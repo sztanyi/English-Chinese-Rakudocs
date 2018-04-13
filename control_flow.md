@@ -14,7 +14,7 @@ Statements used to control the flow of execution
 
 
 
-# [语句]()
+# [statements]()
 
 Perl 6 成语由一个或多个语句组成。简单语句由分号分隔。下面的这个程序会打印 ”Hello“ 然后再下一行打印 ”World“。
 
@@ -34,7 +34,7 @@ say
 "Hello"; say "World";
 ```
 
-# [块]()
+# [blocks]()
 
 像许多语言一样，Perl 6 使用用 `{` 和 `}` 包含的代码块讲多个语句转变为单个语句。 代码块最后一个语句的分号可以省略。
 
@@ -245,7 +245,7 @@ $_ = 1; if 42       { $_.say; $^a.say } ; # says "1" then says "42"
 
 A compound conditional may be produced by following an `if` conditional with `else` to provide an alternative block to run when the conditional expression is false:
 
-```
+```Perl6
 if 0 { say "no" } else { say "yes" }   ; # says "yes" 
 if 0 { say "no" } else{ say "yes" }    ; # says "yes", space is not required 
 ```
@@ -254,11 +254,11 @@ if 0 { say "no" } else{ say "yes" }    ; # says "yes", space is not required
 
 The `else` cannot be separated from the conditional statement by a semicolon, but as a special case, it is OK to have a newline.
 
-```
+```Perl6
 if 0 { say "no" }; else { say "yes" }  ; # syntax error 
 ```
 
-```
+```Perl6
 if 0 { say "no" }
 else { say "yes" }                     ; # says "yes" 
 ```
@@ -267,7 +267,7 @@ else { say "yes" }                     ; # says "yes"
 
 Additional conditions may be sandwiched between the `if` and the `else` using `elsif`. An extra condition will only be evaluated if all the conditions before it were false, and only the block next to the first true condition will be run. You can end with an `elsif` instead of an `else` if you want.
 
-```
+```Perl6
 if 0 { say "no" } elsif False { say "NO" } else { say "yes" } # says "yes" 
 if 0 { say "no" } elsif True { say "YES" } else { say "yes" } # says "YES" 
  
@@ -283,7 +283,7 @@ if wrong() { say "no" } elsif right() { say "yes" } else { say "maybe" }
 
 You cannot use the statement modifier form with `else` or `elsif`:
 
-```
+```Perl6
 42.say if 0 else { 43.say }            # syntax error 
 ```
 
@@ -291,13 +291,13 @@ You cannot use the statement modifier form with `else` or `elsif`:
 
 All the same rules for semicolons and newlines apply, consistently
 
-```
+```Perl6
 if 0 { say 0 }; elsif 1 { say 1 }  else { say "how?" } ; # syntax error 
 if 0 { say 0 }  elsif 1 { say 1 }; else { say "how?" } ; # syntax error 
 if 0 { say 0 }  elsif 1 { say 1 }  else { say "how?" } ; # says "1" 
 ```
 
-```
+```Perl6
 if 0 { say 0 } elsif 1 { say 1 }
 else { say "how?" }                                    ; # says "1" 
  
@@ -313,7 +313,7 @@ else        { say "yes" }                              ; # says "yes"
 
 The whole thing either [slips](https://docs.perl6.org/type/Slip) us an empty list (if no blocks were run) or returns the value produced by the block that did run:
 
-```
+```Perl6
 my $d = 0; say (1,
                 (if 0 { $d += 42; "two"; } elsif False { $d += 43; 2; }),
                 3, $d); # says "(1 3 0)" 
@@ -326,7 +326,7 @@ my $c = 0; say (1,
 
 It's possible to obtain the value of the previous expression inside an `else`, which could be from `if` or the last `elsif` if any are present:
 
-```
+```Perl6
 $_ = 1; if 0     { } else -> $a { "$_ $a".say } ; # says "1 0" 
 $_ = 1; if False { } else -> $a { "$_ $a".say } ; # says "1 False" 
  
@@ -339,19 +339,19 @@ if False { } elsif 0 { } else -> $a { $a.say }  ; # says "0"
 
 When you get sick of typing "if not (X)" you may use `unless` to invert the sense of a conditional statement. You cannot use `else` or `elsif` with `unless` because that ends up getting confusing. Other than those two differences `unless` works the same as [if](https://docs.perl6.org/language/control#if):
 
-```
+```Perl6
 unless 1 { "1 is false".say }  ; # does not say anything, since 1 is true 
 ```
 
-```
+```Perl6
 unless 1   "1 is false".say    ; # syntax error, missing block 
 ```
 
-```
+```Perl6
 unless 0 { "0 is false".say }  ; # says "0 is false" 
 ```
 
-```
+```Perl6
 unless 42.say and 1 { 43.say } ; # says "42" but does not say "43" 
 43.say unless 42.say and 0;      # says "42" and then says "43" 
 43.say unless 42.say and 1;      # says "42" but does not say "43" 
@@ -370,7 +370,7 @@ my $d = 0; say (1, (unless 1 { $d += 42; 2; }), 3, $d); # says "(1 3 0)"
 
 The `with` statement is like `if` but tests for definedness rather than truth. In addition, it topicalizes on the condition, much like `given`:
 
-```
+```Perl6
 with "abc".index("a") { .say }      # prints 0 
 ```
 
@@ -378,7 +378,7 @@ with "abc".index("a") { .say }      # prints 0
 
 Instead of `elsif`, `orwith` may be used to chain definedness tests:
 
-```
+```Perl6
 # The below code says "Found a at 0" 
 my $s = "abc";
 with   $s.index("a") { say "Found a at $_" }
@@ -391,7 +391,7 @@ else                 { say "Didn't find a, b or c" }
 
 You may intermix `if`-based and `with`-based clauses.
 
-```
+```Perl6
 # This says "Yes" 
 if 0 { say "No" } orwith Nil { say "No" } orwith 0 { say "Yes" };
 ```
@@ -400,7 +400,7 @@ if 0 { say "No" } orwith Nil { say "No" } orwith 0 { say "Yes" };
 
 As with `unless`, you may use `without` to check for undefinedness, but you may not add an `else` clause:
 
-```
+```Perl6
 my $answer = Any;
 without $answer { warn "Got: $_" }
 ```
@@ -409,7 +409,7 @@ without $answer { warn "Got: $_" }
 
 There are also `with` and `without` statement modifiers:
 
-```
+```Perl6
 my $answer = (Any, True).roll;
 say 42 with $answer;
 warn "undefined answer" without $answer;
@@ -421,7 +421,7 @@ warn "undefined answer" without $answer;
 
 The `when` block is similar to an `if` block and either or both can be used in an outer block, they also both have a "statement modifier" form. But there is a difference in how following code in the same, outer block is handled: When the `when` block is executed, control is passed to the enclosing block and following statements are ignored; but when the `if`block is executed, following statements are executed. (Note there are other ways to modify the default behavior of each which are discussed in other sections.) The following examples should illustrate the `if` or `when` block's default behavior assuming no special exit or other side effect statements are included in the `if` or `when` blocks:
 
-```
+```Perl6
 {
     if X {...} # if X is true in boolean context, block is executed 
     # following statements are executed regardless 
@@ -441,7 +441,7 @@ Should the `if` and `when` blocks above appear at file scope, following statemen
 
 There is one other feature a `when` has that `if` doesn't: the `when`'s boolean context test defaults to `$_ ~~` while the `if`'s does not. That has an effect on how one uses the X in the `when` block without a value for `$_` (it's `Any` in that case and `Any` smart matches on `True`: `Any ~~ True` yields `True`). Consider the following:
 
-```
+```Perl6
 {
     my $a = 1;
     my $b = True;
@@ -456,7 +456,7 @@ There is one other feature a `when` has that `if` doesn't: the `when`'s boolean 
 
 Finally, `when`'s statement modifier form does not effect execution of following statements either inside or outside of another block:
 
-```
+```Perl6
 say "foo" when X; # if X is true statement is executed 
                   # following statements are not affected 
 ```
@@ -467,7 +467,7 @@ say "foo" when X; # if X is true statement is executed
 
 The `for` loop iterates over a list, running the statements inside a [block](https://docs.perl6.org/type/Block) once on each iteration. If the block takes parameters, the elements of the list are provided as arguments.
 
-```
+```Perl6
 my @foo = 1..3;
 for @foo { $_.print } # prints each value contained in @foo 
 for @foo { .print }   # same thing, because .print implies a $_ argument 
@@ -478,7 +478,7 @@ for @foo { 42.print } # prints 42 as many times as @foo has elements
 
 Pointy block syntax or a [placeholder](https://docs.perl6.org/language/variables#The_%5E_Twigil) may be used to name the parameter, of course.
 
-```
+```Perl6
 my @foo = 1..3;
 for @foo -> $item { print $item }
 for @foo { print $^item }            # same thing 
