@@ -1,3 +1,9 @@
+原文：https://docs.perl6.org/language/control
+
+译者：stanley_tam@163.com
+
+
+
 # 控制流
 
 # Control Flow
