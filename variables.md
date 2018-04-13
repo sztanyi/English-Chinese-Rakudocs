@@ -278,11 +278,13 @@ say foo; # OUTPUT: «bar
 
 用 `my` 和 `our` 声明的动态变量分别有词法作用域和包作用域。动态解析以及通过 `our` 引入的借助符号表的解析是两个正交问题。
 
-## [The `?` Twigil ](https://docs.perl6.org/language/variables#___top)
+## [`?` 号](https://docs.perl6.org/language/variables#___top)
+
+编译时变量使用 `?` 号。编译器知道他们并且编译时不能修改。一个常见的例子是：
 
 Compile-time variables may be addressed via the `?` twigil. They are known to the compiler and may not be modified after being compiled in. A popular example for this is:
 
-```
+```Perl6
 say "$?FILE: $?LINE"; # OUTPUT: "hello.pl: 23" 
                       # if this is the line 23 of a 
                       # file named "hello.pl" 
@@ -290,11 +292,13 @@ say "$?FILE: $?LINE"; # OUTPUT: "hello.pl: 23" 
 
 For a list of these special variables, see [compile-time variables](https://docs.perl6.org/language/variables#Compile-time_variables).
 
-## [The `!` Twigil ](https://docs.perl6.org/language/variables#___top)
+## [`!` 号](https://docs.perl6.org/language/variables#___top)
+
+属性是存在于类实例中的变量。他们可以在类中通过 `!` 号被直接访问：
 
 [Attributes](https://docs.perl6.org/language/objects#Attributes) are variables that exist per instance of a class. They may be directly accessed from within the class via `!`:
 
-```
+```Perl6
 my class Point {
     has $.x;
     has $.y;
@@ -305,13 +309,17 @@ my class Point {
 }
 ```
 
+注意属性是如何通过 `$.x` 和 `$xy` 声明却通过 `$!x` 和 `$!y` 来访问的。这是因为 Perl 6 中所有的属性都是私有的而且可以在类中通过 `$!attribute-name` 直接访问。Perl 6 会直接为你生成访问器方法。更多关于对象，类和他们的属性的信息见 [object orientation](https://docs.perl6.org/language/objects) 。
+
 Note how the attributes are declared as `$.x` and `$.y` but are still accessed via `$!x` and `$!y`. This is because in Perl 6 all attributes are private and can be directly accessed within the class by using `$!attribute-name`. Perl 6 may automatically generate accessor methods for you though. For more details on objects, classes and their attributes see [object orientation](https://docs.perl6.org/language/objects).
 
-## [The `.` Twigil ](https://docs.perl6.org/language/variables#___top)
+## [`.` 号](https://docs.perl6.org/language/variables#___top)
+
+`.` 号不是给变量用的，事实上，下面代码
 
 The `.` twigil isn't really for variables at all. In fact, something along the lines of
 
-```
+```Perl6
 my class Point {
     has $.x;
     has $.y;
@@ -322,11 +330,15 @@ my class Point {
 }
 ```
 
+对 `self` 调用了方法 `x` 和 `y` ，这些是自动为你生成的，因为你使用 `.` 声明属性。但是子类可能覆盖这些方法，如果你不想看到这种情况发生，使用 `$!x` 和 `$!y` 。
+
 just calls the methods `x` and `y` on `self`, which are automatically generated for you because you used the `.` twigil when the attributes were declared. Note, however, that subclasses may override those methods. If you don't want this to happen, use `$!x` and `$!y` instead.
+
+`.` 号调用了方法的事实以为下面的操作也是可能的：
 
 The fact that the `.` twigil does a method call implies that the following is also possible:
 
-```
+```Perl6
 class SaySomething {
     method a() { say "a"; }
     method b() { $.a; }
@@ -654,7 +666,7 @@ await
 # many other more or less odd variations can be produced 
 ```
 
-### [The `$` Variable ](https://docs.perl6.org/language/variables#___top)
+### [The `###  Variable ](https://docs.perl6.org/language/variables#___top)
 
 In addition to explicitly declared named state variables, `$` can be used as an anonymous state variable without an explicit `state`declaration.
 
