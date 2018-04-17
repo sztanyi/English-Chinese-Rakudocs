@@ -209,7 +209,7 @@ class Singleton {
  
 ```
 
-通过 [my](https://docs.perl6.org/syntax/my) 或者 [our](https://docs.perl6.org/syntax/our) 定义的类属性。
+通过 [my](https://docs.perl6.org/syntax/my) 或者 [our](https://docs.perl6.org/syntax/our) 定义的类属性也可能在声明时被初始化，但是我们要在这实现单例模式，对象必须在第一次使用时被创建。不可能 100% 预见什么属性初始化的时刻，因为它可以发生在编译时，运行时或者同时，尤其使用 [use](https://docs.perl6.org/syntax/use) 关键字时。
 
 Class attributes defined by [my](https://docs.perl6.org/syntax/my) or [our](https://docs.perl6.org/syntax/our) may also be initialized when being declared, however we are implementing the Singleton pattern here and the object must be created during its first use. It is not 100% possible to predict the moment when attribute initialization will be executed, because it can take place during compilation, runtime or both, especially when importing the class using the [use](https://docs.perl6.org/syntax/use) keyword.
 
@@ -219,9 +219,13 @@ class HaveStaticAttr {
 }
 ```
 
+类属性也可以通过第二个符号来声明，与声明对象属性类似的方式。如果属性是公有的话它会生成只读访问器。
+
 Class attributes may also be declared with a secondary sigil – in a similar manner to object attributes – that will generate read-only accessors if the attribute is to be public.
 
 # [Methods](https://docs.perl6.org/language/classtut#___top)
+
+属性给赋予对象状态，方法赋予对象行为。让我们暂时忽略 `new` 这个特殊方法。考虑第二个方法 `add-dependency` ，它给任务的依赖列表增加了新任务。
 
 While attributes give objects state, methods give objects behaviors. Let's ignore the `new` method temporarily; it's a special type of method. Consider the second method, `add-dependency`, which adds a new task to a task's dependency list.
 
@@ -230,6 +234,8 @@ method add-dependency(Task $dependency) {
     push @!dependencies, $dependency;
 }
 ```
+
+从许多方面看，这个看起来很像 `sub` 定义。但是，它们之间有两个重要的区别。首先，声明这个函数是
 
 In many ways, this looks a lot like a `sub` declaration. However, there are two important differences. First, declaring this routine as a method adds it to the list of methods for the current class. Thus any instance of the `Task` class can call this method with the `.` method call operator. Second, a method places its invocant into the special variable `self`.
 
