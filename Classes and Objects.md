@@ -1,3 +1,7 @@
+原文：https://docs.perl6.org/language/variables
+
+译者：stanley_tam@163.com
+
 # 类与对象
 
 创建和使用 Perl 6 中类的教程
