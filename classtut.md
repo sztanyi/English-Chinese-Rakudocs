@@ -158,9 +158,11 @@ has Bool $!done;
 method done() { return $!done }
 ```
 
-请注意这不像声明了一个某些语言允许的那样的公共属性；你实实在在地获得了一个私有属性和一个方法，而不用去手写那个方法。
+注意这不像声明了一个某些语言允许的那样的公共属性；你真实地获得了一个私有属性和一个方法，而不用去手写那个方法。你也可以编写自己的访问器方法，如果将来你需要做一些比仅仅返回值更复杂的事情。
 
 Note that this is not like declaring a public attribute, as some languages allow; you really get *both* a private attribute and a method, without having to write the method by hand. You are free instead to write your own accessor method, if at some future point you need to do something more complex than return the value.
+
+注意使用 `.` 号会创建对属性有只读权限的方法。如果这个对象的用户想能够重置任务的完成状态（也许想重新执行一遍），可以通过改变属性声明：
 
 Note that using the `.` twigil has created a method that will provide read-only access to the attribute. If instead the users of this object should be able to reset a task's completion state (perhaps to perform it again), you can change the attribute declaration:
 
@@ -168,13 +170,19 @@ Note that using the `.` twigil has created a method that will provide read-onl
 has Bool $.done is rw;
 ```
 
+`is rw` 特性致使生成的访问器方法返回可以修改属性值的外部代码。
+
 The `is rw` trait causes the generated accessor method to return something external code can modify to change the value of the attribute.
+
+你也可以提供默认值给属性（对那些没有访问器的也适用）：
 
 You can also supply default values to attributes (which works equally for those with and without accessors):
 
 ```Perl6
 has Bool $.done = False;
 ```
+
+赋值发生在对象构建时。等号右边的求值发生在那段时间，甚至可以引用之前的属性：
 
 The assignment is carried out at object build time. The right-hand side is evaluated at that time, and can even reference earlier attributes:
 
@@ -184,6 +192,8 @@ has $.ready = not @!dependencies;
 ```
 
 # [Static fields?](https://docs.perl6.org/language/classtut#___top)
+
+Perl 6 没有 **static** 关键字。然而，任何类都可以声明模组可以声明的任何东西，创建一个有限作用域的变量听起来是个好点子。
 
 Perl 6 has no **static** keyword. Nevertheless, any class may declare anything that a module can, so making a scoped variable sounds like good idea.
 
@@ -198,6 +208,8 @@ class Singleton {
 }
  
 ```
+
+通过 [my](https://docs.perl6.org/syntax/my) 或者 [our](https://docs.perl6.org/syntax/our) 定义的类属性。
 
 Class attributes defined by [my](https://docs.perl6.org/syntax/my) or [our](https://docs.perl6.org/syntax/our) may also be initialized when being declared, however we are implementing the Singleton pattern here and the object must be created during its first use. It is not 100% possible to predict the moment when attribute initialization will be executed, because it can take place during compilation, runtime or both, especially when importing the class using the [use](https://docs.perl6.org/syntax/use) keyword.
 
