@@ -482,11 +482,11 @@ for @foo -> $item { print $item }
 for @foo { print $^item }            # same thing 
 ```
 
-
+可以声明多个参数，在这种情况下，迭代器在运行块之前根据需要从列表中获取尽可能多的元素。
 
 Multiple parameters can be declared, in which case the iterator takes as many elements from the list as needed before running the block.
 
-```
+```Perl6
 my @foo = 1..3;
 for @foo.kv -> $idx, $val { say "$idx: $val" }
 my %hash = <a b c> Z=> 1,2,3;
@@ -494,9 +494,11 @@ for %hash.kv -> $key, $val { say "$key => $val" }
 for 1, 1.1, 2, 2.1 { say "$^x < $^y" }  # says "1 < 1.1" then says "2 < 2.1" 
 ```
 
+带箭头代码块的参数可以有默认值，可以处理缺少元素的列表。
+
 Parameters of a pointy block can have default values, allowing to handle lists with missing elements.
 
-```
+```Perl6
 my @list = 1,2,3,4;
 for @list -> $a, $b = 'N/A', $c = 'N/A' {
     say "$a $b $c"
@@ -506,9 +508,11 @@ for @list -> $a, $b = 'N/A', $c = 'N/A' {
 » 
 ```
 
+如果使用 `for` 的后缀形式，则不需要块，并且为语句列表设置主题。
+
 If the postfix form of `for` is used a block is not required and the topic is set for the statement list.
 
-```
+```Perl6
 say „I $_ butterflies!“ for <♥ ♥ ♥>;
 # OUTPUT«I ♥ butterflies!
 I ♥ butterflies!
@@ -516,22 +520,28 @@ I ♥ butterflies!
 » 
 ```
 
+`for` 可以用在懒惰列表上，它会按需拿列表中的元素，因此要逐行读取文件，可以使用：
+
 A `for` may be used on lazy lists – it will only take elements from the list when they are needed, so to read a file line by line, you could use:
 
-```
+```Perl6
 for $*IN.lines -> $line { .say }
 ```
 
+迭代变量总是词法上的，所以你不需要用 `my` 。而且，它们是只读别名。如果您需要它们是可读写的，请使用 `<->` 而不是 `->` 。如果您需要在 `for` 循环中创建可读写的 `$_` 变量，请明确指明。
+
 Iteration variables are always lexical, so you don't need to use `my` to give them the appropriate scope. Also, they are read-only aliases. If you need them to be read-write, use `<->` instead of `->`. If you need to make `$_` read-write in a for loop, do so explicitly.
 
-```
+```Perl6
 my @foo = 1..3;
 for @foo <-> $_ { $_++ }
 ```
 
+`for` 循环可以生成每个附加块运行产生的值列表。要捕获这些值，请将 `for` 循环放在括号中或将它们分配给数组：
+
 A for loop can produce a `List` of the values produced by each run of the attached block. To capture these values, put the for loop in parenthesis or assign them to an array:
 
-```
+```Perl6
 (for 1, 2, 3 { $_ * 2 }).say;              # says "(2 4 6)" 
 my @a = do for 1, 2, 3 { $_ * 2 }; @a.say; # says "[2 4 6]" 
 my @b = (for 1, 2, 3 { $_ * 2 }); @a.say;  # same thing 
@@ -539,9 +549,11 @@ my @b = (for 1, 2, 3 { $_ * 2 }); @a.say;  # same thing
 
 # [gather/take]()
 
+gather是一个返回值序列的语句或块前缀。这些值由 `gather` 代码块动态作用域中 `take` 返回。
+
 `gather` is a statement or block prefix that returns a [sequence](https://docs.perl6.org/type/Seq) of values. The values come from calls to [take](https://docs.perl6.org/type/Mu#routine_take) in the dynamic scope of the `gather` block.
 
-```
+```Perl6
 my @a = gather {
     take 1;
     take 5;
@@ -551,11 +563,15 @@ say join ', ', @a;          # OUTPUT: «1, 5, 42
 » 
 ```
 
-`gather/take` can generate values lazily, depending on context. If you want to force lazy evaluation use the [lazy](https://docs.perl6.org/type/Iterable#method_lazy)subroutine or method. Binding to a scalar or sigilless container will also force laziness.
+`gather/take` 根据上下文惰性求值。如果你想强制惰性求值，使用 `lazy` 子程序或方法。绑定到一个标量或无符号的容器也会迫使惰性求值。
+
+`gather/take` can generate values lazily, depending on context. If you want to force lazy evaluation use the [lazy](https://docs.perl6.org/type/Iterable#method_lazy) subroutine or method. Binding to a scalar or sigilless container will also force laziness.
+
+例如
 
 For example
 
-```
+```Perl6
 my @vals = lazy gather {
     take 1;
     say "Produced a value";
@@ -572,9 +588,11 @@ say @vals[1];
 # 2 
 ```
 
+`gather/take` 是动态作用域，所以你可以从 `gather` 中的函数或方法中调用 `take` 。
+
 `gather/take` is scoped dynamically, so you can call `take` from subs or methods that are called from within `gather`:
 
-```
+```Perl6
 sub weird(@elems, :$direction = 'forward') {
     my %direction = (
         forward  => sub { take $_ for @elems },
@@ -588,13 +606,17 @@ say weird(<a b c>, :direction<backward> );          # OUTPUT: «(c b a)
 » 
 ```
 
+如果值需要在调用方可改变，使用 [take-rw](https://docs.perl6.org/type/Mu#routine_take-rw)。
+
 If values need to be mutable on the caller side, use [take-rw](https://docs.perl6.org/type/Mu#routine_take-rw).
 
 # [given]() 
 
+`given` 语句是 Perl 6 的主题化关键字，类似于 C 语言中 `switch` 的主题化功能。换句话说，`given` 设置了紧随其后代码块中 `$_` 的值。单个条件的关键词是 `when` 和 `default`。通常的习语看起来像这样：
+
 The `given` statement is Perl 6's topicalizing keyword in a similar way that `switch` topicalizes in languages such as C. In other words, `given` sets `$_` inside the following block. The keywords for individual cases are `when` and `default`. The usual idiom looks like this:
 
-```
+```Perl6
 my $var = (Any, 21, any <answer lie>).pick;
 given $var {
     when 21 { say $_ * 2 }
@@ -603,23 +625,29 @@ given $var {
 }
 ```
 
+`given` 语句通常单独使用:
+
 The `given` statement is often used alone:
 
-```
+```Perl6
 given 42 { .say; .Numeric; }
 ```
 
+比这个可读性更强：
+
 This is a lot more understandable than:
 
-```
+```Perl6
 { .say; .Numeric; }(42)
 ```
 
 ## [default and when]()
 
+当 `default` 语句之后的子块离开时，包裹 `default` 语句的块将立即离开。就好像块中其余的语句被跳过了一样。
+
 A block containing a `default` statement will be left immediately when the sub-block after the `default` statement is left. It is as though the rest of the statements in the block are skipped.
 
-```
+```Perl6
 given 42 {
     "This says".say;
     $_ == 42 and ( default { "This says, too".say; 43; } );
@@ -628,11 +656,15 @@ given 42 {
 # The above block evaluates to 43 
 ```
 
+`when` 语句也可以这样做（但是 `when` 语句修饰符不会）。
+
 A `when` statement will also do this (but a `when` statement modifier will *not*.)
+
+另外，`when` 语句提供的表达式智能匹配主题（ `$_` ），因此可以检查主题的值，正则表达式和类型。
 
 In addition, `when` statements `smartmatch` the topic (`$_`) against a supplied expression such that it is possible to check against values, regular expressions, and types when specifying a match.
 
-```
+```Perl6
 for 42, 43, "foo", 44, "bar" {
     when Int { .say }
     when /:i ^Bar/ { .say }
@@ -646,9 +678,11 @@ Bar
 » 
 ```
 
+以这种形式，`given/when` 结构和 `if/elsif/else` 语句相似。请注意 `when` 语句的顺序。以下代码表示 `Int` 而不是 `42`。
+
 In this form, the `given`/`when` construct acts much like a set of `if`/`elsif`/`else` statements. Be careful with the order of the `when` statements. The following code says `"Int"` not `42`.
 
-```
+```Perl6
 given 42 {
     when Int { say "Int" }
     when 42  { say 42 }
@@ -657,6 +691,8 @@ given 42 {
 # OUTPUT: «Int
 » 
 ```
+
+当 `when` 语句或 `default` 语句导致外部块返回时，嵌套 `when` 或 `default` 块不会被视为外部块，因此你可以嵌套这些语句，并且只要你不新建代码块，仍然处于相同的“开关”中：
 
 When a `when` statement or `default` statement causes the outer block to return, nesting `when` or `default` blocks do not count as the outer block, so you can nest these statements and still be in the same "switch" just so long as you do not open a new block:
 
