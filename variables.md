@@ -538,9 +538,11 @@ outer-location; # OUTPUT: «outside
 » 
 ```
 
+如果一个变量被重新定义，任何引用外部变量的代码依旧引用外部变量。因此这里，`&outer-location` 仍旧打印的是外部的 `$location` 的值：
+
 If a variable has been redefined, any code that referenced the outer variable will continue to reference the outer variable. So here, `&outer-location` still prints the outer `$location`:
 
-```
+```Perl6
 sub new-location {
     my $location = "nowhere";
     outer-location;
@@ -550,15 +552,21 @@ new-location; # OUTPUT: «outside
 » 
 ```
 
+要使 `new-location()` 打印出 `nowhere`，使用 [* 号](https://docs.perl6.org/language/variables#The_%2A_Twigil) 使 `$location` 成为一个动态变量。这个符号让编译器在调用者的作用域查找变量符号，而不是查完本地作用域后查外部作用域。
+
 To make `new-location()` print `nowhere`, make `$location` a dynamic variable using [the * twigil](https://docs.perl6.org/language/variables#The_%2A_Twigil). This twigil makes the compiler look up the symbol in the calling scope instead of the outer scope after trying the local scope.
+
+`my` 是子例程的默认作用域，因此 `my sub x() {}` 和 `sub x() {}` 是完全一样的。
 
 `my` is the default scope for subroutines, so `my sub x() {}` and `sub x() {}` do exactly the same thing.
 
-## [The `our` Declarator](https://docs.perl6.org/language/variables#___top)
+## [`our` 声明符](https://docs.perl6.org/language/variables#___top)
+
+`our` 声明的变量像 `my` 声明的变量一样工作，除了额外给符号表插入了一个别名。
 
 `our` variables work just like `my` variables, except that they also introduce an alias into the symbol table.
 
-```
+```Perl6
 module M {
     our $Var;
     # $Var available here 
@@ -567,26 +575,32 @@ module M {
 # Available as $M::Var here. 
 ```
 
-## [Declaring a list of variables](https://docs.perl6.org/language/variables#___top)
+## [声明一组变量](https://docs.perl6.org/language/variables#___top)
+
+`my` 和 `our` 声明符接受一组括起来的变量作为参数来一次声明多个变量。
 
 The declarators `my` and `our` take a list of variables in parentheses as argument to declare more than one variable at a time.
 
-```
+```Perl6
 my (@a, $s, %h);
 ```
 
+这可以与解构赋值一起使用。对这样一个列表的任何赋值都将采用左列表中提供的元素数量，并从右列表中为它们分配相应的值。根据变量的类型，任何遗漏的元素都会导致未定义的值。
+
 This can be used in conjunction with [destructuring assignment](undefined). Any assignment to such a list will take the number of elements provided in the left list and assign corresponding values from the right list to them. Any missing elements are left will result in undefined values according to the type of the variables.
 
-```
+```Perl6
 my (Str $a, Str $b, Int $c) = <a b>;
 say [$a, $b, $c].perl;
 # OUTPUT: «["a", "b", Int]
 » 
 ```
 
+要将列表拆分为单个值，请使用 `($var,)` 创建包含一个元素的列表文字。与变量声明符一起使用时，将单个变量用括号括起来就足够了。
+
 To destructure a list into a single value, create a list literal with one element by using `($var,)`. When used with a variable declarator, providing parentheses around a single variable is sufficient.
 
-```
+```Perl6
 sub f { 1,2,3 };
 my ($a) = f;
 say $a.perl;
@@ -594,28 +608,36 @@ say $a.perl;
 » 
 ```
 
+要跳过列表中的元素，请使用匿名状态变量 `$`。
+
 To skip elements in the list use the anonymous state variable `$`.
 
-```
+```Perl6
 my ($,$a,$,%h) = ('a', 'b', [1,2,3], {:1th});
 say [$a, %h].perl;
 # OUTPUT: «["b", {:th(1)}]
 » 
 ```
 
-## [The `has` Declarator](https://docs.perl6.org/language/variables#___top)
+## [`has` 声明符](https://docs.perl6.org/language/variables#___top)
+
+`has` 将属性作用于类实例或者角色，以及类或角色的方法。`has` 暗示了方法，因此 `has method x() {}` 与 `mehod x() {}` 等价。
 
 `has` scopes attributes to instances of a class or role, and methods to classes or roles. `has` is implied for methods, so `has method x() {}` and `method x() {}` do the same thing.
 
 See [object orientation](https://docs.perl6.org/language/objects) for more documentation and some examples.
 
-## [The `anon` Declarator](https://docs.perl6.org/language/variables#___top)
+## [`anon` 声明符](https://docs.perl6.org/language/variables#___top)
+
+`anon` 声明符可防止在词法作用域，方法表和其他任何地方安装符号。
 
 The `anon` declarator prevents a symbol from getting installed in the lexical scope, the method table and everywhere else.
 
+例如，你可以使用它来声明知道其自己名称的子例程，但仍未安装在作用域中：
+
 For example, you can use it to declare subroutines which know their own name, but still aren't installed in a scope:
 
-```
+```Perl6
 my %operations =
     half   => anon sub half($x) { $x / 2 },
     square => anon sub square($x) { $x * $x },
