@@ -457,7 +457,7 @@ augment slang Regex {  # derive from $~Regex and then modify $~Regex
 }
 ```
 
-# [Variable Declarators and Scope](https://docs.perl6.org/language/variables#___top)
+# [变量声明符和作用域](https://docs.perl6.org/language/variables#___top)
 
 大多数时候使用 `my` 关键字创建新变量就足够了：
 
@@ -646,13 +646,17 @@ say %operations<square>.name;       # square 
 say %operations<square>(8);         # 64 
 ```
 
-## [The `state` Declarator](https://docs.perl6.org/language/variables#___top)
+## [`state` 声明符](https://docs.perl6.org/language/variables#___top)
+
+跟 `my` 类似，`state` 声明词法作用域变量。但是，初始化在正常执行流程中首次遇到初始化时发生。因此，state 变量将在封闭块或例程的多次执行中保持其值。
 
 `state` declares lexically scoped variables, just like `my`. However, initialization happens exactly once the first time the initialization is encountered in the normal flow of execution. Thus, state variables will retain their value across multiple executions of the enclosing block or routine.
 
+因此，子例程
+
 Therefore, the subroutine
 
-```
+```Perl6
 sub a {
     state @x;
     state $l = 'A';
@@ -662,9 +666,11 @@ sub a {
 say a for 1..6;
 ```
 
+会持续增加 `$l` 的值，并在每次调用时将它追加到 `@x`。所以它会输出：
+
 will continue to increment `$l` and append it to `@x` each time it is called. So it will output:
 
-```
+```Perl6
 [A]
 [A B]
 [A B C]
@@ -674,21 +680,31 @@ will continue to increment `$l` and append it to `@x` each time it is called
  
 ```
 
+这适用于包含代码对象的每个“克隆”，如下例所示：
+
 This works per "clone" of the containing code object, as in this example:
 
-```
+```Perl6
 ({ state $i = 1; $i++.say; } xx 3).map: {$_(), $_()}; # says 1 then 2 thrice 
 ```
 
+请注意，当多个线程运行同一个块的相同克隆时，这不是线程安全的构造。还要记住，方法在每个类中只有一个克隆，而不是在每个对象中。
+
 Note that this is **not** a thread-safe construct when the same clone of the same block is run by multiple threads. Also remember that methods only have one clone per class, not per object.
+
+和 `my` 一样，声明多个 `state` 变量必须放在圆括号中。声明单个变量时，括号可以省略。
 
 As with `my`, declaring multiple `state` variables must be placed in parentheses and for declaring a single variable, parentheses may be omitted.
 
+许多操作符都带有隐式绑定，可能会导致其他地方的操作。
+
 Many operators come with implicit binding which can lead to actions at a distance.
+
+使用 `.clone` 或强制来创建一个可绑定的新容器。
 
 Use `.clone` or coercion to create a new container that can be bound to.
 
-```
+```Perl6
 my @a;
 my @a-cloned;
 sub f() {
@@ -707,7 +723,7 @@ say @a-cloned; # OUTPUT: «[k1 => 1 k2 => 2 k3 => 3]
 
 State variables are shared between all threads. The result can be unexpected.
 
-```
+```Perl6
 sub code(){ state $i = 0; say ++$i; $i };
 await
     start { loop { last if code() >= 5 } },
@@ -730,25 +746,31 @@ await
 # many other more or less odd variations can be produced 
 ```
 
-### [The `###  Variable ](https://docs.perl6.org/language/variables#___top)
+### [$ 变量 ](https://docs.perl6.org/language/variables#___top)
 
-In addition to explicitly declared named state variables, `$` can be used as an anonymous state variable without an explicit `state`declaration.
+除了显式声明的命名状态变量外，`$` 可以用作匿名 `state` 变量而不需要明确的 `state` 声明。
 
-```
+In addition to explicitly declared named state variables, `$` can be used as an anonymous state variable without an explicit `state` declaration.
+
+```Perl6
 say "1-a 2-b 3-c".subst(:g, /\d/, {<one two three>[$++]});
 # OUTPUT: «one-a two-b three-c
 » 
 ```
 
+此外，状态变量可以在子程序之外使用。例如，你可以在一行中使用 `$` 来对文件中的行进行编号。
+
 Furthermore, state variables can be used outside of subroutines. You could, for example, use `$` in a one-liner to number the lines in a file.
 
-```
+```Perl6
 perl6 -ne 'say ++$ ~ " $_"' example.txt
 ```
 
+在词法范围内对 `$` 的每个引用实际上是一个单独的变量。
+
 Each reference to `$` within a lexical scope is in effect a separate variable.
 
-```
+```Perl6
 perl6 -e '{ say ++$; say $++  } for ^5'
 # OUTPUT: «1
 0
@@ -763,9 +785,11 @@ perl6 -e '{ say ++$; say $++  } for ^5'
 » 
 ```
 
+如果你需要在一个作用域中多次使用 `$` 的值，它应该被复制到一个新的变量中。
+
 If you need to use the value of $ more than once in a scope, it should be copied to a new variable.
 
-```
+```Perl6
 sub foo() {
     given ++$ {
         when 1 {
@@ -790,18 +814,22 @@ three
 » 
 ```
 
+请注意，隐式 `state` 声明器仅适用于变量本身，而不适用于可能包含初始化程序的表达式。如果初始化器只能被调用一次，则必须提供 `state` 声明器。
+
 Note that the implicit state declarator is only applied to the variable itself, not the expression that may contain an initializer. If the initializer has to be called exactly once, the `state` declarator has to be provided.
 
-```
+```Perl6
 subset DynInt where $ = ::('Int'); # the initializer will be called for each type check 
 subset DynInt where state $ = ::('Int'); # the initializer is called once, this is a proper cache 
 ```
 
-### [The `@` Variable](https://docs.perl6.org/language/variables#___top)
+### [`@` 变量](https://docs.perl6.org/language/variables#___top)
+
+类似于 `$` 变量，还有一个位置匿名 `state` 变量 `@` 。
 
 Similar to the `$` variable, there is also a [Positional](https://docs.perl6.org/type/Positional) anonymous state variable `@`.
 
-```
+```Perl6
 sub foo($x) {
     say (@).push($x);
 }
@@ -814,9 +842,11 @@ foo($_) for ^3;
 » 
 ```
 
+`@` 在这里加括号是为了从名为 `@.push` 的类成员变量中消除表达式的歧义。索引访问不需要这种歧义消除，但你需要复制该值以执行任何有用的操作。
+
 The `@` here is parenthesized in order to disambiguate the expression from a class member variable named `@.push`. Indexed access doesn't require this disambiguation but you will need to copy the value in order to do anything useful with it.
 
-```
+```Perl6
 sub foo($x) {
     my $v = @;
     $v[$x] = $x;
@@ -831,13 +861,17 @@ foo($_) for ^3;
 » 
 ```
 
+与 `$` 一样，范围中的每个 `@` 都会引入一个新的匿名数组。
+
 As with `$`, each mention of `@` in a scope introduces a new anonymous array.
 
-### [The `%` Variable](https://docs.perl6.org/language/variables#___top)
+### [`%` 变量](https://docs.perl6.org/language/variables#___top)
+
+另外，还有一个关联匿名状态变量 `％`。
 
 In addition, there's an [Associative](https://docs.perl6.org/type/Associative) anonymous state variable `%`.
 
-```
+```Perl6
 sub foo($x) {
     say (%).push($x => $x);
 }
@@ -850,9 +884,11 @@ foo($_) for ^3;
 » 
 ```
 
+关于消歧的警告同样适用。正如你所期望的那样，索引访问也是可能的（通过复制使其有用）。
+
 The same caveat about disambiguation applies. As you may expect, indexed access is also possible (with copying to make it useful).
 
-```
+```Perl6
 sub foo($x) {
     my $v = %;
     $v{$x} = $x;
@@ -867,15 +903,21 @@ foo($_) for ^3;
 » 
 ```
 
+与其他匿名状态变量一样，每个`given` 范围内的 `％` 都将有效地引入一个单独的变量。
+
 As with the other anonymous state variables, each mention of `%` within a given scope will effectively introduce a separate variable.
 
-## [The `augment` Declarator](https://docs.perl6.org/language/variables#___top)
+## [`augment` 声明符](https://docs.perl6.org/language/variables#___top)
+
+通过  `augment`，你可以将属性和方法添加到现有的类和语法，只要您先激活 `MONKEY-TYPING` 指令即可。
 
 With `augment`, you can add attributes and methods to existing classes and grammars, provided you activated the `MONKEY-TYPING`pragma first.
 
+由于类通常是 `our` 作用域，因此是全局的，这意味着修改全局状态，这是强烈不鼓励的。几乎所有的情况都有更好的解决方案。
+
 Since classes are usually `our` scoped, and thus global, this means modifying global state, which is strongly discouraged. For almost all situations, there are better solutions.
 
-```
+```Perl6
 # don't do this 
 use MONKEY-TYPING;
 augment class Int {
@@ -885,13 +927,17 @@ say 42.is-answer;       # OUTPUT: «True
 » 
 ```
 
+（在这个情况下，更好的解决方案是使用 [function](https://docs.perl6.org/language/functions)）。
+
 (In this case, the better solution would be to use a [function](https://docs.perl6.org/language/functions)).
 
-## [The `temp` Prefix](https://docs.perl6.org/language/variables#___top)
+## [`temp` 前缀](https://docs.perl6.org/language/variables#___top)
+
+像 `my` 一样，`temp` 会在其范围的末尾恢复变量的旧值。但是，`temp` 不会创建新变量。
 
 Like `my`, `temp` restores the old value of a variable at the end of its scope. However, `temp` does not create a new variable.
 
-```
+```Perl6
 my $in = 0; # temp will "entangle" the global variable with the call stack 
             # that keeps the calls at the bottom in order. 
 sub f(*@c) {
@@ -925,11 +971,13 @@ print g(g(f(g()), g(), f()));
 » 
 ```
 
-## [The `let` Prefix](https://docs.perl6.org/language/variables#___top)
+## [`let` 前缀](https://docs.perl6.org/language/variables#___top)
+
+如果该块以失败退出，则恢复先前的值。成功退出意味着块返回了定义的值或列表。
 
 Restores the previous value if the block exits unsuccessfully. A successful exit means the block returned a defined value or a list.
 
-```
+```Perl6
 my $answer = 42;
  
 {
@@ -943,6 +991,8 @@ my $answer = 42;
  
 say $answer;
 ```
+
+在上面的例子中，如果 `Bool.pick` 返回真值，那么答案将保持为 84，因为该块返回一个定义的值（ `say` 返回真）。否则，`die` 语句将导致该块退出失败，并将答案重置为42。
 
 In the above case, if the `Bool.pick` returns true, the answer will stay as 84 because the block returns a defined value (`say` returns true). Otherwise the `die` statement will cause the block to exit unsuccessfully, resetting the answer to 42.
 
