@@ -1,14 +1,17 @@
-原文：https://docs.perl6.org/language/variables
-
+原文：https://docs.perl6.org/language/classtut
 译者：stanley_tam@163.com
 
 # 类与对象
+# Classes and objects
 
 创建和使用 Perl 6 中类的教程
+A tutorial about creating and using classes in Perl 6
 
 Perl 6 有一套丰富的定义和使用类的内建语法。
+Perl 6 has a rich built-in syntax for defining and using classes.
 
 默认构造器可以为生成的对象设置属性：
+A default constructor allows the setting of attributes for the created object:
 
 ```Perl6
 class Point {
@@ -32,20 +35,21 @@ say $r.area(); # OUTPUT: «100
 » 
 ```
 
-你也可以提供你自己的构造器和构造实现。下面例子更详细地展示了 Perl 6 中的依赖操作器可能的样子。 它展示了客制化的构造器，私有和公有的属性，方法以及各种签名。代码不多，但是运行结果很有意思也很有用。
+你也可以提供你自己的构造器和构造实现。下面例子更详细地展示了 Perl 6 中的依赖操作可能的样子。 它展示了客制化的构造器，私有和公有的属性，子方法，方法以及各种签名。代码不多，但是运行结果很有意思也很有用。
+You can also provide your own construction and BUILD implementation. The following, more elaborate example shows how a dependency handler might look in Perl 6. It showcases custom constructors, private and public attributes, Submethods, methods, and various aspects of signatures. It's not a lot of code, and yet the result is interesting and useful.
 
 ```Perl6
 class Task {
     has      &!callback;
     has Task @!dependencies;
     has Bool $.done;
- 
+    
     # Normally doesn't need to be written 
-    # BUILD is the equivalent of a constructor in other languages 
     method new(&callback, *@dependencies) {
         return self.bless(:&callback, :@dependencies);
     }
  
+    # BUILD is the equivalent of a constructor in other languages 
     submethod BUILD(:&!callback, :@!dependencies) { }
  
     method add-dependency(Task $dependency) {
