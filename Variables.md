@@ -65,7 +65,7 @@ CATCH { default { put .^name, ': ', .Str } }
 
 For information on variables without sigils, see [sigilless variables](https://docs.perl6.org/language/variables#Sigilless_variables).
 
-## [Item and List Assignment](https://docs.perl6.org/language/variables#___top)
+## [单条目和列表赋值 (Item and List Assignment)](https://docs.perl6.org/language/variables#___top)
 
 有两种类型的变量分配，单条目赋值和列表赋值。两者都用等于号作为操作符。等于号左边的语法决定了等于号是用作单条目还是列表赋值。
 
@@ -89,20 +89,15 @@ The type of assignment (item or list) is decided by the first context seen in th
 
 ```Perl6
 my $foo = 5;            # item assignment 
-say $foo.perl;          # OUTPUT: «5
-» 
+say $foo.perl;          # OUTPUT: «5» 
  
 my @bar = 7, 9;         # list assignment 
-say @bar.^name;         # OUTPUT: «Array
-» 
-say @bar.perl;          # OUTPUT: «[7, 9]
-» 
+say @bar.^name;         # OUTPUT: «Array» 
+say @bar.perl;          # OUTPUT: «[7, 9]» 
  
 (my $baz) = 11, 13;     # list assignment 
-say $baz.^name;         # OUTPUT: «List
-» 
-say $baz.perl;          # OUTPUT: «$(11, 13)
-» 
+say $baz.^name;         # OUTPUT: «List» 
+say $baz.perl;          # OUTPUT: «$(11, 13)» 
 ```
 
 列表赋值中的赋值行为依赖于包含它的表达式或者声明语句。
@@ -116,10 +111,8 @@ For instance, if the internal assignment is a declarator, item assignment is use
 ```Perl6
 my @array;
 @array = my $num = 42, "str";   # item assignment: uses declarator 
-say @array.perl;                # OUTPUT: «[42, "str"]
-» (an Array) 
-say $num.perl;                  # OUTPUT: «42
-» (a Num) 
+say @array.perl;                # OUTPUT: «[42, "str"]» (an Array) 
+say $num.perl;                  # OUTPUT: «42» (a Num) 
 ```
 
 类似地，如果中间的的赋值是表达式，这个表达式用来初始化声明语句，赋值类型由中间表达式的上下文决定：
@@ -129,17 +122,13 @@ Similarly, if the internal assignment is an expression that is being used as an 
 ```Perl6
 my $num;
 my @array = $num = 42, "str";    # item assignment: uses expression 
-say @array.perl;                 # OUTPUT: «[42, "str"]
-» (an Array) 
-say $num.perl;                   # OUTPUT: «42
-» (a Num) 
+say @array.perl;                 # OUTPUT: «[42, "str"]» (an Array) 
+say $num.perl;                   # OUTPUT: «42» (a Num) 
  
 my ( @foo, $bar );
 @foo = ($bar) = 42, "str";       # list assignment: uses parentheses 
-say @foo.perl;                   # OUTPUT: «[(42, "str"),]
-» (an Array) 
-say $bar.perl;                   # OUTPUT: «$(42, "str")
-» (a List)# 
+say @foo.perl;                   # OUTPUT: «[(42, "str"),]» (an Array) 
+say $bar.perl;                   # OUTPUT: «$(42, "str")» (a List)# 
 ```
 
 但是，如果中间的赋值既不是一个声明语句也不是一个表达式，而是更大的表达式中的一部分， 那个更大的表达式的上下文决定了赋值类型：
@@ -149,21 +138,19 @@ However, if the internal assignment is neither a declarator nor an expression, b
 ```Perl6
 my ( @array, $num );
 @array = $num = 42, "str";    # list assignment 
-say @array.perl;              # OUTPUT: «[42, "str"]
-» 
-say $num.perl;                # OUTPUT: «42
-» 
+say @array.perl;              # OUTPUT: «[42, "str"]» 
+say $num.perl;                # OUTPUT: «42» 
 ```
 
 赋值语句被解析为 `@array = (($num = 42), "str")`, 因为单条目赋值比逗号的优先级更高。
 
 The assignment expression is parsed as `@array = (($num = 42), "str")`, because item assignment has tighter precedence than the comma.
 
-更多关于优先级的细节见 [operators](https://docs.perl6.org/language/operators) 。
+更多关于优先级的细节见 [操作符](https://docs.perl6.org/language/operators) 。
 
 See [operators](https://docs.perl6.org/language/operators) for more details on precedence.
 
-## [无符号变量(Sigilless variables) ](https://docs.perl6.org/language/variables#___top)
+## [无符号变量 (Sigilless variables) ](https://docs.perl6.org/language/variables#___top)
 
 使用 \ 作为前缀，可以生成无标记的变量：
 
@@ -174,7 +161,7 @@ my \degrees = pi / 180;
 my \θ       = 15 * degrees;
 ```
 
-注意，无标记变量没有关联容器。这意味着上面例子中的degrees 和  `θ` 实际上表示的是 Num。尝试在定义变量后赋值可以详细说明这一点：
+注意，无标记变量没有关联的[容器](https://docs.perl6.org/language/containers)。这意味着上面例子中的 `degrees` 和  `θ` 实际上表示的是 Num。尝试在定义变量后赋值可以详细说明这一点：
 
 Note that sigilless variable do not have associated [containers](https://docs.perl6.org/language/containers). This means `degrees` and `θ`, above, actually directly represent `Num`s. To illustrate, try assigning to one after you've defined it:
 
@@ -196,27 +183,40 @@ sub logged(&f, |args) {
 }
 ```
 
-无标记变量也能用作绑定。更多信息见 [Binding](https://docs.perl6.org/language/containers#Binding) 。
+无标记变量也能用作绑定。更多信息见 [绑定](https://docs.perl6.org/language/containers#Binding) 。
 
 Sigilless variables can also be used for binding. See [Binding](https://docs.perl6.org/language/containers#Binding) for more information.
 
-# [符号（Twigils） ](https://docs.perl6.org/language/variables#___top)
+# [符号 (Twigils)](https://docs.perl6.org/language/variables#___top)
 
 符号影响变量的作用域；但是他们对主标记符是否插值无影响。如果变量 `$a` 内插了， `$^a`, `$*a`, `$=a`, `$?a`, `$.a` 也可以，只取决于 `$`。
 
 Twigils influence the scoping of a variable; however, they have no influence over whether the primary sigil interpolates. That is, if `$a`interpolates, so do `$^a`, `$*a`, `$=a`, `$?a`, `$.a`, etc. It only depends on the `$`.
 
+| 符号   | 作用域                                    |
+| ------ | ---------------------------------------- |
+| none   | 作用域只依赖声明符                         |
+| *      | 动态作用域                                |
+| ?      | 编译时变量                                |
+| !      | 属性 (类成员)                             |
+| .      | 方法 (非真正意义上的变量)                  |
+| <      | 正则匹配对象索引 (非真正意义上的变量)       |
+| ^      | 自声明的正式的位置参数                     |
+| :      | 自声明的正式的命名参数                     |
+| =      | Pod 文档变量                              |
+| ~      | 分歧器在当前词法点上可见的子语言            |
+
 | Twigil | Scope                                    |
 | ------ | ---------------------------------------- |
-| !      | Attribute (class member)                 |
+| none   | Based only on declarator                 |
 | *      | Dynamic                                  |
+| !      | Attribute (class member)                 |
 | .      | Method (not really a variable)           |
 | :      | Self-declared formal named parameter     |
 | <      | Index into match object (not really a variable) |
 | =      | Pod variables                            |
 | ?      | Compile-time variable                    |
 | ^      | Self-declared formal positional parameter |
-| none   | Based only on declarator                 |
 | ~      | The sublanguage seen by the parser at this lexical spot |
 
 ## [`*` 号 ](https://docs.perl6.org/language/variables#___top)
