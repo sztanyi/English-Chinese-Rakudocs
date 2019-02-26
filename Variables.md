@@ -1,7 +1,5 @@
 原文：https://docs.perl6.org/language/variables
 
-译者：stanley_tam@163.com
-
 # 变量
 
 Perl 6 中的变量
@@ -14,11 +12,11 @@ Variable names can start with or without a special character called a *sigil*, 
 
 # [标记（ Sigils ） ](https://docs.perl6.org/language/variables#___top)
 
-共有四种标记。标量标记 \$，位置标记 @，关联标记 % 和可调用标记 &。
+共有四种标记。标量标记 `$`，位置标记 `@`，关联标记 `%` 和可调用标记 `&`。
 
 There are four sigils. The scalar-sigil `$`, the positional-sigil `@`, the associative-sigil `%` and the callable-sigil `&`.
 
-标记链接了语法，类型系统和容器。当声明变量以及为字符串插值充当标记时，他们为最常见的类型约束提供快捷方式。位置标记和关联标记提供了类型约束，使基础类型下标需要知道分派给哪些方法。可调用标记对函数调用起到了同样的作用。可调用标记还会告诉编译器哪些括号可以省略。位置和关联签名也可以通过默认情况下展平来简化分配。
+标记链接了语法，类型系统和[容器](https://docs.perl6.org/language/containers)。这些标记为最常见的类型约束提供快捷方式，当声明变量以及为[字符串插值](https://docs.perl6.org/language/quoting#Interpolation%3A_qq)充当标记时。[位置标记](https://docs.perl6.org/language/containers#Flattening%2C_items_and_containers)和[关联标记](https://docs.perl6.org/language/containers#Flattening%2C_items_and_containers)起到了类型约束的作用，使基础类型[下标](https://docs.perl6.org/language/subscripts#Custom_types)需要知道分派给哪些方法。可调用标记对函数调用起到了同样的作用。可调用标记还会告诉编译器哪些括号可以省略。位置和关联签名也可以通过默认情况下展平来简化分配。
 
 Sigils provide a link between syntax, the type system and [containers](https://docs.perl6.org/language/containers). They provide a shortcut for the most common type constraints when declaring variables and serve as markers for [string interpolation](https://docs.perl6.org/language/quoting#Interpolation%3A_qq). The [positional-sigil](https://docs.perl6.org/language/containers#Flattening%2C_items_and_containers) and the [associative-sigil](https://docs.perl6.org/language/containers#Flattening%2C_items_and_containers) provide type constraint that enforce a base type [subscripts](https://docs.perl6.org/language/subscripts#Custom_types) require to know what methods to dispatch to. The [callable-sigil](https://docs.perl6.org/language/containers#Callable_containers) does the same for function calls. The latter also tells the compiler where parentheses for calls can be omitted. The positional and associative-sigil also simplify assignment by flattening by default.
 
@@ -56,8 +54,7 @@ class FailHash is Hash {
  
 my %h is FailHash = oranges => "round", bananas => "bendy";
 say %h<oranges>;
-# OUTPUT: «round
-» 
+# OUTPUT: «round» 
 %h.finalize;
 say %h<cherry>;
 CATCH { default { put .^name, ': ', .Str } }
@@ -82,7 +79,7 @@ Item assignment places the value from the right-hand side into the variable (con
 
 List assignment leaves the choice of what to do to the variable on the left.
 
-例如，列表变量（@ 标记）首先将自己的值清空然后接受右边所有的值。
+例如，[列表](https://docs.perl6.org/type/Array)变量（`@` 标记）在列表赋值时首先将自己清空然后接受右边所有的值。
 
 For example, [Array](https://docs.perl6.org/type/Array) variables (`@` sigil) empty themselves on list assignment and then put all the values from the right-hand side into themselves.
 
