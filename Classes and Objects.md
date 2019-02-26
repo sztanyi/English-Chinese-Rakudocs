@@ -1,8 +1,8 @@
 原文：https://docs.perl6.org/language/classtut
+
 译者：stanley_tam@163.com
 
-# 类与对象
-# Classes and objects
+# 类与对象 / Classes and objects
 
 创建和使用 Perl 6 中类的教程
 A tutorial about creating and using classes in Perl 6
