@@ -255,7 +255,7 @@ say-all();  # OUTPUT: 1, 10, 101 
 
 The first time `&say-all` is called, it prints "`1, 10, 100`" just as one would expect. The second time though, it prints "`1, 11, 101`". This is because `$lexical` isn't looked up in the caller's scope but in the scope `&say-all` was defined in. The two dynamic variables are looked up in the caller's scope and therefore have the values `11` and `101`. The third time `&say-all` is called `$*dynamic1` isn't `11`anymore, but `$*dynamic2` is still `101`. This stems from the fact that we declared a new dynamic variable `$*dynamic1` in the block and did not assign to the old variable as we did with `$*dynamic2`.
 
-动态变量与其他变量不同之处在于，引用一个没有声明的动态变量不是一个编译时错误而是一个运行时错误。因此动态变量可以不用声明便使用，只要在使用前检查了是否定义或者在布尔上下文被用到：
+动态变量与其他变量不同之处在于，引用一个没有声明的动态变量不是一个编译时错误而是一个运行时[错误](https://docs.perl6.org/type/Failure)。因此动态变量可以不用声明便使用，只要在使用前检查了是否定义或者在布尔上下文中被用到：
 
 The dynamic variables differ from other variable types in that referring to an undeclared dynamic variable is not a compile time error but a runtime [failure](https://docs.perl6.org/type/Failure), so a dynamic variable can be used undeclared as long as it's checked for definedness or used in a boolean context before using it for anything else:
 
@@ -264,20 +264,18 @@ sub foo() {
     $*FOO // 'foo';
 }
  
-say foo; # OUTPUT: «foo
-» 
+say foo; # OUTPUT: «foo» 
  
 my $*FOO = 'bar';
  
-say foo; # OUTPUT: «bar
-» 
+say foo; # OUTPUT: «bar» 
 ```
 
 用 `my` 和 `our` 声明的动态变量分别有词法作用域和包作用域。动态解析以及通过 `our` 引入的借助符号表的解析是两个正交问题。
 
 ## [`?` 号](https://docs.perl6.org/language/variables#___top)
 
-编译时变量使用 `?` 号。这个变量就会编译器知晓，并且在变量编译进去后不能修改。一个常见的例子是：
+编译时变量使用 `?` 号。这个变量就会被编译器知晓，并且在变量编译进去后不能修改。一个常见的例子是：
 
 Compile-time variables may be addressed via the `?` twigil. They are known to the compiler and may not be modified after being compiled in. A popular example for this is:
 
@@ -314,7 +312,7 @@ Note how the attributes are declared as `$.x` and `$.y` but are still access
 
 ## [`.` 号](https://docs.perl6.org/language/variables#___top)
 
-`.` 号不是给变量用的，事实上，下面代码
+`.` 号事实上不是给变量用的，下面代码
 
 The `.` twigil isn't really for variables at all. In fact, something along the lines of
 
@@ -346,7 +344,7 @@ class SaySomething {
 SaySomething.b; # OUTPUT: «a» 
 ```
 
-更多关于对象，类和他们的属性的信息见 [object orientation](https://docs.perl6.org/language/objects) 。
+更多关于对象，类和他们的属性的信息见 [面向对象](https://docs.perl6.org/language/objects) 。
 
 For more details on objects, classes and their attributes and methods see [object orientation](https://docs.perl6.org/language/objects).
 
@@ -367,22 +365,22 @@ say reduce { $^b - $^a }, 0, |@powers-of-three;
 
 has two formal parameters, namely `$a` and `$b`. Note that even though `$^b` appears before `$^a` in the code, `$^a` is still the first formal parameter to that block. This is because the placeholder variables are sorted in Unicode order. If you have self-declared a parameter using `$^a` once, you may refer to it using only `$a` thereafter.
 
-尽管用任意合法的标记符作为占位符变量是可以的，还是建议使用短名或者按照正常顺序轻松理解的名称，以免给读者带来不必要的惊喜。
+尽管用任意合法的标记符作为占位符变量是可以的，还是建议使用短名或者容易理解的名称，以免给读者带来不必要的惊喜。
 
 Although it is possible to use nearly any valid identifier as a placeholder variable, it is recommended to use short names or ones that can be trivially understood in the correct order, to avoid surprise on behalf of the reader.
 
-普通块和子例程也可以使用占位符变量，但前提是它们没有明确的参数列表。
+普通块和子例程也可以使用占位符变量，但前提是它们没有显式的参数列表。
 
 Normal blocks and subroutines may also make use of placeholder variables but only if they do not have an explicit parameter list.
 
-```
+```Perl6
 sub say-it    { say $^a; } # valid 
 sub say-it()  { say $^a; } # invalid 
               { say $^a; } # valid 
 -> $x, $y, $x { say $^a; } # invalid 
 ```
 
-占位符变量不能有类型约束或者变量名称带有单个大写字母（这个不被允许，以免 Perl5 氛围太明显）。
+占位符变量不能有类型约束或者变量名称带有单个大写字母（这个不被允许，以免 Perl5 主义）。
 
 Placeholder variables cannot have type constraints or a variable name with a single upper-case letter (this is disallowed to enable catching some Perl5-isms).
 
@@ -390,14 +388,13 @@ Placeholder variables cannot have type constraints or a variable name with a sin
 
 `:` 号为块或子例程声明一个正式的命名参数。以这种形式声明的变量也是一种占位符变量。
 
-使用此表单声明的变量也是一种占位符变量。因此，与应用于使用^ twigil声明的变量相同的东西也适用于此（除了它们不是位置的，因此不用Unicode顺序排序）。如：
+使用这种形式声明的变量也是一种占位符变量。因此，他们与使用 `^` 声明的变量相似（除了它们不是位置的，因此不按照Unicode顺序排序）。如：
 
 The `:` twigil declares a formal named parameter to a block or subroutine. Variables declared using this form are a type of placeholder variable too. Therefore the same things that apply to variables declared using the `^` twigil also apply here (with the exception that they are not positional and therefore not ordered using Unicode order, of course). So this:
 
 ```Perl6
 say { $:add ?? $^a + $^b !! $^a - $^b }( 4, 5 ) :!add
-# OUTPUT: «-1
-» 
+# OUTPUT: «-1» 
 ```
 
 更多占位符变量细节见 [^](https://docs.perl6.org/routine/$CIRCUMFLEX_ACCENT) 。
@@ -406,9 +403,7 @@ See [^](https://docs.perl6.org/routine/$CIRCUMFLEX_ACCENT) for more details ab
 
 ## [`=` 号 ](https://docs.perl6.org/language/variables#___top)
 
-= 号用于访问 Pod 变量。当前文件中的每个 Pod 块可以通过 Pod 对象访问，例如 `$=data`，`$=SYNOPSIS` 或 `=UserBlock`。即：变量有着跟 Pod 块相同的名字以及一个 `=` 号。
-
-即：所需块和a = twigil具有相同名称的变量。
+= 号用于访问 Pod 变量。当前文件中的每个 Pod 块可以通过 Pod 对象访问，例如 `$=data`，`$=SYNOPSIS` 或 `=UserBlock`。即变量有着跟 Pod 块相同的名字以及一个 `=` 号。
 
 The `=` twigil is used to access Pod variables. Every Pod block in the current file can be accessed via a Pod object, such as `$=data`, `$=SYNOPSIS` or `=UserBlock`. That is: a variable with the same name of the desired block and a `=` twigil.
 
@@ -423,16 +418,15 @@ The `=` twigil is used to access Pod variables. Every Pod block in the current
 ```
 
 您可以通过 `$=pod` 访问包含所有 Pod 结构的 Pod 树作为分层数据结构
+You may access the Pod tree which contains all Pod structures as a hierarchical data structure through `$=pod`.
 
-You may access the Pod tree which contains all Pod structures as a hierarchical data structure through `$=pod`.
-
-注意所有的 `$=someBlockName` 支持位置以及关联角色。
+注意所有的 `$=someBlockName` 支持`位置`以及`关联`角色。
 
 Note that all those `$=someBlockName` support the `Positional` and the `Associative` roles.
 
 ## [`~` 号 ](https://docs.perl6.org/language/variables#___top)
 
-~ 号是用来引用子语言（也叫 slangs ）。以下是有用的：
+~ 号是用来引用子语言（也叫 slangs ）。下面这些变量很有用：
 
 The `~` twigil is for referring to sublanguages (called slangs). The following are useful:
 
@@ -444,7 +438,7 @@ The `~` twigil is for referring to sublanguages (called slangs). The following
 | $~Trans   | the current root of transliteration language |
 | $~P5Regex | the current root of the Perl 5 regex language |
 
-你可以在当前的词汇范围内扩充这些语言。
+你可以在当前的词汇范围内`扩充`这些语言。
 
 You `augment` these languages in your current lexical scope.
 
@@ -455,7 +449,7 @@ augment slang Regex {  # derive from $~Regex and then modify $~Regex
 }
 ```
 
-# [变量声明符和作用域](https://docs.perl6.org/language/variables#___top)
+# [变量声明符和作用域 (Variable declarators and scope)](https://docs.perl6.org/language/variables#___top)
 
 大多数时候使用 `my` 关键字创建新变量就足够了：
 
@@ -467,9 +461,19 @@ say "Hello $amazing-variable!"; # OUTPUT: «Hello World!
 » 
 ```
 
-但是，有许多声明符可以改变作用域的一些细节，这超越了符号所能做的。
+但是，有许多声明符可以改变作用域的一些细节，这超越了[符号](https://docs.perl6.org/language/variables#Twigils)所能做的。
 
 However, there are many declarators that change the details of scoping beyond what [Twigils](https://docs.perl6.org/language/variables#Twigils) can do.
+
+| 声明符      | 作用                                     |
+| ---------- | ---------------------------------------- |
+| my         | 引入词法作用域字                          |
+| our        | 引入包作用域名字                          |
+| has        | 引入属性名字                              |
+| anon       | 引入构造器私有的名字                       |
+| state      | 引入词法作用域但是持久保存的名字            |
+| augment    | 给现有名字增加定义                         |
+| supersede  | 给现有名字替换定义                         |
 
 | Declarator | Effect                                   |
 | ---------- | ---------------------------------------- |
@@ -481,7 +485,7 @@ However, there are many declarators that change the details of scoping beyond wh
 | augment    | Adds definitions to an existing name     |
 | supersede  | Replaces definitions of an existing name |
 
-还有两个类似于声明符的前缀对预定义的变量起作用。
+还有两个这样的前缀，他们类似于声明符但是作用于已定义变量。
 
 There are also two prefixes that resemble declarators but act on predefined variables:
 
@@ -499,8 +503,7 @@ Declaring a variable with `my` gives it lexical scope. This means it only exis
 ```Perl6
 {
     my $foo = "bar";
-    say $foo; # OUTPUT: «"bar"
-» 
+    say $foo; # OUTPUT: «"bar"» 
 }
 say $foo; # Exception! "Variable '$foo' is not declared" 
 ```
@@ -521,19 +524,16 @@ sub outer-location {
     say $location;
 }
  
-outer-location; # OUTPUT: «outside
-» 
+outer-location; # OUTPUT: «outside» 
  
 sub in-building {
     my $location = "inside";
     say $location;
 }
  
-in-building;    # OUTPUT: «inside
-» 
+in-building;    # OUTPUT: «inside» 
  
-outer-location; # OUTPUT: «outside
-» 
+outer-location; # OUTPUT: «outside» 
 ```
 
 如果一个变量被重新定义，任何引用外部变量的代码依旧引用外部变量。因此这里，`&outer-location` 仍旧打印的是外部的 `$location` 的值：
@@ -546,11 +546,10 @@ sub new-location {
     outer-location;
 }
  
-new-location; # OUTPUT: «outside
-» 
+new-location; # OUTPUT: «outside» 
 ```
 
-要使 `new-location()` 打印出 `nowhere`，使用 [* 号](https://docs.perl6.org/language/variables#The_%2A_Twigil) 使 `$location` 成为一个动态变量。这个符号让编译器在调用者的作用域查找变量符号，而不是查完本地作用域后查外部作用域。
+要使 `new-location()` 打印出 `nowhere`，使用 [* 号](https://docs.perl6.org/language/variables#The_%2A_Twigil) 使 `$location` 成为一个动态变量。这个符号让编译器在调用者的作用域查找变量符号，而不是查完本地作用域没找到后查外部作用域。
 
 To make `new-location()` print `nowhere`, make `$location` a dynamic variable using [the * twigil](https://docs.perl6.org/language/variables#The_%2A_Twigil). This twigil makes the compiler look up the symbol in the calling scope instead of the outer scope after trying the local scope.
 
@@ -573,25 +572,33 @@ module M {
 # Available as $M::Var here. 
 ```
 
-## [声明一组变量](https://docs.perl6.org/language/variables#___top)
+同时创建多个包作用域的变量只要将变量用括号括起来即可：
 
-`my` 和 `our` 声明符接受一组括起来的变量作为参数来一次声明多个变量。
-
-The declarators `my` and `our` take a list of variables in parentheses as argument to declare more than one variable at a time.
+In order to create more than one variable with package scope, at the same time, surround the variables with parentheses:
 
 ```Perl6
-my (@a, $s, %h);
+our ( $foo, $bar );
+```
+
+## [使用 my 或者 our 声明一组变量](https://docs.perl6.org/language/variables#___top)
+
+`my` 和 `our` 声明符都接受一组括起来的变量作为参数来一次声明多个变量。
+
+It is possible to scope more than one variable at a time, but both my and our require variables to be placed into parentheses:
+
+```Perl6
+my  (@a,  $s,  %h);   # same as my @a; my $s; my %h;
+our (@aa, $ss, %hh);  # same as our @aa; our $ss; our %hh; 
 ```
 
 这可以与解构赋值一起使用。对这样一个列表的任何赋值都将采用左列表中提供的元素数量，并从右列表中为它们分配相应的值。根据变量的类型，任何遗漏的元素都会导致未定义的值。
 
-This can be used in conjunction with [destructuring assignment](undefined). Any assignment to such a list will take the number of elements provided in the left list and assign corresponding values from the right list to them. Any missing elements are left will result in undefined values according to the type of the variables.
+This can be used in conjunction with destructuring assignment. Any assignment to such a list will take the number of elements provided in the left list and assign corresponding values from the right list to them. Any missing elements are left will result in undefined values according to the type of the variables.
 
 ```Perl6
 my (Str $a, Str $b, Int $c) = <a b>;
 say [$a, $b, $c].perl;
-# OUTPUT: «["a", "b", Int]
-» 
+# OUTPUT: «["a", "b", Int]» 
 ```
 
 要将列表拆分为单个值，请使用 `($var,)` 创建包含一个元素的列表文字。与变量声明符一起使用时，将单个变量用括号括起来就足够了。
@@ -602,8 +609,7 @@ To destructure a list into a single value, create a list literal with one elemen
 sub f { 1,2,3 };
 my ($a) = f;
 say $a.perl;
-# OUTPUT: «1
-» 
+# OUTPUT: «1» 
 ```
 
 要跳过列表中的元素，请使用匿名状态变量 `$`。
@@ -613,8 +619,7 @@ To skip elements in the list use the anonymous state variable `$`.
 ```Perl6
 my ($,$a,$,%h) = ('a', 'b', [1,2,3], {:1th});
 say [$a, %h].perl;
-# OUTPUT: «["b", {:th(1)}]
-» 
+# OUTPUT: «["b", {:th(1)}]» 
 ```
 
 ## [`has` 声明符](https://docs.perl6.org/language/variables#___top)
