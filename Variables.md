@@ -20,7 +20,7 @@ There are four sigils. The scalar-sigil `$`, the positional-sigil `@`, the ass
 
 Sigils provide a link between syntax, the type system and [containers](https://docs.perl6.org/language/containers). They provide a shortcut for the most common type constraints when declaring variables and serve as markers for [string interpolation](https://docs.perl6.org/language/quoting#Interpolation%3A_qq). The [positional-sigil](https://docs.perl6.org/language/containers#Flattening%2C_items_and_containers) and the [associative-sigil](https://docs.perl6.org/language/containers#Flattening%2C_items_and_containers) provide type constraint that enforce a base type [subscripts](https://docs.perl6.org/language/subscripts#Custom_types) require to know what methods to dispatch to. The [callable-sigil](https://docs.perl6.org/language/containers#Callable_containers) does the same for function calls. The latter also tells the compiler where parentheses for calls can be omitted. The positional and associative-sigil also simplify assignment by flattening by default.
 
-| 标记   | 类型约束                    | 默认类型     | 赋值   | 例子                          |
+| 标记   | 类型约束                |  默认类型 | 赋值  | 例子                        |
 | ---- | ----------------------- | -------- | ---- | --------------------------- |
 | $    | Mu (no type constraint) | Any      | item | Int, Str, Array, Hash       |
 | @    | Positional              | Array    | list | List, Array, Range, Buf     |
@@ -146,7 +146,7 @@ say $num.perl;                # OUTPUT: «42» 
 
 The assignment expression is parsed as `@array = (($num = 42), "str")`, because item assignment has tighter precedence than the comma.
 
-更多关于优先级的细节见 [操作符](https://docs.perl6.org/language/operators) 。
+更多关于优先级的细节见[操作符](https://docs.perl6.org/language/operators) 。
 
 See [operators](https://docs.perl6.org/language/operators) for more details on precedence.
 
@@ -193,18 +193,18 @@ Sigilless variables can also be used for binding. See [Binding](https://docs.pe
 
 Twigils influence the scoping of a variable; however, they have no influence over whether the primary sigil interpolates. That is, if `$a`interpolates, so do `$^a`, `$*a`, `$=a`, `$?a`, `$.a`, etc. It only depends on the `$`.
 
-| 符号   | 作用域                                    |
+| 符号    | 作用域                                    |
 | ------ | ---------------------------------------- |
-| none   | 作用域只依赖声明符                         |
-| *      | 动态作用域                                |
-| ?      | 编译时变量                                |
-| !      | 属性 (类成员)                             |
-| .      | 方法 (非真正意义上的变量)                  |
-| <      | 正则匹配对象索引 (非真正意义上的变量)       |
-| ^      | 自声明的正式的位置参数                     |
-| :      | 自声明的正式的命名参数                     |
-| =      | Pod 文档变量                              |
-| ~      | 分歧器在当前词法点上可见的子语言            |
+| none   | 没有符号，作用域只依赖声明符                  |
+| *      | 动态作用域                                 |
+| ?      | 编译时变量                                 |
+| !      | 属性 (类成员)                              |
+| .      | 方法 (非真正意义上的变量)                    |
+| <      | 正则匹配对象索引 (非真正意义上的变量)          |
+| ^      | 自声明的正式的位置参数                       |
+| :      | 自声明的正式的命名参数                       |
+| =      | Pod 文档变量                               |
+| ~      | 分歧器在当前词法点上可见的子语言               |
 
 | Twigil | Scope                                    |
 | ------ | ---------------------------------------- |
@@ -251,7 +251,7 @@ say-all();    # OUTPUT: 1, 10, 100 
 say-all();  # OUTPUT: 1, 10, 101 
 ```
 
-第一次运行 `&say-all` 会打印出 “1， 10， 100”，没有意外。第二次运行却打印出 “1，11，101”。这是因为 `$lexical` 不是在调用者作用域查值而是在 `&say-all` 被定义时的作用域里查值。那两个动态变量是在调用者作用域里查值，因此值分别为 `11` 和 `101`。第三次运行 `&say-all` 时 `$*dynamic1` 的值不再是 `11`，但 `$*dynamic2` 仍然是 `101`。 这是因为我们在代码块声明了一个新的 `$*dynamic1` 变量而不是像 `$*dynamic2` 那样给旧变量赋值。
+第一次运行 `&say-all` 会打印出 “1， 10， 100”，没有意外。第二次运行却打印出 “1，11，101”。这是因为 `$lexical` 不是在调用者作用域里面查值而是在 `&say-all` 被定义时的作用域里查值。那两个动态变量是在调用者作用域里查值，因此值分别为 `11` 和 `101`。第三次运行 `&say-all` 时 `$*dynamic1` 的值不再是 `11`，但 `$*dynamic2` 仍然是 `101`。 这是因为我们在代码块里声明了一个新的 `$*dynamic1` 变量而不是像 `$*dynamic2` 那样给旧变量赋值。
 
 The first time `&say-all` is called, it prints "`1, 10, 100`" just as one would expect. The second time though, it prints "`1, 11, 101`". This is because `$lexical` isn't looked up in the caller's scope but in the scope `&say-all` was defined in. The two dynamic variables are looked up in the caller's scope and therefore have the values `11` and `101`. The third time `&say-all` is called `$*dynamic1` isn't `11`anymore, but `$*dynamic2` is still `101`. This stems from the fact that we declared a new dynamic variable `$*dynamic1` in the block and did not assign to the old variable as we did with `$*dynamic2`.
 
@@ -277,7 +277,7 @@ say foo; # OUTPUT: «bar
 
 ## [`?` 号](https://docs.perl6.org/language/variables#___top)
 
-编译时变量使用 `?` 号。编译器知道他们并且编译时不能修改。一个常见的例子是：
+编译时变量使用 `?` 号。这个变量就会编译器知晓，并且在变量编译进去后不能修改。一个常见的例子是：
 
 Compile-time variables may be addressed via the `?` twigil. They are known to the compiler and may not be modified after being compiled in. A popular example for this is:
 
@@ -286,6 +286,8 @@ say "$?FILE: $?LINE"; # OUTPUT: "hello.pl: 23" 
                       # if this is the line 23 of a 
                       # file named "hello.pl" 
 ```
+
+如果想要这些特殊变量的列表，可以参考[编译时变量](https://docs.perl6.org/language/variables#Compile-time_variables).
 
 For a list of these special variables, see [compile-time variables](https://docs.perl6.org/language/variables#Compile-time_variables).
 
@@ -306,7 +308,7 @@ my class Point {
 }
 ```
 
-注意属性是如何通过 `$.x` 和 `$xy` 声明却通过 `$!x` 和 `$!y` 来访问的。这是因为 Perl 6 中所有的属性都是私有的而且可以在类中通过 `$!attribute-name` 直接访问。Perl 6 会直接为你生成访问器方法。更多关于对象，类和他们的属性的信息见 [object orientation](https://docs.perl6.org/language/objects) 。
+注意属性是如何通过 `$.x` 和 `$.y` 声明却通过 `$!x` 和 `$!y` 来访问的。这是因为 Perl 6 中所有的属性都是私有的而且可以在类中通过 `$!attribute-name` 直接访问。Perl 6 会直接为你生成访问器方法。更多关于对象，类和他们的属性的信息见 [object orientation](https://docs.perl6.org/language/objects) 。
 
 Note how the attributes are declared as `$.x` and `$.y` but are still accessed via `$!x` and `$!y`. This is because in Perl 6 all attributes are private and can be directly accessed within the class by using `$!attribute-name`. Perl 6 may automatically generate accessor methods for you though. For more details on objects, classes and their attributes see [object orientation](https://docs.perl6.org/language/objects).
 
@@ -331,7 +333,7 @@ my class Point {
 
 just calls the methods `x` and `y` on `self`, which are automatically generated for you because you used the `.` twigil when the attributes were declared. Note, however, that subclasses may override those methods. If you don't want this to happen, use `$!x` and `$!y` instead.
 
-`.` 号调用了方法的事实以为下面的操作也是可能的：
+`.` 号调用了方法的事实意味着下面的操作也是可能的：
 
 The fact that the `.` twigil does a method call implies that the following is also possible:
 
@@ -341,8 +343,7 @@ class SaySomething {
     method b() { $.a; }
 }
  
-SaySomething.b; # OUTPUT: «a
-» 
+SaySomething.b; # OUTPUT: «a» 
 ```
 
 更多关于对象，类和他们的属性的信息见 [object orientation](https://docs.perl6.org/language/objects) 。
