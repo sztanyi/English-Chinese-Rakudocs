@@ -5,12 +5,15 @@
 # 类与对象 / Classes and objects
 
 创建和使用 Perl 6 中类的教程
+
 A tutorial about creating and using classes in Perl 6
 
 Perl 6 有一套丰富的定义和使用类的内建语法。
+
 Perl 6 has a rich built-in syntax for defining and using classes.
 
 默认构造器可以为生成的对象设置属性：
+
 A default constructor allows the setting of attributes for the created object:
 
 ```Perl6
@@ -36,6 +39,7 @@ say $r.area(); # OUTPUT: «100
 ```
 
 你也可以提供你自己的构造器和构造实现。下面例子更详细地展示了 Perl 6 中的依赖操作可能的样子。 它展示了客制化的构造器，私有和公有的属性，子方法，方法以及各种签名。代码不多，但是运行结果很有意思也很有用。
+
 You can also provide your own construction and BUILD implementation. The following, more elaborate example shows how a dependency handler might look in Perl 6. It showcases custom constructors, private and public attributes, Submethods, methods, and various aspects of signatures. It's not a lot of code, and yet the result is interesting and useful.
 
 ```Perl6
@@ -81,15 +85,15 @@ $eat.perform();
 
 # [类](https://docs.perl6.org/language/classtut#___top)
 
-Perl 6 和许多其他语言类似，使用 `class` 关键字来定义一个类。紧随其后的代码块可能包含任意代码，跟其他代码块一样，但是类通常含有状态以及行为声明。例子中的代码包含通过 `has` 关键字声明的属性（状态）以及通过 `method` 关键字声明的行为。
+Perl 6 和许多其他语言类似，使用 `class` 关键字来定义一个类。其后的代码块就是用户自己的代码，就像其他代码块一样，但是类通常含有状态以及行为声明。例子中的代码包含通过 `has` 关键字声明的属性（状态）以及通过 `method` 关键字声明的行为。
 
 Perl 6, like many other languages, uses the `class` keyword to define a class. The block that follows may contain arbitrary code, just as with any other block, but classes commonly contain state and behavior declarations. The example code includes attributes (state), introduced through the `has` keyword, and behaviors, introduced through the `method` keyword.
 
 声明一个类默认给当前的包创建了一个新的类型对象（就像通过 `our` 声明的变量）。这个类型对象是类的一个“空实例”。例如，`Int` 和 `Str` 类型指代 Perl 6 中内建类的类型对象。上面的例子使用类名 `Task` 以供其他代码以后来代指它，例如调用 `new` 方法来创建类实例。
 
-你可以使用 `.DEFINITE` 方法来区别实例和类型对象：
-
 Declaring a class creates a new *type object* which, by default, is installed into the current package (just like a variable declared with `our`scope). This type object is an "empty instance" of the class. For example, types such as `Int` and `Str` refer to the type object of one of the Perl 6 built-in classes. The example above uses the class name `Task` so that other code can refer to it later, such as to create class instances by calling the `new` method.
+
+你可以使用 `.DEFINITE` 方法来弄清楚你拥有的是实例还是类型对象：
 
 You can use `.DEFINITE` method to find out if what you have is an instance or a type object:
 
@@ -106,7 +110,7 @@ say Foo.new.DEFINITE; # OUTPUT: «True
 »  (instance) 
 ```
 
-你也可以使用类型笑容符来指定只接受实例或者类型对象：
+你也可以使用类型笑容符号来指定只接受实例或者类型对象：
 
 You can also use type smileys to only accept instances or type objects:
 
@@ -119,13 +123,13 @@ say foo 42;  # OUTPUT: «It's an instance!
 » 
 ```
 
-# [状态](https://docs.perl6.org/language/classtut#___top)
+# [状态 / State](https://docs.perl6.org/language/classtut#___top)
 
-Task 类中前三行代码都是用来声明属性的（在其他语言中叫 *fields* 或者实例存储）。就像用 `my` 声明的变量不可以在它被声明的作用域之外访问一样，属性也不可以在类之外被访问。这种封装特性是面向对象设计的重要原则。
+Task 类中前三行都是用来声明属性的（在其他语言中叫 *fields* 或者 *instance storage*）。就像用 `my` 声明的变量不可以在它被声明的作用域之外访问一样，属性也不可以在类之外被访问。这种封装特性是面向对象设计的重要原则。
 
 The first three lines inside the class block all declare attributes (called *fields* or *instance storage* in other languages). Just as a `my`variable cannot be accessed from outside its declared scope, attributes are not accessible outside of the class. This *encapsulation* is one of the key principles of object oriented design.
 
-第一个声明语句定义了回调的实例存储 - 为执行对象代表的任务而调用的一些代码。
+第一个声明语句定义了一个回调的 instance storage - 为执行对象代表的任务而调用的一小段代码:
 
 The first declaration specifies instance storage for a callback – a bit of code to invoke in order to perform the task that an object represents:
 
@@ -145,7 +149,7 @@ The second declaration also uses the private twigil:
 has Task @!dependencies;
 ```
 
-但是，这个属性代表的是一组物件，所以需要 `@` 标记。每个物件代表了当前任务完成之前必须要完成的任务。另外，这个属性的类型声明也说明数组只能持有 `Task` 类或其子例的实例。
+但是，这个属性代表的是一组物件，所以需要 `@` 标记。每个物件代表了当前任务完成之前必须要完成的任务。另外，这个属性的类型声明也说明数组只能持有 `Task` 类或其子类。
 
 However, this attribute represents an array of items, so it requires the `@` sigil. These items each specify a task that must be completed before the present one can complete. Furthermore, the type declaration on this attribute indicates that the array may only hold instances of the `Task` class (or some subclass of it).
 
@@ -157,7 +161,7 @@ The third attribute represents the state of completion of a task:
 has Bool $.done;
 ```
 
-这个标量属性（以 `$` 标记）是 `Bool` 类型。`.` 号而非 `!` 号被使用了。Perl 6 强制封装属性的同时，也避免了你写访问器方法。用 `.` 替换 `!` 时声明了属性 `$!done` 以及访问器方法 `done` 。就像你写了：
+这个标量属性（以 `$` 标记）是 `Bool` 类型。这里使用了`.` 而非 `!` 。这样，Perl 6 强制封装属性的同时，也避免了你写访问器方法。用 `.` 替换 `!` 时声明了属性 `$!done` 以及访问器方法 `done` 。就像你写了下面代码一样：
 
 This scalar attribute (with the `$` sigil) has a type of `Bool`. Instead of the `!` twigil, the `.` twigil is used. While Perl 6 does enforce encapsulation on attributes, it also saves you from writing accessor methods. Replacing the `!` with a `.` both declares the attribute `$!done` and an accessor method named `done`. It's as if you had written:
 
@@ -166,11 +170,11 @@ has Bool $!done;
 method done() { return $!done }
 ```
 
-注意这不像声明了一个某些语言允许的那样的公共属性；你真实地获得了一个私有属性和一个方法，而不用去手写那个方法。你也可以编写自己的访问器方法，如果将来你需要做一些比仅仅返回值更复杂的事情。
+注意这不像声明了一个公共属性，像某些语言允许的那样的；你真实地获得了一个私有属性和一个方法，而不用去手写那个方法。你也可以编写自己的访问器方法，如果将来你需要做一些比仅仅返回值更复杂的事情。
 
 Note that this is not like declaring a public attribute, as some languages allow; you really get *both* a private attribute and a method, without having to write the method by hand. You are free instead to write your own accessor method, if at some future point you need to do something more complex than return the value.
 
-注意使用 `.` 号会创建对属性有只读权限的方法。如果这个对象的用户想能够重置任务的完成状态（也许想重新执行一遍），可以通过改变属性声明：
+注意使用 `.` 会创建对属性有只读权限的方法。如果这个对象的用户想能够重置任务的完成状态（也许想重新执行一遍），可以通过改变属性声明：
 
 Note that using the `.` twigil has created a method that will provide read-only access to the attribute. If instead the users of this object should be able to reset a task's completion state (perhaps to perform it again), you can change the attribute declaration:
 
@@ -178,7 +182,7 @@ Note that using the `.` twigil has created a method that will provide read-onl
 has Bool $.done is rw;
 ```
 
-`is rw` 特性致使生成的访问器方法返回可以修改属性值的外部代码。
+`is rw` 特性使生成的访问器方法返回可以修改属性值的代码。
 
 The `is rw` trait causes the generated accessor method to return something external code can modify to change the value of the attribute.
 
