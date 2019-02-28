@@ -722,6 +722,8 @@ say @a;        # OUTPUT: «[k1 => 3 k2 => 3 k3 => 3]» 
 say @a-cloned; # OUTPUT: «[k1 => 1 k2 => 2 k3 => 3]» 
 ```
 
+State 变量在所有线程中共享。结果可能出乎意料。
+
 State variables are shared between all threads. The result can be unexpected.
 
 ```Perl6
@@ -736,14 +738,13 @@ await
 4
 4
 3
-5
-» 
+5» 
 # OUTPUT: «2
 1
 3
 4
-5
-» 
+5» 
+# 很多其他差不多的输出
 # many other more or less odd variations can be produced 
 ```
 
@@ -755,8 +756,7 @@ In addition to explicitly declared named state variables, `$` can be used as a
 
 ```Perl6
 say "1-a 2-b 3-c".subst(:g, /\d/, {<one two three>[$++]});
-# OUTPUT: «one-a two-b three-c
-» 
+# OUTPUT: «one-a two-b three-c» 
 ```
 
 此外，状态变量可以在子程序之外使用。例如，你可以在一行中使用 `$` 来对文件中的行进行编号。
@@ -767,7 +767,7 @@ Furthermore, state variables can be used outside of subroutines. You could, for 
 perl6 -ne 'say ++$ ~ " $_"' example.txt
 ```
 
-在词法范围内对 `$` 的每个引用实际上是一个单独的变量。
+在词法范围内对 `$` 的每个引用在效果上相当于一个独立的变量。
 
 Each reference to `$` within a lexical scope is in effect a separate variable.
 
@@ -782,8 +782,7 @@ perl6 -e '{ say ++$; say $++  } for ^5'
 4
 3
 5
-4
-» 
+4» 
 ```
 
 如果你需要在一个作用域中多次使用 `$` 的值，它应该被复制到一个新的变量中。
@@ -811,8 +810,7 @@ sub foo() {
 foo() for ^3;
 # OUTPUT: «one
 two
-three
-» 
+three» 
 ```
 
 请注意，隐式 `state` 声明器仅适用于变量本身，而不适用于可能包含初始化程序的表达式。如果初始化器只能被调用一次，则必须提供 `state` 声明器。
@@ -820,13 +818,13 @@ three
 Note that the implicit state declarator is only applied to the variable itself, not the expression that may contain an initializer. If the initializer has to be called exactly once, the `state` declarator has to be provided.
 
 ```Perl6
-subset DynInt where $ = ::('Int'); # the initializer will be called for each type check 
-subset DynInt where state $ = ::('Int'); # the initializer is called once, this is a proper cache 
+subset DynInt where $ = ::('Int'); # 每次类型检查，初始化代码都会被调用 / the initializer will be called for each type check 
+subset DynInt where state $ = ::('Int'); # 初始化只会被调用一次，这才是合适的缓存 / the initializer is called once, this is a proper cache 
 ```
 
 ### [`@` 变量](https://docs.perl6.org/language/variables#___top)
 
-类似于 `$` 变量，还有一个位置匿名 `state` 变量 `@` 。
+类似于 `$` 变量，还有一个匿名[位置](https://docs.perl6.org/type/Positional) `state` 变量 `@` 。
 
 Similar to the `$` variable, there is also a [Positional](https://docs.perl6.org/type/Positional) anonymous state variable `@`.
 
@@ -839,8 +837,7 @@ foo($_) for ^3;
  
 # OUTPUT: «[0] 
 #          [0 1] 
-#          [0 1 2]
-» 
+#          [0 1 2]» 
 ```
 
 `@` 在这里加括号是为了从名为 `@.push` 的类成员变量中消除表达式的歧义。索引访问不需要这种歧义消除，但你需要复制该值以执行任何有用的操作。
