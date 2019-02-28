@@ -559,7 +559,7 @@ To make `new-location()` print `nowhere`, make `$location` a dynamic variab
 
 ## [`our` 声明符](https://docs.perl6.org/language/variables#___top)
 
-`our` 声明的变量像 `my` 声明的变量一样工作，除了额外给符号表插入了一个别名。
+`our` 声明的变量跟 `my` 声明的一样，除了额外给符号表插入了一个别名。
 
 `our` variables work just like `my` variables, except that they also introduce an alias into the symbol table.
 
@@ -591,7 +591,7 @@ my  (@a,  $s,  %h);   # same as my @a; my $s; my %h;
 our (@aa, $ss, %hh);  # same as our @aa; our $ss; our %hh; 
 ```
 
-这可以与解构赋值一起使用。对这样一个列表的任何赋值都将采用左列表中提供的元素数量，并从右列表中为它们分配相应的值。根据变量的类型，任何遗漏的元素都会导致未定义的值。
+这可以与解构赋值一起使用。对这样一个列表的任何赋值都将采用左列表的元素个数，并从右列表中为它们分配相应的值。根据变量的类型，任何遗漏的元素都会导致未定义的值。
 
 This can be used in conjunction with destructuring assignment. Any assignment to such a list will take the number of elements provided in the left list and assign corresponding values from the right list to them. Any missing elements are left will result in undefined values according to the type of the variables.
 
@@ -627,6 +627,8 @@ say [$a, %h].perl;
 `has` 将属性作用于类实例或者角色，以及类或角色的方法。`has` 暗示了方法，因此 `has method x() {}` 与 `mehod x() {}` 等价。
 
 `has` scopes attributes to instances of a class or role, and methods to classes or roles. `has` is implied for methods, so `has method x() {}` and `method x() {}` do the same thing.
+
+更多文档和例子，见[面向对象](https://docs.perl6.org/language/objects)。
 
 See [object orientation](https://docs.perl6.org/language/objects) for more documentation and some examples.
 
