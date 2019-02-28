@@ -467,13 +467,13 @@ However, there are many declarators that change the details of scoping beyond wh
 
 | 声明符      | 作用                                     |
 | ---------- | ---------------------------------------- |
-| my         | 引入词法作用域字                          |
-| our        | 引入包作用域名字                          |
-| has        | 引入属性名字                              |
-| anon       | 引入构造器私有的名字                       |
-| state      | 引入词法作用域但是持久保存的名字            |
-| augment    | 给现有名字增加定义                         |
-| supersede  | 给现有名字替换定义                         |
+| my         | 引入词法作用域变量                          |
+| our        | 引入包作用域变量                          |
+| has        | 引入属性变量                              |
+| anon       | 引入构造器私有的变量                       |
+| state      | 引入词法作用域但是持久保存的变量            |
+| augment    | 给现有变量增加定义                         |
+| supersede  | 给现有变量替换定义                         |
 
 | Declarator | Effect                                   |
 | ---------- | ---------------------------------------- |
@@ -634,11 +634,11 @@ See [object orientation](https://docs.perl6.org/language/objects) for more doc
 
 ## [`anon` 声明符](https://docs.perl6.org/language/variables#___top)
 
-`anon` 声明符可防止在词法作用域，方法表和其他任何地方安装符号。
+`anon` 声明符可防止在词法作用域，方法表和其他任何地方安放符号。
 
 The `anon` declarator prevents a symbol from getting installed in the lexical scope, the method table and everywhere else.
 
-例如，你可以使用它来声明知道其自己名称的子例程，但仍未安装在作用域中：
+例如，你可以使用它来声明知道自己名称的子例程，但在它们不会被放置在作用域中：
 
 For example, you can use it to declare subroutines which know their own name, but still aren't installed in a scope:
 
@@ -653,7 +653,7 @@ say %operations<square>(8);         # 64 
 
 ## [`state` 声明符](https://docs.perl6.org/language/variables#___top)
 
-跟 `my` 类似，`state` 声明词法作用域变量。但是，初始化在正常执行流程中首次遇到初始化时发生。因此，state 变量将在封闭块或例程的多次执行中保持其值。
+跟 `my` 类似，`state` 声明词法作用域变量。但是，初始化只会首次遇到时执行一次。 因此，state 变量将在封闭块或例程的多次执行中保持值不被改变。
 
 `state` declares lexically scoped variables, just like `my`. However, initialization happens exactly once the first time the initialization is encountered in the normal flow of execution. Thus, state variables will retain their value across multiple executions of the enclosing block or routine.
 
@@ -693,7 +693,7 @@ This works per "clone" of the containing code object, as in this example:
 ({ state $i = 1; $i++.say; } xx 3).map: {$_(), $_()}; # says 1 then 2 thrice 
 ```
 
-请注意，当多个线程运行同一个块的相同克隆时，这不是线程安全的构造。还要记住，方法在每个类中只有一个克隆，而不是在每个对象中。
+请注意，当多个线程运行同一个块的相同克隆时，这**不是**线程安全的构造。还要记住，方法在每个类中只有一个克隆，而不是在每个对象中。
 
 Note that this is **not** a thread-safe construct when the same clone of the same block is run by multiple threads. Also remember that methods only have one clone per class, not per object.
 
@@ -720,11 +720,11 @@ sub f() {
 };
  
 f for 1..3;
-say @a;        # OUTPUT: «[k1 => 3 k2 => 3 k3 => 3]
-» 
-say @a-cloned; # OUTPUT: «[k1 => 1 k2 => 2 k3 => 3]
-» 
+say @a;        # OUTPUT: «[k1 => 3 k2 => 3 k3 => 3]» 
+say @a-cloned; # OUTPUT: «[k1 => 1 k2 => 2 k3 => 3]» 
 ```
+
+State 变量在所有线程中共享。结果可能出乎意料。
 
 State variables are shared between all threads. The result can be unexpected.
 
@@ -740,14 +740,13 @@ await
 4
 4
 3
-5
-» 
+5» 
 # OUTPUT: «2
 1
 3
 4
-5
-» 
+5» 
+# 很多其他差不多的输出
 # many other more or less odd variations can be produced 
 ```
 
@@ -759,8 +758,7 @@ In addition to explicitly declared named state variables, `$` can be used as a
 
 ```Perl6
 say "1-a 2-b 3-c".subst(:g, /\d/, {<one two three>[$++]});
-# OUTPUT: «one-a two-b three-c
-» 
+# OUTPUT: «one-a two-b three-c» 
 ```
 
 此外，状态变量可以在子程序之外使用。例如，你可以在一行中使用 `$` 来对文件中的行进行编号。
@@ -771,7 +769,7 @@ Furthermore, state variables can be used outside of subroutines. You could, for 
 perl6 -ne 'say ++$ ~ " $_"' example.txt
 ```
 
-在词法范围内对 `$` 的每个引用实际上是一个单独的变量。
+在词法范围内对 `$` 的每个引用在效果上相当于一个独立的变量。
 
 Each reference to `$` within a lexical scope is in effect a separate variable.
 
@@ -786,8 +784,7 @@ perl6 -e '{ say ++$; say $++  } for ^5'
 4
 3
 5
-4
-» 
+4» 
 ```
 
 如果你需要在一个作用域中多次使用 `$` 的值，它应该被复制到一个新的变量中。
@@ -815,8 +812,7 @@ sub foo() {
 foo() for ^3;
 # OUTPUT: «one
 two
-three
-» 
+three» 
 ```
 
 请注意，隐式 `state` 声明器仅适用于变量本身，而不适用于可能包含初始化程序的表达式。如果初始化器只能被调用一次，则必须提供 `state` 声明器。
@@ -824,13 +820,13 @@ three
 Note that the implicit state declarator is only applied to the variable itself, not the expression that may contain an initializer. If the initializer has to be called exactly once, the `state` declarator has to be provided.
 
 ```Perl6
-subset DynInt where $ = ::('Int'); # the initializer will be called for each type check 
-subset DynInt where state $ = ::('Int'); # the initializer is called once, this is a proper cache 
+subset DynInt where $ = ::('Int'); # 每次类型检查，初始化代码都会被调用 / the initializer will be called for each type check 
+subset DynInt where state $ = ::('Int'); # 初始化只会被调用一次，这才是合适的缓存 / the initializer is called once, this is a proper cache 
 ```
 
 ### [`@` 变量](https://docs.perl6.org/language/variables#___top)
 
-类似于 `$` 变量，还有一个位置匿名 `state` 变量 `@` 。
+类似于 `$` 变量，还有一个匿名[位置](https://docs.perl6.org/type/Positional) `state` 变量 `@` 。
 
 Similar to the `$` variable, there is also a [Positional](https://docs.perl6.org/type/Positional) anonymous state variable `@`.
 
@@ -843,8 +839,7 @@ foo($_) for ^3;
  
 # OUTPUT: «[0] 
 #          [0 1] 
-#          [0 1 2]
-» 
+#          [0 1 2]» 
 ```
 
 `@` 在这里加括号是为了从名为 `@.push` 的类成员变量中消除表达式的歧义。索引访问不需要这种歧义消除，但你需要复制该值以执行任何有用的操作。
