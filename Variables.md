@@ -653,7 +653,7 @@ say %operations<square>(8);         # 64 
 
 ## [`state` 声明符](https://docs.perl6.org/language/variables#___top)
 
-跟 `my` 类似，`state` 声明词法作用域变量。但是，初始化只会首次遇到时执行一次。 因此，state 变量将在封闭块或例程的多次执行中保持值不被改变。
+跟 `my` 类似，`state` 声明词法作用域变量。但是，初始化只会在首次遇到时执行一次。 因此，状态变量将在封闭块或例程的多次执行中保持值不被改变。
 
 `state` declares lexically scoped variables, just like `my`. However, initialization happens exactly once the first time the initialization is encountered in the normal flow of execution. Thus, state variables will retain their value across multiple executions of the enclosing block or routine.
 
@@ -685,7 +685,7 @@ will continue to increment `$l` and append it to `@x` each time it is called
  
 ```
 
-这适用于包含代码对象的每个“克隆”，如下例所示：
+这适用于包含代码的对象的每个“克隆”，如下例所示：
 
 This works per "clone" of the containing code object, as in this example:
 
@@ -815,13 +815,13 @@ two
 three» 
 ```
 
-请注意，隐式 `state` 声明器仅适用于变量本身，而不适用于可能包含初始化程序的表达式。如果初始化器只能被调用一次，则必须提供 `state` 声明器。
+请注意，隐式 `state` 声明符仅适用于变量本身，而不适用于可能包含初始化程序的表达式。如果初始化代码必须只能被调用一次，则必须使用 `state` 声明器。
 
 Note that the implicit state declarator is only applied to the variable itself, not the expression that may contain an initializer. If the initializer has to be called exactly once, the `state` declarator has to be provided.
 
 ```Perl6
-subset DynInt where $ = ::('Int'); # 每次类型检查，初始化代码都会被调用 / the initializer will be called for each type check 
-subset DynInt where state $ = ::('Int'); # 初始化只会被调用一次，这才是合适的缓存 / the initializer is called once, this is a proper cache 
+subset DynInt where $ = ::('Int'); # 每次类型检查，初始化代码都会被调用 / the initializer will be called for each type check 
+subset DynInt where state $ = ::('Int'); # 初始化只会被调用一次，这才是合适的缓存 / the initializer is called once, this is a proper cache 
 ```
 
 ### [`@` 变量](https://docs.perl6.org/language/variables#___top)
@@ -842,7 +842,7 @@ foo($_) for ^3;
 #          [0 1 2]» 
 ```
 
-`@` 在这里加括号是为了从名为 `@.push` 的类成员变量中消除表达式的歧义。索引访问不需要这种歧义消除，但你需要复制该值以执行任何有用的操作。
+`@` 在这里加括号是为了使其和类成员变量 `@.push` 区分开来。索引访问不需要这种歧义消除，但你需要复制该值以执行任何有用的操作。
 
 The `@` here is parenthesized in order to disambiguate the expression from a class member variable named `@.push`. Indexed access doesn't require this disambiguation but you will need to copy the value in order to do anything useful with it.
 
@@ -861,13 +861,13 @@ foo($_) for ^3;
 » 
 ```
 
-与 `$` 一样，范围中的每个 `@` 都会引入一个新的匿名数组。
+与 `$` 一样，每个 `@` 都会引入一个新的匿名数组到作用域。
 
 As with `$`, each mention of `@` in a scope introduces a new anonymous array.
 
 ### [`%` 变量](https://docs.perl6.org/language/variables#___top)
 
-另外，还有一个关联匿名状态变量 `％`。
+另外，还有一个关联匿名关联变量 `%`。
 
 In addition, there's an [Associative](https://docs.perl6.org/type/Associative) anonymous state variable `%`.
 
@@ -880,11 +880,10 @@ foo($_) for ^3;
  
 # OUTPUT: «{0 => 0} 
 #          {0 => 0, 1 => 1} 
-#          {0 => 0, 1 => 1, 2 => 2}
-» 
+#          {0 => 0, 1 => 1, 2 => 2}» 
 ```
 
-关于消歧的警告同样适用。正如你所期望的那样，索引访问也是可能的（通过复制使其有用）。
+消除歧义的作用在这同样适用。正如你所期望的那样，索引访问也是可以的（通过复制使其生效）。
 
 The same caveat about disambiguation applies. As you may expect, indexed access is also possible (with copying to make it useful).
 
@@ -899,35 +898,33 @@ foo($_) for ^3;
  
 # OUTPUT: «{0 => 0} 
 #          {0 => 0, 1 => 1} 
-#          {0 => 0, 1 => 1, 2 => 2}
-» 
+#          {0 => 0, 1 => 1, 2 => 2}» 
 ```
 
-与其他匿名状态变量一样，每个`given` 范围内的 `％` 都将有效地引入一个单独的变量。
+与其他匿名状态变量一样，每个`given` 范围内的 `%` 都将有效地引入一个独立的变量。
 
 As with the other anonymous state variables, each mention of `%` within a given scope will effectively introduce a separate variable.
 
 ## [`augment` 声明符](https://docs.perl6.org/language/variables#___top)
 
-通过  `augment`，你可以将属性和方法添加到现有的类和语法，只要您先激活 `MONKEY-TYPING` 指令即可。
+使用 `augment`，你可以将属性和方法添加到现有的类和语法，只要您先激活 `MONKEY-TYPING` 指令即可。
 
 With `augment`, you can add attributes and methods to existing classes and grammars, provided you activated the `MONKEY-TYPING`pragma first.
 
-由于类通常是 `our` 作用域，因此是全局的，这意味着修改全局状态，这是强烈不鼓励的。几乎所有的情况都有更好的解决方案。
+由于类通常与 `our` 同作用域，因此是全局的，这样做意味着修改全局状态，这是非常不推荐的。几乎所有的这种情况都有更好的解决方案。
 
 Since classes are usually `our` scoped, and thus global, this means modifying global state, which is strongly discouraged. For almost all situations, there are better solutions.
 
 ```Perl6
-# don't do this 
+# 不要这样做 / don't do this 
 use MONKEY-TYPING;
 augment class Int {
     method is-answer { self == 42 }
 }
-say 42.is-answer;       # OUTPUT: «True
-» 
+say 42.is-answer;       # OUTPUT: «True» 
 ```
 
-（在这个情况下，更好的解决方案是使用 [function](https://docs.perl6.org/language/functions)）。
+在这个情况下，更好的解决方案是使用 [function](https://docs.perl6.org/language/functions)。
 
 (In this case, the better solution would be to use a [function](https://docs.perl6.org/language/functions)).
 
