@@ -1146,6 +1146,18 @@ say $/;
 #             textnode => ｢some text｣» 
 ```
 
+在 6.c 版本中，你可以使用 `$()` 从 `$/` 中[匹配](https://docs.perl6.org/type/Match)得到[ast](https://docs.perl6.org/routine/ast)的值, 如果那个值为真的话。也可以从[匹配](https://docs.perl6.org/type/Match)对象的字符串形式中获得。
+
+In the 6.c version, you can use `$()` shortcut (no spaces inside the parentheses) to get the [ast](https://docs.perl6.org/routine/ast) value from `$/` [Match](https://docs.perl6.org/type/Match) if that value is truthy, or the stringification of the [Match](https://docs.perl6.org/type/Match) object otherwise.
+
+```Perl6
+'test' ~~ /.../;
+# 6.c language only: 
+say $(); # OUTPUT: «tes»; 
+$/.make: 'McTesty';
+say $(); # OUTPUT: «McTesty»; 
+```
+
 #### [位置属性 (Positional Attributes)](undefined)
 
 `$/` 有位置属性，如果[正则]中(https://docs.perl6.org/language/regexes)有匹配组的话，就是那些括号组成的匹配组。
@@ -1163,91 +1175,119 @@ say $/[1]; # OUTPUT: «｢dddddeff｣» 
 These can also be accessed by the shortcuts `$0`, `$1`, `$2`, etc.
 
 ```Perl6
+'abbbbbcdddddeffg' ~~ / a (b+) c (d+ef+) g /;
 say $0; # OUTPUT: «｢bbbbb｣» 
 say $1; # OUTPUT: «｢dddddeff｣» 
 ```
 
-`$/.list`, `@$/`, 或者 `@()` 都可以用来获取所有的位置属性。
+`$/.list` 或者 `@$/`可以用来获取所有的位置属性。在 6.c 中，可以使用 `@()` （括号中无空格）。
 
-To get all of the positional attributes, any of `$/.list`, `@$/`, or `@()` can be used.
+To get all of the positional attributes, you can use `$/.list` or `@$/`. In the 6.c language, you can also use the `@()` shortcut (no spaces inside the parentheses).
 
 ```Perl6
+say @$/.join; # OUTPUT: «bbbbbdddddeff
+
+# 6.c language only:
+'abbbbbcdddddeffg' ~~ / a (b+) c (d+ef+) g /;
 say @().join; # OUTPUT: «bbbbbdddddeff» 
 ```
 
-#### [Named Attributes](undefined)
+#### [命名属性(Named Attributes)](undefined)
+
+`$/` 有命名属性当[正则](https://docs.perl6.org/language/regexes)中有命名群组捕获或者正则中有调用另外一个正则。
 
 `$/` can have named attributes if the [Regex](https://docs.perl6.org/language/regexes) had named capture-groups in it, or if the Regex called out to another Regex.
 
-```
+```Perl6
 'I.... see?' ~~ / \w+ $<punctuation>=[ <-[\w\s]>+ ] \s* $<final-word> = [ \w+ . ] /;
-say $/<punctuation>; # OUTPUT: «｢....｣
-» 
-say $/<final-word>;  # OUTPUT: «｢see?｣
-» 
+say $/<punctuation>; # OUTPUT: «｢....｣» 
+say $/<final-word>;  # OUTPUT: «｢see?｣» 
 ```
 
+这些也可以通过 `$` 更快捷地访问。
 These can also be accessed by the shortcut `$`.
 
+```Perl6
+say $<punctuation>; # OUTPUT: «｢....｣» 
+say $<final-word>;  # OUTPUT: «｢see?｣» 
 ```
-say $<punctuation>; # OUTPUT: «｢....｣
-» 
-say $<final-word>;  # OUTPUT: «｢see?｣
-» 
+`$/.hash` 或者 `%$/` 可以用来获取所有的命名属性。在 6.c 中，你也可以使用 `%()`（括号内无空格）。
+
+To get all of the named attributes, you can use `$/.hash` or `%$/`. In the 6.c language, you can also use the `%()` shortcut (no spaces inside the parentheses). 
+
+```Perl6
+say %$/.join;       # OUTPUT: «"punctuation     ....final-word  see?"
+
+# 6.c language only 
+say %().join;       # OUTPUT: «"punctuation     ....final-word  see?"» 
 ```
 
-To get all of the named attributes, any of `$/.hash`, `%$/`, or `%()` can be used.
+### [`$!` 变量 (The `$!` Variable)](https://docs.perl6.org/language/variables#___top)
 
-```
-say %().join;       # OUTPUT: «"punctuation     ....final-word  see?"
-» 
-```
-
-### [The `$!` Variable](https://docs.perl6.org/language/variables#___top)
+`$!` 是错误变量。`try` 代码块或者语句捕获的异常存储在 `$!` 中。如果没有异常被捕获，`$!` 会被设置为 `Any` 类型对象。
 
 `$!` is the error variable. If a `try` block or statement prefix catches an exception, that exception is stored in `$!`. If no exception was caught, `$!` is set to the `Any` type object.
 
+注意 `CATCH` 代码块*不会*设置 `$!`，在代码块中设置 `$_` 来获取异常。
+
 Note that `CATCH` blocks *do not* set `$!`. Rather they set `$_` inside the block to the caught exception.
 
-## [Compile-time variables](https://docs.perl6.org/language/variables#___top)
+## [编译时变量(Compile-time variables)](https://docs.perl6.org/language/variables#___top)
+
+所有的编译时变量在符号中都带有问号。身为*编译时*，它们无法在运行时被改变，但是它们在内省程序时很有价值。最常见的编译时变量如下：
 
 All compile time variables have a question mark as part of the twigil. Being *compile time* they cannot be changed at run-time, however they are valuable in order to introspect the program. The most common compile time variables are the following:
 
-| $?FILE      | Which file am I in?                      |
-| ----------- | ---------------------------------------- |
-| $?LINE      | Which line am I at?                      |
-| ::?CLASS    | Which class am I in?                     |
-| %?LANG      | What is the current set of interwoven languages? |
-| %?RESOURCES | The files associated with the "Distribution" of the current compilation unit. |
+| $?FILE      | Which file am I in?                      | # 我在哪一个文件？
+| ----------- | ---------------------------------------- | 
+| $?LINE      | Which line am I at?                      | # 我在哪一行？
+| ::?CLASS    | Which class am I in?                     | # 我在哪一个类
+| %?LANG      | What is the current set of interwoven languages? | # 我在哪个交织的语言中 ？
+| %?RESOURCES | The files associated with the "Distribution" of the current compilation unit. | # 当前发行版编译单元相关的文件
 
-### [Other compile-time variables:](https://docs.perl6.org/language/variables#___top)
+### [其他编译时变量：(Other compile-time variables:)](https://docs.perl6.org/language/variables#___top)
+
+下列编译时变量可以进行更深入的内省：
 
 The following compile time variables allow for a deeper introspection:
 
-| $?PACKAGE | Which package am I in?                   |
-| --------- | ---------------------------------------- |
-| $?MODULE  | Which module am I in?                    |
-| $?CLASS   | Which class am I in? (as variable)       |
-| $?ROLE    | Which role am I in? (as variable)        |
-| $?GRAMMAR | Which grammar am I in?                   |
-| $?TABSTOP | How many spaces is a tab in a heredoc or virtual margin? |
-| $?NL      | What a vertical newline "\n" means: LF, CR or CRLF |
-| $?ENC     | Default encoding of various IO methods, e.g., Str.encode, Buf.decode |
+| $?PACKAGE          | Which package am I in?                                   | # 我在哪个包?
+| -------------------| ---------------------------------------------------------|
+| $?MODULE           | Which module am I in?                                    | # 我在哪个模组?
+| $?CLASS            | Which class am I in? (as variable)                       | # 我在哪个类中作为变量？
+| $?ROLE             | Which role am I in? (as variable)                        | # 我在哪个角色中作为变量？
+| $?GRAMMAR          | Which grammar am I in?                                   | # 我在哪个语法中?
+| $?TABSTOP          | How many spaces is a tab in a heredoc or virtual margin? | # 在 heredoc 或者虚拟边框中 Tab 相当于几个空格 ？
+| $?NL               | What a vertical newline "\n" means: LF, CR or CRLF       | # 换行符的意思是：LF， CR 还是 CRLF
+| $?DISTRIBUTION     | The Distribution of the current compilation unit.        | # 当前编译单元的发行版
+
+特别是关于 `$?NL`，见[换行指令](https://docs.perl6.org/language/pragmas)
 
 With particular regard to the `$?NL`, see the [newline pragma](https://docs.perl6.org/language/pragmas).
 
+这些变量是Rakudo特有的，具有所有相应的注意事项：
+
+These variables are Rakudo specific, with all the corresponding caveats:
+
+| $?BITS | Number of bits of the platform the program is being compiled | # 程序被编译时平台的位数。
+| ------ | ------------------------------------------------------------ |
+
 ### [&?ROUTINE](undefined)
+
+程序实际在哪个函数，编译时变量 `&ROUTINE` 为此提供了内省功能。它会返回当前函数的一个[Sub](https://docs.perl6.org/type/Sub)实例。它支持使用方法 `.name` 或者 `.signature` 以及其他跟 `Sub` 相关的方法来获取调用函数名。
 
 The compile time variable `&?ROUTINE` provides introspection about which routine the program is actually within. It returns an instance of [Sub](https://docs.perl6.org/type/Sub) attached to the current routine. It does support the method `.name` to obtain the name of the called routine, as well as `.signature`and others method related to `Sub`:
 
-```
+```Perl6
 sub awesome-sub { say &?ROUTINE.name }
 awesome-sub # OUTPUT: awesome-sub 
 ```
 
+特殊变量 `&?ROUTINE` 也支持递归：
+
 The special variable `&?ROUTINE` allows also for recursion:
 
-```
+```Perl6
 my $counter = 10;
 sub do-work {
     say 'Calling myself other ' ~ $counter-- ~ ' times';
@@ -1258,67 +1298,240 @@ do-work;
 
 ### [&?BLOCK](undefined)
 
+`?&BLOCK` 行为与 `?&ROUTINE` 类似，但是它允许内省单一代码块。其持有一个[Sub](https://docs.perl6.org/type/Sub)并且允许在相同代码块中迭代。
+
 The special compile variable `?&BLOCK` behaves similarly to `?&ROUTINE` but it allows to introspect a single block of code. It holds a [Sub](https://docs.perl6.org/type/Sub)and allows for recursion within the same block:
 
-```
+```Perl6
 for '.' {
     .Str.say when !.IO.d;
     .IO.dir()».&?BLOCK when .IO.d # lets recurse a little! 
 }
 ```
 
-## [Dynamic variables](https://docs.perl6.org/language/variables#___top)
+## [动态作用域变量(Dynamic variables)](https://docs.perl6.org/language/variables#___top)
 
-| $*ARGFILES        | An L<IO::ArgFiles> (an empty subclass of L<IO::CatHandle>) that uses C<@*ARGS> as source files, if it contains any files, or C<$*IN> otherwise. When C<$*IN> is used, its C<:nl-in>, C<:chomp>, C<:encoding>, and C<:bin> will be set on the L<IO::ArgFiles> object. |
-| ----------------- | ---------------------------------------- |
-| @*ARGS            | Arguments from the command line.         |
-| $*IN              | Standard input filehandle, AKA stdin     |
-| $*OUT             | Standard output filehandle, AKA stdout   |
-| $*ERR             | Standard error filehandle, AKA stderr    |
-| %*ENV             | Environment variables                    |
-| $*REPO            | A variable holding information about modules installed/loaded |
-| $*INIT-INSTANT    | An Instant object representing program startup time. In particular, this is when the core code starts up, so the value of $*INIT-INSTANT may be a few milliseconds earlier than C<INIT now> or even C<BEGIN now> executed in your program. |
-| $*TZ              | The system's local timezone offset, as the number of B<seconds> from GMT |
-| $*CWD             | The Current Working Directory.           |
-| $*KERNEL          | Which kernel am I running under?         |
-| $*DISTRO          | Which OS distribution am I running under? (e.g. C<say "Some sort of Windows" if $*DISTRO.is-win>) |
-| $*VM              | Which virtual machine am I running under? |
-| $*PERL            | Which Perl am I running under?           |
-| $*PID             | Process ID of the current process.       |
-| $*PROGRAM-NAME    | Path to the current executable as it was entered on the command line, or C<-e> if perl was invoked with the -e flag. |
-| $*PROGRAM         | Location (in the form of an C<IO::Path> object) of the Perl program being executed. |
-| &*EXIT            | Code that will be executed when doing an exit(). Intended to be used in situations where Perl 6 is embedded in another language runtime (such as Inline::Perl6 in Perl 5) |
-| $*EXECUTABLE      | Absolute path of the perl executable that is currently running. |
-| $*EXECUTABLE-NAME | The name of the perl executable that is currently running. (e.g. perl6-p, perl6-m, Niecza.exe) Favor $*EXECUTABLE because it's not guaranteed that the perl executable is in PATH. |
-| $*USAGE           | Read-only. The default usage message generated from the signatures of MAIN subs available from inside sub MAIN and sub USAGE |
-| $*USER            | The user that is running the program. It's an object that evaluates to "username (uid)". It will evaluate to the username only if treated as a string and the numeric user id if treated as a number. |
-| $*GROUP           | The primary group of the user who is running the program. It's an object that evaluates to "groupname (gid)". It will evaluate to the groupname only if treated as a string and the numeric group id if treated as a number. |
-| $*HOME            | An L<IO::Path> object representing the "home directory" of the user that is running the program. Uses C«%*ENV<HOME>» if set. On Windows, uses C«%*ENV<HOMEDRIVE> ~ %*ENV<HOMEPATH>». If the home directory cannot be determined, it will be L<Any> |
-| $*SPEC            | The appropriate L<IO::Spec> sub-class for the platform that the program is running on. |
-| $*TMPDIR          | An L<IO::Path> object representing the "system temporary directory" as determined by L«C<.tmpdir IO::Spec::* method\|/routine/tmpdir>» |
-| $*TOLERANCE       | Used by the C<=~=> operator, and any operations that depend on it, to decide if two values are approximately equal. Defaults to 1e-15. |
-| $*THREAD          | A L<Thread> object representing the currently executing thread. |
-| $*SCHEDULER       | A L<ThreadPoolScheduler> object representing the current default scheduler. (see note below) |
-| $*SAMPLER         | The current L<Telemetry::Sampler> used for making snapshots of system state. Only available if L<Telemetry> has been loaded. |
+所有的动态作用域变量带有 `*` 符号，名字习惯上使用大写。
 
-Note on usage of $*SCHEDULER:
+All dynamically scoped variables have the `*` twigil, and their name is (conventionally) written in uppercase.
 
-For the current Rakudo, by default this imposes a maximum of 16 threads on the methods `.hyper` and `.race`. To change the maximum number of threads, either set the environment variable RAKUDO_MAX_THREADS before running perl6 or create a scoped copy with the default changed before using `.hyper` or `.race`:
+### [参数相关变量(Argument related variables)](https://docs.perl6.org/language/variables#___top)
+
+这些变量与传给脚本的参数有关。
+
+These variables are related to the arguments passed to a script.
+
+#### [`$*ARGFILES`](https://docs.perl6.org/language/variables#___top)
+
+An [IO::ArgFiles](https://docs.perl6.org/type/IO::ArgFiles) (an empty subclass of [IO::CatHandle](https://docs.perl6.org/type/IO::CatHandle)) that uses `@*ARGS` as source files, if it contains any files, or `$*IN` otherwise. When `$*IN` is used, its `:nl-in`, `:chomp`, `:encoding`, and `:bin` will be set on the [IO::ArgFiles](https://docs.perl6.org/type/IO::ArgFiles) object.
+
+As of the 6.d version, `$*ARGFILES` *inside* [`sub MAIN`](https://docs.perl6.org/language/functions#sub_MAIN) is always set to `$*IN`, even when `@*ARGS` is not empty. See [the class documentation](https://docs.perl6.org/type/IO::ArgFiles#%24%2AARGFILES) for examples and more context.
+
+#### [`@*ARGS`](https://docs.perl6.org/language/variables#___top)
+
+`@*ARGS` contains the arguments from the command line.
+
+#### [`&*ARGS-TO-CAPTURE`](https://docs.perl6.org/language/variables#___top)
+
+A dynamic variable available inside any custom [`ARGS-TO-CAPTURE`](https://docs.perl6.org/language/create-cli#sub_ARGS-TO-CAPTURE) subroutine that can be used to perform the default argument parsing. Takes the same parameters as are expected of the custom `ARGS-TO-CAPTURE` subroutine.
+
+#### [`&*GENERATE-USAGE`](https://docs.perl6.org/language/variables#___top)
+
+A dynamic variable available inside any custom [`GENERATE-USAGE`](https://docs.perl6.org/language/create-cli#sub_GENERATE-USAGE) subroutine that can be used to perform the default usage message creation. Takes the same parameters as are expected of the custom `GENERATE-USAGE` subroutine.
+
+### [Special filehandles: `STDIN`, `STDOUT` and `STDERR`](https://docs.perl6.org/language/variables#___top)
+
+For more information about special filehandles please see also the [Input and Output](https://docs.perl6.org/language/io) page and the [IO::Special](https://docs.perl6.org/type/IO::Special) class. [IO::Handle](https://docs.perl6.org/type/IO::Handle)contains several examples of using `$*IN` for reading standard input.
+
+- `$*IN` Standard input filehandle, AKA *STDIN*.
+- `$*OUT` Standard output filehandle, AKA *STDOUT*.
+- `$*ERR` Standard error filehandle, AKA *STDERR*.
+
+### [Runtime environment](https://docs.perl6.org/language/variables#___top)
+
+These dynamic variables contain information related to the environment the script or program is running in.
+
+#### [`%*ENV`](https://docs.perl6.org/language/variables#___top)
+
+Operating system environment variables. Numeric values are provided as [allomorphs](https://docs.perl6.org/language/glossary#index-entry-Allomorph)
+
+#### [`$*REPO`](https://docs.perl6.org/language/variables#___top)
+
+This variable holds information about modules installed/loaded.
+
+#### [`$*INIT-INSTANT`](https://docs.perl6.org/language/variables#___top)
+
+`$*INIT-INSTANT` is an [Instant](https://docs.perl6.org/type/Instant) object representing program startup time. In particular, this is when the core code starts up, so the value of `$*INIT-INSTANT` may be a few milliseconds earlier than `INIT now` or even `BEGIN now` executed in your program.
+
+#### [`$*TZ`](https://docs.perl6.org/language/variables#___top)
+
+`$*TZ` contains the system's local timezone offset, as the number of **seconds** from GMT.
+
+#### [`$*CWD`](https://docs.perl6.org/language/variables#___top)
+
+It contains the `C`urrent `W`orking `D`irectory.
+
+#### [`$*KERNEL`](https://docs.perl6.org/language/variables#___top)
+
+`$*KERNEL` contains a [`Kernel` instance](https://docs.perl6.org/type/Kernel), the `.gist` of it being the current running kernel.
 
 ```
-my $*SCHEDULER = ThreadPoolScheduler.new( max_threads => 64 );
+say $*KERNEL; # OUTPUT: «linux (4.4.92.31.default)␤» 
+```
+
+#### [`$*DISTRO`](https://docs.perl6.org/language/variables#___top)
+
+This object (of type `Distro`) contains information about the current operating system distribution. For instance:
+
+```
+say "Some sort of Windows" if $*DISTRO.is-win;
+```
+
+`$*DISTRO.name` takes a set of values that depend on the operating system. These names will vary with version and implementation, so you should double-check and test before using them in your programs; since these names are implementation defined and not in the specification, they could vary and change at any moment.
+
+The `$*DISTRO` gist is displayed by using `say`:
+
+```
+say $*DISTRO; # OUTPUT: «debian (9.stretch)␤» 
+```
+
+This shows additional information on the operating system and version it's using, but as a matter of fact, this variable contains information which is useful to create portable programs, such as the path separator:
+
+```
+say $*DISTRO.perl;
+# OUTPUT: «Distro.new(release => "42.3", is-win => Bool::False, 
+#          path-sep => ":", name => "opensuse", 
+#          auth => "https://www.opensuse.org/", version => v42.3, 
+#          signature => Blob, desc => "2018-12-13T08:50:59.213619+01:00")␤» 
+```
+
+#### [`$*VM`](https://docs.perl6.org/language/variables#___top)
+
+This variable contains the current virtual machine running the code, as well as additional information on the inner workings of aforementioned VM.
+
+```
+say $*VM.precomp-ext, " ", $*VM.precomp-target; # OUTPUT: «moarvm mbc␤» 
+```
+
+These two methods, for instance, will show the extension used in the precompiled bytecode scripts and the target used. This is what is found in the Moar Virtual Machine, but it could also vary with version and implementation. Other VM, such as Java, will show different values for them. `$*VM.config` includes all configuration values used to create the virtual machine, e.g.
+
+```
+say $*VM.config<versionmajor>, ".", $*VM.config<versionminor>;
+# OUTPUT: «2018.11␤» 
+```
+
+which are the version of the virtual machine, generally the same one as the one used in the interpreter and the overall Perl 6 environment.
+
+#### [`$*PERL`](https://docs.perl6.org/language/variables#___top)
+
+This object contains information on the current implementation of the Perl 6 language:
+
+```
+say $*PERL.compiler.version; # OUTPUT: «v2018.11.52.g.06156.a.7.ca␤» 
+```
+
+but its gist includes the name of the language, followed by the major version of the compiler:
+
+```
+say $*PERL; # OUTPUT: «Perl 6 (6.d)␤» 
+```
+
+It stringifies to `Perl 6`:
+
+```
+$*PERL.put; # OUTPUT: «Perl 6␤» 
+```
+
+#### [`$*PID`](https://docs.perl6.org/language/variables#___top)
+
+Object containing an integer describing the current Process IDentifier (operating system dependent).
+
+#### [`$*PROGRAM-NAME`](https://docs.perl6.org/language/variables#___top)
+
+This contains the path to the current executable as it was entered on the command line, or `-e` if perl was invoked with the -e flag.
+
+#### [`$*PROGRAM`](https://docs.perl6.org/language/variables#___top)
+
+Contains the location (in the form of an `IO::Path` object) of the Perl 6 program being executed.
+
+#### [`&*EXIT`](https://docs.perl6.org/language/variables#___top)
+
+This is a [Callable](https://docs.perl6.org/type/Callable) that contains the code that will be executed when doing an `exit()` call. Intended to be used in situations where Perl 6 is embedded in another language runtime (such as Inline::Perl6 in Perl 5).
+
+#### [`$*EXECUTABLE`](https://docs.perl6.org/language/variables#___top)
+
+Contains an `IO::Path` absolute path of the perl executable that is currently running.
+
+#### [`$*EXECUTABLE-NAME`](https://docs.perl6.org/language/variables#___top)
+
+Contains the name of the Perl executable that is currently running. (e.g. perl6-p, perl6-m). Favor `$*EXECUTABLE` over this one, since it's not guaranteed that the perl executable is in `PATH`.
+
+#### [`$*USAGE`](https://docs.perl6.org/language/variables#___top)
+
+This is the default usage message generated from the signatures of `MAIN` subs available from inside `sub MAIN` and `sub USAGE`. The variable is *read-only*.
+
+#### [`$*USER`](https://docs.perl6.org/language/variables#___top)
+
+An `Allomorph` with information about the user that is running the program. It will evaluate to the username if treated as a string and the numeric user id if treated as a number.
+
+#### [`$*GROUP`](https://docs.perl6.org/language/variables#___top)
+
+An `Allomorph` with the primary group of the user who is running the program. It will evaluate to the groupname only if treated as a string and the numeric group id if treated as a number.
+
+#### [`$*HOMEDRIVE`](https://docs.perl6.org/language/variables#___top)
+
+Contains information about the "home drive" of the user that is running the program on Windows. It's not defined in other operating systems.
+
+#### [`$*HOMEPATH`](https://docs.perl6.org/language/variables#___top)
+
+Contains information about the path to the user directory that is running the program on Windows. It's not defined in other operating systems.
+
+#### [`$*HOME`](https://docs.perl6.org/language/variables#___top)
+
+Contains an [IO::Path](https://docs.perl6.org/type/IO::Path) object representing the "home directory" of the user that is running the program. Uses `%*ENV<HOME>` if set.
+
+On Windows, uses `%*ENV<HOMEDRIVE> ~ %*ENV<HOMEPATH>`. If the home directory cannot be determined, it will be [Any](https://docs.perl6.org/type/Any).
+
+#### [`$*SPEC`](https://docs.perl6.org/language/variables#___top)
+
+Contains the appropriate [IO::Spec](https://docs.perl6.org/type/IO::Spec) sub-class for the platform that the program is running on. This is a higher-level class for the operating system; it will return `Unix`, for instance, in the case of Linux (in the form of the `IO::Spec` class used for the current implementation).
+
+#### [`$*TMPDIR`](https://docs.perl6.org/language/variables#___top)
+
+This is an [IO::Path](https://docs.perl6.org/type/IO::Path) object representing the "system temporary directory" as determined by [`.tmpdir IO::Spec::* method`](https://docs.perl6.org/routine/tmpdir).
+
+#### [`$*TOLERANCE`](https://docs.perl6.org/language/variables#___top)
+
+Variable used by the [`=~=`](https://docs.perl6.org/routine/=~=) operator, and any operations that depend on it, to decide if two values are approximately equal. Defaults to `1e-15`.
+
+#### [`$*THREAD`](https://docs.perl6.org/language/variables#___top)
+
+Contains a [Thread](https://docs.perl6.org/type/Thread) object representing the currently executing thread.
+
+#### [`$*SCHEDULER`](https://docs.perl6.org/language/variables#___top)
+
+This is a [ThreadPoolScheduler](https://docs.perl6.org/type/ThreadPoolScheduler) object representing the current default scheduler.
+
+By default this imposes a maximum of 64 threads on the methods `.hyper`, `.race` and other thread-pool classes that use that scheduler such as `Promise`s or `Supply`s. This is, however, implementation, dependent and might be subject to change. To change the maximum number of threads, you can either set the environment variable `RAKUDO_MAX_THREADS` before running perl6 or create a scoped copy with the default changed before using them:
+
+```
+my $*SCHEDULER = ThreadPoolScheduler.new( max_threads => 128 );
 ```
 
 This behavior is not tested in the spec tests and is subject to change.
 
-# [Naming Conventions](https://docs.perl6.org/language/variables#___top)
+#### [`$*SAMPLER`](https://docs.perl6.org/language/variables#___top)
 
-It is helpful to know our naming conventions in order to understand what codes do directly. However, there is not yet a conventions list covering anywhere. Still we list several conventions that are widely held.
+The current [Telemetry::Sampler](https://docs.perl6.org/type/Telemetry::Sampler) used for making snapshots of system state. Only available if [Telemetry](https://docs.perl6.org/type/Telemetry) has been loaded.
+
+# [Naming conventions](https://docs.perl6.org/language/variables#___top)
+
+It is helpful to know our naming conventions in order to understand what codes do directly. However, there is not yet (and might never be) an official list of; still, we list several conventions that are widely held.
 
 - Subs and methods from the built-ins library try to have single-word names when a good one could be found. In cases where there are two or more words making up a name, they are separated by a "-".
-- Compounds are treated as a single word, thus `substr`, `subbuf`, and `deepmap` (just like we write "starfish", not "star fish" in English).
-- Subs and methods that are automatically called for you at special times are written in uppercase. This includes the `MAIN` sub, the `AT-POS` and related methods for implementing container types, along with `BUILD` and `DESTROY`.
+- Compounds are treated as a single word, thus `substr`, `subbuf`, and `deepmap` (just like we write "starfish", not "star fish" in English).
+- Subs and methods that are automatically called for you at special times are written in uppercase. This includes the `MAIN` sub, the `AT-POS` and related methods for implementing container types, along with `BUILD` and `DESTROY`.
 - Type names are camel case, except for native types, which are lowercase. For the exception, you can remember it by: they are stored in a more compact way, so they names look smaller too.
-- Built-in dynamic variables and compile-time variables are always uppercase, such like `$*OUT`, `$?FILE`.
-- Methods from the MOP and other internals use "_" to separate multiple words, such like `add_method`.
+- Built-in dynamic variables and compile-time variables are always uppercase, such like `$*OUT`, `$?FILE`.
+- Methods from the MOP and other internals use "_" to separate multiple words, such like `add_method`.
 
