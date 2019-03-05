@@ -994,7 +994,7 @@ In the above case, if the `Bool.pick` returns true, the answer will stay as 84
 
 # [类型约束及初始化 (Type Constraints and Initialization)](https://docs.perl6.org/language/variables#___top)
 
-变量通过所绑定的[容器](https://docs.perl6.org/language/containers)有类型约束，容器在声明符与变量名之间。默认的类型约束是[Mu](https://docs.perl6.org/type/Mu)。也可以使用[of](https://docs.perl6.org/type/Variable#trait_of)特性来设置类型约束。
+变量通过所绑定的[容器](https://docs.perl6.org/language/containers)有类型约束，容器在声明符与变量名之间。默认的类型约束是[Mu](https://docs.perl6.org/type/Mu)。也可以使用[of](https://docs.perl6.org/type/Variable#trait_of)特性来设置类型约束。
 
 Variables have a type constraint via the [container](https://docs.perl6.org/language/containers) they are bound to, which goes between the declarator and the variable name. The default type constraint is [Mu](https://docs.perl6.org/type/Mu). You can also use the trait [of](https://docs.perl6.org/type/Variable#trait_of) to set a type constraint.
 
@@ -1037,7 +1037,7 @@ say $product;                       # OUTPUT: «1» 
 
 ## [已定义变量的默认指令 (Default Defined Variables Pragma)](https://docs.perl6.org/language/variables#___top)
 
-强制所有变量适用已定义约束，使用指令 `use variables :D`。指令为词法作用域并且可以使用 `use variables :_` 关闭。
+强制所有变量适用已定义约束，使用指令 `use variables :D`。指令为词法作用域并且可以使用 `use variables :_` 关闭。
 
 To force all variables to have a definedness constraint, use the pragma `use variables :D`. The pragma is lexically scoped and can be switched off with `use variables :_`.
 
@@ -1050,7 +1050,7 @@ my Int $i = 1; # that works 
 { use variables :_; my Int $i; } # switch it off in this block 
 ```
 
-注意赋值[Nil](https://docs.perl6.org/type/Nil)会使变量恢复默认值。有已定义约束的类型的默认值就是后面跟 `:D` 的类型 (e.g. `Int:D`)。那意味着已定义约束不保证变量的已定义。这个只对变量初始化生效，不适用于[签名](https://docs.perl6.org/type/Signature)或者其后的变量赋值。
+注意赋值[Nil](https://docs.perl6.org/type/Nil)会使变量恢复默认值。有已定义约束的类型的默认值就是后面跟 `:D` 的类型 (e.g. `Int:D`)。那意味着已定义约束不保证变量的已定义。这个只对变量初始化生效，不适用于[签名](https://docs.perl6.org/type/Signature)或者其后的变量赋值。
 
 Note that assigning [Nil](https://docs.perl6.org/type/Nil) will revert the variable to its default value. The default value of a defined constraint type is the type appended with `:D` (e.g. `Int:D`). That means a definedness constraint is no guarantee of definedness. This only applies to variable initializers, not to [Signature](https://docs.perl6.org/type/Signature)s. or subsequent assignments to a variable.
 
@@ -1062,7 +1062,7 @@ Perl 6 attempts to use long, descriptive names for special variables. There are 
 
 ## [预定义词法变量(Pre-defined lexical variables)](https://docs.perl6.org/language/variables#___top)
 
-每个代码块都可以访问到的三个特殊变量：
+每个代码块都可以访问到的三个特殊变量：
 
 There are three special variables that are available in every block:
 
@@ -1074,7 +1074,7 @@ There are three special variables that are available in every block:
 
 ### [`$_` 变量 (The `$_` Variable)](https://docs.perl6.org/language/variables#___top)
 
-`$_` 是主题变量。代码块没有显示签名时它会作为默认参数，因此类似 `for @array { ... }` 以及 `given $var { ... }` 结构的代码块被调用时会绑定到 `$_`。
+`$_` 是主题变量。代码块没有显示签名时它会作为默认参数，因此类似 `for @array { ... }` 以及 `given $var { ... }` 结构的代码块被调用时会绑定到 `$_`。
 
 `$_` is the topic variable. It's the default parameter for blocks that do not have an explicit signature, so constructs like `for @array { ... }` and `given $var { ... }` bind to `$_` by invoking the block.
 
@@ -1085,18 +1085,23 @@ given 'a'   { say $_ }  # sets $_ to 'a' 
 say $_ given 'a';       # same, even though it's not a block 
 ```
 
+`CATCH` 代码块设置 `$_` 为捕获的异常。聪明匹配符 `~~` 将右手边的表达式 `$_` 赋值给左手边的值。
 
 `CATCH` blocks set `$_` to the exception that was caught. The `~~` smart-match operator sets `$_` on the right-hand side expression to the value of the left-hand side.
 
+`$_` 调用方法时可以省去变量名：
+
 Calling a method on `$_` can be shortened by leaving off the variable name:
 
-```
+```Perl6
 .say;                   # same as $_.say 
 ```
 
+`m/regex/` 和 `/regex/` 正则匹配以及 `s/regex/subst/` 替换默认对 `$_` 进行操作:
+
 `m/regex/` and `/regex/` regex matches and `s/regex/subst/` substitutions work on `$_`:
 
-```
+```Perl6
 say "Looking for strings with non-alphabetic characters...";
 for <ab:c d$e fgh ij*> {
     .say if m/<-alpha>/;
@@ -1105,23 +1110,25 @@ for <ab:c d$e fgh ij*> {
 # OUTPUT: «Looking for strings with non-alphabetic characters... 
 #          ab:c 
 #          d$e 
-#          ij*
-» 
+#          ij*» 
 ```
 
-### [The `$/` Variable](https://docs.perl6.org/language/variables#___top)
+### [`$/` 变量 (The `$/` Variable)](https://docs.perl6.org/language/variables#___top)
+
+`$/` 是匹配变量。它存储了上一次[正则](https://docs.perl6.org/language/regexes)匹配的结果，因此通常包含[匹配](https://docs.perl6.org/type/Match)类型的对象。
 
 `$/` is the match variable. It stores the result of the last [Regex](https://docs.perl6.org/language/regexes) match and so usually contains objects of type [Match](https://docs.perl6.org/type/Match).
 
-```
+```Perl6
 'abc 12' ~~ /\w+/;  # sets $/ to a Match object 
-say $/.Str;         # OUTPUT: «abc
-» 
+say $/.Str;         # OUTPUT: «abc» 
 ```
+
+`Grammar.parse` 方法也会将调用者的 `$/` 变量设置为结果中的[匹配](https://docs.perl6.org/type/Match)对象。下列代码：
 
 The `Grammar.parse` method also sets the caller's `$/` to the resulting [Match](https://docs.perl6.org/type/Match) object. For the following code:
 
-```
+```Perl6
 use XML::Grammar; # zef install XML 
 XML::Grammar.parse("<p>some text</p>");
 say $/;
@@ -1136,36 +1143,36 @@ say $/;
 #            name => ｢p｣ 
 #            child => ｢some text｣ 
 #             text => ｢some text｣ 
-#             textnode => ｢some text｣
-» 
+#             textnode => ｢some text｣» 
 ```
 
-#### [Positional Attributes](undefined)
+#### [位置属性 (Positional Attributes)](undefined)
+
+`$/` 有位置属性，如果[正则]中(https://docs.perl6.org/language/regexes)有匹配组的话，就是那些括号组成的匹配组。
 
 `$/` can have positional attributes if the [Regex](https://docs.perl6.org/language/regexes) had capture-groups in it, which are just formed with parentheses.
 
-```
+```Perl6
 'abbbbbcdddddeffg' ~~ / a (b+) c (d+ef+) g /;
-say $/[0]; # OUTPUT: «｢bbbbb｣
-» 
-say $/[1]; # OUTPUT: «｢dddddeff｣
-» 
+say $/[0]; # OUTPUT: «｢bbbbb｣» 
+say $/[1]; # OUTPUT: «｢dddddeff｣» 
 ```
+
+也可以通过快捷变量 `$0`, `$1`, `$2` 等等表示。
 
 These can also be accessed by the shortcuts `$0`, `$1`, `$2`, etc.
 
+```Perl6
+say $0; # OUTPUT: «｢bbbbb｣» 
+say $1; # OUTPUT: «｢dddddeff｣» 
 ```
-say $0; # OUTPUT: «｢bbbbb｣
-» 
-say $1; # OUTPUT: «｢dddddeff｣
-» 
-```
+
+`$/.list`, `@$/`, 或者 `@()` 都可以用来获取所有的位置属性。
 
 To get all of the positional attributes, any of `$/.list`, `@$/`, or `@()` can be used.
 
-```
-say @().join; # OUTPUT: «bbbbbdddddeff
-» 
+```Perl6
+say @().join; # OUTPUT: «bbbbbdddddeff» 
 ```
 
 #### [Named Attributes](undefined)
