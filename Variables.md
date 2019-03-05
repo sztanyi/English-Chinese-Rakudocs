@@ -924,13 +924,13 @@ augment class Int {
 say 42.is-answer;       # OUTPUT: «True» 
 ```
 
-在这个情况下，更好的解决方案是使用 [function](https://docs.perl6.org/language/functions)。
+在这个情况下，更好的解决方案是使用 [函数](https://docs.perl6.org/language/functions)。
 
 (In this case, the better solution would be to use a [function](https://docs.perl6.org/language/functions)).
 
 ## [`temp` 前缀](https://docs.perl6.org/language/variables#___top)
 
-像 `my` 一样，`temp` 会在其范围的末尾恢复变量的旧值。但是，`temp` 不会创建新变量。
+像 `my` 一样，`temp` 会在其范围的末尾恢复变量的旧值。但是 `temp` 不会创建新变量。
 
 Like `my`, `temp` restores the old value of a variable at the end of its scope. However, `temp` does not create a new variable.
 
@@ -964,8 +964,7 @@ print g(g(f(g()), g(), f()));
 #            <f> 
 #            </f> 
 #           </g> 
-#          </g>
-» 
+#          </g>» 
 ```
 
 ## [`let` 前缀](https://docs.perl6.org/language/variables#___top)
@@ -989,62 +988,69 @@ my $answer = 42;
 say $answer;
 ```
 
-在上面的例子中，如果 `Bool.pick` 返回真值，那么答案将保持为 84，因为该块返回一个定义的值（ `say` 返回真）。否则，`die` 语句将导致该块退出失败，并将答案重置为42。
+在上面的例子中，如果 `Bool.pick` 返回真值，那么答案将保持为 84，因为该块返回一个定义的值（ `say` 返回真）。否则，`die` 语句将导致该块退出失败，并将答案重置为 42。
 
 In the above case, if the `Bool.pick` returns true, the answer will stay as 84 because the block returns a defined value (`say` returns true). Otherwise the `die` statement will cause the block to exit unsuccessfully, resetting the answer to 42.
 
-# [Type Constraints and Initialization](https://docs.perl6.org/language/variables#___top)
+# [类型约束及初始化 (Type Constraints and Initialization)](https://docs.perl6.org/language/variables#___top)
+
+变量通过所绑定的[容器](https://docs.perl6.org/language/containers)有类型约束，容器在声明符与变量名之间。默认的类型约束是[Mu](https://docs.perl6.org/type/Mu)。也可以使用[of](https://docs.perl6.org/type/Variable#trait_of)特性来设置类型约束。
 
 Variables have a type constraint via the [container](https://docs.perl6.org/language/containers) they are bound to, which goes between the declarator and the variable name. The default type constraint is [Mu](https://docs.perl6.org/type/Mu). You can also use the trait [of](https://docs.perl6.org/type/Variable#trait_of) to set a type constraint.
 
-```
+```Perl6
 my Int $x = 42;
 $x = 'a string';
 CATCH { default { put .^name, ': ', .Str } }
-# OUTPUT: «X::TypeCheck::Assignment: Type check failed in assignment to $x; expected Int but got Str ("a string")
-» 
+# OUTPUT: «X::TypeCheck::Assignment: Type check failed in assignment to $x; expected Int but got Str ("a string")» 
 ```
 
+如果标量变量有类型约束但是没有设置初始值，会被赋予容器的默认值。
 If a scalar variable has a type constraint but no initial value, it's initialized with the type object of the default value of the container it's bound to.
 
-```
+```Perl6
 my Int $x;
-say $x.^name;       # OUTPUT: «Int
-» 
-say $x.defined;     # OUTPUT: «False
-» 
+say $x.^name;       # OUTPUT: «Int» 
+say $x.defined;     # OUTPUT: «False» 
 ```
+
+没有显示类型约束的标量变量写作[Mu](https://docs.perl6.org/type/Mu)但是默认是[Any](https://docs.perl6.org/type/Any)类型对象。
 
 Scalar variables without an explicit type constraint are typed as [Mu](https://docs.perl6.org/type/Mu) but default to the [Any](https://docs.perl6.org/type/Any) type object.
 
+带 `@` 标记的变量初始化时生成一个空[数组](https://docs.perl6.org/type/Array); 带 `%` 标记带变量初始化时生成一个空[哈希](https://docs.perl6.org/type/Hash)。
+
 Variables with the `@` sigil are initialized with an empty [Array](https://docs.perl6.org/type/Array); variables with the `%` sigil are initialized with an empty [Hash](https://docs.perl6.org/type/Hash).
+
+变量默认值可以通过 `is default` 特性来设置，赋值 `Nil` 给变量恢复默认值。
 
 The default value of a variable can be set with the `is default` trait, and re-applied by assigning `Nil` to it:
 
-```
+```Perl6
 my Real $product is default(1);
-say $product;                       # OUTPUT: «1
-» 
+say $product;                       # OUTPUT: «1» 
 $product *= 5;
-say $product;                       # OUTPUT: «5
-» 
+say $product;                       # OUTPUT: «5» 
 $product = Nil;
-say $product;                       # OUTPUT: «1
-» 
+say $product;                       # OUTPUT: «1» 
 ```
 
-## [Default Defined Variables Pragma](https://docs.perl6.org/language/variables#___top)
+## [已定义变量的默认指令 (Default Defined Variables Pragma)](https://docs.perl6.org/language/variables#___top)
+
+强制所有变量适用已定义约束，使用指令 `use variables :D`。指令为词法作用域并且可以使用 `use variables :_` 关闭。
 
 To force all variables to have a definedness constraint, use the pragma `use variables :D`. The pragma is lexically scoped and can be switched off with `use variables :_`.
 
-```
+```Perl6
 use variables :D;
 my Int $i;
 # OUTPUT: «===SORRY!=== Error while compiling <tmp>
-Variable definition of type Int:D (implicit :D by pragma) requires an initializer ... 
+# Variable definition of type Int:D (implicit :D by pragma) requires an initializer ... 
 my Int $i = 1; # that works 
 { use variables :_; my Int $i; } # switch it off in this block 
 ```
+
+注意赋值[Nil](https://docs.perl6.org/type/Nil)会使变量恢复默认值。有已定义约束的类型的默认值就是后面跟 `:D` 的类型 (e.g. `Int:D`)。那意味着已定义约束不保证变量的已定义。这个只对变量初始化生效，不适用于[签名](https://docs.perl6.org/type/Signature)或者其后的变量赋值。
 
 Note that assigning [Nil](https://docs.perl6.org/type/Nil) will revert the variable to its default value. The default value of a defined constraint type is the type appended with `:D` (e.g. `Int:D`). That means a definedness constraint is no guarantee of definedness. This only applies to variable initializers, not to [Signature](https://docs.perl6.org/type/Signature)s. or subsequent assignments to a variable.
 
