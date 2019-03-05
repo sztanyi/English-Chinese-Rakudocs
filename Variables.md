@@ -1234,16 +1234,16 @@ Note that `CATCH` blocks *do not* set `$!`. Rather they set `$_` inside t
 
 ## [编译时变量(Compile-time variables)](https://docs.perl6.org/language/variables#___top)
 
-所有的编译时变量在符号中都带有问号。身为*编译时*，它们无法在运行时被改变，但是它们在内省程序时很有价值。最常见的编译时变量如下：
+所有的编译时变量在符号中都带有问号。身为*编译时*，它们无法在运行时被改变，但是它们在内省程序时很有价值。最常见的编译时变量如下：
 
 All compile time variables have a question mark as part of the twigil. Being *compile time* they cannot be changed at run-time, however they are valuable in order to introspect the program. The most common compile time variables are the following:
 
-| $?FILE      | Which file am I in?                      | # 我在哪一个文件？
+| $?FILE      | Which file am I in?                      | 我在哪一个文件？
 | ----------- | ---------------------------------------- | 
-| $?LINE      | Which line am I at?                      | # 我在哪一行？
-| ::?CLASS    | Which class am I in?                     | # 我在哪一个类
-| %?LANG      | What is the current set of interwoven languages? | # 我在哪个交织的语言中 ？
-| %?RESOURCES | The files associated with the "Distribution" of the current compilation unit. | # 当前发行版编译单元相关的文件
+| $?LINE      | Which line am I at?                      | 我在哪一行？
+| ::?CLASS    | Which class am I in?                     | 我在哪一个类
+| %?LANG      | What is the current set of interwoven languages? | 我在哪个交织的语言中 ？
+| %?RESOURCES | The files associated with the "Distribution" of the current compilation unit. | 当前发行版编译单元相关的文件
 
 ### [其他编译时变量：(Other compile-time variables:)](https://docs.perl6.org/language/variables#___top)
 
@@ -1251,15 +1251,15 @@ All compile time variables have a question mark as part of the twigil. Being *c
 
 The following compile time variables allow for a deeper introspection:
 
-| $?PACKAGE          | Which package am I in?                                   | # 我在哪个包?
+| $?PACKAGE          | Which package am I in?                                   | 我在哪个包?
 | -------------------| ---------------------------------------------------------|
-| $?MODULE           | Which module am I in?                                    | # 我在哪个模组?
-| $?CLASS            | Which class am I in? (as variable)                       | # 我在哪个类中作为变量？
-| $?ROLE             | Which role am I in? (as variable)                        | # 我在哪个角色中作为变量？
-| $?GRAMMAR          | Which grammar am I in?                                   | # 我在哪个语法中?
-| $?TABSTOP          | How many spaces is a tab in a heredoc or virtual margin? | # 在 heredoc 或者虚拟边框中 Tab 相当于几个空格 ？
-| $?NL               | What a vertical newline "\n" means: LF, CR or CRLF       | # 换行符的意思是：LF， CR 还是 CRLF
-| $?DISTRIBUTION     | The Distribution of the current compilation unit.        | # 当前编译单元的发行版
+| $?MODULE           | Which module am I in?                                    | 我在哪个模组?
+| $?CLASS            | Which class am I in? (as variable)                       | 我在哪个类中作为变量？
+| $?ROLE             | Which role am I in? (as variable)                        | 我在哪个角色中作为变量？
+| $?GRAMMAR          | Which grammar am I in?                                   | 我在哪个语法中?
+| $?TABSTOP          | How many spaces is a tab in a heredoc or virtual margin? | 在 heredoc 或者虚拟边框中 Tab 相当于几个空格 ？
+| $?NL               | What a vertical newline "\n" means: LF, CR or CRLF       | 换行符的意思是：LF， CR 还是 CRLF
+| $?DISTRIBUTION     | The Distribution of the current compilation unit.        | 当前编译单元的发行版
 
 特别是关于 `$?NL`，见[换行指令](https://docs.perl6.org/language/pragmas)
 
