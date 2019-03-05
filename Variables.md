@@ -1054,11 +1054,15 @@ my Int $i = 1; # that works 
 
 Note that assigning [Nil](https://docs.perl6.org/type/Nil) will revert the variable to its default value. The default value of a defined constraint type is the type appended with `:D` (e.g. `Int:D`). That means a definedness constraint is no guarantee of definedness. This only applies to variable initializers, not to [Signature](https://docs.perl6.org/type/Signature)s. or subsequent assignments to a variable.
 
-# [Special Variables](https://docs.perl6.org/language/variables#___top)
+# [特殊变量(Special Variables)](https://docs.perl6.org/language/variables#___top)
+
+Perl 6 试图对特殊变量使用可描述的长名。只有三个特殊变量很简短。
 
 Perl 6 attempts to use long, descriptive names for special variables. There are only three special variables that are extra short.
 
-## [Pre-defined lexical variables](https://docs.perl6.org/language/variables#___top)
+## [预定义词法变量(Pre-defined lexical variables)](https://docs.perl6.org/language/variables#___top)
+
+每个代码块都可以访问到的三个特殊变量：
 
 There are three special variables that are available in every block:
 
@@ -1068,16 +1072,19 @@ There are three special variables that are available in every block:
 | $/       | regex match    |
 | $!       | exceptions     |
 
-### [The `$_` Variable](https://docs.perl6.org/language/variables#___top)
+### [`$_` 变量 (The `$_` Variable)](https://docs.perl6.org/language/variables#___top)
+
+`$_` 是主题变量。代码块没有显示签名时它会作为默认参数，因此类似 `for @array { ... }` 以及 `given $var { ... }` 结构的代码块被调用时会绑定到 `$_`。
 
 `$_` is the topic variable. It's the default parameter for blocks that do not have an explicit signature, so constructs like `for @array { ... }` and `given $var { ... }` bind to `$_` by invoking the block.
 
-```
+```Perl6
 for <a b c> { say $_ }  # sets $_ to 'a', 'b' and 'c' in turn 
 say $_ for <a b c>;     # same, even though it's not a block 
 given 'a'   { say $_ }  # sets $_ to 'a' 
 say $_ given 'a';       # same, even though it's not a block 
 ```
+
 
 `CATCH` blocks set `$_` to the exception that was caught. The `~~` smart-match operator sets `$_` on the right-hand side expression to the value of the left-hand side.
 
