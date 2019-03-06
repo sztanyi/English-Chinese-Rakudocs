@@ -1323,43 +1323,64 @@ These variables are related to the arguments passed to a script.
 
 #### [`$*ARGFILES`](https://docs.perl6.org/language/variables#___top)
 
-An [IO::ArgFiles](https://docs.perl6.org/type/IO::ArgFiles) (an empty subclass of [IO::CatHandle](https://docs.perl6.org/type/IO::CatHandle)) that uses `@*ARGS` as source files, if it contains any files, or `$*IN` otherwise. When `$*IN` is used, its `:nl-in`, `:chomp`, `:encoding`, and `:bin` will be set on the [IO::ArgFiles](https://docs.perl6.org/type/IO::ArgFiles) object.
+[IO::ArgFiles](https://docs.perl6.org/type/IO::ArgFiles) (一个[IO::CatHandle](https://docs.perl6.org/type/IO::CatHandle)的空子类)，如果`@*ARGS` 中包含文件话，使用 `@*ARGS` 作为源文件，否则用 `$*IN`。 当使用 `$*IN` 时， 它的 `:chomp`，`:encoding` 以及 `:bin` 将会被给到
+[IO::ArgFiles](https://docs.perl6.org/type/IO::ArgFiles) 对象。
 
 As of the 6.d version, `$*ARGFILES` *inside* [`sub MAIN`](https://docs.perl6.org/language/functions#sub_MAIN) is always set to `$*IN`, even when `@*ARGS` is not empty. See [the class documentation](https://docs.perl6.org/type/IO::ArgFiles#%24%2AARGFILES) for examples and more context.
 
 #### [`@*ARGS`](https://docs.perl6.org/language/variables#___top)
 
+`@*ARGS` 包含命令行中的参数。
+
 `@*ARGS` contains the arguments from the command line.
 
 #### [`&*ARGS-TO-CAPTURE`](https://docs.perl6.org/language/variables#___top)
+
+在任意用来分析默认参数的自定义[`ARGS-TO-CAPTURE`](https://docs.perl6.org/language/create-cli#sub_ARGS-TO-CAPTURE)函数中的动态作用域变量。其与自定义 `ARGS-TO-CAPTURE` 函数一样接受同样的参数。
 
 A dynamic variable available inside any custom [`ARGS-TO-CAPTURE`](https://docs.perl6.org/language/create-cli#sub_ARGS-TO-CAPTURE) subroutine that can be used to perform the default argument parsing. Takes the same parameters as are expected of the custom `ARGS-TO-CAPTURE` subroutine.
 
 #### [`&*GENERATE-USAGE`](https://docs.perl6.org/language/variables#___top)
 
+在任意用来生成默认使用说明信息的自定义[`GENERATE-USAGE`](https://docs.perl6.org/language/create-cli#sub_GENERATE-USAGE)函数中的动态作用域变量。其与自定义 `GENERATE-USAGE` 函数一样接受同样的参数。
+
 A dynamic variable available inside any custom [`GENERATE-USAGE`](https://docs.perl6.org/language/create-cli#sub_GENERATE-USAGE) subroutine that can be used to perform the default usage message creation. Takes the same parameters as are expected of the custom `GENERATE-USAGE` subroutine.
 
-### [Special filehandles: `STDIN`, `STDOUT` and `STDERR`](https://docs.perl6.org/language/variables#___top)
+### [特殊文件句柄： `STDIN`，`STDOUT` 以及 `STDERR` (Special filehandles: `STDIN`, `STDOUT` and `STDERR`)](https://docs.perl6.org/language/variables#___top)
+
+更多关于特殊文件句柄的信息请参考[Input and Output](https://docs.perl6.org/language/io)以及[IO::Special](https://docs.perl6.org/type/IO::Special)类。[IO::Handle](https://docs.perl6.org/type/IO::Handle)包含使用 `$*IN` 读取标准输入的几个例子。
 
 For more information about special filehandles please see also the [Input and Output](https://docs.perl6.org/language/io) page and the [IO::Special](https://docs.perl6.org/type/IO::Special) class. [IO::Handle](https://docs.perl6.org/type/IO::Handle)contains several examples of using `$*IN` for reading standard input.
+
+- `$*IN` 标准输入文件句柄, 即 *STDIN*.
+- `$*OUT` 标准输出文件句柄, 即 *STDOUT*.
+- `$*ERR` 标准错误文件句柄, 即 *STDERR*.
 
 - `$*IN` Standard input filehandle, AKA *STDIN*.
 - `$*OUT` Standard output filehandle, AKA *STDOUT*.
 - `$*ERR` Standard error filehandle, AKA *STDERR*.
 
-### [Runtime environment](https://docs.perl6.org/language/variables#___top)
+### [运行时环境 (Runtime environment)](https://docs.perl6.org/language/variables#___top)
+
+这些动态作用域变量包含脚本或者程序环境相关的信息。
 
 These dynamic variables contain information related to the environment the script or program is running in.
 
 #### [`%*ENV`](https://docs.perl6.org/language/variables#___top)
 
+操作系统环境变量。数值由[allomorphs](https://docs.perl6.org/language/glossary#index-entry-Allomorph)提供。
+
 Operating system environment variables. Numeric values are provided as [allomorphs](https://docs.perl6.org/language/glossary#index-entry-Allomorph)
 
 #### [`$*REPO`](https://docs.perl6.org/language/variables#___top)
 
+这个变量有已安装或者装载的模块信息。
+
 This variable holds information about modules installed/loaded.
 
 #### [`$*INIT-INSTANT`](https://docs.perl6.org/language/variables#___top)
+
+
 
 `$*INIT-INSTANT` is an [Instant](https://docs.perl6.org/type/Instant) object representing program startup time. In particular, this is when the core code starts up, so the value of `$*INIT-INSTANT` may be a few milliseconds earlier than `INIT now` or even `BEGIN now` executed in your program.
 
