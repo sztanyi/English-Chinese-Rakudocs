@@ -1296,14 +1296,32 @@ do-work;
 
 ### [&?BLOCK](undefined)
 
-`?&BLOCK` 行为与 `?&ROUTINE` 类似，但是它允许内省单一代码块。其持有一个 [Sub](https://docs.perl6.org/type/Sub) 并且允许在相同代码块中迭代。
+`&?BLOCK` 行为与 `&?ROUTINE` 类似，但是它允许内省单一代码块。其持有一个 [Sub](https://docs.perl6.org/type/Sub) 并且允许在相同代码块中迭代。
 
-The special compile variable `?&BLOCK` behaves similarly to `?&ROUTINE` but it allows to introspect a single block of code. It holds a [Sub](https://docs.perl6.org/type/Sub)and allows for recursion within the same block:
+The special compile variable `&?BLOCK` behaves similarly to `&?ROUTINE` but it allows to introspect a single block of code. It holds a [Sub](https://docs.perl6.org/type/Sub)and allows for recursion within the same block:
 
 ```Perl6
 for '.' {
     .Str.say when !.IO.d;
     .IO.dir()».&?BLOCK when .IO.d # lets recurse a little! 
+}
+```
+
+### $?DISTRIBUTION
+
+`$?DISTRIBUTION` provides access to the [Distribution](https://docs.perl6.org/type/Distribution) of the current compilation unit. This gives module authors a way to reference other files in the distribution by their original relative path names, or to view the metadata (via the `.meta` method), without needing to know the underlying file structure (such as how `CompUnit::Repository::Installation` changes the file layout on installation).
+
+```Perl6
+unit module MyFoo;
+ 
+sub module-version {
+    say "MyFoo is version:";
+    say $?DISTRIBUTION.meta<ver>;
+}
+ 
+sub module-source {
+    say "MyFoo source code:";
+    say $?DISTRIBUTION.content('lib/MyFoo.pm6');
 }
 ```
 
@@ -1401,7 +1419,8 @@ It contains the `C`urrent `W`orking `D`irectory.
 `$*KERNEL` contains a [`Kernel` instance](https://docs.perl6.org/type/Kernel), the `.gist` of it being the current running kernel.
 
 ```Perl6
-say $*KERNEL; # OUTPUT: «linux (4.4.92.31.default)␤» 
+say $*KERNEL; # OUTPUT: «linux (4.4.92.31.default)
+» 
 ```
 
 #### [`$*DISTRO`](https://docs.perl6.org/language/variables#___top)
@@ -1423,7 +1442,8 @@ say "Some sort of Windows" if $*DISTRO.is-win;
 The `$*DISTRO` gist is displayed by using `say`:
 
 ```Perl6
-say $*DISTRO; # OUTPUT: «debian (9.stretch)␤» 
+say $*DISTRO; # OUTPUT: «debian (9.stretch)
+» 
 ```
 
 这将显示有关操作系统及其使用的版本的其他信息，但实际上，此变量包含的信息对于创建可移植程序很有用，例如路径分隔符：
@@ -1435,7 +1455,8 @@ say $*DISTRO.perl;
 # OUTPUT: «Distro.new(release => "42.3", is-win => Bool::False, 
 #          path-sep => ":", name => "opensuse", 
 #          auth => "https://www.opensuse.org/", version => v42.3, 
-#          signature => Blob, desc => "2018-12-13T08:50:59.213619+01:00")␤» 
+#          signature => Blob, desc => "2018-12-13T08:50:59.213619+01:00")
+» 
 ```
 
 #### [`$*VM`](https://docs.perl6.org/language/variables#___top)
@@ -1445,7 +1466,8 @@ say $*DISTRO.perl;
 This variable contains the current virtual machine running the code, as well as additional information on the inner workings of aforementioned VM.
 
 ```Perl6
-say $*VM.precomp-ext, " ", $*VM.precomp-target; # OUTPUT: «moarvm mbc␤» 
+say $*VM.precomp-ext, " ", $*VM.precomp-target; # OUTPUT: «moarvm mbc
+» 
 ```
 
 例如，这两个方法将显示预编译字节码脚本中使用的扩展名和使用的目标。这是在 moar 虚拟机中的情况，但它也可能随版本和实现而变化。其他的VM，例如 Java，将为它们显示不同的值。`$*VM.config` 包括用于创建虚拟机的所有配置值，例如:
@@ -1454,7 +1476,8 @@ These two methods, for instance, will show the extension used in the precompiled
 
 ```Perl6
 say $*VM.config<versionmajor>, ".", $*VM.config<versionminor>;
-# OUTPUT: «2018.11␤» 
+# OUTPUT: «2018.11
+» 
 ```
 
 这是虚拟机的版本，通常与解释器和整个 Perl6 环境中使用的版本相同。
@@ -1468,7 +1491,8 @@ which are the version of the virtual machine, generally the same one as the one 
 This object contains information on the current implementation of the Perl 6 language:
 
 ```Perl6
-say $*PERL.compiler.version; # OUTPUT: «v2018.11.52.g.06156.a.7.ca␤» 
+say $*PERL.compiler.version; # OUTPUT: «v2018.11.52.g.06156.a.7.ca
+» 
 ```
 
 但其 gist 输出包括语言名称，然后是编译器的主要版本：
@@ -1476,7 +1500,8 @@ say $*PERL.compiler.version; # OUTPUT: «v2018.11.52.g.06156.a.7.ca␤»
 but its gist includes the name of the language, followed by the major version of the compiler:
 
 ```Perl6
-say $*PERL; # OUTPUT: «Perl 6 (6.d)␤» 
+say $*PERL; # OUTPUT: «Perl 6 (6.d)
+» 
 ```
 
 它将字符串化为 `Perl 6` ：
@@ -1484,7 +1509,8 @@ say $*PERL; # OUTPUT: «Perl 6 (6.d)␤»
 It stringifies to `Perl 6`:
 
 ```Perl6
-$*PERL.put; # OUTPUT: «Perl 6␤» 
+$*PERL.put; # OUTPUT: «Perl 6
+» 
 ```
 
 #### [`$*PID`](https://docs.perl6.org/language/variables#___top)
