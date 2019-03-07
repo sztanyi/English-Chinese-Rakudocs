@@ -1507,7 +1507,7 @@ Contains the location (in the form of an `IO::Path` object) of the Perl 6 progra
 
 #### [`&*EXIT`](https://docs.perl6.org/language/variables#___top)
 
-这是一个[可调用]（https://docs.perl6.org/type/callable），其中包含执行 `exit()` 调用时将执行的代码。用于将 Perl6 嵌入到另一个语言运行时（如 Perl5 中的 Inline::Perl6）的情况。
+这是一个[可调用](https://docs.perl6.org/type/callable)，其中包含执行 `exit()` 调用时将执行的代码。用于将 Perl6 嵌入到另一个语言运行时（如 Perl5 中的 Inline::Perl6）的情况。
 
 This is a [Callable](https://docs.perl6.org/type/Callable) that contains the code that will be executed when doing an `exit()` call. Intended to be used in situations where Perl 6 is embedded in another language runtime (such as Inline::Perl6 in Perl 5).
 
