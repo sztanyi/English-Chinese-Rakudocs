@@ -1321,7 +1321,7 @@ These variables are related to the arguments passed to a script.
 
 #### [`$*ARGFILES`](https://docs.perl6.org/language/variables#___top)
 
-[IO::ArgFiles](https://docs.perl6.org/type/IO::ArgFiles) (一个 [IO::CatHandle](https://docs.perl6.org/type/IO::CatHandle) 的空子类)，如果 `@*ARGS` 中包含文件话，使用 `@*ARGS` 作为源文件，否则用 `$*IN`。 当使用 `$*IN` 时， 它的 `:chomp`，`:encoding` 以及 `:bin` 将会被给到
+[IO::ArgFiles](https://docs.perl6.org/type/IO::ArgFiles) （一个 [IO::CatHandle](https://docs.perl6.org/type/IO::CatHandle) 的空子类），如果 `@*ARGS` 中包含文件话，使用 `@*ARGS` 作为源文件，否则用 `$*IN`。 当使用 `$*IN` 时， 它的 `:chomp`，`:encoding` 以及 `:bin` 将会被给到
 [IO::ArgFiles](https://docs.perl6.org/type/IO::ArgFiles) 对象。
 
 As of the 6.d version, `$*ARGFILES` *inside* [`sub MAIN`](https://docs.perl6.org/language/functions#sub_MAIN) is always set to `$*IN`, even when `@*ARGS` is not empty. See [the class documentation](https://docs.perl6.org/type/IO::ArgFiles#%24%2AARGFILES) for examples and more context.
@@ -1340,7 +1340,7 @@ A dynamic variable available inside any custom [`ARGS-TO-CAPTURE`](https://docs.
 
 #### [`&*GENERATE-USAGE`](https://docs.perl6.org/language/variables#___top)
 
-在任意用来生成默认使用说明信息的自定义 [`GENERATE-USAGE`](https://docs.perl6.org/language/create-cli#sub_GENERATE-USAGE) 函数中的动态作用域变量。其与自定义 `GENERATE-USAGE` 函数一样接受同样的参数。
+在任意用来生成默认使用说明信息的自定义 [`GENERATE-USAGE`](https://docs.perl6.org/language/create-cli#sub_GENERATE-USAGE) 函数中的动态作用域变量。其与自定义 `GENERATE-USAGE` 函数一样接受同样的参数。
 
 A dynamic variable available inside any custom [`GENERATE-USAGE`](https://docs.perl6.org/language/create-cli#sub_GENERATE-USAGE) subroutine that can be used to perform the default usage message creation. Takes the same parameters as are expected of the custom `GENERATE-USAGE` subroutine.
 
