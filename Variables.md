@@ -865,7 +865,7 @@ As with `$`, each mention of `@` in a scope introduces a new anonymous array.
 
 ### [`%` 变量](https://docs.perl6.org/language/variables#___top)
 
-另外，还有一个关联匿名关联变量 `%`。
+另外，还有一个[关联](https://docs.perl6.org/type/Associative)匿名关联变量 `%`。
 
 In addition, there's an [Associative](https://docs.perl6.org/type/Associative) anonymous state variable `%`.
 
@@ -992,7 +992,7 @@ In the above case, if the `Bool.pick` returns true, the answer will stay as 84
 
 # [类型约束及初始化（Type Constraints and Initialization）](https://docs.perl6.org/language/variables#___top)
 
-变量通过所绑定的[容器](https://docs.perl6.org/language/containers)有类型约束，容器在声明符与变量名之间。默认的类型约束是[Mu](https://docs.perl6.org/type/Mu)。也可以使用[of](https://docs.perl6.org/type/Variable#trait_of)特性来设置类型约束。
+变量通过所绑定的[容器](https://docs.perl6.org/language/containers)有类型约束，容器在声明符与变量名之间。默认的类型约束是 [Mu](https://docs.perl6.org/type/Mu)。也可以使用 [of](https://docs.perl6.org/type/Variable#trait_of)特性来设置类型约束。
 
 Variables have a type constraint via the [container](https://docs.perl6.org/language/containers) they are bound to, which goes between the declarator and the variable name. The default type constraint is [Mu](https://docs.perl6.org/type/Mu). You can also use the trait [of](https://docs.perl6.org/type/Variable#trait_of) to set a type constraint.
 
@@ -1013,7 +1013,7 @@ say $x.^name;       # OUTPUT: «Int» 
 say $x.defined;     # OUTPUT: «False» 
 ```
 
-没有显示类型约束的标量变量写作[Mu](https://docs.perl6.org/type/Mu)但是默认是[Any](https://docs.perl6.org/type/Any)类型对象。
+没有显示类型约束的标量变量写作 [Mu](https://docs.perl6.org/type/Mu)但是默认是 [Any](https://docs.perl6.org/type/Any)类型对象。
 
 Scalar variables without an explicit type constraint are typed as [Mu](https://docs.perl6.org/type/Mu) but default to the [Any](https://docs.perl6.org/type/Any) type object.
 
@@ -1049,7 +1049,7 @@ my Int $i = 1; # that works 
 { use variables :_; my Int $i; } # switch it off in this block 
 ```
 
-注意赋值[Nil](https://docs.perl6.org/type/Nil)会使变量恢复默认值。有已定义约束的类型的默认值就是后面跟 `:D` 的类型 (e.g. `Int:D`)。那意味着已定义约束不保证变量的已定义。这个只对变量初始化生效，不适用于[签名](https://docs.perl6.org/type/Signature)或者其后的变量赋值。
+注意赋值 [Nil](https://docs.perl6.org/type/Nil)会使变量恢复默认值。有已定义约束的类型的默认值就是后面跟 `:D` 的类型 (e.g. `Int:D`)。那意味着已定义约束不保证变量的已定义。这个只对变量初始化生效，不适用于[签名](https://docs.perl6.org/type/Signature)或者其后的变量赋值。
 
 Note that assigning [Nil](https://docs.perl6.org/type/Nil) will revert the variable to its default value. The default value of a defined constraint type is the type appended with `:D` (e.g. `Int:D`). That means a definedness constraint is no guarantee of definedness. This only applies to variable initializers, not to [Signature](https://docs.perl6.org/type/Signature)s. or subsequent assignments to a variable.
 
@@ -1272,7 +1272,7 @@ These variables are Rakudo specific, with all the corresponding caveats:
 
 ### [&?ROUTINE](undefined)
 
-程序实际在哪个函数，编译时变量 `&ROUTINE` 为此提供了内省功能。它会返回当前函数的一个[Sub](https://docs.perl6.org/type/Sub)实例。它支持使用方法 `.name` 或者 `.signature` 以及其他跟 `Sub` 相关的方法来获取调用函数名。
+程序实际在哪个函数，编译时变量 `&ROUTINE` 为此提供了内省功能。它会返回当前函数的一个 [Sub](https://docs.perl6.org/type/Sub)实例。它支持使用方法 `.name` 或者 `.signature` 以及其他跟 `Sub` 相关的方法来获取调用函数名。
 
 The compile time variable `&?ROUTINE` provides introspection about which routine the program is actually within. It returns an instance of [Sub](https://docs.perl6.org/type/Sub) attached to the current routine. It does support the method `.name` to obtain the name of the called routine, as well as `.signature`and others method related to `Sub`:
 
@@ -1321,7 +1321,7 @@ These variables are related to the arguments passed to a script.
 
 #### [`$*ARGFILES`](https://docs.perl6.org/language/variables#___top)
 
-[IO::ArgFiles](https://docs.perl6.org/type/IO::ArgFiles) (一个[IO::CatHandle](https://docs.perl6.org/type/IO::CatHandle)的空子类)，如果`@*ARGS` 中包含文件话，使用 `@*ARGS` 作为源文件，否则用 `$*IN`。 当使用 `$*IN` 时， 它的 `:chomp`，`:encoding` 以及 `:bin` 将会被给到
+[IO::ArgFiles](https://docs.perl6.org/type/IO::ArgFiles) (一个[IO::CatHandle](https://docs.perl6.org/type/IO::CatHandle)的空子类)，如果 `@*ARGS` 中包含文件话，使用 `@*ARGS` 作为源文件，否则用 `$*IN`。 当使用 `$*IN` 时， 它的 `:chomp`，`:encoding` 以及 `:bin` 将会被给到
 [IO::ArgFiles](https://docs.perl6.org/type/IO::ArgFiles) 对象。
 
 As of the 6.d version, `$*ARGFILES` *inside* [`sub MAIN`](https://docs.perl6.org/language/functions#sub_MAIN) is always set to `$*IN`, even when `@*ARGS` is not empty. See [the class documentation](https://docs.perl6.org/type/IO::ArgFiles#%24%2AARGFILES) for examples and more context.
@@ -1334,19 +1334,19 @@ As of the 6.d version, `$*ARGFILES` *inside* [`sub MAIN`](https://docs.perl6.org
 
 #### [`&*ARGS-TO-CAPTURE`](https://docs.perl6.org/language/variables#___top)
 
-在任意用来分析默认参数的自定义[`ARGS-TO-CAPTURE`](https://docs.perl6.org/language/create-cli#sub_ARGS-TO-CAPTURE)函数中的动态作用域变量。其与自定义 `ARGS-TO-CAPTURE` 函数一样接受同样的参数。
+在任意用来分析默认参数的自定义 [`ARGS-TO-CAPTURE`](https://docs.perl6.org/language/create-cli#sub_ARGS-TO-CAPTURE)函数中的动态作用域变量。其与自定义 `ARGS-TO-CAPTURE` 函数一样接受同样的参数。
 
 A dynamic variable available inside any custom [`ARGS-TO-CAPTURE`](https://docs.perl6.org/language/create-cli#sub_ARGS-TO-CAPTURE) subroutine that can be used to perform the default argument parsing. Takes the same parameters as are expected of the custom `ARGS-TO-CAPTURE` subroutine.
 
 #### [`&*GENERATE-USAGE`](https://docs.perl6.org/language/variables#___top)
 
-在任意用来生成默认使用说明信息的自定义[`GENERATE-USAGE`](https://docs.perl6.org/language/create-cli#sub_GENERATE-USAGE)函数中的动态作用域变量。其与自定义 `GENERATE-USAGE` 函数一样接受同样的参数。
+在任意用来生成默认使用说明信息的自定义 [`GENERATE-USAGE`](https://docs.perl6.org/language/create-cli#sub_GENERATE-USAGE)函数中的动态作用域变量。其与自定义 `GENERATE-USAGE` 函数一样接受同样的参数。
 
 A dynamic variable available inside any custom [`GENERATE-USAGE`](https://docs.perl6.org/language/create-cli#sub_GENERATE-USAGE) subroutine that can be used to perform the default usage message creation. Takes the same parameters as are expected of the custom `GENERATE-USAGE` subroutine.
 
 ### [特殊文件句柄： `STDIN`，`STDOUT` 以及 `STDERR`（Special filehandles: `STDIN`, `STDOUT` and `STDERR`）](https://docs.perl6.org/language/variables#___top)
 
-更多关于特殊文件句柄的信息请参考[Input and Output](https://docs.perl6.org/language/io)以及[IO::Special](https://docs.perl6.org/type/IO::Special)类。[IO::Handle](https://docs.perl6.org/type/IO::Handle)包含使用 `$*IN` 读取标准输入的几个例子。
+更多关于特殊文件句柄的信息请参考 [Input and Output](https://docs.perl6.org/language/io)以及[IO::Special](https://docs.perl6.org/type/IO::Special)类。[IO::Handle](https://docs.perl6.org/type/IO::Handle)包含使用 `$*IN` 读取标准输入的几个例子。
 
 For more information about special filehandles please see also the [Input and Output](https://docs.perl6.org/language/io) page and the [IO::Special](https://docs.perl6.org/type/IO::Special) class. [IO::Handle](https://docs.perl6.org/type/IO::Handle)contains several examples of using `$*IN` for reading standard input.
 
@@ -1366,7 +1366,7 @@ These dynamic variables contain information related to the environment the scrip
 
 #### [`%*ENV`](https://docs.perl6.org/language/variables#___top)
 
-操作系统环境变量。数值由[allomorphs](https://docs.perl6.org/language/glossary#index-entry-Allomorph)提供。
+操作系统环境变量。数值由 [allomorphs](https://docs.perl6.org/language/glossary#index-entry-Allomorph)提供。
 
 Operating system environment variables. Numeric values are provided as [allomorphs](https://docs.perl6.org/language/glossary#index-entry-Allomorph)
 
@@ -1378,7 +1378,7 @@ This variable holds information about modules installed/loaded.
 
 #### [`$*INIT-INSTANT`](https://docs.perl6.org/language/variables#___top)
 
-`$*INIT-INSTANT` 是一个[Instant](https://docs.perl6.org/type/Instant)对象，表示程序的启动时间。这个表示的是核心代码启动时的时间，因此它的值可能比你程序中的 `INIT now` 或者 `BEGIN now` 要早几毫秒。
+`$*INIT-INSTANT` 是一个 [Instant](https://docs.perl6.org/type/Instant)对象，表示程序的启动时间。这个表示的是核心代码启动时的时间，因此它的值可能比你程序中的 `INIT now` 或者 `BEGIN now` 要早几毫秒。
 
 `$*INIT-INSTANT` is an [Instant](https://docs.perl6.org/type/Instant) object representing program startup time. In particular, this is when the core code starts up, so the value of `$*INIT-INSTANT` may be a few milliseconds earlier than `INIT now` or even `BEGIN now` executed in your program.
 
@@ -1396,9 +1396,9 @@ It contains the `C`urrent `W`orking `D`irectory.
 
 #### [`$*KERNEL`](https://docs.perl6.org/language/variables#___top)
 
-`$*KERNEL` contains a [`Kernel` instance](https://docs.perl6.org/type/Kernel), the `.gist` of it being the current running kernel.
+`$*KERNEL` 包含一个 [`Kernel` 实例](https://docs.perl6.org/type/Kernel)，它调用 `.gist` 方法的输出即为当前生效内核。
 
-`$*KERNEL` 包含一个[`Kernel` 实例](https://docs.perl6.org/type/Kernel)，它调用 `.gist` 方法的输出即为当前生效内核。
+`$*KERNEL` contains a [`Kernel` instance](https://docs.perl6.org/type/Kernel), the `.gist` of it being the current running kernel.
 
 ```Perl6
 say $*KERNEL; # OUTPUT: «linux (4.4.92.31.default)␤» 
@@ -1448,7 +1448,7 @@ This variable contains the current virtual machine running the code, as well as 
 say $*VM.precomp-ext, " ", $*VM.precomp-target; # OUTPUT: «moarvm mbc␤» 
 ```
 
-例如，这两个方法将显示预编译字节码脚本中使用的扩展名和使用的目标。这是在 moar 虚拟机中的情况，但它也可能随版本和实现而变化。其他的VM，例如 Java，将为它们显示不同的值。`$*vm.config` 包括用于创建虚拟机的所有配置值，例如:
+例如，这两个方法将显示预编译字节码脚本中使用的扩展名和使用的目标。这是在 moar 虚拟机中的情况，但它也可能随版本和实现而变化。其他的VM，例如 Java，将为它们显示不同的值。`$*VM.config` 包括用于创建虚拟机的所有配置值，例如:
 
 These two methods, for instance, will show the extension used in the precompiled bytecode scripts and the target used. This is what is found in the Moar Virtual Machine, but it could also vary with version and implementation. Other VM, such as Java, will show different values for them. `$*VM.config` includes all configuration values used to create the virtual machine, e.g.
 
@@ -1555,23 +1555,23 @@ Contains information about the path to the user directory that is running the pr
 
 #### [`$*HOME`](https://docs.perl6.org/language/variables#___top)
 
-包含一个[IO::Path](https://docs.perl6.org/type/IO::Path)对象，表示运行程序的用户的“家目录”。如果设置，则使用 `%*ENV<HOME>`。
+包含一个 [IO::Path](https://docs.perl6.org/type/IO::Path)对象，表示运行程序的用户的“家目录”。如果设置，则使用 `%*ENV<HOME>`。
 
 Contains an [IO::Path](https://docs.perl6.org/type/IO::Path) object representing the "home directory" of the user that is running the program. Uses `%*ENV<HOME>` if set.
 
-在 Windows 上，使用 `%*ENV<HOMEDRIVE> ~ %*ENV<HOMEPATH>`。如果无法确定家目录，它将是[Any]（https://docs.perl6.org/type/any）。
+在 Windows 上，使用 `%*ENV<HOMEDRIVE> ~ %*ENV<HOMEPATH>`。如果无法确定家目录，它将是 [Any]（https://docs.perl6.org/type/any）。
 
 On Windows, uses `%*ENV<HOMEDRIVE> ~ %*ENV<HOMEPATH>`. If the home directory cannot be determined, it will be [Any](https://docs.perl6.org/type/Any).
 
 #### [`$*SPEC`](https://docs.perl6.org/language/variables#___top)
 
-包含程序所运行平台的适当[IO::Spec](https://docs.perl6.org/type/IO::Spec)子类。这是操作系统的一个更高级别的类；例如，对于Linux，它将返回 `Unix`（以 `IO::Spec` 类的形式，用于当前实现）。
+包含程序所运行平台的适当 [IO::Spec](https://docs.perl6.org/type/IO::Spec)子类。这是操作系统的一个更高级别的类；例如，对于Linux，它将返回 `Unix`（以 `IO::Spec` 类的形式，用于当前实现）。
 
 Contains the appropriate [IO::Spec](https://docs.perl6.org/type/IO::Spec) sub-class for the platform that the program is running on. This is a higher-level class for the operating system; it will return `Unix`, for instance, in the case of Linux (in the form of the `IO::Spec` class used for the current implementation).
 
 #### [`$*TMPDIR`](https://docs.perl6.org/language/variables#___top)
 
-这是一个[IO::Path](https://docs.perl6.org/type/IO::Path)对象，表示由[`.tmpdir IO::Spec::* method`]确定的“系统临时目录”（https://docs.perl6.org/routine/tmpdir）。
+这是一个 [IO::Path](https://docs.perl6.org/type/IO::Path)对象，表示由 [`.tmpdir IO::Spec::* method`](https://docs.perl6.org/routine/tmpdir)确定的“系统临时目录”。
 
 This is an [IO::Path](https://docs.perl6.org/type/IO::Path) object representing the "system temporary directory" as determined by [`.tmpdir IO::Spec::* method`](https://docs.perl6.org/routine/tmpdir).
 
@@ -1583,7 +1583,7 @@ Variable used by the [`=~=`](https://docs.perl6.org/routine/=~=) operator, and a
 
 #### [`$*THREAD`](https://docs.perl6.org/language/variables#___top)
 
-包含表示当前执行线程的[Thread](https://docs.perl6.org/type/thread)对象。
+包含表示当前执行线程的 [Thread](https://docs.perl6.org/type/thread)对象。
 
 Contains a [Thread](https://docs.perl6.org/type/Thread) object representing the currently executing thread.
 
@@ -1607,7 +1607,7 @@ This behavior is not tested in the spec tests and is subject to change.
 
 #### [`$*SAMPLER`](https://docs.perl6.org/language/variables#___top)
 
-当前用于生成系统状态快照的[Telemetry::Sampler](https://docs.perl6.org/type/Telemetry::Sampler)。仅当已加载[Telemetry]（https://docs.perl6.org/type/teletry）时可用。
+当前用于生成系统状态快照的 [Telemetry::Sampler](https://docs.perl6.org/type/Telemetry::Sampler)。仅当已加载[Telemetry]（https://docs.perl6.org/type/teletry）时可用。
 
 The current [Telemetry::Sampler](https://docs.perl6.org/type/Telemetry::Sampler) used for making snapshots of system state. Only available if [Telemetry](https://docs.perl6.org/type/Telemetry) has been loaded.
 
