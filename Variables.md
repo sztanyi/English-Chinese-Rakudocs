@@ -1624,6 +1624,7 @@ It is helpful to know our naming conventions in order to understand what codes d
 - 内置的动态作用域变量和编译时变量总是大写的，例如 `$*out`，`$?FILE`。
 - 来自 MOP(元对象协议) 和其他内部的方法使用 "_" 来分隔多个单词，例如 `add_method`。
 
+
 - Subs and methods from the built-ins library try to have single-word names when a good one could be found. In cases where there are two or more words making up a name, they are separated by a "-".
 - Compounds are treated as a single word, thus `substr`, `subbuf`, and `deepmap` (just like we write "starfish", not "star fish" in English).
 - Subs and methods that are automatically called for you at special times are written in uppercase. This includes the `MAIN` sub, the `AT-POS` and related methods for implementing container types, along with `BUILD` and `DESTROY`.
