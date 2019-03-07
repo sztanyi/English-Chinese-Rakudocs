@@ -1380,15 +1380,19 @@ This variable holds information about modules installed/loaded.
 
 #### [`$*INIT-INSTANT`](https://docs.perl6.org/language/variables#___top)
 
-
+`$*INIT-INSTANT` 是一个[Instant](https://docs.perl6.org/type/Instant)对象，表示程序的启动时间。这个表示的是核心代码启动时的时间，因此它的值可能比你程序中的 `INIT now` 或者 `BEGIN now` 要早几毫秒。
 
 `$*INIT-INSTANT` is an [Instant](https://docs.perl6.org/type/Instant) object representing program startup time. In particular, this is when the core code starts up, so the value of `$*INIT-INSTANT` may be a few milliseconds earlier than `INIT now` or even `BEGIN now` executed in your program.
 
 #### [`$*TZ`](https://docs.perl6.org/language/variables#___top)
 
+`$*TZ` 表示系统本地时区偏移，值为与GMT相差的**秒**数。
+
 `$*TZ` contains the system's local timezone offset, as the number of **seconds** from GMT.
 
 #### [`$*CWD`](https://docs.perl6.org/language/variables#___top)
+
+当前工作目录。
 
 It contains the `C`urrent `W`orking `D`irectory.
 
@@ -1396,29 +1400,39 @@ It contains the `C`urrent `W`orking `D`irectory.
 
 `$*KERNEL` contains a [`Kernel` instance](https://docs.perl6.org/type/Kernel), the `.gist` of it being the current running kernel.
 
-```
+`$*KERNEL` 包含一个[`Kernel` 实例](https://docs.perl6.org/type/Kernel)，它调用 `.gist` 方法的输出即为当前生效内核。
+
+```Perl6
 say $*KERNEL; # OUTPUT: «linux (4.4.92.31.default)␤» 
 ```
 
 #### [`$*DISTRO`](https://docs.perl6.org/language/variables#___top)
 
+这个对象(类型为 `Distro`)包含当前操作系统的发行版信息。例如：
+
 This object (of type `Distro`) contains information about the current operating system distribution. For instance:
 
-```
+```Perl6
 say "Some sort of Windows" if $*DISTRO.is-win;
 ```
 
+`$*DISTRO.name` 的值依赖操作系统。随着系统的版本和实现而变，因此使用这个前你需要充分确认和测试。这些名字是实现定义的而且不在规格说明里，所以它们随时可能发生变化和改变。
+
 `$*DISTRO.name` takes a set of values that depend on the operating system. These names will vary with version and implementation, so you should double-check and test before using them in your programs; since these names are implementation defined and not in the specification, they could vary and change at any moment.
+
+使用 `say` 显示 `$*DISTRO` 的 gist(返回对象的名字和版本) 形式。
 
 The `$*DISTRO` gist is displayed by using `say`:
 
-```
+```Perl6
 say $*DISTRO; # OUTPUT: «debian (9.stretch)␤» 
 ```
 
+这将显示有关操作系统及其使用的版本的其他信息，但实际上，此变量包含的信息对于创建可移植程序很有用，例如路径分隔符：
+
 This shows additional information on the operating system and version it's using, but as a matter of fact, this variable contains information which is useful to create portable programs, such as the path separator:
 
-```
+```Perl6
 say $*DISTRO.perl;
 # OUTPUT: «Distro.new(release => "42.3", is-win => Bool::False, 
 #          path-sep => ":", name => "opensuse", 
@@ -1428,74 +1442,104 @@ say $*DISTRO.perl;
 
 #### [`$*VM`](https://docs.perl6.org/language/variables#___top)
 
+此变量包含当前运行代码的虚拟机，以及有关上述虚拟机内部工作的其他信息。
+
 This variable contains the current virtual machine running the code, as well as additional information on the inner workings of aforementioned VM.
 
-```
+```Perl6
 say $*VM.precomp-ext, " ", $*VM.precomp-target; # OUTPUT: «moarvm mbc␤» 
 ```
 
+例如，这两个方法将显示预编译字节码脚本中使用的扩展名和使用的目标。这是在 moar 虚拟机中的情况，但它也可能随版本和实现而变化。其他的VM，例如 Java，将为它们显示不同的值。`$*vm.config` 包括用于创建虚拟机的所有配置值，例如:
+
 These two methods, for instance, will show the extension used in the precompiled bytecode scripts and the target used. This is what is found in the Moar Virtual Machine, but it could also vary with version and implementation. Other VM, such as Java, will show different values for them. `$*VM.config` includes all configuration values used to create the virtual machine, e.g.
 
-```
+```Perl6
 say $*VM.config<versionmajor>, ".", $*VM.config<versionminor>;
 # OUTPUT: «2018.11␤» 
 ```
+
+这是虚拟机的版本，通常与解释器和整个 Perl6 环境中使用的版本相同。
 
 which are the version of the virtual machine, generally the same one as the one used in the interpreter and the overall Perl 6 environment.
 
 #### [`$*PERL`](https://docs.perl6.org/language/variables#___top)
 
+此对象包含有关当前Perl6语言实现的信息：
+
 This object contains information on the current implementation of the Perl 6 language:
 
-```
+```Perl6
 say $*PERL.compiler.version; # OUTPUT: «v2018.11.52.g.06156.a.7.ca␤» 
 ```
 
+但其 gist 输出包括语言名称，然后是编译器的主要版本：
+
 but its gist includes the name of the language, followed by the major version of the compiler:
 
-```
+```Perl6
 say $*PERL; # OUTPUT: «Perl 6 (6.d)␤» 
 ```
 
+它将字符串化为 `Perl 6` ：
+
 It stringifies to `Perl 6`:
 
-```
+```Perl6
 $*PERL.put; # OUTPUT: «Perl 6␤» 
 ```
 
 #### [`$*PID`](https://docs.perl6.org/language/variables#___top)
 
+包含描述当前进程标识符的整数的对象（依赖于操作系统）。
+
 Object containing an integer describing the current Process IDentifier (operating system dependent).
 
 #### [`$*PROGRAM-NAME`](https://docs.perl6.org/language/variables#___top)
+
+它包含当前可执行文件在命令行中输入时的路径，或者如果使用 -e 标志调用 perl，则为 `-e`。
 
 This contains the path to the current executable as it was entered on the command line, or `-e` if perl was invoked with the -e flag.
 
 #### [`$*PROGRAM`](https://docs.perl6.org/language/variables#___top)
 
+包含正在执行的 Perl6 程序的位置（以 `IO::Path` 对象的形式）。
+
 Contains the location (in the form of an `IO::Path` object) of the Perl 6 program being executed.
 
 #### [`&*EXIT`](https://docs.perl6.org/language/variables#___top)
+
+这是一个[可调用]（https://docs.perl6.org/type/callable），其中包含执行 `exit()` 调用时将执行的代码。用于将 Perl6 嵌入到另一个语言运行时（如 Perl5 中的 Inline::Perl6）的情况。
 
 This is a [Callable](https://docs.perl6.org/type/Callable) that contains the code that will be executed when doing an `exit()` call. Intended to be used in situations where Perl 6 is embedded in another language runtime (such as Inline::Perl6 in Perl 5).
 
 #### [`$*EXECUTABLE`](https://docs.perl6.org/language/variables#___top)
 
+包含当前正在运行的Perl可执行文件的 `IO::Path` 绝对路径。
+
 Contains an `IO::Path` absolute path of the perl executable that is currently running.
 
 #### [`$*EXECUTABLE-NAME`](https://docs.perl6.org/language/variables#___top)
+
+包含当前运行的 Perl 可执行文件的名称。（例如 perl6-p、perl6-m）。优先选择 `$*EXECUTABLE`，因为不能保证 perl 可执行文件在 `PATH` 中。
 
 Contains the name of the Perl executable that is currently running. (e.g. perl6-p, perl6-m). Favor `$*EXECUTABLE` over this one, since it's not guaranteed that the perl executable is in `PATH`.
 
 #### [`$*USAGE`](https://docs.perl6.org/language/variables#___top)
 
+这是从 `sub MAIN` 和 `sub USAGE` 内部的 `MAIN` 函数签名生成的默认用法消息。变量为*只读*。
+
 This is the default usage message generated from the signatures of `MAIN` subs available from inside `sub MAIN` and `sub USAGE`. The variable is *read-only*.
 
 #### [`$*USER`](https://docs.perl6.org/language/variables#___top)
 
+包含运行程序的用户信息的一种 `同质异形体` 。如果将其视为字符串则其值为用户名，如果将其视为数字，则其值为用户的数值。
+
 An `Allomorph` with information about the user that is running the program. It will evaluate to the username if treated as a string and the numeric user id if treated as a number.
 
 #### [`$*GROUP`](https://docs.perl6.org/language/variables#___top)
+
+包含运行程序的主组信息的一种 `同质异形体` 。如果将其视为字符串则其值为组名，如果将其视为数字，则其值为组的数值。
 
 An `Allomorph` with the primary group of the user who is running the program. It will evaluate to the groupname only if treated as a string and the numeric group id if treated as a number.
 
