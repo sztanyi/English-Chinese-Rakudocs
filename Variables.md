@@ -10,7 +10,7 @@ Variables in Perl 6
 
 Variable names can start with or without a special character called a *sigil*, followed optionally by a second special character named *twigil* and then an [identifier](https://docs.perl6.org/language/syntax#Identifiers). Variables are symbolic names for values or [containers](https://docs.perl6.org/language/containers). Variable declarations or assignment of values may create a container on the fly.
 
-# [标记（Sigils） ](https://docs.perl6.org/language/variables#___top)
+# [标记（Sigils）](https://docs.perl6.org/language/variables#___top)
 
 共有四种标记。标量标记 `$`，位置标记 `@`，关联标记 `%` 和可调用标记 `&`。
 
@@ -65,7 +65,7 @@ CATCH { default { put .^name, ': ', .Str } }
 
 For information on variables without sigils, see [sigilless variables](https://docs.perl6.org/language/variables#Sigilless_variables).
 
-## [单条目和列表赋值 (Item and List Assignment)](https://docs.perl6.org/language/variables#___top)
+## [单条目和列表赋值 （Item and List Assignment）](https://docs.perl6.org/language/variables#___top)
 
 有两种类型的变量分配，单条目赋值和列表赋值。两者都用等于号作为操作符。等于号左边的语法决定了等于号是用作单条目还是列表赋值。
 
@@ -150,7 +150,7 @@ The assignment expression is parsed as `@array = (($num = 42), "str")`, because
 
 See [operators](https://docs.perl6.org/language/operators) for more details on precedence.
 
-## [无符号变量 (Sigilless variables) ](https://docs.perl6.org/language/variables#___top)
+## [无符号变量（Sigilless variables）](https://docs.perl6.org/language/variables#___top)
 
 使用 \ 作为前缀，可以生成无标记的变量：
 
@@ -187,7 +187,7 @@ sub logged(&f, |args) {
 
 Sigilless variables can also be used for binding. See [Binding](https://docs.perl6.org/language/containers#Binding) for more information.
 
-# [符号 (Twigils)](https://docs.perl6.org/language/variables#___top)
+# [符号（Twigils）](https://docs.perl6.org/language/variables#___top)
 
 符号影响变量的作用域；但是他们对主标记符是否插值无影响。如果变量 `$a` 内插了， `$^a`, `$*a`, `$=a`, `$?a`, `$.a` 也可以，只取决于 `$`。
 
@@ -448,7 +448,7 @@ augment slang Regex {  # derive from $~Regex and then modify $~Regex
 }
 ```
 
-# [变量声明符和作用域 (Variable declarators and scope)](https://docs.perl6.org/language/variables#___top)
+# [变量声明符和作用域（Variable declarators and scope）](https://docs.perl6.org/language/variables#___top)
 
 大多数时候使用 `my` 关键字创建新变量就足够了：
 
@@ -748,7 +748,7 @@ await
 # many other more or less odd variations can be produced 
 ```
 
-### [$ 变量 ](https://docs.perl6.org/language/variables#___top)
+### [$ 变量](https://docs.perl6.org/language/variables#___top)
 
 除了显式声明的命名状态变量外，`$` 可以用作匿名 `state` 变量而不需要明确的 `state` 声明。
 
@@ -990,7 +990,7 @@ say $answer;
 
 In the above case, if the `Bool.pick` returns true, the answer will stay as 84 because the block returns a defined value (`say` returns true). Otherwise the `die` statement will cause the block to exit unsuccessfully, resetting the answer to 42.
 
-# [类型约束及初始化 (Type Constraints and Initialization)](https://docs.perl6.org/language/variables#___top)
+# [类型约束及初始化（Type Constraints and Initialization）](https://docs.perl6.org/language/variables#___top)
 
 变量通过所绑定的[容器](https://docs.perl6.org/language/containers)有类型约束，容器在声明符与变量名之间。默认的类型约束是[Mu](https://docs.perl6.org/type/Mu)。也可以使用[of](https://docs.perl6.org/type/Variable#trait_of)特性来设置类型约束。
 
@@ -1004,6 +1004,7 @@ CATCH { default { put .^name, ': ', .Str } }
 ```
 
 如果标量变量有类型约束但是没有设置初始值，会被赋予容器的默认值。
+
 If a scalar variable has a type constraint but no initial value, it's initialized with the type object of the default value of the container it's bound to.
 
 ```Perl6
@@ -1033,7 +1034,7 @@ $product = Nil;
 say $product;                       # OUTPUT: «1» 
 ```
 
-## [已定义变量的默认指令 (Default Defined Variables Pragma)](https://docs.perl6.org/language/variables#___top)
+## [已定义变量的默认指令（Default Defined Variables Pragma）](https://docs.perl6.org/language/variables#___top)
 
 强制所有变量适用已定义约束，使用指令 `use variables :D`。指令为词法作用域并且可以使用 `use variables :_` 关闭。
 
@@ -1052,13 +1053,13 @@ my Int $i = 1; # that works 
 
 Note that assigning [Nil](https://docs.perl6.org/type/Nil) will revert the variable to its default value. The default value of a defined constraint type is the type appended with `:D` (e.g. `Int:D`). That means a definedness constraint is no guarantee of definedness. This only applies to variable initializers, not to [Signature](https://docs.perl6.org/type/Signature)s. or subsequent assignments to a variable.
 
-# [特殊变量(Special Variables)](https://docs.perl6.org/language/variables#___top)
+# [特殊变量（Special Variables）](https://docs.perl6.org/language/variables#___top)
 
 Perl 6 试图对特殊变量使用可描述的长名。只有三个特殊变量很简短。
 
 Perl 6 attempts to use long, descriptive names for special variables. There are only three special variables that are extra short.
 
-## [预定义词法变量(Pre-defined lexical variables)](https://docs.perl6.org/language/variables#___top)
+## [预定义词法变量（Pre-defined lexical variables）](https://docs.perl6.org/language/variables#___top)
 
 每个代码块都可以访问到的三个特殊变量：
 
@@ -1070,7 +1071,7 @@ There are three special variables that are available in every block:
 | $/       | regex match    |
 | $!       | exceptions     |
 
-### [`$_` 变量 (The `$_` Variable)](https://docs.perl6.org/language/variables#___top)
+### [`$_` 变量（The `$_` Variable）](https://docs.perl6.org/language/variables#___top)
 
 `$_` 是主题变量。代码块没有显示签名时它会作为默认参数，因此类似 `for @array { ... }` 以及 `given $var { ... }` 结构的代码块被调用时会绑定到 `$_`。
 
@@ -1111,7 +1112,7 @@ for <ab:c d$e fgh ij*> {
 #          ij*» 
 ```
 
-### [`$/` 变量 (The `$/` Variable)](https://docs.perl6.org/language/variables#___top)
+### [`$/` 变量（The `$/` Variable）](https://docs.perl6.org/language/variables#___top)
 
 `$/` 是匹配变量。它存储了上一次[正则](https://docs.perl6.org/language/regexes)匹配的结果，因此通常包含[匹配](https://docs.perl6.org/type/Match)类型的对象。
 
@@ -1156,7 +1157,7 @@ $/.make: 'McTesty';
 say $(); # OUTPUT: «McTesty»; 
 ```
 
-#### [位置属性 (Positional Attributes)](undefined)
+#### [位置属性（Positional Attributes）](undefined)
 
 `$/` 有位置属性，如果[正则]中(https://docs.perl6.org/language/regexes)有匹配组的话，就是那些括号组成的匹配组。
 
@@ -1190,7 +1191,7 @@ say @$/.join; # OUTPUT: «bbbbbdddddeff
 say @().join; # OUTPUT: «bbbbbdddddeff» 
 ```
 
-#### [命名属性(Named Attributes)](undefined)
+#### [命名属性（Named Attributes）](undefined)
 
 `$/` 有命名属性当[正则](https://docs.perl6.org/language/regexes)中有命名群组捕获或者正则中有调用另外一个正则。
 
@@ -1220,7 +1221,7 @@ say %$/.join;       # OUTPUT: «"punctuation     ....final-word  see?"
 say %().join;       # OUTPUT: «"punctuation     ....final-word  see?"» 
 ```
 
-### [`$!` 变量 (The `$!` Variable)](https://docs.perl6.org/language/variables#___top)
+### [`$!` 变量（The `$!` Variable）](https://docs.perl6.org/language/variables#___top)
 
 `$!` 是错误变量。`try` 代码块或者语句捕获的异常存储在 `$!` 中。如果没有异常被捕获，`$!` 会被设置为 `Any` 类型对象。
 
@@ -1230,7 +1231,7 @@ say %().join;       # OUTPUT: «"punctuation     ....final-word 
 
 Note that `CATCH` blocks *do not* set `$!`. Rather they set `$_` inside the block to the caught exception.
 
-## [编译时变量(Compile-time variables)](https://docs.perl6.org/language/variables#___top)
+## [编译时变量（Compile-time variables）](https://docs.perl6.org/language/variables#___top)
 
 所有的编译时变量在符号中都带有问号。身为*编译时*，它们无法在运行时被改变，但是它们在内省程序时很有价值。最常见的编译时变量如下：
 
@@ -1243,7 +1244,7 @@ All compile time variables have a question mark as part of the twigil. Being *c
 | %?LANG      | What is the current set of interwoven languages? | 我在哪个交织的语言中 ？|
 | %?RESOURCES | The files associated with the "Distribution" of the current compilation unit. | 当前发行版编译单元相关的文件|
 
-### [其他编译时变量：(Other compile-time variables:)](https://docs.perl6.org/language/variables#___top)
+### [其他编译时变量（Other compile-time variables）](https://docs.perl6.org/language/variables#___top)
 
 下列编译时变量可以进行更深入的内省：
 
@@ -1306,13 +1307,13 @@ for '.' {
 }
 ```
 
-## [动态作用域变量(Dynamic variables)](https://docs.perl6.org/language/variables#___top)
+## [动态作用域变量（Dynamic variables）](https://docs.perl6.org/language/variables#___top)
 
 所有的动态作用域变量带有 `*` 符号，名字习惯上使用大写。
 
 All dynamically scoped variables have the `*` twigil, and their name is (conventionally) written in uppercase.
 
-### [参数相关变量(Argument related variables)](https://docs.perl6.org/language/variables#___top)
+### [参数相关变量（Argument related variables）](https://docs.perl6.org/language/variables#___top)
 
 这些变量与传给脚本的参数有关。
 
@@ -1343,7 +1344,7 @@ A dynamic variable available inside any custom [`ARGS-TO-CAPTURE`](https://docs.
 
 A dynamic variable available inside any custom [`GENERATE-USAGE`](https://docs.perl6.org/language/create-cli#sub_GENERATE-USAGE) subroutine that can be used to perform the default usage message creation. Takes the same parameters as are expected of the custom `GENERATE-USAGE` subroutine.
 
-### [特殊文件句柄： `STDIN`，`STDOUT` 以及 `STDERR` (Special filehandles: `STDIN`, `STDOUT` and `STDERR`)](https://docs.perl6.org/language/variables#___top)
+### [特殊文件句柄： `STDIN`，`STDOUT` 以及 `STDERR`（Special filehandles: `STDIN`, `STDOUT` and `STDERR`）](https://docs.perl6.org/language/variables#___top)
 
 更多关于特殊文件句柄的信息请参考[Input and Output](https://docs.perl6.org/language/io)以及[IO::Special](https://docs.perl6.org/type/IO::Special)类。[IO::Handle](https://docs.perl6.org/type/IO::Handle)包含使用 `$*IN` 读取标准输入的几个例子。
 
@@ -1357,7 +1358,7 @@ For more information about special filehandles please see also the [Input and Ou
 - `$*OUT` Standard output filehandle, AKA *STDOUT*.
 - `$*ERR` Standard error filehandle, AKA *STDERR*.
 
-### [运行时环境 (Runtime environment)](https://docs.perl6.org/language/variables#___top)
+### [运行时环境（Runtime environment）](https://docs.perl6.org/language/variables#___top)
 
 这些动态作用域变量包含脚本或者程序环境相关的信息。
 
@@ -1610,7 +1611,7 @@ This behavior is not tested in the spec tests and is subject to change.
 
 The current [Telemetry::Sampler](https://docs.perl6.org/type/Telemetry::Sampler) used for making snapshots of system state. Only available if [Telemetry](https://docs.perl6.org/type/Telemetry) has been loaded.
 
-# [命名约定(Naming conventions)](https://docs.perl6.org/language/variables#___top)
+# [命名约定（Naming conventions）](https://docs.perl6.org/language/variables#___top)
 
 了解我们的命名约定有助于直接理解代码的作用。然而，还没有（也可能永远不会）一份正式的清单；不过，我们列出了一些被广泛采用的约定。
 
