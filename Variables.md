@@ -1272,7 +1272,7 @@ These variables are Rakudo specific, with all the corresponding caveats:
 
 ### [&?ROUTINE](undefined)
 
-程序实际在哪个函数，编译时变量 `&ROUTINE` 为此提供了内省功能。它会返回当前函数的一个 [Sub](https://docs.perl6.org/type/Sub)实例。它支持使用方法 `.name` 或者 `.signature` 以及其他跟 `Sub` 相关的方法来获取调用函数名。
+程序实际在哪个函数，编译时变量 `&ROUTINE` 为此提供了内省功能。它会返回当前函数的一个 [Sub](https://docs.perl6.org/type/Sub) 实例。它支持使用方法 `.name` 或者 `.signature` 以及其他跟 `Sub` 相关的方法来获取调用函数名。
 
 The compile time variable `&?ROUTINE` provides introspection about which routine the program is actually within. It returns an instance of [Sub](https://docs.perl6.org/type/Sub) attached to the current routine. It does support the method `.name` to obtain the name of the called routine, as well as `.signature`and others method related to `Sub`:
 
@@ -1296,7 +1296,7 @@ do-work;
 
 ### [&?BLOCK](undefined)
 
-`?&BLOCK` 行为与 `?&ROUTINE` 类似，但是它允许内省单一代码块。其持有一个[Sub](https://docs.perl6.org/type/Sub)并且允许在相同代码块中迭代。
+`?&BLOCK` 行为与 `?&ROUTINE` 类似，但是它允许内省单一代码块。其持有一个 [Sub](https://docs.perl6.org/type/Sub) 并且允许在相同代码块中迭代。
 
 The special compile variable `?&BLOCK` behaves similarly to `?&ROUTINE` but it allows to introspect a single block of code. It holds a [Sub](https://docs.perl6.org/type/Sub)and allows for recursion within the same block:
 
@@ -1321,7 +1321,7 @@ These variables are related to the arguments passed to a script.
 
 #### [`$*ARGFILES`](https://docs.perl6.org/language/variables#___top)
 
-[IO::ArgFiles](https://docs.perl6.org/type/IO::ArgFiles) (一个[IO::CatHandle](https://docs.perl6.org/type/IO::CatHandle)的空子类)，如果 `@*ARGS` 中包含文件话，使用 `@*ARGS` 作为源文件，否则用 `$*IN`。 当使用 `$*IN` 时， 它的 `:chomp`，`:encoding` 以及 `:bin` 将会被给到
+[IO::ArgFiles](https://docs.perl6.org/type/IO::ArgFiles) (一个 [IO::CatHandle](https://docs.perl6.org/type/IO::CatHandle) 的空子类)，如果 `@*ARGS` 中包含文件话，使用 `@*ARGS` 作为源文件，否则用 `$*IN`。 当使用 `$*IN` 时， 它的 `:chomp`，`:encoding` 以及 `:bin` 将会被给到
 [IO::ArgFiles](https://docs.perl6.org/type/IO::ArgFiles) 对象。
 
 As of the 6.d version, `$*ARGFILES` *inside* [`sub MAIN`](https://docs.perl6.org/language/functions#sub_MAIN) is always set to `$*IN`, even when `@*ARGS` is not empty. See [the class documentation](https://docs.perl6.org/type/IO::ArgFiles#%24%2AARGFILES) for examples and more context.
@@ -1334,19 +1334,19 @@ As of the 6.d version, `$*ARGFILES` *inside* [`sub MAIN`](https://docs.perl6.org
 
 #### [`&*ARGS-TO-CAPTURE`](https://docs.perl6.org/language/variables#___top)
 
-在任意用来分析默认参数的自定义 [`ARGS-TO-CAPTURE`](https://docs.perl6.org/language/create-cli#sub_ARGS-TO-CAPTURE)函数中的动态作用域变量。其与自定义 `ARGS-TO-CAPTURE` 函数一样接受同样的参数。
+在任意用来分析默认参数的自定义 [`ARGS-TO-CAPTURE`](https://docs.perl6.org/language/create-cli#sub_ARGS-TO-CAPTURE) 函数中的动态作用域变量。其与自定义 `ARGS-TO-CAPTURE` 函数一样接受同样的参数。
 
 A dynamic variable available inside any custom [`ARGS-TO-CAPTURE`](https://docs.perl6.org/language/create-cli#sub_ARGS-TO-CAPTURE) subroutine that can be used to perform the default argument parsing. Takes the same parameters as are expected of the custom `ARGS-TO-CAPTURE` subroutine.
 
 #### [`&*GENERATE-USAGE`](https://docs.perl6.org/language/variables#___top)
 
-在任意用来生成默认使用说明信息的自定义 [`GENERATE-USAGE`](https://docs.perl6.org/language/create-cli#sub_GENERATE-USAGE)函数中的动态作用域变量。其与自定义 `GENERATE-USAGE` 函数一样接受同样的参数。
+在任意用来生成默认使用说明信息的自定义 [`GENERATE-USAGE`](https://docs.perl6.org/language/create-cli#sub_GENERATE-USAGE) 函数中的动态作用域变量。其与自定义 `GENERATE-USAGE` 函数一样接受同样的参数。
 
 A dynamic variable available inside any custom [`GENERATE-USAGE`](https://docs.perl6.org/language/create-cli#sub_GENERATE-USAGE) subroutine that can be used to perform the default usage message creation. Takes the same parameters as are expected of the custom `GENERATE-USAGE` subroutine.
 
 ### [特殊文件句柄： `STDIN`，`STDOUT` 以及 `STDERR`（Special filehandles: `STDIN`, `STDOUT` and `STDERR`）](https://docs.perl6.org/language/variables#___top)
 
-更多关于特殊文件句柄的信息请参考 [Input and Output](https://docs.perl6.org/language/io)以及[IO::Special](https://docs.perl6.org/type/IO::Special)类。[IO::Handle](https://docs.perl6.org/type/IO::Handle)包含使用 `$*IN` 读取标准输入的几个例子。
+更多关于特殊文件句柄的信息请参考 [Input and Output](https://docs.perl6.org/language/io) 以及[IO::Special](https://docs.perl6.org/type/IO::Special) 类。[IO::Handle](https://docs.perl6.org/type/IO::Handle) 包含使用 `$*IN` 读取标准输入的几个例子。
 
 For more information about special filehandles please see also the [Input and Output](https://docs.perl6.org/language/io) page and the [IO::Special](https://docs.perl6.org/type/IO::Special) class. [IO::Handle](https://docs.perl6.org/type/IO::Handle)contains several examples of using `$*IN` for reading standard input.
 
@@ -1378,7 +1378,7 @@ This variable holds information about modules installed/loaded.
 
 #### [`$*INIT-INSTANT`](https://docs.perl6.org/language/variables#___top)
 
-`$*INIT-INSTANT` 是一个 [Instant](https://docs.perl6.org/type/Instant)对象，表示程序的启动时间。这个表示的是核心代码启动时的时间，因此它的值可能比你程序中的 `INIT now` 或者 `BEGIN now` 要早几毫秒。
+`$*INIT-INSTANT` 是一个 [Instant](https://docs.perl6.org/type/Instant) 对象，表示程序的启动时间。这个表示的是核心代码启动时的时间，因此它的值可能比你程序中的 `INIT now` 或者 `BEGIN now` 要早几毫秒。
 
 `$*INIT-INSTANT` is an [Instant](https://docs.perl6.org/type/Instant) object representing program startup time. In particular, this is when the core code starts up, so the value of `$*INIT-INSTANT` may be a few milliseconds earlier than `INIT now` or even `BEGIN now` executed in your program.
 
@@ -1555,7 +1555,7 @@ Contains information about the path to the user directory that is running the pr
 
 #### [`$*HOME`](https://docs.perl6.org/language/variables#___top)
 
-包含一个 [IO::Path](https://docs.perl6.org/type/IO::Path)对象，表示运行程序的用户的“家目录”。如果设置，则使用 `%*ENV<HOME>`。
+包含一个 [IO::Path](https://docs.perl6.org/type/IO::Path) 对象，表示运行程序的用户的“家目录”。如果设置，则使用 `%*ENV<HOME>`。
 
 Contains an [IO::Path](https://docs.perl6.org/type/IO::Path) object representing the "home directory" of the user that is running the program. Uses `%*ENV<HOME>` if set.
 
@@ -1565,31 +1565,31 @@ On Windows, uses `%*ENV<HOMEDRIVE> ~ %*ENV<HOMEPATH>`. If the home directory can
 
 #### [`$*SPEC`](https://docs.perl6.org/language/variables#___top)
 
-包含程序所运行平台的适当 [IO::Spec](https://docs.perl6.org/type/IO::Spec)子类。这是操作系统的一个更高级别的类；例如，对于Linux，它将返回 `Unix`（以 `IO::Spec` 类的形式，用于当前实现）。
+包含程序所运行平台的适当 [IO::Spec](https://docs.perl6.org/type/IO::Spec) 子类。这是操作系统的一个更高级别的类；例如，对于Linux，它将返回 `Unix`（以 `IO::Spec` 类的形式，用于当前实现）。
 
 Contains the appropriate [IO::Spec](https://docs.perl6.org/type/IO::Spec) sub-class for the platform that the program is running on. This is a higher-level class for the operating system; it will return `Unix`, for instance, in the case of Linux (in the form of the `IO::Spec` class used for the current implementation).
 
 #### [`$*TMPDIR`](https://docs.perl6.org/language/variables#___top)
 
-这是一个 [IO::Path](https://docs.perl6.org/type/IO::Path)对象，表示由 [`.tmpdir IO::Spec::* method`](https://docs.perl6.org/routine/tmpdir)确定的“系统临时目录”。
+这是一个 [IO::Path](https://docs.perl6.org/type/IO::Path) 对象，表示由 [`.tmpdir IO::Spec::* method`](https://docs.perl6.org/routine/tmpdir)确定的“系统临时目录”。
 
 This is an [IO::Path](https://docs.perl6.org/type/IO::Path) object representing the "system temporary directory" as determined by [`.tmpdir IO::Spec::* method`](https://docs.perl6.org/routine/tmpdir).
 
 #### [`$*TOLERANCE`](https://docs.perl6.org/language/variables#___top)
 
-由[`=~=`](https://docs.perl6.org/routine/=~=)运算符和依赖它的任何操作使用的变量，以确定两个值是否近似相等。默认为 `1e-15`。
+由 [`=~=`](https://docs.perl6.org/routine/=~=) 运算符和依赖它的任何操作使用的变量，以确定两个值是否近似相等。默认为 `1e-15`。
 
 Variable used by the [`=~=`](https://docs.perl6.org/routine/=~=) operator, and any operations that depend on it, to decide if two values are approximately equal. Defaults to `1e-15`.
 
 #### [`$*THREAD`](https://docs.perl6.org/language/variables#___top)
 
-包含表示当前执行线程的 [Thread](https://docs.perl6.org/type/thread)对象。
+包含表示当前执行线程的 [Thread](https://docs.perl6.org/type/thread) 对象。
 
 Contains a [Thread](https://docs.perl6.org/type/Thread) object representing the currently executing thread.
 
 #### [`$*SCHEDULER`](https://docs.perl6.org/language/variables#___top)
 
-这是表示当前默认计划程序的[ThreadPoolScheduler](https://docs.perl6.org/type/threadpoolscheduler)对象。
+这是表示当前默认计划程序的 [ThreadPoolScheduler](https://docs.perl6.org/type/threadpoolscheduler) 对象。
 
 This is a [ThreadPoolScheduler](https://docs.perl6.org/type/ThreadPoolScheduler) object representing the current default scheduler.
 
@@ -1607,7 +1607,7 @@ This behavior is not tested in the spec tests and is subject to change.
 
 #### [`$*SAMPLER`](https://docs.perl6.org/language/variables#___top)
 
-当前用于生成系统状态快照的 [Telemetry::Sampler](https://docs.perl6.org/type/Telemetry::Sampler)。仅当已加载[Telemetry]（https://docs.perl6.org/type/teletry）时可用。
+当前用于生成系统状态快照的 [Telemetry::Sampler](https://docs.perl6.org/type/Telemetry::Sampler)。仅当已加载 [Telemetry]（https://docs.perl6.org/type/teletry）时可用。
 
 The current [Telemetry::Sampler](https://docs.perl6.org/type/Telemetry::Sampler) used for making snapshots of system state. Only available if [Telemetry](https://docs.perl6.org/type/Telemetry) has been loaded.
 
