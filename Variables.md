@@ -6,11 +6,11 @@ Perl 6 中的变量
 
 Variables in Perl 6
 
-变量名字以一种叫做标记的特殊字符开头，后面跟着叫 twigil 的特殊字符最后才是识别符，前面两个特殊符号都是可选的。变量是值以及容器的符号名称。定义变量或者给变量赋值会直接生成容器。
+变量名字以一种叫做标记的特殊字符开头，后面跟着叫 twigil 的特殊字符最后才是[识别符](https://docs.perl6.org/language/syntax#Identifiers)，前面两个特殊符号都是可选的。变量是值以及[容器](https://docs.perl6.org/language/containers)符号名称。定义变量或者给变量赋值会直接生成容器。
 
 Variable names can start with or without a special character called a *sigil*, followed optionally by a second special character named *twigil* and then an [identifier](https://docs.perl6.org/language/syntax#Identifiers). Variables are symbolic names for values or [containers](https://docs.perl6.org/language/containers). Variable declarations or assignment of values may create a container on the fly.
 
-# [标记（ Sigils ） ](https://docs.perl6.org/language/variables#___top)
+# [标记（Sigils） ](https://docs.perl6.org/language/variables#___top)
 
 共有四种标记。标量标记 `$`，位置标记 `@`，关联标记 `%` 和可调用标记 `&`。
 
@@ -357,8 +357,7 @@ The `^` twigil declares a formal positional parameter to blocks or subroutines
 ```Perl6
 my @powers-of-three = 1,3,9…100;
 say reduce { $^b - $^a }, 0, |@powers-of-three;
-# OUTPUT: «61
-» 
+# OUTPUT: «61» 
 ```
 
 有两个正式参数 `$a` 和 `$b`。 注意，尽管 `$^b` 在 `$^a` 之前，`$^a` 人就是代码块中的第一个正式参数。这是因为占位符变量是按 Unicode 顺序排序的。如果你有用 `$^a` 自声明变量，之后你可以用 `$a` 引用它。
@@ -457,8 +456,7 @@ Most of the time it's enough to create a new variable using the `my` keyword:
 
 ```Perl6
 my $amazing-variable = "World";
-say "Hello $amazing-variable!"; # OUTPUT: «Hello World!
-» 
+say "Hello $amazing-variable!"; # OUTPUT: «Hello World!» 
 ```
 
 但是，有许多声明符可以改变作用域的一些细节，这超越了[符号](https://docs.perl6.org/language/variables#Twigils)所能做的。
@@ -746,7 +744,7 @@ await
 3
 4
 5» 
-# 很多其他差不多的输出
+# 可能有很多其他差不多的输出
 # many other more or less odd variations can be produced 
 ```
 
@@ -1050,7 +1048,7 @@ my Int $i = 1; # that works 
 { use variables :_; my Int $i; } # switch it off in this block 
 ```
 
-注意赋值[Nil](https://docs.perl6.org/type/Nil)会使变量恢复默认值。有已定义约束的类型的默认值就是后面跟 `:D` 的类型 (e.g. `Int:D`)。那意味着已定义约束不保证变量的已定义。这个只对变量初始化生效，不适用于[签名](https://docs.perl6.org/type/Signature)或者其后的变量赋值。
+注意赋值[Nil](https://docs.perl6.org/type/Nil)会使变量恢复默认值。有已定义约束的类型的默认值就是后面跟 `:D` 的类型 (e.g. `Int:D`)。那意味着已定义约束不保证变量的已定义。这个只对变量初始化生效，不适用于[签名](https://docs.perl6.org/type/Signature)或者其后的变量赋值。
 
 Note that assigning [Nil](https://docs.perl6.org/type/Nil) will revert the variable to its default value. The default value of a defined constraint type is the type appended with `:D` (e.g. `Int:D`). That means a definedness constraint is no guarantee of definedness. This only applies to variable initializers, not to [Signature](https://docs.perl6.org/type/Signature)s. or subsequent assignments to a variable.
 
@@ -1062,7 +1060,7 @@ Perl 6 attempts to use long, descriptive names for special variables. There are 
 
 ## [预定义词法变量(Pre-defined lexical variables)](https://docs.perl6.org/language/variables#___top)
 
-每个代码块都可以访问到的三个特殊变量：
+每个代码块都可以访问到的三个特殊变量：
 
 There are three special variables that are available in every block:
 
@@ -1211,7 +1209,7 @@ These can also be accessed by the shortcut `$`.
 say $<punctuation>; # OUTPUT: «｢....｣» 
 say $<final-word>;  # OUTPUT: «｢see?｣» 
 ```
-`$/.hash` 或者 `%$/` 可以用来获取所有的命名属性。在 6.c 中，你也可以使用 `%()`（括号内无空格）。
+`$/.hash` 或者 `%$/` 可以用来获取所有的命名属性。在 6.c 中，你也可以使用 `%()`（括号内无空格）。
 
 To get all of the named attributes, you can use `$/.hash` or `%$/`. In the 6.c language, you can also use the `%()` shortcut (no spaces inside the parentheses). 
 
@@ -1252,14 +1250,14 @@ All compile time variables have a question mark as part of the twigil. Being *c
 The following compile time variables allow for a deeper introspection:
 
 | $?PACKAGE          | Which package am I in?                                   | 我在哪个包?|
-| -------------------| ---------------------------------------------------------|----------|
+|--------------------| ---------------------------------------------------------|----------|
 | $?MODULE           | Which module am I in?                                    | 我在哪个模组?|
 | $?CLASS            | Which class am I in? (as variable)                       | 我在哪个类中作为变量？|
 | $?ROLE             | Which role am I in? (as variable)                        | 我在哪个角色中作为变量？|
 | $?GRAMMAR          | Which grammar am I in?                                   | 我在哪个语法中?|
 | $?TABSTOP          | How many spaces is a tab in a heredoc or virtual margin? | 在 heredoc 或者虚拟边框中 Tab 相当于几个空格 ？|
 | $?NL               | What a vertical newline "\n" means: LF, CR or CRLF       | 换行符的意思是：LF， CR 还是 CRLF|
-| $?DISTRIBUTION     | The Distribution of the current compilation unit.        | 当前编译单元的发行版|
+| $?DISTRIBUTION     | The Distribution of the current compilation unit.        | 当前编译单元的发行版|
 
 特别是关于 `$?NL`，见[换行指令](https://docs.perl6.org/language/pragmas)
 
@@ -1269,8 +1267,7 @@ With particular regard to the `$?NL`, see the [newline pragma](https://docs.pe
 
 These variables are Rakudo specific, with all the corresponding caveats:
 
-| $?BITS | Number of bits of the platform the program is being compiled | # 程序被编译时平台的位数。
-| ------ | ------------------------------------------------------------ |
+| $?BITS | Number of bits of the platform the program is being compiled | # 程序被编译时平台的位数。|
 
 ### [&?ROUTINE](undefined)
 
@@ -1330,25 +1327,25 @@ As of the 6.d version, `$*ARGFILES` *inside* [`sub MAIN`](https://docs.perl6.org
 
 #### [`@*ARGS`](https://docs.perl6.org/language/variables#___top)
 
-`@*ARGS` 包含命令行中的参数。
+`@*ARGS` 包含命令行中的参数。
 
 `@*ARGS` contains the arguments from the command line.
 
 #### [`&*ARGS-TO-CAPTURE`](https://docs.perl6.org/language/variables#___top)
 
-在任意用来分析默认参数的自定义[`ARGS-TO-CAPTURE`](https://docs.perl6.org/language/create-cli#sub_ARGS-TO-CAPTURE)函数中的动态作用域变量。其与自定义 `ARGS-TO-CAPTURE` 函数一样接受同样的参数。
+在任意用来分析默认参数的自定义[`ARGS-TO-CAPTURE`](https://docs.perl6.org/language/create-cli#sub_ARGS-TO-CAPTURE)函数中的动态作用域变量。其与自定义 `ARGS-TO-CAPTURE` 函数一样接受同样的参数。
 
 A dynamic variable available inside any custom [`ARGS-TO-CAPTURE`](https://docs.perl6.org/language/create-cli#sub_ARGS-TO-CAPTURE) subroutine that can be used to perform the default argument parsing. Takes the same parameters as are expected of the custom `ARGS-TO-CAPTURE` subroutine.
 
 #### [`&*GENERATE-USAGE`](https://docs.perl6.org/language/variables#___top)
 
-在任意用来生成默认使用说明信息的自定义[`GENERATE-USAGE`](https://docs.perl6.org/language/create-cli#sub_GENERATE-USAGE)函数中的动态作用域变量。其与自定义 `GENERATE-USAGE` 函数一样接受同样的参数。
+在任意用来生成默认使用说明信息的自定义[`GENERATE-USAGE`](https://docs.perl6.org/language/create-cli#sub_GENERATE-USAGE)函数中的动态作用域变量。其与自定义 `GENERATE-USAGE` 函数一样接受同样的参数。
 
 A dynamic variable available inside any custom [`GENERATE-USAGE`](https://docs.perl6.org/language/create-cli#sub_GENERATE-USAGE) subroutine that can be used to perform the default usage message creation. Takes the same parameters as are expected of the custom `GENERATE-USAGE` subroutine.
 
 ### [特殊文件句柄： `STDIN`，`STDOUT` 以及 `STDERR` (Special filehandles: `STDIN`, `STDOUT` and `STDERR`)](https://docs.perl6.org/language/variables#___top)
 
-更多关于特殊文件句柄的信息请参考[Input and Output](https://docs.perl6.org/language/io)以及[IO::Special](https://docs.perl6.org/type/IO::Special)类。[IO::Handle](https://docs.perl6.org/type/IO::Handle)包含使用 `$*IN` 读取标准输入的几个例子。
+更多关于特殊文件句柄的信息请参考[Input and Output](https://docs.perl6.org/language/io)以及[IO::Special](https://docs.perl6.org/type/IO::Special)类。[IO::Handle](https://docs.perl6.org/type/IO::Handle)包含使用 `$*IN` 读取标准输入的几个例子。
 
 For more information about special filehandles please see also the [Input and Output](https://docs.perl6.org/language/io) page and the [IO::Special](https://docs.perl6.org/type/IO::Special) class. [IO::Handle](https://docs.perl6.org/type/IO::Handle)contains several examples of using `$*IN` for reading standard input.
 
@@ -1408,7 +1405,7 @@ say $*KERNEL; # OUTPUT: «linux (4.4.92.31.default)␤»
 
 #### [`$*DISTRO`](https://docs.perl6.org/language/variables#___top)
 
-这个对象(类型为 `Distro`)包含当前操作系统的发行版信息。例如：
+这个对象(类型为 `Distro`)包含当前操作系统的发行版信息。例如：
 
 This object (of type `Distro`) contains information about the current operating system distribution. For instance:
 
@@ -1533,65 +1530,98 @@ This is the default usage message generated from the signatures of `MAIN` subs a
 
 #### [`$*USER`](https://docs.perl6.org/language/variables#___top)
 
-包含运行程序的用户信息的一种 `同质异形体` 。如果将其视为字符串则其值为用户名，如果将其视为数字，则其值为用户的数值。
+包含运行程序的用户信息的一种 `同质异形体` 。如果将其视为字符串则其值为用户名，如果将其视为数字，则其值为用户的数值。
 
 An `Allomorph` with information about the user that is running the program. It will evaluate to the username if treated as a string and the numeric user id if treated as a number.
 
 #### [`$*GROUP`](https://docs.perl6.org/language/variables#___top)
 
-包含运行程序的主组信息的一种 `同质异形体` 。如果将其视为字符串则其值为组名，如果将其视为数字，则其值为组的数值。
+包含运行程序的主组信息的一种 `同质异形体` 。如果将其视为字符串则其值为组名，如果将其视为数字，则其值为组的数值。
 
 An `Allomorph` with the primary group of the user who is running the program. It will evaluate to the groupname only if treated as a string and the numeric group id if treated as a number.
 
 #### [`$*HOMEDRIVE`](https://docs.perl6.org/language/variables#___top)
 
+包含有关在 Windows 上运行程序的用户的“家驱动器”的信息。它在其他操作系统中没有定义。
+
 Contains information about the "home drive" of the user that is running the program on Windows. It's not defined in other operating systems.
 
 #### [`$*HOMEPATH`](https://docs.perl6.org/language/variables#___top)
+
+包含有关在 Windows 上运行程序的用户目录路径的信息。它在其他操作系统中没有定义。
 
 Contains information about the path to the user directory that is running the program on Windows. It's not defined in other operating systems.
 
 #### [`$*HOME`](https://docs.perl6.org/language/variables#___top)
 
+包含一个[IO::Path](https://docs.perl6.org/type/IO::Path)对象，表示运行程序的用户的“家目录”。如果设置，则使用 `%*ENV<HOME>`。
+
 Contains an [IO::Path](https://docs.perl6.org/type/IO::Path) object representing the "home directory" of the user that is running the program. Uses `%*ENV<HOME>` if set.
+
+在 Windows 上，使用 `%*ENV<HOMEDRIVE> ~ %*ENV<HOMEPATH>`。如果无法确定家目录，它将是[Any]（https://docs.perl6.org/type/any）。
 
 On Windows, uses `%*ENV<HOMEDRIVE> ~ %*ENV<HOMEPATH>`. If the home directory cannot be determined, it will be [Any](https://docs.perl6.org/type/Any).
 
 #### [`$*SPEC`](https://docs.perl6.org/language/variables#___top)
 
+包含程序所运行平台的适当[IO::Spec](https://docs.perl6.org/type/IO::Spec)子类。这是操作系统的一个更高级别的类；例如，对于Linux，它将返回 `Unix`（以 `IO::Spec` 类的形式，用于当前实现）。
+
 Contains the appropriate [IO::Spec](https://docs.perl6.org/type/IO::Spec) sub-class for the platform that the program is running on. This is a higher-level class for the operating system; it will return `Unix`, for instance, in the case of Linux (in the form of the `IO::Spec` class used for the current implementation).
 
 #### [`$*TMPDIR`](https://docs.perl6.org/language/variables#___top)
+
+这是一个[IO::Path](https://docs.perl6.org/type/IO::Path)对象，表示由[`.tmpdir IO::Spec::* method`]确定的“系统临时目录”（https://docs.perl6.org/routine/tmpdir）。
 
 This is an [IO::Path](https://docs.perl6.org/type/IO::Path) object representing the "system temporary directory" as determined by [`.tmpdir IO::Spec::* method`](https://docs.perl6.org/routine/tmpdir).
 
 #### [`$*TOLERANCE`](https://docs.perl6.org/language/variables#___top)
 
+由[`=~=`](https://docs.perl6.org/routine/=~=)运算符和依赖它的任何操作使用的变量，以确定两个值是否近似相等。默认为 `1e-15`。
+
 Variable used by the [`=~=`](https://docs.perl6.org/routine/=~=) operator, and any operations that depend on it, to decide if two values are approximately equal. Defaults to `1e-15`.
 
 #### [`$*THREAD`](https://docs.perl6.org/language/variables#___top)
+
+包含表示当前执行线程的[Thread](https://docs.perl6.org/type/thread)对象。
 
 Contains a [Thread](https://docs.perl6.org/type/Thread) object representing the currently executing thread.
 
 #### [`$*SCHEDULER`](https://docs.perl6.org/language/variables#___top)
 
+这是表示当前默认计划程序的[ThreadPoolScheduler](https://docs.perl6.org/type/threadpoolscheduler)对象。
+
 This is a [ThreadPoolScheduler](https://docs.perl6.org/type/ThreadPoolScheduler) object representing the current default scheduler.
+
+默认情况下，在方法 `.hyper`、`.race` 和使用该调度程序的其他线程池类（如 `Promise` 或 `Supply`）上，这最多可施加64个线程。但是，这取决于实现，可能会发生更改。要更改线程的最大数目，可以在运行 perl6 之前设置环境变量 `RAKUDO_MAX_THREADS`，或者在使用它们之前创建一个范围复制，并更改默认值：
 
 By default this imposes a maximum of 64 threads on the methods `.hyper`, `.race` and other thread-pool classes that use that scheduler such as `Promise`s or `Supply`s. This is, however, implementation, dependent and might be subject to change. To change the maximum number of threads, you can either set the environment variable `RAKUDO_MAX_THREADS` before running perl6 or create a scoped copy with the default changed before using them:
 
-```
+```Perl6
 my $*SCHEDULER = ThreadPoolScheduler.new( max_threads => 128 );
 ```
+
+此行为未在规范测试中测试，可能会发生更改。
 
 This behavior is not tested in the spec tests and is subject to change.
 
 #### [`$*SAMPLER`](https://docs.perl6.org/language/variables#___top)
 
+当前用于生成系统状态快照的[Telemetry::Sampler](https://docs.perl6.org/type/Telemetry::Sampler)。仅当已加载[Telemetry]（https://docs.perl6.org/type/teletry）时可用。
+
 The current [Telemetry::Sampler](https://docs.perl6.org/type/Telemetry::Sampler) used for making snapshots of system state. Only available if [Telemetry](https://docs.perl6.org/type/Telemetry) has been loaded.
 
-# [Naming conventions](https://docs.perl6.org/language/variables#___top)
+# [命名约定(Naming conventions)](https://docs.perl6.org/language/variables#___top)
+
+了解我们的命名约定有助于直接理解代码的作用。然而，还没有（也可能永远不会）一份正式的清单；不过，我们列出了一些被广泛采用的约定。
 
 It is helpful to know our naming conventions in order to understand what codes do directly. However, there is not yet (and might never be) an official list of; still, we list several conventions that are widely held.
+
+- 内置库中的函数和方法在找到一个好的单词时，会尝试使用单个单词名。如果一个名称由两个或多个单词组成，则用“-”分隔。
+- 符合词被当作一个词来处理，如 `substr`、`subbuf` 和 `deepmap`（就像我们用英语写 "starfish"，而不是 "star fish"）。
+- 在特殊时间自动为你调用的函数和方法都是大写的。这包括 `MAIN` 函数、`AT-POS` 和实现容器类型的相关方法，以及 `BUILD` 和 `DESTROY`。
+- 类型名采用驼峰法，除了本地类型（小写）。对于例外情况，您可以通过以下方式记住它：它们以更紧凑的方式存储，因此它们的名称看起来也更小。
+- 内置的动态作用域变量和编译时变量总是大写的，例如 `$*out`，`$?FILE`。
+- 来自 MOP(元对象协议) 和其他内部的方法使用 "_" 来分隔多个单词，例如 `add_method`。
 
 - Subs and methods from the built-ins library try to have single-word names when a good one could be found. In cases where there are two or more words making up a name, they are separated by a "-".
 - Compounds are treated as a single word, thus `substr`, `subbuf`, and `deepmap` (just like we write "starfish", not "star fish" in English).
