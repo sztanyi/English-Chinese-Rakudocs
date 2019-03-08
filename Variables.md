@@ -1013,7 +1013,7 @@ say $x.^name;       # OUTPUT: «Int» 
 say $x.defined;     # OUTPUT: «False» 
 ```
 
-没有显示类型约束的标量变量写作 [Mu](https://docs.perl6.org/type/Mu)但是默认是 [Any](https://docs.perl6.org/type/Any)类型对象。
+没有显示类型约束的标量变量写作 [Mu](https://docs.perl6.org/type/Mu) 但是默认是 [Any](https://docs.perl6.org/type/Any)类型对象。
 
 Scalar variables without an explicit type constraint are typed as [Mu](https://docs.perl6.org/type/Mu) but default to the [Any](https://docs.perl6.org/type/Any) type object.
 
@@ -1049,7 +1049,7 @@ my Int $i = 1; # that works 
 { use variables :_; my Int $i; } # switch it off in this block 
 ```
 
-注意赋值 [Nil](https://docs.perl6.org/type/Nil)会使变量恢复默认值。有已定义约束的类型的默认值就是后面跟 `:D` 的类型 (e.g. `Int:D`)。那意味着已定义约束不保证变量的已定义。这个只对变量初始化生效，不适用于[签名](https://docs.perl6.org/type/Signature)或者其后的变量赋值。
+注意赋值 [Nil](https://docs.perl6.org/type/Nil) 会使变量恢复默认值。有已定义约束的类型的默认值就是后面跟 `:D` 的类型 (e.g. `Int:D`)。那意味着已定义约束不保证变量的已定义。这个只对变量初始化生效，不适用于[签名](https://docs.perl6.org/type/Signature)或者其后的变量赋值。
 
 Note that assigning [Nil](https://docs.perl6.org/type/Nil) will revert the variable to its default value. The default value of a defined constraint type is the type appended with `:D` (e.g. `Int:D`). That means a definedness constraint is no guarantee of definedness. This only applies to variable initializers, not to [Signature](https://docs.perl6.org/type/Signature)s. or subsequent assignments to a variable.
 
@@ -1309,6 +1309,8 @@ for '.' {
 
 ### $?DISTRIBUTION
 
+`$？DISTRIBUTION` 提供对当前编译单元的 [Distribution](https://docs.perl6.org/type/distribution) 的访问。这使模块作者可以通过原始相对路径名引用分发中的其他文件，或查看元数据（通过 `.meta` 方法），而无需知道底层文件结构（例如 `Compunit::Repository::Installation` 如何在安装时更改文件布局）。
+
 `$?DISTRIBUTION` provides access to the [Distribution](https://docs.perl6.org/type/Distribution) of the current compilation unit. This gives module authors a way to reference other files in the distribution by their original relative path names, or to view the metadata (via the `.meta` method), without needing to know the underlying file structure (such as how `CompUnit::Repository::Installation` changes the file layout on installation).
 
 ```Perl6
@@ -1419,8 +1421,7 @@ It contains the `C`urrent `W`orking `D`irectory.
 `$*KERNEL` contains a [`Kernel` instance](https://docs.perl6.org/type/Kernel), the `.gist` of it being the current running kernel.
 
 ```Perl6
-say $*KERNEL; # OUTPUT: «linux (4.4.92.31.default)
-» 
+say $*KERNEL; # OUTPUT: «linux (4.4.92.31.default)» 
 ```
 
 #### [`$*DISTRO`](https://docs.perl6.org/language/variables#___top)
