@@ -6,7 +6,7 @@ Perl 6 中的变量
 
 Variables in Perl 6
 
-变量名字以一种叫做标记的特殊字符开头，后面跟着叫 twigil 的特殊字符最后才是[识别符](https://docs.perl6.org/language/syntax#Identifiers)，前面两个特殊符号都是可选的。变量是值以及[容器](https://docs.perl6.org/language/containers)符号名称。定义变量或者给变量赋值会直接生成容器。
+变量名字以一种叫做标记的特殊字符开头，后面跟着叫 twigil 的特殊字符最后才是[识别符](https://docs.perl6.org/language/syntax#Identifiers)，前面两个特殊符号都是可选的。变量是值或者[容器](https://docs.perl6.org/language/containers)符号名称。定义变量或者给变量赋值会直接生成容器。
 
 Variable names can start with or without a special character called a *sigil*, followed optionally by a second special character named *twigil* and then an [identifier](https://docs.perl6.org/language/syntax#Identifiers). Variables are symbolic names for values or [containers](https://docs.perl6.org/language/containers). Variable declarations or assignment of values may create a container on the fly.
 
@@ -16,7 +16,7 @@ Variable names can start with or without a special character called a *sigil*, 
 
 There are four sigils. The scalar-sigil `$`, the positional-sigil `@`, the associative-sigil `%` and the callable-sigil `&`.
 
-标记链接了语法，类型系统和[容器](https://docs.perl6.org/language/containers)。这些标记为最常见的类型约束提供快捷方式，当声明变量以及为[字符串插值](https://docs.perl6.org/language/quoting#Interpolation%3A_qq)充当标记时。[位置标记](https://docs.perl6.org/language/containers#Flattening%2C_items_and_containers)和[关联标记](https://docs.perl6.org/language/containers#Flattening%2C_items_and_containers)起到了类型约束的作用，使基础类型[下标](https://docs.perl6.org/language/subscripts#Custom_types)需要知道分派给哪些方法。可调用标记对函数调用起到了同样的作用。可调用标记还会告诉编译器哪些括号可以省略。位置和关联签名也可以通过默认情况下展平来简化分配。
+标记链接了语法，类型系统和[容器](https://docs.perl6.org/language/containers)。这些标记为最常见的类型约束提供快捷方式，当声明变量以及为[字符串插值](https://docs.perl6.org/language/quoting#Interpolation%3A_qq)充当标记时。[位置标记](https://docs.perl6.org/language/containers#Flattening%2C_items_and_containers)和[关联标记](https://docs.perl6.org/language/containers#Flattening%2C_items_and_containers)起到了类型约束的作用，使基础类型[下标](https://docs.perl6.org/language/subscripts#Custom_types)需要知道分派给哪些方法。可调用标记对函数调用起到了同样的作用。可调用标记还会告诉编译器哪些括号可以省略。位置和关联签名也可以通过默认情况下展平来简化赋值。
 
 Sigils provide a link between syntax, the type system and [containers](https://docs.perl6.org/language/containers). They provide a shortcut for the most common type constraints when declaring variables and serve as markers for [string interpolation](https://docs.perl6.org/language/quoting#Interpolation%3A_qq). The [positional-sigil](https://docs.perl6.org/language/containers#Flattening%2C_items_and_containers) and the [associative-sigil](https://docs.perl6.org/language/containers#Flattening%2C_items_and_containers) provide type constraint that enforce a base type [subscripts](https://docs.perl6.org/language/subscripts#Custom_types) require to know what methods to dispatch to. The [callable-sigil](https://docs.perl6.org/language/containers#Callable_containers) does the same for function calls. The latter also tells the compiler where parentheses for calls can be omitted. The positional and associative-sigil also simplify assignment by flattening by default.
 
@@ -1443,8 +1443,7 @@ say "Some sort of Windows" if $*DISTRO.is-win;
 The `$*DISTRO` gist is displayed by using `say`:
 
 ```Perl6
-say $*DISTRO; # OUTPUT: «debian (9.stretch)
-» 
+say $*DISTRO; # OUTPUT: «debian (9.stretch)» 
 ```
 
 这将显示有关操作系统及其使用的版本的其他信息，但实际上，此变量包含的信息对于创建可移植程序很有用，例如路径分隔符：
@@ -1467,8 +1466,7 @@ say $*DISTRO.perl;
 This variable contains the current virtual machine running the code, as well as additional information on the inner workings of aforementioned VM.
 
 ```Perl6
-say $*VM.precomp-ext, " ", $*VM.precomp-target; # OUTPUT: «moarvm mbc
-» 
+say $*VM.precomp-ext, " ", $*VM.precomp-target; # OUTPUT: «moarvm mbc» 
 ```
 
 例如，这两个方法将显示预编译字节码脚本中使用的扩展名和使用的目标。这是在 moar 虚拟机中的情况，但它也可能随版本和实现而变化。其他的VM，例如 Java，将为它们显示不同的值。`$*VM.config` 包括用于创建虚拟机的所有配置值，例如:
@@ -1477,8 +1475,7 @@ These two methods, for instance, will show the extension used in the precompiled
 
 ```Perl6
 say $*VM.config<versionmajor>, ".", $*VM.config<versionminor>;
-# OUTPUT: «2018.11
-» 
+# OUTPUT: «2018.11» 
 ```
 
 这是虚拟机的版本，通常与解释器和整个 Perl6 环境中使用的版本相同。
@@ -1492,8 +1489,7 @@ which are the version of the virtual machine, generally the same one as the one 
 This object contains information on the current implementation of the Perl 6 language:
 
 ```Perl6
-say $*PERL.compiler.version; # OUTPUT: «v2018.11.52.g.06156.a.7.ca
-» 
+say $*PERL.compiler.version; # OUTPUT: «v2018.11.52.g.06156.a.7.ca» 
 ```
 
 但其 gist 输出包括语言名称，然后是编译器的主要版本：
@@ -1501,8 +1497,7 @@ say $*PERL.compiler.version; # OUTPUT: «v2018.11.52.g.06156.a.7.ca
 but its gist includes the name of the language, followed by the major version of the compiler:
 
 ```Perl6
-say $*PERL; # OUTPUT: «Perl 6 (6.d)
-» 
+say $*PERL; # OUTPUT: «Perl 6 (6.d)» 
 ```
 
 它将字符串化为 `Perl 6` ：
@@ -1510,8 +1505,7 @@ say $*PERL; # OUTPUT: «Perl 6 (6.d)
 It stringifies to `Perl 6`:
 
 ```Perl6
-$*PERL.put; # OUTPUT: «Perl 6
-» 
+$*PERL.put; # OUTPUT: «Perl 6» 
 ```
 
 #### [`$*PID`](https://docs.perl6.org/language/variables#___top)
@@ -1620,7 +1614,7 @@ Contains a [Thread](https://docs.perl6.org/type/Thread) object representing the 
 
 This is a [ThreadPoolScheduler](https://docs.perl6.org/type/ThreadPoolScheduler) object representing the current default scheduler.
 
-默认情况下，在方法 `.hyper`、`.race` 和使用该调度程序的其他线程池类（如 `Promise` 或 `Supply`）上，这最多可施加64个线程。但是，这取决于实现，可能会发生更改。要更改线程的最大数目，可以在运行 perl6 之前设置环境变量 `RAKUDO_MAX_THREADS`，或者在使用它们之前创建一个范围复制，并更改默认值：
+默认情况下，在方法 `.hyper`、`.race` 和使用该调度程序的其他线程池类（如 `Promise` 或 `Supply`）上，这最多可施加 64 个线程。但是，这取决于实现，可能会发生更改。要更改线程的最大数目，可以在运行 perl6 之前设置环境变量 `RAKUDO_MAX_THREADS`，或者在使用它们之前创建一个范围复制，并更改默认值：
 
 By default this imposes a maximum of 64 threads on the methods `.hyper`, `.race` and other thread-pool classes that use that scheduler such as `Promise`s or `Supply`s. This is, however, implementation, dependent and might be subject to change. To change the maximum number of threads, you can either set the environment variable `RAKUDO_MAX_THREADS` before running perl6 or create a scoped copy with the default changed before using them:
 
