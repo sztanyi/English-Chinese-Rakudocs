@@ -35,7 +35,7 @@ my @array  = 1, 2, 3;   # Array variable with three elements 
 my %hash   = London => 'UK', Berlin => 'Germany';
 ```
 
-在声明中可以用 is 来设置容器类型。
+在声明中可以用 `is` 来设置容器类型。
 
 The container type can be set with `is` in a declaration.
 
@@ -67,7 +67,7 @@ For information on variables without sigils, see [sigilless variables](https://
 
 ## [单条目和列表赋值 （Item and List Assignment）](https://docs.perl6.org/language/variables#___top)
 
-有两种类型的变量分配，单条目赋值和列表赋值。两者都用等于号作为操作符。等于号左边的语法决定了等于号是用作单条目还是列表赋值。
+有两种类型的变量分配，单条目赋值和列表赋值。两者都用 `=` 作为操作符。左边的语法决定了 `=` 号是用作单条目还是列表赋值。
 
 There are two types of variable assignment, *item assignment* and *list assignment*. Both use the equal sign `=` as operator. The syntax of the left-hand side determines whether an `=` means item or list assignment.
 
