@@ -763,11 +763,15 @@ given 42 {
 » 
 ```
 
+…匹配 `int`，跳过 `43`，因为值不匹配，匹配 `42`，因为这是下一个正匹配，但不进入 `default` 块，因为 `when 42` 块不包含 `proceed`。
+
 ...which matches the `Int`, skips `43` since the value doesn't match, matches `42` since this is the next positive match, but doesn't enter the `default` block since the `when 42` block doesn't contain a `proceed`.
+
+相反，`succeed` 关键字会短路执行，并在该点退出整个 `given` 块。它还可能需要一个参数来指定块的最终值。
 
 By contrast, the `succeed` keyword short-circuits execution and exits the entire `given` block at that point. It may also take an argument to specify a final value for the block.
 
-```
+```Perl6
 given 42 {
     when Int {
         say "Int";
@@ -781,9 +785,11 @@ given 42 {
 » 
 ```
 
-If you are not inside a when or default block, it is an error to try to use `proceed` or `succeed`. Also remember, the `when`statement modifier form does not cause any blocks to be left, and any `succeed` or `proceed` in such a statement applies to the surrounding clause, if there is one:
+如果不在 when 或 default 块中，则尝试使用 `proceed` 或 `succeed` 是一个错误。还请记住，`when` 语句修饰符形式不会导致任何块被留下，并且此类语句中的任何 `succeed` 或 `proceed` 都适用于周围的子句（如果有）：
 
-```
+If you are not inside a when or default block, it is an error to try to use `proceed` or `succeed`. Also remember, the `when` statement modifier form does not cause any blocks to be left, and any `succeed` or `proceed` in such a statement applies to the surrounding clause, if there is one:
+
+```Perl6
 given 42 {
     { say "This says" } when Int;
     "This says too".say;
@@ -797,9 +803,11 @@ given 42 {
 
 ## [given as a statement]()
 
+`given` 可以跟在一个语句后面，以在它后面的语句中设置主题。
+
 `given` can follow a statement to set the topic in the statement it follows.
 
-```
+```Perl6
 .say given "foo";
 # OUTPUT: «foo
 » 
