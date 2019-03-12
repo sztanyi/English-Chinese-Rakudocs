@@ -1,18 +1,12 @@
 原文：https://docs.perl6.org/language/control
 
-译者：stanley_tam@163.com
-
-# 控制流
-
-# Control Flow
+# 控制流（Control Flow）
 
 控制执行流程的语句
 
 Statements used to control the flow of execution
 
-
-
-# [statements]()
+# [语句（statements）]()
 
 Perl 6 成语由一个或多个语句组成。简单语句由分号分隔。下面的这个程序会打印 ”Hello“ 然后再下一行打印 ”World“。
 
@@ -32,7 +26,7 @@ say
 "Hello"; say "World";
 ```
 
-# [blocks]()
+# [代码块（blocks）]()
 
 像许多语言一样，Perl 6 使用用 `{` 和 `}` 包含的代码块讲多个语句转变为单个语句。 代码块最后一个语句的分号可以省略。
 
@@ -64,13 +58,13 @@ Unless it stands alone as a statement, a block simply creates a closure. The sta
 say "We get here"; { say "then here." }; { say "not here"; 0; } or die;
 ```
 
-上例中，执行完第一个语句后，第一个代码块作为第二个语句独立存在，因此我们执行里面的语句。第二个代码块不是作为一个独立语句，它产生了一个 `Block` 类型的对象而不是直接运行它。对象实力通常被当作真值，所以代码并没有挂掉，尽管代码块最后的返回值为 0，如果执行的话。示例并没有说明 `Block` 对象的后续使用，所以对象被马上丢弃了。
+上例中，执行完第一个语句后，第一个代码块作为第二个语句独立存在，因此我们执行里面的语句。第二个代码块不是作为一个独立语句，它产生了一个 `Block` 类型的对象而不是直接运行它。对象实例通常被当作真值，所以代码并没有死亡，尽管代码块最后的返回值为 0，如果执行的话。示例并没有说明 `Block` 对象的后续使用，所以对象被马上丢弃了。
 
-In the above example, after running the first statement, the first block stands alone as a second statement, so we run the statement inside it. The second block does not stand alone as a statement, so instead, it makes an object of type `Block`but does not run it. Object instances are usually considered to be true, so the code does not die, even though that block would evaluate to 0, were it to be executed. The example does not say what to do with the `Block` object, so it just gets thrown away.
+In the above example, after running the first statement, the first block stands alone as a second statement, so we run the statement inside it. The second block does not stand alone as a statement, so instead, it makes an object of type `Block` but does not run it. Object instances are usually considered to be true, so the code does not die, even though that block would evaluate to 0, were it to be executed. The example does not say what to do with the `Block` object, so it just gets thrown away.
 
 大多数下面提到的控制流讲述了 Perl 6 什么时候，以什么方式以及几次进入像上面提到的第二段代码块。
 
-Most of the flow control constructs covered below are just ways to tell perl6 when, how, and how many times, to enter blocks like that second block.
+Most of the flow control constructs covered below are just ways to tell Perl6 when, how, and how many times, to enter blocks like that second block.
 
 在这之前，说一下语法上的一个注意点：如果在闭大括号之后什么都没有或者只有注释，分号是可以不要的：
 
@@ -364,7 +358,7 @@ my $d = 0; say (1, (unless 1 { $d += 42; 2; }), 3, $d); # says "(1 3 0)"
 
 ## [with, orwith, without]()
 
-`with` 语句有点像 `if` 但是检查定义而不是真值。额外的，它点题了条件，这点很像 `given` ：
+`with` 语句有点像 `if` 但是检查定义而不是真值。额外的，它指明了条件的主题，这点很像 `given` ：
 
 The `with` statement is like `if` but tests for definedness rather than truth. In addition, it topicalizes on the condition, much like `given`:
 
@@ -372,7 +366,7 @@ The `with` statement is like `if` but tests for definedness rather than truth. I
 with "abc".index("a") { .say }      # prints 0 
 ```
 
-`orwith` 可用作链式检查定义，与其使用 `elsif`。
+`orwith` 可用作链式已定义检查测试，替代 `elsif`。
 
 Instead of `elsif`, `orwith` may be used to chain definedness tests:
 
@@ -549,7 +543,7 @@ my @b = (for 1, 2, 3 { $_ * 2 }); @a.say;  # same thing
 
 # [gather/take]()
 
-gather是一个返回值序列的语句或块前缀。这些值由 `gather` 代码块动态作用域中 `take` 返回。
+gather 是一个返回值序列的语句或块前缀。这些值由 `gather` 代码块动态作用域中 `take` 返回。
 
 `gather` is a statement or block prefix that returns a [sequence](https://docs.perl6.org/type/Seq) of values. The values come from calls to [take](https://docs.perl6.org/type/Mu#routine_take) in the dynamic scope of the `gather` block.
 
@@ -696,7 +690,7 @@ given 42 {
 
 When a `when` statement or `default` statement causes the outer block to return, nesting `when` or `default` blocks do not count as the outer block, so you can nest these statements and still be in the same "switch" just so long as you do not open a new block:
 
-```
+```Perl6
 given 42 {
     when Int {
       when 42  { say 42 }
@@ -713,11 +707,15 @@ given 42 {
 
 ## [succeed]()
 
+`proceed` 和 `succeed` 都只能在 `when` 或者 `default` 代码块里使用。
+
 Both `proceed` and `succeed` are meant to be used only from inside `when` or `default` blocks.
+
+`proceed` 语句会立即离开 `when` 或者 `default` 代码块，跳过其余语句，并在块后继续。这样防止 `when` 或者 `default` 退出外部代码块。
 
 The `proceed` statement will immediately leave the `when` or `default` block, skipping the rest of the statements, and resuming after the block. This prevents the `when` or `default` from exiting the outer block.
 
-```
+```Perl6
 given * {
     default {
         proceed;
@@ -727,9 +725,11 @@ given * {
 "This says".say;
 ```
 
+这通常用于输入多个 `when` 块。`继续`将在成功匹配后恢复匹配，如下所示：
+
 This is most often used to enter multiple `when` blocks. `proceed` will resume matching after a successful match, like so:
 
-```
+```Perl6
 given 42 {
     when Int   { say "Int"; proceed }
     when 42    { say 42 }
@@ -742,11 +742,15 @@ given 42 {
 » 
 ```
 
+注意 `when 40..*` 匹配没有发生。为了使这种情况也匹配，需要在 `when 42` 块中有一个 `proceed`。
+
 Note that the `when 40..*` match didn't occur. For this to match such cases as well, one would need a `proceed` in the `when 42` block.
+
+这不像是 `C` 中的 `switch` 语句，因为 `proceed` 不只是直接进入下面的块，它试图再次匹配 `given` 值，请考虑此代码：
 
 This is not like a `C` `switch` statement, because the `proceed` does not merely enter the directly following block, it attempts to match the `given` value once more, consider this code:
 
-```
+```Perl6
 given 42 {
     when Int { "Int".say; proceed }
     when 43  { 43.say }
@@ -759,11 +763,15 @@ given 42 {
 » 
 ```
 
+…匹配 `int`，跳过 `43`，因为值不匹配，匹配 `42`，因为这是下一个正匹配，但不进入 `default` 块，因为 `when 42` 块不包含 `proceed`。
+
 ...which matches the `Int`, skips `43` since the value doesn't match, matches `42` since this is the next positive match, but doesn't enter the `default` block since the `when 42` block doesn't contain a `proceed`.
+
+相反，`succeed` 关键字会短路执行，并在该点退出整个 `given` 块。它还可能需要一个参数来指定块的最终值。
 
 By contrast, the `succeed` keyword short-circuits execution and exits the entire `given` block at that point. It may also take an argument to specify a final value for the block.
 
-```
+```Perl6
 given 42 {
     when Int {
         say "Int";
@@ -777,9 +785,11 @@ given 42 {
 » 
 ```
 
-If you are not inside a when or default block, it is an error to try to use `proceed` or `succeed`. Also remember, the `when`statement modifier form does not cause any blocks to be left, and any `succeed` or `proceed` in such a statement applies to the surrounding clause, if there is one:
+如果不在 when 或 default 块中，则尝试使用 `proceed` 或 `succeed` 是一个错误。还请记住，`when` 语句修饰符形式不会导致任何块被留下，并且此类语句中的任何 `succeed` 或 `proceed` 都适用于周围的子句（如果有）：
 
-```
+If you are not inside a when or default block, it is an error to try to use `proceed` or `succeed`. Also remember, the `when` statement modifier form does not cause any blocks to be left, and any `succeed` or `proceed` in such a statement applies to the surrounding clause, if there is one:
+
+```Perl6
 given 42 {
     { say "This says" } when Int;
     "This says too".say;
@@ -793,9 +803,11 @@ given 42 {
 
 ## [given as a statement]()
 
+`given` 可以跟在一个语句后面，以在它后面的语句中设置主题。
+
 `given` can follow a statement to set the topic in the statement it follows.
 
-```
+```Perl6
 .say given "foo";
 # OUTPUT: «foo
 » 
