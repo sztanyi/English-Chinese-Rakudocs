@@ -241,15 +241,21 @@ my @a = 1, 2, 3;
 say @a;         # OUTPUT: «[42 2 3]␤» 
 ```
 
+`@a` 实际上存储了三个标量变量。`@a[0]` 返回其中的一个，赋值符号将容器内的值替换成新的 `42`。
+
 `@a` actually stores three scalar containers. `@a[0]` returns one of them, and the assignment operator replaces the integer value stored in that container with the new one, `42`.
 
-# [Assigning and binding to array variables](https://docs.perl6.org/language/containers#___top)
+# [赋值以及绑定至数组变量（Assigning and binding to array variables）](https://docs.perl6.org/language/containers#___top)
+
+给标量以及数组变量赋值都做的同一件事情：舍弃旧值并输入新值。
 
 Assignment to a scalar variable and to an array variable both do the same thing: discard the old value(s), and enter some new value(s).
 
+尽管如此，很容易观察到它们有多不同：
+
 Nevertheless, it's easy to observe how different they are:
 
-```
+```Perl6
 my $x = 42; say $x.^name;   # OUTPUT: «Int␤» 
 my @a = 42; say @a.^name;   # OUTPUT: «Array␤» 
 ```
@@ -258,7 +264,7 @@ This is because the `Scalar` container type hides itself well, but `Array` makes
 
 To place a non-`Array` into an array variable, binding works:
 
-```
+```Perl6
 my @a := (1, 2, 3);
 say @a.^name;               # OUTPUT: «List␤» 
 ```
