@@ -112,7 +112,7 @@ say $x.^name;       # OUTPUT: «Int␤»
 say $x.VAR.^name;   # OUTPUT: «Scalar␤» 
 ```
 
-参数上的 `is rw` 要求存在可写的标量容器：
+参数上的 `is rw` 要求可写的标量容器：
 
 And `is rw` on a parameter requires the presence of a writable Scalar container:
 
@@ -125,7 +125,7 @@ CATCH { default { say .^name, ': ', .Str } };
 
 # [可调用容器（Callable containers）](https://docs.perl6.org/language/containers#___top)
 
-可调用容器在存储在容器中的对象的 [Routine](https://docs.perl6.org/type/routine) 调用的语法和方法 [CALL-ME](https://docs.perl6.org/type/callable method_call-me) 的实际调用之间提供了一个桥梁。声明容器时需要 `&` 标记并且在执行 `Callable` 时必须省略。默认类型约束为[Callable](https://docs.perl6.org/type/callable)。
+可调用容器在存储在容器中的对象的 [Routine](https://docs.perl6.org/type/routine) 调用的语法和方法 [CALL-ME](https://docs.perl6.org/type/callable method_call-me) 的实际调用之间提供了一个桥梁。声明容器时需要 `&` 标记并且在执行 `Callable` 时必须省略。默认类型约束为 [Callable](https://docs.perl6.org/type/callable)。
 
 Callable containers provide a bridge between the syntax of a [Routine](https://docs.perl6.org/type/Routine) call and the actual call of the method [CALL-ME](https://docs.perl6.org/type/Callable#method_CALL-ME) of the object that is stored in the container. The sigil `&` is required when declaring the container and has to be omitted when executing the `Callable`. The default type constraint is [Callable](https://docs.perl6.org/type/Callable).
 
@@ -135,35 +135,41 @@ callable( ⅓ );
 callable( 3 );
 ```
 
+引用存储在容器中的值时必须带标记。这反过来又允许将  `Routine` 用作[参数](https://docs.perl6.org/type/Signature#Constraining_signature_s_of_Callables)调用。
+
 The sigil has to be provided when referring to the value stored in the container. This in turn allows `Routine`s to be used as [arguments](https://docs.perl6.org/type/Signature#Constraining_signatures_of_Callables) to calls.
 
-```
+```Perl6
 sub f() {}
 my &g = sub {}
 sub caller(&c1, &c2){ c1, c2 }
 caller(&f, &g);
 ```
 
-# [Binding](https://docs.perl6.org/language/containers#___top)
+# [绑定（Binding）](https://docs.perl6.org/language/containers#___top)
+
+除了赋值之外，Perl6 还支持带 `：=` 运算符的*绑定*。将值或容器绑定到变量时，将修改变量的词法板条目（而不仅仅是它指向的容器）。如果你写:
 
 Next to assignment, Perl 6 also supports *binding* with the `:=` operator. When binding a value or a container to a variable, the lexpad entry of the variable is modified (and not just the container it points to). If you write
 
-```
+```Perl6
 my $x := 42;
 ```
-
+那么 `$x` 的词法板条目指向 `Int` 42。意味着你无法再给它赋值。
 then the lexpad entry for `$x` directly points to the `Int` 42. Which means that you cannot assign to it anymore:
 
-```
+```Perl6
 my $x := 42;
 $x = 23;
 CATCH { default { say .^name, ': ', .Str } };
 # OUTPUT: «X::AdHoc: Cannot assign to an immutable value␤» 
 ```
 
+也可以绑定到其他变量：
+
 You can also bind variables to other variables:
 
-```
+```Perl6
 my $a = 0;
 my $b = 0;
 $a := $b;
@@ -171,13 +177,19 @@ $b = 42;
 say $a;         # OUTPUT: «42␤» 
 ```
 
+在绑定后，`$a` 和 `$b` 的词法板条目指向相同的标量容器，因此给一个变量赋值也会改变另一个变量的内容。
+
 Here, after the initial binding, the lexpad entries for `$a` and `$b` both point to the same scalar container, so assigning to one variable also changes the contents of the other.
+
+这种情形你之前也见到过：标记为 `is rw` 的签名参数正是如此。
 
 You've seen this situation before: it is exactly what happened with the signature parameter marked as `is rw`.
 
+无符号变量以及带 `is raw` 特性的参数始终绑定（无论使用 `=` 还是 `:=`）:
+
 Sigilless variables and parameters with the trait `is raw` always bind (whether `=` or `:=` is used):
 
-```
+```Perl6
 my $a = 42;
 my \b = $a;
 b++;
