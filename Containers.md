@@ -200,17 +200,21 @@ f($a);
 say $a;         # OUTPUT: «44␤» 
 ```
 
-# [Scalar containers and listy things](https://docs.perl6.org/language/containers#___top)
+# [标量容器和列表（Scalar containers and listy things）](https://docs.perl6.org/language/containers#___top)
+
+Perl6 中有许多语义稍有不同的位置容器类型。最基本的是 [List](https://docs.perl6.org/type/list)；它是由逗号操作符创建的。
 
 There are a number of positional container types with slightly different semantics in Perl 6. The most basic one is [List](https://docs.perl6.org/type/List); it is created by the comma operator.
 
-```
+```Perl6
 say (1, 2, 3).^name;    # OUTPUT: «List␤» 
 ```
 
+列表是不可变的，这意味着您不能更改列表中的元素数。但是，如果其中一个元素恰好是一个标量容器，你仍然可以给它赋值：
+
 A list is immutable, which means you cannot change the number of elements in a list. But if one of the elements happens to be a scalar container, you can still assign to it:
 
-```
+```Perl6
 my $x = 42;
 ($x, 1, 2)[0] = 23;
 say $x;                 # OUTPUT: «23␤» 
@@ -219,13 +223,19 @@ CATCH { default { say .^name, ': ', .Str } };
 # OUTPUT: «X::Assignment::RO: Cannot modify an immutable Int␤» 
 ```
 
+因此列表不关心它的元素时值还是容器，它们只存储和检索给它们的任何东西。
+
 So the list doesn't care about whether its elements are values or containers, they just store and retrieve whatever was given to them.
+
+列表也可以是惰性的；在这种情况下，末尾的元素是根据需要从迭代器生成的。
 
 Lists can also be lazy; in that case, elements at the end are generated on demand from an iterator.
 
+`数组` 类似列表，除了它强制其所有元素都时容器，着意味着你可以始终给其中的元素赋值：
+
 An `Array` is just like a list, except that it forces all its elements to be containers, which means that you can always assign to elements:
 
-```
+```Perl6
 my @a = 1, 2, 3;
 @a[0] = 42;
 say @a;         # OUTPUT: «[42 2 3]␤» 
