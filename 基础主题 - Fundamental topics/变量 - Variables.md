@@ -1,7 +1,5 @@
 原文：https://docs.perl6.org/language/variables
 
-
-
 # 变量
 
 Perl 6 中的变量
@@ -22,7 +20,7 @@ There are four sigils. The scalar-sigil `$`, the positional-sigil `@`, the ass
 
 Sigils provide a link between syntax, the type system and [containers](https://docs.perl6.org/language/containers). They provide a shortcut for the most common type constraints when declaring variables and serve as markers for [string interpolation](https://docs.perl6.org/language/quoting#Interpolation%3A_qq). The [positional-sigil](https://docs.perl6.org/language/containers#Flattening%2C_items_and_containers) and the [associative-sigil](https://docs.perl6.org/language/containers#Flattening%2C_items_and_containers) provide type constraint that enforce a base type [subscripts](https://docs.perl6.org/language/subscripts#Custom_types) require to know what methods to dispatch to. The [callable-sigil](https://docs.perl6.org/language/containers#Callable_containers) does the same for function calls. The latter also tells the compiler where parentheses for calls can be omitted. The positional and associative-sigil also simplify assignment by flattening by default.
 
-| 标记   | 类型约束                |  默认类型 | 赋值  | 例子                        |
+| 标记 | 类型约束                | 默认类型 | 赋值 | 例子                        |
 | ---- | ----------------------- | -------- | ---- | --------------------------- |
 | $    | Mu (no type constraint) | Any      | item | Int, Str, Array, Hash       |
 | @    | Positional              | Array    | list | List, Array, Range, Buf     |
@@ -195,30 +193,30 @@ Sigilless variables can also be used for binding. See [Binding](https://docs.pe
 
 Twigils influence the scoping of a variable; however, they have no influence over whether the primary sigil interpolates. That is, if `$a`interpolates, so do `$^a`, `$*a`, `$=a`, `$?a`, `$.a`, etc. It only depends on the `$`.
 
-| 符号    | 作用域                                    |
-| ------ | ---------------------------------------- |
-| none   | 没有符号，作用域只依赖声明符                  |
-| *      | 动态作用域                                 |
-| ?      | 编译时变量                                 |
-| !      | 属性 (类成员)                              |
-| .      | 方法 (非真正意义上的变量)                    |
-| <      | 正则匹配对象索引 (非真正意义上的变量)          |
-| ^      | 自声明的正式的位置参数                       |
-| :      | 自声明的正式的命名参数                       |
-| =      | Pod 文档变量                               |
-| ~      | 分歧器在当前词法点上可见的子语言               |
+| 符号 | 作用域                                |
+| ---- | ------------------------------------- |
+| none | 没有符号，作用域只依赖声明符          |
+| *    | 动态作用域                            |
+| ?    | 编译时变量                            |
+| !    | 属性 (类成员)                         |
+| .    | 方法 (非真正意义上的变量)             |
+| <    | 正则匹配对象索引 (非真正意义上的变量) |
+| ^    | 自声明的正式的位置参数                |
+| :    | 自声明的正式的命名参数                |
+| =    | Pod 文档变量                          |
+| ~    | 分歧器在当前词法点上可见的子语言      |
 
-| Twigil | Scope                                    |
-| ------ | ---------------------------------------- |
-| none   | Based only on declarator                 |
-| *      | Dynamic                                  |
-| !      | Attribute (class member)                 |
-| .      | Method (not really a variable)           |
-| :      | Self-declared formal named parameter     |
-| <      | Index into match object (not really a variable) |
-| =      | Pod variables                            |
-| ?      | Compile-time variable                    |
-| ^      | Self-declared formal positional parameter |
+| Twigil | Scope                                                   |
+| ------ | ------------------------------------------------------- |
+| none   | Based only on declarator                                |
+| *      | Dynamic                                                 |
+| !      | Attribute (class member)                                |
+| .      | Method (not really a variable)                          |
+| :      | Self-declared formal named parameter                    |
+| <      | Index into match object (not really a variable)         |
+| =      | Pod variables                                           |
+| ?      | Compile-time variable                                   |
+| ^      | Self-declared formal positional parameter               |
 | ~      | The sublanguage seen by the parser at this lexical spot |
 
 ## `*` 号
@@ -432,12 +430,12 @@ Note that all those `$=someBlockName` support the `Positional` and the `Ass
 The `~` twigil is for referring to sublanguages (called slangs). The following are useful:
 
 | $~MAIN    | the current main language (e.g. Perl statements) |
-| --------- | ---------------------------------------- |
-| $~Quote   | the current root of quoting language     |
-| $~Quasi   | the current root of quasiquoting language |
-| $~Regex   | the current root of regex language       |
-| $~Trans   | the current root of transliteration language |
-| $~P5Regex | the current root of the Perl 5 regex language |
+| --------- | ------------------------------------------------ |
+| $~Quote   | the current root of quoting language             |
+| $~Quasi   | the current root of quasiquoting language        |
+| $~Regex   | the current root of regex language               |
+| $~Trans   | the current root of transliteration language     |
+| $~P5Regex | the current root of the Perl 5 regex language    |
 
 你可以在当前的词汇范围内`扩充`这些语言。
 
@@ -465,33 +463,33 @@ say "Hello $amazing-variable!"; # OUTPUT: «Hello World!» 
 
 However, there are many declarators that change the details of scoping beyond what [Twigils](https://docs.perl6.org/language/variables#Twigils) can do.
 
-| 声明符      | 作用                                     |
-| ---------- | ---------------------------------------- |
-| my         | 引入词法作用域变量                          |
-| our        | 引入包作用域变量                          |
-| has        | 引入属性变量                              |
-| anon       | 引入构造器私有的变量                       |
-| state      | 引入词法作用域但是持久保存的变量            |
-| augment    | 给现有变量增加定义                         |
-| supersede  | 给现有变量替换定义                         |
+| 声明符    | 作用                             |
+| --------- | -------------------------------- |
+| my        | 引入词法作用域变量               |
+| our       | 引入包作用域变量                 |
+| has       | 引入属性变量                     |
+| anon      | 引入构造器私有的变量             |
+| state     | 引入词法作用域但是持久保存的变量 |
+| augment   | 给现有变量增加定义               |
+| supersede | 给现有变量替换定义               |
 
-| Declarator | Effect                                   |
-| ---------- | ---------------------------------------- |
-| my         | Introduces lexically scoped names        |
-| our        | Introduces package-scoped names          |
-| has        | Introduces attribute names               |
+| Declarator | Effect                                             |
+| ---------- | -------------------------------------------------- |
+| my         | Introduces lexically scoped names                  |
+| our        | Introduces package-scoped names                    |
+| has        | Introduces attribute names                         |
 | anon       | Introduces names that are private to the construct |
-| state      | Introduces lexically scoped but persistent names |
-| augment    | Adds definitions to an existing name     |
-| supersede  | Replaces definitions of an existing name |
+| state      | Introduces lexically scoped but persistent names   |
+| augment    | Adds definitions to an existing name               |
+| supersede  | Replaces definitions of an existing name           |
 
 还有两个这样的前缀，他们类似于声明符但是作用于已定义变量。
 
 There are also two prefixes that resemble declarators but act on predefined variables:
 
-| Prefix | Effect                                   |
-| ------ | ---------------------------------------- |
-| temp   | Restores a variable's value at the end of scope / 在作用域结束时恢复变量的值。 |
+| Prefix | Effect                                                                                                                                 |
+| ------ | -------------------------------------------------------------------------------------------------------------------------------------- |
+| temp   | Restores a variable's value at the end of scope / 在作用域结束时恢复变量的值。                                                         |
 | let    | Restores a variable's value at the end of scope if the block exits unsuccessfully / 如果代码块退出不成功，在作用域结束时恢复变量的值。 |
 
 ## `my` 声明符
@@ -1239,12 +1237,12 @@ Note that `CATCH` blocks *do not* set `$!`. Rather they set `$_` inside t
 
 All compile time variables have a question mark as part of the twigil. Being *compile time* they cannot be changed at run-time, however they are valuable in order to introspect the program. The most common compile time variables are the following:
 
-| $?FILE      | Which file am I in?                      | 我在哪一个文件？|
-| ----------- | ---------------------------------------- | -------------|
-| $?LINE      | Which line am I at?                      | 我在哪一行？   |
-| ::?CLASS    | Which class am I in?                     | 我在哪一个类   |
-| %?LANG      | What is the current set of interwoven languages? | 我在哪个交织的语言中 ？|
-| %?RESOURCES | The files associated with the "Distribution" of the current compilation unit. | 当前发行版编译单元相关的文件|
+| $?FILE      | Which file am I in?                                                           | 我在哪一个文件？             |
+| ----------- | ----------------------------------------------------------------------------- | ---------------------------- |
+| $?LINE      | Which line am I at?                                                           | 我在哪一行？                 |
+| ::?CLASS    | Which class am I in?                                                          | 我在哪一个类                 |
+| %?LANG      | What is the current set of interwoven languages?                              | 我在哪个交织的语言中 ？      |
+| %?RESOURCES | The files associated with the "Distribution" of the current compilation unit. | 当前发行版编译单元相关的文件 |
 
 ### 其他编译时变量/ Other compile-time variables
 
@@ -1252,15 +1250,15 @@ All compile time variables have a question mark as part of the twigil. Being *c
 
 The following compile time variables allow for a deeper introspection:
 
-| $?PACKAGE          | Which package am I in?                                   | 我在哪个包?|
-|--------------------| ---------------------------------------------------------|----------|
-| $?MODULE           | Which module am I in?                                    | 我在哪个模组?|
-| $?CLASS            | Which class am I in? (as variable)                       | 我在哪个类中作为变量？|
-| $?ROLE             | Which role am I in? (as variable)                        | 我在哪个角色中作为变量？|
-| $?GRAMMAR          | Which grammar am I in?                                   | 我在哪个语法中?|
-| $?TABSTOP          | How many spaces is a tab in a heredoc or virtual margin? | 在 heredoc 或者虚拟边框中 Tab 相当于几个空格 ？|
-| $?NL               | What a vertical newline "\n" means: LF, CR or CRLF       | 换行符的意思是：LF， CR 还是 CRLF|
-| $?DISTRIBUTION     | The Distribution of the current compilation unit.        | 当前编译单元的发行版|
+| $?PACKAGE      | Which package am I in?                                   | 我在哪个包?                                     |
+| -------------- | -------------------------------------------------------- | ----------------------------------------------- |
+| $?MODULE       | Which module am I in?                                    | 我在哪个模组?                                   |
+| $?CLASS        | Which class am I in? (as variable)                       | 我在哪个类中作为变量？                          |
+| $?ROLE         | Which role am I in? (as variable)                        | 我在哪个角色中作为变量？                        |
+| $?GRAMMAR      | Which grammar am I in?                                   | 我在哪个语法中?                                 |
+| $?TABSTOP      | How many spaces is a tab in a heredoc or virtual margin? | 在 heredoc 或者虚拟边框中 Tab 相当于几个空格 ？ |
+| $?NL           | What a vertical newline "\n" means: LF, CR or CRLF       | 换行符的意思是：LF， CR 还是 CRLF               |
+| $?DISTRIBUTION | The Distribution of the current compilation unit.        | 当前编译单元的发行版                            |
 
 特别是关于 `$?NL`，见[换行指令](https://docs.perl6.org/language/pragmas)
 
