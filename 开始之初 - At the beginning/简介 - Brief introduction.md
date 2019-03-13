@@ -32,7 +32,7 @@ It has been found that newcomers to Perl 6 often ask questions that indicate ass
 
 - [`Signatures`](https://docs.perl6.org/type/Signature) - each routine, which includes subroutines and methods, has a signature. Understanding the information given in the signature of a `sub` or `method`provides a quick way to grasp the operation and effect of the routine.
 
-- [`容器`](http://docs.perl6.org/language/containers) - 变量，就像计算机语言中的名词，是存放信息的容器。容器名字的第一个字符，如 $my-variable 中的 `$`、@an-array-of-things 中的 `@` 或者 %the-scores-in-the-competition 中的 `%`，传达了容器的信息。然而，在容器能存储什么东西上，Perl6 比其他语言要更抽象。因此，例如，一个 $scalar（标量变量） 容器可以包含一个实际上士数组的容器。
+- [`容器`](http://docs.perl6.org/language/containers) - 变量，就像计算机语言中的名词，是存放信息的容器。容器名字的第一个字符，如 $my-variable 中的 `$`、@an-array-of-things 中的 `@` 或者 %the-scores-in-the-competition 中的 `%`，传达了容器的信息。然而，在容器能存储什么东西上，Perl6 比其他语言要更抽象。因此，例如，一个 $scalar（标量变量） 容器可以包含一个实际上是数组的容器。
 
 - [`Containers`](https://docs.perl6.org/language/containers) - variables, which are like the nouns of a computer language, are containers in which information is stored. The first letter in the formal name of a container, such as the '$' of $my-variable, or '@' of @an-array-of-things, or '%' of %the-scores-in-the-competition, conveys information about the container. However, Perl6 is more abstract than other languages about what can be stored in a container. So, for example, a $scalar container can contain an object that is in fact an array.
 

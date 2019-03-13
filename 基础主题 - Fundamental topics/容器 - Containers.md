@@ -8,7 +8,7 @@ A low-level explanation of Perl 6 containers
 
 This section explains the levels of indirection involved in dealing with variables and container elements. The difference types of containers used in Perl 6 are explained and the actions applicable to them like assigning, binding and flattening. More advanced topics like self-referential data, type constraints and custom containers are discussed at the end.
 
-# [变量是什么（What is a variable?）](https://docs.perl6.org/language/containers#___top)
+# [变量是什么 / What is a variable?](https://docs.perl6.org/language/containers#___top)
 
 有些人喜欢说“一切都是一个对象”，但实际上在 Perl6 中，变量不是用户公开的对象。
 
@@ -26,7 +26,7 @@ At runtime, a variable appears as an entry in a *lexical pad*, or *lexpad* for s
 
 In the case of `my $x`, the lexpad entry for the variable `$x` is a pointer to an object of type `Scalar`, usually just called *the container*.
 
-# [标量容器 （Scalar containers）](https://docs.perl6.org/language/containers#___top)
+# [标量容器 / Scalar containers](https://docs.perl6.org/language/containers#___top)
 
 尽管在 Perl6 中，[`Scalar`] 类型的对象(https://docs.perl6.org/type/scalar)随处可见，但你很少见它们直接作为对象，因为大多数操作时*反容器化*的，这意味着它们作用于 `scalar` 容器的内容，而不是容器本身。
 
@@ -59,7 +59,8 @@ sub f($a is rw) {
 }
 my $x = 42;
 f($x);
-say $x;         # OUTPUT: «23␤» 
+say $x;         # OUTPUT: «23
+» 
 ```
 
 在子例程中，`$a` 的词法板条目指向与 `$x` 指向子例程外部的相同容器。这就是为什么赋值给 `$a` 也会修改 `$x` 的内容。
@@ -74,7 +75,8 @@ Likewise a routine can return a container if it is marked as `is rw`:
 my $x = 23;
 sub f() is rw { $x };
 f() = 42;
-say $x;         # OUTPUT: «42␤» 
+say $x;         # OUTPUT: «42
+» 
 ```
 
 对于显式返回，必须使用  `return-rw` 而不是 `return`。
@@ -108,8 +110,10 @@ Scalar containers are transparent to type checks and most kinds of read-only acc
 
 ```Perl6
 my $x = 42;
-say $x.^name;       # OUTPUT: «Int␤» 
-say $x.VAR.^name;   # OUTPUT: «Scalar␤» 
+say $x.^name;       # OUTPUT: «Int
+» 
+say $x.VAR.^name;   # OUTPUT: «Scalar
+» 
 ```
 
 参数上的 `is rw` 要求可写的标量容器：
@@ -120,10 +124,11 @@ And `is rw` on a parameter requires the presence of a writable Scalar container:
 sub f($x is rw) { say $x };
 f 42;
 CATCH { default { say .^name, ': ', .Str } };
-# OUTPUT: «X::Parameter::RW: Parameter '$x' expected a writable container, but got Int value␤» 
+# OUTPUT: «X::Parameter::RW: Parameter '$x' expected a writable container, but got Int value
+» 
 ```
 
-# [可调用容器（Callable containers）](https://docs.perl6.org/language/containers#___top)
+# [可调用容器 / Callable containers](https://docs.perl6.org/language/containers#___top)
 
 可调用容器在存储在容器中的对象的 [Routine](https://docs.perl6.org/type/routine) 调用的语法和方法 [CALL-ME](https://docs.perl6.org/type/callable method_call-me) 的实际调用之间提供了一个桥梁。声明容器时需要 `&` 标记并且在执行 `Callable` 时必须省略。默认类型约束为 [Callable](https://docs.perl6.org/type/callable)。
 
@@ -146,7 +151,7 @@ sub caller(&c1, &c2){ c1, c2 }
 caller(&f, &g);
 ```
 
-# [绑定（Binding）](https://docs.perl6.org/language/containers#___top)
+# [绑定 / Binding](https://docs.perl6.org/language/containers#___top)
 
 除了赋值之外，Perl6 还支持带 `：=` 运算符的*绑定*。将值或容器绑定到变量时，将修改变量的词法板条目（而不仅仅是它指向的容器）。如果你写:
 
@@ -162,7 +167,8 @@ then the lexpad entry for `$x` directly points to the `Int` 42. Which means that
 my $x := 42;
 $x = 23;
 CATCH { default { say .^name, ': ', .Str } };
-# OUTPUT: «X::AdHoc: Cannot assign to an immutable value␤» 
+# OUTPUT: «X::AdHoc: Cannot assign to an immutable value
+» 
 ```
 
 也可以绑定到其他变量：
@@ -174,7 +180,8 @@ my $a = 0;
 my $b = 0;
 $a := $b;
 $b = 42;
-say $a;         # OUTPUT: «42␤» 
+say $a;         # OUTPUT: «42
+» 
 ```
 
 在绑定后，`$a` 和 `$b` 的词法板条目指向相同的标量容器，因此给一个变量赋值也会改变另一个变量的内容。
@@ -193,21 +200,24 @@ Sigilless variables and parameters with the trait `is raw` always bind (whether 
 my $a = 42;
 my \b = $a;
 b++;
-say $a;         # OUTPUT: «43␤» 
+say $a;         # OUTPUT: «43
+» 
  
 sub f($c is raw) { $c++ }
 f($a);
-say $a;         # OUTPUT: «44␤» 
+say $a;         # OUTPUT: «44
+» 
 ```
 
-# [标量容器和列表（Scalar containers and listy things）](https://docs.perl6.org/language/containers#___top)
+# [标量容器和列表 / Scalar containers and listy things](https://docs.perl6.org/language/containers#___top)
 
 Perl6 中有许多语义稍有不同的位置容器类型。最基本的是 [List](https://docs.perl6.org/type/list)；它是由逗号操作符创建的。
 
 There are a number of positional container types with slightly different semantics in Perl 6. The most basic one is [List](https://docs.perl6.org/type/List); it is created by the comma operator.
 
 ```Perl6
-say (1, 2, 3).^name;    # OUTPUT: «List␤» 
+say (1, 2, 3).^name;    # OUTPUT: «List
+» 
 ```
 
 列表是不可变的，这意味着您不能更改列表中的元素数。但是，如果其中一个元素恰好是一个标量容器，你仍然可以给它赋值：
@@ -217,10 +227,12 @@ A list is immutable, which means you cannot change the number of elements in a l
 ```Perl6
 my $x = 42;
 ($x, 1, 2)[0] = 23;
-say $x;                 # OUTPUT: «23␤» 
+say $x;                 # OUTPUT: «23
+» 
 ($x, 1, 2)[1] = 23;     # Cannot modify an immutable value 
 CATCH { default { say .^name, ': ', .Str } };
-# OUTPUT: «X::Assignment::RO: Cannot modify an immutable Int␤» 
+# OUTPUT: «X::Assignment::RO: Cannot modify an immutable Int
+» 
 ```
 
 因此列表不关心它的元素时值还是容器，它们只存储和检索给它们的任何东西。
@@ -238,14 +250,15 @@ An `Array` is just like a list, except that it forces all its elements to be con
 ```Perl6
 my @a = 1, 2, 3;
 @a[0] = 42;
-say @a;         # OUTPUT: «[42 2 3]␤» 
+say @a;         # OUTPUT: «[42 2 3]
+» 
 ```
 
 `@a` 实际上存储了三个标量变量。`@a[0]` 返回其中的一个，赋值符号将容器内的值替换成新的 `42`。
 
 `@a` actually stores three scalar containers. `@a[0]` returns one of them, and the assignment operator replaces the integer value stored in that container with the new one, `42`.
 
-# [赋值以及绑定至数组变量（Assigning and binding to array variables）](https://docs.perl6.org/language/containers#___top)
+# [赋值以及绑定至数组变量 / Assigning and binding to array variables](https://docs.perl6.org/language/containers#___top)
 
 给标量以及数组变量赋值都做的同一件事情：舍弃旧值并输入新值。
 
@@ -256,28 +269,38 @@ Assignment to a scalar variable and to an array variable both do the same thing:
 Nevertheless, it's easy to observe how different they are:
 
 ```Perl6
-my $x = 42; say $x.^name;   # OUTPUT: «Int␤» 
-my @a = 42; say @a.^name;   # OUTPUT: «Array␤» 
+my $x = 42; say $x.^name;   # OUTPUT: «Int
+» 
+my @a = 42; say @a.^name;   # OUTPUT: «Array
+» 
 ```
 
+这是因为`标量`容器类型很好地隐藏了自己，但是`数组`不这样做。另外，对数组变量的赋值是强制的，因此可以将非数组值赋给数组变量。
+
 This is because the `Scalar` container type hides itself well, but `Array` makes no such effort. Also assignment to an array variable is coercive, so you can assign a non-array value to an array variable.
+
+要将非`数组`放入数组变量中，使用绑定：
 
 To place a non-`Array` into an array variable, binding works:
 
 ```Perl6
 my @a := (1, 2, 3);
-say @a.^name;               # OUTPUT: «List␤» 
+say @a.^name;               # OUTPUT: «List
+» 
 ```
 
-# [Binding to array elements](https://docs.perl6.org/language/containers#___top)
+# [绑定至数组元素 / Binding to array elements](https://docs.perl6.org/language/containers#___top)
+
+奇妙的是，Perl 6 支持绑定到数组元素：
 
 As a curious side note, Perl 6 supports binding to array elements:
 
-```
+```Perl6
 my @a = (1, 2, 3);
 @a[0] := my $x;
 $x = 42;
-say @a;                     # OUTPUT: «[42 2 3]␤» 
+say @a;                     # OUTPUT: «[42 2 3]
+» 
 ```
 
 If you've read and understood the previous explanations, it is now time to wonder how this can possibly work. After all, binding to a variable requires a lexpad entry for that variable, and while there is one for an array, there aren't lexpad entries for each array element, because you cannot expand the lexpad at runtime.
@@ -294,7 +317,8 @@ my $b := 42;
 @a[2] = $b;          # ...but this is fine. 
 @a[1, 2] := 1, 2;    # runtime error: X::Bind::Slice 
 CATCH { default { say .^name, ': ', .Str } };
-# OUTPUT: «X::Bind::Slice: Cannot bind to Array slice␤» 
+# OUTPUT: «X::Bind::Slice: Cannot bind to Array slice
+» 
 ```
 
 Operations that mix Lists and Arrays generally protect against such a thing happening accidentally.
@@ -315,25 +339,30 @@ for $a { };         # 1 iteration
 ```
 my @a = 1, 2, 3;
 my @b = @a, 4, 5;
-say @b.elems;               # OUTPUT: «3␤» 
+say @b.elems;               # OUTPUT: «3
+» 
 ```
 
 There are operations that flatten out sublists that are not inside a scalar container: slurpy parameters (`*@a`) and explicit calls to `flat`:
 
 ```
 my @a = 1, 2, 3;
-say (flat @a, 4, 5).elems;  # OUTPUT: «5␤» 
+say (flat @a, 4, 5).elems;  # OUTPUT: «5
+» 
  
 sub f(*@x) { @x.elems };
-say f @a, 4, 5;             # OUTPUT: «5␤» 
+say f @a, 4, 5;             # OUTPUT: «5
+» 
 ```
 
 You can also use `|` to create a [Slip](https://docs.perl6.org/type/Slip), introducing a list into the other.
 
 ```
 my @l := 1, 2, (3, 4, (5, 6)), [7, 8, (9, 10)];
-say (|@l, 11, 12);    # OUTPUT: «(1 2 (3 4 (5 6)) [7 8 (9 10)] 11 12)␤» 
-say (flat @l, 11, 12) # OUTPUT: «(1 2 3 4 5 6 7 8 (9 10) 11 12)␤» 
+say (|@l, 11, 12);    # OUTPUT: «(1 2 (3 4 (5 6)) [7 8 (9 10)] 11 12)
+» 
+say (flat @l, 11, 12) # OUTPUT: «(1 2 3 4 5 6 7 8 (9 10) 11 12)
+» 
 ```
 
 In the first case, every element of `@l` is *slipped* as the corresponding elements of the resulting list. `flat`, in the other hand, *flattens* all elements including the elements of the included array, except for `(9 10)`.
@@ -343,7 +372,8 @@ As hinted above, scalar containers prevent that flattening:
 ```
 sub f(*@x) { @x.elems };
 my @a = 1, 2, 3;
-say f $@a, 4, 5;            # OUTPUT: «3␤» 
+say f $@a, 4, 5;            # OUTPUT: «3
+» 
 ```
 
 The `@` character can also be used as a prefix to coerce the argument to a list, thus removing a scalar container:
@@ -380,7 +410,8 @@ Containers types, including `Array` and `Hash`, allow you to create self-referen
 my @a;
 @a[0] = @a;
 put @a.perl;
-# OUTPUT: «((my @Array_75093712) = [@Array_75093712,])␤» 
+# OUTPUT: «((my @Array_75093712) = [@Array_75093712,])
+» 
 ```
 
 Although Perl 6 does not prevent you from creating and using self-referential data, by doing so you may end up in a loop trying to dump the data. As a last resort, you can use Promises to [handle](https://docs.perl6.org/type/Promise#method_in) timeouts.
@@ -410,11 +441,14 @@ The default type constraint of a `Scalar` container is [Mu](https://docs.perl6.o
 
 ```
 my Str $x;
-say $x.VAR.of;  # OUTPUT: «(Str)␤» 
+say $x.VAR.of;  # OUTPUT: «(Str)
+» 
 my Num @a;
-say @a.VAR.of;  # OUTPUT: «(Num)␤» 
+say @a.VAR.of;  # OUTPUT: «(Num)
+» 
 my Int %h;
-say %h.VAR.of;  # OUTPUT: «(Int)␤» 
+say %h.VAR.of;  # OUTPUT: «(Int)
+» 
 ```
 
 ## [Definedness constraints](https://docs.perl6.org/language/containers#___top)
@@ -423,7 +457,8 @@ A container can also enforce a variable to be defined. Put a smiley in the decla
 
 ```
 my Int:D $def = 3;
-say $def;   # OUTPUT: «3␤» 
+say $def;   # OUTPUT: «3
+» 
 $def = Int; # Typecheck failure 
 ```
 
@@ -449,7 +484,8 @@ sub lucky(::T $type) {
 }
  
 my Int $a := lucky(Int);
-say $a = 12;    # OUTPUT: «12␤» 
+say $a = 12;    # OUTPUT: «12
+» 
 say $a = 'FOO'; # X::TypeCheck::Binding 
 say $a = 13;    # X::OutOfRange 
 CATCH { default { say .^name, ': ', .Str } };
