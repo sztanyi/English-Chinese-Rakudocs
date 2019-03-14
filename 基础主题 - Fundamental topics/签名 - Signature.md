@@ -159,7 +159,7 @@ sub baz(Str) { "Got passed a Str" }
 
 Type constraints may also be [type captures](https://docs.perl6.org/type/Signature#Type_captures).
 
-除了那些 *nominal* 类型之外，还可以以代码块的形式对参数进行附加约束，这些代码块必须返回真值才能通过类型检查
+除了那些*名义上*的类型之外，还可以以代码块的形式对参数进行附加约束，这些代码块必须返回真值才能通过类型检查
 
 In addition to those *nominal* types, additional constraints can be placed on parameters in the form of code blocks which must return a true value to pass the type check
 

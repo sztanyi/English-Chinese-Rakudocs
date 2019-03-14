@@ -1,5 +1,91 @@
 原文：https://docs.perl6.org/language/variables
 
+<!-- MarkdownTOC -->
+# `目录`
+
+
+- [变量](#%E5%8F%98%E9%87%8F)
+- [标记 / Sigils](#%E6%A0%87%E8%AE%B0--sigils)
+    - [单条目和列表赋值 / Item and List Assignment](#%E5%8D%95%E6%9D%A1%E7%9B%AE%E5%92%8C%E5%88%97%E8%A1%A8%E8%B5%8B%E5%80%BC--item-and-list-assignment)
+    - [无符号变量 / Sigilless variables](#%E6%97%A0%E7%AC%A6%E5%8F%B7%E5%8F%98%E9%87%8F--sigilless-variables)
+- [符号 / Twigils](#%E7%AC%A6%E5%8F%B7--twigils)
+    - [`*` 号](#-%E5%8F%B7)
+    - [`?` 号](#-%E5%8F%B7-1)
+    - [`!` 号](#-%E5%8F%B7-2)
+    - [`.` 号](#-%E5%8F%B7-3)
+    - [`^` 号](#%5E-%E5%8F%B7)
+    - [`:` 号](#-%E5%8F%B7-4)
+    - [`=` 号](#-%E5%8F%B7-5)
+    - [`~` 号](#%7E-%E5%8F%B7)
+- [变量声明符和作用域 / Variable declarators and scope](#%E5%8F%98%E9%87%8F%E5%A3%B0%E6%98%8E%E7%AC%A6%E5%92%8C%E4%BD%9C%E7%94%A8%E5%9F%9F--variable-declarators-and-scope)
+    - [`my` 声明符](#my-%E5%A3%B0%E6%98%8E%E7%AC%A6)
+    - [`our` 声明符](#our-%E5%A3%B0%E6%98%8E%E7%AC%A6)
+    - [使用 my 或者 our 声明一组变量](#%E4%BD%BF%E7%94%A8-my-%E6%88%96%E8%80%85-our-%E5%A3%B0%E6%98%8E%E4%B8%80%E7%BB%84%E5%8F%98%E9%87%8F)
+    - [`has` 声明符](#has-%E5%A3%B0%E6%98%8E%E7%AC%A6)
+    - [`anon` 声明符](#anon-%E5%A3%B0%E6%98%8E%E7%AC%A6)
+    - [`state` 声明符](#state-%E5%A3%B0%E6%98%8E%E7%AC%A6)
+        - [$ 变量](#%24-%E5%8F%98%E9%87%8F)
+        - [`@` 变量](#-%E5%8F%98%E9%87%8F)
+        - [`%` 变量](#%25-%E5%8F%98%E9%87%8F)
+    - [`augment` 声明符](#augment-%E5%A3%B0%E6%98%8E%E7%AC%A6)
+    - [`temp` 前缀](#temp-%E5%89%8D%E7%BC%80)
+    - [`let` 前缀](#let-%E5%89%8D%E7%BC%80)
+- [类型约束及初始化 / Type Constraints and Initialization](#%E7%B1%BB%E5%9E%8B%E7%BA%A6%E6%9D%9F%E5%8F%8A%E5%88%9D%E5%A7%8B%E5%8C%96--type-constraints-and-initialization)
+    - [已定义变量的默认指令 / Default Defined Variables Pragma](#%E5%B7%B2%E5%AE%9A%E4%B9%89%E5%8F%98%E9%87%8F%E7%9A%84%E9%BB%98%E8%AE%A4%E6%8C%87%E4%BB%A4--default-defined-variables-pragma)
+- [特殊变量 / Special Variables](#%E7%89%B9%E6%AE%8A%E5%8F%98%E9%87%8F--special-variables)
+    - [预定义词法变量 / Pre-defined lexical variables](#%E9%A2%84%E5%AE%9A%E4%B9%89%E8%AF%8D%E6%B3%95%E5%8F%98%E9%87%8F--pre-defined-lexical-variables)
+        - [`$_` 变量 / The `$_` Variable](#%24_-%E5%8F%98%E9%87%8F--the-%24_-variable)
+        - [`$/` 变量 / The `$/` Variable](#%24-%E5%8F%98%E9%87%8F--the-%24-variable)
+            - [位置属性 / Positional Attributes](#%E4%BD%8D%E7%BD%AE%E5%B1%9E%E6%80%A7--positional-attributes)
+            - [命名属性 / Named Attributes](#%E5%91%BD%E5%90%8D%E5%B1%9E%E6%80%A7--named-attributes)
+        - [`$!` 变量 / The `$!` Variable](#%24-%E5%8F%98%E9%87%8F--the-%24-variable-1)
+    - [编译时变量 / Compile-time variables](#%E7%BC%96%E8%AF%91%E6%97%B6%E5%8F%98%E9%87%8F--compile-time-variables)
+        - [其他编译时变量/ Other compile-time variables](#%E5%85%B6%E4%BB%96%E7%BC%96%E8%AF%91%E6%97%B6%E5%8F%98%E9%87%8F-other-compile-time-variables)
+        - [&?ROUTINE](#routine)
+        - [&?BLOCK](#block)
+        - [$?DISTRIBUTION](#%24distribution)
+    - [动态作用域变量 / Dynamic variables](#%E5%8A%A8%E6%80%81%E4%BD%9C%E7%94%A8%E5%9F%9F%E5%8F%98%E9%87%8F--dynamic-variables)
+        - [参数相关变量 / Argument related variables](#%E5%8F%82%E6%95%B0%E7%9B%B8%E5%85%B3%E5%8F%98%E9%87%8F--argument-related-variables)
+            - [`$*ARGFILES`](#%24argfiles)
+            - [`@*ARGS`](#args)
+            - [`&*ARGS-TO-CAPTURE`](#args-to-capture)
+            - [`&*GENERATE-USAGE`](#generate-usage)
+        - [特殊文件句柄： `STDIN`，`STDOUT` 以及 `STDERR` / Special filehandles: `STDIN`, `STDOUT` and `STDERR`](#%E7%89%B9%E6%AE%8A%E6%96%87%E4%BB%B6%E5%8F%A5%E6%9F%84%EF%BC%9A-stdin%EF%BC%8Cstdout-%E4%BB%A5%E5%8F%8A-stderr--special-filehandles-stdin-stdout-and-stderr)
+        - [运行时环境 / Runtime environment](#%E8%BF%90%E8%A1%8C%E6%97%B6%E7%8E%AF%E5%A2%83--runtime-environment)
+            - [`%*ENV`](#%25env)
+            - [`$*REPO`](#%24repo)
+            - [`$*INIT-INSTANT`](#%24init-instant)
+            - [`$*TZ`](#%24tz)
+            - [`$*CWD`](#%24cwd)
+            - [`$*KERNEL`](#%24kernel)
+            - [`$*DISTRO`](#%24distro)
+            - [`$*VM`](#%24vm)
+            - [`$*PERL`](#%24perl)
+            - [`$*PID`](#%24pid)
+            - [`$*PROGRAM-NAME`](#%24program-name)
+            - [`$*PROGRAM`](#%24program)
+            - [`&*EXIT`](#exit)
+            - [`$*EXECUTABLE`](#%24executable)
+            - [`$*EXECUTABLE-NAME`](#%24executable-name)
+            - [`$*USAGE`](#%24usage)
+            - [`$*USER`](#%24user)
+            - [`$*GROUP`](#%24group)
+            - [`$*HOMEDRIVE`](#%24homedrive)
+            - [`$*HOMEPATH`](#%24homepath)
+            - [`$*HOME`](#%24home)
+            - [`$*SPEC`](#%24spec)
+            - [`$*TMPDIR`](#%24tmpdir)
+            - [`$*TOLERANCE`](#%24tolerance)
+            - [`$*THREAD`](#%24thread)
+            - [`$*SCHEDULER`](#%24scheduler)
+            - [`$*SAMPLER`](#%24sampler)
+- [命名约定 / Naming conventions](#%E5%91%BD%E5%90%8D%E7%BA%A6%E5%AE%9A--naming-conventions)
+
+<!-- /MarkdownTOC -->
+
+
+
+<a id="%E5%8F%98%E9%87%8F"></a>
 # 变量
 
 Perl 6 中的变量
@@ -10,6 +96,7 @@ Variables in Perl 6
 
 Variable names can start with or without a special character called a *sigil*, followed optionally by a second special character named *twigil* and then an [identifier](https://docs.perl6.org/language/syntax#Identifiers). Variables are symbolic names for values or [containers](https://docs.perl6.org/language/containers). Variable declarations or assignment of values may create a container on the fly.
 
+<a id="%E6%A0%87%E8%AE%B0--sigils"></a>
 # 标记 / Sigils
 
 共有四种标记。标量标记 `$`，位置标记 `@`，关联标记 `%` 和可调用标记 `&`。
@@ -65,6 +152,7 @@ CATCH { default { put .^name, ': ', .Str } }
 
 For information on variables without sigils, see [sigilless variables](https://docs.perl6.org/language/variables#Sigilless_variables).
 
+<a id="%E5%8D%95%E6%9D%A1%E7%9B%AE%E5%92%8C%E5%88%97%E8%A1%A8%E8%B5%8B%E5%80%BC--item-and-list-assignment"></a>
 ## 单条目和列表赋值 / Item and List Assignment
 
 有两种类型的变量分配，单条目赋值和列表赋值。两者都用 `=` 作为操作符。左边的语法决定了 `=` 号是用作单条目还是列表赋值。
@@ -150,6 +238,7 @@ The assignment expression is parsed as `@array = (($num = 42), "str")`, because
 
 See [operators](https://docs.perl6.org/language/operators) for more details on precedence.
 
+<a id="%E6%97%A0%E7%AC%A6%E5%8F%B7%E5%8F%98%E9%87%8F--sigilless-variables"></a>
 ## 无符号变量 / Sigilless variables
 
 使用 \ 作为前缀，可以生成无标记的变量：
@@ -187,6 +276,7 @@ sub logged(&f, |args) {
 
 Sigilless variables can also be used for binding. See [Binding](https://docs.perl6.org/language/containers#Binding) for more information.
 
+<a id="%E7%AC%A6%E5%8F%B7--twigils"></a>
 # 符号 / Twigils
 
 符号影响变量的作用域；但是他们对主标记符是否插值无影响。如果变量 `$a` 内插了， `$^a`, `$*a`, `$=a`, `$?a`, `$.a` 也可以，只取决于 `$`。
@@ -219,6 +309,7 @@ Twigils influence the scoping of a variable; however, they have no influence ove
 | ^      | Self-declared formal positional parameter               |
 | ~      | The sublanguage seen by the parser at this lexical spot |
 
+<a id="-%E5%8F%B7"></a>
 ## `*` 号
 
 动态变量使用这个符号，这种变量不在其所在的外部作用域查值，而是在调用者作用域查值的。
@@ -273,6 +364,7 @@ say foo; # OUTPUT: «bar» 
 
 用 `my` 和 `our` 声明的动态变量分别有词法作用域和包作用域。动态解析以及通过 `our` 引入的借助符号表的解析是两个正交问题。
 
+<a id="-%E5%8F%B7-1"></a>
 ## `?` 号
 
 编译时变量使用 `?` 号。这个变量就会被编译器知晓，并且在变量编译进去后不能修改。一个常见的例子是：
@@ -289,6 +381,7 @@ say "$?FILE: $?LINE"; # OUTPUT: "hello.pl: 23" 
 
 For a list of these special variables, see [compile-time variables](https://docs.perl6.org/language/variables#Compile-time_variables).
 
+<a id="-%E5%8F%B7-2"></a>
 ## `!` 号
 
 属性是存在于类实例中的变量。他们可以在类中通过 `!` 号被直接访问：
@@ -310,6 +403,7 @@ my class Point {
 
 Note how the attributes are declared as `$.x` and `$.y` but are still accessed via `$!x` and `$!y`. This is because in Perl 6 all attributes are private and can be directly accessed within the class by using `$!attribute-name`. Perl 6 may automatically generate accessor methods for you though. For more details on objects, classes and their attributes see [object orientation](https://docs.perl6.org/language/objects).
 
+<a id="-%E5%8F%B7-3"></a>
 ## `.` 号
 
 `.` 号事实上不是给变量用的，下面代码
@@ -348,6 +442,7 @@ SaySomething.b; # OUTPUT: «a» 
 
 For more details on objects, classes and their attributes and methods see [object orientation](https://docs.perl6.org/language/objects).
 
+<a id="%5E-%E5%8F%B7"></a>
 ## `^` 号
 
 ^ 号为代码块或者函数声明正式的位置参数。`$^variable` 形式的变量是占位符变量。他们可以用在裸代码块中来声明代码块的正式参数。因此下面代码中的代码块
@@ -383,6 +478,7 @@ sub say-it()  { say $^a; } # invalid 
 
 Placeholder variables cannot have type constraints or a variable name with a single upper-case letter (this is disallowed to enable catching some Perl5-isms).
 
+<a id="-%E5%8F%B7-4"></a>
 ## `:` 号
 
 `:` 号为块或子例程声明一个正式的命名参数。以这种形式声明的变量也是一种占位符变量。
@@ -400,6 +496,7 @@ say { $:add ?? $^a + $^b !! $^a - $^b }( 4, 5 ) :!add
 
 See [^](https://docs.perl6.org/routine/$CIRCUMFLEX_ACCENT) for more details about placeholder variables.
 
+<a id="-%E5%8F%B7-5"></a>
 ## `=` 号
 
 = 号用于访问 Pod 变量。当前文件中的每个 Pod 块可以通过 Pod 对象访问，例如 `$=data`，`$=SYNOPSIS` 或 `=UserBlock`。即变量有着跟 Pod 块相同的名字以及一个 `=` 号。
@@ -423,6 +520,7 @@ You may access the Pod tree which contains all Pod structures as a hierarchical 
 
 Note that all those `$=someBlockName` support the `Positional` and the `Associative` roles.
 
+<a id="%7E-%E5%8F%B7"></a>
 ## `~` 号
 
 ~ 号是用来引用子语言（也叫 slangs ）。下面这些变量很有用：
@@ -448,6 +546,7 @@ augment slang Regex {  # derive from $~Regex and then modify $~Regex
 }
 ```
 
+<a id="%E5%8F%98%E9%87%8F%E5%A3%B0%E6%98%8E%E7%AC%A6%E5%92%8C%E4%BD%9C%E7%94%A8%E5%9F%9F--variable-declarators-and-scope"></a>
 # 变量声明符和作用域 / Variable declarators and scope
 
 大多数时候使用 `my` 关键字创建新变量就足够了：
@@ -492,6 +591,7 @@ There are also two prefixes that resemble declarators but act on predefined vari
 | temp   | Restores a variable's value at the end of scope / 在作用域结束时恢复变量的值。                                                         |
 | let    | Restores a variable's value at the end of scope if the block exits unsuccessfully / 如果代码块退出不成功，在作用域结束时恢复变量的值。 |
 
+<a id="my-%E5%A3%B0%E6%98%8E%E7%AC%A6"></a>
 ## `my` 声明符
 
 使用 `my` 声明变量赋予了变量词法作用域。这意味着它只存在于当前块中。例如：
@@ -555,6 +655,7 @@ To make `new-location()` print `nowhere`, make `$location` a dynamic variab
 
 `my` is the default scope for subroutines, so `my sub x() {}` and `sub x() {}` do exactly the same thing.
 
+<a id="our-%E5%A3%B0%E6%98%8E%E7%AC%A6"></a>
 ## `our` 声明符
 
 `our` 声明的变量跟 `my` 声明的一样，除了额外给符号表插入了一个别名。
@@ -578,6 +679,7 @@ In order to create more than one variable with package scope, at the same time, 
 our ( $foo, $bar );
 ```
 
+<a id="%E4%BD%BF%E7%94%A8-my-%E6%88%96%E8%80%85-our-%E5%A3%B0%E6%98%8E%E4%B8%80%E7%BB%84%E5%8F%98%E9%87%8F"></a>
 ## 使用 my 或者 our 声明一组变量
 
 `my` 和 `our` 声明符都接受一组括起来的变量作为参数来一次声明多个变量。
@@ -620,6 +722,7 @@ say [$a, %h].perl;
 # OUTPUT: «["b", {:th(1)}]» 
 ```
 
+<a id="has-%E5%A3%B0%E6%98%8E%E7%AC%A6"></a>
 ## `has` 声明符
 
 `has` 将属性作用于类实例或者角色，以及类或角色的方法。`has` 暗示了方法，因此 `has method x() {}` 与 `mehod x() {}` 等价。
@@ -630,6 +733,7 @@ say [$a, %h].perl;
 
 See [object orientation](https://docs.perl6.org/language/objects) for more documentation and some examples.
 
+<a id="anon-%E5%A3%B0%E6%98%8E%E7%AC%A6"></a>
 ## `anon` 声明符
 
 `anon` 声明符可防止在词法作用域，方法表和其他任何地方安放符号。
@@ -649,6 +753,7 @@ say %operations<square>.name;       # square 
 say %operations<square>(8);         # 64 
 ```
 
+<a id="state-%E5%A3%B0%E6%98%8E%E7%AC%A6"></a>
 ## `state` 声明符
 
 跟 `my` 类似，`state` 声明词法作用域变量。但是，初始化只会在首次遇到时执行一次。 因此，状态变量将在封闭块或例程的多次执行中保持值不被改变。
@@ -748,6 +853,7 @@ await
 # many other more or less odd variations can be produced 
 ```
 
+<a id="%24-%E5%8F%98%E9%87%8F"></a>
 ### $ 变量
 
 除了显式声明的命名状态变量外，`$` 可以用作匿名 `state` 变量而不需要明确的 `state` 声明。
@@ -822,6 +928,7 @@ subset DynInt where $ = ::('Int'); # 每次类型检查，初始化代码�
 subset DynInt where state $ = ::('Int'); # 初始化只会被调用一次，这才是合适的缓存 / the initializer is called once, this is a proper cache 
 ```
 
+<a id="-%E5%8F%98%E9%87%8F"></a>
 ### `@` 变量
 
 类似于 `$` 变量，还有一个匿名[位置](https://docs.perl6.org/type/Positional) `state` 变量 `@` 。
@@ -863,6 +970,7 @@ foo($_) for ^3;
 
 As with `$`, each mention of `@` in a scope introduces a new anonymous array.
 
+<a id="%25-%E5%8F%98%E9%87%8F"></a>
 ### `%` 变量
 
 另外，还有一个[关联](https://docs.perl6.org/type/Associative)匿名关联变量 `%`。
@@ -903,6 +1011,7 @@ foo($_) for ^3;
 
 As with the other anonymous state variables, each mention of `%` within a given scope will effectively introduce a separate variable.
 
+<a id="augment-%E5%A3%B0%E6%98%8E%E7%AC%A6"></a>
 ## `augment` 声明符
 
 使用 `augment`，你可以将属性和方法添加到现有的类和语法，只要您先激活 `MONKEY-TYPING` 指令即可。
@@ -926,6 +1035,7 @@ say 42.is-answer;       # OUTPUT: «True» 
 
 (In this case, the better solution would be to use a [function](https://docs.perl6.org/language/functions)).
 
+<a id="temp-%E5%89%8D%E7%BC%80"></a>
 ## `temp` 前缀
 
 像 `my` 一样，`temp` 会在其范围的末尾恢复变量的旧值。但是 `temp` 不会创建新变量。
@@ -965,6 +1075,7 @@ print g(g(f(g()), g(), f()));
 #          </g>» 
 ```
 
+<a id="let-%E5%89%8D%E7%BC%80"></a>
 ## `let` 前缀
 
 如果该块以失败退出，则恢复先前的值。成功退出意味着块返回了定义的值或列表。
@@ -990,6 +1101,7 @@ say $answer;
 
 In the above case, if the `Bool.pick` returns true, the answer will stay as 84 because the block returns a defined value (`say` returns true). Otherwise the `die` statement will cause the block to exit unsuccessfully, resetting the answer to 42.
 
+<a id="%E7%B1%BB%E5%9E%8B%E7%BA%A6%E6%9D%9F%E5%8F%8A%E5%88%9D%E5%A7%8B%E5%8C%96--type-constraints-and-initialization"></a>
 # 类型约束及初始化 / Type Constraints and Initialization
 
 变量通过所绑定的[容器](https://docs.perl6.org/language/containers)有类型约束，容器在声明符与变量名之间。默认的类型约束是 [Mu](https://docs.perl6.org/type/Mu)。也可以使用 [of](https://docs.perl6.org/type/Variable#trait_of)特性来设置类型约束。
@@ -1034,6 +1146,7 @@ $product = Nil;
 say $product;                       # OUTPUT: «1» 
 ```
 
+<a id="%E5%B7%B2%E5%AE%9A%E4%B9%89%E5%8F%98%E9%87%8F%E7%9A%84%E9%BB%98%E8%AE%A4%E6%8C%87%E4%BB%A4--default-defined-variables-pragma"></a>
 ## 已定义变量的默认指令 / Default Defined Variables Pragma
 
 强制所有变量适用已定义约束，使用指令 `use variables :D`。指令为词法作用域并且可以使用 `use variables :_` 关闭。
@@ -1053,12 +1166,14 @@ my Int $i = 1; # that works 
 
 Note that assigning [Nil](https://docs.perl6.org/type/Nil) will revert the variable to its default value. The default value of a defined constraint type is the type appended with `:D` (e.g. `Int:D`). That means a definedness constraint is no guarantee of definedness. This only applies to variable initializers, not to [Signature](https://docs.perl6.org/type/Signature)s. or subsequent assignments to a variable.
 
+<a id="%E7%89%B9%E6%AE%8A%E5%8F%98%E9%87%8F--special-variables"></a>
 # 特殊变量 / Special Variables
 
 Perl 6 试图对特殊变量使用可描述的长名。只有三个特殊变量很简短。
 
 Perl 6 attempts to use long, descriptive names for special variables. There are only three special variables that are extra short.
 
+<a id="%E9%A2%84%E5%AE%9A%E4%B9%89%E8%AF%8D%E6%B3%95%E5%8F%98%E9%87%8F--pre-defined-lexical-variables"></a>
 ## 预定义词法变量 / Pre-defined lexical variables
 
 每个代码块都可以访问到的三个特殊变量：
@@ -1071,6 +1186,7 @@ There are three special variables that are available in every block:
 | $/       | regex match    |
 | $!       | exceptions     |
 
+<a id="%24_-%E5%8F%98%E9%87%8F--the-%24_-variable"></a>
 ### `$_` 变量 / The `$_` Variable
 
 `$_` 是主题变量。代码块没有显示签名时它会作为默认参数，因此类似 `for @array { ... }` 以及 `given $var { ... }` 结构的代码块被调用时会绑定到 `$_`。
@@ -1112,6 +1228,7 @@ for <ab:c d$e fgh ij*> {
 #          ij*» 
 ```
 
+<a id="%24-%E5%8F%98%E9%87%8F--the-%24-variable"></a>
 ### `$/` 变量 / The `$/` Variable
 
 `$/` 是匹配变量。它存储了上一次[正则](https://docs.perl6.org/language/regexes)匹配的结果，因此通常包含[匹配](https://docs.perl6.org/type/Match)类型的对象。
@@ -1157,6 +1274,7 @@ $/.make: 'McTesty';
 say $(); # OUTPUT: «McTesty»; 
 ```
 
+<a id="%E4%BD%8D%E7%BD%AE%E5%B1%9E%E6%80%A7--positional-attributes"></a>
 #### 位置属性 / Positional Attributes
 
 `$/` 有位置属性，如果[正则]中(https://docs.perl6.org/language/regexes)有匹配组的话，就是那些括号组成的匹配组。
@@ -1191,6 +1309,7 @@ say @$/.join; # OUTPUT: «bbbbbdddddeff
 say @().join; # OUTPUT: «bbbbbdddddeff» 
 ```
 
+<a id="%E5%91%BD%E5%90%8D%E5%B1%9E%E6%80%A7--named-attributes"></a>
 #### 命名属性 / Named Attributes
 
 `$/` 有命名属性当[正则](https://docs.perl6.org/language/regexes)中有命名群组捕获或者正则中有调用另外一个正则。
@@ -1221,6 +1340,7 @@ say %$/.join;       # OUTPUT: «"punctuation     ....final-word  see?"
 say %().join;       # OUTPUT: «"punctuation     ....final-word  see?"» 
 ```
 
+<a id="%24-%E5%8F%98%E9%87%8F--the-%24-variable-1"></a>
 ### `$!` 变量 / The `$!` Variable
 
 `$!` 是错误变量。`try` 代码块或者语句捕获的异常存储在 `$!` 中。如果没有异常被捕获，`$!` 会被设置为 `Any` 类型对象。
@@ -1231,6 +1351,7 @@ say %().join;       # OUTPUT: «"punctuation     ....final-word 
 
 Note that `CATCH` blocks *do not* set `$!`. Rather they set `$_` inside the block to the caught exception.
 
+<a id="%E7%BC%96%E8%AF%91%E6%97%B6%E5%8F%98%E9%87%8F--compile-time-variables"></a>
 ## 编译时变量 / Compile-time variables
 
 所有的编译时变量在符号中都带有问号。身为*编译时*，它们无法在运行时被改变，但是它们在内省程序时很有价值。最常见的编译时变量如下：
@@ -1244,6 +1365,7 @@ All compile time variables have a question mark as part of the twigil. Being *c
 | %?LANG      | What is the current set of interwoven languages?                              | 我在哪个交织的语言中 ？      |
 | %?RESOURCES | The files associated with the "Distribution" of the current compilation unit. | 当前发行版编译单元相关的文件 |
 
+<a id="%E5%85%B6%E4%BB%96%E7%BC%96%E8%AF%91%E6%97%B6%E5%8F%98%E9%87%8F-other-compile-time-variables"></a>
 ### 其他编译时变量/ Other compile-time variables
 
 下列编译时变量可以进行更深入的内省：
@@ -1270,6 +1392,7 @@ These variables are Rakudo specific, with all the corresponding caveats:
 
 | $?BITS | Number of bits of the platform the program is being compiled | # 程序被编译时平台的位数。|
 
+<a id="routine"></a>
 ### &?ROUTINE
 
 程序实际在哪个函数，编译时变量 `&ROUTINE` 为此提供了内省功能。它会返回当前函数的一个 [Sub](https://docs.perl6.org/type/Sub) 实例。它支持使用方法 `.name` 或者 `.signature` 以及其他跟 `Sub` 相关的方法来获取调用函数名。
@@ -1294,6 +1417,7 @@ sub do-work {
 do-work;
 ```
 
+<a id="block"></a>
 ### &?BLOCK
 
 `&?BLOCK` 行为与 `&?ROUTINE` 类似，但是它允许内省单一代码块。其持有一个 [Sub](https://docs.perl6.org/type/Sub) 并且允许在相同代码块中迭代。
@@ -1307,6 +1431,7 @@ for '.' {
 }
 ```
 
+<a id="%24distribution"></a>
 ### $?DISTRIBUTION
 
 `$？DISTRIBUTION` 提供对当前编译单元的 [Distribution](https://docs.perl6.org/type/distribution) 的访问。这使模块作者可以通过原始相对路径名引用分发中的其他文件，或查看元数据（通过 `.meta` 方法），而无需知道底层文件结构（例如 `Compunit::Repository::Installation` 如何在安装时更改文件布局）。
@@ -1327,18 +1452,21 @@ sub module-source {
 }
 ```
 
+<a id="%E5%8A%A8%E6%80%81%E4%BD%9C%E7%94%A8%E5%9F%9F%E5%8F%98%E9%87%8F--dynamic-variables"></a>
 ## 动态作用域变量 / Dynamic variables
 
 所有的动态作用域变量带有 `*` 符号，名字习惯上使用大写。
 
 All dynamically scoped variables have the `*` twigil, and their name is (conventionally) written in uppercase.
 
+<a id="%E5%8F%82%E6%95%B0%E7%9B%B8%E5%85%B3%E5%8F%98%E9%87%8F--argument-related-variables"></a>
 ### 参数相关变量 / Argument related variables
 
 这些变量与传给脚本的参数有关。
 
 These variables are related to the arguments passed to a script.
 
+<a id="%24argfiles"></a>
 #### `$*ARGFILES`
 
 [IO::ArgFiles](https://docs.perl6.org/type/IO::ArgFiles) （一个 [IO::CatHandle](https://docs.perl6.org/type/IO::CatHandle) 的空子类），如果 `@*ARGS` 中包含文件话，使用 `@*ARGS` 作为源文件，否则用 `$*IN`。 当使用 `$*IN` 时， 它的 `:chomp`，`:encoding` 以及 `:bin` 将会被给到
@@ -1346,24 +1474,28 @@ These variables are related to the arguments passed to a script.
 
 As of the 6.d version, `$*ARGFILES` *inside* [`sub MAIN`](https://docs.perl6.org/language/functions#sub_MAIN) is always set to `$*IN`, even when `@*ARGS` is not empty. See [the class documentation](https://docs.perl6.org/type/IO::ArgFiles#%24%2AARGFILES) for examples and more context.
 
+<a id="args"></a>
 #### `@*ARGS`
 
 `@*ARGS` 包含命令行中的参数。
 
 `@*ARGS` contains the arguments from the command line.
 
+<a id="args-to-capture"></a>
 #### `&*ARGS-TO-CAPTURE`
 
 在任意用来分析默认参数的自定义 [`ARGS-TO-CAPTURE`](https://docs.perl6.org/language/create-cli#sub_ARGS-TO-CAPTURE) 函数中的动态作用域变量。其与自定义 `ARGS-TO-CAPTURE` 函数一样接受同样的参数。
 
 A dynamic variable available inside any custom [`ARGS-TO-CAPTURE`](https://docs.perl6.org/language/create-cli#sub_ARGS-TO-CAPTURE) subroutine that can be used to perform the default argument parsing. Takes the same parameters as are expected of the custom `ARGS-TO-CAPTURE` subroutine.
 
+<a id="generate-usage"></a>
 #### `&*GENERATE-USAGE`
 
 在任意用来生成默认使用说明信息的自定义 [`GENERATE-USAGE`](https://docs.perl6.org/language/create-cli#sub_GENERATE-USAGE) 函数中的动态作用域变量。其与自定义 `GENERATE-USAGE` 函数一样接受同样的参数。
 
 A dynamic variable available inside any custom [`GENERATE-USAGE`](https://docs.perl6.org/language/create-cli#sub_GENERATE-USAGE) subroutine that can be used to perform the default usage message creation. Takes the same parameters as are expected of the custom `GENERATE-USAGE` subroutine.
 
+<a id="%E7%89%B9%E6%AE%8A%E6%96%87%E4%BB%B6%E5%8F%A5%E6%9F%84%EF%BC%9A-stdin%EF%BC%8Cstdout-%E4%BB%A5%E5%8F%8A-stderr--special-filehandles-stdin-stdout-and-stderr"></a>
 ### 特殊文件句柄： `STDIN`，`STDOUT` 以及 `STDERR` / Special filehandles: `STDIN`, `STDOUT` and `STDERR`
 
 更多关于特殊文件句柄的信息请参考 [Input and Output](https://docs.perl6.org/language/io) 以及[IO::Special](https://docs.perl6.org/type/IO::Special) 类。[IO::Handle](https://docs.perl6.org/type/IO::Handle) 包含使用 `$*IN` 读取标准输入的几个例子。
@@ -1378,42 +1510,49 @@ For more information about special filehandles please see also the [Input and Ou
 - `$*OUT` Standard output filehandle, AKA *STDOUT*.
 - `$*ERR` Standard error filehandle, AKA *STDERR*.
 
+<a id="%E8%BF%90%E8%A1%8C%E6%97%B6%E7%8E%AF%E5%A2%83--runtime-environment"></a>
 ### 运行时环境 / Runtime environment
 
 这些动态作用域变量包含脚本或者程序环境相关的信息。
 
 These dynamic variables contain information related to the environment the script or program is running in.
 
+<a id="%25env"></a>
 #### `%*ENV`
 
 操作系统环境变量。数值由 [allomorphs](https://docs.perl6.org/language/glossary#index-entry-Allomorph)提供。
 
 Operating system environment variables. Numeric values are provided as [allomorphs](https://docs.perl6.org/language/glossary#index-entry-Allomorph)
 
+<a id="%24repo"></a>
 #### `$*REPO`
 
 这个变量有已安装或者装载的模块信息。
 
 This variable holds information about modules installed/loaded.
 
+<a id="%24init-instant"></a>
 #### `$*INIT-INSTANT`
 
 `$*INIT-INSTANT` 是一个 [Instant](https://docs.perl6.org/type/Instant) 对象，表示程序的启动时间。这个表示的是核心代码启动时的时间，因此它的值可能比你程序中的 `INIT now` 或者 `BEGIN now` 要早几毫秒。
 
 `$*INIT-INSTANT` is an [Instant](https://docs.perl6.org/type/Instant) object representing program startup time. In particular, this is when the core code starts up, so the value of `$*INIT-INSTANT` may be a few milliseconds earlier than `INIT now` or even `BEGIN now` executed in your program.
 
+<a id="%24tz"></a>
 #### `$*TZ`
 
 `$*TZ` 表示系统本地时区偏移，值为与GMT相差的**秒**数。
 
 `$*TZ` contains the system's local timezone offset, as the number of **seconds** from GMT.
 
+<a id="%24cwd"></a>
 #### `$*CWD`
 
 当前工作目录。
 
 It contains the `C`urrent `W`orking `D`irectory.
 
+<a id="%24kernel"></a>
 #### `$*KERNEL`
 
 `$*KERNEL` 包含一个 [`Kernel` 实例](https://docs.perl6.org/type/Kernel)，它调用 `.gist` 方法的输出即为当前生效内核。
@@ -1424,6 +1563,7 @@ It contains the `C`urrent `W`orking `D`irectory.
 say $*KERNEL; # OUTPUT: «linux (4.4.92.31.default)» 
 ```
 
+<a id="%24distro"></a>
 #### `$*DISTRO`
 
 这个对象(类型为 `Distro`)包含当前操作系统的发行版信息。例如：
@@ -1459,6 +1599,7 @@ say $*DISTRO.perl;
 » 
 ```
 
+<a id="%24vm"></a>
 #### `$*VM`
 
 此变量包含当前运行代码的虚拟机，以及有关上述虚拟机内部工作的其他信息。
@@ -1482,6 +1623,7 @@ say $*VM.config<versionmajor>, ".", $*VM.config<versionminor>;
 
 which are the version of the virtual machine, generally the same one as the one used in the interpreter and the overall Perl 6 environment.
 
+<a id="%24perl"></a>
 #### `$*PERL`
 
 此对象包含有关当前Perl6语言实现的信息：
@@ -1508,72 +1650,84 @@ It stringifies to `Perl 6`:
 $*PERL.put; # OUTPUT: «Perl 6» 
 ```
 
+<a id="%24pid"></a>
 #### `$*PID`
 
 包含描述当前进程标识符的整数的对象（依赖于操作系统）。
 
 Object containing an integer describing the current Process IDentifier (operating system dependent).
 
+<a id="%24program-name"></a>
 #### `$*PROGRAM-NAME`
 
 它包含当前可执行文件在命令行中输入时的路径，或者如果使用 -e 标志调用 perl，则为 `-e`。
 
 This contains the path to the current executable as it was entered on the command line, or `-e` if perl was invoked with the -e flag.
 
+<a id="%24program"></a>
 #### `$*PROGRAM`
 
 包含正在执行的 Perl6 程序的位置（以 `IO::Path` 对象的形式）。
 
 Contains the location (in the form of an `IO::Path` object) of the Perl 6 program being executed.
 
+<a id="exit"></a>
 #### `&*EXIT`
 
 这是一个[可调用](https://docs.perl6.org/type/callable)，其中包含执行 `exit()` 调用时将执行的代码。用于将 Perl6 嵌入到另一个语言运行时（如 Perl5 中的 Inline::Perl6）的情况。
 
 This is a [Callable](https://docs.perl6.org/type/Callable) that contains the code that will be executed when doing an `exit()` call. Intended to be used in situations where Perl 6 is embedded in another language runtime (such as Inline::Perl6 in Perl 5).
 
+<a id="%24executable"></a>
 #### `$*EXECUTABLE`
 
 包含当前正在运行的Perl可执行文件的 `IO::Path` 绝对路径。
 
 Contains an `IO::Path` absolute path of the perl executable that is currently running.
 
+<a id="%24executable-name"></a>
 #### `$*EXECUTABLE-NAME`
 
 包含当前运行的 Perl 可执行文件的名称。（例如 perl6-p、perl6-m）。优先选择 `$*EXECUTABLE`，因为不能保证 perl 可执行文件在 `PATH` 中。
 
 Contains the name of the Perl executable that is currently running. (e.g. perl6-p, perl6-m). Favor `$*EXECUTABLE` over this one, since it's not guaranteed that the perl executable is in `PATH`.
 
+<a id="%24usage"></a>
 #### `$*USAGE`
 
 这是从 `sub MAIN` 和 `sub USAGE` 内部的 `MAIN` 函数签名生成的默认用法消息。变量为*只读*。
 
 This is the default usage message generated from the signatures of `MAIN` subs available from inside `sub MAIN` and `sub USAGE`. The variable is *read-only*.
 
+<a id="%24user"></a>
 #### `$*USER`
 
 包含运行程序的用户信息的一种 `同质异形体` 。如果将其视为字符串则其值为用户名，如果将其视为数字，则其值为用户的数值。
 
 An `Allomorph` with information about the user that is running the program. It will evaluate to the username if treated as a string and the numeric user id if treated as a number.
 
+<a id="%24group"></a>
 #### `$*GROUP`
 
 包含运行程序的主组信息的一种 `同质异形体` 。如果将其视为字符串则其值为组名，如果将其视为数字，则其值为组的数值。
 
 An `Allomorph` with the primary group of the user who is running the program. It will evaluate to the groupname only if treated as a string and the numeric group id if treated as a number.
 
+<a id="%24homedrive"></a>
 #### `$*HOMEDRIVE`
 
 包含有关在 Windows 上运行程序的用户的“家驱动器”的信息。它在其他操作系统中没有定义。
 
 Contains information about the "home drive" of the user that is running the program on Windows. It's not defined in other operating systems.
 
+<a id="%24homepath"></a>
 #### `$*HOMEPATH`
 
 包含有关在 Windows 上运行程序的用户目录路径的信息。它在其他操作系统中没有定义。
 
 Contains information about the path to the user directory that is running the program on Windows. It's not defined in other operating systems.
 
+<a id="%24home"></a>
 #### `$*HOME`
 
 包含一个 [IO::Path](https://docs.perl6.org/type/IO::Path) 对象，表示运行程序的用户的“家目录”。如果设置，则使用 `%*ENV<HOME>`。
@@ -1584,30 +1738,35 @@ Contains an [IO::Path](https://docs.perl6.org/type/IO::Path) object representing
 
 On Windows, uses `%*ENV<HOMEDRIVE> ~ %*ENV<HOMEPATH>`. If the home directory cannot be determined, it will be [Any](https://docs.perl6.org/type/Any).
 
+<a id="%24spec"></a>
 #### `$*SPEC`
 
 包含程序所运行平台的适当 [IO::Spec](https://docs.perl6.org/type/IO::Spec) 子类。这是操作系统的一个更高级别的类；例如，对于Linux，它将返回 `Unix`（以 `IO::Spec` 类的形式，用于当前实现）。
 
 Contains the appropriate [IO::Spec](https://docs.perl6.org/type/IO::Spec) sub-class for the platform that the program is running on. This is a higher-level class for the operating system; it will return `Unix`, for instance, in the case of Linux (in the form of the `IO::Spec` class used for the current implementation).
 
+<a id="%24tmpdir"></a>
 #### `$*TMPDIR`
 
 这是一个 [IO::Path](https://docs.perl6.org/type/IO::Path) 对象，表示由 [`.tmpdir IO::Spec::* method`](https://docs.perl6.org/routine/tmpdir)确定的“系统临时目录”。
 
 This is an [IO::Path](https://docs.perl6.org/type/IO::Path) object representing the "system temporary directory" as determined by [`.tmpdir IO::Spec::* method`](https://docs.perl6.org/routine/tmpdir).
 
+<a id="%24tolerance"></a>
 #### `$*TOLERANCE`
 
 由 [`=~=`](https://docs.perl6.org/routine/=~=) 运算符和依赖它的任何操作使用的变量，以确定两个值是否近似相等。默认为 `1e-15`。
 
 Variable used by the [`=~=`](https://docs.perl6.org/routine/=~=) operator, and any operations that depend on it, to decide if two values are approximately equal. Defaults to `1e-15`.
 
+<a id="%24thread"></a>
 #### `$*THREAD`
 
 包含表示当前执行线程的 [Thread](https://docs.perl6.org/type/thread) 对象。
 
 Contains a [Thread](https://docs.perl6.org/type/Thread) object representing the currently executing thread.
 
+<a id="%24scheduler"></a>
 #### `$*SCHEDULER`
 
 这是表示当前默认计划程序的 [ThreadPoolScheduler](https://docs.perl6.org/type/threadpoolscheduler) 对象。
@@ -1626,12 +1785,14 @@ my $*SCHEDULER = ThreadPoolScheduler.new( max_threads => 128 );
 
 This behavior is not tested in the spec tests and is subject to change.
 
+<a id="%24sampler"></a>
 #### `$*SAMPLER`
 
 当前用于生成系统状态快照的 [Telemetry::Sampler](https://docs.perl6.org/type/Telemetry::Sampler)。仅当已加载 [Telemetry]（https://docs.perl6.org/type/teletry）时可用。
 
 The current [Telemetry::Sampler](https://docs.perl6.org/type/Telemetry::Sampler) used for making snapshots of system state. Only available if [Telemetry](https://docs.perl6.org/type/Telemetry) has been loaded.
 
+<a id="%E5%91%BD%E5%90%8D%E7%BA%A6%E5%AE%9A--naming-conventions"></a>
 # 命名约定 / Naming conventions
 
 了解我们的命名约定有助于直接理解代码的作用。然而，还没有（也可能永远不会）一份正式的清单；不过，我们列出了一些被广泛采用的约定。
