@@ -1,13 +1,11 @@
 原文：https://docs.perl6.org/language/variables
 
 <!-- MarkdownTOC -->
-# `目录`
-
 
 - [变量](#%E5%8F%98%E9%87%8F)
 - [标记 / Sigils](#%E6%A0%87%E8%AE%B0--sigils)
     - [单条目和列表赋值 / Item and List Assignment](#%E5%8D%95%E6%9D%A1%E7%9B%AE%E5%92%8C%E5%88%97%E8%A1%A8%E8%B5%8B%E5%80%BC--item-and-list-assignment)
-    - [无符号变量 / Sigilless variables](#%E6%97%A0%E7%AC%A6%E5%8F%B7%E5%8F%98%E9%87%8F--sigilless-variables)
+    - [无标记变量 / Sigilless variables](#%E6%97%A0%E6%A0%87%E8%AE%B0%E5%8F%98%E9%87%8F--sigilless-variables)
 - [符号 / Twigils](#%E7%AC%A6%E5%8F%B7--twigils)
     - [`*` 号](#-%E5%8F%B7)
     - [`?` 号](#-%E5%8F%B7-1)
@@ -238,8 +236,8 @@ The assignment expression is parsed as `@array = (($num = 42), "str")`, because
 
 See [operators](https://docs.perl6.org/language/operators) for more details on precedence.
 
-<a id="%E6%97%A0%E7%AC%A6%E5%8F%B7%E5%8F%98%E9%87%8F--sigilless-variables"></a>
-## 无符号变量 / Sigilless variables
+<a id="%E6%97%A0%E6%A0%87%E8%AE%B0%E5%8F%98%E9%87%8F--sigilless-variables"></a>
+## 无标记变量 / Sigilless variables
 
 使用 \ 作为前缀，可以生成无标记的变量：
 
