@@ -20,7 +20,6 @@ Passing arguments to a signature *binds* the arguments, contained in a [Capture]
 
 签名出现在[函数](https://docs.perl6.org/type/Sub)和[方法](https://docs.perl6.org/type/Method)名之后的括号里，在代码块中箭头 `->` 或者 `<->` 之后, 作为[变量声明符](https://docs.perl6.org/language/variables#Variable_declarators_and_scope)如 [`my`](https://docs.perl6.org/syntax/my) 的输入，或者以冒号开头的独立术语。
 
-
 Signatures appear inside parentheses after [subroutine](https://docs.perl6.org/type/Sub) and [method](https://docs.perl6.org/type/Method) names, on blocks after a `-> `or `<-> `arrow, as the input to [variable declarators](https://docs.perl6.org/language/variables#Variable_declarators_and_scope) like [`my`](https://docs.perl6.org/syntax/my), or as a separate term starting with a colon.
 
 ```Perl6
@@ -62,7 +61,7 @@ f(-> Int { 'this works too' } );
 
 Smartmatching signatures against a List is supported.
 
-```
+```Perl6
 my $sig = :(Int $i, Str $s);
 say (10, 'answer') ~~ $sig;
 # OUTPUT: «True␤» 
@@ -77,28 +76,36 @@ given $sig {
 # OUTPUT: «match␤» 
 ```
 
+它匹配第二个 `when` 子句，因为 `:($，$)` 表示带有两个标量，匿名参数的 `签名`，这是 `$sig` 的更通用版本。
+
 It matches the second `when` clause since `:($, $)` represents a `Signature` with two scalar, anonymous, arguments, which is a more general version of `$sig`.
+
+当对哈希进行智能匹配时，假定签名由哈希的键组成。
 
 When smartmatching against a Hash, the signature is assumed to consist of the keys of the Hash.
 
-```
+```Perl6
 my %h = left => 1, right => 2;
 say %h ~~ :(:$left, :$right);
 # OUTPUT: «True␤» 
 ```
 
-## [Parameter separators](https://docs.perl6.org/type/Signature#___top)
+## 参数分隔符 / Parameter separators
+
+签名由零或者多个*参数*组成，由逗号分隔。
 
 A signature consists of zero or more *parameters*, separated by commas.
 
-```
+```Perl6
 my $sig = :($a, @b, %c);
 sub add($a, $b) { $a + $b };
 ```
 
+有一个例外，第一个参数后面可能跟一个分号而非逗号标记一个方法的调用。调用通常绑定到 [`self`](https://docs.perl6.org/routine/self)，是用来调用方法的对象。
+
 As an exception the first parameter may be followed by a colon instead of a comma to mark the invocant of a method. The invocant is the object that was used to call the method, which is usually bound to [`self`](https://docs.perl6.org/routine/self). By specifying it in the signature, you can change the variable name it is bound to.
 
-```
+```Perl6
 method ($a: @b, %c) {};       # first argument is the invocant 
  
 class Foo {
@@ -109,19 +116,21 @@ class Foo {
 say Foo.whoami; # OUTPUT: «Well I'm class Foo, of course!␤» 
 ```
 
+## 类型约束 / Type constraints
 
-
-## [Type constraints](https://docs.perl6.org/type/Signature#___top)
+参数可以选择具有类型约束（默认为 [`Any`](https://docs.perl6.org/type/Any)）。这些可用于限制函数输入。
 
 Parameters can optionally have a type constraint (the default is [`Any`](https://docs.perl6.org/type/Any)). These can be used to restrict the allowed input to a function.
 
-```
+```Perl6
 my $sig = :(Int $a, Str $b);
 ```
 
+类型约束可以有任意编译时定义的值。
+
 Type constraints can have any compile-time defined value
 
-```
+```Perl6
 subset Positive-integer of Int where * > 0;
 sub divisors(Positive-integer $n) { $_ if $n %% $_ for 1..$n };
 divisors 2.5;
@@ -132,54 +141,75 @@ divisors -3;
 # expected Positive-integer but got Int (-3)» 
 ```
 
+请注意，在上面的代码中，类型约束在两个不同的级别强制执行：第一级检查它是否属于子集所基于的类型，在本例中为 `Int`。如果失败，则产生 `类型检查` 错误。清除该过滤器后，将检查定义子集的约束，如果失败则产生`约束类型检查`错误。
+
 Please note that in the code above type constraints are enforced at two different levels: the first level checks if it belongs to the type in which the subset is based, in this case `Int`. If it fails, a `Type check` error is produced. Once that filter is cleared, the constraint that defined the subset is checked, producing a `Constraint type check` error if it fails.
+
+使用匿名参数也可以，如果你实际上不需要按名称引用参数，例如区分 [multi](https://docs.perl6.org/language/functions#index- entry-declarator_multi-Multi-dispatch) 中的不同签名或检查 [Callable](https://docs.perl6.org/type/Callable)的签名。
 
 Anonymous arguments are fine too, if you don't actually need to refer to a parameter by name, for instance to distinguish between different signatures in a [multi](https://docs.perl6.org/language/functions#index-entry-declarator_multi-Multi-dispatch) or to check the signature of a [Callable](https://docs.perl6.org/type/Callable).
 
-```
+```Perl6
 my $sig = :($, @, %a);          # two anonymous and a "normal" parameter 
 $sig = :(Int, Positional);      # just a type is also fine (two parameters) 
 sub baz(Str) { "Got passed a Str" }
 ```
 
+类型约束也可以是[类型捕获](https://docs.perl6.org/type/Signature#Type_captures)。
+
 Type constraints may also be [type captures](https://docs.perl6.org/type/Signature#Type_captures).
+
+除了那些 *nominal* 类型之外，还可以以代码块的形式对参数进行附加约束，这些代码块必须返回真值才能通过类型检查
 
 In addition to those *nominal* types, additional constraints can be placed on parameters in the form of code blocks which must return a true value to pass the type check
 
-```
+```Perl6
 sub f(Real $x where { $x > 0 }, Real $y where { $y >= $x }) { }
 ```
 
+`where` 子句中的代码有一些限制：不支持产生副作用的任何东西（例如打印输出，从迭代器中取值或状态变量增值），如果使用，可能会产生令人惊讶的结果。此外，在某些实现中，对于单个类型检查，`where` 子句的代码可能会运行多次。
+
 The code in `where` clauses has some limitations: anything that produces side-effects (e.g. printing output, pulling from an iterator, or increasing a state variable) is not supported and may produce surprising results if used. Also, the code of the `where` clause may run more than once for a single typecheck in some implementations.
+
+`where` 子句不限于代码块，`where` 子句右边的任何东西都会被参数做[智能匹配](https://docs.perl6.org/language/operators#infix_~~)。因此你也可以这样写：
 
 The `where` clause doesn't need to be a code block, anything on the right of the `where`-clause will be used to [smartmatch](https://docs.perl6.org/language/operators#infix_~~) the argument against it. So you can also write:
 
-```
+```Perl6
 multi factorial(Int $ where 0) { 1 }
 multi factorial(Int $x)        { $x * factorial($x - 1) }
 ```
 
+第一个语句可以简写为
+
 The first of those can be shortened to
 
-```
+```Perl6
 multi factorial(0) { 1 }
 ```
 
+也就是说，你可以对匿名参数直接使用字面值作为一个类型和值的约束。
+
 i.e., you can use a literal directly as a type and value constraint on an anonymous parameter.
+
+**提示:** 注意，当由多个条件时，要使用代码块：
 
 **Tip:** pay attention to not accidentally leave off a block when you, say, have several conditions:
 
-```
+```Perl6
 -> $y where   .so && .name    {}( sub one   {} ); # WRONG!! 
 -> $y where { .so && .name }  {}( sub two   {} ); # OK! 
 -> $y where   .so &  .name.so {}( sub three {} ); # Also good 
 ```
+第一个版本是错误的，运行的话会抛出函数对象强制转化为为字符串的警告。原因是表达式相当于 `($y ~~ ($y.so && $y.name))`; 它会先调用方法 `.so` ，如果执行结果为`真`，则接着调用方法 `.name`，如果执行结果仍为`真`，使用它的值做智能匹配。。。。`(.so && .name)` 的运算结果被智能匹配了，但是我们想要检查 `.so` 和 `.name` 是否都为真值。这就是为什么明确的代码块或者 [Junction](https://docs.perl6.org/type/Junction) 是正确的版本。
 
 The first version is wrong and will issue a warning about sub object coerced to string. The reason is the expression is equivalent to `($y ~~ ($y.so && $y.name))`; that is "call `.so`, and if that is `True`, call `.name`; if that is also `True` use its value for smartmatching…". It's the **result** of `(.so && .name)` is will be smartmatched against, but we want to check that both `.so` and `.name` are truthy values. That is why an explicit Block or a [Junction](https://docs.perl6.org/type/Junction) is the right version.
 
+所有以前不属于`签名`中的子签名的参数都可以在参数后面的 `where` 子句中被访问。因此，最后一个参数的 `where` 子句可以访问不属于子签名的签名的所有参数。对于子签名，在子签名内放置 `where` 子句。
+
 All previous arguments that are not part of a sub-signature in a `Signature` are accessible in a `where`-clause that follows an argument. Therefore, the `where`-clause of the last argument has access to all arguments of a signature that are not part of a sub-signature. For a sub-signature place the `where`-clause inside the sub-signature.
 
-```
+```Perl6
 sub foo($a, $b where * == $a ** 2) { say "$b is a square of $a" }
 foo 2, 4; # OUTPUT: «4 is a square of 2␤»» 
 # foo 2, 3; 
