@@ -8,7 +8,7 @@ A low-level explanation of Perl 6 containers
 
 This section explains the levels of indirection involved in dealing with variables and container elements. The difference types of containers used in Perl 6 are explained and the actions applicable to them like assigning, binding and flattening. More advanced topics like self-referential data, type constraints and custom containers are discussed at the end.
 
-# [变量是什么 / What is a variable?](https://docs.perl6.org/language/containers#___top)
+# 变量是什么 / What is a variable?
 
 有些人喜欢说“一切都是一个对象”，但实际上在 Perl6 中，变量不是用户公开的对象。
 
@@ -26,7 +26,7 @@ At runtime, a variable appears as an entry in a *lexical pad*, or *lexpad* for s
 
 In the case of `my $x`, the lexpad entry for the variable `$x` is a pointer to an object of type `Scalar`, usually just called *the container*.
 
-# [标量容器 / Scalar containers](https://docs.perl6.org/language/containers#___top)
+# 标量容器 / Scalar containers
 
 尽管在 Perl6 中，[`Scalar`] 类型的对象(https://docs.perl6.org/type/scalar)随处可见，但你很少见它们直接作为对象，因为大多数操作时*反容器化*的，这意味着它们作用于 `scalar` 容器的内容，而不是容器本身。
 
@@ -128,7 +128,7 @@ CATCH { default { say .^name, ': ', .Str } };
 » 
 ```
 
-# [可调用容器 / Callable containers](https://docs.perl6.org/language/containers#___top)
+# 可调用容器 / Callable containers
 
 可调用容器在存储在容器中的对象的 [Routine](https://docs.perl6.org/type/routine) 调用的语法和方法 [CALL-ME](https://docs.perl6.org/type/callable method_call-me) 的实际调用之间提供了一个桥梁。声明容器时需要 `&` 标记并且在执行 `Callable` 时必须省略。默认类型约束为 [Callable](https://docs.perl6.org/type/callable)。
 
@@ -151,7 +151,7 @@ sub caller(&c1, &c2){ c1, c2 }
 caller(&f, &g);
 ```
 
-# [绑定 / Binding](https://docs.perl6.org/language/containers#___top)
+# 绑定 / Binding
 
 除了赋值之外，Perl6 还支持带 `：=` 运算符的*绑定*。将值或容器绑定到变量时，将修改变量的词法板条目（而不仅仅是它指向的容器）。如果你写:
 
@@ -209,7 +209,7 @@ say $a;         # OUTPUT: «44
 » 
 ```
 
-# [标量容器和列表 / Scalar containers and listy things](https://docs.perl6.org/language/containers#___top)
+# 标量容器和列表 / Scalar containers and listy things
 
 Perl6 中有许多语义稍有不同的位置容器类型。最基本的是 [List](https://docs.perl6.org/type/list)；它是由逗号操作符创建的。
 
@@ -258,7 +258,7 @@ say @a;         # OUTPUT: «[42 2 3]
 
 `@a` actually stores three scalar containers. `@a[0]` returns one of them, and the assignment operator replaces the integer value stored in that container with the new one, `42`.
 
-# [赋值及绑定至数组变量 / Assigning and binding to array variables](https://docs.perl6.org/language/containers#___top)
+# 赋值及绑定至数组变量 / Assigning and binding to array variables
 
 给标量以及数组变量赋值都做的同一件事情：舍弃旧值并输入新值。
 
@@ -289,7 +289,7 @@ say @a.^name;               # OUTPUT: «List
 » 
 ```
 
-# [绑定至数组元素 / Binding to array elements](https://docs.perl6.org/language/containers#___top)
+# 绑定至数组元素 / Binding to array elements
 
 奇妙的是，Perl 6 支持绑定到数组元素：
 
@@ -309,7 +309,7 @@ The answer is that binding to array elements is recognized at the syntax level a
 
 Note that, while supported, one should generally avoid directly binding uncontainerized things into array elements. Doing so may produce counter-intuitive results when the array is used later.
 
-```
+```Perl6
 my @a = (1, 2, 3);
 @a[0] := 42;         # This is not recommended, use assignment instead. 
 my $b := 42;
@@ -323,11 +323,11 @@ CATCH { default { say .^name, ': ', .Str } };
 
 Operations that mix Lists and Arrays generally protect against such a thing happening accidentally.
 
-# [Flattening, items and containers](https://docs.perl6.org/language/containers#___top)
+# Flattening, items and containers
 
 The `%` and `@` sigils in Perl 6 generally indicate multiple values to an iteration construct, whereas the `$` sigil indicates only one value.
 
-```
+```Perl6
 my @a = 1, 2, 3;
 for @a { };         # 3 iterations 
 my $a = (1, 2, 3);
@@ -336,7 +336,7 @@ for $a { };         # 1 iteration
 
 `@`-sigiled variables do not flatten in list context:
 
-```
+```Perl6
 my @a = 1, 2, 3;
 my @b = @a, 4, 5;
 say @b.elems;               # OUTPUT: «3
@@ -345,7 +345,7 @@ say @b.elems;               # OUTPUT: «3
 
 There are operations that flatten out sublists that are not inside a scalar container: slurpy parameters (`*@a`) and explicit calls to `flat`:
 
-```
+```Perl6
 my @a = 1, 2, 3;
 say (flat @a, 4, 5).elems;  # OUTPUT: «5
 » 
@@ -357,7 +357,7 @@ say f @a, 4, 5;             # OUTPUT: «5
 
 You can also use `|` to create a [Slip](https://docs.perl6.org/type/Slip), introducing a list into the other.
 
-```
+```Perl6
 my @l := 1, 2, (3, 4, (5, 6)), [7, 8, (9, 10)];
 say (|@l, 11, 12);    # OUTPUT: «(1 2 (3 4 (5 6)) [7 8 (9 10)] 11 12)
 » 
@@ -369,7 +369,7 @@ In the first case, every element of `@l` is *slipped* as the corresponding eleme
 
 As hinted above, scalar containers prevent that flattening:
 
-```
+```Perl6
 sub f(*@x) { @x.elems };
 my @a = 1, 2, 3;
 say f $@a, 4, 5;            # OUTPUT: «3
@@ -378,14 +378,14 @@ say f $@a, 4, 5;            # OUTPUT: «3
 
 The `@` character can also be used as a prefix to coerce the argument to a list, thus removing a scalar container:
 
-```
+```Perl6
 my $x = (1, 2, 3);
 .say for @$x;               # 3 iterations 
 ```
 
 However, the *decont* operator `<>` is more appropriate to decontainerize items that aren't lists:
 
-```
+```Perl6
 my $x = ^Inf .grep: *.is-prime;
 say "$_ is prime" for @$x;  # WRONG! List keeps values, thus leaking memory 
 say "$_ is prime" for $x<>; # RIGHT. Simply decontainerize the Seq 
@@ -395,18 +395,18 @@ my $y := ^Inf .grep: *.is-prime; # Even better; no Scalars involved at all
 
 Methods generally don't care whether their invocant is in a scalar, so
 
-```
+```Perl6
 my $x = (1, 2, 3);
 $x.map(*.say);              # 3 iterations 
 ```
 
 maps over a list of three elements, not of one.
 
-# [Self-referential data](https://docs.perl6.org/language/containers#___top)
+# Self-referential data
 
 Containers types, including `Array` and `Hash`, allow you to create self-referential structures.
 
-```
+```Perl6
 my @a;
 @a[0] = @a;
 put @a.perl;
@@ -416,11 +416,11 @@ put @a.perl;
 
 Although Perl 6 does not prevent you from creating and using self-referential data, by doing so you may end up in a loop trying to dump the data. As a last resort, you can use Promises to [handle](https://docs.perl6.org/type/Promise#method_in) timeouts.
 
-# [Type constraints](https://docs.perl6.org/language/containers#___top)
+# Type constraints
 
 Any container can have a type constraint in the form of a [type object](https://docs.perl6.org/language/typesystem#Type_objects) or a [subset](https://docs.perl6.org/language/typesystem#subset). Both can be placed between a declarator and the variable name or after the trait [of](https://docs.perl6.org/type/Variable#trait_is_dynamic). The constraint is a property of the variable, not the container.
 
-```
+```Perl6
 subset Three-letter of Str where .chars == 3;
 my Three-letter $acronym = "ÞFL";
 ```
@@ -429,7 +429,7 @@ In this case, the type constraint is the (compile-type defined) subset `Three-le
 
 Variables may have no container in them, yet still offer the ability to re-bind and typecheck that rebind. The reason for that is in such cases the binding operator [:=](https://docs.perl6.org/language/operators#infix_%3A%3D) performs the typecheck:
 
-```
+```Perl6
 my Int \z = 42;
 z := 100; # OK 
 z := "x"; # Typecheck failure 
@@ -439,7 +439,7 @@ The same isn't the case when, say, binding to a [Hash](https://docs.perl6.org/ty
 
 The default type constraint of a `Scalar` container is [Mu](https://docs.perl6.org/type/Mu). Introspection of type constraints on containers is provided by `.VAR.of` method, which for `@` and `%` sigiled variables gives the constraint for values:
 
-```
+```Perl6
 my Str $x;
 say $x.VAR.of;  # OUTPUT: «(Str)
 » 
@@ -451,11 +451,11 @@ say %h.VAR.of;  # OUTPUT: «(Int)
 » 
 ```
 
-## [Definedness constraints](https://docs.perl6.org/language/containers#___top)
+## Definedness constraints
 
 A container can also enforce a variable to be defined. Put a smiley in the declaration:
 
-```
+```Perl6
 my Int:D $def = 3;
 say $def;   # OUTPUT: «3
 » 
@@ -466,11 +466,11 @@ You'll also need to initialize the variable in the declaration, it can't be left
 
 It's also possible to have this constraint enforced in all variables declared in a scope with the [default defined variables pragma](https://docs.perl6.org/language/variables#Default_defined_variables_pragma). People coming from other languages where variables are always defined will want to have a look.
 
-# [Custom containers](https://docs.perl6.org/language/containers#___top)
+# Custom containers
 
 To provide custom containers Perl 6 provides the class `Proxy`. It takes two methods that are called when values are stored or fetched from the container. Type checks are not done by the container itself and other restrictions like readonlyness can be broken. The returned value must therefore be of the same type as the type of the variable it is bound to. We can use type captures to work with types in Perl 6.
 
-```
+```Perl6
 sub lucky(::T $type) {
     my T $c-value; # closure variable 
     return Proxy.new(
