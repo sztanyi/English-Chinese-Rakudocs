@@ -277,7 +277,7 @@ Sigilless variables can also be used for binding. See [Binding](https://docs.pe
 <a id="%E7%AC%A6%E5%8F%B7--twigils"></a>
 # 符号 / Twigils
 
-符号影响变量的作用域；但是他们对主标记符是否插值无影响。如果变量 `$a` 内插了， `$^a`, `$*a`, `$=a`, `$?a`, `$.a` 也可以，只取决于 `$`。
+符号影响变量的作用域；但是他们对主标记符是否可以字符串插值无影响。如果变量 `$a` 可以插值， `$^a`, `$*a`, `$=a`, `$?a`, `$.a` 也可以，只取决于 `$`。
 
 Twigils influence the scoping of a variable; however, they have no influence over whether the primary sigil interpolates. That is, if `$a`interpolates, so do `$^a`, `$*a`, `$=a`, `$?a`, `$.a`, etc. It only depends on the `$`.
 
