@@ -1,6 +1,7 @@
 原文：https://docs.perl6.org/language/variables
 
-# `目录`
+1# `目录`
+
 <!-- MarkdownTOC -->
 
 - [变量](#%E5%8F%98%E9%87%8F)
@@ -9,12 +10,12 @@
     - [无标记变量 / Sigilless variables](#%E6%97%A0%E6%A0%87%E8%AE%B0%E5%8F%98%E9%87%8F--sigilless-variables)
 - [符号 / Twigils](#%E7%AC%A6%E5%8F%B7--twigils)
     - [`*` 号](#-%E5%8F%B7)
-    - [`?` 号](#-%E5%8F%B7-1)
-    - [`!` 号](#-%E5%8F%B7-2)
-    - [`.` 号](#-%E5%8F%B7-3)
-    - [`^` 号](#%5E-%E5%8F%B7)
-    - [`:` 号](#-%E5%8F%B7-4)
-    - [`=` 号](#-%E5%8F%B7-5)
+    - [`?` 号](#wenhao)
+    - [`!` 号](#gantanhao)
+    - [`.` 号](#juhao)
+    - [`^` 号](#yihuo)
+    - [`:` 号](#fenhao)
+    - [`=` 号](#denghao)
     - [`~` 号](#%7E-%E5%8F%B7)
 - [变量声明符和作用域 / Variable declarators and scope](#%E5%8F%98%E9%87%8F%E5%A3%B0%E6%98%8E%E7%AC%A6%E5%92%8C%E4%BD%9C%E7%94%A8%E5%9F%9F--variable-declarators-and-scope)
     - [`my` 声明符](#my-%E5%A3%B0%E6%98%8E%E7%AC%A6)
@@ -23,7 +24,7 @@
     - [`has` 声明符](#has-%E5%A3%B0%E6%98%8E%E7%AC%A6)
     - [`anon` 声明符](#anon-%E5%A3%B0%E6%98%8E%E7%AC%A6)
     - [`state` 声明符](#state-%E5%A3%B0%E6%98%8E%E7%AC%A6)
-        - [$ 变量](#%24-%E5%8F%98%E9%87%8F)
+        - [`$` 变量](#%24-%E5%8F%98%E9%87%8F)
         - [`@` 变量](#-%E5%8F%98%E9%87%8F)
         - [`%` 变量](#%25-%E5%8F%98%E9%87%8F)
     - [`augment` 声明符](#augment-%E5%A3%B0%E6%98%8E%E7%AC%A6)
@@ -81,6 +82,8 @@
 - [命名约定 / Naming conventions](#%E5%91%BD%E5%90%8D%E7%BA%A6%E5%AE%9A--naming-conventions)
 
 <!-- /MarkdownTOC -->
+
+
 
 
 <a id="%E5%8F%98%E9%87%8F"></a>
@@ -364,7 +367,7 @@ say foo; # OUTPUT: «bar» 
 
 Dynamic variables can have lexical scope when declared with `my` or package scope when declared with `our`. Dynamic resolution and resolution through symbol tables introduced with `our` are two orthogonal issues.
 
-<a id="-%E5%8F%B7-1"></a>
+<a id="wenhao"></a>
 ## `?` 号
 
 编译时变量使用 `?` 号。这个变量就会被编译器知晓，并且在变量编译进去后不能修改。一个常见的例子是：
@@ -381,7 +384,7 @@ say "$?FILE: $?LINE"; # OUTPUT: "hello.pl: 23" 
 
 For a list of these special variables, see [compile-time variables](https://docs.perl6.org/language/variables#Compile-time_variables).
 
-<a id="-%E5%8F%B7-2"></a>
+<a id="gantanhao"></a>
 ## `!` 号
 
 属性是存在于类实例中的变量。他们可以在类中通过 `!` 号被直接访问：
@@ -403,7 +406,7 @@ my class Point {
 
 Note how the attributes are declared as `$.x` and `$.y` but are still accessed via `$!x` and `$!y`. This is because in Perl 6 all attributes are private and can be directly accessed within the class by using `$!attribute-name`. Perl 6 may automatically generate accessor methods for you though. For more details on objects, classes and their attributes see [object orientation](https://docs.perl6.org/language/objects).
 
-<a id="-%E5%8F%B7-3"></a>
+<a id="juhao"></a>
 ## `.` 号
 
 `.` 号事实上不是给变量用的，下面代码
@@ -442,7 +445,7 @@ SaySomething.b; # OUTPUT: «a» 
 
 For more details on objects, classes and their attributes and methods see [object orientation](https://docs.perl6.org/language/objects).
 
-<a id="%5E-%E5%8F%B7"></a>
+<a id="yihuo"></a>
 ## `^` 号
 
 ^ 号为代码块或者函数声明正式的位置参数。`$^variable` 形式的变量是占位符变量。他们可以用在裸代码块中来声明代码块的正式参数。因此下面代码中的代码块
@@ -478,7 +481,7 @@ sub say-it()  { say $^a; } # invalid 
 
 Placeholder variables cannot have type constraints or a variable name with a single upper-case letter (this is disallowed to enable catching some Perl5-isms).
 
-<a id="-%E5%8F%B7-4"></a>
+<a id="fenhao"></a>
 ## `:` 号
 
 `:` 号为块或子例程声明一个正式的命名参数。以这种形式声明的变量也是一种占位符变量。
@@ -496,7 +499,7 @@ say { $:add ?? $^a + $^b !! $^a - $^b }( 4, 5 ) :!add
 
 See [^](https://docs.perl6.org/routine/$CIRCUMFLEX_ACCENT) for more details about placeholder variables.
 
-<a id="-%E5%8F%B7-5"></a>
+<a id="denghao"></a>
 ## `=` 号
 
 = 号用于访问 Pod 变量。当前文件中的每个 Pod 块可以通过 Pod 对象访问，例如 `$=data`，`$=SYNOPSIS` 或 `=UserBlock`。即变量有着跟 Pod 块相同的名字以及一个 `=` 号。
@@ -854,7 +857,7 @@ await
 ```
 
 <a id="%24-%E5%8F%98%E9%87%8F"></a>
-### $ 变量
+### `$` 变量
 
 除了显式声明的命名状态变量外，`$` 可以用作匿名 `state` 变量而不需要明确的 `state` 声明。
 
