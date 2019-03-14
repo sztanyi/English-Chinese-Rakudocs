@@ -362,6 +362,8 @@ say foo; # OUTPUT: «bar» 
 
 用 `my` 和 `our` 声明的动态变量分别有词法作用域和包作用域。动态解析以及通过 `our` 引入的借助符号表的解析是两个正交问题。
 
+Dynamic variables can have lexical scope when declared with `my` or package scope when declared with `our`. Dynamic resolution and resolution through symbol tables introduced with `our` are two orthogonal issues.
+
 <a id="-%E5%8F%B7-1"></a>
 ## `?` 号
 
