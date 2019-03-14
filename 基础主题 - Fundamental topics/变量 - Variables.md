@@ -1,6 +1,6 @@
 原文：https://docs.perl6.org/language/variables
 
-1# `目录`
+# `目录`
 
 <!-- MarkdownTOC -->
 
