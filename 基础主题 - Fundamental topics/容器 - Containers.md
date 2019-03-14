@@ -258,7 +258,7 @@ say @a;         # OUTPUT: «[42 2 3]
 
 `@a` actually stores three scalar containers. `@a[0]` returns one of them, and the assignment operator replaces the integer value stored in that container with the new one, `42`.
 
-# [赋值以及绑定至数组变量 / Assigning and binding to array variables](https://docs.perl6.org/language/containers#___top)
+# [赋值及绑定至数组变量 / Assigning and binding to array variables](https://docs.perl6.org/language/containers#___top)
 
 给标量以及数组变量赋值都做的同一件事情：舍弃旧值并输入新值。
 
