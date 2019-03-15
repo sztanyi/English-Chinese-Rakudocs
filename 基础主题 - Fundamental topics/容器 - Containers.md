@@ -303,9 +303,15 @@ say @a;                     # OUTPUT: «[42 2 3]
 » 
 ```
 
+如果你已经阅读并理解了前面的解释，现在是时候思考一下这是如何工作的了。绑定到变量需要该变量的词法板条目，虽然数组确有一个条目，但是数组里的元素没有词法板条目，因为你不能在运行时扩展词法板。
+
 If you've read and understood the previous explanations, it is now time to wonder how this can possibly work. After all, binding to a variable requires a lexpad entry for that variable, and while there is one for an array, there aren't lexpad entries for each array element, because you cannot expand the lexpad at runtime.
 
+答案是，在语法级别可以识别到数组元素的绑定，对数组调用一个叫做 `BIND-KEY` 的特殊方法，而不是为寻常的绑定操作发出代码。此方法处理与数组元素的绑定。
+
 The answer is that binding to array elements is recognized at the syntax level and instead of emitting code for a normal binding operation, a special method (called `BIND-KEY`) is called on the array. This method handles binding to array elements.
+
+请注意，尽管支持，但通常应避免将非容器化的内容直接绑定到数组元素中。这样做可能会在稍后使用数组时产生反直观的结果。
 
 Note that, while supported, one should generally avoid directly binding uncontainerized things into array elements. Doing so may produce counter-intuitive results when the array is used later.
 
@@ -321,9 +327,13 @@ CATCH { default { say .^name, ': ', .Str } };
 » 
 ```
 
+混合列表和数组的操作通常可以防止意外发生这种情况。
+
 Operations that mix Lists and Arrays generally protect against such a thing happening accidentally.
 
-# Flattening, items and containers
+# 扁平化、物品和容器 - Flattening, items and containers
+
+`%` 和 `@` 标记在 Perl 6 中通常代表迭代结构有多个值，而 `$` 标记只表示一个值。
 
 The `%` and `@` sigils in Perl 6 generally indicate multiple values to an iteration construct, whereas the `$` sigil indicates only one value.
 
@@ -334,6 +344,8 @@ my $a = (1, 2, 3);
 for $a { };         # 1 iteration 
 ```
 
+`@` 标记的变量在列表上下文中不扁平化。
+
 `@`-sigiled variables do not flatten in list context:
 
 ```Perl6
@@ -342,6 +354,8 @@ my @b = @a, 4, 5;
 say @b.elems;               # OUTPUT: «3
 » 
 ```
+
+有一些操作可以展开不在标量容器中的子列表：解包参数（`*@a`）和显式调用 `flat`:
 
 There are operations that flatten out sublists that are not inside a scalar container: slurpy parameters (`*@a`) and explicit calls to `flat`:
 
@@ -355,6 +369,8 @@ say f @a, 4, 5;             # OUTPUT: «5
 » 
 ```
 
+你也可以使用 `|` 生成一个 [Slip](https://docs.perl6.org/type/Slip)，将列表引入另一个列表。
+
 You can also use `|` to create a [Slip](https://docs.perl6.org/type/Slip), introducing a list into the other.
 
 ```Perl6
@@ -365,7 +381,12 @@ say (flat @l, 11, 12) # OUTPUT: «(1 2 3 4 5 6 7 8 (9 10) 11 12)
 » 
 ```
 
+在第一种情况下，`@l` 的每个元素都会*滑入*结果列表作为相应的元素。`flat` 函数*扁平化*包括所包含数组元素的所有元素，除了 `(9 10)`。
+`flat` 函数*扁平化*所有元素，包括包含数组的元素，除了 `(9 10)`。
+
 In the first case, every element of `@l` is *slipped* as the corresponding elements of the resulting list. `flat`, in the other hand, *flattens* all elements including the elements of the included array, except for `(9 10)`.
+
+如上所述，标量容器阻止扁平化
 
 As hinted above, scalar containers prevent that flattening:
 
@@ -376,12 +397,16 @@ say f $@a, 4, 5;            # OUTPUT: «3
 » 
 ```
 
+`@` 字符也可以用做前缀来强制参数转为列表，从而移除标量容器。
+
 The `@` character can also be used as a prefix to coerce the argument to a list, thus removing a scalar container:
 
 ```Perl6
 my $x = (1, 2, 3);
 .say for @$x;               # 3 iterations 
 ```
+
+但是*去容器化*操作符 `<>` 更适合用来对非列表的条目去容器化。
 
 However, the *decont* operator `<>` is more appropriate to decontainerize items that aren't lists:
 
@@ -393,6 +418,8 @@ say "$_ is prime" for $x<>; # RIGHT. Simply decontainerize the Seq
 my $y := ^Inf .grep: *.is-prime; # Even better; no Scalars involved at all 
 ```
 
+方法通常不关心他们的调用者是否在标量里。
+
 Methods generally don't care whether their invocant is in a scalar, so
 
 ```Perl6
@@ -400,9 +427,13 @@ my $x = (1, 2, 3);
 $x.map(*.say);              # 3 iterations 
 ```
 
+映射三个元素的列表，而不是一个。
+
 maps over a list of three elements, not of one.
 
-# Self-referential data
+# 自引用数据 / Self-referential data
+
+容器类型，包括 `Array` 和 `Hash`，允许你创建自引用结构。
 
 Containers types, including `Array` and `Hash`, allow you to create self-referential structures.
 
@@ -414,9 +445,11 @@ put @a.perl;
 » 
 ```
 
+尽管 Perl 6 不会阻止你创建和使用自引用数据，但是这样做可能会导致你陷入一个试图转储数据的循环中。最后，你可以使用 Promises 来[处理](https://docs.perl6.org/type/promise-method-in)超时。
+
 Although Perl 6 does not prevent you from creating and using self-referential data, by doing so you may end up in a loop trying to dump the data. As a last resort, you can use Promises to [handle](https://docs.perl6.org/type/Promise#method_in) timeouts.
 
-# Type constraints
+# 类型约束 / Type constraints
 
 Any container can have a type constraint in the form of a [type object](https://docs.perl6.org/language/typesystem#Type_objects) or a [subset](https://docs.perl6.org/language/typesystem#subset). Both can be placed between a declarator and the variable name or after the trait [of](https://docs.perl6.org/type/Variable#trait_is_dynamic). The constraint is a property of the variable, not the container.
 
