@@ -1,3 +1,27 @@
+原文：https://docs.perl6.org/language/containers
+
+# `目录`
+
+<!-- MarkdownTOC -->
+
+- [容器 Containers](#%E5%AE%B9%E5%99%A8-containers)
+- [变量是什么 / What is a variable?](#%E5%8F%98%E9%87%8F%E6%98%AF%E4%BB%80%E4%B9%88--what-is-a-variable)
+- [标量容器 / Scalar containers](#%E6%A0%87%E9%87%8F%E5%AE%B9%E5%99%A8--scalar-containers)
+- [可调用容器 / Callable containers](#%E5%8F%AF%E8%B0%83%E7%94%A8%E5%AE%B9%E5%99%A8--callable-containers)
+- [绑定 / Binding](#%E7%BB%91%E5%AE%9A--binding)
+- [标量容器和列表 / Scalar containers and listy things](#%E6%A0%87%E9%87%8F%E5%AE%B9%E5%99%A8%E5%92%8C%E5%88%97%E8%A1%A8--scalar-containers-and-listy-things)
+- [赋值及绑定至数组变量 / Assigning and binding to array variables](#%E8%B5%8B%E5%80%BC%E5%8F%8A%E7%BB%91%E5%AE%9A%E8%87%B3%E6%95%B0%E7%BB%84%E5%8F%98%E9%87%8F--assigning-and-binding-to-array-variables)
+- [绑定至数组元素 / Binding to array elements](#%E7%BB%91%E5%AE%9A%E8%87%B3%E6%95%B0%E7%BB%84%E5%85%83%E7%B4%A0--binding-to-array-elements)
+- [扁平化、物品和容器 - Flattening, items and containers](#%E6%89%81%E5%B9%B3%E5%8C%96%E3%80%81%E7%89%A9%E5%93%81%E5%92%8C%E5%AE%B9%E5%99%A8---flattening-items-and-containers)
+- [自引用数据 / Self-referential data](#%E8%87%AA%E5%BC%95%E7%94%A8%E6%95%B0%E6%8D%AE--self-referential-data)
+- [类型约束 / Type constraints](#%E7%B1%BB%E5%9E%8B%E7%BA%A6%E6%9D%9F--type-constraints)
+    - [`已定义`约束 / Definedness constraints](#%E5%B7%B2%E5%AE%9A%E4%B9%89%E7%BA%A6%E6%9D%9F--definedness-constraints)
+- [自定义容器 / Custom containers](#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%AE%B9%E5%99%A8--custom-containers)
+
+<!-- /MarkdownTOC -->
+
+
+<a id="%E5%AE%B9%E5%99%A8-containers"></a>
 # 容器 Containers
 
 Perl 6 容器的底层解释
@@ -8,6 +32,7 @@ A low-level explanation of Perl 6 containers
 
 This section explains the levels of indirection involved in dealing with variables and container elements. The difference types of containers used in Perl 6 are explained and the actions applicable to them like assigning, binding and flattening. More advanced topics like self-referential data, type constraints and custom containers are discussed at the end.
 
+<a id="%E5%8F%98%E9%87%8F%E6%98%AF%E4%BB%80%E4%B9%88--what-is-a-variable"></a>
 # 变量是什么 / What is a variable?
 
 有些人喜欢说“一切都是一个对象”，但实际上在 Perl6 中，变量不是用户公开的对象。
@@ -26,6 +51,7 @@ At runtime, a variable appears as an entry in a *lexical pad*, or *lexpad* for s
 
 In the case of `my $x`, the lexpad entry for the variable `$x` is a pointer to an object of type `Scalar`, usually just called *the container*.
 
+<a id="%E6%A0%87%E9%87%8F%E5%AE%B9%E5%99%A8--scalar-containers"></a>
 # 标量容器 / Scalar containers
 
 尽管在 Perl6 中，[`Scalar`] 类型的对象(https://docs.perl6.org/type/scalar)随处可见，但你很少见它们直接作为对象，因为大多数操作时*反容器化*的，这意味着它们作用于 `scalar` 容器的内容，而不是容器本身。
@@ -128,6 +154,7 @@ CATCH { default { say .^name, ': ', .Str } };
 » 
 ```
 
+<a id="%E5%8F%AF%E8%B0%83%E7%94%A8%E5%AE%B9%E5%99%A8--callable-containers"></a>
 # 可调用容器 / Callable containers
 
 可调用容器在存储在容器中的对象的 [Routine](https://docs.perl6.org/type/routine) 调用的语法和方法 [CALL-ME](https://docs.perl6.org/type/callable method_call-me) 的实际调用之间提供了一个桥梁。声明容器时需要 `&` 标记并且在执行 `Callable` 时必须省略。默认类型约束为 [Callable](https://docs.perl6.org/type/callable)。
@@ -151,6 +178,7 @@ sub caller(&c1, &c2){ c1, c2 }
 caller(&f, &g);
 ```
 
+<a id="%E7%BB%91%E5%AE%9A--binding"></a>
 # 绑定 / Binding
 
 除了赋值之外，Perl6 还支持带 `：=` 运算符的*绑定*。将值或容器绑定到变量时，将修改变量的词法板条目（而不仅仅是它指向的容器）。如果你写:
@@ -209,6 +237,7 @@ say $a;         # OUTPUT: «44
 » 
 ```
 
+<a id="%E6%A0%87%E9%87%8F%E5%AE%B9%E5%99%A8%E5%92%8C%E5%88%97%E8%A1%A8--scalar-containers-and-listy-things"></a>
 # 标量容器和列表 / Scalar containers and listy things
 
 Perl6 中有许多语义稍有不同的位置容器类型。最基本的是 [List](https://docs.perl6.org/type/list)；它是由逗号操作符创建的。
@@ -258,6 +287,7 @@ say @a;         # OUTPUT: «[42 2 3]
 
 `@a` actually stores three scalar containers. `@a[0]` returns one of them, and the assignment operator replaces the integer value stored in that container with the new one, `42`.
 
+<a id="%E8%B5%8B%E5%80%BC%E5%8F%8A%E7%BB%91%E5%AE%9A%E8%87%B3%E6%95%B0%E7%BB%84%E5%8F%98%E9%87%8F--assigning-and-binding-to-array-variables"></a>
 # 赋值及绑定至数组变量 / Assigning and binding to array variables
 
 给标量以及数组变量赋值都做的同一件事情：舍弃旧值并输入新值。
@@ -289,6 +319,7 @@ say @a.^name;               # OUTPUT: «List
 » 
 ```
 
+<a id="%E7%BB%91%E5%AE%9A%E8%87%B3%E6%95%B0%E7%BB%84%E5%85%83%E7%B4%A0--binding-to-array-elements"></a>
 # 绑定至数组元素 / Binding to array elements
 
 奇妙的是，Perl 6 支持绑定到数组元素：
@@ -331,6 +362,7 @@ CATCH { default { say .^name, ': ', .Str } };
 
 Operations that mix Lists and Arrays generally protect against such a thing happening accidentally.
 
+<a id="%E6%89%81%E5%B9%B3%E5%8C%96%E3%80%81%E7%89%A9%E5%93%81%E5%92%8C%E5%AE%B9%E5%99%A8---flattening-items-and-containers"></a>
 # 扁平化、物品和容器 - Flattening, items and containers
 
 `%` 和 `@` 标记在 Perl 6 中通常代表迭代结构有多个值，而 `$` 标记只表示一个值。
@@ -431,6 +463,7 @@ $x.map(*.say);              # 3 iterations
 
 maps over a list of three elements, not of one.
 
+<a id="%E8%87%AA%E5%BC%95%E7%94%A8%E6%95%B0%E6%8D%AE--self-referential-data"></a>
 # 自引用数据 / Self-referential data
 
 容器类型，包括 `Array` 和 `Hash`，允许你创建自引用结构。
@@ -449,6 +482,7 @@ put @a.perl;
 
 Although Perl 6 does not prevent you from creating and using self-referential data, by doing so you may end up in a loop trying to dump the data. As a last resort, you can use Promises to [handle](https://docs.perl6.org/type/Promise#method_in) timeouts.
 
+<a id="%E7%B1%BB%E5%9E%8B%E7%BA%A6%E6%9D%9F--type-constraints"></a>
 # 类型约束 / Type constraints
 
 任何容器都有[类型对象](https://docs.perl6.org/language/typesystem#Type_objects)或者[子集](https://docs.perl6.org/language/typesystem#subset)形式的类型约束。两者都可以放在声明符合变量名中间或者在特性 [of] (https://docs.perl6.org/type/Variable#trait_is_dynamic)之后。约束是变量而非容器的属性。
@@ -494,7 +528,10 @@ say %h.VAR.of;  # OUTPUT: «(Int)
 » 
 ```
 
-## Definedness constraints
+<a id="%E5%B7%B2%E5%AE%9A%E4%B9%89%E7%BA%A6%E6%9D%9F--definedness-constraints"></a>
+## `已定义`约束 / Definedness constraints
+
+容器还可以强制变量是已定义的。在声明中加一个笑脸：
 
 A container can also enforce a variable to be defined. Put a smiley in the declaration:
 
@@ -505,11 +542,19 @@ say $def;   # OUTPUT: «3
 $def = Int; # Typecheck failure 
 ```
 
+您还需要初始化声明中的变量，毕竟它不能是未定义的。
+
 You'll also need to initialize the variable in the declaration, it can't be left undefined after all.
+
+也可以使用[默认已定义变量的
+指令](https://docs.perl6.org/language/variables#Default_defined_variables_pragma)在作用域中声明的所有变量中强制实施此约束。来自总是定义变量的其他语言的人会想看看。
 
 It's also possible to have this constraint enforced in all variables declared in a scope with the [default defined variables pragma](https://docs.perl6.org/language/variables#Default_defined_variables_pragma). People coming from other languages where variables are always defined will want to have a look.
 
-# Custom containers
+<a id="%E8%87%AA%E5%AE%9A%E4%B9%89%E5%AE%B9%E5%99%A8--custom-containers"></a>
+# 自定义容器 / Custom containers
+
+为了提供自定义容器，Perl 6 提供了类 `Proxy`。它接受两个方法，在存储或从容器中提取值时调用。类型检查不是由容器本身完成的并且其他限制如只读可能会被打破。因此，返回值的类型必须与它绑定到的变量的类型相同。我们可以使用类型捕获来处理 Perl 6 中的类型。
 
 To provide custom containers Perl 6 provides the class `Proxy`. It takes two methods that are called when values are stored or fetched from the container. Type checks are not done by the container itself and other restrictions like readonlyness can be broken. The returned value must therefore be of the same type as the type of the variable it is bound to. We can use type captures to work with types in Perl 6.
 
