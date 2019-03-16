@@ -28,14 +28,14 @@ Perl 6 容器的底层解释
 
 A low-level explanation of Perl 6 containers
 
-本节解释处理变量和容器元素所涉及的间接级别。介绍了 Perl6 中使用的容器的不同类型，以及适用于这些容器的操作，如分配、绑定和展平。最后讨论了更高级的主题，如自引用数据、类型约束和自定义容器。
+本节解释处理变量和容器元素所涉及的间接级别。介绍了 Perl 6 中使用的容器的不同类型，以及适用于这些容器的操作，如分配、绑定和展平。最后讨论了更高级的主题，如自引用数据、类型约束和自定义容器。
 
 This section explains the levels of indirection involved in dealing with variables and container elements. The difference types of containers used in Perl 6 are explained and the actions applicable to them like assigning, binding and flattening. More advanced topics like self-referential data, type constraints and custom containers are discussed at the end.
 
 <a id="%E5%8F%98%E9%87%8F%E6%98%AF%E4%BB%80%E4%B9%88--what-is-a-variable"></a>
 # 变量是什么 / What is a variable?
 
-有些人喜欢说“一切都是一个对象”，但实际上在 Perl6 中，变量不是用户公开的对象。
+有些人喜欢说“一切都是一个对象”，但实际上在 Perl 6 中，变量不是用户公开的对象。
 
 Some people like to say "everything is an object", but in fact a variable is not a user-exposed object in Perl 6.
 
@@ -54,7 +54,7 @@ In the case of `my $x`, the lexpad entry for the variable `$x` is a pointer to a
 <a id="%E6%A0%87%E9%87%8F%E5%AE%B9%E5%99%A8--scalar-containers"></a>
 # 标量容器 / Scalar containers
 
-尽管在 Perl6 中，[`Scalar`] 类型的对象(https://docs.perl6.org/type/scalar)随处可见，但你很少见它们直接作为对象，因为大多数操作时*反容器化*的，这意味着它们作用于 `scalar` 容器的内容，而不是容器本身。
+尽管在 Perl 6 中，[`Scalar`] 类型的对象(https://docs.perl6.org/type/scalar)随处可见，但你很少见它们直接作为对象，因为大多数操作时*反容器化*的，这意味着它们作用于 `scalar` 容器的内容，而不是容器本身。
 
 Although objects of type [`Scalar`](https://docs.perl6.org/type/Scalar) are everywhere in Perl 6, you rarely see them directly as objects, because most operations *decontainerize*, which means they act on the `Scalar` container's contents instead of the container itself.
 
@@ -181,7 +181,7 @@ caller(&f, &g);
 <a id="%E7%BB%91%E5%AE%9A--binding"></a>
 # 绑定 / Binding
 
-除了赋值之外，Perl6 还支持带 `：=` 运算符的*绑定*。将值或容器绑定到变量时，将修改变量的词法板条目（而不仅仅是它指向的容器）。如果你写:
+除了赋值之外，Perl 6 还支持带 `：=` 运算符的*绑定*。将值或容器绑定到变量时，将修改变量的词法板条目（而不仅仅是它指向的容器）。如果你写:
 
 Next to assignment, Perl 6 also supports *binding* with the `:=` operator. When binding a value or a container to a variable, the lexpad entry of the variable is modified (and not just the container it points to). If you write
 
@@ -240,7 +240,7 @@ say $a;         # OUTPUT: «44
 <a id="%E6%A0%87%E9%87%8F%E5%AE%B9%E5%99%A8%E5%92%8C%E5%88%97%E8%A1%A8--scalar-containers-and-listy-things"></a>
 # 标量容器和列表 / Scalar containers and listy things
 
-Perl6 中有许多语义稍有不同的位置容器类型。最基本的是 [List](https://docs.perl6.org/type/list)；它是由逗号操作符创建的。
+Perl 6 中有许多语义稍有不同的位置容器类型。最基本的是 [List](https://docs.perl6.org/type/list)；它是由逗号操作符创建的。
 
 There are a number of positional container types with slightly different semantics in Perl 6. The most basic one is [List](https://docs.perl6.org/type/List); it is created by the comma operator.
 
