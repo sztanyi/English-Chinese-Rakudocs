@@ -451,6 +451,8 @@ Although Perl 6 does not prevent you from creating and using self-referential da
 
 # 类型约束 / Type constraints
 
+任何容器都有[类型对象](https://docs.perl6.org/language/typesystem#Type_objects)或者[子集](https://docs.perl6.org/language/typesystem#subset)形式的类型约束。两者都可以放在声明符合变量名中间或者在特性 [of] (https://docs.perl6.org/type/Variable#trait_is_dynamic)之后。约束是变量而非容器的属性。
+
 Any container can have a type constraint in the form of a [type object](https://docs.perl6.org/language/typesystem#Type_objects) or a [subset](https://docs.perl6.org/language/typesystem#subset). Both can be placed between a declarator and the variable name or after the trait [of](https://docs.perl6.org/type/Variable#trait_is_dynamic). The constraint is a property of the variable, not the container.
 
 ```Perl6
@@ -458,7 +460,11 @@ subset Three-letter of Str where .chars == 3;
 my Three-letter $acronym = "ÞFL";
 ```
 
+这个例子中，类型约束是子集 `Three-letter`，
+
 In this case, the type constraint is the (compile-type defined) subset `Three-letter`.
+
+变量中可能没有容器，但是仍然具有再绑定的能力以及类型检查那个再绑定。因为在那种情况中绑定操作符 [:=](https://docs.perl6.org/language/operators#infix_%3A%3D) 执行了类型检查：
 
 Variables may have no container in them, yet still offer the ability to re-bind and typecheck that rebind. The reason for that is in such cases the binding operator [:=](https://docs.perl6.org/language/operators#infix_%3A%3D) performs the typecheck:
 
@@ -468,7 +474,11 @@ z := 100; # OK
 z := "x"; # Typecheck failure 
 ```
 
+当绑定至 [Hash] 键时，情况又有所不同，因为绑定是被方法调用处理的（尽管语法仍旧不变，使用 `:=` 操作符）。
+
 The same isn't the case when, say, binding to a [Hash](https://docs.perl6.org/type/Hash) key, as the binding is then handled by a method call (even though the syntax remains the same, using `:=` operator).
+
+`标量`容器的默认类型约束是 [Mu](https://docs.perl6.org/type/Mu)。容器的类型约束反省是由 `.VAR.of` 方法提供的，对于 `@` 和 `％` 标记的变量给出了值的约束：
 
 The default type constraint of a `Scalar` container is [Mu](https://docs.perl6.org/type/Mu). Introspection of type constraints on containers is provided by `.VAR.of` method, which for `@` and `%` sigiled variables gives the constraint for values:
 
