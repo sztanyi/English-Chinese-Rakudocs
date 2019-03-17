@@ -1,7 +1,27 @@
 原文：https://docs.perl6.org/language/classtut
 
-译者：stanley_tam@163.com
+# `目录`
 
+<!-- MarkdownTOC -->
+
+- [类与对象 / Classes and objects](#%E7%B1%BB%E4%B8%8E%E5%AF%B9%E8%B1%A1--classes-and-objects)
+- [从类开始 / Starting with class](#%E4%BB%8E%E7%B1%BB%E5%BC%80%E5%A7%8B--starting-with-class)
+- [状态 / State](#%E7%8A%B6%E6%80%81--state)
+- [静态字段？ / Static fields?](#%E9%9D%99%E6%80%81%E5%AD%97%E6%AE%B5%EF%BC%9F--static-fields)
+- [方法 / Methods](#%E6%96%B9%E6%B3%95--methods)
+    - [私有方法 / Private Methods](#%E7%A7%81%E6%9C%89%E6%96%B9%E6%B3%95--private-methods)
+- [构造器 / Constructors](#%E6%9E%84%E9%80%A0%E5%99%A8--constructors)
+- [类的使用 / Consuming our class](#%E7%B1%BB%E7%9A%84%E4%BD%BF%E7%94%A8--consuming-our-class)
+- [继承 / Inheritance](#%E7%BB%A7%E6%89%BF--inheritance)
+    - [覆盖继承的方法 / Overriding inherited methods](#%E8%A6%86%E7%9B%96%E7%BB%A7%E6%89%BF%E7%9A%84%E6%96%B9%E6%B3%95--overriding-inherited-methods)
+    - [多重继承 / Multiple inheritance](#%E5%A4%9A%E9%87%8D%E7%BB%A7%E6%89%BF--multiple-inheritance)
+    - [`also` 声明符 / The `also` declarator](#also-%E5%A3%B0%E6%98%8E%E7%AC%A6--the-also-declarator)
+- [内省 / Introspection](#%E5%86%85%E7%9C%81--introspection)
+
+<!-- /MarkdownTOC -->
+
+
+<a id="%E7%B1%BB%E4%B8%8E%E5%AF%B9%E8%B1%A1--classes-and-objects"></a>
 # 类与对象 / Classes and objects
 
 创建和使用 Perl 6 中类的教程
@@ -83,7 +103,8 @@ my $eat =
 $eat.perform();
 ```
 
-# [类](https://docs.perl6.org/language/classtut#___top)
+<a id="%E4%BB%8E%E7%B1%BB%E5%BC%80%E5%A7%8B--starting-with-class"></a>
+# 从类开始 / Starting with class
 
 Perl 6 和许多其他语言类似，使用 `class` 关键字来定义一个类。其后的代码块就是用户自己的代码，就像其他代码块一样，但是类通常含有状态以及行为声明。例子中的代码包含通过 `has` 关键字声明的属性（状态）以及通过 `method` 关键字声明的行为。
 
@@ -123,9 +144,10 @@ say foo 42;  # OUTPUT: «It's an instance!
 » 
 ```
 
-# [状态 / State](https://docs.perl6.org/language/classtut#___top)
+<a id="%E7%8A%B6%E6%80%81--state"></a>
+# 状态 / State
 
-Task 类中前三行都是用来声明属性的（在其他语言中叫 *fields* 或者 *instance storage*）。就像用 `my` 声明的变量不可以在它被声明的作用域之外访问一样，属性也不可以在类之外被访问。这种封装特性是面向对象设计的重要原则。
+Task 类中前三行都是用来声明属性的（在其他语言中叫*字段*或者*实例存储*）。就像用 `my` 声明的变量不可以在它被声明的作用域之外访问一样，属性也不可以在类之外被访问。这种封装特性是面向对象设计的重要原则。
 
 The first three lines inside the class block all declare attributes (called *fields* or *instance storage* in other languages). Just as a `my`variable cannot be accessed from outside its declared scope, attributes are not accessible outside of the class. This *encapsulation* is one of the key principles of object oriented design.
 
@@ -137,7 +159,7 @@ The first declaration specifies instance storage for a callback – a bit of cod
 has &!callback;
 ```
 
-`&` 标记表示这个属性是可被调用的。`!`  字符是叫做符号或者次要标记。符号是变量名字的一部分。在这个例子中，`!` 号强调了这是类的私有属性。
+`&` 标记表示这个属性是可被调用的。`!` 字符是叫做符号或者次要标记。符号是变量名字的一部分。在这个例子中，`!` 号强调了这是类的私有属性。
 
 The `&` sigil indicates that this attribute represents something invocable. The `!` character is a *twigil*, or secondary sigil. A twigil forms part of the name of the variable. In this case, the `!` twigil emphasizes that this attribute is private to the class.
 
@@ -161,7 +183,7 @@ The third attribute represents the state of completion of a task:
 has Bool $.done;
 ```
 
-这个标量属性（以 `$` 标记）是 `Bool` 类型。这里使用了`.` 而非 `!` 。这样，Perl 6 强制封装属性的同时，也避免了你写访问器方法。用 `.` 替换 `!` 时声明了属性 `$!done` 以及访问器方法 `done` 。就像你写了下面代码一样：
+这个标量属性（以 `$` 标记）是 `Bool` 类型。这里使用了 `.` 而非 `!` 。这样，Perl 6 强制封装属性的同时，也避免了你写访问器方法。用 `.` 替换 `!` 时声明了属性 `$!done` 以及访问器方法 `done` 。就像你写了下面代码一样：
 
 This scalar attribute (with the `$` sigil) has a type of `Bool`. Instead of the `!` twigil, the `.` twigil is used. While Perl 6 does enforce encapsulation on attributes, it also saves you from writing accessor methods. Replacing the `!` with a `.` both declares the attribute `$!done` and an accessor method named `done`. It's as if you had written:
 
@@ -203,7 +225,8 @@ has Task @!dependencies;
 has $.ready = not @!dependencies;
 ```
 
-# [Static fields?](https://docs.perl6.org/language/classtut#___top)
+<a id="%E9%9D%99%E6%80%81%E5%AD%97%E6%AE%B5%EF%BC%9F--static-fields"></a>
+# 静态字段？ / Static fields?
 
 Perl 6 没有 **static** 关键字。然而，任何类都可以声明模组可以声明的任何东西，创建一个有限作用域的变量听起来是个好点子。
 
@@ -235,7 +258,8 @@ class HaveStaticAttr {
 
 Class attributes may also be declared with a secondary sigil – in a similar manner to object attributes – that will generate read-only accessors if the attribute is to be public.
 
-# [Methods](https://docs.perl6.org/language/classtut#___top)
+<a id="%E6%96%B9%E6%B3%95--methods"></a>
+# 方法 / Methods
 
 属性给赋予对象状态，方法赋予对象行为。让我们暂时忽略 `new` 这个特殊方法。考虑第二个方法 `add-dependency` ，它给任务的依赖列表增加了新任务。
 
@@ -247,11 +271,15 @@ method add-dependency(Task $dependency) {
 }
 ```
 
-从许多方面看，这个看起来很像 `sub` 定义。但是，它们之间有两个重要的区别。首先，声明这个函数是
+从许多方面看，这个看起来很像一个`函数`定义。但是，它们之间有两个重要的区别。首先，声明例程为方法使其加入当前类的方法列表。这样一来 `Task`  类的任何实例都可以使用方法调用符 `.` 来调用这个方法。其次，方法会将其调用者放置到特殊变量 `self`。
 
 In many ways, this looks a lot like a `sub` declaration. However, there are two important differences. First, declaring this routine as a method adds it to the list of methods for the current class. Thus any instance of the `Task` class can call this method with the `.` method call operator. Second, a method places its invocant into the special variable `self`.
 
+方法本身接受传递的参数（必须是 `Task` 类的一个实例），并将其`推送`到调用方的 `@！dependencies` 属性。
+
 The method itself takes the passed parameter – which must be an instance of the `Task` class – and `push`es it onto the invocant's `@!dependencies` attribute.
+
+`perform` 方法包含依赖关系处理程序的主要逻辑：
 
 The `perform` method contains the main logic of the dependency handler:
 
@@ -265,13 +293,22 @@ method perform() {
 }
 ```
 
+它不需要参数，而是使用对象的属性。首先，通过检查 `$!done` 来确定任务是否已经完成。如果是这样，那就没什么可做的了。
+
 It takes no parameters, working instead with the object's attributes. First, it checks if the task has already completed by checking the `$!done` attribute. If so, there's nothing to do.
+
+否则，该方法将执行任务的所有依赖项，使用 `for` 构造迭代 `@!dependencies` 中的所有属性。此迭代将每个项（每个项都是一个 `Task` 对象）放入主题变量 `$_`。使用 `.` 方法调用运算符而不指定显式调用者会将当前主题当作调用者。因此，迭代构造对当前调用者的 `@!dependencies` 属性中的每个 `Task` 对象调用 `.perform()` 方法。
 
 Otherwise, the method performs all of the task's dependencies, using the `for` construct to iterate over all of the items in the `@!dependencies` attribute. This iteration places each item – each a `Task` object – into the topic variable, `$_`. Using the `.` method call operator without specifying an explicit invocant uses the current topic as the invocant. Thus the iteration construct calls the `.perform()`method on every `Task` object in the `@!dependencies` attribute of the current invocant.
 
+所有的依赖项完成后，会执行当前 `Task` 的任务，通过执行调用 `&!callback` 属性，这就是括号的目的。最后，方法设置 `$!done` 属性为`真`，后续这个对象的 `perform` 方法调用不会重复这个任务（例如，如果这个 `Task` 是另一个 `Task`的依赖）。
+
 After all of the dependencies have completed, it's time to perform the current `Task`'s task by invoking the `&!callback` attribute directly; this is the purpose of the parentheses. Finally, the method sets the `$!done` attribute to `True`, so that subsequent invocations of `perform`on this object (if this `Task` is a dependency of another `Task`, for example) will not repeat the task.
 
-## [Private Methods](https://docs.perl6.org/language/classtut#___top)
+<a id="%E7%A7%81%E6%9C%89%E6%96%B9%E6%B3%95--private-methods"></a>
+## 私有方法 / Private Methods
+
+和属性一样，方法也可以是私有的。私有方法用带前缀的感叹号声明。使用 `self!` 跟方法名调用私有方法。要调用另一个类的私有方法，调用类必须受被调用类的信任。信任关系是用 `trusts` 声明的，并且要信任的类必须已经声明。调用另一个类的私有方法需要该类的实例和该方法的完全限定名。信任还允许访问私有属性。
 
 Just like attributes, methods can also be private. Private methods are declared with a prefixed exclamation mark. They are called with `self!` followed by the method's name. To call a private method of another class the calling class has to be trusted by the called class. A trust relationship is declared with `trusts` and the class to be trusted must already be declared. Calling a private method of another class requires an instance of that class and the fully qualified name of the method. Trust also allows access to private attributes.
 
@@ -299,9 +336,14 @@ C.new.yours-to-use(); # the context of this call is GLOBAL, and not t
 B.new.i-am-trusted();
 ```
 
+信任关系不受继承的约束。要信任全局命名空间，可以使用伪包 `GLOBAL`。
+
 Trust relationships are not subject to inheritance. To trust the global namespace, the pseudo package `GLOBAL` can be used.
 
-# [Constructors](https://docs.perl6.org/language/classtut#___top)
+<a id="%E6%9E%84%E9%80%A0%E5%99%A8--constructors"></a>
+# 构造器 / Constructors
+
+Perl 6 在构造器领域比许多语言更自由。构造器是返回类实例的任何东西。此外，构造器是普通的方法。你从基类 `Mu` 继承了名为 `new` 的默认构造器，但是你可以自由地重写 `new`，如本例所示：
 
 Perl 6 is rather more liberal than many languages in the area of constructors. A constructor is anything that returns an instance of the class. Furthermore, constructors are ordinary methods. You inherit a default constructor named `new` from the base class `Mu`, but you are free to override `new`, as this example does:
 
@@ -311,9 +353,15 @@ method new(&callback, *@dependencies) {
 }
 ```
 
+Perl 6 中的构造器和 C 语言与 Java 语言中的构造器之间的最大区别在于，Perl 6 构造器自己创建对象本身，而不是在魔法般已创建的对象上建立状态。最简单的方法是调用 [bless](https://docs.perl6.org/routine/bless) 方法，这个方法也继承自 [Mu]（https://docs.perl6.org/type/mu）。`bless` 方法需要一组命名参数来为每个属性提供初始值。
+
 The biggest difference between constructors in Perl 6 and constructors in languages such as C# and Java is that rather than setting up state on a somehow already magically created object, Perl 6 constructors create the object themselves. The easiest way to do this is by calling the [bless](https://docs.perl6.org/routine/bless) method, also inherited from [Mu](https://docs.perl6.org/type/Mu). The `bless` method expects a set of named parameters to provide the initial values for each attribute.
 
+示例的构造器将位置参数转换为命名参数，这样类就可以为其用户提供一个好的构造器。第一个参数是回调（将执行任务的对象）。其余参数依赖于 `Task` 实例。构造器将这些捕获到 `@dependencies` 吞噬数组中，并将它们作为命名参数传递给 `bless`（注意 `:&callback` 使用变量名减去标记作为参数名）。
+
 The example's constructor turns positional arguments into named arguments, so that the class can provide a nice constructor for its users. The first parameter is the callback (the thing which will execute the task). The rest of the parameters are dependent `Task`instances. The constructor captures these into the `@dependencies` slurpy array and passes them as named parameters to `bless` (note that `:&callback` uses the name of the variable – minus the sigil – as the name of the parameter).
+
+私有属性确实是私有的。这意味着 `bless` 不允许将事物直接绑定到 `&!callback` 和 `@!dependencies`。为了做到这一点，我们重写了 `BUILD` 子方法，这个方法被 `bless` 在全新的对象上调用：
 
 Private attributes really are private. This means that `bless` is not allowed to bind things to `&!callback` and `@!dependencies` directly. To do this, we override the `BUILD` submethod, which is called on the brand new object by `bless`:
 
@@ -321,7 +369,11 @@ Private attributes really are private. This means that `bless` is not allowed 
 submethod BUILD(:&!callback, :@!dependencies) { }
 ```
 
+因为 `BUILD` 在新创建的 `Task` 对象上下文中运行，可以操作这些私有属性。这里的技巧是私有属性（`&!callback` 和 `@!dependencies`）被用作 `BUILD` 参数的绑定目标。没有初始化样板代码！更多信息见[对象](https://docs.perl6.org/language/objects#Object_Construction)。
+
 Since `BUILD` runs in the context of the newly created `Task` object, it is allowed to manipulate those private attributes. The trick here is that the private attributes (`&!callback` and `@!dependencies`) are being used as the bind targets for `BUILD`'s parameters. Zero-boilerplate initialization! See [objects](https://docs.perl6.org/language/objects#Object_Construction) for more information.
+
+`BUILD` 方法负责初始化所有属性，也必须处理默认值：
 
 The `BUILD` method is responsible for initializing all attributes and must also handle default values:
 
@@ -337,17 +389,25 @@ submethod BUILD(
     ) { }
 ```
 
+更多影响对象构建的选项以及属性初始化，参考 [对象构建](https://docs.perl6.org/language/objects#Object_Construction) 。
+
 See [Object Construction](https://docs.perl6.org/language/objects#Object_Construction) for more options to influence object construction and attribute initialization.
 
-# [Consuming our class](https://docs.perl6.org/language/classtut#___top)
+<a id="%E7%B1%BB%E7%9A%84%E4%BD%BF%E7%94%A8--consuming-our-class"></a>
+# 类的使用 / Consuming our class
 
+类创建后，你才可以创建类实例。声明任务以及他们的依赖的一个简单方法是声明一个自定义构造器。创建一个没有依赖的简单任务：
 After creating a class, you can create instances of the class. Declaring a custom constructor provides a simple way of declaring tasks along with their dependencies. To create a single task with no dependencies, write:
 
 ```Perl6
 my $eat = Task.new({ say 'eating dinner. NOM!' });
 ```
 
+之前的章节解释了声明 `Task` 类会在命名空间生成一个类型对象。这个类型对象是这个类的一种“空实例”，确切地说是一个没有状态的实例。你可以调用那个实例的方法，只要这些方法不访问任何的状态。 `new` 就是这样的例子，它创建了一个新对象而不是修改或者访问现存的对象。
+
 An earlier section explained that declaring the class `Task` installed a type object in the namespace. This type object is a kind of "empty instance" of the class, specifically an instance without any state. You can call methods on that instance, as long as they do not try to access any state; `new` is an example, as it creates a new object rather than modifying or accessing an existing object.
+
+不幸的是，晚餐不会魔法般冒出来。它有依赖的任务：
 
 Unfortunately, dinner never magically happens. It has dependent tasks:
 
@@ -364,7 +424,11 @@ my $eat =
     );
 ```
 
+注意自定义构造器和合理地使用空格怎样使任务依赖更清晰。
+
 Notice how the custom constructor and sensible use of whitespace makes task dependencies clear.
+
+最后，`perform` 方法迭代地对各种各样的其他依赖依次调用 `perform` 方法，输出：
 
 Finally, the `perform` method call recursively calls the `perform` method on the various other dependencies in order, giving the output:
 
@@ -377,7 +441,10 @@ making dinner
 eating dinner. NOM!
 ```
 
-# [Inheritance](https://docs.perl6.org/language/classtut#___top)
+<a id="%E7%BB%A7%E6%89%BF--inheritance"></a>
+# 继承 / Inheritance
+
+面向对象编程采用继承作为代码重用的一种机制。Perl 6 支持一个类从一个或者多个类继承。当一个类从另一个类继承时，它通知方法分派器沿着继承链查找要分派的方法。这既适用于通过 method 关键字定义的标准方法，也适用于通过其他方法（如属性访问器）生成的方法。
 
 Object Oriented Programming provides the concept of inheritance as one of the mechanisms for code reuse. Perl 6 supports the ability for one class to inherit from one or more classes. When a class inherits from another class it informs the method dispatcher to follow the inheritance chain to look for a method to dispatch. This happens both for standard methods defined via the method keyword and for methods generated through other means, such as attribute accessors.
 
@@ -401,6 +468,8 @@ class Programmer is Employee {
 }
 ```
 
+现在，Programmer 类型的任何对象都可以使用 Employee 类中定义的方法和访问器，就好像它们来自Programmer类一样。
+
 Now, any object of type Programmer can make use of the methods and accessors defined in the Employee class as though they were from the Programmer class.
 
 ```Perl6
@@ -414,7 +483,10 @@ $programmer.code_to_solve('halting problem');
 $programmer.pay();
 ```
 
-## [Overriding inherited methods](https://docs.perl6.org/language/classtut#___top)
+<a id="%E8%A6%86%E7%9B%96%E7%BB%A7%E6%89%BF%E7%9A%84%E6%96%B9%E6%B3%95--overriding-inherited-methods"></a>
+## 覆盖继承的方法 / Overriding inherited methods
+
+当然，类可以通过定义自己的类来覆盖父类定义的方法和属性。下面的例子演示了 `Baker` 类覆盖了 `Cook` 的 `cook` 方法。
 
 Of course, classes can override methods and attributes defined by parent classes by defining their own. The example below demonstrates the `Baker` class overriding the `Cook`'s `cook` method.
 
@@ -467,11 +539,18 @@ say $baker.salary;           # OUTPUT: «50000
 » 
 ```
 
+因为调度程序在它移动到父类之前会在 `Baker` 上看到 `cook` 方法，所以将调用 `Baker` 的 `cook` 方法。
+
 Because the dispatcher will see the `cook` method on `Baker` before it moves up to the parent class the `Baker`'s `cook` method will be called.
+
+要访问继承链中的方法，请使用 [re-dispatch](https://docs.perl6.org/language/functions#Re-dispatching) 或 [MOP](https://docs.perl6.org/type/Metamodel::ClassHOW#method_can)。
 
 To access methods in the inheritance chain use [re-dispatch](https://docs.perl6.org/language/functions#Re-dispatching) or the [MOP](https://docs.perl6.org/type/Metamodel::ClassHOW#method_can).
 
-## [Multiple inheritance](https://docs.perl6.org/language/classtut#___top)
+<a id="%E5%A4%9A%E9%87%8D%E7%BB%A7%E6%89%BF--multiple-inheritance"></a>
+## 多重继承 / Multiple inheritance
+
+如前所述，类可以从多个类继承。当一个类从多个类继承时，调度程序知道在查找要搜索的方法时查看这两个类。 Perl 6 使用 [C3 算法](https://en.wikipedia.org/wiki/C3_linearization)来线性化多个继承层次结构，这比深度优先搜索更好地处理多重继承。
 
 As mentioned before, a class can inherit from multiple classes. When a class inherits from multiple classes the dispatcher knows to look at both classes when looking up a method to search for. Perl 6 uses the [C3 algorithm](https://en.wikipedia.org/wiki/C3_linearization) to linearize multiple inheritance hierarchies, which is better than depth-first search for handling multiple inheritance.
 
@@ -494,11 +573,18 @@ $geek.cook('pizza');
 $geek.code_to_solve('P =? NP');
 ```
 
+现在可以从 GeekCook 类获得可用于 Programmer 和 Cook 类的所有方法。
+
 Now all the methods made available to the Programmer and the Cook classes are available from the GeekCook class.
+
+虽然多重继承是一个有用的概念，但需要了解并偶尔使用，但重要的是要了解有更多有用的 OOP 概念。在进行多重继承时，最好考虑使用角色是否更好地实现设计，角色通常更安全，因为它们迫使类作者明确解决冲突的方法名称。有关角色的更多信息，请参阅[角色](https://docs.perl6.org/language/objects#Roles)。
 
 While multiple inheritance is a useful concept to know and occasionally use, it is important to understand that there are more useful OOP concepts. When reaching for multiple inheritance it is good practice to consider whether the design wouldn't be better realized by using roles, which are generally safer because they force the class author to explicitly resolve conflicting method names. For more information on roles see [Roles](https://docs.perl6.org/language/objects#Roles).
 
-## [The ](https://docs.perl6.org/language/classtut#___top)[`also`](undefined) declarator
+<a id="also-%E5%A3%B0%E6%98%8E%E7%AC%A6--the-also-declarator"></a>
+## `also` 声明符 / The `also` declarator
+
+要继承的类可以在类声明体中列出，方法是将 `is` 特性加上 `also`。这也适用于角色构成特性 `does`。
 
 Classes to be inherited from can be listed in the class declaration body by prefixing the `is` trait with `also`. This also works for the role composition trait `does`.
 
@@ -514,9 +600,14 @@ role B {};
 class C { also does A; also does B }
 ```
 
-# [Introspection](https://docs.perl6.org/language/classtut#___top)
+<a id="%E5%86%85%E7%9C%81--introspection"></a>
+# 内省 / Introspection
+
+内省是在程序中收集有关某些对象的信息的过程，而不是通过读取源代码，而是通过查询对象（或是一个控制对象）来查找某些属性，例如其类型。
 
 Introspection is the process of gathering information about some objects in your program, not by reading the source code, but by querying the object (or a controlling object) for some properties, such as its type.
+
+给定一个对象 `$o` 和前面几节中的类定义，我们可以问几个问题：
 
 Given an object `$o` and the class definitions from the previous sections, we can ask it a few questions:
 
@@ -529,6 +620,8 @@ say $o.^methods(:local)».name.join(', ');
 say $o.^name;
 ```
 
+输出可能如下所示：
+
 The output can look like this:
 
 ```Perl6
@@ -540,11 +633,19 @@ code_to_solve, known_languages, favorite_editor
 Programmer
 ```
 
+前两个测试每个智能匹配一个类名。如果对象属于该类或继承类，则返回真值。因此，所讨论的对象是 `Employee` 类或者继承自它的类，而不是 `GeekCook`。
+
 The first two tests each smart-match against a class name. If the object is of that class, or of an inheriting class, it returns true. So the object in question is of class `Employee` or one that inherits from it, but not `GeekCook`.
+
+`.WHAT` 方法返回与对象 `$o` 关联的类型对象，它告诉我们 `$o` 的确切类型：在本例中为 `Programmer`。
 
 The `.WHAT` method returns the type object associated with the object `$o`, which tells us the exact type of `$o`: in this case `Programmer`.
 
+`$o.perl` 返回一个可以作为 Perl 代码执行的字符串，并重现原始对象 `$o`。虽然这在对所有情况不会都完美生效，但它对于调试简单对象非常有用。 [[\]](https://docs.perl6.org/language/classtut#fn-1) `$o.^methods(:local)` 生成对 `$o` 调用的 [Method](https://docs.perl6.org/type/Method) 列表。`:local` 命名参数将返回的方法限制为 `Programmer` 类中定义的方法，并排除继承的方法。
+
 `$o.perl` returns a string that can be executed as Perl code, and reproduces the original object `$o`. While this does not work perfectly in all cases, it is very useful for debugging simple objects. [[\]](https://docs.perl6.org/language/classtut#fn-1) `$o.^methods(:local)` produces a list of [Method](https://docs.perl6.org/type/Method)s that can be called on `$o`. The `:local` named argument limits the returned methods to those defined in the `Programmer` class and excludes the inherited methods.
+
+使用 `.^` 而不是单个点调用方法的语法意味着它实际上是对其*元类*的一个方法调用，它是一个管理 `Programmer` 类的属性的类 - 或任何其他类你感兴趣的类。这个元类也可以实现其他内省方式：
 
 The syntax of calling a method with `.^` instead of a single dot means that it is actually a method call on its *meta class*, which is a class managing the properties of the `Programmer` class – or any other class you are interested in. This meta class enables other ways of introspection too:
 
@@ -553,9 +654,15 @@ say $o.^attributes.join(', ');
 say $o.^parents.map({ $_.^name }).join(', ');
 ```
 
+最后 `$o.^name` 在元对象上调用 `name` 方法，不出所料地返回类名。
+
 Finally `$o.^name` calls the `name` method on the meta object, which unsurprisingly returns the class name.
 
+内省对于调试和学习语言和新库非常有用。当一个函数或方法返回一个你不知道的对象时，用 `.WHAT` 找到它的类型，用 `.perl` 查看它的构造方法，依此类推，你会很清楚它是什么返回值是。使用 `.^methods` 你可以了解如何使用该类。
+
 Introspection is very useful for debugging and for learning the language and new libraries. When a function or method returns an object you don't know about, finding its type with `.WHAT`, seeing a construction recipe for it with `.perl`, and so on, you'll get a good idea of what its return value is. With `.^methods` you can learn what you can do with the class.
+
+但是还有其他应用程序：将对象序列化为一堆字节的例程需要知道该对象的属性，它可以通过内省找到。
 
 But there are other applications too: a routine that serializes objects to a bunch of bytes needs to know the attributes of that object, which it can find out via introspection.
 

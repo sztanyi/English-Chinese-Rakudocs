@@ -24,7 +24,7 @@ A number of **Tutorials** cover several areas in which Perl6 is particularly inn
 
 There are a number of [`useful resources`](https://perl6.org/resources) listed elsewhere on the perl6.org site. These include articles, books, slide presentations, and videos.
 
-新加入 Perl 6 的人经常会提出问题指出从其他编程范例中继承的假设。建议首先回顾 `基本主题` 部分的以下主题。
+新加入 Perl 6 的人经常会提出问题指出从其他编程范例中继承的假设。建议首先回顾~~基本主题部分~~的以下主题。
 
 It has been found that newcomers to Perl 6 often ask questions that indicate assumptions carried over from other programming paradigms. It is suggested that the following sections in the `Fundamental topics` section should be reviewed first.
 
@@ -36,9 +36,9 @@ It has been found that newcomers to Perl 6 often ask questions that indicate ass
 
 - [`Containers`](https://docs.perl6.org/language/containers) - variables, which are like the nouns of a computer language, are containers in which information is stored. The first letter in the formal name of a container, such as the '$' of $my-variable, or '@' of @an-array-of-things, or '%' of %the-scores-in-the-competition, conveys information about the container. However, Perl6 is more abstract than other languages about what can be stored in a container. So, for example, a $scalar container can contain an object that is in fact an array.
 
-- [`类与角色`](https://docs.perl6.org/language/classtut) - Perl 6 基本上是基于对象的，这些对象按类和角色进行描述。与某些语言不同，Perl 6 **不强制采用**面向对象的编程实践，并且可以就好像 Perl 6 本质上是纯过程的一样编写有用的程序。然而，复杂的软件，如 Perl 6 的 Rakudo 编译器，通过使用面向对象的风格来编写，变得简单多了，这就是为什么通过查看类是什么以及角色是什么，Perl 6 文档更容易理解的原因。如果不理解类和角色，就很难理解类型，而文档的整个部分都是针对类型的。
+- [`类与对象`](https://docs.perl6.org/language/classtut) - Perl 6 基本上是基于对象的，这些对象按类和角色进行描述。与某些语言不同，Perl 6 **不强制采用**面向对象的编程实践，并且可以就好像 Perl 6 本质上是纯过程的一样编写有用的程序。然而，复杂的软件，如 Perl 6 的 Rakudo 编译器，通过使用面向对象的风格来编写，变得简单多了，这就是为什么通过查看类是什么以及角色是什么，Perl 6 文档更容易理解的原因。如果不理解类和角色，就很难理解类型，而文档的整个部分都是针对类型的。
 
-- [`Classes and Roles`](https://docs.perl6.org/language/classtut) - Perl 6 is fundamentally based on objects, which are described in terms of classes and roles. Perl 6, unlike some languages, does not **impose**object-oriented programming practices, and useful programs can be written as if Perl 6 was purely procedural in nature. However, complex software, such as the Rakudo compiler of Perl 6, is made much simpler by writing in object-oriented idioms, which is why the Perl 6 documentation is more easily understood by reviewing what a class is and what a role is. Without understanding about Classes and Roles, it would be difficult to understand Types, to which a whole section of the documentation is devoted.
+- [`Classes and Objects`](https://docs.perl6.org/language/classtut) - Perl 6 is fundamentally based on objects, which are described in terms of classes and roles. Perl 6, unlike some languages, does not **impose**object-oriented programming practices, and useful programs can be written as if Perl 6 was purely procedural in nature. However, complex software, such as the Rakudo compiler of Perl 6, is made much simpler by writing in object-oriented idioms, which is why the Perl 6 documentation is more easily understood by reviewing what a class is and what a role is. Without understanding about Classes and Roles, it would be difficult to understand Types, to which a whole section of the documentation is devoted.
 
 - [`避免陷阱`](https://docs.perl6.org/language/traps) - 一些常见的假设导致代码没有如程序员设想的那样工作。这个主题选出了一些这种类型的假设。当事情不太顺利时，值得回顾一下。
 
