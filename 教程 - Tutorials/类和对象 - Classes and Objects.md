@@ -151,7 +151,7 @@ Task 类中前三行都是用来声明属性的（在其他语言中叫*字段*�
 
 The first three lines inside the class block all declare attributes (called *fields* or *instance storage* in other languages). Just as a `my`variable cannot be accessed from outside its declared scope, attributes are not accessible outside of the class. This *encapsulation* is one of the key principles of object oriented design.
 
-第一个声明语句定义了一个回调的 instance storage - 为执行对象代表的任务而调用的一小段代码:
+第一个声明语句定义了一个回调的实例存储 - 为执行对象代表的任务而调用的一小段代码:
 
 The first declaration specifies instance storage for a callback – a bit of code to invoke in order to perform the task that an object represents:
 
