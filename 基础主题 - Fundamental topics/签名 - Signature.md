@@ -216,19 +216,25 @@ foo 2, 4; # OUTPUT: «4 is a square of 2␤»»
 # OUTPUT: «Constraint type check failed in binding to parameter '$b'…» 
 ```
 
-### [Constraining optional arguments](https://docs.perl6.org/type/Signature#___top)
+### 约束可选参数 / Constraining optional arguments
+
+[可选参数](https://docs.perl6.org/type/Signature#Optional_and_mandatory_arguments)也可以有约束。任何参数的任一 `where` 子句都将会被执行，即使它是可选的并且不由调用者提供。那种情况下你需要防止 `where` 子句中未定义的值。
+
+can have constraints, too. Any `where` clause on any parameter will be executed, even if it's optional and not provided by the caller. In that case you may have to guard against undefined values within the `where` clause.
 
 [Optional arguments](https://docs.perl6.org/type/Signature#Optional_and_mandatory_arguments) can have constraints, too. Any `where` clause on any parameter will be executed, even if it's optional and not provided by the caller. In that case you may have to guard against undefined values within the `where` clause.
 
-```
+```Perl6
 sub f(Int $a, UInt $i? where { !$i.defined or $i > 5 }) { ... }
 ```
 
-### [Constraining slurpy arguments](https://docs.perl6.org/type/Signature#___top)
+### 约束解包参数 - Constraining slurpy arguments
+
+[解包参数](https://docs.perl6.org/type/Signature#Slurpy_%28A.K.A._variadic%29_parameters)不能有类型约束。可以使用 `where` 子句和 [Junction](https://docs.perl6.org/type/Junction) 来实现该效果。
 
 [Slurpy arguments](https://docs.perl6.org/type/Signature#Slurpy_%28A.K.A._variadic%29_parameters) can not have type constraints. A `where`-clause in conjunction with a [Junction](https://docs.perl6.org/type/Junction) can be used to that effect.
 
-```
+```Perl6
 sub f(*@a where {$_.all ~~ Int}) { say @a };
 f(42);
 f(<a>);
@@ -236,11 +242,13 @@ CATCH { default { say .^name, ' ==> ', .Str }  }
 # OUTPUT: «[42]␤Constraint type check failed in binding to parameter '@a' ...» 
 ```
 
-### [Constraining named arguments](https://docs.perl6.org/type/Signature#___top)
+### 约束命名参数 / Constraining named arguments
+
+对[命名参数](https://docs.perl6.org/type/Signature#Positional_vs._named_arguments)的约束适用于[冒号对](https://docs.perl6.org/type/Pair)的值部分。
 
 Constraints against [Named arguments](https://docs.perl6.org/type/Signature#Positional_vs._named_arguments) apply to the value part of the [colon-pair](https://docs.perl6.org/type/Pair).
 
-```
+```Perl6
 sub f(Int :$i){};
 f :i<forty-two>;
 CATCH { default { say .^name, ' ==> ', .Str }  }
@@ -248,23 +256,27 @@ CATCH { default { say .^name, ' ==> ', .Str }  }
 # binding to parameter '$i'; expected Int but got Str ("forty-two")␤» 
 ```
 
+### 约束参数的确定性 / Constraining argument definiteness
 
-
-### [Constraining argument definiteness](https://docs.perl6.org/type/Signature#___top)
+通常，类型约束仅检查参数的值是否为正确的类型。至关重要的是，*对象实例*和*类型对象*都将满足如下所示的约束：
 
 Normally, a type constraint only checks whether the value of the parameter is of the correct type. Crucially, both *object instances* and *type objects* will satisfy such a constraint as illustrated below:
 
-```
+```Perl6
 say  42.^name;    # OUTPUT: «Int␤» 
 say  42 ~~ Int;   # OUTPUT: «True␤» 
 say Int ~~ Int;   # OUTPUT: «True␤» 
 ```
 
+注意 `42` 和 `Int` 是如何满足匹配的。
+
 Note how both `42` and `Int` satisfy the match.
+
+有时我们需要区分这些对象实例（`42`）和类型对象（`Int`）。考虑以下代码：
 
 Sometimes we need to distinguish between these object instances (`42`) and type objects (`Int`). Consider the following code:
 
-```
+```Perl6
 sub limit-lines(Str $s, Int $limit) {
     my @lines = $s.lines;
     @lines[0 .. min @lines.elems, $limit].join("\n")
@@ -280,20 +292,28 @@ CATCH { default { put .^name, ': ', .Str } };
 say limit-lines "a \n b", Int; # Always returns the max number of lines 
 ```
 
+在这里，我们其实只想处理字符串实例，而不是类型对象。为此，我们可以使用 `：D` 类型约束。此约束以与调用其 [DEFINITE](https://docs.perl6.org/language/mop#DEFINITE)（meta）方法类似的方式检查传递的值是否为*对象实例*。
+
 Here we really only want to deal with string instances, not type objects. To do this, we can use the `:D` type constraint. This constraint checks that the value passed is an *object instance*, in a similar fashion to calling its [DEFINITE](https://docs.perl6.org/language/mop#DEFINITE) (meta)method.
+
+热个身，让我们将 `：D` 应用到我们简陋的 `Int` 示例的右侧：
 
 To warm up, let's apply `:D` to the right-hand side of our humble `Int` example:
 
-```
+```Perl6
 say  42 ~~ Int:D;  # OUTPUT: «True␤» 
 say Int ~~ Int:D;  # OUTPUT: «False␤» 
 ```
 
+注意上面只有 `42` 匹配 `Int：D`。
+
 Note how only `42` matches `Int:D` in the above.
+
+回到 `limit-lines`，我们现在可以修改它的签名以便及早收到错误：
 
 Returning to `limit-lines`, we can now amend its signature to catch the error early:
 
-```
+```Perl6
 sub limit-lines(Str:D $s, Int $limit) { };
 say limit-lines Str, 3;
 CATCH { default { put .^name ~ '--' ~ .Str } };
@@ -301,20 +321,28 @@ CATCH { default { put .^name ~ '--' ~ .Str } };
 #          not a type object of type 'Str'.  Did you forget a '.new'?» 
 ```
 
+这个比之前的编码方式好得多，因为失败的原因更清晰。
+
 This is much better than the way the program failed before, since here the reason for failure is clearer.
+
+也有可能*类型对象*是唯一对例程接受有意义的对象。这可以使用 `:U` 类型约束来完成，该约束检查传递的值是否是类型对象而不是对象实例。这又是我们的 `Int` 例子，不过这次使用 `:U`：
 
 It's also possible that *type objects* are the only ones that make sense for a routine to accept. This can be done with the `:U`type constraint, which checks whether the value passed is a type object rather than an object instance. Here's our `Int`example again, this time with `:U` applied:
 
-```
+```Perl6
 say  42 ~~ Int:U;  # OUTPUT: «False␤» 
 say Int ~~ Int:U;  # OUTPUT: «True␤» 
 ```
 
+现在 `42` 匹配失败而 `Int` 匹配成功。
+
 Now `42` fails to match `Int:U` while `Int` succeeds.
+
+这里有一个更实用的例子：
 
 Here's a more practical example:
 
-```
+```Perl6
 sub can-turn-into(Str $string, Any:U $type) {
    return so $string.$type;
 }
@@ -323,14 +351,17 @@ say can-turn-into("6.5", Int);      # OUTPUT: «True␤»
 say can-turn-into("6.5", Num);      # OUTPUT: «True␤» 
 say can-turn-into("a string", Num); # OUTPUT: «False␤» 
 ```
+使用对象实例作为其第二个参数调用 `can-turn-into` 将按预期产生约束违规：
 
 Calling `can-turn-into` with an object instance as its second parameter will yield a constraint violation as intended:
 
-```
+```Perl6
 say can-turn-into("a string", 123);
 # OUTPUT: «Parameter '$type' of routine 'can-turn-into' must be a type object 
 # of type 'Any', not an object instance of type 'Int'...» 
 ```
+
+为了明确指出正常行为，即不限制参数是实例还是类型对象，可以使用 `:_`，但这是不必要的。 `:( Num：_ $）`与`:( Num $）`相同。
 
 For explicitly indicating the normal behavior, that is, not constraining whether the argument will be an instance or a type object, `:_` can be used, but this is unnecessary. `:(Num:_ $)` is the same as `:(Num $)`.
 
