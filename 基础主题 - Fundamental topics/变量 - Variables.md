@@ -1622,7 +1622,7 @@ say $*VM.config<versionmajor>, ".", $*VM.config<versionminor>;
 # OUTPUT: «2018.11» 
 ```
 
-这是虚拟机的版本，通常与解释器和整个 Perl6 环境中使用的版本相同。
+这是虚拟机的版本，通常与解释器和整个 Perl 6 环境中使用的版本相同。
 
 which are the version of the virtual machine, generally the same one as the one used in the interpreter and the overall Perl 6 environment.
 
@@ -1670,14 +1670,14 @@ This contains the path to the current executable as it was entered on the comman
 <a id="%24program"></a>
 #### `$*PROGRAM`
 
-包含正在执行的 Perl6 程序的位置（以 `IO::Path` 对象的形式）。
+包含正在执行的 Perl 6 程序的位置（以 `IO::Path` 对象的形式）。
 
 Contains the location (in the form of an `IO::Path` object) of the Perl 6 program being executed.
 
 <a id="exit"></a>
 #### `&*EXIT`
 
-这是一个[可调用](https://docs.perl6.org/type/callable)，其中包含执行 `exit()` 调用时将执行的代码。用于将 Perl6 嵌入到另一个语言运行时（如 Perl5 中的 Inline::Perl6）的情况。
+这是一个[可调用](https://docs.perl6.org/type/callable)，其中包含执行 `exit()` 调用时将执行的代码。用于将 Perl 6 嵌入到另一个语言运行时（如 Perl5 中的 Inline::Perl6）的情况。
 
 This is a [Callable](https://docs.perl6.org/type/Callable) that contains the code that will be executed when doing an `exit()` call. Intended to be used in situations where Perl 6 is embedded in another language runtime (such as Inline::Perl6 in Perl 5).
 
@@ -1776,7 +1776,7 @@ Contains a [Thread](https://docs.perl6.org/type/Thread) object representing the 
 
 This is a [ThreadPoolScheduler](https://docs.perl6.org/type/ThreadPoolScheduler) object representing the current default scheduler.
 
-默认情况下，在方法 `.hyper`、`.race` 和使用该调度程序的其他线程池类（如 `Promise` 或 `Supply`）上，这最多可施加 64 个线程。但是，这取决于实现，可能会发生更改。要更改线程的最大数目，可以在运行 perl6 之前设置环境变量 `RAKUDO_MAX_THREADS`，或者在使用它们之前创建一个范围复制，并更改默认值：
+默认情况下，在方法 `.hyper`、`.race` 和使用该调度程序的其他线程池类（如 `Promise` 或 `Supply`）上，这最多可施加 64 个线程。但是，这取决于实现，可能会发生更改。要更改线程的最大数目，可以在运行 Perl 6 之前设置环境变量 `RAKUDO_MAX_THREADS`，或者在使用它们之前创建一个范围复制，并更改默认值：
 
 By default this imposes a maximum of 64 threads on the methods `.hyper`, `.race` and other thread-pool classes that use that scheduler such as `Promise`s or `Supply`s. This is, however, implementation, dependent and might be subject to change. To change the maximum number of threads, you can either set the environment variable `RAKUDO_MAX_THREADS` before running perl6 or create a scoped copy with the default changed before using them:
 

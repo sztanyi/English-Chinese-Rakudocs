@@ -1,12 +1,50 @@
 原文：https://docs.perl6.org/language/control
 
+# `目录`
+
+<!-- MarkdownTOC -->
+
+- [控制流（Control Flow）](#%E6%8E%A7%E5%88%B6%E6%B5%81%EF%BC%88control-flow%EF%BC%89)
+- [语句/ statements](#%E8%AF%AD%E5%8F%A5-statements)
+- [代码块 / blocks](#%E4%BB%A3%E7%A0%81%E5%9D%97--blocks)
+- [do](#do)
+- [if](#if)
+    - [else/elsif](#elseelsif)
+    - [unless](#unless)
+    - [with, orwith, without](#with-orwith-without)
+- [when](#when)
+- [for](#for)
+- [gather/take](#gathertake)
+- [given](#given)
+    - [default and when](#default-and-when)
+    - [proceed](#proceed)
+    - [succeed](#succeed)
+    - [given 作为语句 / given as a statement](#given-%E4%BD%9C%E4%B8%BA%E8%AF%AD%E5%8F%A5--given-as-a-statement)
+- [loop](#loop)
+- [while, until](#while-until)
+- [repeat/while, repeat/until](#repeatwhile-repeatuntil)
+- [return](#return)
+- [return-rw](#return-rw)
+- [fail](#fail)
+- [once](#once)
+- [quietly](#quietly)
+- [标签 / LABELs](#%E6%A0%87%E7%AD%BE--labels)
+- [next](#next)
+- [last](#last)
+- [redo](#redo)
+
+<!-- /MarkdownTOC -->
+
+
+<a id="%E6%8E%A7%E5%88%B6%E6%B5%81%EF%BC%88control-flow%EF%BC%89"></a>
 # 控制流（Control Flow）
 
 控制执行流程的语句
 
 Statements used to control the flow of execution
 
-# [语句（statements）]()
+<a id="%E8%AF%AD%E5%8F%A5-statements"></a>
+# 语句/ statements
 
 Perl 6 成语由一个或多个语句组成。简单语句由分号分隔。下面的这个程序会打印 ”Hello“ 然后再下一行打印 ”World“。
 
@@ -26,7 +64,8 @@ say
 "Hello"; say "World";
 ```
 
-# [代码块（blocks）]()
+<a id="%E4%BB%A3%E7%A0%81%E5%9D%97--blocks"></a>
+# 代码块 / blocks
 
 像许多语言一样，Perl 6 使用用 `{` 和 `}` 包含的代码块讲多个语句转变为单个语句。 代码块最后一个语句的分号可以省略。
 
@@ -103,7 +142,8 @@ So, be careful when you backspace in a line-wrapping editor:
 
 You have to watch out for this in most languages anyway to prevent things from getting accidentally commented out. Many of the examples below may have unnecessary semicolons for clarity.
 
-# [do]()
+<a id="do"></a>
+# do
 
 最简单的方式执行一个代码块并使他不能成为一个独立的语句就时在它之前加上 `do`。
 
@@ -162,7 +202,8 @@ A `do` may also be used on a bare statement (without curly braces) but this is m
 
 ...which brings us to `if`.
 
-# [if]()
+<a id="if"></a>
+# if
 
 有条件地运行一段代码块，使用 `if` 接一个条件。这个条件是一个表达式，在 `if` 之前的语句结束后立即求值。附加的代码块只有在当条件表达式的值为真并强转为 `Bool` 值时才执行。不像有些语言一样，条件表达式不需要括号，然而代码块中的 `{` 和 `}` 是必须要的：
 
@@ -231,7 +272,8 @@ $_ = 1; if 42 -> $a { $_.say;  $a.say } ; # says "1" then says "42"
 $_ = 1; if 42       { $_.say; $^a.say } ; # says "1" then says "42" 
 ```
 
-## [else/elsif]()
+<a id="elseelsif"></a>
+## else/elsif
 
 复合条件可以由 `if` 条件后跟随 `else` 产生。当条件表达式为假时，提供另外一个代码块来运行。
 
@@ -325,7 +367,8 @@ $_ = 1; if False { } else -> $a { "$_ $a".say } ; # says "1 False"
 if False { } elsif 0 { } else -> $a { $a.say }  ; # says "0" 
 ```
 
-## [unless]()
+<a id="unless"></a>
+## unless
 
 如果你厌烦敲代码 “if not (x)“ 你可以使用 `unless` 来反转条件语句。`unless` 不能同时使用 `else` 或者 `elsif` ，因为这会引发困惑。除了这两个区别之外，`unless` 和 [if](https://docs.perl6.org/language/control#if) 效果一样。
 
@@ -356,7 +399,8 @@ my $c = 0; say (1, (unless 0 { $c += 42; 2; }), 3, $c); # says "(1 2 3 42)"
 my $d = 0; say (1, (unless 1 { $d += 42; 2; }), 3, $d); # says "(1 3 0)" 
 ```
 
-## [with, orwith, without]()
+<a id="with-orwith-without"></a>
+## with, orwith, without
 
 `with` 语句有点像 `if` 但是检查定义而不是真值。额外的，它指明了条件的主题，这点很像 `given` ：
 
@@ -379,7 +423,7 @@ orwith $s.index("c") { say "Found c at $_" }
 else                 { say "Didn't find a, b or c" }
 ```
 
-基于 `if` 和基于`with` 的分句可以混合使用。
+基于 `if` 和基于 `with` 的分句可以混合使用。
 
 You may intermix `if`-based and `with`-based clauses.
 
@@ -407,9 +451,10 @@ say 42 with $answer;
 warn "undefined answer" without $answer;
 ```
 
-# [when]()
+<a id="when"></a>
+# when
 
-`when` 代码块类似于 `if` 代码块，两者都能在外部代码块使用，也有 “语句修饰符” 形式。下面的代码展示了相同情况下外部代码块是被怎样处理的：当 `when` 代码块执行完，控制权交给外层大括号代码块，when 之后外层大括号代码块之前的代码都会被略过；但是当 `if` 代码块执行完时，后续的代码会继续执行。（注两者都有其他的方式改变默认行为，这个将会在其他章节讨论。）下面的示例代码展示了 `if` 或者 `when` 代码块的默认行为，假设代码块中没有特殊退出或者其他副作用的语句。
+`when` 代码块类似于 `if` 代码块，两者都能在外部代码块使用，也有“语句修饰符” 形式。下面的代码展示了相同情况下外部代码块是被怎样处理的：当 `when` 代码块执行完，控制权交给外层大括号代码块，when 之后外层大括号代码块之前的代码都会被略过；但是当 `if` 代码块执行完时，后续的代码会继续执行。（注两者都有其他的方式改变默认行为，这个将会在其他章节讨论。）下面的示例代码展示了 `if` 或者 `when` 代码块的默认行为，假设代码块中没有特殊退出或者其他副作用的语句。
 
 The `when` block is similar to an `if` block and either or both can be used in an outer block, they also both have a "statement modifier" form. But there is a difference in how following code in the same, outer block is handled: When the `when` block is executed, control is passed to the enclosing block and following statements are ignored; but when the `if`block is executed, following statements are executed. (Note there are other ways to modify the default behavior of each which are discussed in other sections.) The following examples should illustrate the `if` or `when` block's default behavior assuming no special exit or other side effect statements are included in the `if` or `when` blocks:
 
@@ -453,7 +498,8 @@ say "foo" when X; # if X is true statement is executed
                   # following statements are not affected 
 ```
 
-# [for]()
+<a id="for"></a>
+# for
 
 `for` 循环遍历数组，每次循环执行一次 [block](https://docs.perl6.org/type/Block) 中的语句。如果代码块接收参数，数组中的元素将作为参数。
 
@@ -541,7 +587,8 @@ my @a = do for 1, 2, 3 { $_ * 2 }; @a.say; # says "[2 4 6]"
 my @b = (for 1, 2, 3 { $_ * 2 }); @a.say;  # same thing 
 ```
 
-# [gather/take]()
+<a id="gathertake"></a>
+# gather/take
 
 gather 是一个返回值序列的语句或块前缀。这些值由 `gather` 代码块动态作用域中 `take` 返回。
 
@@ -604,7 +651,8 @@ say weird(<a b c>, :direction<backward> );          # OUTPUT: «(c b a)
 
 If values need to be mutable on the caller side, use [take-rw](https://docs.perl6.org/type/Mu#routine_take-rw).
 
-# [given]() 
+<a id="given"></a>
+# given
 
 `given` 语句是 Perl 6 的主题化关键字，类似于 C 语言中 `switch` 的主题化功能。换句话说，`given` 设置了紧随其后代码块中 `$_` 的值。单个条件的关键词是 `when` 和 `default`。通常的习语看起来像这样：
 
@@ -635,7 +683,8 @@ This is a lot more understandable than:
 { .say; .Numeric; }(42)
 ```
 
-## [default and when]()
+<a id="default-and-when"></a>
+## default and when
 
 当 `default` 语句之后的子块离开时，包裹 `default` 语句的块将立即离开。就好像块中其余的语句被跳过了一样。
 
@@ -703,9 +752,11 @@ given 42 {
 
 `when` statements can smart match against [Signatures](https://docs.perl6.org/language/syntax#Signature_literals).
 
-## [proceed]()
+<a id="proceed"></a>
+## proceed
 
-## [succeed]()
+<a id="succeed"></a>
+## succeed
 
 `proceed` 和 `succeed` 都只能在 `when` 或者 `default` 代码块里使用。
 
@@ -801,7 +852,8 @@ given 42 {
 }
 ```
 
-## [given as a statement]()
+<a id="given-%E4%BD%9C%E4%B8%BA%E8%AF%AD%E5%8F%A5--given-as-a-statement"></a>
+## given 作为语句 / given as a statement
 
 `given` 可以跟在一个语句后面，以在它后面的语句中设置主题。
 
@@ -821,25 +873,32 @@ printf "%s %02i.%02i.%i",
 # OUTPUT: «Sa 03.06.2016» 
 ```
 
-# [loop]()
+<a id="loop"></a>
+# loop
+
+`loop` 语句接收三个被`分号`分隔的语句，它们扮演初始化器，条件和增量器。初始化程序执行一次，任何变量声明都将溢出到周围的块中。每次迭代执行一次条件并强制转换为 `Bool`，如果 `False` 则循环停止。每次迭代执行一次增量器。
 
 The `loop` statement takes three statements in parentheses separated by `;` that take the role of initializer, conditional and incrementer. The initializer is executed once and any variable declaration will spill into the surrounding block. The conditional is executed once per iteration and coerced to `Bool`, if `False` the loop is stopped. The incrementer is executed once per iteration.
 
-```
+```Perl6
 loop (my $i = 0; $i < 10; $i++) {
     say $i;
 }
 ```
 
+无限循环不需要括号。
+
 The infinite loop does not require parentheses.
 
-```
+```Perl6
 loop { say 'forever' }
 ```
 
+如果出现在列表中，`loop` 语句可用于从附加块的每次运行结果中生成值：
+
 The `loop` statement may be used to produce values from the result of each run of the attached block if it appears in lists:
 
-```
+```Perl6
 (loop ( my $i = 0; $i++ < 3;) { $i * 2 }).say;               # OUTPUT: «(2 4 6)
 » 
 my @a = (loop ( my $j = 0; $j++ < 3;) { $j * 2 }); @a.say;   # OUTPUT: «[2 4 6]
@@ -847,19 +906,24 @@ my @a = (loop ( my $j = 0; $j++ < 3;) { $j * 2 }); @a.say;   # OUTPUT: «[2 4 6]
 my @b = do loop ( my $k = 0; $k++ < 3;) { $k * 2 }; @b.say;  # same thing 
 ```
 
+与 `for` 循环不同，目前不应该依赖于返回值是否惰性生成。最好使用 `eager` 来保证返回值可能要使用的循环会实际运行：
+
 Unlike a `for` loop, one should not rely on whether returned values are produced lazily, for now. It would probably be best to use `eager` to guarantee that a loop whose return value may be used actually runs:
 
-```
+```Perl6
 sub heads-in-a-row {
     (eager loop (; 2.rand < 1;) { "heads".say })
 }
 ```
 
-# [while, until]()
+<a id="while-until"></a>
+# while, until
+
+只要条件为真，`while` 语句就会执行该代码块。所以
 
 The `while` statement executes the block as long as its condition is true. So
 
-```
+```Perl6
 my $x = 1;
 while $x < 4 {
     print $x++;
@@ -870,9 +934,11 @@ print "\n";
 » 
 ```
 
+类似地，只要表达式为假，`until` 语句就会执行该块。
+
 Similarly, the `until` statement executes the block as long as the expression is false.
 
-```
+```Perl6
 my $x = 1;
 until $x > 3 {
     print $x++;
@@ -883,24 +949,35 @@ print "\n";
 » 
 ```
 
+ `while` 或 `until` 的条件可以用括号括起来，但是在关键字和条件的左括号之间必须有一个空格。
+
 The condition for `while` or `until` can be parenthesized, but there must be a space between the keyword and the opening parenthesis of the condition.
+
+`while` 和 `until` 都可以用作语句修饰符。例如：
 
 Both `while` and `until` can be used as statement modifiers. E. g.
 
-```
+```Perl6
 my $x = 42;
 $x-- while $x > 12
 ```
 
+另请参阅下面的 `repeat/while` 和 `repeat/until`。
+
 Also see `repeat/while` and `repeat/until` below.
+
+所有这些形式都可以像 `loop` 一样产生返回值。
 
 All these forms may produce a return value the same way `loop` does.
 
-# [repeat/while, repeat/until]()
+<a id="repeatwhile-repeatuntil"></a>
+# repeat/while, repeat/until
+
+执行代码块*至少一次*，如果条件允许，则重复执行。这与 `while`/`until` 的不同之处在于条件在循环结束时进行评估，即使它出现在前面。
 
 Executes the block *at least once* and, if the condition allows, repeats that execution. This differs from `while`/`until` in that the condition is evaluated at the end of the loop, even if it appears at the front.
 
-```
+```Perl6
 my $x = -42;
 repeat {
     $x++;
@@ -951,28 +1028,40 @@ $x.say; # OUTPUT: «21
 » 
 ```
 
+所有这些形式都可以像 `loop` 一样产生返回值。
+
 All these forms may produce a return value the same way `loop` does.
 
-# [return]()
+<a id="return"></a>
+# return
+
+`return` 将停止执行子程序或方法，运行所有相关的[阶段](https://docs.perl6.org/language/phasers#Block_Phasers) 并向调用者提供给定的返回值。默认返回值为 `Nil`。如果提供了返回[类型约束](https://docs.perl6.org/type/Signature#Constraining_Return_Types) ，则将检查它，除非返回值为 `Nil`。如果类型检查失败，则抛出异常 [X::TypeCheck::Return](https://docs.perl6.org/type/X::TypeCheck::Return)。如果它通过了类型检查，则引发`控制`异常并可以使用 [CONTROL](https://docs.perl6.org/language/phasers#CONTROL) 捕获。
 
 The sub `return` will stop execution of a subroutine or method, run all relevant [phasers](https://docs.perl6.org/language/phasers#Block_Phasers) and provide the given return value to the caller. The default return value is `Nil`. If a return [type constraint](https://docs.perl6.org/type/Signature#Constraining_Return_Types) is provided it will be checked unless the return value is `Nil`. If the type check fails the exception [X::TypeCheck::Return](https://docs.perl6.org/type/X::TypeCheck::Return) is thrown. If it passes a control exception is raised and can be caught with [CONTROL](https://docs.perl6.org/language/phasers#CONTROL).
 
+块中的任何 `return` 都与该块的外部词法范围中的第一个`例程`相关联，无论嵌套有多深。请注意，根包中的 `return` 将在运行时失败。在惰性代码块中的 `return`（例如在 `map` 内部）可能发现在执行块时外部词法例程已经消失。几乎在任何情况下， `last` 都是更好的选择。
+
 Any `return` in a block is tied to the first `Routine` in the outer lexical scope of that block, no matter how deeply nested. Please note that a `return` in the root of a package will fail at runtime. A `return` in a block that is evaluated lazily (e.g. inside `map`) may find the outer lexical routine gone by the time the block is executed. In almost any case `last` is the better alternative.
 
-# [return-rw]()
+<a id="return-rw"></a>
+# return-rw
+
+`return` 将返回值，而不是容器。这些是不可变的，并且在尝试变异时会导致运行时错误。
 
 The sub `return` will return values, not containers. Those are immutable and will lead to runtime errors when attempted to be mutated.
 
-```
+```Perl6
 sub s(){ my $a = 41; return $a };
 say ++s();
 CATCH { default { say .^name, ': ', .Str } };
 # OUTPUT: «X::Multi::NoMatch.new(dispatcher … 
 ```
 
+要返回一个可变容器，请使用 `return-rw`。
+
 To return a mutable container, use `return-rw`.
 
-```
+```Perl6
 sub s(){ my $a = 41; return-rw $a };
 say ++s();
 # OUTPUT: «42
@@ -981,11 +1070,14 @@ say ++s();
 
 The same rules as for `return` regarding phasers and control exceptions apply.
 
-# [fail]()
+<a id="fail"></a>
+# fail
+
+离开当前例程并返回提供的 [Exception](https://docs.perl6.org/type/Exception) 或包含在 [Failure](https://docs.perl6.org/type/Failure) 中的 `Str`，执行所有相关的[阶段](https://docs.perl6.org/language/phasers#Block_Phasers)之后。如果调用者通过编译指示 `use fatal;` 激活了致命异常，则抛出异常而不是作为 `Failure` 返回。
 
 Leaves the current routine and returns the provided [Exception](https://docs.perl6.org/type/Exception) or `Str` wrapped inside a [Failure](https://docs.perl6.org/type/Failure), after all relevant [phasers](https://docs.perl6.org/language/phasers#Block_Phasers)are executed. If the caller activated fatal exceptions via the pragma `use fatal;`, the exception is thrown instead of being returned as a `Failure`.
 
-```
+```Perl6
 sub f { fail "WELP!" };
 say f;
 CATCH { default { say .^name, ': ', .Str } }
@@ -993,11 +1085,14 @@ CATCH { default { say .^name, ': ', .Str } }
 » 
 ```
 
-# [once]()
+<a id="once"></a>
+# once
+
+带有 `once` 的代码块前缀只执行一次，即使放在循环或递归例程中也是如此。
 
 A block prefix with `once` will be executed exactly once, even if placed inside a loop or a recursive routine.
 
-```
+```Perl6
 my $guard = 3;
 loop {
     last if $guard-- <= 0;
@@ -1007,30 +1102,38 @@ loop {
 manymanymany» 
 ```
 
+这适用于包含代码对象的每个“克隆”，因此：
+
 This works per "clone" of the containing code object, so:
 
-```
+```Perl6
 ({ once 42.say } xx 3).map: {$_(), $_()}; # says 42 thrice 
 ```
 
+请注意，当多个线程运行同一块的同一个克隆时，这不是一个线程安全的构造。还要记住，方法每个类只有一个克隆，而不是每个对象。
+
 Note that this is **not** a thread-safe construct when the same clone of the same block is run by multiple threads. Also remember that methods only have one clone per class, not per object.
 
-# [quietly]()
+<a id="quietly"></a>
+# quietly
+
+`安静的`代码块会抑制警告。
 
 A `quietly` block will suppress warnings.
 
-```
+```Perl6
 quietly { warn 'kaput!' };
 warn 'still kaput!';
 # OUTPUT: «still kaput! [...]
 » 
 ```
 
-# [LABELs](https://docs.perl6.org/language/control#___top)
+<a id="%E6%A0%87%E7%AD%BE--labels"></a>
+# 标签 / LABELs
 
 `while`, `until`, `loop` and `for` loops can all take a label, which can be used to identify them for `next`, `last`, and `redo`. Nested loops are supported, for instance:
 
-```
+```Perl6
 OUTAHERE: while True  {
     for 1,2,3 -> $n {
         last OUTAHERE if $n == 2;
@@ -1038,9 +1141,11 @@ OUTAHERE: while True  {
 }
 ```
 
+标签也可以在嵌套循环中用于命名每个循环，例如：
+
 Labels can be used also within nested loops to name each loop, for instance:
 
-```
+```Perl6
 OUTAHERE:
 loop ( my $i = 1; True; $i++ ) {
   OUTFOR:
@@ -1054,11 +1159,14 @@ loop ( my $i = 1; True; $i++ ) {
 }
 ```
 
-# [next]()
+<a id="next"></a>
+# next
+
+`next` 命令启动循环的下一次迭代。所以代码
 
 The `next` command starts the next iteration of the loop. So the code
 
-```
+```Perl6
 my @x = 1, 2, 3, 4, 5;
 for @x -> $x {
     next if $x == 3;
@@ -1066,13 +1174,18 @@ for @x -> $x {
 }
 ```
 
+输出 “1245”。
+
 prints "1245".
 
-# [last]()
+<a id="last"></a>
+# last
+
+`last`命令立即退出有问题的循环。
 
 The `last` command immediately exits the loop in question.
 
-```
+```Perl6
 my @x = 1, 2, 3, 4, 5;
 for @x -> $x {
     last if $x == 3;
@@ -1080,13 +1193,18 @@ for @x -> $x {
 }
 ```
 
+输出 “12”。
+
 prints "12".
 
-# [redo]()
+<a id="redo"></a>
+# redo
+
+`redo` 命令重新开始循环块而不再评估条件。
 
 The `redo` command restarts the loop block without evaluating the conditional again.
 
-```
+```Perl6
 loop {
     my $x = prompt("Enter a number");
     redo unless $x ~~ /\d+/;
