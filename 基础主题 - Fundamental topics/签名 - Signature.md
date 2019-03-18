@@ -351,6 +351,7 @@ say can-turn-into("6.5", Int);      # OUTPUT: «True␤»
 say can-turn-into("6.5", Num);      # OUTPUT: «True␤» 
 say can-turn-into("a string", Num); # OUTPUT: «False␤» 
 ```
+
 使用对象实例作为其第二个参数调用 `can-turn-into` 将按预期产生约束违规：
 
 Calling `can-turn-into` with an object instance as its second parameter will yield a constraint violation as intended:
@@ -361,9 +362,11 @@ say can-turn-into("a string", 123);
 # of type 'Any', not an object instance of type 'Int'...» 
 ```
 
-为了明确指出正常行为，即不限制参数是实例还是类型对象，可以使用 `:_`，但这是不必要的。 `:( Num：_ $）`与`:( Num $）`相同。
+为了明确指出正常行为，即不限制参数是实例还是类型对象，可以使用 `:_`，但这是不必要的。 `:(Num:_ $)` 与 `:(Num $)` 相同。
 
 For explicitly indicating the normal behavior, that is, not constraining whether the argument will be an instance or a type object, `:_` can be used, but this is unnecessary. `:(Num:_ $)` is the same as `:(Num $)`.
+
+回顾一下，这里是这些类型约束的快速说明，也称为*笑脸类型*：
 
 To recap, here is a quick illustration of these type constraints, also known collectively as *type smileys*:
 
@@ -391,18 +394,24 @@ say $f  ~~ Any:U;    # OUTPUT: «False␤»
 say $f  ~~ Any:_;    # OUTPUT: «True␤» 
 ```
 
+[类和对象](https://docs.perl6.org/language/classtut#Starting_with_class)文档进一步阐述了实例和类型对象的概念，并使用 `.DEFINITE` 方法发现它们。
+
 The [Classes and Objects](https://docs.perl6.org/language/classtut#Starting_with_class) document further elaborates on the concepts of instances and type objects and discovering them with the `.DEFINITE` method.
+
+请记住所有参数都有值;即使是可选参数也有默认默认值，他们是显式类型约束的约束类型的类型对象。如果不存在显式类型约束，则默认默认值为方法，子方法和子例程的 [Any](https://docs.perl6.org/type/Any) 类型对象，以及 [Mu](https://docs.perl6.org/type/Mu) 为块输入对象。这意味着如果使用 `:D` 类型的笑脸，则需要提供默认值或使参数成为必需参数。否则，默认默认值为类型对象，这将使定义约束失败。
 
 Keep in mind all parameters have values; even optional ones have default defaults that are the type object of the constrained type for explicit type constraints. If no explicit type constraint exists, the default default is an [Any](https://docs.perl6.org/type/Any) type object for methods, submethods, and subroutines, and a [Mu](https://docs.perl6.org/type/Mu) type object for blocks. This means that if you use the `:D` type smiley, you'd need to provide a default value or make the parameter required. Otherwise, the default default would be a type object, which would fail the definiteness constraint.
 
-```
+```Perl6
 sub divide (Int:D :$a = 2, Int:D :$b!) { say $a/$b }
 divide :1a, :2b; # OUTPUT: «0.5␤» 
 ```
 
+当特定参数（位置或命名）根本没有获取到值时，将启用默认值。
+
 The default value will kick in when that particular parameter, either positional or named, gets no value *at all*.
 
-```
+```Perl6
 sub f($a = 42){
   my $b is default('answer');
   say $a;
@@ -413,20 +422,26 @@ f;     # OUTPUT: «42␤42␤»
 f Nil; # OUTPUT: «Nil␤answer␤» 
 ```
 
+`$a` 的默认值为 42。没有赋值时，`$a` 将被赋予签名中声明的默认值。但是，在第二种情况下，确实会收到一个值，恰好是 `Nil`。将 `Nil` 分配给任何变量会将其重置为其默认值，该值已被声明为 `'answer'`。这解释了第二次调用 `f` 会发生什么。例程参数和变量处理默认值的方式不同，这部分地通过在每种情况下声明默认值的不同方式来澄清（参数使用 `=`，变量使用 `default` 特性）。
+
 `$a` has 42 as default value. With no value, `$a` will be assigned the default declared in the Signature. However, in the second case, it *does* receive a value, which happens to be `Nil`. Assigning `Nil` to any variable resets it to its default value, which has been declared as `'answer'`. That explains what happens the second time we call `f`. Routine parameters and variables deal differently with default value, which is in part clarified by the different way default values are declared in each case (using `=`for parameters, using the `default` trait for variables).
+
+注意：在 6.c 中，默认 `:U`/`:D` 约束的变量，其默认值是一个带有这种约束的类型对象，它是不可初始化的，因此你不能使用 `.=` 运算符，例如。
 
 Note: in 6.c language, the default default of `:U`/`:D` constrained variables was a type object with such a constraint, which is not initializable, thus you cannot use the `.=` operator, for example.
 
-```
+```Perl6
 use v6.c;
 my Int:D $x .= new: 42;
 # OUTPUT: You cannot create an instance of this type (Int:D) 
 # in block <unit> at -e line 1 
 ```
 
+在 6.d 中，默认默认值是没有笑脸约束的​​类型对象：
+
 In the 6.d language, the default default is the type object without the smiley constraint:
 
-```
+```Perl6
 use v6.d;
 my Int:D $x .= new: 42; # OUTPUT: «42␤» 
 ```
