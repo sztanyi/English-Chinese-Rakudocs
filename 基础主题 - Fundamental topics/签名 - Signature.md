@@ -367,7 +367,7 @@ For explicitly indicating the normal behavior, that is, not constraining whether
 
 To recap, here is a quick illustration of these type constraints, also known collectively as *type smileys*:
 
-```
+```Perl6
 # Checking a type object 
 say Int ~~ Any:D;    # OUTPUT: «False␤» 
 say Int ~~ Any:U;    # OUTPUT: «True␤» 
