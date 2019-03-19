@@ -366,7 +366,7 @@ say can-turn-into("a string", 123);
 
 For explicitly indicating the normal behavior, that is, not constraining whether the argument will be an instance or a type object, `:_` can be used, but this is unnecessary. `:(Num:_ $)` is the same as `:(Num $)`.
 
-回顾一下，这里是这些类型约束的快速说明，也称为*笑脸类型*：
+回顾一下，这里是这些类型约束的快速说明，也称为*表情符号类型*：
 
 To recap, here is a quick illustration of these type constraints, also known collectively as *type smileys*:
 
@@ -398,7 +398,7 @@ say $f  ~~ Any:_;    # OUTPUT: «True␤»
 
 The [Classes and Objects](https://docs.perl6.org/language/classtut#Starting_with_class) document further elaborates on the concepts of instances and type objects and discovering them with the `.DEFINITE` method.
 
-请记住所有参数都有值;即使是可选参数也有默认默认值，他们是显式类型约束的约束类型的类型对象。如果不存在显式类型约束，则默认默认值为方法，子方法和子例程的 [Any](https://docs.perl6.org/type/Any) 类型对象，以及 [Mu](https://docs.perl6.org/type/Mu) 为块输入对象。这意味着如果使用 `:D` 类型的笑脸，则需要提供默认值或使参数成为必需参数。否则，默认默认值为类型对象，这将使定义约束失败。
+请记住所有参数都有值;即使是可选参数也有默认默认值，他们是显式类型约束的约束类型的类型对象。如果不存在显式类型约束，则默认默认值为方法，子方法和子例程的 [Any](https://docs.perl6.org/type/Any) 类型对象，以及 [Mu](https://docs.perl6.org/type/Mu) 为块输入对象。这意味着如果使用 `:D` 类型的表情符号，则需要提供默认值或使参数成为必需参数。否则，默认默认值为类型对象，这将使定义约束失败。
 
 Keep in mind all parameters have values; even optional ones have default defaults that are the type object of the constrained type for explicit type constraints. If no explicit type constraint exists, the default default is an [Any](https://docs.perl6.org/type/Any) type object for methods, submethods, and subroutines, and a [Mu](https://docs.perl6.org/type/Mu) type object for blocks. This means that if you use the `:D` type smiley, you'd need to provide a default value or make the parameter required. Otherwise, the default default would be a type object, which would fail the definiteness constraint.
 
@@ -437,7 +437,7 @@ my Int:D $x .= new: 42;
 # in block <unit> at -e line 1 
 ```
 
-在 6.d 中，默认默认值是没有笑脸约束的​​类型对象：
+在 6.d 中，默认默认值是没有类型表情符号约束的​​类型对象：
 
 In the 6.d language, the default default is the type object without the smiley constraint:
 
@@ -445,6 +445,8 @@ In the 6.d language, the default default is the type object without the smiley c
 use v6.d;
 my Int:D $x .= new: 42; # OUTPUT: «42␤» 
 ```
+
+关于术语的结束语：本节是关于使用类型表情符号 `：D` 和 `：U` 来约束参数的确定性。偶尔*定义*用作*定性*的同义词;这可能令人困惑，因为这些术语的含义略有不同。
 
 A closing remark on terminology: this section is about the use of the type smileys `:D` and `:U` to constrain the definiteness of arguments. Occasionally *definedness* is used as a synonym for *definiteness*; this may be confusing, since the terms have subtly different meanings.
 

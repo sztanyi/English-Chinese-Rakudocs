@@ -4,6 +4,7 @@
 
 <!-- MarkdownTOC -->
 
+- [`目录`](#%E7%9B%AE%E5%BD%95)
 - [容器 Containers](#%E5%AE%B9%E5%99%A8-containers)
 - [变量是什么 / What is a variable?](#%E5%8F%98%E9%87%8F%E6%98%AF%E4%BB%80%E4%B9%88--what-is-a-variable)
 - [标量容器 / Scalar containers](#%E6%A0%87%E9%87%8F%E5%AE%B9%E5%99%A8--scalar-containers)
@@ -12,10 +13,10 @@
 - [标量容器和列表 / Scalar containers and listy things](#%E6%A0%87%E9%87%8F%E5%AE%B9%E5%99%A8%E5%92%8C%E5%88%97%E8%A1%A8--scalar-containers-and-listy-things)
 - [赋值及绑定至数组变量 / Assigning and binding to array variables](#%E8%B5%8B%E5%80%BC%E5%8F%8A%E7%BB%91%E5%AE%9A%E8%87%B3%E6%95%B0%E7%BB%84%E5%8F%98%E9%87%8F--assigning-and-binding-to-array-variables)
 - [绑定至数组元素 / Binding to array elements](#%E7%BB%91%E5%AE%9A%E8%87%B3%E6%95%B0%E7%BB%84%E5%85%83%E7%B4%A0--binding-to-array-elements)
-- [扁平化、物品和容器 - Flattening, items and containers](#%E6%89%81%E5%B9%B3%E5%8C%96%E3%80%81%E7%89%A9%E5%93%81%E5%92%8C%E5%AE%B9%E5%99%A8---flattening-items-and-containers)
+- [扁平化、物品和容器 - Flattening, items and containers](#%E6%89%81%E5%B9%B3%E5%8C%96%E7%89%A9%E5%93%81%E5%92%8C%E5%AE%B9%E5%99%A8---flattening-items-and-containers)
 - [自引用数据 / Self-referential data](#%E8%87%AA%E5%BC%95%E7%94%A8%E6%95%B0%E6%8D%AE--self-referential-data)
 - [类型约束 / Type constraints](#%E7%B1%BB%E5%9E%8B%E7%BA%A6%E6%9D%9F--type-constraints)
-    - [`已定义`约束 / Definedness constraints](#%E5%B7%B2%E5%AE%9A%E4%B9%89%E7%BA%A6%E6%9D%9F--definedness-constraints)
+  - [`已定义`约束 / Definedness constraints](#%E5%B7%B2%E5%AE%9A%E4%B9%89%E7%BA%A6%E6%9D%9F--definedness-constraints)
 - [自定义容器 / Custom containers](#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%AE%B9%E5%99%A8--custom-containers)
 
 <!-- /MarkdownTOC -->
@@ -531,7 +532,7 @@ say %h.VAR.of;  # OUTPUT: «(Int)
 <a id="%E5%B7%B2%E5%AE%9A%E4%B9%89%E7%BA%A6%E6%9D%9F--definedness-constraints"></a>
 ## `已定义`约束 / Definedness constraints
 
-容器还可以强制变量是已定义的。在声明中加一个笑脸：
+容器还可以强制变量是已定义的。在声明中加一个类型表情符号：
 
 A container can also enforce a variable to be defined. Put a smiley in the declaration:
 
