@@ -450,11 +450,15 @@ my Int:D $x .= new: 42; # OUTPUT: «42␤»
 
 A closing remark on terminology: this section is about the use of the type smileys `:D` and `:U` to constrain the definiteness of arguments. Occasionally *definedness* is used as a synonym for *definiteness*; this may be confusing, since the terms have subtly different meanings.
 
+如上所述，*明确性*涉及类型对象和对象实例之间的区别。类型对象总是不确定的，而对象实例总是明确的。可以使用 [DEFINITE](https://docs.perl6.org/language/mop#DEFINITE)（元）方法验证对象是类型对象还是对象实例。
+
 As explained above, *definiteness* is concerned with the distinction between type objects and object instances. A type object is always indefinite, while an object instance is always definite. Whether an object is a type object/indefinite or an object instance/definite can be verified using the [DEFINITE](https://docs.perl6.org/language/mop#DEFINITE) (meta)method.
+
+*确定性*应与*定义性*区分开来，*定义性*与定义和未定义对象之间的区别有关。可以使用 `defined` 方法验证对象是定义的还是未定义的，该方法在类 [Mu](https://docs.perl6.org/type/Mu) 中实现。默认情况下，类型对象被视为未定义，而对象实例被视为已定义;即：`.defined` 在类型对象上返回`假值`，否则返回 `真值`。但是这个默认行为可能会被子类覆盖。覆盖默认 `.defined` 行为的子类的示例是 [Failure](https://docs.perl6.org/type/Failure)，因此即使实例化的 `Failure` 也可以作为未定义的值：
 
 *Definiteness* should be distinguished from *definedness*, which is concerned with the difference between defined and undefined objects. Whether an object is defined or undefined can be verified using the `defined`-method, which is implemented in class [Mu](https://docs.perl6.org/type/Mu). By default a type object is considered undefined, while an object instance is considered defined; that is: `.defined` returns `False` on a type object, and `True` otherwise. But this default behavior may be overridden by subclasses. An example of a subclass that overrides the default `.defined` behavior is [Failure](https://docs.perl6.org/type/Failure), so that even an instantiated `Failure` acts as an undefined value:
 
-```
+```Perl6
 my $a = Failure;                # Initialize with type object 
 my $b = Failure.new("foo");     # Initialize with object instance 
 say $a.DEFINITE;                # Output: «False␤» : indefinite type object 
@@ -463,11 +467,13 @@ say $a.defined;                 # Output: «False␤» : default response
 say $b.defined;                 # Output: «False␤» : .defined override 
 ```
 
-### [Constraining signatures of `Callable`s](https://docs.perl6.org/type/Signature#___top)
+### 约束可调用签名 / Constraining signatures of `Callable`s
+
+可以在参数之后紧跟[签名](https://docs.perl6.org/type/Signature)（不允许空格）来约束[Callable](https://docs.perl6.org/type/Callable)参数：
 
 The signature of a [Callable](https://docs.perl6.org/type/Callable) parameter can be constrained by specifying a [Signature](https://docs.perl6.org/type/Signature) literal right after the parameter (no whitespace allowed):
 
-```
+```Perl6
 sub f(&c:(Int, Str))  { say c(10, 'ten') };
 sub g(Int $i, Str $s) { $s ~ $i };
 f(&g);
@@ -476,7 +482,7 @@ f(&g);
 
 This shorthand syntax is available only for parameters with the `&` sigil. For others, you need to use the long version:
 
-```
+```Perl6
 sub f($c where .signature ~~ :(Int, Str))  { say $c(10, 'ten') }
 sub g(Num $i, Str $s) { $s ~ $i }
 sub h(Int $i, Str $s) { $s ~ $i }
