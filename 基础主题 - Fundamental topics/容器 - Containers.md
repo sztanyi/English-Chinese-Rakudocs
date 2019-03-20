@@ -4,7 +4,6 @@
 
 <!-- MarkdownTOC -->
 
-- [`目录`](#%E7%9B%AE%E5%BD%95)
 - [容器 Containers](#%E5%AE%B9%E5%99%A8-containers)
 - [变量是什么 / What is a variable?](#%E5%8F%98%E9%87%8F%E6%98%AF%E4%BB%80%E4%B9%88--what-is-a-variable)
 - [标量容器 / Scalar containers](#%E6%A0%87%E9%87%8F%E5%AE%B9%E5%99%A8--scalar-containers)
