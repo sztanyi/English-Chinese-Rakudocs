@@ -795,8 +795,6 @@ my &s = f(10, 2, Int.new / Int.new);
 say s(2); # 10 / 2 * 2 == 10 
 ```
 
-
-
 ## 位置与命名参数 / Positional vs. named arguments
 
 参数可以是*位置的*或*命名的*。默认情况下，参数是位置的，除了嗦哈希和标有前导冒号 `:` 的参数。后者称为[冒号对](https://docs.perl6.org/type/Pair)。检查以下签名及其表示的内容：
@@ -850,8 +848,6 @@ sub named(:official($private)) { "Official business!" if $private }
 named :official;
 ```
 
-
-
 ## 参数别名/ Argument aliases
 
 [冒号对](https://docs.perl6.org/type/Pair)语法可用于为参数提供别名：
@@ -871,7 +867,7 @@ alias-named(color => "white", class => "C"); # every alias is independent
 
 The presence of the colon `:` will decide whether we are creating a new named argument or not. `:$colour` will not only be the name of the aliased variable, but also a new named argument (used in the second invocation). However, `$kind` will just be the name of the aliased variable, that does not create a new named argument. More uses of aliases can be found in [sub MAIN](https://docs.perl6.org/language/functions#sub_MAIN)
 
-可以动态调用具有命名参数的函数，使用 `|` 取消引用 [Pair](https://docs.perl6.org/type/Pair) 将其转换为命名参数。
+具有命名参数的函数可以被动态调用，使用 `|` 解引用 [Pair](https://docs.perl6.org/type/Pair) 将其转换为命名参数。
 
 A function with named arguments can be called dynamically, dereferencing a [Pair](https://docs.perl6.org/type/Pair) with `|` to turn it into a named argument.
 
@@ -886,6 +882,8 @@ my $pair = :named(1);
 f |$pair;                           # OUTPUT: «(:$named)␤» 
 ```
 
+可以使用同样的方法将 `Hash` 转换为命名参数。
+
 The same can be used to convert a `Hash` into named arguments.
 
 ```Perl6
@@ -894,16 +892,16 @@ my %pairs = also-named => 4;
 f |%pairs;                              # OUTPUT: «(:$also-named)␤» 
 ```
 
+包含列表的 `Hash` 转换为命名参数时会出现问题。避免额外的容器层级，将其转化为 [Map](https://docs.perl6.org/type/Map)。
+
 A `Hash` that contains a list may prove problematic when slipped into named arguments. To avoid the extra layer of containers coerce to [Map](https://docs.perl6.org/type/Map) before slipping.
 
-```
+```Perl6
 class C { has $.x; has $.y; has @.z };
 my %h = <x y z> Z=> (5, 20, [1,2]);
 say C.new(|%h.Map);
 # OUTPUT: «C.new(x => 5, y => 20, z => [1, 2])␤» 
 ```
-
-
 
 ## [Optional and mandatory arguments](https://docs.perl6.org/type/Signature#___top)
 
@@ -975,8 +973,6 @@ for <Peter Paul Merry>.pairs -> (:key($index), :value($guest)) { }
 ```
 
 However, this unpacking of objects as their attributes is only the default behavior. To make an object get destructured differently, change its [`Capture`](https://docs.perl6.org/routine/Capture) method.
-
-
 
 ## [Sub-signatures](https://docs.perl6.org/type/Signature#___top)
 

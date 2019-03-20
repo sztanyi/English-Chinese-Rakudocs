@@ -55,7 +55,7 @@ In the case of `my $x`, the lexpad entry for the variable `$x` is a pointer to a
 <a id="%E6%A0%87%E9%87%8F%E5%AE%B9%E5%99%A8--scalar-containers"></a>
 # 标量容器 / Scalar containers
 
-尽管在 Perl 6 中，[`Scalar`] 类型的对象(https://docs.perl6.org/type/scalar)随处可见，但你很少见它们直接作为对象，因为大多数操作时*反容器化*的，这意味着它们作用于 `scalar` 容器的内容，而不是容器本身。
+尽管在 Perl 6 中，[`Scalar`](https://docs.perl6.org/type/scalar) 类型的对象随处可见，但你很少见它们直接作为对象，因为大多数操作时*反容器化*的，这意味着它们作用于 `scalar` 容器的内容，而不是容器本身。
 
 Although objects of type [`Scalar`](https://docs.perl6.org/type/Scalar) are everywhere in Perl 6, you rarely see them directly as objects, because most operations *decontainerize*, which means they act on the `Scalar` container's contents instead of the container itself.
 
