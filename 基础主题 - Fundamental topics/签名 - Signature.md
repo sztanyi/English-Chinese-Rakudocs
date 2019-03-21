@@ -1,3 +1,6 @@
+原文：https://docs.perl6.org/type/Signature
+
+
 # Signature 类 / class Signature
 
 参数列表模式
@@ -16,7 +19,7 @@ A signature is a static description of the [parameter](https://docs.perl6.org/ty
 
 Passing arguments to a signature *binds* the arguments, contained in a [Capture](https://docs.perl6.org/type/Capture), to the signature.
 
-# 签名文本 - Signature literals
+# 签名字面量 - Signature literals
 
 签名出现在[函数](https://docs.perl6.org/type/Sub)和[方法](https://docs.perl6.org/type/Method)名之后的括号里，在代码块中箭头 `->` 或者 `<->` 之后, 作为[变量声明符](https://docs.perl6.org/language/variables#Variable_declarators_and_scope)如 [`my`](https://docs.perl6.org/syntax/my) 的输入，或者以冒号开头的独立术语。
 
@@ -292,7 +295,7 @@ CATCH { default { put .^name, ': ', .Str } };
 say limit-lines "a \n b", Int; # Always returns the max number of lines 
 ```
 
-在这里，我们其实只想处理字符串实例，而不是类型对象。为此，我们可以使用 `：D` 类型约束。此约束以与调用其 [DEFINITE](https://docs.perl6.org/language/mop#DEFINITE)（meta）方法类似的方式检查传递的值是否为*对象实例*。
+在这里，我们其实只想处理字符串实例，而不是类型对象。为此，我们可以使用 `：D` 类型约束。此约束以与调用其 [DEFINITE](https://docs.perl6.org/language/mop#DEFINITE) 元方法类似的方式检查传递的值是否为*对象实例*。
 
 Here we really only want to deal with string instances, not type objects. To do this, we can use the `:D` type constraint. This constraint checks that the value passed is an *object instance*, in a similar fashion to calling its [DEFINITE](https://docs.perl6.org/language/mop#DEFINITE) (meta)method.
 
@@ -469,7 +472,7 @@ say $b.defined;                 # Output: «False␤» : .defined override
 
 ### 约束可调用签名 / Constraining signatures of `Callable`s
 
-可以在参数之后紧跟[签名](https://docs.perl6.org/type/Signature)（不允许空格）来约束[Callable](https://docs.perl6.org/type/Callable)参数：
+可以在参数之后紧跟[签名](https://docs.perl6.org/type/Signature)（不允许空格）来约束 [Callable](https://docs.perl6.org/type/Callable) 参数：
 
 The signature of a [Callable](https://docs.perl6.org/type/Callable) parameter can be constrained by specifying a [Signature](https://docs.perl6.org/type/Signature) literal right after the parameter (no whitespace allowed):
 
@@ -480,7 +483,7 @@ f(&g);
 # OUTPUT: «ten10␤» 
 ```
 
-此速记语法仅适用于带有 `&` 标记的参数。对于参数，你需要使用长版本：
+此速记语法仅适用于带有 `&` 标记的参数。对于其他参数，你需要使用长版本：
 
 This shorthand syntax is available only for parameters with the `&` sigil. For others, you need to use the long version:
 
@@ -625,19 +628,19 @@ In this example, coercing the return type to `String` allows us to directly appl
 
 
 
-## 嗦（A.K.A。可变参数）参数 / Slurpy (A.K.A. variadic) parameters
+## slurpy（A.K.A。可变参数）参数 / Slurpy (A.K.A. variadic) parameters
 
-如果函数可以采用不同数量的参数，则该函数是可变参数;也就是说，它的参数元数并不固定。因此，可选，命名和解包参数是可变参数。数组或散列参数可以通过前导星号（*）或两个前导星号（**）或前导加号（+）标记为 *嗦*。一个嗦参数可以绑定到任意零或更多）。
+如果函数可以采用不同数量的参数，则该函数是可变参数;也就是说，它的参数元数并不固定。因此，可选，命名和解包参数是可变参数。数组或散列参数可以通过前导星号（*）或两个前导星号（**）或前导加号（+）标记为 *slurpy*。一个slurpy参数可以绑定到任意零或更多）。
 
 A function is variadic if it can take a varying number of arguments; that is, its arity is not fixed. Therefore, optional, named, and slurpy parameters are variadic. An array or hash parameter can be marked as *slurpy* by leading asterisk (*) or two leading asterisks (**) or a leading plus (+). A slurpy parameter can bind to an arbitrary number of arguments (zero or more).
 
-这些被称为“嗦”，因为它们将任何剩余的参数淹没到一个函数中，就像有人嗦粉一样。
+这些被称为 “slurpy”，因为它们将任何剩余的参数淹没到一个函数中，就像有人嗦粉一样。
 
 These are called "slurpy" because they slurp up any remaining arguments to a function, like someone slurping up noodles.
 
 ```Perl6
 $ = :($a, @b);     # 正好两个参数，第二个参数必须是位置的 / exactly two arguments, where the second one must be Positional 
-$ = :($a, *@b);    # 至少有一个参数，@b 嗦掉多余一个的参数 / at least one argument, @b slurps up any beyond that 
+$ = :($a, *@b);    # 至少有一个参数，@b slurpy掉多余一个的参数 / at least one argument, @b slurps up any beyond that 
 $ = :(*%h);        # no positional arguments, but any number of named arguments 
  
 sub one-arg (@)  { }
@@ -652,7 +655,7 @@ sub named-names (*%named-args) { %named-args.keys };
 say named-names :foo(42) :bar<baz>; # OUTPUT: «foo bar␤» 
 ```
 
-定位和命名的嗦参数可以结合起来;命名参数（即`键值对`）收集在指定的散列中，位置参数收集在数组中：
+定位和命名的 slurpy 参数可以结合起来;命名参数（即`键值对`）收集在指定的散列中，位置参数收集在数组中：
 
 Positional and named slurpies can be combined; named arguments (i.e., `Pair`s) are collected in the specified hash, positional arguments in the array:
 
@@ -670,7 +673,7 @@ say combined-slurpy(one => 1, two => 2, 3, 4, five => 5, 6);
 # OUTPUT: «{array => [3 4 6], hash => {five => 5, one => 1, two => 2}}␤» 
 ```
 
-请注意，在嗦（解包）参数之后不允许使用位置参数：
+请注意，在 slurpy（解包）参数之后不允许使用位置参数：
 
 Note that positional parameters aren't allowed after slurpy parameters:
 
@@ -680,17 +683,17 @@ Note that positional parameters aren't allowed after slurpy parameters:
 # Cannot put required parameter $last after variadic parameters 
 ```
 
-通常，一个嗦参数将创建一个[数组](https://docs.perl6.org/type/Array)，为每个参数创建一个新的 [标量](https://docs.perl6.org/type/Scalar)容器参数，并将每个参数的值分配给这些标量。如果原始参数也有一个中间标量，则在此过程中被绕过，并且在被调用函数内不可用。
+通常，一个 slurpy 参数将创建一个[数组](https://docs.perl6.org/type/Array)，为每个参数创建一个新的 [标量](https://docs.perl6.org/type/Scalar)容器参数，并将每个参数的值分配给这些标量。如果原始参数也有一个中间标量，则在此过程中被绕过，并且在被调用函数内不可用。
 
 Normally a slurpy parameter will create an [Array](https://docs.perl6.org/type/Array), create a new [Scalar](https://docs.perl6.org/type/Scalar) container for each argument, and assign the value from each argument to those Scalars. If the original argument also had an intermediary Scalar it is bypassed during this process, and is not available inside the called function.
 
-当与某些[特征和修饰符](https://docs.perl6.org/type/Signature#Parameter_Traits_and_Modifiers)结合使用时，嗦参数具有特殊行为，如[嗦数组参数章节]所述(https://docs.perl6.org/type/Signature#Types_of_slurpy_array_parameters)。
+当与某些[特征和修饰符](https://docs.perl6.org/type/Signature#Parameter_Traits_and_Modifiers)结合使用时，slurpy 参数具有特殊行为，如[slurpy 数组参数章节](https://docs.perl6.org/type/Signature#Types_of_slurpy_array_parameters)所述。
 
 Slurpy parameters have special behaviors when combined with some [traits and modifiers](https://docs.perl6.org/type/Signature#Parameter_Traits_and_Modifiers), as described in [the section on slurpy array parameters](https://docs.perl6.org/type/Signature#Types_of_slurpy_array_parameters).
 
-## 嗦数组参数的类型 / Types of slurpy array parameters
+## slurpy 数组参数的类型 / Types of slurpy array parameters
 
-嗦数组参数有三种变体。
+slurpy 数组参数有三种变体。
 
 There are three variations to slurpy array parameters.
 
@@ -702,13 +705,13 @@ There are three variations to slurpy array parameters.
 - The double asterisk form does not flatten arguments.
 - The plus form flattens according to the single argument rule.
 
-每个部分将在接下来的几节中详细介绍。由于每个之间的差异有点细微差别，因此每个都提供了示例，以说明每个嗦参数约定与其他约定的差异。
+每个部分将在接下来的几节中详细介绍。由于每个之间的差异有点细微差别，因此每个都提供了示例，以说明每个 slurpy 参数约定与其他约定的差异。
 
 Each will be described in detail in the next few sections. As the difference between each is a bit nuanced, examples are provided for each to demonstrate how each slurpy convention varies from the others.
 
-### 展平的嗦参数 / Flattened slurpy
+### 展平的 slurpy 参数 / Flattened slurpy
 
-用一个星号声明的嗦参数将通过溶解一个或多个裸[可迭代](https://docs.perl6.org/type/Iterable)层来展平参数。
+用一个星号声明的 slurpy 参数将通过溶解一个或多个裸[可迭代](https://docs.perl6.org/type/Iterable)层来展平参数。
 
 Slurpy parameters declared with one asterisk will flatten arguments by dissolving one or more layers of bare [Iterable](https://docs.perl6.org/type/Iterable)s.
 
@@ -723,13 +726,13 @@ a(1, [1, 2], ([3, 4], 5)); # OUTPUT: «[1, 1, 2, 3, 4, 5]»
 a(($_ for 1, 2, 3));       # OUTPUT: «[1, 2, 3]» 
 ```
 
-单个星号嗦参数使所有给定的迭代变平，有效地将用逗号创建的任何对象提升到顶层。
+单个星号 slurpy 参数使所有给定的迭代变平，有效地将用逗号创建的任何对象提升到顶层。
 
 A single asterisk slurpy flattens all given iterables, effectively hoisting any object created with commas up to the top level.
 
-### 不展平的嗦参数 / Unflattened slurpy
+### 不展平的 slurpy 参数 / Unflattened slurpy
 
-用两颗星声明的嗦参数不会压缩列表中的任何[可迭代](https://docs.perl6.org/type/Iterable)参数，但保持参数或多或少的原样：
+用两颗星声明的 slurpy 参数不会压缩列表中的任何[可迭代](https://docs.perl6.org/type/Iterable)参数，但保持参数或多或少的原样：
 
 Slurpy parameters declared with two stars do not flatten any [Iterable](https://docs.perl6.org/type/Iterable) arguments within the list, but keep the arguments more or less as-is:
 
@@ -744,15 +747,13 @@ b(1, [1, 2], ([3, 4], 5)); # OUTPUT: «[1, [1, 2], ([3, 4], 5)]␤»
 b(($_ for 1, 2, 3));       # OUTPUT: «[(1, 2, 3),]␤» 
 ```
 
-双星号嗦参数隐藏嵌套的逗号对象，并在嗦数组中保持原样。
+双星号 slurpy 参数隐藏嵌套的逗号对象，并在 slurpy 数组中保持原样。
 
 The double asterisk slurpy hides the nested comma objects and leaves them as-is in the slurpy array.
 
+### 单一 slurpy 参数规则 / Single argument rule slurpy
 
-
-### 单一嗦参数规则 / Single argument rule slurpy
-
-使用 `+` 创建的嗦参数使用*“单个参数规则”*，它决定如何根据上下文处理嗦参数。基本上，如果只传递一个参数并且该参数是[可迭代](https://docs.perl6.org/type/Iterable)，则该参数用于填充嗦参数数组。在任何其他情况下，`+@` 的作用类似于 `**@`。
+使用 `+` 创建的 slurpy 参数使用*“单个参数规则”*，它决定如何根据上下文处理 slurpy 参数。基本上，如果只传递一个参数并且该参数是[可迭代](https://docs.perl6.org/type/Iterable)，则该参数用于填充 slurpy 参数数组。在任何其他情况下，`+@` 的作用类似于 `**@`。
 
 A slurpy parameter created using a plus engages the *"single argument rule"*, which decides how to handle the slurpy argument based upon context. Basically, if only a single argument is passed and that argument is [Iterable](https://docs.perl6.org/type/Iterable), that argument is used to fill the slurpy parameter array. In any other case, `+@` works like `**@`.
 
@@ -767,11 +768,9 @@ c(1, [1, 2], ([3, 4], 5)); # OUTPUT: «[1, [1, 2], ([3, 4], 5)]␤»
 c(($_ for 1, 2, 3));       # OUTPUT: «[1, 2, 3]␤» 
 ```
 
-有关其他讨论和示例，请参阅[函数的嗦参数约定](https://docs.perl6.org/language/functions#Slurpy_conventions)。
+有关其他讨论和示例，请参阅[函数的slurpy参数约定](https://docs.perl6.org/language/functions#Slurpy_conventions)。
 
 For additional discussion and examples, see [Slurpy Conventions for Functions](https://docs.perl6.org/language/functions#Slurpy_conventions).
-
-
 
 ## 类型捕获 / Type captures
 
@@ -797,7 +796,7 @@ say s(2); # 10 / 2 * 2 == 10
 
 ## 位置与命名参数 / Positional vs. named arguments
 
-参数可以是*位置的*或*命名的*。默认情况下，参数是位置的，除了嗦哈希和标有前导冒号 `:` 的参数。后者称为[冒号对](https://docs.perl6.org/type/Pair)。检查以下签名及其表示的内容：
+参数可以是*位置的*或*命名的*。默认情况下，参数是位置的，除了slurpy哈希和标有前导冒号 `:` 的参数。后者称为[冒号对](https://docs.perl6.org/type/Pair)。检查以下签名及其表示的内容：
 
 An argument can be *positional* or *named*. By default, arguments are positional, except slurpy hash and arguments marked with a leading colon `:`. The latter is called a [colon-pair](https://docs.perl6.org/type/Pair). Check the following signatures and what they denote:
 
@@ -892,7 +891,7 @@ my %pairs = also-named => 4;
 f |%pairs;                              # OUTPUT: «(:$also-named)␤» 
 ```
 
-包含列表的 `Hash` 转换为命名参数时会出现问题。避免额外的容器层级，将其转化为 [Map](https://docs.perl6.org/type/Map)。
+包含列表的 `Hash` 转换为命名参数时会出现问题。避免额外的容器层级，将其转化为 [Map](https://docs.perl6.org/type/Map)。
 
 A `Hash` that contains a list may prove problematic when slipped into named arguments. To avoid the extra layer of containers coerce to [Map](https://docs.perl6.org/type/Map) before slipping.
 
@@ -903,62 +902,77 @@ say C.new(|%h.Map);
 # OUTPUT: «C.new(x => 5, y => 20, z => [1, 2])␤» 
 ```
 
-## [Optional and mandatory arguments](https://docs.perl6.org/type/Signature#___top)
+## 可选和强制参数 / Optional and mandatory arguments
+
+默认情况下，位置参数是必需的，并且可以使用默认值或尾随问号使其成为可选参数：
 
 Positional parameters are mandatory by default, and can be made optional with a default value or a trailing question mark:
 
-```
+```Perl6
 $ = :(Str $id);         # required parameter 
 $ = :($base = 10);      # optional parameter, default value 10 
 $ = :(Int $x?);         # optional parameter, default is the Int type object 
 ```
 
+默认情况下，命名参数是可选的，并且可以使用尾随感叹号强制转为必须参数：
+
 Named parameters are optional by default, and can be made mandatory with a trailing exclamation mark:
 
-```
+```Perl6
 $ = :(:%config);        # optional parameter 
 $ = :(:$debug = False); # optional parameter, defaults to False 
 $ = :(:$name!);         # mandatory 'name' named parameter 
 ```
 
+默认值可以取决于先前的参数，并且（至少在概念上）为每个调用重新计算
+
 Default values can depend on previous parameters, and are (at least notionally) computed anew for each call
 
-```
+```Perl6
 $ = :($goal, $accuracy = $goal / 100);
 $ = :(:$excludes = ['.', '..']);        # a new Array for every call 
 ```
 
-## [Dynamic variables](https://docs.perl6.org/type/Signature#___top)
+## 动态变量 / Dynamic variables
+
+签名中允许[动态变量](https://docs.perl6.org/language/variables#The_%2A_twigil)，尽管它们不提供特殊行为，因为参数绑定无论如何都会连接两个作用域。
 
 [Dynamic variables](https://docs.perl6.org/language/variables#The_%2A_twigil) are allowed in signatures although they don't provide special behavior because argument binding does connect two scopes anyway.
 
 
+## 解构参数 / Destructuring arguments
 
-## [Destructuring arguments](https://docs.perl6.org/type/Signature#___top)
+参数之后可以是括号中的子签名，它将对给定的参数进行解构。列表解构后就是它的元素：
 
 Parameters can be followed by a sub-signature in parentheses, which will destructure the argument given. The destructuring of a list is just its elements:
 
-```
+```Perl6
 sub first(@array ($first, *@rest)) { $first }
 ```
 
+或者
+
 or
 
-```
+```Perl6
 sub first([$f, *@]) { $f }
 ```
 
+虽然散列的解构是它的键值对：
+
 While the destructuring of a hash is its pairs:
 
-```
+```Perl6
 sub all-dimensions(% (:length(:$x), :width(:$y), :depth(:$z))) {
     $x andthen $y andthen $z andthen True
 }
 ```
 
+尖点循环也可以解构哈希，允许赋值给变量：
+
 Pointy loops can also destructure hashes, allowing assignment to variables:
 
-```
+```Perl6
 my %hhgttu = (:40life, :41universe, :42everything);
 for %hhgttu -> (:$key, :$value) {
   say "$key → $value";
@@ -966,19 +980,25 @@ for %hhgttu -> (:$key, :$value) {
 # OUTPUT: «universe → 41␤life → 40␤everything → 42␤» 
 ```
 
+通常，基于其属性来对对象进行解构。一个常见的习惯用法是在 for 循环中解包 [`Pair`](https://docs.perl6.org/type/Pair) 的键和值：
+
 In general, an object is destructured based on its attributes. A common idiom is to unpack a [`Pair`](https://docs.perl6.org/type/Pair)'s key and value in a for loop:
 
-```
+```Perl6
 for <Peter Paul Merry>.pairs -> (:key($index), :value($guest)) { }
 ```
 
+但是，将对象解压缩为其属性只是默认行为。要使对象以不同方式进行解构，请更改其 [`Capture`](https://docs.perl6.org/routine/Capture) 方法。
+
 However, this unpacking of objects as their attributes is only the default behavior. To make an object get destructured differently, change its [`Capture`](https://docs.perl6.org/routine/Capture) method.
 
-## [Sub-signatures](https://docs.perl6.org/type/Signature#___top)
+## 子签名 / Sub-signatures
+
+要匹配复合参数，请在括号中的参数名称后面使用子签名。
 
 To match against a compound parameter use a sub-signature following the argument name in parentheses.
 
-```
+```Perl6
 sub foo(|c(Int, Str)){
    put "called with {c.perl}"
 };
@@ -986,131 +1006,169 @@ foo(42, "answer");
 # OUTPUT: «called with \(42, "answer")␤» 
 ```
 
-## Long names
+## 长名 / Long names
+
+要排除某些参数在多次分派中被考虑，请用双分号分隔它们。
 
 To exclude certain parameters from being considered in multiple dispatch, separate them with a double semicolon.
 
-```
+```Perl6
 multi sub f(Int $i, Str $s;; :$b) { say "$i, $s, {$b.perl}" };
 f(10, 'answer');
 # OUTPUT: «10, answer, Any␤» 
 ```
 
-## Capture parameters
+## 捕获参数 / Capture parameters
+
+使用竖线 `|` 前缀参数使参数成为 [`Capture`](https://docs.perl6.org/type/Capture)，用完所有剩余的位置和命名参数。
 
 Prefixing a parameter with a vertical bar `|` makes the parameter a [`Capture`](https://docs.perl6.org/type/Capture), using up all the remaining positional and named arguments.
 
+这通常用于 `proto` 定义（如 `proto foo (|) {*}` ）来表示例程的 [`multi` 定义](https://docs.perl6.org/routine/multi)可以有任意[类型约束](https://docs.perl6.org/type/Signature#Type_constraints)。有关示例，请参阅 [proto](https://docs.perl6.org/language/functions#proto)。
+
 This is often used in `proto` definitions (like `proto foo (|) {*}`) to indicate that the routine's [`multi` definitions](https://docs.perl6.org/routine/multi) can have any [type constraints](https://docs.perl6.org/type/Signature#Type_constraints). See [proto](https://docs.perl6.org/language/functions#proto) for an example.
+
+如果绑定到变量, 参数可以使用 slip 运算符 `|` 作为一个整体转发。
 
 If bound to a variable arguments can be forwarded as a whole using the slip operator `|`.
 
-```
+```Perl6
 sub a(Int $i, Str $s) { say $i.^name ~ ' ' ~ $s.^name }
 sub b(|c) { say c.^name; a(|c) }
 b(42, "answer");
 # OUTPUT: «Capture␤Int Str␤» 
 ```
 
-## [Parameter traits and modifiers](https://docs.perl6.org/type/Signature#___top)
+## 参数特征和修饰符 / Parameter traits and modifiers
+
+默认情况下，参数绑定到其参数并标记为只读。可以通过参数上的特征来改变它。
 
 By default, parameters are bound to their argument and marked as read-only. One can change that with traits on the parameter.
 
+`is copy` 特征可以使复制被参数，并允许在例程中被修改。
+
 The `is copy` trait causes the argument to be copied, and allows it to be modified inside the routine
 
-```
+```Perl6
 sub count-up($x is copy) {
     $x = ∞ if $x ~~ Whatever;
     .say for 1..$x;
 }
 ```
 
+`is rw` 特征，代表 *is read-write*，使参数绑定到变量（或其他可写容器）。分配给参数会更改调用方的变量值。
+
 The `is rw` trait, which stands for *is read-write*, makes the parameter bind to a variable (or other writable container). Assigning to the parameter changes the value of the variable at the caller side.
 
-```
+```Perl6
 sub swap($x is rw, $y is rw) {
     ($x, $y) = ($y, $x);
 }
 ```
 
+在 slurpy 参数上，`is rw` 被保留供语言设计者将来使用。
+
 On slurpy parameters, `is rw` is reserved for future use by language designers.
+
+[`is raw` 特征](https://docs.perl6.org/type/Parameter#method_raw)会自动应用于使用[反斜杠](https://docs.perl6.org/language/variables#Sigilless_variables)声明的参数作为“标记”，像这些一样，也可用于产生一般`带标记参数`的行为。在 slurpies 的特殊情况下，通常会产生一个充满`标量`的`数组`，如上所述，`is raw` 将导致参数产生一个`列表`。该列表的每个元素将直接绑定为原始参数。
 
 The [`is raw` trait](https://docs.perl6.org/type/Parameter#method_raw) is automatically applied to parameters declared with a [backslash](https://docs.perl6.org/language/variables#Sigilless_variables) as a "sigil", and may also be used to make normally sigiled parameters behave like these do. In the special case of slurpies, which normally produce an `Array` full of `Scalar`s as described above, `is raw` will instead cause the parameter to produce a `List`. Each element of that list will be bound directly as raw parameter.
 
+要显式请求只读参数，请使用 `is readonly` 特征。请注意，这仅适用于容器。里面的对象很可能有 mutator 方法，而 Perl 6 不会对对象的属性强制不可变。
+
 To explicitly ask for a read-only parameter use the `is readonly` trait. Please note that this applies only to the container. The object inside can very well have mutator methods and Perl 6 will not enforce immutability on the attributes of the object.
+
+特征可以跟随 where 子句：
 
 Traits can be followed by the where clause:
 
-```
+```Perl6
 sub ip-expand-ipv6($ip is copy where m:i/^<[a..f\d\:]>**3..39$/) { }
 ```
 
-# [Methods](https://docs.perl6.org/type/Signature#___top)
+# 方法 / Methods
 
-## [method params](https://docs.perl6.org/type/Signature#___top)
+## 方法 params / method params
 
-```
+```Perl6
 method params(Signature:D: --> Positional)
 ```
 
+返回组成签名的 [`Parameter`](https://docs.perl6.org/type/Parameter) 对象列表。
+
 Returns the list of [`Parameter`](https://docs.perl6.org/type/Parameter) objects that make up the signature.
 
-## [method arity](https://docs.perl6.org/type/Signature#___top)
+## 方法 arity / method arity
 
-```
+```Perl6
 method arity(Signature:D: --> Int:D)
 ```
 
+返回满足签名所需的*最少*位置参数数。
+
 Returns the *minimal* number of positional arguments required to satisfy the signature.
 
-## [method count](https://docs.perl6.org/type/Signature#___top)
+## 方法 count / method count
 
-```
+```Perl6
 method count(Signature:D: --> Real:D)
 ```
 
+返回可以绑定到签名的位置参数*最大*个数。如果存在一个不稳定的位置参数，则返回 `Inf`。
+
 Returns the *maximal* number of positional arguments which can be bound to the signature. Returns `Inf` if there is a slurpy positional parameter.
 
-## [method returns](https://docs.perl6.org/type/Signature#___top)
+## 方法 returns / method returns
+
+无论签名的返回值约束是什么：
 
 Whatever the Signature's return constraint is:
 
-```
+```Perl6
 :($a, $b --> Int).returns # OUTPUT: «(Int)» 
 ```
 
-## [method ACCEPTS](https://docs.perl6.org/type/Signature#___top)
+## 方法 ACCEPTS / method ACCEPTS
 
-```
+```Perl6
 multi method ACCEPTS(Signature:D: Signature $topic)
 multi method ACCEPTS(Signature:D: Capture $topic)
 multi method ACCEPTS(Signature:D: Mu \topic)
 ```
 
+如果 `$topic` 是 [Signature](https://docs.perl6.org/type/Signature) 返回 `True`，如果 `$topic` 接受的任何内容也会被调用者接受，否则返回 `False`：
+
 If `$topic` is a [Signature](https://docs.perl6.org/type/Signature) returns `True` if anything accepted by `$topic` would also be accepted by the invocant, otherwise returns `False`:
 
-```
+```Perl6
 :($a, $b) ~~ :($foo, $bar, $baz?);   # OUTPUT: «True» 
 :(Int $n) ~~ :(Str);                 # OUTPUT: «False» 
 ```
 
+`$topic` 是 [Capture](https://docs.perl6.org/type/Capture)，如果它可以绑定到调用者，则返回`True`，即，如果具有调用者的 `Signature` 的函数将可以使用 `$topic` 调用：
+
 The `$topic` is a [Capture](https://docs.perl6.org/type/Capture), returns `True` if it can be bound to the invocant, i.e., if a function with invocant's `Signature` would be able to be called with the `$topic`:
 
-```
+```Perl6
 \(1, 2, :foo) ~~ :($a, $b, :foo($bar)); # OUTPUT: «True» 
 \(1, :bar)    ~~ :($a);                 # OUTPUT: «False» 
 ```
 
+最后，具有 `Mu \topic` 的候选者将 `topic` 转换为 [Capture](https://docs.perl6.org/type/Capture)，并遵循与 [Capture](https://docs.perl6.org/type/Capture) 相同的语义 `$topic`：
+
 Lastly, the candidate with `Mu \topic` converts `topic` to [Capture](https://docs.perl6.org/type/Capture) and follows the same semantics as [Capture](https://docs.perl6.org/type/Capture) `$topic`:
 
-```
+```Perl6
 <a b c d>  ~~ :(Int $a);      # OUTPUT: «False» 
 42         ~~ :(Int);         # OUTPUT: «False» (Int.Capture throws) 
 set(<a b>) ~~ :(:$a, :$b);    # OUTPUT: «True» 
 ```
 
+由于[`where` 子句](https://docs.perl6.org/type/Signature#index-entry-where_clause_%28Signature%29)不能内省，因此该方法无法确定是否有两个签名 [ACCEPTS](https://docs.perl6.org/type/Signature#method_ACCEPTS) 同样的 `where` 约束的参数。这种比较将返回 `False`。这包括字面量的签名，这些只是 `where`约束的语法糖：
+
 Since [`where` clauses](https://docs.perl6.org/type/Signature#index-entry-where_clause_%28Signature%29) are not introspectable, the method cannot determine whether two signatures [ACCEPTS](https://docs.perl6.org/type/Signature#method_ACCEPTS) the same sort of `where`-constrained parameters. Such comparisons will return `False`. This includes signatures with literals, which are just sugar for the `where`-constraints:
 
-```
+```Perl6
 say :(42) ~~ :($ where 42)    # OUTPUT: «False␤» 
 ```
 
@@ -1118,7 +1176,7 @@ say :(42) ~~ :($ where 42)    # OUTPUT: «False␤»
 
 Defined as:
 
-```
+```Perl6
 method Capture()
 ```
 
@@ -1126,7 +1184,7 @@ Throws `X::Cannot::Capture`.
 
 # [Runtime creation of Signature objects (6.d, 2019.01 and later)](https://docs.perl6.org/type/Signature#___top)
 
-```
+```Perl6
 Signature.new(params => (...), returns => Type, arity => 1, count => 1)
 ```
 
