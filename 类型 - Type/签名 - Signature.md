@@ -1,11 +1,28 @@
 原文：https://docs.perl6.org/type/Signature
 
-# `目录`
+# Signature 类 / class Signature
+
+参数列表模式
+
+Parameter list pattern
+
+```Perl6
+class Signature { }
+```
+
+签名是对代码对象的[参数](https://docs.perl6.org/type/parameter)列表的静态描述。也就是说，它描述了要调用代码或函数，需要传递什么和多少参数。
+
+A signature is a static description of the [parameter](https://docs.perl6.org/type/Parameter) list of a code object. That is, it describes what and how many arguments you need to pass to the code or function in order to call it.
+
+向签名传递参数将包含在 [Capture](https://docs.perl6.org/type/capture) 中的参数*绑定*到签名。
+
+Passing arguments to a signature *binds* the arguments, contained in a [Capture](https://docs.perl6.org/type/Capture), to the signature.
+
+# `目录` / Table Of Content
 
 <!-- MarkdownTOC -->
 
-- [Signature 类 / class Signature](#signature-%E7%B1%BB--class-signature)
-- [签名字面量 - Signature literals](#%E7%AD%BE%E5%90%8D%E5%AD%97%E9%9D%A2%E9%87%8F---signature-literals)
+- [签名字面量 / Signature literals](#%E7%AD%BE%E5%90%8D%E5%AD%97%E9%9D%A2%E9%87%8F--signature-literals)
     - [参数分隔符 / Parameter separators](#%E5%8F%82%E6%95%B0%E5%88%86%E9%9A%94%E7%AC%A6--parameter-separators)
     - [类型约束 / Type constraints](#%E7%B1%BB%E5%9E%8B%E7%BA%A6%E6%9D%9F--type-constraints)
         - [约束可选参数 / Constraining optional arguments](#%E7%BA%A6%E6%9D%9F%E5%8F%AF%E9%80%89%E5%8F%82%E6%95%B0--constraining-optional-arguments)
@@ -47,27 +64,8 @@
 <!-- /MarkdownTOC -->
 
 
-<a id="signature-%E7%B1%BB--class-signature"></a>
-# Signature 类 / class Signature
-
-参数列表模式
-
-Parameter list pattern
-
-```Perl6
-class Signature { }
-```
-
-签名是对代码对象的[参数](https://docs.perl6.org/type/parameter)列表的静态描述。也就是说，它描述了要调用代码或函数，需要传递什么和多少参数。
-
-A signature is a static description of the [parameter](https://docs.perl6.org/type/Parameter) list of a code object. That is, it describes what and how many arguments you need to pass to the code or function in order to call it.
-
-向签名传递参数将包含在 [Capture](https://docs.perl6.org/type/capture) 中的参数*绑定*到签名。
-
-Passing arguments to a signature *binds* the arguments, contained in a [Capture](https://docs.perl6.org/type/Capture), to the signature.
-
-<a id="%E7%AD%BE%E5%90%8D%E5%AD%97%E9%9D%A2%E9%87%8F---signature-literals"></a>
-# 签名字面量 - Signature literals
+<a id="%E7%AD%BE%E5%90%8D%E5%AD%97%E9%9D%A2%E9%87%8F--signature-literals"></a>
+# 签名字面量 / Signature literals
 
 签名出现在[函数](https://docs.perl6.org/type/Sub)和[方法](https://docs.perl6.org/type/Method)名之后的括号里，在代码块中箭头 `->` 或者 `<->` 之后, 作为[变量声明符](https://docs.perl6.org/language/variables#Variable_declarators_and_scope)如 [`my`](https://docs.perl6.org/syntax/my) 的输入，或者以冒号开头的独立术语。
 
