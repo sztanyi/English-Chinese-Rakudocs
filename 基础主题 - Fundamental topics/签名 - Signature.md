@@ -1172,7 +1172,9 @@ Since [`where` clauses](https://docs.perl6.org/type/Signature#index-entry-where_
 say :(42) ~~ :($ where 42)    # OUTPUT: «False␤» 
 ```
 
-## [method Capture](https://docs.perl6.org/type/Signature#___top)
+## 方法 Capture / method Capture
+
+定义为了：
 
 Defined as:
 
@@ -1180,32 +1182,55 @@ Defined as:
 method Capture()
 ```
 
+抛出异常 `X::Cannot::Capture`。
+
 Throws `X::Cannot::Capture`.
 
-# [Runtime creation of Signature objects (6.d, 2019.01 and later)](https://docs.perl6.org/type/Signature#___top)
+# 运行时创建签名对象(6.d, 2019.01 and later) / Runtime creation of Signature objects (6.d, 2019.01 and later)
 
 ```Perl6
 Signature.new(params => (...), returns => Type, arity => 1, count => 1)
 ```
 
+在某些情况下，特别是在使用元对象协议时，以编程方式创建 `Signature` 对象是有意义的。为此，您可以使用以下命名参数调用 `new` 方法：
+
 In some situations, specifically when working with the MetaObject Protocol, it makes sense to create `Signature` objects programmatically. For this purpose, you can call the `new` method with the following named parameters:
 
 - params
+
+签名的 [Parameter](https://docs.perl6.org/type/Parameter) 对象列表。
 
 A list of [Parameter](https://docs.perl6.org/type/Parameter) objects for this signature.
 
 - returns
 
+返回值应匹配的任何约束。默认为 `Mu`，这实际上意味着没有返回值约束检查。
+
 Any constraint the return value should match. Defaults to `Mu`, which effectively implies no return value constraint check.
 
 - arity
+
+满足签名的最小位置参数个数。默认为 `params` 参数给的 `Parameter` 对象的个数。
 
 The *minimal* number of positional arguments required to satisfy the signature. Defaults to the number of `Parameter` objects given with the `params` parameter.
 
 - count
 
+可以绑定到签名的*最大*位置参数个数。如果未指定，则默认为 `arity`。如果存在一个 slurpy 位置参数，请指定 `Inf`。
+
 The *maximal* number of positional arguments which can be bound to the signature. Defaults to the `arity` if not specified. Specify `Inf` if there is a slurpy positional parameter.
 
-# [Type Graph](https://docs.perl6.org/type/Signature#___top)
+# 类型图 / Type Graph
 
-Type relations for `Signature`Signature
+`Signature` 签名的类型关系。
+
+Type relations for `Signature` Signature.
+
+        Mu
+        ^
+        |
+        |
+       Any
+        ^
+        |
+    Signature
