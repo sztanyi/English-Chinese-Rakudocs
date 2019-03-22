@@ -283,7 +283,7 @@ sub f(Int $a, UInt $i? where { !$i.defined or $i > 5 }) { ... }
 ```
 
 <a id="%E7%BA%A6%E6%9D%9F-slurpy-%E5%8F%82%E6%95%B0---constraining-slurpy-arguments"></a>
-### 约束 slurpy 参数 - Constraining slurpy arguments
+### 约束 slurpy 参数 / Constraining slurpy arguments
 
 [Slurpy 参数](https://docs.perl6.org/type/Signature#Slurpy_%28A.K.A._variadic%29_parameters)不能有类型约束。可以使用 `where` 子句和 [Junction](https://docs.perl6.org/type/Junction) 来实现该效果。
 
