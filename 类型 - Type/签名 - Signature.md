@@ -12,7 +12,7 @@
         - [约束 slurpy 参数 / Constraining slurpy arguments](#%E7%BA%A6%E6%9D%9F-slurpy-%E5%8F%82%E6%95%B0--constraining-slurpy-arguments)
         - [约束命名参数 / Constraining named arguments](#%E7%BA%A6%E6%9D%9F%E5%91%BD%E5%90%8D%E5%8F%82%E6%95%B0--constraining-named-arguments)
         - [约束参数的确定性 / Constraining argument definiteness](#%E7%BA%A6%E6%9D%9F%E5%8F%82%E6%95%B0%E7%9A%84%E7%A1%AE%E5%AE%9A%E6%80%A7--constraining-argument-definiteness)
-        - [约束可调用签名 / Constraining signatures of `Callable`s](#%E7%BA%A6%E6%9D%9F%E5%8F%AF%E8%B0%83%E7%94%A8%E7%AD%BE%E5%90%8D--constraining-signatures-of-callables)
+        - [约束`可调用`签名 / Constraining signatures of `Callable`s](#%E7%BA%A6%E6%9D%9F%E5%8F%AF%E8%B0%83%E7%94%A8%E7%AD%BE%E5%90%8D--constraining-signatures-of-callables)
         - [约束返回值类型 / Constraining return types](#%E7%BA%A6%E6%9D%9F%E8%BF%94%E5%9B%9E%E5%80%BC%E7%B1%BB%E5%9E%8B--constraining-return-types)
             - [`-->`](#--)
             - [`returns`](#returns)
@@ -525,7 +525,7 @@ say $b.defined;                 # Output: «False␤» : .defined override
 ```
 
 <a id="%E7%BA%A6%E6%9D%9F%E5%8F%AF%E8%B0%83%E7%94%A8%E7%AD%BE%E5%90%8D--constraining-signatures-of-callables"></a>
-### 约束可调用签名 / Constraining signatures of `Callable`s
+### 约束`可调用`签名 / Constraining signatures of `Callable`s
 
 可以在参数之后紧跟[签名](https://docs.perl6.org/type/Signature)（不允许空格）来约束 [Callable](https://docs.perl6.org/type/Callable) 参数：
 
