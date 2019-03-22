@@ -26,7 +26,7 @@
         - [单一 slurpy 参数规则 / Single argument rule slurpy](#%E5%8D%95%E4%B8%80-slurpy-%E5%8F%82%E6%95%B0%E8%A7%84%E5%88%99--single-argument-rule-slurpy)
     - [类型捕获 / Type captures](#%E7%B1%BB%E5%9E%8B%E6%8D%95%E8%8E%B7--type-captures)
     - [位置与命名参数 / Positional vs. named arguments](#%E4%BD%8D%E7%BD%AE%E4%B8%8E%E5%91%BD%E5%90%8D%E5%8F%82%E6%95%B0--positional-vs-named-arguments)
-    - [参数别名/ Argument aliases](#%E5%8F%82%E6%95%B0%E5%88%AB%E5%90%8D-argument-aliases)
+    - [参数别名 / Argument aliases](#%E5%8F%82%E6%95%B0%E5%88%AB%E5%90%8D--argument-aliases)
     - [可选和强制参数 / Optional and mandatory arguments](#%E5%8F%AF%E9%80%89%E5%92%8C%E5%BC%BA%E5%88%B6%E5%8F%82%E6%95%B0--optional-and-mandatory-arguments)
     - [动态变量 / Dynamic variables](#%E5%8A%A8%E6%80%81%E5%8F%98%E9%87%8F--dynamic-variables)
     - [解构参数 / Destructuring arguments](#%E8%A7%A3%E6%9E%84%E5%8F%82%E6%95%B0--destructuring-arguments)
@@ -34,14 +34,14 @@
     - [长名 / Long names](#%E9%95%BF%E5%90%8D--long-names)
     - [捕获参数 / Capture parameters](#%E6%8D%95%E8%8E%B7%E5%8F%82%E6%95%B0--capture-parameters)
     - [参数特征和修饰符 / Parameter traits and modifiers](#%E5%8F%82%E6%95%B0%E7%89%B9%E5%BE%81%E5%92%8C%E4%BF%AE%E9%A5%B0%E7%AC%A6--parameter-traits-and-modifiers)
-- [方法 / Methods](#%E6%96%B9%E6%B3%95--methods)
+- [Signature 的方法 / Methods](#signature-%E7%9A%84%E6%96%B9%E6%B3%95--methods)
     - [方法 params / method params](#%E6%96%B9%E6%B3%95-params--method-params)
     - [方法 arity / method arity](#%E6%96%B9%E6%B3%95-arity--method-arity)
     - [方法 count / method count](#%E6%96%B9%E6%B3%95-count--method-count)
     - [方法 returns / method returns](#%E6%96%B9%E6%B3%95-returns--method-returns)
     - [方法 ACCEPTS / method ACCEPTS](#%E6%96%B9%E6%B3%95-accepts--method-accepts)
     - [方法 Capture / method Capture](#%E6%96%B9%E6%B3%95-capture--method-capture)
-- [运行时创建签名对象\(6.d, 2019.01 and later\) / Runtime creation of Signature objects \(6.d, 2019.01 and later\)](#%E8%BF%90%E8%A1%8C%E6%97%B6%E5%88%9B%E5%BB%BA%E7%AD%BE%E5%90%8D%E5%AF%B9%E8%B1%A16d-201901-and-later--runtime-creation-of-signature-objects-6d-201901-and-later)
+- [运行时创建签名对象\(6.d, 2019.01及以后\) / Runtime creation of Signature objects \(6.d, 2019.01 and later\)](#%E8%BF%90%E8%A1%8C%E6%97%B6%E5%88%9B%E5%BB%BA%E7%AD%BE%E5%90%8D%E5%AF%B9%E8%B1%A16d-201901%E5%8F%8A%E4%BB%A5%E5%90%8E--runtime-creation-of-signature-objects-6d-201901-and-later)
 - [类型图 / Type Graph](#%E7%B1%BB%E5%9E%8B%E5%9B%BE--type-graph)
 
 <!-- /MarkdownTOC -->
@@ -455,7 +455,7 @@ say $f  ~~ Any:_;    # OUTPUT: «True␤»
 
 The [Classes and Objects](https://docs.perl6.org/language/classtut#Starting_with_class) document further elaborates on the concepts of instances and type objects and discovering them with the `.DEFINITE` method.
 
-请记住所有参数都有值;即使是可选参数也有默认默认值，他们是显式类型约束的约束类型的类型对象。如果不存在显式类型约束，则默认默认值为方法，子方法和子例程的 [Any](https://docs.perl6.org/type/Any) 类型对象，以及 [Mu](https://docs.perl6.org/type/Mu) 为块输入对象。这意味着如果使用 `:D` 类型的表情符号，则需要提供默认值或使参数成为必需参数。否则，默认默认值为类型对象，这将使定义约束失败。
+请记住所有参数都有值;即使是可选参数也有默认默认值，他们是显式类型约束的约束类型的类型对象。如果不存在显式类型约束，则默认默认值为方法，子方法和子例程的 [Any](https://docs.perl6.org/type/Any) 类型对象，以及 [Mu](https://docs.perl6.org/type/Mu) 为块输入对象。这意味着如果使用 `:D` 类型表情符号，则需要提供默认值或使参数成为必需参数。否则，默认默认值为类型对象，这将使定义约束失败。
 
 Keep in mind all parameters have values; even optional ones have default defaults that are the type object of the constrained type for explicit type constraints. If no explicit type constraint exists, the default default is an [Any](https://docs.perl6.org/type/Any) type object for methods, submethods, and subroutines, and a [Mu](https://docs.perl6.org/type/Mu) type object for blocks. This means that if you use the `:D` type smiley, you'd need to provide a default value or make the parameter required. Otherwise, the default default would be a type object, which would fail the definiteness constraint.
 
@@ -503,7 +503,7 @@ use v6.d;
 my Int:D $x .= new: 42; # OUTPUT: «42␤» 
 ```
 
-关于术语的结束语：本节是关于使用类型表情符号 `：D` 和 `：U` 来约束参数的确定性。偶尔*定义*用作*定性*的同义词;这可能令人困惑，因为这些术语的含义略有不同。
+关于术语的结束语：本节是关于使用类型表情符号 `:D` 和 `:U` 来约束参数的确定性。偶尔*定义*可以用作*定性*的同义词;这可能令人困惑，因为这些术语的含义略有不同。
 
 A closing remark on terminology: this section is about the use of the type smileys `:D` and `:U` to constrain the definiteness of arguments. Occasionally *definedness* is used as a synonym for *definiteness*; this may be confusing, since the terms have subtly different meanings.
 
@@ -573,7 +573,7 @@ Type captures are not supported.
 <a id="--"></a>
 #### `-->`
 
-由于以下几个原因，这种形式是首选的：（1）它可以处理恒定值，而其他形式则不能; （2）为保持一致性，这是本站接受的唯一形式;
+由于以下几个原因，这种形式是首选的：（1）它可以处理常量，而其他形式则不能; （2）为保持一致性，这是本站接受的唯一形式;
 
 This form is preferred for several reasons: (1) it can handle constant values while the others can't; (2) for consistency, it is the only form accepted on this site;
 
@@ -733,7 +733,7 @@ say combined-slurpy(one => 1, two => 2, 3, 4, five => 5, 6);
 # OUTPUT: «{array => [3 4 6], hash => {five => 5, one => 1, two => 2}}␤» 
 ```
 
-请注意，在 slurpy（解包）参数之后不允许使用位置参数：
+请注意，在 slurpy 参数之后不允许使用位置参数：
 
 Note that positional parameters aren't allowed after slurpy parameters:
 
@@ -862,7 +862,7 @@ say s(2); # 10 / 2 * 2 == 10
 <a id="%E4%BD%8D%E7%BD%AE%E4%B8%8E%E5%91%BD%E5%90%8D%E5%8F%82%E6%95%B0--positional-vs-named-arguments"></a>
 ## 位置与命名参数 / Positional vs. named arguments
 
-参数可以是*位置的*或*命名的*。默认情况下，参数是位置的，除了slurpy哈希和标有前导冒号 `:` 的参数。后者称为[冒号对](https://docs.perl6.org/type/Pair)。检查以下签名及其表示的内容：
+参数可以是*位置的*或*命名的*。默认情况下，参数是位置的，除了 slurpy 哈希和标有前导冒号 `:` 的参数。后者称为[冒号对](https://docs.perl6.org/type/Pair)。检查以下签名及其表示的内容：
 
 An argument can be *positional* or *named*. By default, arguments are positional, except slurpy hash and arguments marked with a leading colon `:`. The latter is called a [colon-pair](https://docs.perl6.org/type/Pair). Check the following signatures and what they denote:
 
@@ -891,7 +891,7 @@ sub named(:$x, :$y) { "x=$x y=$y" }
 named( y => 5, x => 4);             # OUTPUT: «x=4 y=5» 
 ```
 
-你可以使用与命名参数同名的变量来调用例程;在这种情况下，`:` 将用于调用，以便将变量的名称理解为参数的键。
+你可以使用与命名参数同名的变量来调用例程;在这种情况下调用者可以使用 `:`，以便将变量的名称理解为参数的键。
 
 You can invoke the routine using a variable with the same name as the named argument; in that case `:` will be used for the invocation so that the name of the variable is understood as the key of the argument.
 
@@ -904,7 +904,7 @@ my $shortcut = "Þor is mighty";
 named-shortcut( :$shortcut );           # OUTPUT: «Looks like Þor is mighty␤» 
 ```
 
-命名参数的名称可能与变量名称不同：
+命名参数的名称可与变量的名称不同：
 
 It is possible to have a different name for a named argument than the variable name:
 
@@ -913,8 +913,8 @@ sub named(:official($private)) { "Official business!" if $private }
 named :official;
 ```
 
-<a id="%E5%8F%82%E6%95%B0%E5%88%AB%E5%90%8D-argument-aliases"></a>
-## 参数别名/ Argument aliases
+<a id="%E5%8F%82%E6%95%B0%E5%88%AB%E5%90%8D--argument-aliases"></a>
+## 参数别名 / Argument aliases
 
 [冒号对](https://docs.perl6.org/type/Pair)语法可用于为参数提供别名：
 
@@ -1028,7 +1028,7 @@ or
 sub first([$f, *@]) { $f }
 ```
 
-虽然散列的解构是它的键值对：
+解构后的哈希是它的键值对：
 
 While the destructuring of a hash is its pairs:
 
@@ -1050,7 +1050,7 @@ for %hhgttu -> (:$key, :$value) {
 # OUTPUT: «universe → 41␤life → 40␤everything → 42␤» 
 ```
 
-通常，基于其属性来对对象进行解构。一个常见的习惯用法是在 for 循环中解包 [`Pair`](https://docs.perl6.org/type/Pair) 的键和值：
+通常，对象是基于其属性进行解构。一个常见的习惯用法是在 for 循环中解包 [`Pair`](https://docs.perl6.org/type/Pair) 的键和值：
 
 In general, an object is destructured based on its attributes. A common idiom is to unpack a [`Pair`](https://docs.perl6.org/type/Pair)'s key and value in a for loop:
 
@@ -1058,7 +1058,7 @@ In general, an object is destructured based on its attributes. A common idiom is
 for <Peter Paul Merry>.pairs -> (:key($index), :value($guest)) { }
 ```
 
-但是，将对象解压缩为其属性只是默认行为。要使对象以不同方式进行解构，请更改其 [`Capture`](https://docs.perl6.org/routine/Capture) 方法。
+但是，将对象解包为其属性只是默认行为。要使对象以不同方式进行解构，请更改其 [`Capture`](https://docs.perl6.org/routine/Capture) 方法。
 
 However, this unpacking of objects as their attributes is only the default behavior. To make an object get destructured differently, change its [`Capture`](https://docs.perl6.org/routine/Capture) method.
 
@@ -1093,11 +1093,11 @@ f(10, 'answer');
 <a id="%E6%8D%95%E8%8E%B7%E5%8F%82%E6%95%B0--capture-parameters"></a>
 ## 捕获参数 / Capture parameters
 
-使用竖线 `|` 前缀参数使参数成为 [`Capture`](https://docs.perl6.org/type/Capture)，用完所有剩余的位置和命名参数。
+使用竖线 `|` 前缀参数使参数成为 [`Capture`](https://docs.perl6.org/type/Capture)，它会消耗完所有剩余的位置和命名参数。
 
 Prefixing a parameter with a vertical bar `|` makes the parameter a [`Capture`](https://docs.perl6.org/type/Capture), using up all the remaining positional and named arguments.
 
-这通常用于 `proto` 定义（如 `proto foo (|) {*}` ）来表示例程的 [`multi` 定义](https://docs.perl6.org/routine/multi)可以有任意[类型约束](https://docs.perl6.org/type/Signature#Type_constraints)。有关示例，请参阅 [proto](https://docs.perl6.org/language/functions#proto)。
+这通常用于 `proto` 定义（如 `proto foo (|) {*}`）来表示例程的 [`multi` 定义](https://docs.perl6.org/routine/multi)可以有任意[类型约束](https://docs.perl6.org/type/Signature#Type_constraints)。有关示例，请参阅 [proto](https://docs.perl6.org/language/functions#proto)。
 
 This is often used in `proto` definitions (like `proto foo (|) {*}`) to indicate that the routine's [`multi` definitions](https://docs.perl6.org/routine/multi) can have any [type constraints](https://docs.perl6.org/type/Signature#Type_constraints). See [proto](https://docs.perl6.org/language/functions#proto) for an example.
 
@@ -1130,7 +1130,7 @@ sub count-up($x is copy) {
 }
 ```
 
-`is rw` 特征，代表 *is read-write*，使参数绑定到变量（或其他可写容器）。分配给参数会更改调用方的变量值。
+`is rw` 特征，代表*可读写*，使参数绑定到变量（或其他可写容器）。分配给参数会更改调用方的变量值。
 
 The `is rw` trait, which stands for *is read-write*, makes the parameter bind to a variable (or other writable container). Assigning to the parameter changes the value of the variable at the caller side.
 
@@ -1140,11 +1140,11 @@ sub swap($x is rw, $y is rw) {
 }
 ```
 
-在 slurpy 参数上，`is rw` 被保留供语言设计者将来使用。
+在 slurpy 参数上，`is rw` 被语言设计者保留供将来使用。
 
 On slurpy parameters, `is rw` is reserved for future use by language designers.
 
-[`is raw` 特征](https://docs.perl6.org/type/Parameter#method_raw)会自动应用于使用[反斜杠](https://docs.perl6.org/language/variables#Sigilless_variables)声明的参数作为“标记”，像这些一样，也可用于产生一般`带标记参数`的行为。在 slurpies 的特殊情况下，通常会产生一个充满`标量`的`数组`，如上所述，`is raw` 将导致参数产生一个`列表`。该列表的每个元素将直接绑定为原始参数。
+[`is raw` 特征](https://docs.perl6.org/type/Parameter#method_raw)会自动应用于使用[反斜杠](https://docs.perl6.org/language/variables#Sigilless_variables)声明的参数作为“标记”，也可用于产生`带标记参数`的行为。在 slurpies 的特殊情况下，通常会产生一个充满`标量`的`数组`，如上所述，`is raw` 将导致参数产生一个`列表`。该列表的每个元素将直接绑定为原始参数。
 
 The [`is raw` trait](https://docs.perl6.org/type/Parameter#method_raw) is automatically applied to parameters declared with a [backslash](https://docs.perl6.org/language/variables#Sigilless_variables) as a "sigil", and may also be used to make normally sigiled parameters behave like these do. In the special case of slurpies, which normally produce an `Array` full of `Scalar`s as described above, `is raw` will instead cause the parameter to produce a `List`. Each element of that list will be bound directly as raw parameter.
 
@@ -1160,8 +1160,8 @@ Traits can be followed by the where clause:
 sub ip-expand-ipv6($ip is copy where m:i/^<[a..f\d\:]>**3..39$/) { }
 ```
 
-<a id="%E6%96%B9%E6%B3%95--methods"></a>
-# 方法 / Methods
+<a id="signature-%E7%9A%84%E6%96%B9%E6%B3%95--methods"></a>
+# Signature 的方法 / Methods
 
 <a id="%E6%96%B9%E6%B3%95-params--method-params"></a>
 ## 方法 params / method params
@@ -1216,7 +1216,7 @@ multi method ACCEPTS(Signature:D: Capture $topic)
 multi method ACCEPTS(Signature:D: Mu \topic)
 ```
 
-如果 `$topic` 是 [Signature](https://docs.perl6.org/type/Signature) 返回 `True`，如果 `$topic` 接受的任何内容也会被调用者接受，否则返回 `False`：
+如果 `$topic` 是一个返回 `True` 的 [Signature](https://docs.perl6.org/type/Signature) 时，`$topic` 接受的任何内容也会被调用者接受，否则返回 `False`：
 
 If `$topic` is a [Signature](https://docs.perl6.org/type/Signature) returns `True` if anything accepted by `$topic` would also be accepted by the invocant, otherwise returns `False`:
 
@@ -1234,7 +1234,7 @@ The `$topic` is a [Capture](https://docs.perl6.org/type/Capture), returns `True`
 \(1, :bar)    ~~ :($a);                 # OUTPUT: «False» 
 ```
 
-最后，具有 `Mu \topic` 的候选者将 `topic` 转换为 [Capture](https://docs.perl6.org/type/Capture)，并遵循与 [Capture](https://docs.perl6.org/type/Capture) 相同的语义 `$topic`：
+最后，具有 `Mu \topic` 的候选者将 `topic` 转换为 [Capture](https://docs.perl6.org/type/Capture)，并遵循与 [Capture](https://docs.perl6.org/type/Capture) `$topic` 相同的语义 ：
 
 Lastly, the candidate with `Mu \topic` converts `topic` to [Capture](https://docs.perl6.org/type/Capture) and follows the same semantics as [Capture](https://docs.perl6.org/type/Capture) `$topic`:
 
@@ -1244,7 +1244,7 @@ Lastly, the candidate with `Mu \topic` converts `topic` to [Capture](https://doc
 set(<a b>) ~~ :(:$a, :$b);    # OUTPUT: «True» 
 ```
 
-由于[`where` 子句](https://docs.perl6.org/type/Signature#index-entry-where_clause_%28Signature%29)不能内省，因此该方法无法确定是否有两个签名 [ACCEPTS](https://docs.perl6.org/type/Signature#method_ACCEPTS) 同样的 `where` 约束的参数。这种比较将返回 `False`。这包括字面量的签名，这些只是 `where`约束的语法糖：
+由于 [`where` 子句](https://docs.perl6.org/type/Signature#index-entry-where_clause_%28Signature%29)不能内省，因此该方法无法确定是否有两个签名 [ACCEPTS](https://docs.perl6.org/type/Signature#method_ACCEPTS) 同样的 `where` 约束的参数。这种比较将返回 `False`。这包括字面量的签名，这些只是 `where`约束的语法糖：
 
 Since [`where` clauses](https://docs.perl6.org/type/Signature#index-entry-where_clause_%28Signature%29) are not introspectable, the method cannot determine whether two signatures [ACCEPTS](https://docs.perl6.org/type/Signature#method_ACCEPTS) the same sort of `where`-constrained parameters. Such comparisons will return `False`. This includes signatures with literals, which are just sugar for the `where`-constraints:
 
@@ -1267,8 +1267,8 @@ method Capture()
 
 Throws `X::Cannot::Capture`.
 
-<a id="%E8%BF%90%E8%A1%8C%E6%97%B6%E5%88%9B%E5%BB%BA%E7%AD%BE%E5%90%8D%E5%AF%B9%E8%B1%A16d-201901-and-later--runtime-creation-of-signature-objects-6d-201901-and-later"></a>
-# 运行时创建签名对象(6.d, 2019.01 and later) / Runtime creation of Signature objects (6.d, 2019.01 and later)
+<a id="%E8%BF%90%E8%A1%8C%E6%97%B6%E5%88%9B%E5%BB%BA%E7%AD%BE%E5%90%8D%E5%AF%B9%E8%B1%A16d-201901%E5%8F%8A%E4%BB%A5%E5%90%8E--runtime-creation-of-signature-objects-6d-201901-and-later"></a>
+# 运行时创建签名对象(6.d, 2019.01及以后) / Runtime creation of Signature objects (6.d, 2019.01 and later)
 
 ```Perl6
 Signature.new(params => (...), returns => Type, arity => 1, count => 1)
