@@ -9,7 +9,7 @@
     - [参数分隔符 / Parameter separators](#%E5%8F%82%E6%95%B0%E5%88%86%E9%9A%94%E7%AC%A6--parameter-separators)
     - [类型约束 / Type constraints](#%E7%B1%BB%E5%9E%8B%E7%BA%A6%E6%9D%9F--type-constraints)
         - [约束可选参数 / Constraining optional arguments](#%E7%BA%A6%E6%9D%9F%E5%8F%AF%E9%80%89%E5%8F%82%E6%95%B0--constraining-optional-arguments)
-        - [约束 slurpy 参数 / Constraining slurpy arguments](#%E7%BA%A6%E6%9D%9F-slurpy-%E5%8F%82%E6%95%B0---constraining-slurpy-arguments)
+        - [约束 slurpy 参数 / Constraining slurpy arguments](#%E7%BA%A6%E6%9D%9F-slurpy-%E5%8F%82%E6%95%B0--constraining-slurpy-arguments)
         - [约束命名参数 / Constraining named arguments](#%E7%BA%A6%E6%9D%9F%E5%91%BD%E5%90%8D%E5%8F%82%E6%95%B0--constraining-named-arguments)
         - [约束参数的确定性 / Constraining argument definiteness](#%E7%BA%A6%E6%9D%9F%E5%8F%82%E6%95%B0%E7%9A%84%E7%A1%AE%E5%AE%9A%E6%80%A7--constraining-argument-definiteness)
         - [约束可调用签名 / Constraining signatures of `Callable`s](#%E7%BA%A6%E6%9D%9F%E5%8F%AF%E8%B0%83%E7%94%A8%E7%AD%BE%E5%90%8D--constraining-signatures-of-callables)
@@ -282,7 +282,7 @@ can have constraints, too. Any `where` clause on any parameter will be executed,
 sub f(Int $a, UInt $i? where { !$i.defined or $i > 5 }) { ... }
 ```
 
-<a id="%E7%BA%A6%E6%9D%9F-slurpy-%E5%8F%82%E6%95%B0---constraining-slurpy-arguments"></a>
+<a id="%E7%BA%A6%E6%9D%9F-slurpy-%E5%8F%82%E6%95%B0--constraining-slurpy-arguments"></a>
 ### 约束 slurpy 参数 / Constraining slurpy arguments
 
 [Slurpy 参数](https://docs.perl6.org/type/Signature#Slurpy_%28A.K.A._variadic%29_parameters)不能有类型约束。可以使用 `where` 子句和 [Junction](https://docs.perl6.org/type/Junction) 来实现该效果。
