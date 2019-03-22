@@ -1,27 +1,5 @@
 原文：https://docs.perl6.org/language/classtut
 
-# `目录`
-
-<!-- MarkdownTOC -->
-
-- [类与对象 / Classes and objects](#%E7%B1%BB%E4%B8%8E%E5%AF%B9%E8%B1%A1--classes-and-objects)
-- [从类开始 / Starting with class](#%E4%BB%8E%E7%B1%BB%E5%BC%80%E5%A7%8B--starting-with-class)
-- [状态 / State](#%E7%8A%B6%E6%80%81--state)
-- [静态字段？ / Static fields?](#%E9%9D%99%E6%80%81%E5%AD%97%E6%AE%B5%EF%BC%9F--static-fields)
-- [方法 / Methods](#%E6%96%B9%E6%B3%95--methods)
-    - [私有方法 / Private Methods](#%E7%A7%81%E6%9C%89%E6%96%B9%E6%B3%95--private-methods)
-- [构造器 / Constructors](#%E6%9E%84%E9%80%A0%E5%99%A8--constructors)
-- [类的使用 / Consuming our class](#%E7%B1%BB%E7%9A%84%E4%BD%BF%E7%94%A8--consuming-our-class)
-- [继承 / Inheritance](#%E7%BB%A7%E6%89%BF--inheritance)
-    - [覆盖继承的方法 / Overriding inherited methods](#%E8%A6%86%E7%9B%96%E7%BB%A7%E6%89%BF%E7%9A%84%E6%96%B9%E6%B3%95--overriding-inherited-methods)
-    - [多重继承 / Multiple inheritance](#%E5%A4%9A%E9%87%8D%E7%BB%A7%E6%89%BF--multiple-inheritance)
-    - [`also` 声明符 / The `also` declarator](#also-%E5%A3%B0%E6%98%8E%E7%AC%A6--the-also-declarator)
-- [内省 / Introspection](#%E5%86%85%E7%9C%81--introspection)
-
-<!-- /MarkdownTOC -->
-
-
-<a id="%E7%B1%BB%E4%B8%8E%E5%AF%B9%E8%B1%A1--classes-and-objects"></a>
 # 类与对象 / Classes and objects
 
 创建和使用 Perl 6 中类的教程
@@ -102,6 +80,25 @@ my $eat =
  
 $eat.perform();
 ```
+
+# 目录 / Table of Contents
+
+<!-- MarkdownTOC -->
+
+- [从类开始 / Starting with class](#%E4%BB%8E%E7%B1%BB%E5%BC%80%E5%A7%8B--starting-with-class)
+- [状态 / State](#%E7%8A%B6%E6%80%81--state)
+- [静态字段？ / Static fields?](#%E9%9D%99%E6%80%81%E5%AD%97%E6%AE%B5%EF%BC%9F--static-fields)
+- [方法 / Methods](#%E6%96%B9%E6%B3%95--methods)
+    - [私有方法 / Private Methods](#%E7%A7%81%E6%9C%89%E6%96%B9%E6%B3%95--private-methods)
+- [构造器 / Constructors](#%E6%9E%84%E9%80%A0%E5%99%A8--constructors)
+- [类的使用 / Consuming our class](#%E7%B1%BB%E7%9A%84%E4%BD%BF%E7%94%A8--consuming-our-class)
+- [继承 / Inheritance](#%E7%BB%A7%E6%89%BF--inheritance)
+    - [覆盖继承的方法 / Overriding inherited methods](#%E8%A6%86%E7%9B%96%E7%BB%A7%E6%89%BF%E7%9A%84%E6%96%B9%E6%B3%95--overriding-inherited-methods)
+    - [多重继承 / Multiple inheritance](#%E5%A4%9A%E9%87%8D%E7%BB%A7%E6%89%BF--multiple-inheritance)
+    - [`also` 声明符 / The `also` declarator](#also-%E5%A3%B0%E6%98%8E%E7%AC%A6--the-also-declarator)
+- [内省 / Introspection](#%E5%86%85%E7%9C%81--introspection)
+
+<!-- /MarkdownTOC -->
 
 <a id="%E4%BB%8E%E7%B1%BB%E5%BC%80%E5%A7%8B--starting-with-class"></a>
 # 从类开始 / Starting with class

@@ -18,7 +18,7 @@ A signature is a static description of the [parameter](https://docs.perl6.org/ty
 
 Passing arguments to a signature *binds* the arguments, contained in a [Capture](https://docs.perl6.org/type/Capture), to the signature.
 
-# `目录` / Table Of Content
+# 目录 / Table Of Contents
 
 <!-- MarkdownTOC -->
 

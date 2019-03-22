@@ -1,10 +1,15 @@
 原文：https://docs.perl6.org/language/control
 
-# `目录`
+# 控制流（Control Flow）
+
+控制执行流程的语句
+
+Statements used to control the flow of execution
+
+# 目录 / Table of Contents
 
 <!-- MarkdownTOC -->
 
-- [控制流（Control Flow）](#%E6%8E%A7%E5%88%B6%E6%B5%81%EF%BC%88control-flow%EF%BC%89)
 - [语句/ statements](#%E8%AF%AD%E5%8F%A5-statements)
 - [代码块 / blocks](#%E4%BB%A3%E7%A0%81%E5%9D%97--blocks)
 - [do](#do)
@@ -34,14 +39,6 @@
 - [redo](#redo)
 
 <!-- /MarkdownTOC -->
-
-
-<a id="%E6%8E%A7%E5%88%B6%E6%B5%81%EF%BC%88control-flow%EF%BC%89"></a>
-# 控制流（Control Flow）
-
-控制执行流程的语句
-
-Statements used to control the flow of execution
 
 <a id="%E8%AF%AD%E5%8F%A5-statements"></a>
 # 语句/ statements

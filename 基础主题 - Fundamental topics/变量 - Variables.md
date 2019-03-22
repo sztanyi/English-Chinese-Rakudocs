@@ -1,10 +1,19 @@
 原文：https://docs.perl6.org/language/variables
 
-# `目录`
+# 变量
+
+Perl 6 中的变量
+
+Variables in Perl 6
+
+变量名字以一种叫做标记的特殊字符开头，后面跟着叫 twigil 的特殊字符最后才是[识别符](https://docs.perl6.org/language/syntax#Identifiers)，前面两个特殊符号都是可选的。变量是值或者[容器](https://docs.perl6.org/language/containers)符号名称。定义变量或者给变量赋值会直接生成容器。
+
+Variable names can start with or without a special character called a *sigil*, followed optionally by a second special character named *twigil* and then an [identifier](https://docs.perl6.org/language/syntax#Identifiers). Variables are symbolic names for values or [containers](https://docs.perl6.org/language/containers). Variable declarations or assignment of values may create a container on the fly.
+
+# 目录 / Table of Contents
 
 <!-- MarkdownTOC -->
 
-- [变量](#%E5%8F%98%E9%87%8F)
 - [标记 / Sigils](#%E6%A0%87%E8%AE%B0--sigils)
     - [单条目和列表赋值 / Item and List Assignment](#%E5%8D%95%E6%9D%A1%E7%9B%AE%E5%92%8C%E5%88%97%E8%A1%A8%E8%B5%8B%E5%80%BC--item-and-list-assignment)
     - [无标记变量 / Sigilless variables](#%E6%97%A0%E6%A0%87%E8%AE%B0%E5%8F%98%E9%87%8F--sigilless-variables)
@@ -82,20 +91,6 @@
 - [命名约定 / Naming conventions](#%E5%91%BD%E5%90%8D%E7%BA%A6%E5%AE%9A--naming-conventions)
 
 <!-- /MarkdownTOC -->
-
-
-
-
-<a id="%E5%8F%98%E9%87%8F"></a>
-# 变量
-
-Perl 6 中的变量
-
-Variables in Perl 6
-
-变量名字以一种叫做标记的特殊字符开头，后面跟着叫 twigil 的特殊字符最后才是[识别符](https://docs.perl6.org/language/syntax#Identifiers)，前面两个特殊符号都是可选的。变量是值或者[容器](https://docs.perl6.org/language/containers)符号名称。定义变量或者给变量赋值会直接生成容器。
-
-Variable names can start with or without a special character called a *sigil*, followed optionally by a second special character named *twigil* and then an [identifier](https://docs.perl6.org/language/syntax#Identifiers). Variables are symbolic names for values or [containers](https://docs.perl6.org/language/containers). Variable declarations or assignment of values may create a container on the fly.
 
 <a id="%E6%A0%87%E8%AE%B0--sigils"></a>
 # 标记 / Sigils
