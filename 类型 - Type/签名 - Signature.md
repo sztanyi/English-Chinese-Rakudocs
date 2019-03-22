@@ -231,9 +231,9 @@ can have constraints, too. Any `where` clause on any parameter will be executed,
 sub f(Int $a, UInt $i? where { !$i.defined or $i > 5 }) { ... }
 ```
 
-### 约束解包参数 - Constraining slurpy arguments
+### 约束 slurpy 参数 - Constraining slurpy arguments
 
-[解包参数](https://docs.perl6.org/type/Signature#Slurpy_%28A.K.A._variadic%29_parameters)不能有类型约束。可以使用 `where` 子句和 [Junction](https://docs.perl6.org/type/Junction) 来实现该效果。
+[Slurpy 参数](https://docs.perl6.org/type/Signature#Slurpy_%28A.K.A._variadic%29_parameters)不能有类型约束。可以使用 `where` 子句和 [Junction](https://docs.perl6.org/type/Junction) 来实现该效果。
 
 [Slurpy arguments](https://docs.perl6.org/type/Signature#Slurpy_%28A.K.A._variadic%29_parameters) can not have type constraints. A `where`-clause in conjunction with a [Junction](https://docs.perl6.org/type/Junction) can be used to that effect.
 
@@ -626,11 +626,9 @@ for 2,4, *²  … 256 -> $a {
 
 In this example, coercing the return type to `String` allows us to directly apply string methods, such as the number of characters.
 
+## slurpy（A.K.A。可变）参数 / Slurpy (A.K.A. variadic) parameters
 
-
-## slurpy（A.K.A。可变参数）参数 / Slurpy (A.K.A. variadic) parameters
-
-如果函数可以采用不同数量的参数，则该函数是可变参数;也就是说，它的参数元数并不固定。因此，可选，命名和解包参数是可变参数。数组或散列参数可以通过前导星号（*）或两个前导星号（**）或前导加号（+）标记为 *slurpy*。一个slurpy参数可以绑定到任意零或更多）。
+如果函数可以采用不同数量的参数，则该函数是可变参数;也就是说，它的参数元数并不固定。因此，可选，命名和解包参数是可变参数。数组或散列参数可以通过前导星号（*）或两个前导星号（**）或前导加号（+）标记为 *slurpy*。一个 slurpy 参数可以绑定到任意零或更多）。
 
 A function is variadic if it can take a varying number of arguments; that is, its arity is not fixed. Therefore, optional, named, and slurpy parameters are variadic. An array or hash parameter can be marked as *slurpy* by leading asterisk (*) or two leading asterisks (**) or a leading plus (+). A slurpy parameter can bind to an arbitrary number of arguments (zero or more).
 
@@ -640,7 +638,7 @@ These are called "slurpy" because they slurp up any remaining arguments to a fun
 
 ```Perl6
 $ = :($a, @b);     # 正好两个参数，第二个参数必须是位置的 / exactly two arguments, where the second one must be Positional 
-$ = :($a, *@b);    # 至少有一个参数，@b slurpy掉多余一个的参数 / at least one argument, @b slurps up any beyond that 
+$ = :($a, *@b);    # 至少有一个参数，@b 吃掉多余一个的参数 / at least one argument, @b slurps up any beyond that 
 $ = :(*%h);        # no positional arguments, but any number of named arguments 
  
 sub one-arg (@)  { }
