@@ -349,11 +349,11 @@ CATCH { default { put .^name, ': ', .Str } };
 say limit-lines "a \n b", Int; # Always returns the max number of lines 
 ```
 
-在这里，我们其实只想处理字符串实例，而不是类型对象。为此，我们可以使用 `：D` 类型约束。此约束以与调用其 [DEFINITE](https://docs.perl6.org/language/mop#DEFINITE) 元方法类似的方式检查传递的值是否为*对象实例*。
+在这里，我们其实只想处理字符串实例，而不是类型对象。为此，我们可以使用 `:D` 类型约束。此约束以与调用其 [DEFINITE](https://docs.perl6.org/language/mop#DEFINITE) 元方法类似的方式检查传递的值是否为*对象实例*。
 
 Here we really only want to deal with string instances, not type objects. To do this, we can use the `:D` type constraint. This constraint checks that the value passed is an *object instance*, in a similar fashion to calling its [DEFINITE](https://docs.perl6.org/language/mop#DEFINITE) (meta)method.
 
-热个身，让我们将 `：D` 应用到我们简陋的 `Int` 示例的右侧：
+热个身，让我们将 `:D` 应用到我们简陋的 `Int` 示例的右侧：
 
 To warm up, let's apply `:D` to the right-hand side of our humble `Int` example:
 
@@ -362,7 +362,7 @@ say  42 ~~ Int:D;  # OUTPUT: «True␤»
 say Int ~~ Int:D;  # OUTPUT: «False␤» 
 ```
 
-注意上面只有 `42` 匹配 `Int：D`。
+注意上面只有 `42` 匹配 `Int:D`。
 
 Note how only `42` matches `Int:D` in the above.
 
