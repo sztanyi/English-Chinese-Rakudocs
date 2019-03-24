@@ -237,7 +237,7 @@ See [operators](https://docs.perl6.org/language/operators) for more details on
 <a id="%E6%97%A0%E6%A0%87%E8%AE%B0%E5%8F%98%E9%87%8F--sigilless-variables"></a>
 ## 无标记变量 / Sigilless variables
 
-使用 \ 作为前缀，可以生成无标记的变量：
+使用 `\` 作为前缀，可以生成无标记的变量：
 
 Using the `\` prefix, it's possible to create variables that do not have a sigil:
 
