@@ -1,6 +1,6 @@
 原文：https://docs.perl6.org/language/variables
 
-# 变量
+# 变量 / Variables
 
 Perl 6 中的变量
 

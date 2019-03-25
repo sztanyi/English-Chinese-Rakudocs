@@ -1,0 +1,368 @@
+数据结构 / Data structures
+
+Perl 6 如何处理数据结构以及我们可以从中得到什么
+
+How Perl 6 deals with data structures and what we can expect from them
+
+# 标量结构 / Scalar structures
+
+有些类没有任何*内部*结构，要访问其中的某些部分，必须使用特定的方法。数字、字符串和一些其他单体类都包含在这个类中。它们使用的是 `$` 标记，尽管复杂的数据结构也可以使用它。
+
+Some classes do not have any *internal* structure and to access parts of them, specific methods have to be used. Numbers, strings, and some other monolithic classes are included in that class. They use the `$` sigil, although complex data structures can also use it.
+
+```Perl6
+my $just-a-number = 7;
+my $just-a-string = "8";
+```
+
+有一个内部使用的 [Scalar](https://docs.perl6.org/type/Scalar) 类，用来给 `$` 标记的变量赋默认值。
+
+There is a [Scalar](https://docs.perl6.org/type/Scalar) class, which is used internally to assign a default value to variables declared with the `$` sigil.
+
+```Perl6
+my $just-a-number = 333;
+say $just-a-number.VAR.^name; # OUTPUT: «Scalar␤» 
+```
+
+Any complex data structure can be *scalarized* by using the [item contextualizer `$`](https://docs.perl6.org/type/Any#index-entry-%2524_%28item_contextualizer%29):
+
+```Perl6
+(1, 2, 3, $(4, 5))[3].VAR.^name.say; # OUTPUT: «Scalar␤» 
+```
+
+However, this means that it will be treated as such in the context they are. You can still access its internal structure.
+
+```Perl6
+(1, 2, 3, $(4, 5))[3][0].say; # OUTPUT: «4␤» 
+```
+
+An interesting side effect, or maybe intended feature, is that scalarization conserves identity of complex structures.
+
+```Perl6
+for ^2 {
+     my @list = (1, 1);
+     say @list.WHICH;
+} # OUTPUT: «Array|93947995146096␤Array|93947995700032␤» 
+```
+
+Every time `(1, 1)` is assigned, the variable created is going to be different in the sense that `===` will say it is; as it is shown, different values of the internal pointer representation are printed. However
+
+```Perl6
+for ^2 {
+  my $list = (1, 1);
+  say $list.WHICH
+} # OUTPUT: «List|94674814008432␤List|94674814008432␤» 
+```
+
+In this case, `$list` is using the Scalar sigil and thus will be a `Scalar`. Any scalar with the same value will be exactly the same, as shown when printing the pointers.
+
+# Complex data structures
+
+Complex data structures fall in two different broad categories: [Positional](https://docs.perl6.org/type/Positional), or list-like and [Associative](https://docs.perl6.org/type/Associative), or key-value pair like, according to how you access its first-level elements. In general, complex data structures, including objects, will be a combination of both, with object properties assimilated to key-value pairs. While all objects subclass [Mu](https://docs.perl6.org/type/Mu), in general complex objects are instances of subclasses of [Any](https://docs.perl6.org/type/Any). While it is theoretically possible to mix in `Positional` or `Associative` without doing so, most methods applicable to complex data structures are implemented in `Any`.
+
+Navigating these complex data structures is a challenge, but Perl 6 provides a couple of functions that can be used on them: [`deepmap`](https://docs.perl6.org/routine/deepmap) and [`duckmap`](https://docs.perl6.org/routine/duckmap). While the former will go to every single element, in order, and do whatever the block passed requires,
+
+```Perl6
+say [[1, 2, [3, 4]],[[5, 6, [7, 8]]]].deepmap( *.elems );
+# OUTPUT: «[[1 1 [1 1]] [1 1 [1 1]]]␤» 
+```
+
+which returns `1` because it goes to the deeper level and applies `elems` to them, `deepmap` can perform more complicated operations:
+
+```Perl6
+say [[1, 2, [3, 4]], [[5, 6, [7, 8]]]].duckmap:
+   -> $array where .elems == 2 { $array.elems };
+# OUTPUT: «[[1 2 2] [5 6 2]]␤» 
+```
+
+In this case, it dives into the structure, but returns the element itself if it does not meet the condition in the block (`1, 2`), returning the number of elements of the array if it does (the two `2`s at the end of each subarray).
+
+Since `deepmap` and `duckmap` are `Any` methods, they also apply to Associative arrays:
+
+```Perl6
+say %( first => [1, 2], second => [3,4] ).deepmap( *.elems );
+# OUTPUT: «{first => [1 1], second => [1 1]}␤» 
+```
+
+Only in this case, they will be applied to every list or array that is a value, leaving the keys alone.
+
+`Positional` and `Associative` can be turned into each other.
+
+```Perl6
+say %( first => [1, 2], second => [3,4] ).list[0];
+# OUTPUT: «second => [3 4]␤» 
+```
+
+However, in this case, and for Rakudo >= 2018.05, it will return a different value every time it runs. A hash will be turned into a list of the key-value pairs, but it is guaranteed to be disordered. You can also do the operation in the opposite direction, as long as the list has an even number of elements (odd number will result in an error):
+
+```Perl6
+say <a b c d>.Hash # OUTPUT: «{a => b, c => d}␤» 
+```
+
+But
+
+```Perl6
+say <a b c d>.Hash.kv # OUTPUT: «(c d a b)␤» 
+```
+
+will obtain a different value every time you run it; [`kv`](https://docs.perl6.org/type/Pair#method_kv) turns every `Pair` into a list.
+
+Complex data structures are also generally [Iterable](https://docs.perl6.org/type/Iterable). Generating an [iterator](https://docs.perl6.org/routine/iterator) out of them will allow the program to visit the first level of the structure, one by one:
+
+```Perl6
+.say for 'א'..'ס'; # OUTPUT: «א␤ב␤ג␤ד␤ה␤ו␤ז␤ח␤ט␤י␤ך␤כ␤ל␤ם␤מ␤ן␤נ␤ס␤» 
+```
+
+`'א'..'ס'` is a [Range](https://docs.perl6.org/type/Range), a complex data structure, and with `for` in front it will iterate until the list is exhausted. You can use `for`on your complex data structures by overriding the [iterator](https://docs.perl6.org/routine/iterator) method (from role `Iterable`):
+
+```Perl6
+class SortedArray is Array {
+  method iterator() {
+    self.sort.iterator
+  }
+};
+my @thing := SortedArray.new([3,2,1,4]);
+.say for @thing; # OUTPUT: «1␤2␤3␤4␤» 
+```
+
+`for` calls directly the `iterator` method on `@thing` making it return the elements of the array in order. Much more on [iterating on the page devoted to it](https://docs.perl6.org/language/iterating).
+
+# Functional structures
+
+Perl 6 is a functional language and, as such, functions are first-class *data* structures. Functions follow the [Callable](https://docs.perl6.org/type/Callable) role, which is the 4th element in the quartet of fundamental roles. [Callable](https://docs.perl6.org/type/Callable) goes with the `&` sigil, although in most cases it is elided for the sake of simplicity; this sigil elimination is always allowed in the case of `Callables`.
+
+```Perl6
+my &a-func= { (^($^þ)).Seq };
+say a-func(3), a-func(7); # OUTPUT: «(0 1 2)(0 1 2 3 4 5 6)␤» 
+```
+
+[Block](https://docs.perl6.org/type/Block)s are the simplest callable structures, since `Callable`s cannot be instantiated. In this case we implement a block that logs events and can retrieve them:
+
+```Perl6
+my $logger = -> $event, $key = Nil  {
+  state %store;
+  if ( $event ) {
+    %store{ DateTime.new( now ) } = $event;
+  } else {
+    %store.keys.grep( /$key/ )
+  }
+}
+$logger( "Stuff" );
+$logger( "More stuff" );
+say $logger( Nil, "2018-05-28" ); # OUTPUT: «(Stuff More stuff)␤» 
+```
+
+A `Block` has a [Signature](https://docs.perl6.org/type/Signature), in this case two arguments, the first of which is the event that is going to be logged, and the second is the key to retrieve the events. They will be used in an independent way, but its intention is to showcase the use of a [state variable](https://docs.perl6.org/syntax/state) that is kept from every invocation to the next. This state variable is encapsulated within the block, and cannot be accessed from outside except by using the simple API the block provides: calling the block with a second argument. The two first invocations log two events, the third invocation at the bottom of the example use this second type of call to retrieve the stored values. `Block`s can be cloned:
+
+```Perl6
+my $clogger = $logger.clone;
+$clogger( "Clone stuff" );
+$clogger( "More clone stuff" );
+say $clogger( Nil, "2018-05-28" );
+# OUTPUT: «(Clone stuff More clone stuff)␤» 
+```
+
+And cloning will reset the state variable; instead of cloning, we can create *façades* that change the API. For instance, eliminate the need to use `Nil` as first argument to retrieve the log for a certain date:
+
+```Perl6
+my $gets-logs = $logger.assuming( Nil, * );
+$logger( %(changing => "Logs") );
+say $gets-logs( "2018-05-28" );
+# OUTPUT: «({changing => Logs} Stuff More stuff)␤» 
+```
+
+[`assuming`](https://docs.perl6.org/type/Block#%28Code%29_method_assuming) wraps around a block call, giving a value (in this case, `Nil`) to the arguments we need, and passing on the arguments to the other arguments we represent using `*`. In fact, this corresponds to the natural language statement "We are calling `$logger` *assuming* the first argument is `Nil`". We can slightly change the appearance of these two Blocks to clarify they are actually acting on the same block:
+
+```Perl6
+my $Logger = $logger.clone;
+my $Logger::logs = $Logger.assuming( *, Nil );
+my $Logger::get = $Logger.assuming( Nil, * );
+$Logger::logs( <an array> );
+$Logger::logs( %(key => 42) );
+say $Logger::get( "2018-05-28" );
+```
+
+Although `::` is generally used for invocation of class methods, it is actually a valid part of the name of a variable. In this case we use them conventionally to simply indicate `$Logger::logs` and `$Logger::get` are actually calling `$Logger`, which we have capitalized to use a class-like appearance. The point of this tutorial is that using functions as first-class citizens, together with the use of state variables, allows the use of certain interesting design patterns such as this one.
+
+As such first class data structures, callables can be used anywhere another type of data can.
+
+```Perl6
+my @regex-check = ( /<alnum>/, /<alpha>/, /<punct>/ );
+say @regex-check.map: "33af" ~~ *;
+# OUTPUT: «(｢3｣␤ alnum => ｢3｣ ｢a｣␤ alpha => ｢a｣ Nil)␤» 
+```
+
+Regexes are actually a type of callable:
+
+```Perl6
+say /regex/.does( Callable ); # OUTPUT: «True␤» 
+```
+
+And in the example above we are calling regexes stored in an array, and applying them to a string literal.
+
+Callables are composed by using the [function composition operator ∘](https://docs.perl6.org/language/operators#infix_%25E2%2588%2598):
+
+```Perl6
+my $typer = -> $thing { $thing.^name ~ ' → ' ~ $thing };
+my $Logger::withtype = $Logger::logs ∘ $typer;
+$Logger::withtype( Pair.new( 'left', 'right' ) );
+$Logger::withtype( ¾ );
+say $Logger::get( "2018-05-28" );
+# OUTPUT: «(Pair → left right Rat → 0.75)␤» 
+```
+
+We are composing `$typer` with the `$Logger::logs` function defined above, obtaining a function that logs an object preceded by its type, which can be useful for filtering, for instance. `$Logger::withtype` is, in fact, a complex data structure composed of two functions which are applied in a serial way, but every one of the callables composed can keep state, thus creating complex transformative callables, in a design pattern that is similar to object composition in the object oriented realm. You will have to choose, in every particular case, what is the programming style which is most suitable for your problem.
+
+# Defining and constraining data structures
+
+Perl 6 has different ways of defining data structures, but also many ways to constrain them so that you can create the most adequate data structure for every problem domain. [`but`](https://docs.perl6.org/routine/but), for example, mixes roles or values into a value or a variable:
+
+```Perl6
+my %not-scalar := %(2 => 3) but Associative[Int, Int];
+say %not-scalar.^name; # OUTPUT: «Hash+{Associative[Int, Int]}␤» 
+say %not-scalar.of;    # OUTPUT: «Associative[Int, Int]␤» 
+%not-scalar{3} = 4;
+%not-scalar<thing> = 3;
+say %not-scalar;       # OUTPUT: «{2 => 3, 3 => 4, thing => 3}␤» 
+```
+
+In this case, `but` is mixing in the `Associative[Int, Int]` role; please note that we are using binding so that the type of the variable is the one defined, and not the one imposed by the `%` sigil; this mixed-in role shows in the `name` surrounded by curly braces. What does that really mean? That role includes two methods, `of` and `keyof`; by mixing the role in, the new `of` will be called (the old `of` would return `Mu`, which is the default value type for Hashes). However, that is all it does. It is not really changing the type of the variable, as you can see since we are using any kind of key and values in the next few statements.
+
+However, we can provide new functionality to a variable using this type of mixin:
+
+```Perl6
+role Lastable {
+  method last() {
+    self.sort.reverse[0]
+  }
+}
+my %hash-plus := %( 3 => 33, 4 => 44) but Lastable;
+say %hash-plus.sort[0]; # OUTPUT: «3 => 33␤» 
+say %hash-plus.last;    # OUTPUT: «4 => 44␤» 
+```
+
+In `Lastable` we use the universal `self` variable to refer to whatever object this particular role is mixed in; in this case it will contain the hash it is mixed in with; it will contain something else (and possibly work some other way) in other case. This role will provide the `last` method to any variable it's mixed with, providing new, attachable, functionalities to *regular* variables. Roles can even be [added to existing variables using the `does` keyword](https://docs.perl6.org/language/objects#Mixins_of_roles).
+
+[Subsets](https://docs.perl6.org/language/typesystem#subset) can also be used to constrain the possible values a variable might hold; they are Perl 6 attempt at [gradual typing](https://en.wikipedia.org/wiki/Gradual_typing); it is not a full attempt, because subsets are not really types in a strict sense, but they allow runtime type checking. It adds type-checking functionality to regular types, so it helps create a richer type system, allowing things like the one shown in this code:
+
+```Perl6
+subset OneOver where (1/$_).Int == 1/$_;
+my OneOver $one-fraction = ⅓;
+say $one-fraction; # OUTPUT: «0.333333␤» 
+```
+
+On the other hand, `my OneOver $ = ⅔;` will cause a type-check error. Subsets can use `Whatever`, that is, `*`, to refer to the argument; but this will be instantiated every time you use it to a different argument, so if we use it twice in the definition we would get an error. In this case we are using the topic single variable, `$_`, to check the instantiation. Subsetting can be done directly, without the need of declaring it, in [signatures](https://docs.perl6.org/language/typesystem#subset).
+
+# Infinite structures and laziness
+
+It might be assumed that all the data contained in a data structure is actually *there*. That is not necessarily the case: in many cases, for efficiency reasons or simply because it is not possible, the elements contained in a data structure only jump into existence when they are actually needed. This computation of items as they are needed is called [reification](https://docs.perl6.org/language/glossary#Reify).
+
+```Perl6
+# A list containing infinite number of un-reified Fibonacci numbers: 
+my @fibonacci = 1, 1, * + * … ∞;
+ 
+# We reify 10 of them, looking up the first 10 of them with array index: 
+say @fibonacci[^10]; # OUTPUT: «(1 1 2 3 5 8 13 21 34 55)␤» 
+ 
+# We reify 5 more: 10 we already reified on previous line, and we need to 
+# reify 5 more to get the 15th element at index 14. Even though we need only 
+# the 15th element, the original Seq still has to reify all previous elements: 
+say @fibonacci[14]; # OUTPUT: «987␤» 
+```
+
+Above we were reifying a [Seq](https://docs.perl6.org/type/Seq) we created with the [sequence operator](https://docs.perl6.org/language/operators#index-entry-%25E2%2580%25A6_operators), but other data structures use the concept as well. For example, an un-reified [Range](https://docs.perl6.org/type/Range) is just the two end points. In some languages, calculating the sum of a huge range is a lengthy and memory-consuming process, but Perl 6 calculates it instantly:
+
+```Perl6
+say sum 1 .. 9_999_999_999_999; # OUTPUT: «49999999999995000000000000␤» 
+```
+
+Why? Because the sum can be calculated *without* reifying the Range; that is, without figuring out all the elements it contains. This is why this feature exists. You can even make your own things reify-on-demand, using [`gather` and `take`](https://docs.perl6.org/syntax/gather%20take):
+
+```Perl6
+my $seq = gather {
+    say "About to make 1st element"; take 1;
+    say "About to make 2nd element"; take 2;
+}
+say "Let's reify an element!";
+say $seq[0];
+say "Let's reify more!";
+say $seq[1];
+say "Both are reified now!";
+say $seq[^2];
+ 
+# OUTPUT: 
+# Let's reify an element! 
+# About to make 1st element 
+# 1 
+# Let's reify more! 
+# About to make 2nd element 
+# 2 
+# Both are reified now! 
+# (1 2) 
+```
+
+Following the output above, you can see the print statements *inside* the `gather` got executed only when we reified the individual elements while looking up an element. Also note that the elements got reified just once. When we printed the same elements again on the last line of the example, the messages inside `gather` was no longer printed. This is because the construct used already-reified elements from the [Seq](https://docs.perl6.org/type/Seq)'s cache.
+
+Note that above we assigned the `gather` to a [Scalar](https://docs.perl6.org/type/Scalar) container (the `$` sigil), not the [Positional](https://docs.perl6.org/type/Positional) one (the `@` sigil). The reason is that the `@`-sigiled variables are *mostly eager*. What this means is they *reify the stuff assigned to them* right away *most of the time*. The only time they don't do it is when the items are known to be [`is-lazy`](https://docs.perl6.org/routine/is-lazy), like our sequence generated with infinity as the end point. Were we to assign the `gather` to a `@`-variable, the `say` statements inside of it would've been printed right away.
+
+Another way to fully-reify a list, is by calling [`.elems`](https://docs.perl6.org/routine/elems) on it. This is the reason why checking whether a list contains any items is best done by using `.Bool` method (or just using `if @array { … }`), since you don't need to reify *all* the elements to find out if there are `any` of them.
+
+There are times where you *do* want to fully-reify a list before doing something. For example, the [`IO::Handle.lines`](https://docs.perl6.org/type/IO::Handle#method_lines) returns a [Seq](https://docs.perl6.org/type/Seq). The following code contains a bug; keeping reification in mind, try to spot it:
+
+```Perl6
+my $fh = "/tmp/bar".IO.open;
+my $lines = $fh.lines;
+close $fh;
+say $lines[0];
+```
+
+We open a [filehandle](https://docs.perl6.org/type/IO::Handle), then assign return of [`.lines`](https://docs.perl6.org/type/IO::Handle#method_lines) to a [Scalar](https://docs.perl6.org/type/Scalar) variable, so the returned [Seq](https://docs.perl6.org/type/Seq) does not get reified right away. We then [`close`](https://docs.perl6.org/routine/close) the filehandle, and try to print an element from `$lines`.
+
+The bug in the code is by the time we reify the `$lines` [Seq](https://docs.perl6.org/type/Seq) on the last line, we've *already closed* the filehandle. When the `Seq's` iterator tries to generate the item we've requested, it results in the error about attempting to read from a closed handle. So, to fix the bug we can either assign to a `@`-sigiled variable or call [`.elems`](https://docs.perl6.org/routine/elems) on `$lines` before closing the handle:
+
+```Perl6
+my $fh = "/tmp/bar".IO.open;
+my @lines = $fh.lines;
+close $fh;
+say @lines[0]; # no problem! 
+```
+
+We can also use any function whose side effect is reification, like `.elems` mentioned above:
+
+```Perl6
+my $fh = "/tmp/bar".IO.open;
+my $lines = $fh.lines;
+say "Read $lines.elems() lines"; # reifying before closing handle 
+close $fh;
+say $lines[0]; # no problem! 
+```
+
+Using [eager](https://docs.perl6.org/routine/eager) will also reify the whole sequence:
+
+```Perl6
+my $fh = "/tmp/bar".IO.open;
+my $lines = eager $fh.lines; # Uses eager for reification. 
+close $fh;
+say $lines[0];
+```
+
+# Introspection
+
+Languages that allow [introspection](https://en.wikipedia.org/wiki/Type_introspection) like Perl 6 have functionalities attached to the type system that let the developer access container and value metadata. This metadata can be used in a program to carry out different actions depending on their value. As it is obvious from the name, metadata are extracted from a value or container via the metaclass.
+
+```Perl6
+my $any-object = "random object";
+my $metadata = $any-object.HOW;
+say $metadata.^mro;                   # OUTPUT: «((ClassHOW) (Any) (Mu))␤» 
+say $metadata.can( $metadata, "uc" ); # OUTPUT: «(uc uc)␤» 
+```
+
+With the first `say` we show the class hierarchy of the metamodel class, which in this case is [Metamodel::ClassHOW](https://docs.perl6.org/type/Metamodel::ClassHOW). It inherits directly from `Any`, meaning any method there can be used; it also mixes in several roles which can give you information about the class structure and functions. But one of the methods of that particular class is [`can`](https://docs.perl6.org/type/Metamodel::ClassHOW#method_can), which we can use to look up whether the object can use the `uc` (uppercase) method, which it obviously can. However, it might not be so obvious in some other cases, when roles are mixed in directly into a variable. For instance, in the [case of `%hash-plus` defined above](https://docs.perl6.org/language/structures#Defining_and_constraining_data_structures):
+
+```Perl6
+say %hash-plus.^can("last"); # OUTPUT: «(last)␤» 
+```
+
+In this case we are using the *syntactic sugar* for `HOW.method`, `^method`, to check if your data structure responds to that method; the output, which shows the name of the methods that match, certifies that we can use it.
+
+See also [this article on class introspection](https://perl6advent.wordpress.com/2015/12/19/day-19-introspection/) on how to access class properties and methods, and use it to generate test data for a class; this [Advent Calendar article describes the meta-object protocol](https://perl6advent.wordpress.com/2010/12/22/day-22-the-meta-object-protocol/) extensively.
