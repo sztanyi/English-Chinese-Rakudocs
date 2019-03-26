@@ -67,7 +67,7 @@ In this case, `$list` is using the Scalar sigil and thus will be a `Scalar`. Any
 
 # 复杂数据结构 / Complex data structures
 
-根据你访问其第一级元素的方式，复杂数据结构分为两大类：[位置](https://docs.perl6.org/type/Positional)，或类似列表和[关联](https://docs.perl6.org/type/Associative)或键值对。通常，复杂的数据结构（包括对象）将是两者的组合，其中对象属性被同化为键值对。虽然所有对象都是[Mu](https://docs.perl6.org/type/Mu)的子类，但一般来说复杂对象是 [Any](https://docs.perl6.org/type/Any) 的子类实例 。虽然理论上可以在没有这样做的情况下混合使用 `Positional` 或 `Associative`，但是大多数适用于复杂数据结构的方法都是在 `Any` 中实现的。
+根据你访问其第一级元素的方式，复杂数据结构分为两大类：[位置](https://docs.perl6.org/type/Positional)，或类似列表和[关联](https://docs.perl6.org/type/Associative)或键值对。通常，复杂的数据结构（包括对象）将是两者的组合，其中对象属性被同化为键值对。虽然所有对象都是[Mu](https://docs.perl6.org/type/Mu)的子类，但一般来说复杂对象是 [Any](https://docs.perl6.org/type/Any) 的子类实例 。虽然理论上可以在没有这样做的情况下混合使用`位置`或`关联`，但是大多数适用于复杂数据结构的方法都是在 `Any` 中实现的。
 
 Complex data structures fall in two different broad categories: [Positional](https://docs.perl6.org/type/Positional), or list-like and [Associative](https://docs.perl6.org/type/Associative), or key-value pair like, according to how you access its first-level elements. In general, complex data structures, including objects, will be a combination of both, with object properties assimilated to key-value pairs. While all objects subclass [Mu](https://docs.perl6.org/type/Mu), in general complex objects are instances of subclasses of [Any](https://docs.perl6.org/type/Any). While it is theoretically possible to mix in `Positional` or `Associative` without doing so, most methods applicable to complex data structures are implemented in `Any`.
 
@@ -90,7 +90,11 @@ say [[1, 2, [3, 4]], [[5, 6, [7, 8]]]].duckmap:
 # OUTPUT: «[[1 2 2] [5 6 2]]␤» 
 ```
 
+在本例中，它深入到结构中，但如果元素不满足块中的条件（`1，2`），则返回元素本身；如果满足条件，则返回数组的元素数（每个子数组末尾的两个'2`）。
+
 In this case, it dives into the structure, but returns the element itself if it does not meet the condition in the block (`1, 2`), returning the number of elements of the array if it does (the two `2`s at the end of each subarray).
+
+因为 `deepmap` 和 `duckmap` 是 `Any` 的方法，他们也可用于关联数组：
 
 Since `deepmap` and `duckmap` are `Any` methods, they also apply to Associative arrays:
 
@@ -99,7 +103,11 @@ say %( first => [1, 2], second => [3,4] ).deepmap( *.elems );
 # OUTPUT: «{first => [1 1], second => [1 1]}␤» 
 ```
 
+只有在这种情况下，它们才会应用于作为值的每个列表或数组，而不管键。
+
 Only in this case, they will be applied to every list or array that is a value, leaving the keys alone.
+
+`位置`和`关联`数据结构可以互相转换。
 
 `Positional` and `Associative` can be turned into each other.
 
@@ -108,11 +116,15 @@ say %( first => [1, 2], second => [3,4] ).list[0];
 # OUTPUT: «second => [3 4]␤» 
 ```
 
+在这个例子中，2018.05 之后的 Rakudo 版本每次运行都会返回不同的值。哈希会转变为键值对的乱序数组。也可以反着操作，只要只要数组有偶数个元素（奇数个元素会报错）：
+
 However, in this case, and for Rakudo >= 2018.05, it will return a different value every time it runs. A hash will be turned into a list of the key-value pairs, but it is guaranteed to be disordered. You can also do the operation in the opposite direction, as long as the list has an even number of elements (odd number will result in an error):
 
 ```Perl6
 say <a b c d>.Hash # OUTPUT: «{a => b, c => d}␤» 
 ```
+
+但是
 
 But
 
@@ -120,13 +132,19 @@ But
 say <a b c d>.Hash.kv # OUTPUT: «(c d a b)␤» 
 ```
 
+每次运行都是不同的结果，[`kv`](https://docs.perl6.org/type/Pair#method_kv) 将每个 `键值对` 转换为列表。
+
 will obtain a different value every time you run it; [`kv`](https://docs.perl6.org/type/Pair#method_kv) turns every `Pair` into a list.
+
+复杂的数据结构通常也是[可迭代的](https://docs.perl6.org/type/Iterable)。从中生成一个[迭代器](https://docs.perl6.org/routine/iterator)，将允许程序逐个访问结构的第一级：
 
 Complex data structures are also generally [Iterable](https://docs.perl6.org/type/Iterable). Generating an [iterator](https://docs.perl6.org/routine/iterator) out of them will allow the program to visit the first level of the structure, one by one:
 
 ```Perl6
 .say for 'א'..'ס'; # OUTPUT: «א␤ב␤ג␤ד␤ה␤ו␤ז␤ח␤ט␤י␤ך␤כ␤ל␤ם␤מ␤ן␤נ␤ס␤» 
 ```
+
+'א'..'ס' 是一个 [Range](https://docs.perl6.org/type/Range) 复杂数据结构，在前面加上 `for`，它将迭代直到列表耗尽。通过重写[迭代器](https://docs.perl6.org/routine/iterator)，可以对复杂的数据结构使用 `for`：
 
 `'א'..'ס'` is a [Range](https://docs.perl6.org/type/Range), a complex data structure, and with `for` in front it will iterate until the list is exhausted. You can use `for`on your complex data structures by overriding the [iterator](https://docs.perl6.org/routine/iterator) method (from role `Iterable`):
 
@@ -140,9 +158,13 @@ my @thing := SortedArray.new([3,2,1,4]);
 .say for @thing; # OUTPUT: «1␤2␤3␤4␤» 
 ```
 
+`for` 对数组 `@thing` 直接调用 `iterator` 方法使其按顺序返回数组元素。更多关于[迭代](https://docs.perl6.org/language/iterating)。
+
 `for` calls directly the `iterator` method on `@thing` making it return the elements of the array in order. Much more on [iterating on the page devoted to it](https://docs.perl6.org/language/iterating).
 
-# Functional structures
+# 函数式结构 / Functional structures
+
+Perl 6 是一种函数式语言，因此，函数是第一等的*数据*结构。函数有 [Callable](https://docs.perl6.org/type/Callable) 角色，这是基本角色四件套中的第四个元素。[Callable](https://docs.perl6.org/type/Callable) 与 `&` 标记一起使用，尽管在大多数情况下，为了简单起见省略了它；在 `Callables` 的情况下可以总是省略这标记。
 
 Perl 6 is a functional language and, as such, functions are first-class *data* structures. Functions follow the [Callable](https://docs.perl6.org/type/Callable) role, which is the 4th element in the quartet of fundamental roles. [Callable](https://docs.perl6.org/type/Callable) goes with the `&` sigil, although in most cases it is elided for the sake of simplicity; this sigil elimination is always allowed in the case of `Callables`.
 
@@ -150,6 +172,8 @@ Perl 6 is a functional language and, as such, functions are first-class *data* s
 my &a-func= { (^($^þ)).Seq };
 say a-func(3), a-func(7); # OUTPUT: «(0 1 2)(0 1 2 3 4 5 6)␤» 
 ```
+
+[Block](https://docs.perl6.org/type/Block) 是最简单的可调用结构，因为 `Callable` 不能被实例化。在这种情况下，我们实现一个记录事件并可以检索它们的代码：
 
 [Block](https://docs.perl6.org/type/Block)s are the simplest callable structures, since `Callable`s cannot be instantiated. In this case we implement a block that logs events and can retrieve them:
 
