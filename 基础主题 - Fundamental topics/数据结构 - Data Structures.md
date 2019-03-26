@@ -24,17 +24,23 @@ my $just-a-number = 333;
 say $just-a-number.VAR.^name; # OUTPUT: «Scalar␤» 
 ```
 
+任何复杂数据结构都能使用 [`$`](https://docs.perl6.org/type/Any#index-entry-%2524_%28item_contextualizer%29) 使其*标量化*：
+
 Any complex data structure can be *scalarized* by using the [item contextualizer `$`](https://docs.perl6.org/type/Any#index-entry-%2524_%28item_contextualizer%29):
 
 ```Perl6
 (1, 2, 3, $(4, 5))[3].VAR.^name.say; # OUTPUT: «Scalar␤» 
 ```
 
+但是，这意味着它将在它们的上下文中被视为原来的样子。你仍然可以访问其内部结构。
+
 However, this means that it will be treated as such in the context they are. You can still access its internal structure.
 
 ```Perl6
 (1, 2, 3, $(4, 5))[3][0].say; # OUTPUT: «4␤» 
 ```
+
+一个有趣的副作用，或者可能是预期的特征，是标量化保留了复杂结构的同一性。
 
 An interesting side effect, or maybe intended feature, is that scalarization conserves identity of complex structures.
 
@@ -44,6 +50,7 @@ for ^2 {
      say @list.WHICH;
 } # OUTPUT: «Array|93947995146096␤Array|93947995700032␤» 
 ```
+每次分配 `(1,1)` 时，创建的变量将会是不同的, `===` 对比的结果也显示是不同的变量;如图所示，打印内部指针表示的不同值。然而
 
 Every time `(1, 1)` is assigned, the variable created is going to be different in the sense that `===` will say it is; as it is shown, different values of the internal pointer representation are printed. However
 
@@ -54,11 +61,17 @@ for ^2 {
 } # OUTPUT: «List|94674814008432␤List|94674814008432␤» 
 ```
 
+在这种情况下，`$list` 正在使用标量标记，因此将成为 `Scalar`。任何具有相同值的标量都将完全相同，如打印指针时所示。
+
 In this case, `$list` is using the Scalar sigil and thus will be a `Scalar`. Any scalar with the same value will be exactly the same, as shown when printing the pointers.
 
-# Complex data structures
+# 复杂数据结构 / Complex data structures
+
+根据你访问其第一级元素的方式，复杂数据结构分为两大类：[位置](https://docs.perl6.org/type/Positional)，或类似列表和[关联](https://docs.perl6.org/type/Associative)或键值对。通常，复杂的数据结构（包括对象）将是两者的组合，其中对象属性被同化为键值对。虽然所有对象都是[Mu](https://docs.perl6.org/type/Mu)的子类，但一般来说复杂对象是 [Any](https://docs.perl6.org/type/Any) 的子类实例 。虽然理论上可以在没有这样做的情况下混合使用 `Positional` 或 `Associative`，但是大多数适用于复杂数据结构的方法都是在 `Any` 中实现的。
 
 Complex data structures fall in two different broad categories: [Positional](https://docs.perl6.org/type/Positional), or list-like and [Associative](https://docs.perl6.org/type/Associative), or key-value pair like, according to how you access its first-level elements. In general, complex data structures, including objects, will be a combination of both, with object properties assimilated to key-value pairs. While all objects subclass [Mu](https://docs.perl6.org/type/Mu), in general complex objects are instances of subclasses of [Any](https://docs.perl6.org/type/Any). While it is theoretically possible to mix in `Positional` or `Associative` without doing so, most methods applicable to complex data structures are implemented in `Any`.
+
+浏览这些复杂的数据结构是一项挑战，但 Perl 6 提供了一些可用于它们的函数：[`deepmap`](https://docs.perl6.org/routine/deepmap) 和 [`duckmap`] (https://docs.perl6.org/routine/duckmap)。虽然前者将按顺序转到每个元素，并且执行传递的代码块的。
 
 Navigating these complex data structures is a challenge, but Perl 6 provides a couple of functions that can be used on them: [`deepmap`](https://docs.perl6.org/routine/deepmap) and [`duckmap`](https://docs.perl6.org/routine/duckmap). While the former will go to every single element, in order, and do whatever the block passed requires,
 
@@ -66,6 +79,8 @@ Navigating these complex data structures is a challenge, but Perl 6 provides a c
 say [[1, 2, [3, 4]],[[5, 6, [7, 8]]]].deepmap( *.elems );
 # OUTPUT: «[[1 1 [1 1]] [1 1 [1 1]]]␤» 
 ```
+
+返回 `1` 因为它进入更深层次并将 `elems` 应用于它们，`deepmap` 可以执行更复杂的操作：
 
 which returns `1` because it goes to the deeper level and applies `elems` to them, `deepmap` can perform more complicated operations:
 
