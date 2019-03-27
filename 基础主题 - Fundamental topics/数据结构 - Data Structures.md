@@ -191,6 +191,8 @@ $logger( "More stuff" );
 say $logger( Nil, "2018-05-28" ); # OUTPUT: «(Stuff More stuff)␤» 
 ```
 
+`Block` 是有[签名](https://docs.perl6.org/type/Signature)的。在这个例子中，有2个参数。第一个参数是需要记录的事件，第二个参数是获取事件的键。他们将会被独立地使用，意图是展示 [状态变量](https://docs.perl6.org/syntax/state)的用法，该变量从每次调用到下一次调用时都会被保留。此状态变量封装在代码块中，除非使用代码块提供的简单 API，否则无法从外部访问：带第二个参数调用代码块。头两次调用记录了两个事件，示例底部的调用使用第二种调用来检索存储的值。`代码块`可以克隆：
+
 A `Block` has a [Signature](https://docs.perl6.org/type/Signature), in this case two arguments, the first of which is the event that is going to be logged, and the second is the key to retrieve the events. They will be used in an independent way, but its intention is to showcase the use of a [state variable](https://docs.perl6.org/syntax/state) that is kept from every invocation to the next. This state variable is encapsulated within the block, and cannot be accessed from outside except by using the simple API the block provides: calling the block with a second argument. The two first invocations log two events, the third invocation at the bottom of the example use this second type of call to retrieve the stored values. `Block`s can be cloned:
 
 ```Perl6
@@ -201,6 +203,8 @@ say $clogger( Nil, "2018-05-28" );
 # OUTPUT: «(Clone stuff More clone stuff)␤» 
 ```
 
+克隆将重置而非克隆状态变量，我们可以创建改变 API 的*外立面*。例如，无需使用 `Nil` 作为第一个参数来检索特定日期的日志：
+
 And cloning will reset the state variable; instead of cloning, we can create *façades* that change the API. For instance, eliminate the need to use `Nil` as first argument to retrieve the log for a certain date:
 
 ```Perl6
@@ -209,6 +213,9 @@ $logger( %(changing => "Logs") );
 say $gets-logs( "2018-05-28" );
 # OUTPUT: «({changing => Logs} Stuff More stuff)␤» 
 ```
+
+[`assuming`](https://docs.perl6.org/type/Block#%28Code%29_method_assuming) 方法包围一个代码块调用，给我们需要的参数赋一个值（在这种情况下，值是`Nil`），并将参数传递给我们用 `*` 表示的其他参数。
+实际上，这对应于自然语言语句“我们正在调用 `$logger` *假设*第一个参数是 `Nil`”。我们可以稍微改变这两个代码块的外观，以澄清它们实际上是在同一个块上运行：
 
 [`assuming`](https://docs.perl6.org/type/Block#%28Code%29_method_assuming) wraps around a block call, giving a value (in this case, `Nil`) to the arguments we need, and passing on the arguments to the other arguments we represent using `*`. In fact, this corresponds to the natural language statement "We are calling `$logger` *assuming* the first argument is `Nil`". We can slightly change the appearance of these two Blocks to clarify they are actually acting on the same block:
 
@@ -221,7 +228,11 @@ $Logger::logs( %(key => 42) );
 say $Logger::get( "2018-05-28" );
 ```
 
+尽管 `::` 通常用于调用类方法，但它实际上是变量名称的有效部分。在这种情况下，我们通常使用它们来简单地表明 `$Logger::logs` 和 `$Logger::get` 实际上是在调用 `$Logger`，我们已经大写使其类似于类的外观。本教程的重点是，使用函数作为一等公民，以及使用状态变量，允许使用某些有趣的设计模式，例如这一个。
+
 Although `::` is generally used for invocation of class methods, it is actually a valid part of the name of a variable. In this case we use them conventionally to simply indicate `$Logger::logs` and `$Logger::get` are actually calling `$Logger`, which we have capitalized to use a class-like appearance. The point of this tutorial is that using functions as first-class citizens, together with the use of state variables, allows the use of certain interesting design patterns such as this one.
+
+作为这样的第一类数据结构，可以在其他类型的数据可以使用的任何地方使用`可调用`数据结构。
 
 As such first class data structures, callables can be used anywhere another type of data can.
 
@@ -230,6 +241,8 @@ my @regex-check = ( /<alnum>/, /<alpha>/, /<punct>/ );
 say @regex-check.map: "33af" ~~ *;
 # OUTPUT: «(｢3｣␤ alnum => ｢3｣ ｢a｣␤ alpha => ｢a｣ Nil)␤» 
 ```
+
+正则表达式实际上是一种可调用的数据结构：
 
 Regexes are actually a type of callable:
 
