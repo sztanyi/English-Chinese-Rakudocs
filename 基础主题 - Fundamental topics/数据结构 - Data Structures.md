@@ -315,7 +315,9 @@ say $one-fraction; # OUTPUT: «0.333333␤»
 
 On the other hand, `my OneOver $ = ⅔;` will cause a type-check error. Subsets can use `Whatever`, that is, `*`, to refer to the argument; but this will be instantiated every time you use it to a different argument, so if we use it twice in the definition we would get an error. In this case we are using the topic single variable, `$_`, to check the instantiation. Subsetting can be done directly, without the need of declaring it, in [signatures](https://docs.perl6.org/language/typesystem#subset).
 
-# Infinite structures and laziness
+# 无限数据结构以及惰性 / Infinite structures and laziness
+
+通常认为所有包含在数据结构中的数据都是实际*存在*的。
 
 It might be assumed that all the data contained in a data structure is actually *there*. That is not necessarily the case: in many cases, for efficiency reasons or simply because it is not possible, the elements contained in a data structure only jump into existence when they are actually needed. This computation of items as they are needed is called [reification](https://docs.perl6.org/language/glossary#Reify).
 
