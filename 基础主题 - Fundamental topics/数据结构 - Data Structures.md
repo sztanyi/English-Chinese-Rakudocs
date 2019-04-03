@@ -250,11 +250,11 @@ Regexes are actually a type of callable:
 say /regex/.does( Callable ); # OUTPUT: «True␤» 
 ```
 
-上例中我们调用了存储在数组中的正则表达式，并且将它们应用于字符串字面量。
+在上面的示例中，我们调用存储在数组中的正则表达式，并将它们应用于字符串文字。
 
 And in the example above we are calling regexes stored in an array, and applying them to a string literal.
 
-使用[函数组合运算符∘](https://docs.perl6.org/language/operators#infix_%25E2%2588%2598)组成可调用：
+可调用数据结构由[函数组合运算符 ∘]组成
 
 Callables are composed by using the [function composition operator ∘](https://docs.perl6.org/language/operators#infix_%25E2%2588%2598):
 
@@ -267,9 +267,13 @@ say $Logger::get( "2018-05-28" );
 # OUTPUT: «(Pair → left right Rat → 0.75)␤» 
 ```
 
+我们使用上面定义的 `$Logger::logs` 函数与 `$typer` 组合，获得另外一个函数。这个函数记录一个对象及其类型，这非常有用，例如作为过滤。 `$Logger::withtype` 实际上是一个复杂的数据结构，由两个以串行方式应用的函数组成，但每一个组合的可调用数据结构都可以保持状态，从而创建复杂的变换可调用数据结构，其设计模式是：类似于面向对象领域中的对象组合。在每种特定情况下，你都必须选择最适合你的问题的编程风格。
+
 We are composing `$typer` with the `$Logger::logs` function defined above, obtaining a function that logs an object preceded by its type, which can be useful for filtering, for instance. `$Logger::withtype` is, in fact, a complex data structure composed of two functions which are applied in a serial way, but every one of the callables composed can keep state, thus creating complex transformative callables, in a design pattern that is similar to object composition in the object oriented realm. You will have to choose, in every particular case, what is the programming style which is most suitable for your problem.
 
-# Defining and constraining data structures
+# 定义和约束数据结构 / Defining and constraining data structures
+
+Perl 6 有不同的定义数据结构的方法，但也有许多方法来约束它们，这样你就可以为每个问题域创建最合适的数据结构。例如 [`but`](https://docs.perl6.org/routine/but)，将角色或值混合到值或变量中：
 
 Perl 6 has different ways of defining data structures, but also many ways to constrain them so that you can create the most adequate data structure for every problem domain. [`but`](https://docs.perl6.org/routine/but), for example, mixes roles or values into a value or a variable:
 
@@ -281,6 +285,8 @@ say %not-scalar.of;    # OUTPUT: «Associative[Int, Int]␤»
 %not-scalar<thing> = 3;
 say %not-scalar;       # OUTPUT: «{2 => 3, 3 => 4, thing => 3}␤» 
 ```
+
+在这种情况下，`but` 混合在 `Associative[Int, Int]` 角色中；请注意，我们使用的是绑定，这样变量的类型就是定义的类型，而不是由`%` sigil强加的类型；这种混合的角色显示在用大括号括起来的'name'中。这到底是什么意思？该角色包含两个方法：“of”和“keyof”；通过混合中的角色，将调用新的“of”（旧的“of”将返回“mu”，这是哈希的默认值类型）。然而，这就是它所做的一切。它并没有真正改变变量的类型，正如您所看到的，因为我们在接下来的几条语句中使用了任何类型的键和值。
 
 In this case, `but` is mixing in the `Associative[Int, Int]` role; please note that we are using binding so that the type of the variable is the one defined, and not the one imposed by the `%` sigil; this mixed-in role shows in the `name` surrounded by curly braces. What does that really mean? That role includes two methods, `of` and `keyof`; by mixing the role in, the new `of` will be called (the old `of` would return `Mu`, which is the default value type for Hashes). However, that is all it does. It is not really changing the type of the variable, as you can see since we are using any kind of key and values in the next few statements.
 
