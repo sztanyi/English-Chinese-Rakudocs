@@ -214,7 +214,7 @@ say $gets-logs( "2018-05-28" );
 # OUTPUT: «({changing => Logs} Stuff More stuff)␤» 
 ```
 
-[`assuming`](https://docs.perl6.org/type/Block#%28Code%29_method_assuming) 方法包围一个代码块调用，给我们需要的参数赋一个值（在这种情况下，值是`Nil`），并将参数传递给我们用 `*` 表示的其他参数。
+[`assuming`](https://docs.perl6.org/type/Block#%28Code%29_method_assuming) 方法包装了一个代码块调用，给我们需要的参数赋一个值（在这种情况下，值是`Nil`），并将参数传递给我们用 `*` 表示的其他参数。
 实际上，这对应于自然语言语句“我们正在调用 `$logger` *假设*第一个参数是 `Nil`”。我们可以稍微改变这两个代码块的外观，以澄清它们实际上是在同一个块上运行：
 
 [`assuming`](https://docs.perl6.org/type/Block#%28Code%29_method_assuming) wraps around a block call, giving a value (in this case, `Nil`) to the arguments we need, and passing on the arguments to the other arguments we represent using `*`. In fact, this corresponds to the natural language statement "We are calling `$logger` *assuming* the first argument is `Nil`". We can slightly change the appearance of these two Blocks to clarify they are actually acting on the same block:
@@ -228,7 +228,7 @@ $Logger::logs( %(key => 42) );
 say $Logger::get( "2018-05-28" );
 ```
 
-尽管 `::` 通常用于调用类方法，但它实际上是变量名称的有效部分。在这种情况下，我们通常使用它们来简单地表明 `$Logger::logs` 和 `$Logger::get` 实际上是在调用 `$Logger`，我们已经大写使其类似于类的外观。本教程的重点是，使用函数作为一等公民，以及使用状态变量，允许使用某些有趣的设计模式，例如这一个。
+尽管 `::` 通常用于调用类方法，但它实际上是变量名称的有效部分。在这种情况下，我们通常使用它们来简单地表明 `$Logger::logs` 和 `$Logger::get` 实际上是在调用 `$Logger`，使用大写使其像类的外观。本教程的重点是，使用函数作为一等公民，以及使用状态变量，允许使用某些有趣的设计模式，例如这一个。
 
 Although `::` is generally used for invocation of class methods, it is actually a valid part of the name of a variable. In this case we use them conventionally to simply indicate `$Logger::logs` and `$Logger::get` are actually calling `$Logger`, which we have capitalized to use a class-like appearance. The point of this tutorial is that using functions as first-class citizens, together with the use of state variables, allows the use of certain interesting design patterns such as this one.
 
@@ -250,7 +250,11 @@ Regexes are actually a type of callable:
 say /regex/.does( Callable ); # OUTPUT: «True␤» 
 ```
 
+上例中我们调用了存储在数组中的正则表达式，并且将它们应用于字符串字面量。
+
 And in the example above we are calling regexes stored in an array, and applying them to a string literal.
+
+使用[函数组合运算符∘](https://docs.perl6.org/language/operators#infix_%25E2%2588%2598)组成可调用：
 
 Callables are composed by using the [function composition operator ∘](https://docs.perl6.org/language/operators#infix_%25E2%2588%2598):
 
