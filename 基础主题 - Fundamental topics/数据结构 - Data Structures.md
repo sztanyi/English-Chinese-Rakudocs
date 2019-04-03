@@ -286,9 +286,11 @@ say %not-scalar.of;    # OUTPUT: «Associative[Int, Int]␤»
 say %not-scalar;       # OUTPUT: «{2 => 3, 3 => 4, thing => 3}␤» 
 ```
 
-在这种情况下，`but` 混合在 `Associative[Int, Int]` 角色中；请注意，我们使用的是绑定，这样变量的类型就是定义的类型，而不是由`%` sigil强加的类型；这种混合的角色显示在用大括号括起来的'name'中。这到底是什么意思？该角色包含两个方法：“of”和“keyof”；通过混合中的角色，将调用新的“of”（旧的“of”将返回“mu”，这是哈希的默认值类型）。然而，这就是它所做的一切。它并没有真正改变变量的类型，正如您所看到的，因为我们在接下来的几条语句中使用了任何类型的键和值。
+在这种情况下，`but` 混合在 `Associative[Int, Int]` 角色中；请注意，我们使用的是绑定，这样变量的类型就是定义的类型，而不是由 `%` 标记强加的类型；这种混合的角色显示在用大括号括起来的 `name` 中。这到底是什么意思？该角色包含两个方法： `of` 和 `keyof`；通过混合中的角色，将调用新的 `of`（旧的 `of` 将返回 `Mu`，这是哈希的默认值类型）。然而，这就是它所做的一切。它并没有真正改变变量的类型，正如你所看到的，因为我们在接下来的几条语句中使用了任何类型的键和值。
 
 In this case, `but` is mixing in the `Associative[Int, Int]` role; please note that we are using binding so that the type of the variable is the one defined, and not the one imposed by the `%` sigil; this mixed-in role shows in the `name` surrounded by curly braces. What does that really mean? That role includes two methods, `of` and `keyof`; by mixing the role in, the new `of` will be called (the old `of` would return `Mu`, which is the default value type for Hashes). However, that is all it does. It is not really changing the type of the variable, as you can see since we are using any kind of key and values in the next few statements.
+
+但是，我们可以使用这种类型的混合给变量增加新功能：
 
 However, we can provide new functionality to a variable using this type of mixin:
 
@@ -303,7 +305,11 @@ say %hash-plus.sort[0]; # OUTPUT: «3 => 33␤»
 say %hash-plus.last;    # OUTPUT: «4 => 44␤» 
 ```
 
+在 `Lastable` 中，我们使用通用的 `self` 变量来引用这个特定角色所混合的任何对象；在这种情况下，它将包含与之混合的哈希；在另一种情况下，它将包含其他内容（可能以其他方式工作）。此角色将为与之混合的任何变量提供 `last` 方法，为*常规*变量提供新的、可附加的功能。甚至可以[使用 `does` 关键字将角色添加到现有变量中](https://docs.perl6.org/language/objects#Mixins_of_roles)。
+
 In `Lastable` we use the universal `self` variable to refer to whatever object this particular role is mixed in; in this case it will contain the hash it is mixed in with; it will contain something else (and possibly work some other way) in other case. This role will provide the `last` method to any variable it's mixed with, providing new, attachable, functionalities to *regular* variables. Roles can even be [added to existing variables using the `does` keyword](https://docs.perl6.org/language/objects#Mixins_of_roles).
+
+[子集](https://docs.perl6.org/language/typesystem#subset) 也可以用来约束变量可能拥有的值；他们是 Perl 6 [渐进的类型](https://en.wikipedia.org/wiki/Gradual_typing)的尝试；它不是一个全功能的尝试，是因为严格来说子集不是真正的类型，但他们允许运行时类型检查。它为常规类型添加类型检查，因此它创建一个更丰富的类型系统，允许类似于此代码中所示的内容：
 
 [Subsets](https://docs.perl6.org/language/typesystem#subset) can also be used to constrain the possible values a variable might hold; they are Perl 6 attempt at [gradual typing](https://en.wikipedia.org/wiki/Gradual_typing); it is not a full attempt, because subsets are not really types in a strict sense, but they allow runtime type checking. It adds type-checking functionality to regular types, so it helps create a richer type system, allowing things like the one shown in this code:
 
