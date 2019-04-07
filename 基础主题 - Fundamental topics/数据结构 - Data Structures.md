@@ -323,7 +323,7 @@ On the other hand, `my OneOver $ = ⅔;` will cause a type-check error. Subsets 
 
 # 无限数据结构以及惰性 / Infinite structures and laziness
 
-通常认为所有包含在数据结构中的数据都是实际*存在*的。
+通常认为所有包含在数据结构中的数据都是实际*存在*的。这不一定是这样的：在许多情况下，由于效率的原因或仅仅因为不可能，数据结构中包含的元素只有在实际需要时才会出现。按需计算的项目称为 [具体化](https://docs.perl6.org/language/glossary#Reify)
 
 It might be assumed that all the data contained in a data structure is actually *there*. That is not necessarily the case: in many cases, for efficiency reasons or simply because it is not possible, the elements contained in a data structure only jump into existence when they are actually needed. This computation of items as they are needed is called [reification](https://docs.perl6.org/language/glossary#Reify).
 
@@ -340,11 +340,15 @@ say @fibonacci[^10]; # OUTPUT: «(1 1 2 3 5 8 13 21 34 55)␤»
 say @fibonacci[14]; # OUTPUT: «987␤» 
 ```
 
+上面我们正在使用 [序列操作符](https://docs.perl6.org/language/operators#index-entry-%25E2%2580%25A6_operators) 重新定义一个[序列](https://docs.perl6.org/type/Seq)，但是其他数据结构也使用这个概念。例如，一个未具体化的 [范围 / Range](https://docs.perl6.org/type/Range)只是两个端点。在某些语言中，计算一个巨大范围的和是一个耗时且耗内存的过程，但是 Perl 6 可以立即算出它：
+
 Above we were reifying a [Seq](https://docs.perl6.org/type/Seq) we created with the [sequence operator](https://docs.perl6.org/language/operators#index-entry-%25E2%2580%25A6_operators), but other data structures use the concept as well. For example, an un-reified [Range](https://docs.perl6.org/type/Range) is just the two end points. In some languages, calculating the sum of a huge range is a lengthy and memory-consuming process, but Perl 6 calculates it instantly:
 
 ```Perl6
 say sum 1 .. 9_999_999_999_999; # OUTPUT: «49999999999995000000000000␤» 
 ```
+
+为什么？因为求和可以计算而*不需要*重新定义范围；也就是说，不需要计算出它包含的所有元素。这就是这个特性存在的原因。您甚至可以使用 [`gather` 和 `take`](https://docs.perl6.org/syntax/gather%20take) 让自己的东西按需具体化：
 
 Why? Because the sum can be calculated *without* reifying the Range; that is, without figuring out all the elements it contains. This is why this feature exists. You can even make your own things reify-on-demand, using [`gather` and `take`](https://docs.perl6.org/syntax/gather%20take):
 
@@ -371,7 +375,11 @@ say $seq[^2];
 # (1 2) 
 ```
 
+在上面的输出之后，你可以看到在 `gather` *里面*的 print 语句只有当我们在查找元素时对单个元素进行了具体化时才会被执行，还要注意，这些元素只被重新定义了一次。当我们在示例的最后一行再次打印相同的元素时，`gather` 中的消息将不再打印。这是因为该构造使用了来自 [Seq](https://docs.perl6.org/type/Seq) 缓存的已重新定义的元素。
+
 Following the output above, you can see the print statements *inside* the `gather` got executed only when we reified the individual elements while looking up an element. Also note that the elements got reified just once. When we printed the same elements again on the last line of the example, the messages inside `gather` was no longer printed. This is because the construct used already-reified elements from the [Seq](https://docs.perl6.org/type/Seq)'s cache.
+
+请注意，上面我们将 `gather` 赋值给 [标量](https://docs.perl6.org/type/Scalar)容器(带 `$` 标记)而非[位置](https://docs.perl6.org/type/Positional)容器。这是因为 `@` 标记的变量 *大多是贪婪的*。这意味着他们*绝大多数时间*会立刻*具体化赋值给他们的东西*。唯一一次他们不这么做的是当物品被知道是 [`is-lazy`](https://docs.perl6.org/routine/is-lazy) 的时候，例如以无穷大为终点的序列。如果我们将 `gather` 分配给一个 `@` 变量，其中的 `say` 语句将立即打印出来。
 
 Note that above we assigned the `gather` to a [Scalar](https://docs.perl6.org/type/Scalar) container (the `$` sigil), not the [Positional](https://docs.perl6.org/type/Positional) one (the `@` sigil). The reason is that the `@`-sigiled variables are *mostly eager*. What this means is they *reify the stuff assigned to them* right away *most of the time*. The only time they don't do it is when the items are known to be [`is-lazy`](https://docs.perl6.org/routine/is-lazy), like our sequence generated with infinity as the end point. Were we to assign the `gather` to a `@`-variable, the `say` statements inside of it would've been printed right away.
 
