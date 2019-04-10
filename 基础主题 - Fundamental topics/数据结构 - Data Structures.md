@@ -1,9 +1,26 @@
-数据结构 / Data structures
+原文：https://docs.perl6.org/language/structures
+
+# 数据结构 / Data structures
 
 Perl 6 如何处理数据结构以及我们可以从中得到什么
 
 How Perl 6 deals with data structures and what we can expect from them
 
+# 目录 / Table of Contents
+
+<!-- MarkdownTOC -->
+
+- [标量结构 / Scalar structures](#%E6%A0%87%E9%87%8F%E7%BB%93%E6%9E%84--scalar-structures)
+- [复杂数据结构 / Complex data structures](#%E5%A4%8D%E6%9D%82%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84--complex-data-structures)
+- [函数式结构 / Functional structures](#%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BB%93%E6%9E%84--functional-structures)
+- [定义和约束数据结构 / Defining and constraining data structures](#%E5%AE%9A%E4%B9%89%E5%92%8C%E7%BA%A6%E6%9D%9F%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84--defining-and-constraining-data-structures)
+- [无限数据结构以及惰性 / Infinite structures and laziness](#%E6%97%A0%E9%99%90%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%BB%A5%E5%8F%8A%E6%83%B0%E6%80%A7--infinite-structures-and-laziness)
+- [内省 / Introspection](#%E5%86%85%E7%9C%81--introspection)
+
+<!-- /MarkdownTOC -->
+
+
+<a id="%E6%A0%87%E9%87%8F%E7%BB%93%E6%9E%84--scalar-structures"></a>
 # 标量结构 / Scalar structures
 
 有些类没有任何*内部*结构，要访问其中的某些部分，必须使用特定的方法。数字、字符串和一些其他单体类都包含在这个类中。它们使用的是 `$` 标记，尽管复杂的数据结构也可以使用它。
@@ -65,9 +82,10 @@ for ^2 {
 
 In this case, `$list` is using the Scalar sigil and thus will be a `Scalar`. Any scalar with the same value will be exactly the same, as shown when printing the pointers.
 
+<a id="%E5%A4%8D%E6%9D%82%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84--complex-data-structures"></a>
 # 复杂数据结构 / Complex data structures
 
-根据你访问其第一级元素的方式，复杂数据结构分为两大类：[位置](https://docs.perl6.org/type/Positional)，或类似列表和[关联](https://docs.perl6.org/type/Associative)或键值对。通常，复杂的数据结构（包括对象）将是两者的组合，其中对象属性被同化为键值对。虽然所有对象都是[Mu](https://docs.perl6.org/type/Mu)的子类，但一般来说复杂对象是 [Any](https://docs.perl6.org/type/Any) 的子类实例 。虽然理论上可以在没有这样做的情况下混合使用`位置`或`关联`，但是大多数适用于复杂数据结构的方法都是在 `Any` 中实现的。
+根据你访问其第一级元素的方式，复杂数据结构分为两大类：[位置](https://docs.perl6.org/type/Positional)，或类似列表和[关联](https://docs.perl6.org/type/Associative)或键值对。通常，复杂的数据结构（包括对象）将是两者的组合，其中对象属性被同化为键值对。虽然所有对象都是 [Mu](https://docs.perl6.org/type/Mu)的子类，但一般来说复杂对象是 [Any](https://docs.perl6.org/type/Any) 的子类实例 。虽然理论上可以在没有这样做的情况下混合使用`位置`或`关联`，但是大多数适用于复杂数据结构的方法都是在 `Any` 中实现的。
 
 Complex data structures fall in two different broad categories: [Positional](https://docs.perl6.org/type/Positional), or list-like and [Associative](https://docs.perl6.org/type/Associative), or key-value pair like, according to how you access its first-level elements. In general, complex data structures, including objects, will be a combination of both, with object properties assimilated to key-value pairs. While all objects subclass [Mu](https://docs.perl6.org/type/Mu), in general complex objects are instances of subclasses of [Any](https://docs.perl6.org/type/Any). While it is theoretically possible to mix in `Positional` or `Associative` without doing so, most methods applicable to complex data structures are implemented in `Any`.
 
@@ -162,6 +180,7 @@ my @thing := SortedArray.new([3,2,1,4]);
 
 `for` calls directly the `iterator` method on `@thing` making it return the elements of the array in order. Much more on [iterating on the page devoted to it](https://docs.perl6.org/language/iterating).
 
+<a id="%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BB%93%E6%9E%84--functional-structures"></a>
 # 函数式结构 / Functional structures
 
 Perl 6 是一种函数式语言，因此，函数是第一等的*数据*结构。函数有 [Callable](https://docs.perl6.org/type/Callable) 角色，这是基本角色四件套中的第四个元素。[Callable](https://docs.perl6.org/type/Callable) 与 `&` 标记一起使用，尽管在大多数情况下，为了简单起见省略了它；在 `Callables` 的情况下可以总是省略这标记。
@@ -214,7 +233,7 @@ say $gets-logs( "2018-05-28" );
 # OUTPUT: «({changing => Logs} Stuff More stuff)␤» 
 ```
 
-[`assuming`](https://docs.perl6.org/type/Block#%28Code%29_method_assuming) 方法包装了一个代码块调用，给我们需要的参数赋一个值（在这种情况下，值是`Nil`），并将参数传递给我们用 `*` 表示的其他参数。
+[`assuming`](https://docs.perl6.org/type/Block#%28Code%29_method_assuming) 方法包装了一个代码块调用，给我们需要的参数赋一个值（在这种情况下，值是 `Nil`），并将参数传递给我们用 `*` 表示的其他参数。
 实际上，这对应于自然语言语句“我们正在调用 `$logger` *假设*第一个参数是 `Nil`”。我们可以稍微改变这两个代码块的外观，以澄清它们实际上是在同一个块上运行：
 
 [`assuming`](https://docs.perl6.org/type/Block#%28Code%29_method_assuming) wraps around a block call, giving a value (in this case, `Nil`) to the arguments we need, and passing on the arguments to the other arguments we represent using `*`. In fact, this corresponds to the natural language statement "We are calling `$logger` *assuming* the first argument is `Nil`". We can slightly change the appearance of these two Blocks to clarify they are actually acting on the same block:
@@ -267,10 +286,11 @@ say $Logger::get( "2018-05-28" );
 # OUTPUT: «(Pair → left right Rat → 0.75)␤» 
 ```
 
-我们使用上面定义的 `$Logger::logs` 函数与 `$typer` 组合，获得另外一个函数。这个函数记录一个对象及其类型，这非常有用，例如作为过滤。 `$Logger::withtype` 实际上是一个复杂的数据结构，由两个以串行方式应用的函数组成，但每一个组合的可调用数据结构都可以保持状态，从而创建复杂的变换可调用数据结构，其设计模式是：类似于面向对象领域中的对象组合。在每种特定情况下，你都必须选择最适合你的问题的编程风格。
+我们使用上面定义的 `$Logger::logs` 函数与 `$typer` 组合，获得另外一个函数。这个函数记录一个对象及其类型，这非常有用，例如作为过滤。`$Logger::withtype` 实际上是一个复杂的数据结构，由两个以串行方式应用的函数组成，但每一个组合的可调用数据结构都可以保持状态，从而创建复杂的变换可调用数据结构，其设计模式是：类似于面向对象领域中的对象组合。在每种特定情况下，你都必须选择最适合你的问题的编程风格。
 
 We are composing `$typer` with the `$Logger::logs` function defined above, obtaining a function that logs an object preceded by its type, which can be useful for filtering, for instance. `$Logger::withtype` is, in fact, a complex data structure composed of two functions which are applied in a serial way, but every one of the callables composed can keep state, thus creating complex transformative callables, in a design pattern that is similar to object composition in the object oriented realm. You will have to choose, in every particular case, what is the programming style which is most suitable for your problem.
 
+<a id="%E5%AE%9A%E4%B9%89%E5%92%8C%E7%BA%A6%E6%9D%9F%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84--defining-and-constraining-data-structures"></a>
 # 定义和约束数据结构 / Defining and constraining data structures
 
 Perl 6 有不同的定义数据结构的方法，但也有许多方法来约束它们，这样你就可以为每个问题域创建最合适的数据结构。例如 [`but`](https://docs.perl6.org/routine/but)，将角色或值混合到值或变量中：
@@ -305,7 +325,7 @@ say %hash-plus.sort[0]; # OUTPUT: «3 => 33␤»
 say %hash-plus.last;    # OUTPUT: «4 => 44␤» 
 ```
 
-在 `Lastable` 中，我们使用通用的 `self` 变量来引用这个特定角色所混合的任何对象；在这种情况下，它将包含与之混合的哈希；在另一种情况下，它将包含其他内容（可能以其他方式工作）。此角色将为与之混合的任何变量提供 `last` 方法，为*常规*变量提供新的、可附加的功能。甚至可以[使用 `does` 关键字将角色添加到现有变量中](https://docs.perl6.org/language/objects#Mixins_of_roles)。
+在 `Lastable` 角色中，我们使用通用的 `self` 变量来引用这个特定角色所混合的任何对象；在这种情况下，它将包含与之混合的哈希；在另一种情况下，它将包含其他内容（可能以其他方式工作）。此角色将为与之混合的任何变量提供 `last` 方法，为*常规*变量提供新的、可附加的功能。甚至可以[使用 `does` 关键字将角色添加到现有变量中](https://docs.perl6.org/language/objects#Mixins_of_roles)。
 
 In `Lastable` we use the universal `self` variable to refer to whatever object this particular role is mixed in; in this case it will contain the hash it is mixed in with; it will contain something else (and possibly work some other way) in other case. This role will provide the `last` method to any variable it's mixed with, providing new, attachable, functionalities to *regular* variables. Roles can even be [added to existing variables using the `does` keyword](https://docs.perl6.org/language/objects#Mixins_of_roles).
 
@@ -321,6 +341,7 @@ say $one-fraction; # OUTPUT: «0.333333␤»
 
 On the other hand, `my OneOver $ = ⅔;` will cause a type-check error. Subsets can use `Whatever`, that is, `*`, to refer to the argument; but this will be instantiated every time you use it to a different argument, so if we use it twice in the definition we would get an error. In this case we are using the topic single variable, `$_`, to check the instantiation. Subsetting can be done directly, without the need of declaring it, in [signatures](https://docs.perl6.org/language/typesystem#subset).
 
+<a id="%E6%97%A0%E9%99%90%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%BB%A5%E5%8F%8A%E6%83%B0%E6%80%A7--infinite-structures-and-laziness"></a>
 # 无限数据结构以及惰性 / Infinite structures and laziness
 
 通常认为所有包含在数据结构中的数据都是实际*存在*的。这不一定是这样的：在许多情况下，由于效率的原因或仅仅因为不可能，数据结构中包含的元素只有在实际需要时才会出现。按需计算的项目称为 [具体化](https://docs.perl6.org/language/glossary#Reify)
@@ -383,7 +404,11 @@ Following the output above, you can see the print statements *inside* the `gathe
 
 Note that above we assigned the `gather` to a [Scalar](https://docs.perl6.org/type/Scalar) container (the `$` sigil), not the [Positional](https://docs.perl6.org/type/Positional) one (the `@` sigil). The reason is that the `@`-sigiled variables are *mostly eager*. What this means is they *reify the stuff assigned to them* right away *most of the time*. The only time they don't do it is when the items are known to be [`is-lazy`](https://docs.perl6.org/routine/is-lazy), like our sequence generated with infinity as the end point. Were we to assign the `gather` to a `@`-variable, the `say` statements inside of it would've been printed right away.
 
+另一种完全具体化列表的方法是在列表上调用 [`.elems`](https://docs.perl6.org/routine/elems)。这就是为什么检查列表是否包含任何项最好使用 `.Bool` 方法（或者只使用 `if @array { … }`）的原因，因为你不需要具体化*所有*元素以确定其中是否存在某一项。
+
 Another way to fully-reify a list, is by calling [`.elems`](https://docs.perl6.org/routine/elems) on it. This is the reason why checking whether a list contains any items is best done by using `.Bool` method (or just using `if @array { … }`), since you don't need to reify *all* the elements to find out if there are `any` of them.
+
+做某事之前有时候你*确实*想完全具体化一个列表。例如，[`IO::Handle.lines`](https://docs.perl6.org/type/IO::Handle#method_lines) 返回一个 [Seq](https://docs.perl6.org/type/Seq)。下面的代码包含一个 bug；请记住具体化的概念，并尝试找出它：
 
 There are times where you *do* want to fully-reify a list before doing something. For example, the [`IO::Handle.lines`](https://docs.perl6.org/type/IO::Handle#method_lines) returns a [Seq](https://docs.perl6.org/type/Seq). The following code contains a bug; keeping reification in mind, try to spot it:
 
@@ -394,7 +419,11 @@ close $fh;
 say $lines[0];
 ```
 
+我们打开一个[文件句柄](https://docs.perl6.org/type/IO::Handle)，然后将 [`.lines`](https://docs.perl6.org/type/IO::Handle#method_lines)的返回值赋值给一个[标量](https://docs.perl6.org/type/Scalar)变量，这样返回的 [Seq](https://docs.perl6.org/type/Seq) 不会马上具体化。然后我们 [`close`](https://docs.perl6.org/routine/close) 那个句柄并打印 `$lines` 中的一个元素。
+
 We open a [filehandle](https://docs.perl6.org/type/IO::Handle), then assign return of [`.lines`](https://docs.perl6.org/type/IO::Handle#method_lines) to a [Scalar](https://docs.perl6.org/type/Scalar) variable, so the returned [Seq](https://docs.perl6.org/type/Seq) does not get reified right away. We then [`close`](https://docs.perl6.org/routine/close) the filehandle, and try to print an element from `$lines`.
+
+代码中的 bug 在最后一行具体化 `$lines` 这个 [Seq](https://docs.perl6.org/type/Seq) 时，这时我们*已经关闭*了那个文件句柄。 当 `Seq` 的迭代器设法生成我们请求的项目，它会导致尝试从关闭的句柄读取的错误。修复这个 bug 我们可以将其赋值给 `@` 标记的变量或者在关闭文件句柄前调用 `$lines` 的 [`.elems`](https://docs.perl6.org/routine/elems) 方法。
 
 The bug in the code is by the time we reify the `$lines` [Seq](https://docs.perl6.org/type/Seq) on the last line, we've *already closed* the filehandle. When the `Seq's` iterator tries to generate the item we've requested, it results in the error about attempting to read from a closed handle. So, to fix the bug we can either assign to a `@`-sigiled variable or call [`.elems`](https://docs.perl6.org/routine/elems) on `$lines` before closing the handle:
 
@@ -404,6 +433,8 @@ my @lines = $fh.lines;
 close $fh;
 say @lines[0]; # no problem! 
 ```
+
+我们也可以使用任何副作用是具体化的函数，如上面提到的 `.elems`：
 
 We can also use any function whose side effect is reification, like `.elems` mentioned above:
 
@@ -415,6 +446,8 @@ close $fh;
 say $lines[0]; # no problem! 
 ```
 
+使用 [eager](https://docs.perl6.org/routine/eager) 也可以具体化整个序列：
+
 Using [eager](https://docs.perl6.org/routine/eager) will also reify the whole sequence:
 
 ```Perl6
@@ -424,7 +457,10 @@ close $fh;
 say $lines[0];
 ```
 
-# Introspection
+<a id="%E5%86%85%E7%9C%81--introspection"></a>
+# 内省 / Introspection
+
+允许像 Perl 6 这样的[自省](https://en.wikipedia.org/wiki/Type_introspection)的语言具有附加到类型系统的功能，允许开发人员访问容器和值元数据。此元数据可用于程序中，根据其值执行不同的操作。从名称中可以明显看出，元数据是通过元类从值或容器中提取的。
 
 Languages that allow [introspection](https://en.wikipedia.org/wiki/Type_introspection) like Perl 6 have functionalities attached to the type system that let the developer access container and value metadata. This metadata can be used in a program to carry out different actions depending on their value. As it is obvious from the name, metadata are extracted from a value or container via the metaclass.
 
@@ -435,12 +471,18 @@ say $metadata.^mro;                   # OUTPUT: «((ClassHOW) (Any) (Mu))␤»
 say $metadata.can( $metadata, "uc" ); # OUTPUT: «(uc uc)␤» 
 ```
 
+在第一个 `say` 中，我们显示了元模型类的类层次结构，在本例中是 [Metamodel::ClassHOW](https://docs.perl6.org/type/Metamodel::ClassHOW)。它直接从 `Any` 继承，这意味着可以使用任何方法；它还混合了几个角色，可以为你提供有关类结构和函数的信息。但是，这个特定类的方法之一是[`can`](https://docs.perl6.org/type/Metamodel::ClassHOW#method_can)，我们可以使用它来查找对象是否可以使用 `uc` （大写）方法，这显然是可以的。然而，在其他一些情况下，当角色直接混合到变量中时，可能就不那么明显了。例如，在[上面定义的 `%hash plus` 的情况下](https://docs.perl6.org/language/structures#Defining_and_constraining_data_structures)：
+
 With the first `say` we show the class hierarchy of the metamodel class, which in this case is [Metamodel::ClassHOW](https://docs.perl6.org/type/Metamodel::ClassHOW). It inherits directly from `Any`, meaning any method there can be used; it also mixes in several roles which can give you information about the class structure and functions. But one of the methods of that particular class is [`can`](https://docs.perl6.org/type/Metamodel::ClassHOW#method_can), which we can use to look up whether the object can use the `uc` (uppercase) method, which it obviously can. However, it might not be so obvious in some other cases, when roles are mixed in directly into a variable. For instance, in the [case of `%hash-plus` defined above](https://docs.perl6.org/language/structures#Defining_and_constraining_data_structures):
 
 ```Perl6
 say %hash-plus.^can("last"); # OUTPUT: «(last)␤» 
 ```
 
+在这例中，我们使用 `HOW.method` 和 `^method` 的*语法糖*来检查你的数据结构是否响应该方法；显示匹配方法名称的输出说明我们可以使用它。
+
 In this case we are using the *syntactic sugar* for `HOW.method`, `^method`, to check if your data structure responds to that method; the output, which shows the name of the methods that match, certifies that we can use it.
+
+另请参阅[这篇关于类内省的文章](https://perl6advent.wordpress.com/2015/12/19/day-19-introspection/)了解如何访问类属性和方法，并使用它为类生成测试数据；还有这篇[降临节描述元对象协议的文章](https://perl6advent.wordpress.com/2010/12/22/day-22-the-meta-object-protocol/)。
 
 See also [this article on class introspection](https://perl6advent.wordpress.com/2015/12/19/day-19-introspection/) on how to access class properties and methods, and use it to generate test data for a class; this [Advent Calendar article describes the meta-object protocol](https://perl6advent.wordpress.com/2010/12/22/day-22-the-meta-object-protocol/) extensively.
