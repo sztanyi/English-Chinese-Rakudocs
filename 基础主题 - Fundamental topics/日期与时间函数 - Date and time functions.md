@@ -2,7 +2,9 @@
 
 Processing date and time in Perl 6
 
+Perl 6 中的日期与时间处理
 
+Perl 6 本身包含几个处理时间信息的类：[Date](https://docs.perl6.org/type/Date)，[DateTime](https://docs.perl6.org/type/DateTime), [Instant](https://docs.perl6.org/type/Instant) 以及 [Duration](https://docs.perl6.org/type/Duration)。前三个是 *dateish*, 因此它们有 [Dateish](https://docs.perl6.org/type/Dateish) 角色，定义了处理日期类要具备的所有方法和属性。它也包含了以 [X::Temporal](https://docs.perl6.org/type/X::Temporal) 为根的异常类树形结构.
 
 Perl 6 includes several classes that deal with temporal information: [Date](https://docs.perl6.org/type/Date), [DateTime](https://docs.perl6.org/type/DateTime), [Instant](https://docs.perl6.org/type/Instant) and [Duration](https://docs.perl6.org/type/Duration). The three first are *dateish*, so they mix in the [Dateish](https://docs.perl6.org/type/Dateish) role, which defines all methods and properties that classes that deal with date should assume. It also includes a class hierarchy of exceptions rooted in [X::Temporal](https://docs.perl6.org/type/X::Temporal).
 
