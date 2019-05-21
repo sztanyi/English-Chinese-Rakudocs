@@ -1,5 +1,6 @@
-# Perl 6 官方文档野生翻译
-Perl 6 documentation with Chinese translation
+# Perl 6 官方文档中英文对照野生翻译
+
+English-Chinese Perl 6 documentation
 
 Official documentation address: https://docs.perl6.org/language.html
 
