@@ -53,7 +53,7 @@ $promise1.keep("First Result");
 say $promise2.result;   # OUTPUT: «First Result␤Second Result␤» 
 ```
 
-这里的 [then](https://docs.perl6.org/type/Promise#method_then) 方法安排代码在第一个 [Promise](https://docs.perl6.org/type/Promise) 被 kept 或者 broken 时执行，其本身返回一个新的 [Promise](https://docs.perl6.org/type/Promise)，当代码执行成功并返回结果时 Promise 为 Kept 状态 （如果代码失败则为 broken 状态）。 `keep` 方法改变 promise 的状态为 `Kept` 并设置 promise 的返回值为 `keep` 的位置参数。 `result` 方法阻塞当前线程的执行直到 promise 被 kept 或者 broken，如果是 kept 则返回结果（即传给 `keep` 方法的值），否则它将基于传给 `break` 方法的值抛出异常。 后一种行为代码示例：
+这里的 [then](https://docs.perl6.org/type/Promise#method_then) 方法参数中的代码会在第一个 [Promise](https://docs.perl6.org/type/Promise) 被 kept 或者 broken 时执行，其本身返回一个新的 [Promise](https://docs.perl6.org/type/Promise)，当代码执行成功并返回结果时 Promise 为 Kept 状态 （如果代码失败则为 broken 状态）。 `keep` 方法改变 promise 的状态为 `Kept` 并设置 promise 的返回值为 `keep` 的位置参数。 `result` 方法阻塞当前线程的执行直到 promise 被 kept 或者 broken，如果是 kept 则返回结果（即传给 `keep` 方法的值），否则它将基于传给 `break` 方法的值抛出异常。 后一种行为代码示例：
 
 Here the [then](https://docs.perl6.org/type/Promise#method_then) method schedules code to be executed when the first [Promise](https://docs.perl6.org/type/Promise) is kept or broken, itself returning a new [Promise](https://docs.perl6.org/type/Promise) which will be kept with the result of the code when it is executed (or broken if the code fails). `keep` changes the status of the promise to `Kept` setting the result to the positional argument. `result` blocks the current thread of execution until the promise is kept or broken, if it was kept then it will return the result (that is the value passed to `keep`), otherwise it will throw an exception based on the value passed to `break`. The latter behavior is illustrated with:
 
@@ -94,7 +94,7 @@ my $promise = Promise.start(
 say $promise.result;    # OUTPUT: «55␤» 
 ```
 
-promise 的 `result` 方法的返回值就是 start 中代码的返回值。 如果代码失败（promise 则 broken），那么 `cause` 方法的返回值就会是抛出的 [Exception](https://docs.perl6.org/type/Exception) 对象：
+promise 的 `result` 方法的返回值就是 start 中代码的返回值。 如果代码失败（则promise broken），那么 `cause` 方法的返回值就会是抛出的 [Exception](https://docs.perl6.org/type/Exception) 对象：
 
 Here the `result` of the promise returned is the value returned from the code. Similarly if the code fails (and the promise is thus broken), then `cause` will be the [Exception](https://docs.perl6.org/type/Exception) object that was thrown:
 
@@ -120,9 +120,11 @@ my $result = await $promise;
 say $result;
 ```
 
+[await](https://docs.perl6.org/type/Promise#sub_await) 函数几乎相当于对 `start` 关键字创建的 promise 对象调用 `result` 方法，但是它可以接受一组 promise 并返回每个 promise 的结果：
+
 The subroutine [await](https://docs.perl6.org/type/Promise#sub_await) is almost equivalent to calling `result` on the promise object returned by `start` but it will also take a list of promises and return the result of each:
 
-```
+```Perl6
 my $p1 = start {
     my $i = 0;
     for 1 .. 10 {
@@ -141,9 +143,11 @@ my @result = await $p1, $p2;
 say @result;            # OUTPUT: «[55 -55]␤» 
 ```
 
+Promise 的两个类方法可以融合多个 [Promise](https://docs.perl6.org/type/Promise) 对象为一个新 Promise：`allof` 方法返回的 promise 为 kept 状态当参数内的 promise 状态为 kept 或者 broken：
+
 In addition to `await`, two class methods combine several [Promise](https://docs.perl6.org/type/Promise) objects into a new promise: `allof` returns a promise that is kept when all the original promises are kept or broken:
 
-```
+```Perl6
 my $promise = Promise.allof(
     Promise.in(2),
     Promise.in(3)
@@ -153,9 +157,11 @@ await $promise;
 say "All done"; # Should be not much more than three seconds later 
 ```
 
+`anyof` 方法返回的 promise 为 kept 状态当参数内任一 promise 状态为 kept 或者 broken：
+
 And `anyof` returns a new promise that will be kept when any of the original promises is kept or broken:
 
-```
+```Perl6
 my $promise = Promise.anyof(
     Promise.in(3),
     Promise.in(8600)
@@ -165,9 +171,11 @@ await $promise;
 say "All done"; # Should be about 3 seconds later 
 ```
 
+然而，与 `await` 不同，原始 kept 的 promise 的结果在没有引用原始版本的情况下是得不到的，因此当任务的完成或其他任务对于使用者而言比实际结果更重要时，或者当结果已被其他方式收集。 例如，你可能希望创建一个依赖的 Promise 来检查每个原始的 promise：
+
 Unlike `await` however the results of the original kept promises are not available without referring to the original, so these are more useful when the completion or otherwise of the tasks is more important to the consumer than the actual results, or when the results have been collected by other means. You may, for example, want to create a dependent Promise that will examine each of the original promises:
 
-```
+```Perl6
 my @promises;
 for 1..5 -> $t {
     push @promises, start {
@@ -178,11 +186,15 @@ for 1..5 -> $t {
 say await Promise.allof(@promises).then({ so all(@promises>>.result) });
 ```
 
+当所有的 promise 都 kept 时为真，否则为假。
+
 Which will give True if all of the promises were kept with True, False otherwise.
+
+如果你想创建一个 proimse，它能够 keep 或者 break 它自己，那么你可能不会想这个 promise 在你之前被其他代码不经意地 keep 或者 break。为此，可以使用方法 [vow](https://docs.perl6.org/type/Promise#method_vow)，它返回 Vow 对象并且只有这个对象能够使 promise 被 kept 或者 broken。如果试图对这个 promise 调用 keep 或者 break 方法，那么 [X::Promise::Vowed](https://docs.perl6.org/type/X::Promise::Vowed) 异常将会被抛出，只要 vow 对象是私有的，promise 的状态就是安全的：
 
 If you are creating a promise that you intend to keep or break yourself then you probably don't want any code that might receive the promise to inadvertently (or otherwise) keep or break the promise before you do. For this purpose there is the [method vow](https://docs.perl6.org/type/Promise#method_vow), which returns a Vow object which becomes the only mechanism by which the promise can be kept or broken. If an attempt to keep or break the Promise is made directly then the exception [X::Promise::Vowed](https://docs.perl6.org/type/X::Promise::Vowed) will be thrown, as long as the vow object is kept private, the status of the promise is safe:
 
-```
+```Perl6
 sub get_promise {
     my $promise = Promise.new;
     my $vow = $promise.vow;
@@ -199,11 +211,17 @@ CATCH { default { say .^name, ': ', .Str } };
 # OUTPUT: «X::Promise::Vowed: Access denied to keep/break this Promise; already vowed␤» 
 ```
 
+使用 `in` 或者 `start` 方法返回的 promise 将会自动变为 kept 或则 broken 状态，因此对这些 promise 使用 vow 方法是不必要的。
+
 The methods that return a promise that will be kept or broken automatically such as `in` or `start` will do this, so it is not necessary to do it for these.
 
 ## Supplies
 
+[Supply](https://docs.perl6.org/type/Supply) 是异步数据流机制，它能够被一个或者多个消费者同时消费。这种方式类似于其他编程语言的事件。可以视作开启 Perl6 *事件驱动*或者响应式设计。
+
 A [Supply](https://docs.perl6.org/type/Supply) is an asynchronous data streaming mechanism that can be consumed by one or more consumers simultaneously in a manner similar to "events" in other programming languages and can be seen as enabling *event driven* or reactive designs.
+
+最简单的，一个 [Supply](https://docs.perl6.org/type/Supply) 为一个消息流，它能够有多个订阅者，这些订阅者通过方法 `tap` 创建，其数据项能够被 `emit` 方法的参数替换。
 
 At its simplest, a [Supply](https://docs.perl6.org/type/Supply) is a message stream that can have multiple subscribers created with the method `tap` on to which data items can be placed with `emit`.
 
