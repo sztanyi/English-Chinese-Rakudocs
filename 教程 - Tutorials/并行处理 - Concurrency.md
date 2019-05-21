@@ -221,15 +221,19 @@ The methods that return a promise that will be kept or broken automatically such
 
 A [Supply](https://docs.perl6.org/type/Supply) is an asynchronous data streaming mechanism that can be consumed by one or more consumers simultaneously in a manner similar to "events" in other programming languages and can be seen as enabling *event driven* or reactive designs.
 
-最简单的，一个 [Supply](https://docs.perl6.org/type/Supply) 为一个消息流，它能够有多个订阅者，这些订阅者通过方法 `tap` 创建，其数据项能够被 `emit` 方法的参数替换。
+最简单的，一个 [Supply](https://docs.perl6.org/type/Supply) 对象为一个消息流，它能够有多个订阅者，这些订阅者通过方法 `tap` 创建，订阅者的数据项能够被 `emit` 方法的参数替换。
 
 At its simplest, a [Supply](https://docs.perl6.org/type/Supply) is a message stream that can have multiple subscribers created with the method `tap` on to which data items can be placed with `emit`.
 
+[Supply](https://docs.perl6.org/type/Supply) 可以是 `live` 或者 `on-demand`的。 `live` supply 就像电视广播：那些刚开始收看的观众看不到播放过的内容。 `on-demand` 广播就像 Netflix 影片租赁公司：所有人都可以点播一个影片（正如 tap 一个 supply），永远可以从头开始看（获取所有的值），不论现在有多少观众。请注意 `on-demand` supply 则不会保留历史数据，`supply` 代码块会为每一个 supply 的 tap 执行。
+
 The [Supply](https://docs.perl6.org/type/Supply) can either be `live` or `on-demand`. A `live` supply is like a TV broadcast: those who tune in don't get previously emitted values. An `on-demand` broadcast is like Netflix: everyone who starts streaming a movie (taps a supply), always starts it from the beginning (gets all the values), regardless of how many people are watching it right now. Note that no history is kept for `on-demand` supplies, instead, the `supply` block is run for each tap of the supply.
+
+`live` [Supply](https://docs.perl6.org/type/Supply) 由 [Supplier](https://docs.perl6.org/type/Supplier) 工厂创建，每一个发出的值传递给了所有激活的 tappers。
 
 A `live` [Supply](https://docs.perl6.org/type/Supply) is created by the [Supplier](https://docs.perl6.org/type/Supplier) factory, each emitted value is passed to all the active tappers as they are added:
 
-```
+```Perl6
 my $supplier = Supplier.new;
 my $supply   = $supplier.Supply;
  
@@ -240,11 +244,15 @@ for 1 .. 10 {
 }
 ```
 
+请注意， `tap` 方法在 [Supply](https://docs.perl6.org/type/Supply) 对象上被调用，这个对象由 [Supplier](https://docs.perl6.org/type/Supplier) 创建。新消息由 [Supplier](https://docs.perl6.org/type/Supplier) 发出。
+
 Note that the `tap` is called on a [Supply](https://docs.perl6.org/type/Supply) object created by the [Supplier](https://docs.perl6.org/type/Supplier) and new values are emitted on the [Supplier](https://docs.perl6.org/type/Supplier).
+
+`on-demand` [Supply](https://docs.perl6.org/type/Supply) 由 `supply` 关键字创建：
 
 An `on-demand` [Supply](https://docs.perl6.org/type/Supply) is created by the `supply` keyword:
 
-```
+```Perl6
 my $supply = supply {
     for 1 .. 10 {
         emit($_);
@@ -253,9 +261,11 @@ my $supply = supply {
 $supply.tap( -> $v { say $v });
 ```
 
+在此例中，`supply` 关键字创建的 [Supply](https://docs.perl6.org/type/Supply) 对象被 tap 时，supply 代码块中的代码都会被执行。例如：
+
 In this case the code in the supply block is executed every time the [Supply](https://docs.perl6.org/type/Supply) returned by `supply` is tapped, as demonstrated by:
 
-```
+```Perl6
 my $supply = supply {
     for 1 .. 10 {
         emit($_);
@@ -265,9 +275,11 @@ $supply.tap( -> $v { say "First : $v" });
 $supply.tap( -> $v { say "Second : $v" });
 ```
 
+`tap` 方法返回一个 [Tap](https://docs.perl6.org/type/Tap) 对象，这个对象可以用来获取 tap 的信息，当我们对事件不感兴趣时也可以关闭它：
+
 The `tap` method returns a [Tap](https://docs.perl6.org/type/Tap) object which can be used to obtain information about the tap and also to turn it off when we are no longer interested in the events:
 
-```
+```Perl6
 my $supplier = Supplier.new;
 my $supply   = $supplier.Supply;
  
@@ -278,19 +290,25 @@ $tap.close;
 $supplier.emit("Won't trigger the tap");
 ```
 
+在 supply 代码块中调用 `done` 函数会执行 tap 中定义的 `done` 回调，但是它不会阻止以后的事件被发射到数据流，或者阻止 taps 接收事件。
+
 Calling `done` on the supply object calls the `done` callback that may be specified for any taps, but does not prevent any further events being emitted to the stream, or taps receiving them.
+
+`interval` 方法会创建一个 `on-demand` supply，它会在指定间隔定期释放一个新事件。每个释放的事件带的数据是从 0 开始递增的整数。 下列代码输出 0 .. 5 ：
 
 The method `interval` returns a new `on-demand` supply which periodically emits a new event at the specified interval. The data that is emitted is an integer starting at 0 that is incremented for each event. The following code outputs 0 .. 5 :
 
-```
+```Perl6
 my $supply = Supply.interval(2);
 $supply.tap(-> $v { say $v });
 sleep 10;
 ```
 
+`interval` 方法接受第二参数，它表示第一个事件被射出之前延迟的秒数。每个 `interval` 方法创建出来的 supply，其每个 tap 都有自己从 0 开始的序列，例如：
+
 A second argument can be supplied to `interval` which specifies a delay in seconds before the first event is fired. Each tap of a supply created by `interval` has its own sequence starting from 0, as illustrated by the following:
 
-```
+```Perl6
 my $supply = Supply.interval(2);
 $supply.tap(-> $v { say "First $v" });
 sleep 6;
@@ -298,9 +316,9 @@ $supply.tap(-> $v { say "Second $v"});
 sleep 10;
 ```
 
+live `Supply` 保留数据直到第一个被 tap 的 supply 能被 [Supplier::Preserving](https://docs.perl6.org/type/Supplier::Preserving) 创建。
+
 A live `Supply` that keeps values until first tapped can be created with [Supplier::Preserving](https://docs.perl6.org/type/Supplier::Preserving).
-
-
 
 ### `whenever`
 
