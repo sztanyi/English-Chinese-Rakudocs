@@ -290,7 +290,7 @@ $tap.close;
 $supplier.emit("Won't trigger the tap");
 ```
 
-在 supply 代码块中调用 `done` 函数会执行 tap 中定义的 `done` 回调，但是它不会阻止以后的事件被发射到数据流，或者阻止 taps 接收事件。
+在 supply 代码块中调用 `done` 函数会执行 tap 中定义的 `done` 回调，但是它不会阻止以后的事件被发射到数据流，或者阻止 tap 接收事件。
 
 Calling `done` on the supply object calls the `done` callback that may be specified for any taps, but does not prevent any further events being emitted to the stream, or taps receiving them.
 
@@ -304,7 +304,7 @@ $supply.tap(-> $v { say $v });
 sleep 10;
 ```
 
-`interval` 方法接受第二参数，它表示第一个事件被射出之前延迟的秒数。每个 `interval` 方法创建出来的 supply，其每个 tap 都有自己从 0 开始的序列，例如：
+`interval` 方法接受第二参数，它表示第一个事件发出之前延迟的秒数。每个 `interval` 方法创建出来的 supply，其每个 tap 都有自己从 0 开始的序列，例如：
 
 A second argument can be supplied to `interval` which specifies a delay in seconds before the first event is fired. Each tap of a supply created by `interval` has its own sequence starting from 0, as illustrated by the following:
 
@@ -322,11 +322,15 @@ A live `Supply` that keeps values until first tapped can be created with [Suppli
 
 ### `whenever`
 
+`whenever` 关键字可以在 supply 或者 react 代码块中使用。 从 6.d 版本开始，需要在他们的词法作用域中被使用。 它引入一个代码块，当它指定的异步事件提示时将运行该代码块。 可以是一个 [Supply](https://docs.perl6.org/type/Supply), [Channel](https://docs.perl6.org/type/Channel), [Promise](https://docs.perl6.org/type/Promise) 或者 [Iterable](https://docs.perl6.org/type/Iterable)。
+
 The `whenever` keyword can be used in supply blocks or in react blocks. From the 6.d version, it needs to be used within the lexical scope of them. It introduces a block of code that will be run when prompted by an asynchronous event that it specifies - that could be a [Supply](https://docs.perl6.org/type/Supply), a [Channel](https://docs.perl6.org/type/Channel), a [Promise](https://docs.perl6.org/type/Promise) or an [Iterable](https://docs.perl6.org/type/Iterable).
+
+这个例子中我们监听两个 supply：
 
 In this example we are watching two supplies.
 
-```
+```Perl6
 my $bread-supplier = Supplier.new;
 my $vegetable-supplier = Supplier.new;
  
@@ -345,17 +349,21 @@ $bread-supplier.emit("Thick sliced"); # OUTPUT: «We've got bread: Thick sliced�
 $vegetable-supplier.emit("Lettuce");  # OUTPUT: «We've got a vegetable: Lettuce␤» 
 ```
 
+请注意，`whenever` 中的代码应尽量小，因为任何时候都只有一个 `whenever` 代码块会被执行。
+
 Please note that one should keep the code inside the `whenever` as small as possible, as only one `whenever` block will be executed at any time. One can use a `start` block inside the `whenever` block to run longer running code.
-
-
 
 ### `react`
 
+`react` 关键字引入包含一个或者多个 `whenever` 关键字的代码块来监听异步事件。 supply 和 react 代码块之间最主要的区别在于在 react 代码块中的代码按出现的位置运行，而 supply 代码块在做任何事情前都需要被 tap。
+
 The `react` keyword introduces a block of code containing one or more `whenever` keywords to watch asynchronous events. The main difference between a supply block and a react block is that the code in a react block runs where it appears in the code flow, whereas a supply block has to be tapped before it does anything.
+
+另一个区别是 supply 代码块使用时可以不需要 `whenever` 关键字，但是 react 代码块至少需要使用到一个 `whenever` 。
 
 Another difference is that a supply block can be used without the `whenever` keyword, but a react block requires at least one `whenever` to be of any real use.
 
-```
+```Perl6
 react {
     whenever Supply.interval(2) -> $v {
         say $v;
@@ -364,11 +372,15 @@ react {
 }
 ```
 
+`whenever` 关键字使用 [`.act`](https://docs.perl6.org/type/Supply#method_act) 方法对 [Supply](https://docs.perl6.org/type/Supply) 创建一个 tap。 当 `done()` 函数在其中一个 tap 中被调用时 `react` 代码块会退出。 使用 `last` 关键字退出代码块会收到这不是一个真正的循环结构的错误提示。
+
 Here the `whenever` keyword uses [`.act`](https://docs.perl6.org/type/Supply#method_act) to create a tap on the [Supply](https://docs.perl6.org/type/Supply) from the provided block. The `react` block is exited when `done()` is called in one of the taps. Using `last` to exit the block would produce an error indicating that it's not really a loop construct.
+
+`on-demand` [Supply](https://docs.perl6.org/type/Supply) 也可以从将依次发出的值的列表中创建，因此第一个 `on-demand` 例子可写成：
 
 An `on-demand` [Supply](https://docs.perl6.org/type/Supply) can also be created from a list of values that will be emitted in turn, thus the first `on-demand` example could be written as:
 
-```
+```Perl6
 react {
     whenever Supply.from-list(1..10) -> $v {
         say $v;
@@ -376,31 +388,43 @@ react {
 }
 ```
 
-### Transforming supplies
+### 转换 supply / Transforming supplies
+
+可以过滤或者转换现有的 supply 对象，分别使用 `grep` 和 `map` 方法，以类似于命名列表方法的方式创建新 supply： `grep` 返回一个 supply ，以便只有在源流上发出的 `grep` 条件为真的事件才会在第二个 supply 上发出。
 
 An existing supply object can be filtered or transformed, using the methods `grep` and `map` respectively, to create a new supply in a manner like the similarly named list methods: `grep` returns a supply such that only those events emitted on the source stream for which the `grep` condition is true is emitted on the second supply:
 
-```
+```Perl6
 my $supplier = Supplier.new;
 my $supply = $supplier.Supply;
+
 $supply.tap(-> $v { say "Original : $v" });
+
 my $odd_supply = $supply.grep({ $_ % 2 });
 $odd_supply.tap(-> $v { say "Odd : $v" });
+
 my $even_supply = $supply.grep({ not $_ % 2 });
 $even_supply.tap(-> $v { say "Even : $v" });
+
 for 0 .. 10 {
     $supplier.emit($_);
 }
 ```
 
+` map` 返回一个新的 supply，这样对于发送给原始 supply 的每个消息，都会发送一个新的项目，这是传递给 `map` 的表达式的结果：
+
 `map` returns a new supply such that for each item emitted to the original supply a new item which is the result of the expression passed to the `map` is emitted:
 
-```
+```Perl6
 my $supplier = Supplier.new;
 my $supply = $supplier.Supply;
+
 $supply.tap(-> $v { say "Original : $v" });
+
 my $half_supply = $supply.map({ $_ / 2 });
+
 $half_supply.tap(-> $v { say "Half : $v" });
+
 for 0 .. 10 {
     $supplier.emit($_);
 }
@@ -410,7 +434,7 @@ for 0 .. 10 {
 
 If you need to have an action that runs when the supply finishes, you can do so by setting the `done` and `quit` options in the call to `tap`:
 
-```
+```Perl6
 $supply.tap: { ... },
     done => { say 'Job is done.' },
     quit => {
@@ -424,7 +448,7 @@ The `quit` block works very similar to a `CATCH`. If the exception is marked as 
 
 If you are using the `react` or `supply` block syntax with `whenever`, you can add phasers within your `whenever` blocks to handle the `done` and `quit` messages from the tapped supply:
 
-```
+```Perl6
 react {
     whenever $supply {
         ...; # your usual supply tap code here 
@@ -442,7 +466,7 @@ A [Channel](https://docs.perl6.org/type/Channel) is a thread-safe queue that can
 
 An item is queued onto the [Channel](https://docs.perl6.org/type/Channel) with the [method send](https://docs.perl6.org/type/Channel#method_send), and the [method receive](https://docs.perl6.org/type/Channel#method_receive) removes an item from the queue and returns it, blocking until a new item is sent if the queue is empty:
 
-```
+```Perl6
 my $channel = Channel.new;
 $channel.send('Channel One');
 say $channel.receive;  # OUTPUT: «Channel One␤» 
@@ -452,7 +476,7 @@ If the channel has been closed with the [method close](https://docs.perl6.org/ty
 
 The [method list](https://docs.perl6.org/type/Channel#method_list) returns all the items on the [Channel](https://docs.perl6.org/type/Channel) and will block until further items are queued unless the channel is closed:
 
-```
+```Perl6
 my $channel = Channel.new;
 await (^10).map: -> $r {
     start {
@@ -468,7 +492,7 @@ for $channel.list -> $r {
 
 There is also the non-blocking [method poll](https://docs.perl6.org/type/Channel#method_poll) that returns an available item from the channel or [Nil](https://docs.perl6.org/type/Nil) if there is no item or the channel is closed, this does of course mean that the channel must be checked to determine whether it is closed:
 
-```
+```Perl6
 my $c = Channel.new;
  
 # Start three Promises that sleep for 1..3 seconds, and then 
@@ -512,7 +536,7 @@ The [method closed](https://docs.perl6.org/type/Channel#method_closed) returns a
 
 The `.poll` method can be used in combination with `.receive` method, as a caching mechanism where lack of value returned by `.poll` is a signal that more values need to be fetched and loaded into the channel:
 
-```
+```Perl6
 sub get-value {
     return $c.poll // do { start replenish-cache; $c.receive };
 }
@@ -526,7 +550,7 @@ sub replenish-cache {
 
 Channels can be used in place of the [Supply](https://docs.perl6.org/type/Supply) in the `whenever` of a `react` block described earlier:
 
-```
+```Perl6
 my $channel = Channel.new;
 my $p = start {
     react {
@@ -549,7 +573,7 @@ await $p;
 
 It is also possible to obtain a [Channel](https://docs.perl6.org/type/Channel) from a [Supply](https://docs.perl6.org/type/Supply) using the [Channel method](https://docs.perl6.org/type/Supply#method_Channel) which returns a [Channel](https://docs.perl6.org/type/Channel) which is fed by a `tap`on the [Supply](https://docs.perl6.org/type/Supply):
 
-```
+```Perl6
 my $supplier = Supplier.new;
 my $supply   = $supplier.Supply;
 my $channel = $supply.Channel;
@@ -579,7 +603,7 @@ await $p;
 
 [Proc::Async](https://docs.perl6.org/type/Proc::Async) builds on the facilities described to run and interact with an external program asynchronously:
 
-```
+```Perl6
 my $proc = Proc::Async.new('echo', 'foo', 'bar');
  
 $proc.stdout.tap(-> $v { print "Output: $v" });
@@ -601,7 +625,7 @@ The path to the command as well as any arguments to the command are supplied to 
 
 If you want to write to the standard input of the program you can supply the `:w` adverb to the constructor and use the methods [write](https://docs.perl6.org/type/Proc::Async#method_write), [print](https://docs.perl6.org/type/Proc::Async#method_print) or [say](https://docs.perl6.org/type/Proc::Async#method_say) to write to the opened pipe once the program has been started:
 
-```
+```Perl6
 my $proc = Proc::Async.new(:w, 'grep', 'foo');
  
 $proc.stdout.tap(-> $v { print "Output: $v" });
@@ -632,7 +656,7 @@ The lowest level interface for concurrency is provided by [Thread](https://docs.
 
 A thread can either be created and then actually run later:
 
-```
+```Perl6
 my $thread = Thread.new(code => { for  1 .. 10  -> $v { say $v }});
 # ... 
 $thread.run;
@@ -640,13 +664,13 @@ $thread.run;
 
 Or can be created and run at a single invocation:
 
-```
+```Perl6
 my $thread = Thread.start({ for  1 .. 10  -> $v { say $v }});
 ```
 
 In both cases the completion of the code encapsulated by the [Thread](https://docs.perl6.org/type/Thread) object can be waited on with the `finish` method which will block until the thread completes:
 
-```
+```Perl6
 $thread.finish;
 ```
 
@@ -660,13 +684,13 @@ The current default global scheduler is available in the variable `$*SCHEDULER`.
 
 The primary interface of a scheduler (indeed the only method required by the [Scheduler](https://docs.perl6.org/type/Scheduler) interface) is the `cue` method:
 
-```
+```Perl6
 method cue(:&code, Instant :$at, :$in, :$every, :$times = 1; :&catch)
 ```
 
 This will schedule the [Callable](https://docs.perl6.org/type/Callable) in `&code` to be executed in the manner determined by the adverbs (as documented in [Scheduler](https://docs.perl6.org/type/Scheduler)) using the execution scheme as implemented by the scheduler. For example:
 
-```
+```Perl6
 my $i = 0;
 my $cancellation = $*SCHEDULER.cue({ say $i++}, every => 2 );
 sleep 20;
@@ -674,7 +698,7 @@ sleep 20;
 
 Assuming that the `$*SCHEDULER` hasn't been changed from the default, will print the numbers 0 to 10 approximately (i.e with operating system scheduling tolerances) every two seconds. In this case the code will be scheduled to run until the program ends normally, however the method returns a [Cancellation](https://docs.perl6.org/type/Cancellation) object which can be used to cancel the scheduled execution before normal completion:
 
-```
+```Perl6
 my $i = 0;
 my $cancellation = $*SCHEDULER.cue({ say $i++}, every => 2 );
 sleep 10;
@@ -704,7 +728,7 @@ The class [Lock](https://docs.perl6.org/type/Lock) provides the low level mechan
 
 The primary interface to [Lock](https://docs.perl6.org/type/Lock) is the method [protect](https://docs.perl6.org/type/Lock#method_protect) which ensures that a block of code (commonly called a "critical section") is only executed in one thread at a time:
 
-```
+```Perl6
 my $lock = Lock.new;
  
 my $a = 0;
@@ -732,7 +756,7 @@ Some shared data concurrency issues are less obvious than others. For a good gen
 
 One particular issue of note is when container autovivification or extension takes place. When an [Array](https://docs.perl6.org/type/Array) or a [Hash](https://docs.perl6.org/type/Hash) entry is initially assigned the underlying structure is altered and that operation is not async safe. For example, in this code:
 
-```
+```Perl6
 my @array;
 my $slot := @array[20];
 $slot = 'foo';
