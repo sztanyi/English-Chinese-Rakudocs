@@ -411,7 +411,7 @@ for 0 .. 10 {
 }
 ```
 
-` map` 返回一个新的 supply，这样对于发送给原始 supply 的每个消息，都会发送一个新的项目，这是传递给 `map` 的表达式的结果：
+` map` 返回一个新的 supply，这样对于发送给原始 supply 的每个条目，条目会传给 `map` 并将表达式的结果作为新条目发送出来。
 
 `map` returns a new supply such that for each item emitted to the original supply a new item which is the result of the expression passed to the `map` is emitted:
 
@@ -430,7 +430,9 @@ for 0 .. 10 {
 }
 ```
 
-### Ending a supply
+### 结束一个 supply / Ending a supply
+
+如果需要在 supply 结束时执行某个动作，你可以在 `tap` 方法中设置 `done` 和 `quit` 选项：
 
 If you need to have an action that runs when the supply finishes, you can do so by setting the `done` and `quit` options in the call to `tap`:
 
@@ -442,9 +444,13 @@ $supply.tap: { ... },
     };
 ```
 
+`quit` 的工作方式代码块非常像 `CATCH`。如果异常被 `when` 或者 `default` 代码块标记，异常会被捕获和处理。否则，异常抛给更上一级的调用（与 `quit` 没有设置时表现一样）。
+
 The `quit` block works very similar to a `CATCH`. If the exception is marked as seen by a `when` or `default` block, the exception is caught and handled. Otherwise, the exception continues to up the call tree (i.e., the same behavior as when `quit` is not set).
 
-### Phasers in a supply or react block
+### supply 或者 react 代码块中的相位器 / Phasers in a supply or react block
+
+如果你在 `react` 或者 `supply` 代码块语法中使用 `whenever`，你可以在 `whenever` 代码块中添加相位器处理来自被 tap 过的 supply 的 `done` 和 `quit` 消息：
 
 If you are using the `react` or `supply` block syntax with `whenever`, you can add phasers within your `whenever` blocks to handle the `done` and `quit` messages from the tapped supply:
 
@@ -457,6 +463,8 @@ react {
     }
 }
 ```
+
+此处的行为与对 `tap` 设置 `done` 和 `quit` 一样。
 
 The behavior here is the same as setting `done` and `quit` on `tap`.
 
@@ -763,3 +771,4 @@ $slot = 'foo';
 ```
 
 The third line is the critical section as that is when the array is extended. The simplest fix is to use a [Lock](https://docs.perl6.org/type/Lock) to protect the critical section. A possibly better fix would be to refactor the code so that sharing a container is not necessary.
+
