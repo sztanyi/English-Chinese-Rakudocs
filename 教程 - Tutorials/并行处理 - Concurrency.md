@@ -470,7 +470,11 @@ The behavior here is the same as setting `done` and `quit` on `tap`.
 
 ## Channels
 
+[Channel](https://docs.perl6.org/type/Channel) 是一个线程安全的队列，可以有多个读取器和编写器，可以被认为在操作上类似于 FIFO 或命名管道，除了它不启用进程间通信。应该注意的是，作为一个真正的队列，发送到 [Channel](https://docs.perl6.org/type/Channel) 的每个值只能先读先服务的基础上供单个阅读器使用：如果你希望多个读者能够接收发送的每个项目，你可能需要考虑 [Supply](https://docs.perl6.org/type/Supply)。
+
 A [Channel](https://docs.perl6.org/type/Channel) is a thread-safe queue that can have multiple readers and writers that could be considered to be similar in operation to a "fifo" or named pipe except it does not enable inter-process communication. It should be noted that, being a true queue, each value sent to the [Channel](https://docs.perl6.org/type/Channel) will only be available to a single reader on a first read, first served basis: if you want multiple readers to be able to receive every item sent you probably want to consider a [Supply](https://docs.perl6.org/type/Supply).
+
+使用方法 [send](https://docs.perl6.org/type/Channel) 将条目排队到 [Channel](https://docs.perl6.org/type/Channel) 上， 方法 [receive](https://docs.perl6.org/type/Channel#method_receive) 从队列中删除一个条目并将其返回，如果队列为空则阻塞直到新条目被发出：
 
 An item is queued onto the [Channel](https://docs.perl6.org/type/Channel) with the [method send](https://docs.perl6.org/type/Channel#method_send), and the [method receive](https://docs.perl6.org/type/Channel#method_receive) removes an item from the queue and returns it, blocking until a new item is sent if the queue is empty:
 
@@ -480,7 +484,11 @@ $channel.send('Channel One');
 say $channel.receive;  # OUTPUT: «Channel One␤» 
 ```
 
+如果 channel 被 [close](https://docs.perl6.org/type/Channel#method_close) 方法关闭，那么任何 `send` 方法都会抛出 [X::Channel::SendOnClosed](https://docs.perl6.org/type/X::Channel::SendOnClosed) 异常并且 `receive` 方法会抛出 [X::Channel::ReceiveOnClosed](https://docs.perl6.org/type/X::Channel::ReceiveOnClosed) 异常如果队列中已没有条目。
+
 If the channel has been closed with the [method close](https://docs.perl6.org/type/Channel#method_close) then any `send` will cause the exception [X::Channel::SendOnClosed](https://docs.perl6.org/type/X::Channel::SendOnClosed) to be thrown, and a `receive` will throw a [X::Channel::ReceiveOnClosed](https://docs.perl6.org/type/X::Channel::ReceiveOnClosed) if there are no more items on the queue.
+
+[list](https://docs.perl6.org/type/Channel#method_list) 方法返回 [Channel](https://docs.perl6.org/type/Channel) 中所有的条目，并且将阻塞程序直到新条目在队列中，除非该频道已关闭。
 
 The [method list](https://docs.perl6.org/type/Channel#method_list) returns all the items on the [Channel](https://docs.perl6.org/type/Channel) and will block until further items are queued unless the channel is closed:
 
