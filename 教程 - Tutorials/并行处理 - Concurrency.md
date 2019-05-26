@@ -488,7 +488,7 @@ say $channel.receive;  # OUTPUT: «Channel One␤»
 
 If the channel has been closed with the [method close](https://docs.perl6.org/type/Channel#method_close) then any `send` will cause the exception [X::Channel::SendOnClosed](https://docs.perl6.org/type/X::Channel::SendOnClosed) to be thrown, and a `receive` will throw a [X::Channel::ReceiveOnClosed](https://docs.perl6.org/type/X::Channel::ReceiveOnClosed) if there are no more items on the queue.
 
-[list](https://docs.perl6.org/type/Channel#method_list) 方法返回 [Channel](https://docs.perl6.org/type/Channel) 中所有的条目，并且将阻塞程序直到新条目在队列中，除非该频道已关闭。
+[list](https://docs.perl6.org/type/Channel#method_list) 方法返回 [Channel](https://docs.perl6.org/type/Channel) 中所有的条目，并且将阻塞程序直到新条目在队列中，除非该 channel 已关闭。
 
 The [method list](https://docs.perl6.org/type/Channel#method_list) returns all the items on the [Channel](https://docs.perl6.org/type/Channel) and will block until further items are queued unless the channel is closed:
 
@@ -505,6 +505,8 @@ for $channel.list -> $r {
     say $r;
 }
 ```
+
+非阻塞方法 [poll](https://docs.perl6.org/type/Channel#method_poll) 从 channel  中返回一个可用项，没有可用项或者 channel 被关闭则返回 [Nil](https://docs.perl6.org/type/Nil)。这当然意味着必须检查 channel 以确定它是否关闭。
 
 There is also the non-blocking [method poll](https://docs.perl6.org/type/Channel#method_poll) that returns an available item from the channel or [Nil](https://docs.perl6.org/type/Nil) if there is no item or the channel is closed, this does of course mean that the channel must be checked to determine whether it is closed:
 
@@ -548,7 +550,12 @@ loop {
 # Doing some unrelated things... 
 ```
 
+
+[closed](https://docs.perl6.org/type/Channel#method_closed) 方法返回一个 [Promise](https://docs.perl6.org/type/Promise) 对象，channel 关闭时这个对象在 channel 被关闭时状态为 kept （此时对象在布尔上下文中为真值）。
+
 The [method closed](https://docs.perl6.org/type/Channel#method_closed) returns a [Promise](https://docs.perl6.org/type/Promise) that will be kept (and consequently will evaluate to True in a boolean context) when the channel is closed.
+
+`.poll` 方法可以与 `.receive` 方法结合使用作为缓存机制，`.poll` 没有返回值时表示需要将更多的加载至 channel：
 
 The `.poll` method can be used in combination with `.receive` method, as a caching mechanism where lack of value returned by `.poll` is a signal that more values need to be fetched and loaded into the channel:
 
@@ -563,6 +570,8 @@ sub replenish-cache {
     }
 }
 ```
+
+Channel 可以取代 `whenever` 在 `react` 代码块中的位置：
 
 Channels can be used in place of the [Supply](https://docs.perl6.org/type/Supply) in the `whenever` of a `react` block described earlier:
 
@@ -586,6 +595,8 @@ await (^10).map: -> $r {
 $channel.close;
 await $p;
 ```
+
+也可以从 [Supply](https://docs.perl6.org/type/Supply) 对象中使用 [Channel](https://docs.perl6.org/type/Supply#method_Channel) 方法获取 [Channel](https://docs.perl6.org/type/Channel) 对象。 这个 Channel 对象由 [Supply](https://docs.perl6.org/type/Supply) 的 `tap` 提供供给。
 
 It is also possible to obtain a [Channel](https://docs.perl6.org/type/Channel) from a [Supply](https://docs.perl6.org/type/Supply) using the [Channel method](https://docs.perl6.org/type/Supply#method_Channel) which returns a [Channel](https://docs.perl6.org/type/Channel) which is fed by a `tap`on the [Supply](https://docs.perl6.org/type/Supply):
 
@@ -612,6 +623,8 @@ await (^10).map: -> $r {
 $supplier.done;
 await $p;
 ```
+
+`Channel` 方法会返回一个不同的 [Channel](https://docs.perl6.org/type/Channel) 对象，每次调用时会被提供同样的数据。这可以用来扇出 [Supply](https://docs.perl6.org/type/Supply) 给一个或者多个 [Channel](https://docs.perl6.org/type/Channel) 来在一个程序中提供不同的接口。
 
 `Channel` will return a different [Channel](https://docs.perl6.org/type/Channel) fed with the same data each time it is called. This could be used, for instance, to fan-out a [Supply](https://docs.perl6.org/type/Supply) to one or more [Channel](https://docs.perl6.org/type/Channel)s to provide for different interfaces in a program.
 
