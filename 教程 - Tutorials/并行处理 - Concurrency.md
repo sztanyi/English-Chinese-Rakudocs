@@ -1,4 +1,6 @@
-# Concurrency
+原文：https://docs.perl6.org/language/concurrency
+
+# 并行处理 / Concurrency
 
 并发与异步编程
 
@@ -16,8 +18,35 @@ The aim of the Perl 6 concurrency design is to provide a high-level, composable 
 
 Additionally, certain Perl features may implicitly operate in an asynchronous fashion, so in order to ensure predictable interoperation with these features, user code should, where possible, avoid the lower level concurrency APIs (e.g., [Thread](https://docs.perl6.org/type/Thread) and [Scheduler](https://docs.perl6.org/type/Scheduler)) and use the higher-level interfaces.
 
+# 目录 / Table of Contents
+
+<!-- MarkdownTOC -->
+
+- [高级接口 / High-level APIs](#%E9%AB%98%E7%BA%A7%E6%8E%A5%E5%8F%A3--high-level-apis)
+    - [承诺 / Promises](#%E6%89%BF%E8%AF%BA--promises)
+    - [Supplies](#supplies)
+        - [`whenever`](#whenever)
+        - [`react`](#react)
+        - [转换 supply / Transforming supplies](#%E8%BD%AC%E6%8D%A2-supply--transforming-supplies)
+        - [结束一个 supply / Ending a supply](#%E7%BB%93%E6%9D%9F%E4%B8%80%E4%B8%AA-supply--ending-a-supply)
+        - [supply 或者 react 代码块中的相位器 / Phasers in a supply or react block](#supply-%E6%88%96%E8%80%85-react-%E4%BB%A3%E7%A0%81%E5%9D%97%E4%B8%AD%E7%9A%84%E7%9B%B8%E4%BD%8D%E5%99%A8--phasers-in-a-supply-or-react-block)
+    - [Channels](#channels)
+    - [Proc::Async](#procasync)
+- [低级 API / Low-level APIs](#%E4%BD%8E%E7%BA%A7-api--low-level-apis)
+    - [线程 / Threads](#%E7%BA%BF%E7%A8%8B--threads)
+    - [调度器 / Schedulers](#%E8%B0%83%E5%BA%A6%E5%99%A8--schedulers)
+        - [线程池调度器 / ThreadPoolScheduler](#%E7%BA%BF%E7%A8%8B%E6%B1%A0%E8%B0%83%E5%BA%A6%E5%99%A8--threadpoolscheduler)
+        - [当前线程调度器 / CurrentThreadScheduler](#%E5%BD%93%E5%89%8D%E7%BA%BF%E7%A8%8B%E8%B0%83%E5%BA%A6%E5%99%A8--currentthreadscheduler)
+    - [锁 / Locks](#%E9%94%81--locks)
+- [安全考虑 / Safety concerns](#%E5%AE%89%E5%85%A8%E8%80%83%E8%99%91--safety-concerns)
+
+<!-- /MarkdownTOC -->
+
+
+<a id="%E9%AB%98%E7%BA%A7%E6%8E%A5%E5%8F%A3--high-level-apis"></a>
 # 高级接口 / High-level APIs
 
+<a id="%E6%89%BF%E8%AF%BA--promises"></a>
 ## 承诺 / Promises
 
 [Promise](https://docs.perl6.org/type/Promise)（在其他编程环境中也叫做 *future*）封装了在获得承诺时可能尚未完成或甚至尚未开始的计算结果。 `Promise` 从 `Planned` 状态开始，结果可能是 `Kept` 状态，意味着该承诺已成功完成，或者 `Broken` 状态，意味着该承诺失败。通常，这是用户代码需要以并发或异步方式操作的大部分功能。
@@ -215,6 +244,7 @@ CATCH { default { say .^name, ': ', .Str } };
 
 The methods that return a promise that will be kept or broken automatically such as `in` or `start` will do this, so it is not necessary to do it for these.
 
+<a id="supplies"></a>
 ## Supplies
 
 [Supply](https://docs.perl6.org/type/Supply) 是异步数据流机制，它能够被一个或者多个消费者同时消费。这种方式类似于其他编程语言的事件。可以视作开启 Perl6 *事件驱动*或者响应式设计。
@@ -320,6 +350,7 @@ live `Supply` 保留数据直到第一个被 tap 的 supply 能被 [Supplier::Pr
 
 A live `Supply` that keeps values until first tapped can be created with [Supplier::Preserving](https://docs.perl6.org/type/Supplier::Preserving).
 
+<a id="whenever"></a>
 ### `whenever`
 
 `whenever` 关键字可以在 supply 或者 react 代码块中使用。 从 6.d 版本开始，需要在他们的词法作用域中被使用。 它引入一个代码块，当它指定的异步事件提示时将运行该代码块。 可以是一个 [Supply](https://docs.perl6.org/type/Supply), [Channel](https://docs.perl6.org/type/Channel), [Promise](https://docs.perl6.org/type/Promise) 或者 [Iterable](https://docs.perl6.org/type/Iterable)。
@@ -353,6 +384,7 @@ $vegetable-supplier.emit("Lettuce");  # OUTPUT: «We've got a vegetable: Lettuce
 
 Please note that one should keep the code inside the `whenever` as small as possible, as only one `whenever` block will be executed at any time. One can use a `start` block inside the `whenever` block to run longer running code.
 
+<a id="react"></a>
 ### `react`
 
 `react` 关键字引入包含一个或者多个 `whenever` 关键字的代码块来监听异步事件。 supply 和 react 代码块之间最主要的区别在于在 react 代码块中的代码按出现的位置运行，而 supply 代码块在做任何事情前都需要被 tap。
@@ -388,6 +420,7 @@ react {
 }
 ```
 
+<a id="%E8%BD%AC%E6%8D%A2-supply--transforming-supplies"></a>
 ### 转换 supply / Transforming supplies
 
 可以过滤或者转换现有的 supply 对象，分别使用 `grep` 和 `map` 方法，以类似于命名列表方法的方式创建新 supply： `grep` 返回一个 supply ，以便只有在源流上发出的 `grep` 条件为真的事件才会在第二个 supply 上发出。
@@ -430,6 +463,7 @@ for 0 .. 10 {
 }
 ```
 
+<a id="%E7%BB%93%E6%9D%9F%E4%B8%80%E4%B8%AA-supply--ending-a-supply"></a>
 ### 结束一个 supply / Ending a supply
 
 如果需要在 supply 结束时执行某个动作，你可以在 `tap` 方法中设置 `done` 和 `quit` 选项：
@@ -448,6 +482,7 @@ $supply.tap: { ... },
 
 The `quit` block works very similar to a `CATCH`. If the exception is marked as seen by a `when` or `default` block, the exception is caught and handled. Otherwise, the exception continues to up the call tree (i.e., the same behavior as when `quit` is not set).
 
+<a id="supply-%E6%88%96%E8%80%85-react-%E4%BB%A3%E7%A0%81%E5%9D%97%E4%B8%AD%E7%9A%84%E7%9B%B8%E4%BD%8D%E5%99%A8--phasers-in-a-supply-or-react-block"></a>
 ### supply 或者 react 代码块中的相位器 / Phasers in a supply or react block
 
 如果你在 `react` 或者 `supply` 代码块语法中使用 `whenever`，你可以在 `whenever` 代码块中添加相位器处理来自被 tap 过的 supply 的 `done` 和 `quit` 消息：
@@ -468,6 +503,7 @@ react {
 
 The behavior here is the same as setting `done` and `quit` on `tap`.
 
+<a id="channels"></a>
 ## Channels
 
 [Channel](https://docs.perl6.org/type/Channel) 是一个线程安全的队列，可以有多个读取器和编写器，可以被认为在操作上类似于 FIFO 或命名管道，除了它不启用进程间通信。应该注意的是，作为一个真正的队列，发送到 [Channel](https://docs.perl6.org/type/Channel) 的每个值只能先读先服务的基础上供单个阅读器使用：如果你希望多个读者能够接收发送的每个项目，你可能需要考虑 [Supply](https://docs.perl6.org/type/Supply)。
@@ -628,6 +664,7 @@ await $p;
 
 `Channel` will return a different [Channel](https://docs.perl6.org/type/Channel) fed with the same data each time it is called. This could be used, for instance, to fan-out a [Supply](https://docs.perl6.org/type/Supply) to one or more [Channel](https://docs.perl6.org/type/Channel)s to provide for different interfaces in a program.
 
+<a id="procasync"></a>
 ## Proc::Async
 
 [Proc::Async](https://docs.perl6.org/type/Proc::Async) 类用来异步运行外部程序以及与外部程序交互：
@@ -685,8 +722,10 @@ say "Done.";
 
 Some programs (such as `grep` without a file argument in this example, ) won't exit until their standard input is closed so [close-stdin](https://docs.perl6.org/type/Proc::Async#method_close-stdin) can be called when you are finished writing to allow the [Promise](https://docs.perl6.org/type/Promise) returned by `start` to be kept.
 
+<a id="%E4%BD%8E%E7%BA%A7-api--low-level-apis"></a>
 # 低级 API / Low-level APIs
 
+<a id="%E7%BA%BF%E7%A8%8B--threads"></a>
 ## 线程 / Threads
 
 最底层的并发接口由 [Thread](https://docs.perl6.org/type/Thread) 提供。一个线程可以认为是一段最终会运行在一个处理器上的代码，它的调度几乎完全由虚拟机和/或操作系统进行安排。线程大都是不受管理的。不管出于什么目的，线程应该考虑避免在用户代码中直接使用线程。
@@ -723,6 +762,7 @@ $thread.finish;
 
 Beyond that there are no further facilities for synchronization or resource sharing which is largely why it should be emphasized that threads are unlikely to be useful directly in user code.
 
+<a id="%E8%B0%83%E5%BA%A6%E5%99%A8--schedulers"></a>
 ## 调度器 / Schedulers
 
 The next level of the concurrency API is supplied by classes that implement the interface defined by the role [Scheduler](https://docs.perl6.org/type/Scheduler). The intent of the scheduler interface is to provide a mechanism to determine which resources to use to run a particular task and when to run it. The majority of the higher level concurrency APIs are built upon a scheduler and it may not be necessary for user code to use them at all, although some methods such as those found in [Proc::Async](https://docs.perl6.org/type/Proc::Async), [Promise](https://docs.perl6.org/type/Promise) and [Supply](https://docs.perl6.org/type/Supply) allow you to explicitly supply a scheduler.
@@ -759,16 +799,19 @@ Despite the apparent advantage the [Scheduler](https://docs.perl6.org/type/Sched
 
 A library may wish to provide an alternative scheduler implementation if it has special requirements, for instance a UI library may want all code to be run within a single UI thread, or some custom priority mechanism may be required, however the implementations provided as standard and described below should suffice for most user code.
 
+<a id="%E7%BA%BF%E7%A8%8B%E6%B1%A0%E8%B0%83%E5%BA%A6%E5%99%A8--threadpoolscheduler"></a>
 ### 线程池调度器 / ThreadPoolScheduler
 
 The [ThreadPoolScheduler](https://docs.perl6.org/type/ThreadPoolScheduler) is the default scheduler, it maintains a pool of threads that are allocated on demand, creating new ones as necessary up to maximum number given as a parameter when the scheduler object was created (the default is 16.) If the maximum is exceeded then `cue` may queue the code until such time as a thread becomes available.
 
 Rakudo allows the maximum number of threads allowed in the default scheduler to be set by the environment variable `RAKUDO_MAX_THREADS` at the time the program is started.
 
+<a id="%E5%BD%93%E5%89%8D%E7%BA%BF%E7%A8%8B%E8%B0%83%E5%BA%A6%E5%99%A8--currentthreadscheduler"></a>
 ### 当前线程调度器 / CurrentThreadScheduler
 
 The [CurrentThreadScheduler](https://docs.perl6.org/type/CurrentThreadScheduler) is a very simple scheduler that will always schedule code to be run straight away on the current thread. The implication is that `cue` on this scheduler will block until the code finishes execution, limiting its utility to certain special cases such as testing.
 
+<a id="%E9%94%81--locks"></a>
 ## 锁 / Locks
 
 The class [Lock](https://docs.perl6.org/type/Lock) provides the low level mechanism that protects shared data in a concurrent environment and is thus key to supporting thread-safety in the high level API, this is sometimes known as a "Mutex" in other programming languages. Because the higher level classes ([Promise](https://docs.perl6.org/type/Promise), [Supply](https://docs.perl6.org/type/Supply) and [Channel](https://docs.perl6.org/type/Channel)) use a [Lock](https://docs.perl6.org/type/Lock) where required it is unlikely that user code will need to use a [Lock](https://docs.perl6.org/type/Lock) directly.
@@ -797,6 +840,7 @@ say $a; # OUTPUT: «10␤»
 
 Because `protect` will block any threads that are waiting to execute the critical section the code should be as quick as possible.
 
+<a id="%E5%AE%89%E5%85%A8%E8%80%83%E8%99%91--safety-concerns"></a>
 # 安全考虑 / Safety concerns
 
 Some shared data concurrency issues are less obvious than others. For a good general write-up on this subject see this [blog post](https://6guts.wordpress.com/2014/04/17/racing-to-writeness-to-wrongness-leads/).
