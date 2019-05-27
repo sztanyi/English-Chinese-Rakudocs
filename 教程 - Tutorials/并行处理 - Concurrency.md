@@ -630,6 +630,8 @@ await $p;
 
 ## Proc::Async
 
+[Proc::Async](https://docs.perl6.org/type/Proc::Async) 类用来异步运行外部程序以及与外部程序交互：
+
 [Proc::Async](https://docs.perl6.org/type/Proc::Async) builds on the facilities described to run and interact with an external program asynchronously:
 
 ```Perl6
@@ -650,7 +652,11 @@ say "Done.";
 # Done. 
 ```
 
+命令的路径以及任何参数可以提供给构造器。当 [start](https://docs.perl6.org/type/Proc::Async#method_start) 方法被调用时命令才会执行，这个方法返回一个在命令退出时状态为 kept 的 [Promise](https://docs.perl6.org/type/Promise)对象。程序的标准输出和标准错误管道就是 [Supply](https://docs.perl6.org/type/Supply) 对象，可分别通过 Proc::Async 的 [stdout](https://docs.perl6.org/type/Proc::Async#method_stdout) 以及 [stderr](https://docs.perl6.org/type/Proc::Async#method_stderr) 方法获得，这些 Supply 对象可按需通过 `tap` 方法使用。
+
 The path to the command as well as any arguments to the command are supplied to the constructor. The command will not be executed until [start](https://docs.perl6.org/type/Proc::Async#method_start) is called, which will return a [Promise](https://docs.perl6.org/type/Promise) that will be kept when the program exits. The standard output and standard error of the program are available as [Supply](https://docs.perl6.org/type/Supply) objects from the methods [stdout](https://docs.perl6.org/type/Proc::Async#method_stdout) and [stderr](https://docs.perl6.org/type/Proc::Async#method_stderr) respectively which can be tapped as required.
+
+如果你想要对程序的标准输入进行写入，你可以给 Proc::Async 构造器加上 `:w` 动词并且在命令程序开始运行后使用 [write](https://docs.perl6.org/type/Proc::Async#method_write)，[print](https://docs.perl6.org/type/Proc::Async#method_print) 或者 [say](https://docs.perl6.org/type/Proc::Async#method_say) 方法向打开的管道写入：
 
 If you want to write to the standard input of the program you can supply the `:w` adverb to the constructor and use the methods [write](https://docs.perl6.org/type/Proc::Async#method_write), [print](https://docs.perl6.org/type/Proc::Async#method_print) or [say](https://docs.perl6.org/type/Proc::Async#method_say) to write to the opened pipe once the program has been started:
 
@@ -675,13 +681,19 @@ say "Done.";
 # Done. 
 ```
 
+有些程序（例如此例中未加文件参数的 `grep`）不会退出知道他们的标准输入管道被关闭。因此在完成写入后可以调用 [close-stdin](https://docs.perl6.org/type/Proc::Async#method_close-stdin) 方法用来关闭程序的标准输入使得 `start` 方法返回的 [Promise](https://docs.perl6.org/type/Promise) 对象为 kept 状态。
+
 Some programs (such as `grep` without a file argument in this example, ) won't exit until their standard input is closed so [close-stdin](https://docs.perl6.org/type/Proc::Async#method_close-stdin) can be called when you are finished writing to allow the [Promise](https://docs.perl6.org/type/Promise) returned by `start` to be kept.
 
-# Low-level APIs
+# 低级 API / Low-level APIs
 
-## Threads
+## 线程 / Threads
+
+最底层的并发接口由 [Thread](https://docs.perl6.org/type/Thread) 提供。一个线程可以认为是一段最终会运行在一个处理器上的代码，它的调度几乎完全由虚拟机和/或操作系统进行安排。线程大都是不受管理的。不管出于什么目的，线程应该考虑避免在用户代码中直接使用线程。
 
 The lowest level interface for concurrency is provided by [Thread](https://docs.perl6.org/type/Thread). A thread can be thought of as a piece of code that may eventually be run on a processor, the arrangement for which is made almost entirely by the virtual machine and/or operating system. Threads should be considered, for all intents, largely un-managed and their direct use should be avoided in user code.
+
+线程既可以先创建稍后实际运行
 
 A thread can either be created and then actually run later:
 
@@ -691,11 +703,15 @@ my $thread = Thread.new(code => { for  1 .. 10  -> $v { say $v }});
 $thread.run;
 ```
 
+或者可以在单个调用中创建和运行
+
 Or can be created and run at a single invocation:
 
 ```Perl6
 my $thread = Thread.start({ for  1 .. 10  -> $v { say $v }});
 ```
+
+两种情形中，在调用 `finish` 方法后线程都会阻塞并且等待 [Thread](https://docs.perl6.org/type/Thread) 对象封装的代码执行完成：
 
 In both cases the completion of the code encapsulated by the [Thread](https://docs.perl6.org/type/Thread) object can be waited on with the `finish` method which will block until the thread completes:
 
@@ -703,9 +719,11 @@ In both cases the completion of the code encapsulated by the [Thread](https://do
 $thread.finish;
 ```
 
+除此之外，没有进一步的同步或资源共享工具，我们强调线程不可能直接在用户代码中有用，这个因素占了很大比例。
+
 Beyond that there are no further facilities for synchronization or resource sharing which is largely why it should be emphasized that threads are unlikely to be useful directly in user code.
 
-## Schedulers
+## 调度器 / Schedulers
 
 The next level of the concurrency API is supplied by classes that implement the interface defined by the role [Scheduler](https://docs.perl6.org/type/Scheduler). The intent of the scheduler interface is to provide a mechanism to determine which resources to use to run a particular task and when to run it. The majority of the higher level concurrency APIs are built upon a scheduler and it may not be necessary for user code to use them at all, although some methods such as those found in [Proc::Async](https://docs.perl6.org/type/Proc::Async), [Promise](https://docs.perl6.org/type/Promise) and [Supply](https://docs.perl6.org/type/Supply) allow you to explicitly supply a scheduler.
 
@@ -741,17 +759,17 @@ Despite the apparent advantage the [Scheduler](https://docs.perl6.org/type/Sched
 
 A library may wish to provide an alternative scheduler implementation if it has special requirements, for instance a UI library may want all code to be run within a single UI thread, or some custom priority mechanism may be required, however the implementations provided as standard and described below should suffice for most user code.
 
-### ThreadPoolScheduler
+### 线程池调度器 / ThreadPoolScheduler
 
 The [ThreadPoolScheduler](https://docs.perl6.org/type/ThreadPoolScheduler) is the default scheduler, it maintains a pool of threads that are allocated on demand, creating new ones as necessary up to maximum number given as a parameter when the scheduler object was created (the default is 16.) If the maximum is exceeded then `cue` may queue the code until such time as a thread becomes available.
 
 Rakudo allows the maximum number of threads allowed in the default scheduler to be set by the environment variable `RAKUDO_MAX_THREADS` at the time the program is started.
 
-### CurrentThreadScheduler
+### 当前线程调度器 / CurrentThreadScheduler
 
 The [CurrentThreadScheduler](https://docs.perl6.org/type/CurrentThreadScheduler) is a very simple scheduler that will always schedule code to be run straight away on the current thread. The implication is that `cue` on this scheduler will block until the code finishes execution, limiting its utility to certain special cases such as testing.
 
-## Locks
+## 锁 / Locks
 
 The class [Lock](https://docs.perl6.org/type/Lock) provides the low level mechanism that protects shared data in a concurrent environment and is thus key to supporting thread-safety in the high level API, this is sometimes known as a "Mutex" in other programming languages. Because the higher level classes ([Promise](https://docs.perl6.org/type/Promise), [Supply](https://docs.perl6.org/type/Supply) and [Channel](https://docs.perl6.org/type/Channel)) use a [Lock](https://docs.perl6.org/type/Lock) where required it is unlikely that user code will need to use a [Lock](https://docs.perl6.org/type/Lock) directly.
 
@@ -779,7 +797,7 @@ say $a; # OUTPUT: «10␤»
 
 Because `protect` will block any threads that are waiting to execute the critical section the code should be as quick as possible.
 
-# Safety concerns
+# 安全考虑 / Safety concerns
 
 Some shared data concurrency issues are less obvious than others. For a good general write-up on this subject see this [blog post](https://6guts.wordpress.com/2014/04/17/racing-to-writeness-to-wrongness-leads/).
 
