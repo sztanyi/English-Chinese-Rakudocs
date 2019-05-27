@@ -20,4 +20,5 @@ Official documentation address: https://docs.perl6.org/language.html
     - [类和对象 - Classes and Objects](https://github.com/sztanyi/perl6doc/blob/master/%E6%95%99%E7%A8%8B%20-%20Tutorials/%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1%20-%20Classes%20and%20Objects.md)
     - [并行处理 - Concurrency](https://github.com/sztanyi/perl6doc/blob/master/%E6%95%99%E7%A8%8B%20-%20Tutorials/%E5%B9%B6%E8%A1%8C%E5%A4%84%E7%90%86%20-%20Concurrency.md)
 - [类型 - Type](https://github.com/sztanyi/perl6doc/tree/master/%E7%B1%BB%E5%9E%8B%20-%20Type)
-    - [签名 - Signature.md](https://github.com/sztanyi/perl6doc/blob/master/%E7%B1%BB%E5%9E%8B%20-%20Type/%E5%9F%BA%E7%A1%80%20-%20Basic/%E7%AD%BE%E5%90%8D%20-%20Signature.md)
+    - [类型 - Type](https://github.com/sztanyi/perl6doc/tree/master/%E7%B1%BB%E5%9E%8B%20-%20Type)
+        - [签名 - Signature.md](https://github.com/sztanyi/perl6doc/blob/master/%E7%B1%BB%E5%9E%8B%20-%20Type/%E5%9F%BA%E7%A1%80%20-%20Basic/%E7%AD%BE%E5%90%8D%20-%20Signature.md)
