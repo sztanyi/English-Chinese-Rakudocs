@@ -2,14 +2,16 @@
 
 Status/result of an asynchronous computation
 
-```
+一个异步计算单元的状态/结果
+
+```Perl6
 my enum PromiseStatus (:Planned(0), :Kept(1), :Broken(2));
 class Promise {}
 ```
 
 A *Promise* is used to handle the result of a computation that might not have finished. It allows the user to execute code once the computation is done (with the `then` method), execution after a time delay (with `in`), combining promises, and waiting for results.
 
-```
+```Perl6
 my $p = Promise.start({ sleep 2; 42});
 $p.then({ say .result });   # will print 42 once the block finished 
 say $p.status;              # OUTPUT: «Planned␤» 
@@ -21,7 +23,7 @@ There are two typical scenarios for using promises. The first is to use a factor
 
 The second is to create your promises yourself with `Promise.new`. If you want to ensure that only your code can keep or break the promise, you can use the `vow` method to get a unique handle, and call `keep` or `break` on it:
 
-```
+```Perl6
 sub async-get-with-promise($user-agent, $url) {
     my $p = Promise.new;
     my $v = $p.vow;
@@ -46,7 +48,7 @@ Further examples can be found in the [concurrency page](https://docs.perl6.org/l
 
 ## [method start](https://docs.perl6.org/type/Promise#___top)
 
-```
+```Perl6
 method start(Promise:U: &code, :$scheduler = $*SCHEDULER --> Promise:D)
 ```
 
@@ -56,7 +58,7 @@ The scheduler that handles this promise can be passed as a named argument.
 
 There is also a statement prefix `start` that provides syntactic sugar for this method:
 
-```
+```Perl6
 # these two are equivalent: 
 my $p1 = Promise.start({ ;#`( do something here ) });
 my $p2 = start { ;#`( do something here ) };
@@ -64,7 +66,7 @@ my $p2 = start { ;#`( do something here ) };
 
 As of the 6.d version of the language, `start` statement prefix used in [sink](https://docs.perl6.org/routine/sink) context will automatically attach an exceptions handler. If an exception occurs in the given code, it will be printed and the program will then exit, like if it were thrown without any `start` statement prefixes involved.
 
-```
+```Perl6
 use v6.c;
 start { die }; sleep ⅓; say "hello"; # OUTPUT: «hello␤» 
 use v6.d;
@@ -77,7 +79,7 @@ start { die }; sleep ⅓; say "hello";
 
 If you wish to avoid this behavior, use `start` in non-sink context or catch the exception yourself:
 
-```
+```Perl6
 # Don't sink it: 
 my $ = start { die }; sleep ⅓; say "hello"; # OUTPUT: «hello␤» 
  
@@ -92,13 +94,13 @@ This behavior exists only syntactically, by using an alternate `.sink` method fo
 
 ## [method in](https://docs.perl6.org/type/Promise#___top)
 
-```
+```Perl6
 method in(Promise:U: $seconds, :$scheduler = $*SCHEDULER --> Promise:D)
 ```
 
 Creates a new Promise that will be kept in `$seconds` seconds, or later.
 
-```
+```Perl6
 my $proc = Proc::Async.new('perl6', '-e', 'sleep 10; warn "end"');
  
 my $result = await Promise.anyof(
@@ -119,13 +121,13 @@ Please note that situations like these are often more clearly handled with a [re
 
 ## [method at](https://docs.perl6.org/type/Promise#___top)
 
-```
+```Perl6
 method at(Promise:U: $at, :$scheduler = $*SCHEDULER --> Promise:D)
 ```
 
 Creates a new `Promise` that will be kept `$at` the given time—which is given as an [Instant](https://docs.perl6.org/type/Instant) or equivalent [Numeric](https://docs.perl6.org/type/Numeric)—or as soon as possible after it.
 
-```
+```Perl6
 my $p = Promise.at(now + 2).then({ say "2 seconds later" });
 # do other stuff here 
  
@@ -138,7 +140,7 @@ Please note that situations like these are often more clearly handled with a [re
 
 ## [method kept](https://docs.perl6.org/type/Promise#___top)
 
-```
+```Perl6
 multi method kept(Promise:U: \result = True --> Promise:D)
 ```
 
@@ -146,7 +148,7 @@ Returns a new promise that is already kept, either with the given value, or with
 
 ## [method broken](https://docs.perl6.org/type/Promise#___top)
 
-```
+```Perl6
 multi method broken(Promise:U: --> Promise:D)
 multi method broken(Promise:U: \exception --> Promise:D)
 ```
@@ -155,7 +157,7 @@ Returns a new promise that is already broken, either with the given value, or wi
 
 ## [method allof](https://docs.perl6.org/type/Promise#___top)
 
-```
+```Perl6
 method allof(Promise:U: *@promises --> Promise:D)
 ```
 
@@ -163,7 +165,7 @@ Returns a new promise that will be kept when all the promises passed as argument
 
 In the following requesting the `result` of a broken promise will cause the original Exception to be thrown. (You may need to run it several times to see the exception.)
 
-```
+```Perl6
 my @promises;
 for 1..5 -> $t {
     push @promises, start {
@@ -178,7 +180,7 @@ say "Promises kept so we get to live another day!";
 
 ## [method anyof](https://docs.perl6.org/type/Promise#___top)
 
-```
+```Perl6
 method anyof(Promise:U: *@promises --> Promise:D)
 ```
 
@@ -186,7 +188,7 @@ Returns a new promise that will be kept as soon as any of the promises passed as
 
 You can use this to wait at most a number of seconds for a promise:
 
-```
+```Perl6
 my $timeout = 5;
 await Promise.anyof(
     Promise.in($timeout),
@@ -198,13 +200,13 @@ await Promise.anyof(
 
 ## [method then](https://docs.perl6.org/type/Promise#___top)
 
-```
+```Perl6
 method then(Promise:D: &code)
 ```
 
 Schedules a piece of code to be run after the invocant has been kept or broken, and returns a new promise for this computation. In other words, creates a chained promise.
 
-```
+```Perl6
 my $timer = Promise.in(2);
 my $after = $timer.then({ say "2 seconds are over!"; 'result' });
 say $after.result;  # 2 seconds are over 
@@ -213,7 +215,7 @@ say $after.result;  # 2 seconds are over
 
 ## [method keep](https://docs.perl6.org/type/Promise#___top)
 
-```
+```Perl6
 multi method keep(Promise:D: \result = True)
 ```
 
@@ -221,7 +223,7 @@ Keeps a promise, optionally setting the result. If no result is passed, the resu
 
 Throws an exception of type `X::Promise::Vowed` if a vow has already been taken. See method `vow` for more information.
 
-```
+```Perl6
 my $p = Promise.new;
  
 if Bool.pick {
@@ -234,7 +236,7 @@ else {
 
 ## [method break](https://docs.perl6.org/type/Promise#___top)
 
-```
+```Perl6
 multi method break(Promise:D: \cause = False)
 ```
 
@@ -242,7 +244,7 @@ Breaks a promise, optionally setting the cause. If no cause is passed, the cause
 
 Throws an exception of type `X::Promise::Vowed` if a vow has already been taken. See method `vow` for more information.
 
-```
+```Perl6
 my $p = Promise.new;
  
 $p.break('sorry');
@@ -252,7 +254,7 @@ say $p.cause;           # OUTPUT: «sorry␤»
 
 ## [method result](https://docs.perl6.org/type/Promise#___top)
 
-```
+```Perl6
 method result(Promise:D)
 ```
 
@@ -260,7 +262,7 @@ Waits for the promise to be kept or broken. If it is kept, returns the result; o
 
 ## [method cause](https://docs.perl6.org/type/Promise#___top)
 
-```
+```Perl6
 method cause(Promise:D)
 ```
 
@@ -268,7 +270,7 @@ If the promise was broken, returns the result (or exception). Otherwise, throws 
 
 ## [method Bool](https://docs.perl6.org/type/Promise#___top)
 
-```
+```Perl6
 multi method Bool(Promise:D:)
 ```
 
@@ -276,19 +278,19 @@ Returns `True` for a kept or broken promise, and `False` for one in state `Plann
 
 ## [method status](https://docs.perl6.org/type/Promise#___top)
 
-```
+```Perl6
 method status(Promise:D --> PromiseStatus)
 ```
 
 Returns the current state of the promise: `Kept`, `Broken` or `Planned`:
 
-```
+```Perl6
 say "promise got Kept" if $promise.status ~~ Kept;
 ```
 
 ## [method scheduler](https://docs.perl6.org/type/Promise#___top)
 
-```
+```Perl6
 method scheduler(Promise:D:)
 ```
 
@@ -296,7 +298,7 @@ Returns the scheduler that manages the promise.
 
 ## [method vow](https://docs.perl6.org/type/Promise#___top)
 
-```
+```Perl6
 my class Vow {
     has Promise $.promise;
     method keep() { ... }
@@ -307,7 +309,7 @@ method vow(Promise:D: --> Vow:D)
 
 Returns an object that holds the sole authority over keeping or breaking a promise. Calling `keep` or `break` on a promise that has vow taken throws an exception of type `X::Promise::Vowed`.
 
-```
+```Perl6
 my $p   = Promise.new;
 my $vow = $p.vow;
 $vow.keep($p);
@@ -316,7 +318,7 @@ say $p.status;          # OUTPUT: «Kept␤»
 
 ## [method Supply](https://docs.perl6.org/type/Promise#___top)
 
-```
+```Perl6
 method Supply(Promise:D:)
 ```
 
@@ -324,7 +326,7 @@ Returns a [Supply](https://docs.perl6.org/type/Supply) that will emit the `resul
 
 ## [sub await](https://docs.perl6.org/type/Promise#___top)
 
-```
+```Perl6
 multi sub await(Promise:D --> Promise)
 multi sub await(*@ --> Array)
 ```

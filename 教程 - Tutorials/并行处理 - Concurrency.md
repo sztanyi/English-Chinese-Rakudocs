@@ -69,7 +69,7 @@ CATCH { default { say .^name, ': ', .Str } };
 # OUTPUT: «X::AdHoc+{X::Promise::Broken}: oh no␤» 
 ```
 
-Promises 通过可组合特性获得其大部分能力，例如通过链式调用，通常通过 [then](https://docs.perl6.org/type/Promise#method_then) 方法：
+Promise 组合能获得很多能力，例如通过链式调用，通常通过 [then](https://docs.perl6.org/type/Promise#method_then) 方法：
 
 Promises gain much of their power by being composable, for example by chaining, usually by the [then](https://docs.perl6.org/type/Promise#method_then) method:
 
@@ -82,7 +82,7 @@ $promise1.keep("First Result");
 say $promise2.result;   # OUTPUT: «First Result␤Second Result␤» 
 ```
 
-这里的 [then](https://docs.perl6.org/type/Promise#method_then) 方法参数中的代码会在第一个 [Promise](https://docs.perl6.org/type/Promise) 被 kept 或者 broken 时执行，其本身返回一个新的 [Promise](https://docs.perl6.org/type/Promise)，当代码执行成功并返回结果时 Promise 为 Kept 状态 （如果代码失败则为 broken 状态）。 `keep` 方法改变 promise 的状态为 `Kept` 并设置 promise 的返回值为 `keep` 的位置参数。 `result` 方法阻塞当前线程的执行直到 promise 被 kept 或者 broken，如果是 kept 则返回结果（即传给 `keep` 方法的值），否则它将基于传给 `break` 方法的值抛出异常。 后一种行为代码示例：
+这里的 [then](https://docs.perl6.org/type/Promise#method_then) 方法参数中的代码会在第一个 [Promise](https://docs.perl6.org/type/Promise) 被 kept 或者 broken 时执行，其本身返回一个新的 [Promise](https://docs.perl6.org/type/Promise)，当代码执行成功并返回结果时 Promise 为 Kept 状态 （如果代码失败则为 broken 状态）。 `keep` 方法改变 promise 的状态为 `Kept` 并设置 promise 的返回值为 `keep` 的位置参数。 `result` 方法阻塞当前线程的执行直到 promise 状态为 kept 或 broken，如果是 kept 则返回结果（即传给 `keep` 方法的值），否则它将基于传给 `break` 方法的值抛出异常。 后一种行为代码示例：
 
 Here the [then](https://docs.perl6.org/type/Promise#method_then) method schedules code to be executed when the first [Promise](https://docs.perl6.org/type/Promise) is kept or broken, itself returning a new [Promise](https://docs.perl6.org/type/Promise) which will be kept with the result of the code when it is executed (or broken if the code fails). `keep` changes the status of the promise to `Kept` setting the result to the positional argument. `result` blocks the current thread of execution until the promise is kept or broken, if it was kept then it will return the result (that is the value passed to `keep`), otherwise it will throw an exception based on the value passed to `break`. The latter behavior is illustrated with:
 
@@ -112,7 +112,7 @@ promise 的方法 [in](https://docs.perl6.org/type/Promise#method_in) 创建一�
 
 The [method in](https://docs.perl6.org/type/Promise#method_in) creates a new promise and schedules a new task to call `keep` on it no earlier than the supplied number of seconds, returning the new [Promise](https://docs.perl6.org/type/Promise) object.
 
-promise 常用场景是运行一段代码，代码返回成功则 keep，代码失败则 break。 [start](https://docs.perl6.org/type/Promise#method_start) 为其便捷方式：
+promise 非常常用的场景是运行一段代码，代码成功返回则 keep promise，代码退出则 break。 [start](https://docs.perl6.org/type/Promise#method_start) 方法为其快捷方式：
 
 A very frequent use of promises is to run a piece of code, and keep the promise once it returns successfully, or break it when the code dies. The [start method](https://docs.perl6.org/type/Promise#method_start) provides a shortcut for that:
 
@@ -123,7 +123,7 @@ my $promise = Promise.start(
 say $promise.result;    # OUTPUT: «55␤» 
 ```
 
-promise 的 `result` 方法的返回值就是 start 中代码的返回值。 如果代码失败（则promise broken），那么 `cause` 方法的返回值就会是抛出的 [Exception](https://docs.perl6.org/type/Exception) 对象：
+promise 的 `result` 方法的返回值就是 start 中代码的返回值。 如果代码失败（则 promise broken），那么 `cause` 方法的返回值就会是抛出的 [Exception](https://docs.perl6.org/type/Exception) 对象：
 
 Here the `result` of the promise returned is the value returned from the code. Similarly if the code fails (and the promise is thus broken), then `cause` will be the [Exception](https://docs.perl6.org/type/Exception) object that was thrown:
 
@@ -758,22 +758,30 @@ In both cases the completion of the code encapsulated by the [Thread](https://do
 $thread.finish;
 ```
 
-除此之外，没有进一步的同步或资源共享工具，我们强调线程不可能直接在用户代码中有用，这个因素占了很大比例。
+除此之外，没有进一步的同步或资源共享工具，我们强调线程不可能直接在用户代码中有用，这是主要原因。
 
 Beyond that there are no further facilities for synchronization or resource sharing which is largely why it should be emphasized that threads are unlikely to be useful directly in user code.
 
 <a id="%E8%B0%83%E5%BA%A6%E5%99%A8--schedulers"></a>
 ## 调度器 / Schedulers
 
+实现了角色 [Scheduler](https://docs.perl6.org/type/Scheduler) 中定义的接口的类提供并发 API 的下一个级别。调度器接口的目的是提供一种机制，以确定运行特定任务所需的资源以及何时运行该任务。大多数高级并发 API 都是建立在调度器上的，用户代码可能根本不需要使用它们。尽管有些在 [Proc::Async](https://docs.perl6.org/type/Proc::Async)，[Promise](https://docs.perl6.org/type/Promise) 以及 [Supply](https://docs.perl6.org/type/Supply) 中的方法允许你显式地提供一个调度器。
+
 The next level of the concurrency API is supplied by classes that implement the interface defined by the role [Scheduler](https://docs.perl6.org/type/Scheduler). The intent of the scheduler interface is to provide a mechanism to determine which resources to use to run a particular task and when to run it. The majority of the higher level concurrency APIs are built upon a scheduler and it may not be necessary for user code to use them at all, although some methods such as those found in [Proc::Async](https://docs.perl6.org/type/Proc::Async), [Promise](https://docs.perl6.org/type/Promise) and [Supply](https://docs.perl6.org/type/Supply) allow you to explicitly supply a scheduler.
 
+当前默认全局计划程序在变量 `$*SCHEDULER` 中可用。
+
 The current default global scheduler is available in the variable `$*SCHEDULER`.
+
+调度程序的主接口（实际上是 [Scheduler](https://docs.perl6.org/type/Scheduler) 接口所需的唯一方法）是 `cue` 方法：
 
 The primary interface of a scheduler (indeed the only method required by the [Scheduler](https://docs.perl6.org/type/Scheduler) interface) is the `cue` method:
 
 ```Perl6
 method cue(:&code, Instant :$at, :$in, :$every, :$times = 1; :&catch)
 ```
+
+这将在 `&code` 中安排 [Callable](https://docs.perl6.org/type/Callable) 以副词确定的方式执行（如 [Scheduler](https://docs.perl6.org/type/Scheduler) 中所述），使用调度器实现的执行方案。例如：
 
 This will schedule the [Callable](https://docs.perl6.org/type/Callable) in `&code` to be executed in the manner determined by the adverbs (as documented in [Scheduler](https://docs.perl6.org/type/Scheduler)) using the execution scheme as implemented by the scheduler. For example:
 
@@ -782,6 +790,8 @@ my $i = 0;
 my $cancellation = $*SCHEDULER.cue({ say $i++}, every => 2 );
 sleep 20;
 ```
+
+假设 `$*SCHEDULER` 没有从默认值更改，大约每两秒钟打印一次数字 0 到 10 （即操作系统调度容差）。在这种情况下，代码将按计划运行，直到程序正常结束，但是该方法返回一个 [Cancellation](https://docs.perl6.org/type/Cancellation) 对象，可用于在正常完成之前取消计划的执行：
 
 Assuming that the `$*SCHEDULER` hasn't been changed from the default, will print the numbers 0 to 10 approximately (i.e with operating system scheduling tolerances) every two seconds. In this case the code will be scheduled to run until the program ends normally, however the method returns a [Cancellation](https://docs.perl6.org/type/Cancellation) object which can be used to cancel the scheduled execution before normal completion:
 
@@ -793,28 +803,44 @@ $cancellation.cancel;
 sleep 10;
 ```
 
+应该只输出 0 到 5。
+
 should only output 0 to 5.
 
+尽管 [Scheduler](https://docs.perl6.org/type/Scheduler) 接口明显优于 [Thread](https://docs.perl6.org/type/Thread) 接口，但所有功能都可以通过更高级别的接口使用，不需要直接使用调度器，除非在上面提到的情况下，调度器可以显式地提供给某些方法。
+
 Despite the apparent advantage the [Scheduler](https://docs.perl6.org/type/Scheduler) interface provides over that of [Thread](https://docs.perl6.org/type/Thread) all of functionality is available through higher level interfaces and it shouldn't be necessary to use a scheduler directly, except perhaps in the cases mentioned above where a scheduler can be supplied explicitly to certain methods.
+
+如果库有特殊要求它可能希望提供另一种调度器的实现，例如，UI 库可能希望所有代码都在单个 UI 线程内运行，或者可能需要某些自定义优先级机制，但作为标准提供的实现和下面描述的实现应足以满足大多数用户代码。
 
 A library may wish to provide an alternative scheduler implementation if it has special requirements, for instance a UI library may want all code to be run within a single UI thread, or some custom priority mechanism may be required, however the implementations provided as standard and described below should suffice for most user code.
 
 <a id="%E7%BA%BF%E7%A8%8B%E6%B1%A0%E8%B0%83%E5%BA%A6%E5%99%A8--threadpoolscheduler"></a>
 ### 线程池调度器 / ThreadPoolScheduler
 
+[ThreadPoolScheduler](https://docs.perl6.org/type/ThreadPoolScheduler) 是默认的调度器，它维护一个按需分配的线程池，必要时创造新的线程直到最大值，这个值在调度器创建时作为参数传给调度器对象（默认是 16）。 如果超过了最大线程数，那么 `cue` 方法会将代码排队直到有新线程可用。
+
 The [ThreadPoolScheduler](https://docs.perl6.org/type/ThreadPoolScheduler) is the default scheduler, it maintains a pool of threads that are allocated on demand, creating new ones as necessary up to maximum number given as a parameter when the scheduler object was created (the default is 16.) If the maximum is exceeded then `cue` may queue the code until such time as a thread becomes available.
+
+Rakudo 允许默认调度器中允许的最大线程数由程序启动时的环境变量 `RAKUDO_MAX_THREADS` 设置。
 
 Rakudo allows the maximum number of threads allowed in the default scheduler to be set by the environment variable `RAKUDO_MAX_THREADS` at the time the program is started.
 
 <a id="%E5%BD%93%E5%89%8D%E7%BA%BF%E7%A8%8B%E8%B0%83%E5%BA%A6%E5%99%A8--currentthreadscheduler"></a>
 ### 当前线程调度器 / CurrentThreadScheduler
 
+[CurrentThreadScheduler](https://docs.perl6.org/type/CurrentThreadScheduler) 是一个非常简单的调度器，调度代码直接运行在当前线程中。对这个调度器调用 `cue` 方法将会阻塞线程直到代码完成，将其效用限制在某些特殊情况下，如测试。
+
 The [CurrentThreadScheduler](https://docs.perl6.org/type/CurrentThreadScheduler) is a very simple scheduler that will always schedule code to be run straight away on the current thread. The implication is that `cue` on this scheduler will block until the code finishes execution, limiting its utility to certain special cases such as testing.
 
 <a id="%E9%94%81--locks"></a>
 ## 锁 / Locks
 
+[Lock](https://docs.perl6.org/type/Lock) 类提供底层机制，用来在并行环境中保护共享数据，因此在高级 API 中支持线程安全发挥关键作用。在其他编程语言中有时被称为"互斥锁"。因为更高级别类（[Promise](https://docs.perl6.org/type/Promise), [Supply](https://docs.perl6.org/type/Supply) 以及 [Channel](https://docs.perl6.org/type/Channel）在需要时会使用 [Lock](https://docs.perl6.org/type/Lock)，用户没必要直接使用 [Lock](https://docs.perl6.org/type/Lock)。
+
 The class [Lock](https://docs.perl6.org/type/Lock) provides the low level mechanism that protects shared data in a concurrent environment and is thus key to supporting thread-safety in the high level API, this is sometimes known as a "Mutex" in other programming languages. Because the higher level classes ([Promise](https://docs.perl6.org/type/Promise), [Supply](https://docs.perl6.org/type/Supply) and [Channel](https://docs.perl6.org/type/Channel)) use a [Lock](https://docs.perl6.org/type/Lock) where required it is unlikely that user code will need to use a [Lock](https://docs.perl6.org/type/Lock) directly.
+
+[Lock](https://docs.perl6.org/type/Lock) 类的主要接口是 [protect](https://docs.perl6.org/type/Lock#method_protect) 方法，用来确保代码块（通常称为“临界区”）一次只在一个线程中执行。
 
 The primary interface to [Lock](https://docs.perl6.org/type/Lock) is the method [protect](https://docs.perl6.org/type/Lock#method_protect) which ensures that a block of code (commonly called a "critical section") is only executed in one thread at a time:
 
@@ -836,14 +862,22 @@ await (^10).map: {
 say $a; # OUTPUT: «10␤» 
 ```
 
+`protect` 的返回值就是代码块的返回值。
+
 `protect` returns whatever the code block returns.
+
+因为 `protect` 会阻止任何等待执行临界区的线程，所以代码应该尽可能快。
 
 Because `protect` will block any threads that are waiting to execute the critical section the code should be as quick as possible.
 
 <a id="%E5%AE%89%E5%85%A8%E8%80%83%E8%99%91--safety-concerns"></a>
 # 安全考虑 / Safety concerns
 
+有些共享数据并发问题并不明显。关于这一主题的一般性报道，请参见[博客文章](https://6guts.wordpress.com/2014/04/17/racing-to-writeness-to-wrongness-leads/)。
+
 Some shared data concurrency issues are less obvious than others. For a good general write-up on this subject see this [blog post](https://6guts.wordpress.com/2014/04/17/racing-to-writeness-to-wrongness-leads/).
+
+一个特别的问题是当容器自动生动化或扩展发生时。当初始分配了一个 [Array](https://docs.perl6.org/type/Array) 或一个 [Hash](https://docs.perl6.org/type/Hash) 条目时，底层结构将被更改，并且该操作不是异步安全的。例如，在此代码中：
 
 One particular issue of note is when container autovivification or extension takes place. When an [Array](https://docs.perl6.org/type/Array) or a [Hash](https://docs.perl6.org/type/Hash) entry is initially assigned the underlying structure is altered and that operation is not async safe. For example, in this code:
 
@@ -852,6 +886,8 @@ my @array;
 my $slot := @array[20];
 $slot = 'foo';
 ```
+
+第三行是临界区，即当数组扩展时。最简单的修复方法是使用 [Lock](https://docs.perl6.org/type/Lock) 来保护关键部分。一个可能更好的解决方法是重构代码，不使用共享容器。
 
 The third line is the critical section as that is when the array is extended. The simplest fix is to use a [Lock](https://docs.perl6.org/type/Lock) to protect the critical section. A possibly better fix would be to refactor the code so that sharing a container is not necessary.
 
