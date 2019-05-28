@@ -49,7 +49,7 @@ Additionally, certain Perl features may implicitly operate in an asynchronous fa
 <a id="%E6%89%BF%E8%AF%BA--promises"></a>
 ## 承诺 / Promises
 
-[Promise](https://docs.perl6.org/type/Promise)（在其他编程环境中也叫做 *future*）封装了在获得承诺时可能尚未完成或甚至尚未开始的计算结果。 `Promise` 从 `Planned` 状态开始，结果可能是 `Kept` 状态，意味着该承诺已成功完成，或者 `Broken` 状态，意味着该承诺失败。通常，这是用户代码需要以并发或异步方式操作的大部分功能。
+[Promise](https://docs.perl6.org/type/Promise)（在其他编程环境中也叫做 *future*）封装了在获得 promise 时可能尚未完成或甚至尚未开始的计算结果。 `Promise` 从 `Planned` 状态开始，结果可能是 `Kept` 状态，意味着该 promise 已成功完成，或者 `Broken` 状态，意味着该 promise 失败。通常，这是用户代码需要以并发或异步方式操作的大部分功能。
 
 A [Promise](https://docs.perl6.org/type/Promise) (also called *future* in other programming environments) encapsulates the result of a computation that may not have completed or even started at the time the promise is obtained. A `Promise` starts from a `Planned` status and can result in either a `Kept` status, meaning the promise has been successfully completed, or a `Broken` status meaning that the promise has failed. Usually this is much of the functionality that user code needs to operate in a concurrent or asynchronous manner.
 
@@ -69,7 +69,7 @@ CATCH { default { say .^name, ': ', .Str } };
 # OUTPUT: «X::AdHoc+{X::Promise::Broken}: oh no␤» 
 ```
 
-Promise 组合能获得很多能力，例如通过链式调用，通常通过 [then](https://docs.perl6.org/type/Promise#method_then) 方法：
+Promise 通过可组合特性获得很大的力量，例如通过链式调用，通常通过 [then](https://docs.perl6.org/type/Promise#method_then) 方法：
 
 Promises gain much of their power by being composable, for example by chaining, usually by the [then](https://docs.perl6.org/type/Promise#method_then) method:
 
