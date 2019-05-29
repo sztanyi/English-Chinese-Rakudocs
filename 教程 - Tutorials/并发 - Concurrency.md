@@ -1,6 +1,6 @@
 原文：https://docs.perl6.org/language/concurrency
 
-# 并行处理 / Concurrency
+# 并发 / Concurrency
 
 并发与异步编程
 
