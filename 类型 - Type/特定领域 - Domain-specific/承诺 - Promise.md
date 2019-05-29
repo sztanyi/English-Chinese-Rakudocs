@@ -9,6 +9,8 @@ my enum PromiseStatus (:Planned(0), :Kept(1), :Broken(2));
 class Promise {}
 ```
 
+*Promise* 用于处理可能尚未完成的计算结果。它允许用户在计算完成后执行代码 （通过 `then` 方法），延迟一定时间后执行代码，合并 promise 并等待计算完成后的结果。
+
 A *Promise* is used to handle the result of a computation that might not have finished. It allows the user to execute code once the computation is done (with the `then` method), execution after a time delay (with `in`), combining promises, and waiting for results.
 
 ```Perl6
@@ -19,7 +21,11 @@ $p.result;                  # waits for the computation to finish
 say $p.status;              # OUTPUT: «Kept␤» 
 ```
 
+使用 promise 有两个典型使用场景。第一个是对类型对象使用一个工厂方法（`start`, `in`, `at`, `anyof`, `allof`, `kept`, `broken`），这些方法会确保 promise 被自动 kept 或者 broken，而你不能对他们调用 `break` 或者 `keep` 方法来改变状态。
+
 There are two typical scenarios for using promises. The first is to use a factory method (`start`, `in`, `at`, `anyof`, `allof`, `kept`, `broken`) on the type object; those will make sure that the promise is automatically kept or broken for you, and you can't call `break` or `keep` on these promises yourself.
+
+第二个方法是使用 `Promise.new` 新建 promise。如果你希望只有你能够 keep 或者 break promise，你可以使用 `vow` 方法来获得一个唯一的句柄，并对句柄调用 `keep` 或者 `break` 来改变 promise 的状态：
 
 The second is to create your promises yourself with `Promise.new`. If you want to ensure that only your code can keep or break the promise, you can use the `vow` method to get a unique handle, and call `keep` or `break` on it:
 
@@ -42,11 +48,13 @@ sub async-get-with-promise($user-agent, $url) {
 }
 ```
 
+[concurrency page](https://docs.perl6.org/language/concurrency#Promises) 可以找到更多的示例。
+
 Further examples can be found in the [concurrency page](https://docs.perl6.org/language/concurrency#Promises).
 
-# [Methods](https://docs.perl6.org/type/Promise#___top)
+# 方法 / Methods
 
-## [method start](https://docs.perl6.org/type/Promise#___top)
+## start 方法 / method start
 
 ```Perl6
 method start(Promise:U: &code, :$scheduler = $*SCHEDULER --> Promise:D)
