@@ -274,7 +274,7 @@ for 1 .. 10 {
 }
 ```
 
-请注意， `tap` 方法在 [Supply](https://docs.perl6.org/type/Supply) 对象上被调用，这个对象由 [Supplier](https://docs.perl6.org/type/Supplier) 创建。新消息由 [Supplier](https://docs.perl6.org/type/Supplier) 发出。
+请注意，`tap` 方法在 [Supply](https://docs.perl6.org/type/Supply) 对象上被调用，这个对象由 [Supplier](https://docs.perl6.org/type/Supplier) 创建。新消息由 [Supplier](https://docs.perl6.org/type/Supplier) 发出。
 
 Note that the `tap` is called on a [Supply](https://docs.perl6.org/type/Supply) object created by the [Supplier](https://docs.perl6.org/type/Supplier) and new values are emitted on the [Supplier](https://docs.perl6.org/type/Supplier).
 
