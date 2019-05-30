@@ -60,9 +60,15 @@ Further examples can be found in the [concurrency page](https://docs.perl6.org/l
 method start(Promise:U: &code, :$scheduler = $*SCHEDULER --> Promise:D)
 ```
 
+创造一个新 Promise 对象，运行指定的代码对象。当代码正常终止时，promise 为 kept 状态，代码抛出异常时为 broken 状态。
+
 Creates a new Promise that runs the given code object. The promise will be kept when the code terminates normally, or broken if it throws an exception. The return value or exception can be inspected with the `result` method.
 
+处理这个 promise 的调度器可以以命名参数传递。
+
 The scheduler that handles this promise can be passed as a named argument.
+
+语句前缀 `start` 是这个方法的语法糖。
 
 There is also a statement prefix `start` that provides syntactic sugar for this method:
 
@@ -71,6 +77,8 @@ There is also a statement prefix `start` that provides syntactic sugar for this 
 my $p1 = Promise.start({ ;#`( do something here ) });
 my $p2 = start { ;#`( do something here ) };
 ```
+
+在 6.d 版本中，在 [sink](https://docs.perl6.org/routine/sink) 上下文中使用 `start` 语句前缀会自动附加异常处理程序。如果在给定的代码中有异常发生，会打印出来异常然后程序退出就像没有 `start` 语句前缀一样。
 
 As of the 6.d version of the language, `start` statement prefix used in [sink](https://docs.perl6.org/routine/sink) context will automatically attach an exceptions handler. If an exception occurs in the given code, it will be printed and the program will then exit, like if it were thrown without any `start` statement prefixes involved.
 
@@ -84,6 +92,8 @@ start { die }; sleep ⅓; say "hello";
 # Died 
 #     in block  at -e line 1 
 ```
+
+在非 sink 上下文使用 `start` 或者自己捕获异常可以避免这个行为：
 
 If you wish to avoid this behavior, use `start` in non-sink context or catch the exception yourself:
 
