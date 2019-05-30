@@ -192,11 +192,11 @@ divisors -3;
 # expected Positive-integer but got Int (-3)» 
 ```
 
-请注意，在上面的代码中，类型约束在两个不同的级别强制执行：第一级检查它是否属于子集所基于的类型，在本例中为 `Int`。如果失败，则产生 `类型检查` 错误。清除该过滤器后，将检查定义子集的约束，如果失败则产生`约束类型检查`错误。
+请注意，在上面的代码中，类型约束在两个不同的级别强制执行：第一级检查它是否属于子集所基于的类型，在本例中为 `Int`。如果失败，则产生 `Type check` 错误。清除该过滤器后，将检查定义子集的约束，如果失败则产生 `Constraint type check` 错误。
 
 Please note that in the code above type constraints are enforced at two different levels: the first level checks if it belongs to the type in which the subset is based, in this case `Int`. If it fails, a `Type check` error is produced. Once that filter is cleared, the constraint that defined the subset is checked, producing a `Constraint type check` error if it fails.
 
-使用匿名参数也可以，如果你实际上不需要按名称引用参数，例如区分 [multi](https://docs.perl6.org/language/functions#index- entry-declarator_multi-Multi-dispatch) 中的不同签名或检查 [Callable](https://docs.perl6.org/type/Callable)的签名。
+使用匿名参数也可以，如果你实际上不需要按名称引用参数，例如区分 [multi](https://docs.perl6.org/language/functions#index- entry-declarator_multi-Multi-dispatch) 中的不同签名或检查 [Callable](https://docs.perl6.org/type/Callable) 的签名。
 
 Anonymous arguments are fine too, if you don't actually need to refer to a parameter by name, for instance to distinguish between different signatures in a [multi](https://docs.perl6.org/language/functions#index-entry-declarator_multi-Multi-dispatch) or to check the signature of a [Callable](https://docs.perl6.org/type/Callable).
 
