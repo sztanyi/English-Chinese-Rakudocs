@@ -108,13 +108,17 @@ say "hello";
 # OUTPUT: «caught␤hello␤» 
 ```
 
+这种行为只是在语法上存在，通过在 sink 上下文中由 `start` 代码块创建的 [Promise](https://docs.perl6.org/type/Promise) 对象的替代 `.sink` 方法，从而简单地 sink [Promise](https://docs.perl6.org/type/Promise)(https://docs.perl6.org/type/Promise)。
+
 This behavior exists only syntactically, by using an alternate `.sink` method for [Promise](https://docs.perl6.org/type/Promise) objects created by `start` blocks in sink context, thus simply sinking a [Promise](https://docs.perl6.org/type/Promise) object that was created by other means won't trigger this behavior.
 
-## [method in](https://docs.perl6.org/type/Promise#___top)
+## in 方法 / method in
 
 ```Perl6
 method in(Promise:U: $seconds, :$scheduler = $*SCHEDULER --> Promise:D)
 ```
+
+创建一个新 Promise 对象，将会在 `$seconds` 秒内或者之后状态变为 kept。
 
 Creates a new Promise that will be kept in `$seconds` seconds, or later.
 
@@ -133,15 +137,21 @@ my $result = await Promise.anyof(
 # OUTPUT: «timeout␤» 
 ```
 
+`$seconds` 可以是分数或负数。 负值被视为 `0` （即立即 [keeping](https://docs.perl6.org/routine/keep) 返回的 [Promise](https://docs.perl6.org/type/Promise))。
+
 `$seconds` can be fractional or negative. Negative values are treated as `0` (i.e. [keeping](https://docs.perl6.org/routine/keep) the returned [Promise](https://docs.perl6.org/type/Promise) right away).
+
+请注意，这些情况通常可以通过 [react 和 whenever 代码块](https://docs.perl6.org/language/concurrency#index-entry-react-react)来更清楚地处理。
 
 Please note that situations like these are often more clearly handled with a [react and whenever block](https://docs.perl6.org/language/concurrency#index-entry-react-react).
 
-## [method at](https://docs.perl6.org/type/Promise#___top)
+## at 方法 / method at
 
 ```Perl6
 method at(Promise:U: $at, :$scheduler = $*SCHEDULER --> Promise:D)
 ```
+
+创建一个新的 `Promise`，它将在 `$at` 给定的时间变为 kept 状态。 这个时间可以是 [Instant](https://docs.perl6.org/type/Instant) 对象、同等的 [Numeric](https://docs.perl6.org/type/Numeric) 对象或者在这个时间之后尽快。
 
 Creates a new `Promise` that will be kept `$at` the given time—which is given as an [Instant](https://docs.perl6.org/type/Instant) or equivalent [Numeric](https://docs.perl6.org/type/Numeric)—or as soon as possible after it.
 
@@ -152,19 +162,25 @@ my $p = Promise.at(now + 2).then({ say "2 seconds later" });
 await $p;   # wait here until the 2 seconds are over 
 ```
 
+如果给定的是过去的时间，它会被当做 [now](https://docs.perl6.org/routine/now) (即立即 [keeping](https://docs.perl6.org/routine/keep) 返回的 [Promise](https://docs.perl6.org/type/Promise))。
+
 If the given time is in the past, it will be treated as [now](https://docs.perl6.org/routine/now) (i.e. [keeping](https://docs.perl6.org/routine/keep) the returned [Promise](https://docs.perl6.org/type/Promise) right away).
+
+请注意，这些情况通常可以通过 [react 和 whenever 代码块](https://docs.perl6.org/language/concurrency#index-entry-react-react)来更清楚地处理。
 
 Please note that situations like these are often more clearly handled with a [react and whenever block](https://docs.perl6.org/language/concurrency#index-entry-react-react).
 
-## [method kept](https://docs.perl6.org/type/Promise#___top)
+## kept 方法 / method kept
 
 ```Perl6
 multi method kept(Promise:U: \result = True --> Promise:D)
 ```
 
+返回已 kept 的新 promise，具有给定值或默认值 `True`。
+
 Returns a new promise that is already kept, either with the given value, or with the default value `True`.
 
-## [method broken](https://docs.perl6.org/type/Promise#___top)
+## broken 方法 / method broken
 
 ```Perl6
 multi method broken(Promise:U: --> Promise:D)
@@ -173,13 +189,17 @@ multi method broken(Promise:U: \exception --> Promise:D)
 
 Returns a new promise that is already broken, either with the given value, or with the default value `X::AdHoc.new(payload => "Died")`
 
-## [method allof](https://docs.perl6.org/type/Promise#___top)
+## allof 方法 / method allof
 
 ```Perl6
 method allof(Promise:U: *@promises --> Promise:D)
 ```
 
+返回一个新 promise，当所有作为参数传递的 promise 为 kept 或者 broken 时其为 kept 状态。单个 Promise 的结果不会反映在返回的 promise 的结果中：它只是表明所有 promise 都以某种方式完成。 如果每个 promise 的结果很重要，那么应该在 `allof` promise 状态为 kept 之后进行检查。
+
 Returns a new promise that will be kept when all the promises passed as arguments are kept or broken. The result of the individual Promises is not reflected in the result of the returned promise: it simply indicates that all the promises have been completed in some way. If the results of the individual promises are important then they should be inspected after the `allof`promise is kept.
+
+在下面请求 broken promise 的 `result` 将导致抛出原始异常。（你可能需要多次运行才能看到异常。）
 
 In the following requesting the `result` of a broken promise will cause the original Exception to be thrown. (You may need to run it several times to see the exception.)
 
@@ -196,13 +216,17 @@ await $all-done;
 say "Promises kept so we get to live another day!";
 ```
 
-## [method anyof](https://docs.perl6.org/type/Promise#___top)
+## anyof 方法 / method anyof
 
 ```Perl6
 method anyof(Promise:U: *@promises --> Promise:D)
 ```
 
+返回一个新 promise，当任一作为参数传递的 promise 为 kept 或者 broken 时其为 kept 状态。完成的 Promise 的结果不会反映在返回的 promise 的结果中，返回的 promise 的状态一定是 Kept 状态。
+
 Returns a new promise that will be kept as soon as any of the promises passed as arguments is kept or broken. The result of the completed Promise is not reflected in the result of the returned promise which will always be Kept.
+
+你可以使用它来等待一个 promise 最多给定的秒钟：
 
 You can use this to wait at most a number of seconds for a promise:
 
@@ -216,11 +240,13 @@ await Promise.anyof(
 );
 ```
 
-## [method then](https://docs.perl6.org/type/Promise#___top)
+## then 方法 / method then
 
 ```Perl6
 method then(Promise:D: &code)
 ```
+
+安排一段代码在调用者为 kept 或者 broken 状态后执行，为这个计算返回一个新的 promise。也就是说，创建一个链式 promise。
 
 Schedules a piece of code to be run after the invocant has been kept or broken, and returns a new promise for this computation. In other words, creates a chained promise.
 
@@ -231,13 +257,17 @@ say $after.result;  # 2 seconds are over
                     # result 
 ```
 
-## [method keep](https://docs.perl6.org/type/Promise#___top)
+## keep 方法 / method keep
 
 ```Perl6
 multi method keep(Promise:D: \result = True)
 ```
 
+Keep 一个 promise，可设置结果。如果没有传递结果，结果为 `True`。
+
 Keeps a promise, optionally setting the result. If no result is passed, the result will be `True`.
+
+如果 vow 了，会抛出类型为 `X::Promise::Vowed` 的异常。更多信息见方法 `vow`。
 
 Throws an exception of type `X::Promise::Vowed` if a vow has already been taken. See method `vow` for more information.
 
@@ -252,13 +282,17 @@ else {
 }
 ```
 
-## [method break](https://docs.perl6.org/type/Promise#___top)
+## break 方法 / method break
 
 ```Perl6
 multi method break(Promise:D: \cause = False)
 ```
 
+break 一个 promise，可参数设置 cause。如果没有传递 cause，cause 为 `False`。
+
 Breaks a promise, optionally setting the cause. If no cause is passed, the cause will be `False`.
+
+如果 vow 了，会抛出类型为 `X::Promise::Vowed` 的异常。更多信息见方法 `vow`。
 
 Throws an exception of type `X::Promise::Vowed` if a vow has already been taken. See method `vow` for more information.
 
@@ -270,51 +304,60 @@ say $p.status;          # OUTPUT: «Broken␤»
 say $p.cause;           # OUTPUT: «sorry␤» 
 ```
 
-## [method result](https://docs.perl6.org/type/Promise#___top)
+## result 方法 / method result
 
 ```Perl6
 method result(Promise:D)
 ```
 
+等待 promise 状态变为 kept 或者 broken。如果为 kept，返回结果。否则将结果作为异常抛出。
+
 Waits for the promise to be kept or broken. If it is kept, returns the result; otherwise throws the result as an exception.
 
-## [method cause](https://docs.perl6.org/type/Promise#___top)
+## cause 方法 / method cause
 
 ```Perl6
 method cause(Promise:D)
 ```
 
+如果 promise 状态为 broken，返回结果或者异常。否则抛出类型为 `X::Promise::CauseOnlyValidOnBroken` 的异常。
+
 If the promise was broken, returns the result (or exception). Otherwise, throws an exception of type `X::Promise::CauseOnlyValidOnBroken`.
 
-## [method Bool](https://docs.perl6.org/type/Promise#___top)
+## Bool 方法 / method Bool
 
 ```Perl6
 multi method Bool(Promise:D:)
 ```
 
+为状态为 kept 或者 broken 的 promise 返回值为 `True`，当状态为 `Planned` 时，返回值为 `False`。
+
 Returns `True` for a kept or broken promise, and `False` for one in state `Planned`.
 
-## [method status](https://docs.perl6.org/type/Promise#___top)
+## status 方法 / method status
 
 ```Perl6
 method status(Promise:D --> PromiseStatus)
 ```
 
+放回 promise 的当前状态： `Kept`，`Broken` 或者 `Planned`:
 Returns the current state of the promise: `Kept`, `Broken` or `Planned`:
 
 ```Perl6
 say "promise got Kept" if $promise.status ~~ Kept;
 ```
 
-## [method scheduler](https://docs.perl6.org/type/Promise#___top)
+## scheduler 方法 / method scheduler
 
 ```Perl6
 method scheduler(Promise:D:)
 ```
 
+返回管理当前 promise 的调度器。
+
 Returns the scheduler that manages the promise.
 
-## [method vow](https://docs.perl6.org/type/Promise#___top)
+## vow 方法 / method vow
 
 ```Perl6
 my class Vow {
@@ -334,7 +377,7 @@ $vow.keep($p);
 say $p.status;          # OUTPUT: «Kept␤» 
 ```
 
-## [method Supply](https://docs.perl6.org/type/Promise#___top)
+## method Supply
 
 ```Perl6
 method Supply(Promise:D:)
@@ -342,7 +385,7 @@ method Supply(Promise:D:)
 
 Returns a [Supply](https://docs.perl6.org/type/Supply) that will emit the `result` of the [Promise](https://docs.perl6.org/type/Promise) being Kept or `quit` with the `cause` if the [Promise](https://docs.perl6.org/type/Promise) is Broken.
 
-## [sub await](https://docs.perl6.org/type/Promise#___top)
+## sub await
 
 ```Perl6
 multi sub await(Promise:D --> Promise)
@@ -351,7 +394,7 @@ multi sub await(*@ --> Array)
 
 Waits until one or more promises are *all* fulfilled, and then returns their values. Also works on [channels](https://docs.perl6.org/type/Channel). Any broken promises will rethrow their exceptions. If a list is passed it will return a list containing the results of awaiting each item in turn.
 
-# [Type Graph](https://docs.perl6.org/type/Promise#___top)
+# Type Graph
 
 Type relations for `Promise`
 
