@@ -259,7 +259,7 @@ At its simplest, a [Supply](https://docs.perl6.org/type/Supply) is a message str
 
 The [Supply](https://docs.perl6.org/type/Supply) can either be `live` or `on-demand`. A `live` supply is like a TV broadcast: those who tune in don't get previously emitted values. An `on-demand` broadcast is like Netflix: everyone who starts streaming a movie (taps a supply), always starts it from the beginning (gets all the values), regardless of how many people are watching it right now. Note that no history is kept for `on-demand` supplies, instead, the `supply` block is run for each tap of the supply.
 
-`live` [Supply](https://docs.perl6.org/type/Supply) 由 [Supplier](https://docs.perl6.org/type/Supplier) 工厂创建，每一个发出的值传递给了所有激活的 tappers。
+`live` [Supply](https://docs.perl6.org/type/Supply) 由 [Supplier](https://docs.perl6.org/type/Supplier) 工厂创建，每一个发出的值传递给了所有激活的对 Supply 调用了 tap 方法的代码块。
 
 A `live` [Supply](https://docs.perl6.org/type/Supply) is created by the [Supplier](https://docs.perl6.org/type/Supplier) factory, each emitted value is passed to all the active tappers as they are added:
 

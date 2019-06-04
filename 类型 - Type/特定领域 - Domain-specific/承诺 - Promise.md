@@ -368,6 +368,8 @@ my class Vow {
 method vow(Promise:D: --> Vow:D)
 ```
 
+返回一个对象，只有这个对象可以使 promise 状态为 kept 或者 broken。 对执行了 vow 的 promise 对象调用 `keep` 或者 `break` 方法
+
 Returns an object that holds the sole authority over keeping or breaking a promise. Calling `keep` or `break` on a promise that has vow taken throws an exception of type `X::Promise::Vowed`.
 
 ```Perl6
@@ -382,6 +384,8 @@ say $p.status;          # OUTPUT: «Kept␤»
 ```Perl6
 method Supply(Promise:D:)
 ```
+
+返回一个 [Supply](https://docs.perl6.org/type/Supply), 如果 promise 为 kept 状态则发出 [Promise](https://docs.perl6.org/type/Promise) 的 `result` 方法的结果，否则发出其 `quit` 和 `cause` 方法的结果如果 [Promise](https://docs.perl6.org/type/Promise) 为 broken 状态。
 
 Returns a [Supply](https://docs.perl6.org/type/Supply) that will emit the `result` of the [Promise](https://docs.perl6.org/type/Promise) being Kept or `quit` with the `cause` if the [Promise](https://docs.perl6.org/type/Promise) is Broken.
 
