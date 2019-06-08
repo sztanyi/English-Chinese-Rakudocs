@@ -73,8 +73,8 @@ Further examples can be found in the [concurrency page](https://docs.perl6.org/l
     - [status 方法 / method status](#status-%E6%96%B9%E6%B3%95--method-status)
     - [scheduler 方法 / method scheduler](#scheduler-%E6%96%B9%E6%B3%95--method-scheduler)
     - [vow 方法 / method vow](#vow-%E6%96%B9%E6%B3%95--method-vow)
-    - [method Supply](#method-supply)
-    - [sub await](#sub-await)
+    - [Supply 方法 / method Supply](#supply-%E6%96%B9%E6%B3%95--method-supply)
+    - [await 子例程 / sub await](#await-%E5%AD%90%E4%BE%8B%E7%A8%8B--sub-await)
 - [类型图 / Type Graph](#%E7%B1%BB%E5%9E%8B%E5%9B%BE--type-graph)
 
 <!-- /MarkdownTOC -->
@@ -424,8 +424,8 @@ $vow.keep($p);
 say $p.status;          # OUTPUT: «Kept␤» 
 ```
 
-<a id="method-supply"></a>
-## method Supply
+<a id="supply-%E6%96%B9%E6%B3%95--method-supply"></a>
+## Supply 方法 / method Supply
 
 ```Perl6
 method Supply(Promise:D:)
@@ -436,8 +436,8 @@ method Supply(Promise:D:)
 
 Returns a [Supply](https://docs.perl6.org/type/Supply) that will emit the `result` of the [Promise](https://docs.perl6.org/type/Promise) being Kept or `quit` with the `cause` if the [Promise](https://docs.perl6.org/type/Promise) is Broken.
 
-<a id="sub-await"></a>
-## sub await
+<a id="await-%E5%AD%90%E4%BE%8B%E7%A8%8B--sub-await"></a>
+## await 子例程 / sub await
 
 ```Perl6
 multi sub await(Promise:D --> Promise)
