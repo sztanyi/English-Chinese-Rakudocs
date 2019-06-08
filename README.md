@@ -22,3 +22,6 @@ Official documentation address: https://docs.perl6.org/language.html
 - [类型 - Type](https://github.com/sztanyi/perl6doc/tree/master/%E7%B1%BB%E5%9E%8B%20-%20Type)
     - [基础 - Basic](https://github.com/sztanyi/perl6doc/tree/master/%E7%B1%BB%E5%9E%8B%20-%20Type/%E5%9F%BA%E7%A1%80%20-%20Basic)
         - [签名 - Signature](https://github.com/sztanyi/perl6doc/blob/master/%E7%B1%BB%E5%9E%8B%20-%20Type/%E5%9F%BA%E7%A1%80%20-%20Basic/%E7%AD%BE%E5%90%8D%20-%20Signature.md)
+    - [特定领域 - Domain-specific](https://github.com/sztanyi/perl6doc/tree/master/%E7%B1%BB%E5%9E%8B%20-%20Type/%E7%89%B9%E5%AE%9A%E9%A2%86%E5%9F%9F%20-%20Domain-specific)
+        - [承诺 - Promise](https://github.com/sztanyi/perl6doc/blob/master/%E7%B1%BB%E5%9E%8B%20-%20Type/%E7%89%B9%E5%AE%9A%E9%A2%86%E5%9F%9F%20-%20Domain-specific/%E6%89%BF%E8%AF%BA%20-%20Promise.md)
+
