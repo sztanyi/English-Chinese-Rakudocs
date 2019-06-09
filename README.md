@@ -19,7 +19,7 @@ Official documentation address: https://docs.perl6.org/language.html
 - [教程 - Tutorials](https://github.com/sztanyi/perl6doc/tree/master/%E6%95%99%E7%A8%8B%20-%20Tutorials)
     - [类和对象 - Classes and Objects](https://github.com/sztanyi/perl6doc/blob/master/%E6%95%99%E7%A8%8B%20-%20Tutorials/%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1%20-%20Classes%20and%20Objects.md)
     - [并发 - Concurrency](https://github.com/sztanyi/perl6doc/blob/master/%E6%95%99%E7%A8%8B%20-%20Tutorials/%E5%B9%B6%E5%8F%91%20-%20Concurrency.md)
-    - [输入 unicode 字符 - Entering unicode characters](https://github.com/sztanyi/perl6doc/blob/master/%E6%95%99%E7%A8%8B%20-%20Tutorials/%E8%BE%93%E5%85%A5%20unicode%20%E5%AD%97%E7%AC%A6%20-%20Entering%20unicode%20characters.md)
+    - [输入 Unicode 字符 - Entering unicode characters](https://github.com/sztanyi/perl6doc/blob/master/%E6%95%99%E7%A8%8B%20-%20Tutorials/%E8%BE%93%E5%85%A5%20unicode%20%E5%AD%97%E7%AC%A6%20-%20Entering%20unicode%20characters.md)
 - [类型 - Type](https://github.com/sztanyi/perl6doc/tree/master/%E7%B1%BB%E5%9E%8B%20-%20Type)
     - [基础 - Basic](https://github.com/sztanyi/perl6doc/tree/master/%E7%B1%BB%E5%9E%8B%20-%20Type/%E5%9F%BA%E7%A1%80%20-%20Basic)
         - [签名 - Signature](https://github.com/sztanyi/perl6doc/blob/master/%E7%B1%BB%E5%9E%8B%20-%20Type/%E5%9F%BA%E7%A1%80%20-%20Basic/%E7%AD%BE%E5%90%8D%20-%20Signature.md)

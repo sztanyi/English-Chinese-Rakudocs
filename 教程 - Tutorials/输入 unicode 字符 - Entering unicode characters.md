@@ -1,14 +1,16 @@
+原文：https://docs.perl6.org/language/unicode_entry
+
 # 输入 unicode 字符 / Entering unicode characters
 
-在编辑器和 shell 中输入 unicode 字符的方法
+在编辑器和 shell 中输入 Unicode 字符的方法
 
 Input methods for unicode characters in editors and the shell
 
-Perl 6 允许使用 unicode 字符作为变量名。许多操作符使用 unicode 符号（特别是 [set/bag operators](https://docs.perl6.org/language/setbagmix#Set%252FBag_operators)）以及一些引用结构。因此，最好知道如何将这些符号输入编辑器，Perl 6 shell 和命令行，特别是如果符号不是键盘上的实际字符。
+Perl 6 允许使用 Unicode 字符作为变量名。许多操作符使用 Unicode 符号（特别是 [set/bag operators](https://docs.perl6.org/language/setbagmix#Set%252FBag_operators)）以及一些引用结构。因此，最好知道如何将这些符号输入编辑器，Perl 6 shell 和命令行，特别是如果符号不是键盘上的实际字符。
 
 Perl 6 allows the use of unicode characters as variable names. Many operators are defined with unicode symbols (in particular the [set/bag operators](https://docs.perl6.org/language/setbagmix#Set%252FBag_operators)) as well as some quoting constructs. Hence it is good to know how to enter these symbols into editors, the Perl 6 shell and the command line, especially if the symbols aren't available as actual characters on a keyboard.
 
-有关在各种操作系统和环境下输入 unicode 的一般信息，请参见 Wikipedia [unicode 输入页面](https://en.wikipedia.org/wiki/Unicode_input)。
+有关在各种操作系统和环境下输入 Unicode 的一般信息，请参见 Wikipedia [Unicode 输入页面](https://en.wikipedia.org/wiki/Unicode_input)。
 
 General information about entering unicode under various operating systems and environments can be found on the Wikipedia [unicode input page](https://en.wikipedia.org/wiki/Unicode_input).
 
@@ -26,8 +28,8 @@ General information about entering unicode under various operating systems and e
     - [Unix shell](#unix-shell)
     - [Screen](#screen)
 - [Perl 6 中一些有用的字符 / Some characters useful in Perl 6](#perl-6-%E4%B8%AD%E4%B8%80%E4%BA%9B%E6%9C%89%E7%94%A8%E7%9A%84%E5%AD%97%E7%AC%A6--some-characters-useful-in-perl-6)
-    - [智能引号 / Smart quotes](#%E6%99%BA%E8%83%BD%E5%BC%95%E5%8F%B7--smart-quotes)
-    - [书名号 / Guillemets](#%E4%B9%A6%E5%90%8D%E5%8F%B7--guillemets)
+    - [智能引号 / Smart quotes]\(https://en.wikipedia.org/wiki/Quotation_mark#Curved_quotes_and_Unicode\)](#%E6%99%BA%E8%83%BD%E5%BC%95%E5%8F%B7--smart-quoteshttpsenwikipediaorgwikiquotationmarkcurved_quotes_andunicode)
+    - [书名号 / Guillemets]\(https://en.wikipedia.org/wiki/Guillemet\)](#%E4%B9%A6%E5%90%8D%E5%8F%B7--guillemetshttpsenwikipediaorgwikiguillemet)
     - [set/bag 操作符 / Set/bag operators](#setbag-%E6%93%8D%E4%BD%9C%E7%AC%A6--setbag-operators)
     - [数学符号 / Mathematical symbols](#%E6%95%B0%E5%AD%A6%E7%AC%A6%E5%8F%B7--mathematical-symbols)
     - [希腊字符 / Greek characters](#%E5%B8%8C%E8%85%8A%E5%AD%97%E7%AC%A6--greek-characters)
@@ -112,7 +114,7 @@ WinCompose has multiple sources to choose from in `Options → Composing → Seq
 <a id="vim"></a>
 ## Vim
 
-在[Vim](https://www.vim.org/) 中，首先按 `Ctrl-V`（也表示为 `^V`），然后按 `u` 和要输入的 unicode 字符的十六进制值来输入 unicode 字符（在插入模式下）。例如，希腊字母 λ（lambda）通过组合键输入：
+在[Vim](https://www.vim.org/) 中，首先按 `Ctrl-V`（也表示为 `^V`），然后按 `u` 和要输入的 Unicode 字符的十六进制值来输入 Unicode 字符（在插入模式下）。例如，希腊字母 λ（lambda）通过组合键输入：
 
 In [Vim](https://www.vim.org/), unicode characters are entered (in insert-mode) by pressing first `Ctrl-V` (also denoted `^V`), then `u` and then the hexadecimal value of the unicode character to be entered. For example, the Greek letter λ (lambda) is entered via the key combination:
 
@@ -232,8 +234,8 @@ This will bind control-k to the shell command digraphs. You can use [digraphs](h
 <a id="perl-6-%E4%B8%AD%E4%B8%80%E4%BA%9B%E6%9C%89%E7%94%A8%E7%9A%84%E5%AD%97%E7%AC%A6--some-characters-useful-in-perl-6"></a>
 # Perl 6 中一些有用的字符 / Some characters useful in Perl 6
 
-<a id="%E6%99%BA%E8%83%BD%E5%BC%95%E5%8F%B7--smart-quotes"></a>
-## [智能引号 / Smart quotes](https://en.wikipedia.org/wiki/Quotation_mark#Curved_quotes_and_Unicode)
+<a id="%E6%99%BA%E8%83%BD%E5%BC%95%E5%8F%B7--smart-quoteshttpsenwikipediaorgwikiquotationmarkcurved_quotes_andunicode"></a>
+## 智能引号 / Smart quotes](https://en.wikipedia.org/wiki/Quotation_mark#Curved_quotes_and_Unicode)
 
 这些字符在不同语言中用作引号。在 Perl 6 中，它们被用作[引用字符](https://docs.perl6.org/language/quoting)
 
@@ -263,8 +265,8 @@ perl6 -e 'say ‘hello world’'
 
 since you can just copy and paste some piece of code and not worry about quotes.
 
-<a id="%E4%B9%A6%E5%90%8D%E5%8F%B7--guillemets"></a>
-## [书名号 / Guillemets](https://en.wikipedia.org/wiki/Guillemet)
+<a id="%E4%B9%A6%E5%90%8D%E5%8F%B7--guillemetshttpsenwikipediaorgwikiguillemet"></a>
+## 书名号 / Guillemets](https://en.wikipedia.org/wiki/Guillemet)
 
 这些字符在法语和德语中用作引号。在 Perl 6 中，它们被用作[内插词引号](https://docs.perl6.org/language/quoting#Word_quoting_with_interpolation_and_quote_protection%3A_qqww)、[hyper 运算符](https://docs.perl6.org/language/operators#Hyper_operators)，以及 POD6 中尖角括号的另一种选择。
 
@@ -291,7 +293,7 @@ say «$baa $baa ber».perl;  # OUTPUT: «("foo", "bar", "foo", "bar", "ber")␤�
 <a id="setbag-%E6%93%8D%E4%BD%9C%E7%AC%A6--setbag-operators"></a>
 ## set/bag 操作符 / Set/bag operators
 
-[set/bag 操作符](https://docs.perl6.org/language/setbagmix#Set%252FBag_operators)都设置了与集合论相关的符号，下面列出了 unicode 代码点及其 ASCII 等价物。要输入这样一个字符，只需输入组合字符（例如，Vim 中的 `Ctrl-V u`；Bash 中的 `Ctrl-Shift-u`），然后输入十六进制的 unicode 代码点。
+[set/bag 操作符](https://docs.perl6.org/language/setbagmix#Set%252FBag_operators)都设置了与集合论相关的符号，下面列出了 Unicode 代码点及其 ASCII 等价物。要输入这样一个字符，只需输入组合字符（例如，Vim 中的 `Ctrl-V u`；Bash 中的 `Ctrl-Shift-u`），然后输入十六进制的 Unicode 代码点。
 
 The [set/bag operators](https://docs.perl6.org/language/setbagmix#Set%252FBag_operators) all have set-theory-related symbols, the unicode code points and their ascii equivalents are listed below. To compose such a character, it is merely necessary to enter the character composition chord (e.g. `Ctrl-V u` in Vim; `Ctrl-Shift-u` in Bash) then the unicode code point hexadecimal number.
 
