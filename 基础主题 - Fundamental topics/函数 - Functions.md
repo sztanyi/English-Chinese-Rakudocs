@@ -48,7 +48,7 @@ my Code \a = sub { say ‚raw containers don't implement postcircumfix:<( )>‘ 
 a.();  # OUTPUT: «raw containers don't implement postcircumfix:<( )>␤» 
 ```
 
-声明符 `sub` 会在编译时当前范围内声明一个新名字。因此，任何间接寻址都必须在编译时解决：
+声明符 `sub` 会在编译时当前范围内声明一个新名字。因此，任何间接命名都会在在编译时解决：
 
 The declarator `sub` will declare a new name in the current scope at compile time. As such any indirection has to be resolved at compile time:
 
@@ -58,20 +58,26 @@ sub ::(aname) { say 'oi‽' };
 foo;
 ```
 
+一旦将宏添加到 Perl 6 中，这将变得更加有用。
+
 This will become more useful once macros are added to Perl 6.
+
+要让子例程接受参数，在子例程的名称和其主体之间插入一个[签名](https://docs.perl6.org/type/Signature)，在括号中：
 
 To have the subroutine take arguments, a [signature](https://docs.perl6.org/type/Signature) goes between the subroutine's name and its body, in parentheses:
 
-```
+```Perl6
 sub exclaim ($phrase) {
     say $phrase ~ "!!!!"
 }
 exclaim "Howdy, World";
 ```
 
+默认情况下，子例程为[词法作用域](https://docs.perl6.org/syntax/my)。也就是说，`sub foo {...}` 与 `my sub foo {...}` 相同，仅在当前范围内定义。
+
 By default, subroutines are [lexically scoped](https://docs.perl6.org/syntax/my). That is, `sub foo {...}` is the same as `my sub foo {...}` and is only defined within the current scope.
 
-```
+```Perl6
 sub escape($str) {
     # Puts a slash before non-alphanumeric characters 
     S:g[<-alpha -digit>] = "\\$/" given $str
@@ -92,76 +98,98 @@ say escape 'foo#bar?'; # OUTPUT: «foo\#bar\?␤»
 say escape 'foo#bar?'; # OUTPUT: «foo\#bar\?␤» 
 ```
 
+子程序不必命名。如果未命名，则称为*匿名*子例程。
+
 Subroutines don't have to be named. If unnamed, they're called *anonymous* subroutines.
 
-```
+```Perl6
 say sub ($a, $b) { $a ** 2 + $b ** 2 }(3, 4) # OUTPUT: «25␤» 
 ```
 
+但在这种情况下，通常需要使用更简洁的 [block](https://docs.perl6.org/type/Block) 语法。子例程和块可以就地调用，如上面的示例所示。
+
 But in this case, it's often desirable to use the more succinct [block](https://docs.perl6.org/type/Block) syntax. Subroutines and blocks can be called in place, as in the example above.
 
-```
+```Perl6
 say -> $a, $b { $a ** 2 + $b ** 2 }(3, 4)    # OUTPUT: «25␤» 
 ```
 
+甚至
+
 Or even
 
-```
+```Perl6
 say { $^a ** 2 + $^b ** 2 }(3, 4)            # OUTPUT: «25␤» 
 ```
 
-## Blocks and lambdas
+## 代码块和拉姆达 / Blocks and lambdas
+
+每当你看到类似于 `{ $_ + 42 }`、 `-> $a, $b { $a ** $b }`，或 `{ $^text.indent($:spaces) }`，那就是 [Block](https://docs.perl6.org/type/Block) 语法。它在 `if`、 `for`、`while` 等后面使用。
 
 Whenever you see something like `{ $_ + 42 }`, `-> $a, $b { $a ** $b }`, or `{ $^text.indent($:spaces) }`, that's [Block](https://docs.perl6.org/type/Block) syntax. It's used after every `if`, `for`, `while`, etc.
 
-```
+```Perl6
 for 1, 2, 3, 4 -> $a, $b {
     say $a ~ $b;
 }
 # OUTPUT: «12␤34␤» 
 ```
 
+它们也可以作为匿名代码块单独使用。
+
 They can also be used on their own as anonymous blocks of code.
 
-```
+```Perl6
 say { $^a ** 2 + $^b ** 2}(3, 4) # OUTPUT: «25␤» 
 ```
 
+有关块语法的详细信息，请参阅 [Block](https://docs.perl6.org/type/Block) 类型的文档。
+
 For block syntax details, see the documentation for the [Block](https://docs.perl6.org/type/Block) type.
 
-## Signatures
+## 签名 / Signatures
+
+函数接受的参数在其*签名*中描述。
 
 The parameters that a function accepts are described in its *signature*.
 
-```
+```Perl6
 sub format(Str $s) { ... }
 -> $a, $b { ... }
 ```
 
+有关签名的语法和使用的详细信息，请参见 [关于'signature'类的文档](https://docs.perl6.org/type/Signature)。
+
 Details about the syntax and use of signatures can be found in the [documentation on the `Signature` class](https://docs.perl6.org/type/Signature).
 
-### Automatic signatures
+### 自动签名 / Automatic signatures
+
+如果没有提供签名，但函数体中使用了两个自动变量 `@_` 或 `%_` ，则将生成带有 `*@_` 或 `*%_` 的签名。两个自动变量可以同时使用。
 
 If no signature is provided but either of the two automatic variables `@_` or `%_` are used in the function body, a signature with `*@_` or `*%_` will be generated. Both automatic variables can be used at the same time.
 
-```
+```Perl6
 sub s { say @_, %_ };
 say &s.signature # OUTPUT: «(*@_, *%_)␤» 
 ```
 
-## Arguments 
+## 参数 / Arguments 
+
+参数以逗号分隔的列表形式提供。要消除嵌套调用的歧义，请使用括号：
 
 Arguments are supplied as a comma separated list. To disambiguate nested calls, use parentheses:
 
-```
+```Perl6
 sub f(&c){ c() * 2 }; # call the function reference c with empty parameter list 
 sub g($p){ $p - 2 };
 say(g(42), 45);       # pass only 42 to g() 
 ```
 
+调用函数时，位置参数的提供顺序应与函数的签名相同。命名参数可以按任意顺序提供，但将命名参数放在位置参数之后被认为是一种很好的形式。在函数调用的参数列表中，支持某些特殊语法：
+
 When calling a function, positional arguments should be supplied in the same order as the function's signature. Named arguments may be supplied in any order, but it's considered good form to place named arguments after positional arguments. Inside the argument list of a function call, some special syntax is supported:
 
-```
+```Perl6
 sub f(|c){};
 f :named(35);     # A named argument (in "adverb" form) 
 f named => 35;    # Also a named argument 
@@ -171,22 +199,28 @@ my \c = <a b c>.Capture;
 f |c;             # Merge the contents of Capture $c as if they were supplied 
 ```
 
+传递给函数的参数在概念上首先收集在 `Capture` 容器中。有关这些容器的语法和使用的详细信息，请参见[关于 `Capture` 类的文档](https://docs.perl6.org/type/Capture)。
+
 Arguments passed to a function are conceptually first collected in a `Capture` container. Details about the syntax and use of these containers can be found in the [documentation on the `Capture` class](https://docs.perl6.org/type/Capture).
+
+使用命名参数时，请注意，普通列表“对链接”允许跳过命名参数之间的逗号。
 
 When using named arguments, note that normal List "pair-chaining" allows one to skip commas between named arguments.
 
-```
+```Perl6
 sub f(|c){};
 f :dest</tmp/foo> :src</tmp/bar> :lines(512);
 f :32x :50y :110z;   # This flavor of "adverb" works, too 
 f :a:b:c;            # The spaces are also optional. 
 ```
 
-## Return values
+## 返回值 / Return values
+
+任何 `Block` 或 `Routine` 都会将其最后一个表达式的值作为返回值提供给调用方。如果调用了 [return](https://docs.perl6.org/language/control#return) 或 [return-rw](https://docs.perl6.org/language/control#return-rw) ，则其参数（如果有）将成为返回值。默认返回值为 [Nil](https://docs.perl6.org/type/Nil)。
 
 Any `Block` or `Routine` will provide the value of its last expression as a return value to the caller. If either [return](https://docs.perl6.org/language/control#return) or [return-rw](https://docs.perl6.org/language/control#return-rw) is called, then its parameter, if any, will become the return value. The default return value is [Nil](https://docs.perl6.org/type/Nil).
 
-```
+```Perl6
 sub a { 42 };
 sub b { say a };
 sub c { };
@@ -194,9 +228,11 @@ b;     # OUTPUT: «42␤»
 say c; # OUTPUT: «Nil␤» 
 ```
 
+多个返回值作为一个列表或通过创建一个 [Capture](https://docs.perl6.org/type/Capture)返回。析构函数可用于解开多个返回值。
+
 Multiple return values are returned as a list or by creating a [Capture](https://docs.perl6.org/type/Capture). Destructuring can be used to untangle multiple return values.
 
-```
+```Perl6
 sub a { 42, 'answer' };
 put a.perl;
 # OUTPUT: «(42, "answer")␤» 
@@ -210,39 +246,51 @@ put b.perl;
 # OUTPUT: «\("a", "b", "c")␤» 
 ```
 
-## Return type constraints
+## 返回类型约束 / Return type constraints
+
+Perl 6 有许多方法可以指定函数的返回类型：
 
 Perl 6 has many ways to specify a function's return type:
 
-```
+```Perl6
 sub foo(--> Int)      {}; say &foo.returns; # OUTPUT: «(Int)␤» 
 sub foo() returns Int {}; say &foo.returns; # OUTPUT: «(Int)␤» 
 sub foo() of Int      {}; say &foo.returns; # OUTPUT: «(Int)␤» 
 my Int sub foo()      {}; say &foo.returns; # OUTPUT: «(Int)␤» 
 ```
 
+尝试返回其他类型的值将导致编译错误。
+
 Attempting to return values of another type will cause a compilation error.
 
-```
+```Perl6
 sub foo() returns Int { "a"; }; foo; # Type check fails 
 ```
 
+`returns` 和 `of` 是等效的，它们都只接受一个类型，因为它们声明了 [Callable](https://docs.perl6.org/type/Callable)的特性。最后一个声明实际上是一个类型声明，它显然只能接受一个类型。`-->`，但是，可以采用未定义或定义了的值。
+
 `returns` and `of` are equivalent, and both take only a Type since they are declaring a trait of the [Callable](https://docs.perl6.org/type/Callable). The last declaration is, in fact, a type declaration, which obviously can take only a type. `-->`, however, can take either undefined or definite values.
+
+请注意，`Nil` 和 `Failure` 不受返回类型约束，并且可以从任何例程返回，无论其约束如何：
 
 Note that `Nil` and `Failure` are exempt from return type constraints and can be returned from any routine, regardless of its constraint:
 
-```
+```Perl6
 sub foo() returns Int { fail   }; foo; # Failure returned 
 sub bar() returns Int { return }; bar; # Nil returned 
 ```
 
-## Multi-dispatch
+## 多分派 / Multi-dispatch
+
+Perl 6 允许使用相同的名称但不同的签名编写多个例程。当以名称调用例程时，运行时环境将确定正确的*候选*并调用它。
 
 Perl 6 allows for writing several routines with the same name but different signatures. When the routine is called by name, the runtime environment determines the proper *candidate* and invokes it.
 
+每个候选项都用 `multi` 关键字声明。根据参数的编号（[arity](https://docs.perl6.org/type/Routine#%28Code%29_method_arity)）、类型和名称进行调度。请考虑以下示例：
+
 Each candidate is declared with the `multi` keyword. Dispatch happens depending on the number ([arity](https://docs.perl6.org/type/Routine#%28Code%29_method_arity)), type and name of arguments. Consider the following example:
 
-```
+```Perl6
 # version 1 
 multi happy-birthday( $name ) {
     say "Happy Birthday $name !";
@@ -271,11 +319,15 @@ happy-birthday( 'Jack', 25 );                  # OUTPUT: «Happy 25th Birthday J
  
 ```
 
+`happy-birthday` 子例程的前两个版本仅在 arity（参数个数）上有所不同，而第三个版本使用命名参数，并且仅在使用命名参数时被选中，即使 arity 与另一个 `multi` 候选版本相同。
+
 The first two versions of the `happy-birthday` sub differs only in the arity (number of arguments), while the third version uses named arguments and is chosen only when named arguments are used, even if the arity is the same of another `multi`candidate.
+
+当两个子例程具有相同的 arity 时，参数的类型驱动调度；当存在命名参数时，即使它们的类型与另一个候选类型相同，它们也驱动调度：
 
 When two sub have the same arity, the type of the arguments drive the dispatch; when there are named arguments they drive the dispatch even when their type is the same as another candidate:
 
-```
+```Perl6
 multi happy-birthday( Str $name, Int $age ) {
     say "Happy {$age}th Birthday $name !";
 }
@@ -294,11 +346,15 @@ happy-birthday age => 40, name => 'Luca';  # OUTPUT: «Happy Birthday Luca, you 
  
 ```
 
+命名参数参与调度，即使调用中没有提供这些参数。因此，将优先考虑具有命名参数的多候选项。
+
 Named parameters participate in the dispatch even if they are not provided in the call. Therefore a multi candidate with named parameters will be given precedence.
+
+有关类型约束的详细信息，请参阅[签名](https://docs.perl6.org/type/Signature#Type_constraints)类的文档。
 
 For more information about type constraints see the documentation for the [Signature](https://docs.perl6.org/type/Signature#Type_constraints) class.
 
-```
+```Perl6
 multi as-json(Bool $d) { $d ?? 'true' !! 'false'; }
 multi as-json(Real $d) { ~$d }
 multi as-json(@d)      { sprintf '[%s]', @d.map(&as-json).join(', ') }
@@ -308,9 +364,11 @@ say as-json( 10.3 );                        # OUTPUT: «10.3␤»
 say as-json( [ True, 10.3, False, 24 ] );   # OUTPUT: «[true, 10.3, false, 24]␤» 
 ```
 
+`multi` 不带任何特定子例程类型都缺省为 `sub`，但是你也可以对方法使用它。候选都是对象的 multi 方法：
+
 `multi` without any specific routine type always defaults to a `sub`, but you can use it on methods as well. The candidates are all the multi methods of the object:
 
-```
+```Perl6
 class Congrats {
     multi method congratulate($reason, $name) {
         say "Hooray for your $reason, $name";
@@ -332,15 +390,21 @@ $congrats.congratulate('promotion','Cindy'); # OUTPUT: «Hooray for your promoti
 $congrats.congratulate('birthday','Bob');    # OUTPUT: «Happy birthday, Bob␤» 
 ```
 
+与 `sub` 不同，如果将命名参数与多个方法一起使用，则参数必须是必需的参数才能按预期工作。
+
 Unlike `sub`, if you use named parameters with multi methods, the parameters must be required parameters to behave as expected.
+
+请注意，non-multi 子例程或运算符将在任何父范围或子范围中隐藏同名的多个候选项。对于导入的非多候选人也是如此。
 
 Please note that a non-multi sub or operator will hide multi candidates of the same name in any parent scope or child scope. The same is true for imported non-multi candidates.
 
 ### proto
 
+`proto` 是一种正式声明 `multi` 候选人之间共性的方法。它充当一个包装器，可以验证但不能修改参数。考虑这个基本示例：
+
 `proto` is a way to formally declare commonalities between `multi` candidates. It acts as a wrapper that can validate but not modify arguments. Consider this basic example:
 
-```
+```Perl6
 proto congratulate(Str $reason, Str $name, |) {*}
 multi congratulate($reason, $name) {
    say "Hooray for your $reason, $name";
@@ -354,15 +418,19 @@ congratulate('being a cool number', 'Fred', 42); # OK
 congratulate('being a cool number', 42);         # Proto match error 
 ```
 
+proto 坚持所有的 `multi congratulate` 子例程都符合两个字符串的基本签名，还可以选择后面跟着其他参数。`|` 是一个未命名的 `Capture` 参数，允许 `multi` 接受其他参数。前两个调用成功，但第三个调用（在编译时）失败，因为 `42` 与 `Str` 不匹配。
+
 The proto insists that all `multi congratulate` subs conform to the basic signature of two strings, optionally followed by further parameters. The `|` is an un-named `Capture` parameter, and allows a `multi` to take additional arguments. The first two calls succeed, but the third fails (at compile time) because `42` doesn't match `Str`.
 
-```
+```Perl6
 say &congratulate.signature # OUTPUT: «(Str $reason, Str $name, | is raw)␤» 
 ```
 
+您可以给 `proto` 一个函数体，并将 `{*}` 放在要完成分派的位置。
+
 You can give the `proto` a function body, and place the `{*}` where you want the dispatch to be done.
 
-```
+```Perl6
 # attempts to notify someone -- False if unsuccessful 
 proto notify(Str $user,Str $msg) {
    my \hour = DateTime.now.hour;
@@ -375,9 +443,11 @@ proto notify(Str $user,Str $msg) {
 }
 ```
 
+`{*}` 总是使用调用参数向候选人发送消息。参数默认值和类型强制将起作用，但不会传递。
+
 `{*}` always dispatches to candidates with the parameters it's called with. Parameter defaults and type coercions will work but are not passed on.
 
-```
+```Perl6
 proto mistake-proto(Str() $str, Int $number = 42) {*}
 multi mistake-proto($str, $number) { say $str.^name }
 mistake-proto(7, 42);  # OUTPUT: «Int␤» -- not passed on 
@@ -386,21 +456,27 @@ mistake-proto('test'); # fails -- not passed on
 
 ## only
 
+在 `sub` 或 `method` 前面的 `only` 关键字指示它将是唯一驻留给定命名空间的具有该名称的函数。
+
 The `only` keyword preceding `sub` or `method` indicates that it will be the only function with that name that inhabits a given namespace.
 
-```
+```Perl6
 only sub you () {"Can make all the world seem right"};
 ```
 
+这将在同一命名空间中生成其他声明，例如
+
 This will make other declarations in the same namespace, such as
 
-```
+```Perl6
 sub you ( $can ) { "Make the darkness bright" }
 ```
 
+失败并出现类型为 `X::Redeclaration` 的异常。`only` 是所有 sub 的默认值；在上面的情况下，不将第一个子例程声明为 `only` 将产生完全相同的错误；但是，没有什么可以阻止未来的开发人员声明 proto 并在名称前面加上 `multi`。在例程之前使用 `only` 是一个[防御编程](https://en.wikipedia.org/wiki/Defensive_programming)功能，它声明将来不在同一命名空间中声明具有相同名称的例程。
+
 fail with an exception of type `X::Redeclaration`. `only` is the default value for all subs; in the case above, not declaring the first subroutine as `only` will yield exactly the same error; however, nothing prevents future developers from declaring a proto and preceding the names with `multi`. Using `only` before a routine is a [defensive programming](https://en.wikipedia.org/wiki/Defensive_programming) feature that declares the intention of not having routines with the same name declared in the same namespace in the future.
 
-```
+```Perl6
 (exit code 1)
 ===SORRY!=== Error while compiling /tmp/only-redeclaration.p6
 Redeclaration of routine 'you' (did you mean to declare a multi-sub?)
@@ -408,15 +484,23 @@ at /tmp/only-redeclaration.p6:3
 ------> <BOL>⏏<EOL>
 ```
 
+匿名子例程不能声明为 `only`。`only sub {}` 会抛出类型为 `X::Anon::Multi` 的错误。
+
 Anonymous sub cannot be declared `only`. `only sub {}'` will throw an error of type, surprisingly, `X::Anon::Multi`.
 
-# Conventions and idioms
+# 习惯用法 / Conventions and idioms
+
+虽然上面描述的调度系统提供了很大的灵活性，但是大多数内部函数和许多模块中的函数都会遵循一些约定。
 
 While the dispatch system described above provides a lot of flexibility, there are some conventions that most internal functions, and those in many modules, will follow.
 
-## Slurpy conventions
+## Slurpy 约定 / Slurpy conventions
+
+也许这些约定中最重要的一个就是处理 slurpy 列表参数的方式。大多数情况下，函数不会自动压扁 slurpy 列表。罕见的例外是那些在列表的列表上没有合理行为的函数（例如，[chrs](https://docs.perl6.org/routine/chrs)），或者与已建立的习惯用法（例如，[pop](https://docs.perl6.org/routine/pop) 作为 [push](https://docs.perl6.org/routine/push) 的逆函数 ）。
 
 Perhaps the most important one of these conventions is the way slurpy list arguments are handled. Most of the time, functions will not automatically flatten slurpy lists. The rare exceptions are those functions that don't have a reasonable behavior on lists of lists (e.g., [chrs](https://docs.perl6.org/routine/chrs)) or where there is a conflict with an established idiom (e.g., [pop](https://docs.perl6.org/routine/pop) being the inverse of [push](https://docs.perl6.org/routine/push)).
+
+如果您希望匹配这种外观和感觉，任何 [Iterable](https://docs.perl6.org/type/Iterable) 参数都必须使用带有两个细微差别的“**@”slurpy逐元素分解：
 
 If you wish to match this look and feel, any [Iterable](https://docs.perl6.org/type/Iterable) argument must be broken out element-by-element using a `**@` slurpy, with two nuances:
 
@@ -425,13 +509,13 @@ If you wish to match this look and feel, any [Iterable](https://docs.perl6.org/t
 
 This can be achieved by using a slurpy with a `+` or `+@` instead of `**`:
 
-```
+```Perl6
 sub grab(+@a) { "grab $_".say for @a }
 ```
 
 which is shorthand for something very close to:
 
-```
+```Perl6
 multi sub grab(**@a) { "grab $_".say for @a }
 multi sub grab(\a) {
     a ~~ Iterable and a.VAR !~~ Scalar ?? nextwith(|a) !! nextwith(a,)
@@ -440,7 +524,7 @@ multi sub grab(\a) {
 
 This results in the following behavior, which is known as the *"single argument rule"* and is important to understand when invoking slurpy functions:
 
-```
+```Perl6
 grab(1, 2);      # OUTPUT: «grab 1␤grab 2␤» 
 grab((1, 2));    # OUTPUT: «grab 1␤grab 2␤» 
 grab($(1, 2));   # OUTPUT: «grab 1 2␤» 
@@ -449,7 +533,7 @@ grab((1, 2), 3); # OUTPUT: «grab 1 2␤grab 3␤»
 
 This also makes user-requested flattening feel consistent whether there is one sublist, or many:
 
-```
+```Perl6
 grab(flat (1, 2), (3, 4));   # OUTPUT: «grab 1␤grab 2␤grab 3␤grab 4␤» 
 grab(flat $(1, 2), $(3, 4)); # OUTPUT: «grab 1 2␤grab 3 4␤» 
 grab(flat (1, 2));           # OUTPUT: «grab 1␤grab 2␤» 
@@ -458,7 +542,7 @@ grab(flat $(1, 2));          # OUTPUT: «grab 1␤grab 2␤»
 
 It's worth noting that mixing binding and sigilless variables in these cases requires a bit of finesse, because there is no [Scalar](https://docs.perl6.org/type/Scalar)intermediary used during binding.
 
-```
+```Perl6
 my $a = (1, 2);  # Normal assignment, equivalent to $(1, 2) 
 grab($a);        # OUTPUT: «grab 1 2␤» 
 my $b := (1, 2); # Binding, $b links directly to a bare (1, 2) 
@@ -473,7 +557,7 @@ Functions and other code objects can be passed around as values, just like any o
 
 There are several ways to get hold of a code object. You can assign it to a variable at the point of declaration:
 
-```
+```Perl6
 my $square = sub (Numeric $x) { $x * $x }
 # and then use it: 
 say $square(6);    # OUTPUT: «36␤» 
@@ -481,7 +565,7 @@ say $square(6);    # OUTPUT: «36␤»
 
 Or you can reference an existing named function by using the `&`-sigil in front of it.
 
-```
+```Perl6
 sub square($x) { $x * $x };
  
 # get hold of a reference to the function: 
@@ -490,7 +574,7 @@ my $func = &square
 
 This is very useful for *higher order functions*, that is, functions that take other functions as input. A simple one is [map](https://docs.perl6.org/type/List#routine_map), which applies a function to each input element:
 
-```
+```Perl6
 sub square($x) { $x * $x };
 my @squared = map &square,  1..5;
 say join ', ', @squared;        # OUTPUT: «1, 4, 9, 16, 25␤» 
@@ -500,7 +584,7 @@ say join ', ', @squared;        # OUTPUT: «1, 4, 9, 16, 25␤»
 
 To call a subroutine with 2 arguments like an infix operator, use a subroutine reference surrounded by `[` and `]`.
 
-```
+```Perl6
 sub plus { $^a + $^b };
 say 21 [&plus] 21;
 # OUTPUT: «42␤» 
@@ -512,7 +596,7 @@ say 21 [&plus] 21;
 
 All code objects in Perl 6 are *closures*, which means they can reference lexical variables from an outer scope.
 
-```
+```Perl6
 sub generate-sub($x) {
     my $y = 2 * $x;
     return sub { say $y };
@@ -526,7 +610,7 @@ Here, `$y` is a lexical variable inside `generate-sub`, and the inner subroutine
 
 Another closure example is the use of [map](https://docs.perl6.org/type/List#routine_map) to multiply a list of numbers:
 
-```
+```Perl6
 my $multiply-by = 5;
 say join ', ', map { $_ * $multiply-by }, 1..5;     # OUTPUT: «5, 10, 15, 20, 25␤» 
 ```
