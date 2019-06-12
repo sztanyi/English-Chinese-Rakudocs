@@ -494,24 +494,32 @@ Anonymous sub cannot be declared `only`. `only sub {}'` will throw an error of t
 
 While the dispatch system described above provides a lot of flexibility, there are some conventions that most internal functions, and those in many modules, will follow.
 
-## Slurpy 约定 / Slurpy conventions
+## 解构约定 / Slurpy conventions
 
 也许这些约定中最重要的一个就是处理 slurpy 列表参数的方式。大多数情况下，函数不会自动压扁 slurpy 列表。罕见的例外是那些在列表的列表上没有合理行为的函数（例如，[chrs](https://docs.perl6.org/routine/chrs)），或者与已建立的习惯用法（例如，[pop](https://docs.perl6.org/routine/pop) 作为 [push](https://docs.perl6.org/routine/push) 的逆函数 ）。
 
 Perhaps the most important one of these conventions is the way slurpy list arguments are handled. Most of the time, functions will not automatically flatten slurpy lists. The rare exceptions are those functions that don't have a reasonable behavior on lists of lists (e.g., [chrs](https://docs.perl6.org/routine/chrs)) or where there is a conflict with an established idiom (e.g., [pop](https://docs.perl6.org/routine/pop) being the inverse of [push](https://docs.perl6.org/routine/push)).
 
-如果您希望匹配这种外观和感觉，任何 [Iterable](https://docs.perl6.org/type/Iterable) 参数都必须使用带有两个细微差别的“**@”slurpy逐元素分解：
+如果您希望匹配这种外观和感觉，任何 [Iterable](https://docs.perl6.org/type/Iterable) 参数都必须使用 `**@` 逐元素分解，这有两个细微差别：
 
 If you wish to match this look and feel, any [Iterable](https://docs.perl6.org/type/Iterable) argument must be broken out element-by-element using a `**@` slurpy, with two nuances:
 
+
+- 对[标量容器](https://docs.perl6.org/language/containers#Scalar_containers)中的 [Iterable](https://docs.perl6.org/type/Iterable) 不生效。
+- 使用一个 [`,`](https://docs.perl6.org/routine/,) 创建的 [List](https://docs.perl6.org/type/List)，在最上层只会被当做一个 [Iterable](https://docs.perl6.org/type/Iterable)。
+
 - An [Iterable](https://docs.perl6.org/type/Iterable) inside a [Scalar container](https://docs.perl6.org/language/containers#Scalar_containers) doesn't count.
 - [List](https://docs.perl6.org/type/List)s created with a [`,`](https://docs.perl6.org/routine/,) at the top level only count as one [Iterable](https://docs.perl6.org/type/Iterable).
+
+这可以通过使用 `+` 或者 `+@` 而不是 `**` 来实现：
 
 This can be achieved by using a slurpy with a `+` or `+@` instead of `**`:
 
 ```Perl6
 sub grab(+@a) { "grab $_".say for @a }
 ```
+
+这是非常接近以下内容的简写：
 
 which is shorthand for something very close to:
 
@@ -522,6 +530,8 @@ multi sub grab(\a) {
 }
 ```
 
+这会导致下列被称为*“单参数规则”*的行为，在调用 slurpy 函数时需要了解这些行为至关重要：
+
 This results in the following behavior, which is known as the *"single argument rule"* and is important to understand when invoking slurpy functions:
 
 ```Perl6
@@ -531,6 +541,8 @@ grab($(1, 2));   # OUTPUT: «grab 1 2␤»
 grab((1, 2), 3); # OUTPUT: «grab 1 2␤grab 3␤» 
 ```
 
+这也使得用户请求的扁平化无论有一个子列表还是多个子列表都感觉一致：
+
 This also makes user-requested flattening feel consistent whether there is one sublist, or many:
 
 ```Perl6
@@ -539,6 +551,8 @@ grab(flat $(1, 2), $(3, 4)); # OUTPUT: «grab 1 2␤grab 3 4␤»
 grab(flat (1, 2));           # OUTPUT: «grab 1␤grab 2␤» 
 grab(flat $(1, 2));          # OUTPUT: «grab 1␤grab 2␤» 
 ```
+
+值得注意的是，在这些情况下混合绑定和无符号变量需要一些技巧，因为在绑定期间没有使用[标量](https://docs.perl6.org/type/Scalar)媒介。
 
 It's worth noting that mixing binding and sigilless variables in these cases requires a bit of finesse, because there is no [Scalar](https://docs.perl6.org/type/Scalar)intermediary used during binding.
 
@@ -551,9 +565,13 @@ my \c = (1, 2);  # Sigilless variables always bind, even with '='
 grab(c);         # OUTPUT: «grab 1␤grab 2␤» 
 ```
 
-# Functions are first-class objects
+# 函数是第一等对象 / Functions are first-class objects
+
+函数和其他代码对象可以作为值传递，就像其他任何对象一样。
 
 Functions and other code objects can be passed around as values, just like any other object.
+
+有几种方法可以获取代码对象。可以在声明点将其赋给变量：
 
 There are several ways to get hold of a code object. You can assign it to a variable at the point of declaration:
 
@@ -562,6 +580,8 @@ my $square = sub (Numeric $x) { $x * $x }
 # and then use it: 
 say $square(6);    # OUTPUT: «36␤» 
 ```
+
+或者，可以使用前面的 `&` 来引用现有的命名函数。
 
 Or you can reference an existing named function by using the `&`-sigil in front of it.
 
@@ -572,6 +592,8 @@ sub square($x) { $x * $x };
 my $func = &square
 ```
 
+这对于*高阶函数*非常有用，也就是说，将其他函数作为输入的函数。一个简单的例子是 [map](https://docs.perl6.org/type/List#routine_map)，它将一个函数应用于每个输入元素：
+
 This is very useful for *higher order functions*, that is, functions that take other functions as input. A simple one is [map](https://docs.perl6.org/type/List#routine_map), which applies a function to each input element:
 
 ```Perl6
@@ -580,7 +602,9 @@ my @squared = map &square,  1..5;
 say join ', ', @squared;        # OUTPUT: «1, 4, 9, 16, 25␤» 
 ```
 
-## Infix form
+## 中缀形式 / Infix form
+
+要使用 2 个参数（如中缀运算符）调用子例程，使用由 `[` 和 `]` 包围的子例程引用。
 
 To call a subroutine with 2 arguments like an infix operator, use a subroutine reference surrounded by `[` and `]`.
 
@@ -590,9 +614,9 @@ say 21 [&plus] 21;
 # OUTPUT: «42␤» 
 ```
 
+## 闭包 / Closures
 
-
-## Closures
+Perl 6 中的所有代码对象都是*闭包*，这意味着它们可以从外部范围引用词汇变量。
 
 All code objects in Perl 6 are *closures*, which means they can reference lexical variables from an outer scope.
 
@@ -606,7 +630,11 @@ my $generated = generate-sub(21);
 $generated(); # OUTPUT: «42␤» 
 ```
 
+这里，`$y` 是 `generate-sub` 中的词法变量，返回的内部子例程使用了它。在调用内部函数时， `generate-sub` 已退出。但是内部函数仍然可以使用 `$y`，因为它*关闭*了变量。
+
 Here, `$y` is a lexical variable inside `generate-sub`, and the inner subroutine that is returned uses it. By the time that inner sub is called, `generate-sub` has already exited. Yet the inner sub can still use `$y`, because it *closed* over the variable.
+
+另一个闭包示例是使用 [map](https://docs.perl6.org/type/List#routine_map) 将数字列表相乘：
 
 Another closure example is the use of [map](https://docs.perl6.org/type/List#routine_map) to multiply a list of numbers:
 
@@ -615,17 +643,25 @@ my $multiply-by = 5;
 say join ', ', map { $_ * $multiply-by }, 1..5;     # OUTPUT: «5, 10, 15, 20, 25␤» 
 ```
 
+在这里，传递给 `map` 的块引用了外部作用域中的变量 `$multiply-by`，从而使块成为一个闭包。
+
 Here, the block passed to `map` references the variable `$multiply-by` from the outer scope, making the block a closure.
+
+没有闭包的语言很难提供像 `map` 这样易于使用且功能强大的高阶函数。
 
 Languages without closures cannot easily provide higher-order functions that are as easy to use and powerful as `map`.
 
-## Routines
+## 例程 / Routines
+
+例程是符合 [类型 `Routine`](https://docs.perl6.org/type/Routine) 的代码对象，最显著的是 [`Sub`](https://docs.perl6.org/type/Sub)、[`Method`](https://docs.perl6.org/type/Method)、[`Regex`](https://docs.perl6.org/type/Regex) 和 [`Submethod`](https://docs.perl6.org/type/Submethod)。
 
 Routines are code objects that conform to [type `Routine`](https://docs.perl6.org/type/Routine), most notably [`Sub`](https://docs.perl6.org/type/Sub), [`Method`](https://docs.perl6.org/type/Method), [`Regex`](https://docs.perl6.org/type/Regex) and [`Submethod`](https://docs.perl6.org/type/Submethod).
 
+除了 [`Block`](https://docs.perl6.org/type/Block) 提供的功能外，它们还具有额外的功能：它们可以作为 [multis](https://docs.perl6.org/language/functions#Multi-dispatch) 提供，你可以 [wrap](https://docs.perl6.org/type/Routine#method_wrap) 他们，并使用 `return` 提前退出：
+
 They carry extra functionality in addition to what a [`Block`](https://docs.perl6.org/type/Block) supplies: they can come as [multis](https://docs.perl6.org/language/functions#Multi-dispatch), you can [wrap](https://docs.perl6.org/type/Routine#method_wrap) them, and exit early with `return`:
 
-```
+```Perl6
 my $keywords = set <if for unless while>;
  
 sub has-keyword(*@words) {
@@ -643,7 +679,7 @@ Here, `return` doesn't just leave the block inside which it was called, but the 
 
 Routines can be inlined and as such provide an obstacle for wrapping. Use the pragma `use soft;` to prevent inlining to allow wrapping at runtime.
 
-```
+```Perl6
 sub testee(Int $i, Str $s){
     rand.Rat * $i ~ $s;
 }
@@ -674,7 +710,7 @@ Operators are just subroutines with funny names. The funny names are composed of
 
 This works both for adding multi candidates to existing operators and for defining new ones. In the latter case, the definition of the new subroutine automatically installs the new operator into the grammar, but only in the current lexical scope. Importing an operator via `use` or `import` also makes it available.
 
-```
+```Perl6
 # adding a multi candidate to an existing operator: 
 multi infix:<+>(Int $x, "same") { 2 * $x };
 say 21 + "same";            # OUTPUT: «42␤» 

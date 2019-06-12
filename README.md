@@ -13,6 +13,7 @@ Official documentation address: https://docs.perl6.org/language.html
     - [数据结构 - Data Structures](https://github.com/sztanyi/perl6doc/blob/master/%E5%9F%BA%E7%A1%80%E4%B8%BB%E9%A2%98%20-%20Fundamental%20topics/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%20-%20Data%20Structures.md)
     - [日期与时间函数 - Date and time functions](https://github.com/sztanyi/perl6doc/blob/master/%E5%9F%BA%E7%A1%80%E4%B8%BB%E9%A2%98%20-%20Fundamental%20topics/%E6%97%A5%E6%9C%9F%E4%B8%8E%E6%97%B6%E9%97%B4%E5%87%BD%E6%95%B0%20-%20Date%20and%20time%20functions.md)
     - [变量 - Variables](https://github.com/sztanyi/perl6doc/blob/master/%E5%9F%BA%E7%A1%80%E4%B8%BB%E9%A2%98%20-%20Fundamental%20topics/%E5%8F%98%E9%87%8F%20-%20Variables.md)
+    - [函数 - Functions](https://github.com/sztanyi/perl6doc/blob/master/%E5%9F%BA%E7%A1%80%E4%B8%BB%E9%A2%98%20-%20Fundamental%20topics/%E5%87%BD%E6%95%B0%20-%20Functions.md)
 - [起步 - At the beginning](https://github.com/sztanyi/perl6doc/tree/master/%E8%B5%B7%E6%AD%A5%20-%20At%20the%20beginning)
     - [Perl 6 的例子 - Perl 6 by example P6-101](https://github.com/sztanyi/perl6doc/blob/master/%E8%B5%B7%E6%AD%A5%20-%20At%20the%20beginning/Perl%206%20%E7%9A%84%E4%BE%8B%E5%AD%90%20-%20Perl%206%20by%20example%20P6-101.md)
     - [简介 - Brief introduction](https://github.com/sztanyi/perl6doc/blob/master/%E8%B5%B7%E6%AD%A5%20-%20At%20the%20beginning/%E7%AE%80%E4%BB%8B%20-%20Brief%20introduction.md)
