@@ -665,7 +665,7 @@ They carry extra functionality in addition to what a [`Block`](https://docs.perl
 my $keywords = set <if for unless while>;
  
 sub has-keyword(*@words) {
-    for @words -> $word {
+    for @words -> $word { 
         return True if $word (elem) $keywords;
     }
     False;
@@ -675,7 +675,11 @@ say has-keyword 'not', 'one', 'here';       # OUTPUT: «False␤»
 say has-keyword 'but', 'here', 'for';       # OUTPUT: «True␤» 
 ```
 
+在这里，`return` 不仅仅是离开调用它的块，而是整个例程。通常，代码块对 `return` 是透明的，它们附加到最外层的例程。
+
 Here, `return` doesn't just leave the block inside which it was called, but the whole routine. In general, blocks are transparent to `return`, they attach to the outermost routine.
+
+例程可以是内联的，因此为包装提供了障碍。使用指令 `use soft;` 防止内联在运行时允许包装。
 
 Routines can be inlined and as such provide an obstacle for wrapping. Use the pragma `use soft;` to prevent inlining to allow wrapping at runtime.
 
@@ -683,7 +687,7 @@ Routines can be inlined and as such provide an obstacle for wrapping. Use the pr
 sub testee(Int $i, Str $s){
     rand.Rat * $i ~ $s;
 }
- 
+
 sub wrap-to-debug(&c){
     say "wrapping {&c.name} with arguments {&c.signature.perl}";
     &c.wrap: sub (|args){
@@ -693,10 +697,10 @@ sub wrap-to-debug(&c){
         ret-val
     }
 }
- 
+
 my $testee-handler = wrap-to-debug(&testee);
 # OUTPUT: «wrapping testee with arguments :(Int $i, Str $s)» 
- 
+
 say testee(10, "ten");
 # OUTPUT: «calling testee with \(10, "ten")␤returned from testee with return value "6.151190ten"␤6.151190ten» 
 &testee.unwrap($testee-handler);
@@ -704,9 +708,13 @@ say testee(10, "ten");
 # OUTPUT: «6.151190ten␤» 
 ```
 
-# Defining operators
+# 定义运算符 / Defining operators
+
+运算符只是具有有趣名称的子例程。有趣的名称由类别名称（`infix`、`prefix`、`postfix`、`circufix`、`postcircumfix`）和其后的冒号以及一个或多个运算符名称列表（ circufix 和 postcircumfix 有两个组件）组成。
 
 Operators are just subroutines with funny names. The funny names are composed of the category name (`infix`, `prefix`, `postfix`, `circumfix`, `postcircumfix`), followed by a colon, and a list of the operator name or names (two components in the case of circumfix and postcircumfix).
+
+这既适用于向现有运算符添加多个候选对象，也适用于定义新运算符。在后一种情况下，新子程序的定义会自动将新的运算符安装到语法中，但仅在当前词汇范围内。通过 `use` 或 `import` 导入运算符也使其可用。
 
 This works both for adding multi candidates to existing operators and for defining new ones. In the latter case, the definition of the new subroutine automatically installs the new operator into the grammar, but only in the current lexical scope. Importing an operator via `use` or `import` also makes it available.
 
@@ -720,18 +728,22 @@ sub postfix:<!>(Int $x where { $x >= 0 }) { [*] 1..$x };
 say 6!;                     # OUTPUT: «720␤» 
 ```
 
+运算符声明将尽快可用，因此可以递归到刚刚定义的运算符：
+
 The operator declaration becomes available as soon as possible, so you can recurse into a just-defined operator:
 
-```
+```Perl6
 sub postfix:<!>(Int $x where { $x >= 0 }) {
     $x == 0 ?? 1 !! $x * ($x - 1)!
 }
 say 6!;                     # OUTPUT: «720␤» 
 ```
 
+Circumfix 和 postcircumfix 运算符有两个分隔符组成，一个标记开始一个标记结尾。
+
 Circumfix and postcircumfix operators are made of two delimiters, one opening and one closing.
 
-```
+```Perl6
 sub circumfix:<START END>(*@elems) {
     "start", @elems, "end"
 }
@@ -739,32 +751,38 @@ sub circumfix:<START END>(*@elems) {
 say START 'a', 'b', 'c' END;        # OUTPUT: «(start [a b c] end)␤» 
 ```
 
+Postcircumfix 还接收到一个术语，在该术语之后，它们将被解析为一个参数：
+
 Postcircumfixes also receive the term after which they are parsed as an argument:
 
-```
+```Perl6
 sub postcircumfix:<!! !!>($left, $inside) {
     "$left -> ( $inside )"
 }
 say 42!! 1 !!;      # OUTPUT: «42 -> ( 1 )␤» 
 ```
 
+代码块可以直接分配给运算符名称。使用变量声明符并在运算符名称前面加上 `&` 标记。
+
 Blocks can be assigned directly to operator names. Use a variable declarator and prefix the operator name with a `&`-sigil.
 
-```
+```Perl6
 my &infix:<ieq> = -> |l { [eq] l>>.fc };
 say "abc" ieq "Abc";
 # OUTPUT: «True␤» 
 ```
 
+## 优先级 / Precedence
 
-
-## Precedence
+Perl 6 中的运算符优先级是相对于现有运算符指定的。特征 `is tighter`、`is equiv` 和 `is looser`，可以提供一个运算符来指示新运算符的优先级如何与其他现有运算符相关。可以应用多个特性。
 
 Operator precedence in Perl 6 is specified relatively to existing operators. The traits `is tighter`, `is equiv` and `is looser` can be provided with an operator to indicate how the precedence of the new operators is related to other, existing ones. More than one trait can be applied.
 
+例如，`infix:<*>` 比 `infix:<+>` 具有更严格的优先级，在两者之间插入一个优先级可以这样：
+
 For example, `infix:<*>` has a tighter precedence than `infix:<+>`, and squeezing one in between works like this:
 
-```
+```Perl6
 sub infix:<!!>($a, $b) is tighter(&infix:<+>) {
     2 * ($a + $b)
 }
@@ -772,41 +790,55 @@ sub infix:<!!>($a, $b) is tighter(&infix:<+>) {
 say 1 + 2 * 3 !! 4;     # OUTPUT: «21␤» 
 ```
 
-Here, the `1 + 2 * 3 !! 4` is parsed as `1 + ((2 * 3) !! 4)`, because the precedence of the new `!!` operator is between that of `+`and `*`.
+在这，`1 + 2 * 3 !! 4` 等于 `1 + ((2 * 3) !! 4)`，因为新运算符 `!!` 的优先级在 `+` 与 `*` 之间。
+
+Here, the `1 + 2 * 3 !! 4` is parsed as `1 + ((2 * 3) !! 4)`, because the precedence of the new `!!` operator is between that of `+` and `*`.
+
+同样的效果也可以通过以下方式实现：
 
 The same effect could have been achieved with:
 
-```
+```Perl6
 sub infix:<!!>($a, $b) is looser(&infix:<*>) { ... }
 ```
 
+若要将新运算符置于与现有运算符相同的优先级，请改用 `is equiv(&other-operator)`。
+
 To put a new operator on the same precedence level as an existing operator, use `is equiv(&other-operator)` instead.
 
-## Associativity
+## 结合性 / Associativity
+
+当同一个运算符在一行中出现多次时，可能会有多种解释。例如：
 
 When the same operator appears several times in a row, there are multiple possible interpretations. For example:
 
-```
+```Perl6
 1 + 2 + 3
 ```
 
+可以解析为
+
 could be parsed as
 
-```
+```Perl6
 (1 + 2) + 3         # left associative 
 ```
 
+或者
+
 or as
 
-```
+```Perl6
 1 + (2 + 3)         # right associative 
 ```
+
+对于实数的添加，这种区别有些无意义，因为 `+ `是 [数学上的关联性](https://en.wikipedia.org/wiki/Associative_property)。
 
 For addition of real numbers, the distinction is somewhat moot, because `+` is [mathematically associative](https://en.wikipedia.org/wiki/Associative_property).
 
 But for other operators it matters a great deal. For example, for the exponentiation/power operator, `infix:<**> `:
 
-```
+```Perl6
 say 2 ** (2 ** 3);      # OUTPUT: «256␤» 
 say (2 ** 2) ** 3;      # OUTPUT: «64␤» 
 ```
@@ -823,7 +855,7 @@ Perl 6 has the following possible associativity configurations:
 
 You can specify the associativity of an operator with the `is assoc` trait, where `left` is the default associativity.
 
-```
+```Perl6
 sub infix:<§>(*@a) is assoc<list> {
     '(' ~ @a.join('|') ~ ')';
 }
@@ -837,7 +869,7 @@ say 1 § 2 § 3;      # OUTPUT: «(1|2|3)␤»
 
 Examples of traits are:
 
-```
+```Perl6
 class ChildClass is ParentClass { ... }
 #                ^^ trait, with argument ParentClass 
 has $.attrib is rw;
@@ -852,7 +884,7 @@ has $!another-attribute handles <close>;
 
 Traits are subs declared in the form `trait_mod<VERB> `, where `VERB` stands for the name like `is`, `does` or `handles`. It receives the modified thing as argument, and the name as a named argument. See [Sub](https://docs.perl6.org/type/Sub#Traits) for details.
 
-```
+```Perl6
 multi sub trait_mod:<is>(Routine $r, :$doubles!) {
     $r.wrap({
         2 * callsame;
@@ -880,7 +912,7 @@ Fortunately, we have a series of re-dispatching tools that help us to make it ea
 
 `callsame` calls the next matching candidate with the same arguments that were used for the current candidate and returns that candidate's return value.
 
-```
+```Perl6
 proto a(|) {*}
  
 multi a(Any $x) {
@@ -903,7 +935,7 @@ a 1;        # OUTPUT: «Int 1␤Any 1␤Back in Int with 5␤»
 
 `callwith` calls the next candidate matching the original signature, that is, the next function that could possibly be used with the arguments provided by users and returns that candidate's return value.
 
-```
+```Perl6
 proto a(|) {*}
  
 multi a(Any $x) {
@@ -923,7 +955,7 @@ Here, `a 1` calls the most specific `Int` candidate first, and `callwith` re-dis
 
 In this case, for example:
 
-```
+```Perl6
 proto how-many(|) {*}
  
 multi how-many( Associative $a ) {
@@ -952,7 +984,7 @@ say how-many( $little-piggy  ); # OUTPUT: «Pair little     piggy␤There is lit
 
 the only candidates that take the `Pair` argument supplied by the user are the two functions defined first. Although a `Pair` can be easily coerced to a `Hash`, here is how signatures match:
 
-```
+```Perl6
 say :( Pair ) ~~ :( Associative ); # OUTPUT: «True␤» 
 say :( Pair ) ~~ :( Hash );        # OUTPUT: «False␤» 
 ```
@@ -965,7 +997,7 @@ The arguments provided by us are a `Pair`. It does not match a `Hash`, so the co
 
 `nextsame` calls the next matching candidate with the same arguments that were used for the current candidate and **never**returns.
 
-```
+```Perl6
 proto a(|) {*}
  
 multi a(Any $x) {
@@ -987,7 +1019,7 @@ a 1;        # OUTPUT: «Int 1␤Any 1␤»
 
 `nextwith` calls the next matching candidate with arguments provided by users and **never** returns.
 
-```
+```Perl6
 proto a(|) {*}
  
 multi a(Any $x) {
@@ -1009,7 +1041,7 @@ a 1;        # OUTPUT: «Int 1␤Any 2␤»
 
 `samewith` calls current candidate again with arguments provided by users and returns return value of the new instance of current candidate.
 
-```
+```Perl6
 proto a(|) {*}
  
 multi a(Int $x) {
@@ -1026,7 +1058,7 @@ say (a 10); # OUTPUT: «36288002␤»
 
 Redispatch may be required to call a block that is not the current scope what provides `nextsame` and friends with the problem to referring to the wrong scope. Use `nextcallee` to capture the right candidate and call it at the desired time.
 
-```
+```Perl6
 proto pick-winner(|) {*}
  
 multi pick-winner (Int \s) {
@@ -1053,7 +1085,7 @@ The Int candidate takes the `nextcallee` and then fires up a Promise to be execu
 
 Besides those are mentioned above, re-dispatch is helpful in more situations. One is for dispatching to wrapped routines:
 
-```
+```Perl6
 # enable wrapping: 
 use soft;
  
@@ -1073,7 +1105,7 @@ say square-root(-4);    # OUTPUT: «0+2i␤»
 
 Another use case is to re-dispatch to methods from parent classes.
 
-```
+```Perl6
 say Version.new('1.0.2') # OUTPUT: v1.0.2 
 class LoggedVersion is Version {
     method new(|c) {
@@ -1095,7 +1127,7 @@ Coercion types force a specific type for routine arguments while allowing the ro
 
 In the case the arguments cannot be converted to the stricter type, a *Type Check* error is thrown.
 
-```
+```Perl6
 sub double(Int(Cool) $x) {
     2 * $x
 }
@@ -1111,7 +1143,7 @@ If the accepted wider input type is [Any](https://docs.perl6.org/type/Any), it i
 
 The coercion works by looking for a method with the same name as the target type: if such method is found on the argument, it is invoked to convert the latter to the expected narrow type. From the above, it is clear that it is possible to provide coercion among user types just providing the required methods:
 
-```
+```Perl6
 class Bar {
    has $.msg;
 }
@@ -1140,7 +1172,7 @@ Coercion types are supposed to work wherever types work, but Rakudo currently (2
 
 Coercion also works with return types:
 
-```
+```Perl6
 sub are-equal (Int $x, Int $y --> Bool(Int) ) { $x - $y };
  
 for (2,4) X (1,2) -> ($a,$b) {
