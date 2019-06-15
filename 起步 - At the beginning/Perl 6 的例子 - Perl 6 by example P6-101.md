@@ -1,3 +1,5 @@
+原文：https://docs.perl6.org/language/101-basics
+
 # Perl 6 by example P6-101
 
 A basic introductory example of a Perl 6 program
