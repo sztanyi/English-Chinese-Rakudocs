@@ -12,6 +12,8 @@ Official documentation address: https://docs.perl6.org/language.html
     - [控制流 - Control Flow](https://github.com/sztanyi/perl6doc/blob/master/%E5%9F%BA%E7%A1%80%E4%B8%BB%E9%A2%98%20-%20Fundamental%20topics/%E6%8E%A7%E5%88%B6%E6%B5%81%20-%20Control%20Flow.md)
     - [数据结构 - Data Structures](https://github.com/sztanyi/perl6doc/blob/master/%E5%9F%BA%E7%A1%80%E4%B8%BB%E9%A2%98%20-%20Fundamental%20topics/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%20-%20Data%20Structures.md)
     - [日期与时间函数 - Date and time functions](https://github.com/sztanyi/perl6doc/blob/master/%E5%9F%BA%E7%A1%80%E4%B8%BB%E9%A2%98%20-%20Fundamental%20topics/%E6%97%A5%E6%9C%9F%E4%B8%8E%E6%97%B6%E9%97%B4%E5%87%BD%E6%95%B0%20-%20Date%20and%20time%20functions.md)
+    - [枚举 - Enumeration](https://github.com/sztanyi/perl6doc/blob/master/%E5%9F%BA%E7%A1%80%E4%B8%BB%E9%A2%98%20-%20Fundamental%20topics/%E6%9E%9A%E4%B8%BE%20-%20Enumeration.md)
+    - [异常 - Exceptions](https://github.com/sztanyi/perl6doc/blob/master/%E5%9F%BA%E7%A1%80%E4%B8%BB%E9%A2%98%20-%20Fundamental%20topics/%E5%BC%82%E5%B8%B8%20-%20Exceptions.md)
     - [变量 - Variables](https://github.com/sztanyi/perl6doc/blob/master/%E5%9F%BA%E7%A1%80%E4%B8%BB%E9%A2%98%20-%20Fundamental%20topics/%E5%8F%98%E9%87%8F%20-%20Variables.md)
     - [函数 - Functions](https://github.com/sztanyi/perl6doc/blob/master/%E5%9F%BA%E7%A1%80%E4%B8%BB%E9%A2%98%20-%20Fundamental%20topics/%E5%87%BD%E6%95%B0%20-%20Functions.md)
 - [起步 - At the beginning](https://github.com/sztanyi/perl6doc/tree/master/%E8%B5%B7%E6%AD%A5%20-%20At%20the%20beginning)
