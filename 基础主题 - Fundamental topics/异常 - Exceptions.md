@@ -29,6 +29,8 @@ It is worth noting that `die` prints the error message to the standard error `$*
 
 Typed exceptions provide more information about the error stored within an exception object.
 
+例如，如果在一个对象上执行 `.zombie copy` 时，需要的文件路径 `foo/bar` 不可用，则 [X::IO::DoesNotExist](https://docs.perl6.org/type/X::IO::DoesNotExist) 异常可以被抛出：
+
 For example, if while executing `.zombie copy` on an object, a needed path `foo/bar` becomes unavailable, then an [X::IO::DoesNotExist](https://docs.perl6.org/type/X::IO::DoesNotExist) exception can be raised:
 
 ```Perl6
@@ -38,9 +40,13 @@ die X::IO::DoesNotExist.new(:path("foo/bar"), :trying("zombie copy"))
 #          in block <unit> at my-script.p6:1» 
 ```
 
+请注意，对象如何向回溯提供有关出错的信息。代码的用户现在可以更容易地找到和纠正问题。
+
 Note how the object has provided the backtrace with information about what went wrong. A user of the code can now more easily find and correct the problem.
 
-# Catching exceptions
+# 捕获异常 / Catching exceptions
+
+可以通过提供 `CATCH` 代码块来处理异常情况：
 
 It's possible to handle exceptional circumstances by supplying a `CATCH` block:
 
@@ -54,9 +60,16 @@ CATCH {
 # OUTPUT: «some kind of IO exception was caught!» 
 ```
 
+这里，我们要说的是，如果发生了类型为 `X::IO` 的异常，那么消息 `some kind of IO exception was caught!` 将被发送到 *stderr*，这就是 `$*ERR.say` 所做的，在那一刻显示在构成标准错误设备的任何组件上，这可能是默认的控制台。
+
 Here, we are saying that if any exception of type `X::IO` occurs, then the message `some kind of IO exception was caught!` will be sent to *stderr*, which is what `$*ERR.say` does, getting displayed on whatever constitutes the standard error device in that moment, which will probably be the console by default.
 
+`CATCH` 代码块使用智能匹配的方式类似 `given/when` 用智能匹配处理选项一样，因此可以在 `when` 代码块中抓取和处理各种类别的异常。
+
 A `CATCH` block uses smartmatching similar to how `given/when` smartmatches on options, thus it's possible to catch and handle various categories of exceptions inside a `when` block.
+
+
+要处理所有异常，使用 `default` 语句。这个例子打印出的信息与普通的回溯打印机几乎相同。
 
 To handle all exceptions, use a `default` statement. This example prints out almost the same information as the normal backtrace printer.
 
@@ -73,11 +86,17 @@ CATCH {
 }
 ```
 
+请注意，匹配目标是一个角色。为了允许用户定义的异常以相同的方式匹配，它们必须实现给定的角色。只存在于同一个命名空间中的将看起来相似，但在`CATCH` 代码块中不匹配。
+
 Note that the match target is a role. To allow user defined exceptions to match in the same manner, they must implement the given role. Just existing in the same namespace will look alike but won't match in a `CATCH` block.
 
-## Exception handlers and enclosing blocks
+## 异常处理程序和封闭块 / Exception handlers and enclosing blocks
+
+CATCH 处理完异常后，将退出包含 `CATCH` 代码块的代码块。
 
 After a CATCH has handled the exception, the block enclosing the `CATCH` block is exited.
+
+换句话说，即使成功地处理了异常，也永远不会执行封闭块中的*其余代码*。
 
 In other words, even when the exception is handled successfully, the *rest of the code* in the enclosing block will never be executed.
 
@@ -93,6 +112,8 @@ say "This won't be said.";   # but this line will be never reached since
                              # the enclosing block will be exited immediately 
 # OUTPUT: «something went wrong ...␤» 
 ```
+
+跟这个比较：
 
 Compare with this:
 
@@ -110,9 +131,11 @@ CATCH {
 say "Hi! I am at the outer block!"; # OUTPUT: «Hi! I am at the outer block!␤» 
 ```
 
+怎样把控制权
+
+[Resuming of exceptions](https://docs.perl6.org/language/exceptions#Resuming_of_exceptions)
+
 See [Resuming of exceptions](https://docs.perl6.org/language/exceptions#Resuming_of_exceptions), for how to return control back to where the exception originated.
-
-
 
 # `try` blocks
 
