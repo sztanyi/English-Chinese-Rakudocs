@@ -131,15 +131,17 @@ CATCH {
 say "Hi! I am at the outer block!"; # OUTPUT: «Hi! I am at the outer block!␤» 
 ```
 
-怎样把控制权
-
-[Resuming of exceptions](https://docs.perl6.org/language/exceptions#Resuming_of_exceptions)
+怎样把控制权还给异常产生的地方，参考[异常恢复](https://docs.perl6.org/language/exceptions#Resuming_of_exceptions)
 
 See [Resuming of exceptions](https://docs.perl6.org/language/exceptions#Resuming_of_exceptions), for how to return control back to where the exception originated.
 
-# `try` blocks
+# `tyr` 代码块 / `try` blocks
+
+`try` 代码块是一个普通代码块，它隐式使用 [`use fatal` 指令](https://docs.perl6.org/language/pragmas#index-entry-fatal-fatal)，并包含一个用来用于舍弃异常的隐式 `CATCH` 代码块，这意味着你可以使用它来包含异常。捕获的异常存储在 `$!` 变量中，它保存 `Exception` 的值。
 
 A `try` block is a normal block which implicitly turns on the [`use fatal` pragma](https://docs.perl6.org/language/pragmas#index-entry-fatal-fatal) and includes an implicit `CATCH` block that drops the exception, which means you can use it to contain them. Caught exceptions are stored inside the `$!` variable, which holds a value of type `Exception`.
+
+像这样的一个普通代码块只会失败：
 
 A normal block like this one will simply fail:
 
@@ -150,9 +152,11 @@ A normal block like this one will simply fail:
 } # OUTPUT: «Failure␤» 
 ```
 
+但是，`try` 代码块将包含异常并将其放入 `$!` 变量中：
+
 However, a `try` block will contain the exception and put it into the `$!` variable:
 
-```
+```Perl6
 try {
     my $x = +"a";
     say $x.^name;
@@ -162,9 +166,11 @@ if $! { say "Something failed!" } # OUTPUT: «Something failed!␤»
 say $!.^name;                     # OUTPUT: «X::Str::Numeric␤» 
 ```
 
+在此类块中引发的任何异常都将被 `CATCH` 块捕获，无论是隐式的还是由用户提供的。在后一种情况下，任何未处理的异常都将被重新抛出。如果选择不处理异常，这些异常将被代码块控制。
+
 Any exception that is thrown in such a block will be caught by a `CATCH` block, either implicit or provided by the user. In the latter case, any unhandled exception will be rethrown. If you choose not to handle the exception, they will be contained by the block.
 
-```
+```Perl6
 try {
     die "Tough luck";
     say "Not gonna happen";
@@ -175,9 +181,11 @@ try {
 }
 ```
 
+在上面的两个 `try` 代码块中，异常将被控制在块中，但不会运行 `say` 语句。不过，我们可以处理它们：
+
 In both `try` blocks above, exceptions will be contained within the block, but the `say` statement will not be run. We can handle them, though:
 
-```
+```Perl6
 class E is Exception { method message() { "Just stop already!" } }
  
 try {
@@ -203,9 +211,11 @@ try {
 }
 ```
 
+输出：
+
 Which would output:
 
-```
+```Perl6
 I'm alive!
 No, I expect you to DIE Mr. Bond!
 I'm immortal.
@@ -213,18 +223,24 @@ Just stop already!
   in block <unit> at exception.p6 line 21
 ```
 
+由于 `CATCH` 代码块只处理由 `die` 语句引发的 `X::AdHoc` 异常，而不是 `E` 异常。在没有 `CATCH` 代码块的情况下，将控制并删除所有异常，如上所示。`resume` 将在引发异常后立即恢复执行；在本例中，在 `die` 语句中。有关此方面的详细信息，请参阅 [恢复异常](https://docs.perl6.org/language/exceptions#Resuming_of_exceptions)。
+
 Since the `CATCH` block is handling just the `X::AdHoc` exception thrown by the `die` statement, but not the `E` exception. In the absence of a `CATCH` block, all exceptions will be contained and dropped, as indicated above. `resume` will resume execution right after the exception has been thrown; in this case, in the `die` statement. Please consult the section on [resuming of exceptions](https://docs.perl6.org/language/exceptions#Resuming_of_exceptions) for more information on this.
+
+`try` 代码块是一个普通代码块，因此将其最后一条语句视为自身的返回值。因此，我们可以将其与 `//` 操作符配合使用。
 
 A `try`-block is a normal block and as such treats its last statement as the return value of itself. We can therefore use it as a right-hand side.
 
-```
+```Perl6
 say try { +"99999" } // "oh no"; # OUTPUT: «99999␤» 
 say try { +"hello" } // "oh no"; # OUTPUT: «oh no␤» 
 ```
 
+Try 代码块通过返回表达式的返回值间接支持 `else` 代码块，如果引发异常，则返回 [Nil](https://docs.perl6.org/type/Nil)。
+
 Try blocks support `else` blocks indirectly by returning the return value of the expression or [Nil](https://docs.perl6.org/type/Nil) if an exception was thrown.
 
-```
+```Perl6
 with try +"♥" {
     say "this is my number: $_"
 } else {
@@ -233,16 +249,20 @@ with try +"♥" {
 # OUTPUT: «not my number!␤» 
 ```
 
+`try` 还可以与语句而不是代码块一起使用，即作为[语句前缀](https://docs.perl6.org/language/statement-prefixes#try)：
+
 `try` can also be used with a statement instead of a block, that is, as a [statement prefix](https://docs.perl6.org/language/statement-prefixes#try):
 
-```
+```Perl6
 say try "some-filename.txt".IO.slurp // "sane default";
 # OUTPUT: «sane default␤» 
 ```
 
+`try` 的实际原因是，通过 `use fatal` 指令，立即抛出在其作用域内发生的异常，但通过这样做，`CATCH` 代码块将从引发异常的点（定义其作用域）调用。
+
 What `try` actually causes is, via the `use fatal` pragma, an immediate throw of the exceptions that happen within its scope, but by doing so the `CATCH` block is invoked from the point where the exception is thrown, which defines its scope.
 
-```
+```Perl6
 my $error-code = "333";
 sub bad-sub {
     die "Something bad happened";
@@ -260,13 +280,17 @@ try {
 # OUTPUT: «Error 111 X::AdHoc: Something bad happened␤» 
 ```
 
-# Throwing exceptions
+# 抛出异常 / Throwing exceptions
+
+可以使用 `Exception` 对象的 `.throw` 方法显式抛出异常。
 
 Exceptions can be thrown explicitly with the `.throw` method of an `Exception` object.
 
+此示例引发一个 `AdHoc` 异常，捕获它，并允许代码通过调用 `.resume` 方法从异常点继续。
+
 This example throws an `AdHoc` exception, catches it and allows the code to continue from the point of the exception by calling the `.resume` method.
 
-```
+```Perl6
 {
     X::AdHoc.new(:payload<foo>).throw;
     "OHAI".say;
@@ -280,9 +304,11 @@ This example throws an `AdHoc` exception, catches it and allows the code to cont
 # OUTPUT: «OHAI␤OBAI␤» 
 ```
 
+如果 `CATCH` 代码块与抛出的异常不匹配，则该异常的有效负载将传递给回溯打印机制。
+
 If the `CATCH` block doesn't match the exception thrown, then the exception's payload is passed on to the backtrace printing mechanism.
 
-```
+```Perl6
 {
     X::AdHoc.new(:payload<foo>).throw;
     "OHAI".say;
@@ -297,7 +323,7 @@ If the `CATCH` block doesn't match the exception thrown, then the exception's pa
 
 This next example doesn't resume from the point of the exception. Instead, it continues after the enclosing block, since the exception is caught, and then control continues after the `CATCH` block.
 
-```
+```Perl6
 {
     X::AdHoc.new(:payload<foo>).throw;
     "OHAI".say;
@@ -317,7 +343,7 @@ This next example doesn't resume from the point of the exception. Instead, it co
 
 Exceptions interrupt control flow and divert it away from the statement following the statement that threw it. Any exception handled by the user can be resumed and control flow will continue with the statement following the statement that threw the exception. To do so, call the method `.resume` on the exception object.
 
-```
+```Perl6
 CATCH { when X::AdHoc { .resume } }         # this is step 2 
  
 die "We leave control after this.";         # this is step 1 
@@ -327,7 +353,7 @@ say "We have continued with control flow."; # this is step 3
 
 Resuming will occur right after the statement that has caused the exception, and in the innermost call frame:
 
-```
+```Perl6
 sub bad-sub {
     die "Something bad happened";
     return "not returning";
@@ -356,7 +382,7 @@ In this case, `.resume` is getting to the `return` statement that happens right 
 
 If an exception is thrown and not caught, it causes the program to exit with a non-zero status code, and typically prints a message to the standard error stream of the program. This message is obtained by calling the `gist` method on the exception object. You can use this to suppress the default behavior of printing a backtrace along with the message:
 
-```
+```Perl6
 class X::WithoutLineNumber is X::AdHoc {
     multi method gist(X::WithoutLineNumber:D:) {
             $.payload
@@ -371,7 +397,7 @@ die X::WithoutLineNumber.new(payload => "message")
 
 Control exceptions are raised when throwing an Exception which does the [X::Control](https://docs.perl6.org/type/X::Control) role (since Rakudo 2019.03). They are usually thrown by certain [keywords](https://docs.perl6.org/language/phasers#CONTROL) and are handled either automatically or by the appropriate [phaser](https://docs.perl6.org/language/phasers#Loop_phasers). Any unhandled control exception is converted to a normal exception.
 
-```
+```Perl6
 { return; CATCH { default { $*ERR.say: .^name, ': ', .Str } } }
 # OUTPUT: «X::ControlFlow::Return: Attempt to return outside of any Routine␤» 
 # was CX::Return 
