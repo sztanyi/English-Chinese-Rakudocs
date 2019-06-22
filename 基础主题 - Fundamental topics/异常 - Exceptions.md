@@ -1,3 +1,5 @@
+原文：https://docs.perl6.org/language/exceptions
+
 # 异常 / Exceptions
 
 Perl 6 中使用异常
@@ -8,6 +10,22 @@ Exceptions in Perl 6 are objects that hold information about errors. An error ca
 
 All built-in exceptions inherit from [Exception](https://docs.perl6.org/type/Exception), which provides some basic behavior, including the storage of a backtrace and an interface for the backtrace printer.
 
+<!-- MarkdownTOC -->
+
+- [临时异常 / *Ad hoc* exceptions](#%E4%B8%B4%E6%97%B6%E5%BC%82%E5%B8%B8--ad-hoc-exceptions)
+- [类型化异常 / Typed exceptions](#%E7%B1%BB%E5%9E%8B%E5%8C%96%E5%BC%82%E5%B8%B8--typed-exceptions)
+- [捕获异常 / Catching exceptions](#%E6%8D%95%E8%8E%B7%E5%BC%82%E5%B8%B8--catching-exceptions)
+    - [异常处理程序和封闭块 / Exception handlers and enclosing blocks](#%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E7%A8%8B%E5%BA%8F%E5%92%8C%E5%B0%81%E9%97%AD%E5%9D%97--exception-handlers-and-enclosing-blocks)
+- [`tyr` 代码块 / `try` blocks](#tyr-%E4%BB%A3%E7%A0%81%E5%9D%97--try-blocks)
+- [抛出异常 / Throwing exceptions](#%E6%8A%9B%E5%87%BA%E5%BC%82%E5%B8%B8--throwing-exceptions)
+- [异常恢复 / Resuming of exceptions](#%E5%BC%82%E5%B8%B8%E6%81%A2%E5%A4%8D--resuming-of-exceptions)
+- [未捕获的异常 / Uncaught exceptions](#%E6%9C%AA%E6%8D%95%E8%8E%B7%E7%9A%84%E5%BC%82%E5%B8%B8--uncaught-exceptions)
+- [控制异常 / Control exceptions](#%E6%8E%A7%E5%88%B6%E5%BC%82%E5%B8%B8--control-exceptions)
+
+<!-- /MarkdownTOC -->
+
+
+<a id="%E4%B8%B4%E6%97%B6%E5%BC%82%E5%B8%B8--ad-hoc-exceptions"></a>
 # 临时异常 / *Ad hoc* exceptions
 
 可以通过调用 [die](https://docs.perl6.org/routine/die) 使用临时异常，并对错误进行描述：
@@ -23,6 +41,7 @@ die "oops, something went wrong";
 
 It is worth noting that `die` prints the error message to the standard error `$*ERR`.
 
+<a id="%E7%B1%BB%E5%9E%8B%E5%8C%96%E5%BC%82%E5%B8%B8--typed-exceptions"></a>
 # 类型化异常 / Typed exceptions
 
 类型化异常提供有关存储在异常对象中的错误的详细信息。
@@ -44,6 +63,7 @@ die X::IO::DoesNotExist.new(:path("foo/bar"), :trying("zombie copy"))
 
 Note how the object has provided the backtrace with information about what went wrong. A user of the code can now more easily find and correct the problem.
 
+<a id="%E6%8D%95%E8%8E%B7%E5%BC%82%E5%B8%B8--catching-exceptions"></a>
 # 捕获异常 / Catching exceptions
 
 可以通过提供 `CATCH` 代码块来处理异常情况：
@@ -90,6 +110,7 @@ CATCH {
 
 Note that the match target is a role. To allow user defined exceptions to match in the same manner, they must implement the given role. Just existing in the same namespace will look alike but won't match in a `CATCH` block.
 
+<a id="%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E7%A8%8B%E5%BA%8F%E5%92%8C%E5%B0%81%E9%97%AD%E5%9D%97--exception-handlers-and-enclosing-blocks"></a>
 ## 异常处理程序和封闭块 / Exception handlers and enclosing blocks
 
 CATCH 处理完异常后，将退出包含 `CATCH` 代码块的代码块。
@@ -135,6 +156,7 @@ say "Hi! I am at the outer block!"; # OUTPUT: «Hi! I am at the outer block!␤�
 
 See [Resuming of exceptions](https://docs.perl6.org/language/exceptions#Resuming_of_exceptions), for how to return control back to where the exception originated.
 
+<a id="tyr-%E4%BB%A3%E7%A0%81%E5%9D%97--try-blocks"></a>
 # `tyr` 代码块 / `try` blocks
 
 `try` 代码块是一个普通代码块，它隐式使用 [`use fatal` 指令](https://docs.perl6.org/language/pragmas#index-entry-fatal-fatal)，并包含一个用来用于舍弃异常的隐式 `CATCH` 代码块，这意味着你可以使用它来包含异常。捕获的异常存储在 `$!` 变量中，它保存 `Exception` 的值。
@@ -280,6 +302,7 @@ try {
 # OUTPUT: «Error 111 X::AdHoc: Something bad happened␤» 
 ```
 
+<a id="%E6%8A%9B%E5%87%BA%E5%BC%82%E5%B8%B8--throwing-exceptions"></a>
 # 抛出异常 / Throwing exceptions
 
 可以使用 `Exception` 对象的 `.throw` 方法显式抛出异常。
@@ -321,6 +344,8 @@ If the `CATCH` block doesn't match the exception thrown, then the exception's pa
 #          in block <unit> at my-script.p6:1» 
 ```
 
+下一个示例不会从异常点恢复。相反，它在封闭代码块之后继续，因为捕获了异常，然后在 `CATCH` 代码块之后继续执行。
+
 This next example doesn't resume from the point of the exception. Instead, it continues after the enclosing block, since the exception is caught, and then control continues after the `CATCH` block.
 
 ```Perl6
@@ -337,9 +362,14 @@ This next example doesn't resume from the point of the exception. Instead, it co
 # OUTPUT: «OBAI␤» 
 ```
 
+`throw` 可以看作是 `die` 的方法形式，在这种特殊情况下，例程的 sub 和 method 形式有不同的名称。
+
 `throw` can be viewed as the method form of `die`, just that in this particular case, the sub and method forms of the routine have different names.
 
-# Resuming of exceptions
+<a id="%E5%BC%82%E5%B8%B8%E6%81%A2%E5%A4%8D--resuming-of-exceptions"></a>
+# 异常恢复 / Resuming of exceptions
+
+异常中断控制流，并将其从抛出它的语句后面的语句转移开。用户处理的任何异常都可以恢复，控制流将继续执行引发异常的语句后面的语句。为此，请对异常对象调用方法 `.resume`。
 
 Exceptions interrupt control flow and divert it away from the statement following the statement that threw it. Any exception handled by the user can be resumed and control flow will continue with the statement following the statement that threw the exception. To do so, call the method `.resume` on the exception object.
 
@@ -350,6 +380,8 @@ die "We leave control after this.";         # this is step 1
  
 say "We have continued with control flow."; # this is step 3 
 ```
+
+恢复将在引发异常的语句之后以及最内部的调用帧中发生：
 
 Resuming will occur right after the statement that has caused the exception, and in the innermost call frame:
 
@@ -376,24 +408,32 @@ sub bad-sub {
 # Returned not returning 
 ```
 
+在这种情况下，`.resume` 将进入 `die` 语句之后的 `return` 语句。请注意，对变量 `$return` 的赋值无效，因为 `CATCH` 语句发生在 `bad-sub` 里，而 `bad-sub` 通过 `return` 语句将 `not returning` 字符串赋值给 `$return`。
+
 In this case, `.resume` is getting to the `return` statement that happens right after the `die` statement. Please note that the assignment to `$return` is taking no effect, since the `CATCH` statement is happening *inside* the call to `bad-sub`, which, via the `return` statement, assigns the `not returning` value to it.
 
-# Uncaught exceptions
+<a id="%E6%9C%AA%E6%8D%95%E8%8E%B7%E7%9A%84%E5%BC%82%E5%B8%B8--uncaught-exceptions"></a>
+# 未捕获的异常 / Uncaught exceptions
+
+如果一个异常被抛出并且没有被捕获，它会导致程序以非零状态代码退出，并且通常会将一条消息打印到程序的标准错误流。此消息是通过对异常对象调用 `gist` 方法获得的。你可以使用此选项来禁止与消息一起打印回溯的默认行为：
 
 If an exception is thrown and not caught, it causes the program to exit with a non-zero status code, and typically prints a message to the standard error stream of the program. This message is obtained by calling the `gist` method on the exception object. You can use this to suppress the default behavior of printing a backtrace along with the message:
 
 ```Perl6
 class X::WithoutLineNumber is X::AdHoc {
     multi method gist(X::WithoutLineNumber:D:) {
-            $.payload
+        $.payload
     }
 }
 die X::WithoutLineNumber.new(payload => "message")
- 
+
 # prints "message\n" to $*ERR and exits, no backtrace 
 ```
 
-# Control exceptions
+<a id="%E6%8E%A7%E5%88%B6%E5%BC%82%E5%B8%B8--control-exceptions"></a>
+# 控制异常 / Control exceptions
+
+当执行 [X::Control](https://docs.perl6.org/type/X::Control) 角色（自 Rakudo 2019.03 起）抛出异常时，会引发控制异常。它们通常由特定的[关键字](https://docs.perl6.org/language/phasers#CONTROL)抛出，并自动或由相应的[相位器](https://docs.perl6.org/language/phasers#Loop_phasers)处理。任何未处理的控件异常都将转换为正常异常。
 
 Control exceptions are raised when throwing an Exception which does the [X::Control](https://docs.perl6.org/type/X::Control) role (since Rakudo 2019.03). They are usually thrown by certain [keywords](https://docs.perl6.org/language/phasers#CONTROL) and are handled either automatically or by the appropriate [phaser](https://docs.perl6.org/language/phasers#Loop_phasers). Any unhandled control exception is converted to a normal exception.
 

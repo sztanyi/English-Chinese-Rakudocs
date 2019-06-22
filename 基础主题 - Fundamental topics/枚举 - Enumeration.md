@@ -1,3 +1,5 @@
+原文：https://docs.perl6.org/language/enumeration
+
 # 枚举 / Enumeration
 
 一个使用 enum 类型的例子
