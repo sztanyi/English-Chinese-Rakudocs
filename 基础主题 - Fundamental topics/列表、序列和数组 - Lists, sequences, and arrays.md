@@ -1,3 +1,5 @@
+原文：https://docs.perl6.org/language/list
+
 # 列表、序列和数组 - Lists, sequences, and arrays
 
 位置数据构造
@@ -8,6 +10,39 @@ Positional data constructs
 
 Lists have been a central part of computing since before there were computers, during which time many devils have taken up residence in their details. They were actually one of the hardest parts of Perl 6 to design, but through persistence and patience, Perl 6 has arrived with an elegant system for handling them.
 
+<!-- MarkdownTOC -->
+
+- [列表字面量 / Literal lists](#%E5%88%97%E8%A1%A8%E5%AD%97%E9%9D%A2%E9%87%8F--literal-lists)
+- [@ 符号 / The @ sigil](#-%E7%AC%A6%E5%8F%B7--the--sigil)
+- [重置列表容器 / Reset a list container](#%E9%87%8D%E7%BD%AE%E5%88%97%E8%A1%A8%E5%AE%B9%E5%99%A8--reset-a-list-container)
+- [迭代 / Iteration](#%E8%BF%AD%E4%BB%A3--iteration)
+    - [单参数规则 / Single Argument Rule](#%E5%8D%95%E5%8F%82%E6%95%B0%E8%A7%84%E5%88%99--single-argument-rule)
+- [成员测试 / Testing for elements](#%E6%88%90%E5%91%98%E6%B5%8B%E8%AF%95--testing-for-elements)
+    - [序列 / Sequences](#%E5%BA%8F%E5%88%97--sequences)
+    - [使用 `.iterator` / Using `.iterator`](#%E4%BD%BF%E7%94%A8-iterator--using-iterator)
+    - [Slips](#slips)
+- [惰性列表 / Lazy lists](#%E6%83%B0%E6%80%A7%E5%88%97%E8%A1%A8--lazy-lists)
+- [不变性 / Immutability](#%E4%B8%8D%E5%8F%98%E6%80%A7--immutability)
+- [列表上下文 / List contexts](#%E5%88%97%E8%A1%A8%E4%B8%8A%E4%B8%8B%E6%96%87--list-contexts)
+    - [列表分配上下文 / List assignment context](#%E5%88%97%E8%A1%A8%E5%88%86%E9%85%8D%E4%B8%8A%E4%B8%8B%E6%96%87--list-assignment-context)
+    - [扁平化“上下文” / Flattening "context"](#%E6%89%81%E5%B9%B3%E5%8C%96%E2%80%9C%E4%B8%8A%E4%B8%8B%E6%96%87%E2%80%9D--flattening-context)
+    - [参数列表（Capture）上下文 / Argument list \(Capture\) context](#%E5%8F%82%E6%95%B0%E5%88%97%E8%A1%A8%EF%BC%88capture%EF%BC%89%E4%B8%8A%E4%B8%8B%E6%96%87--argument-list-capture-context)
+    - [切片索引上下文 / Slice indexing context](#%E5%88%87%E7%89%87%E7%B4%A2%E5%BC%95%E4%B8%8A%E4%B8%8B%E6%96%87--slice-indexing-context)
+    - [范围为切片 / Range as slice](#%E8%8C%83%E5%9B%B4%E4%B8%BA%E5%88%87%E7%89%87--range-as-slice)
+    - [数组构造器上下文 / Array constructor context](#%E6%95%B0%E7%BB%84%E6%9E%84%E9%80%A0%E5%99%A8%E4%B8%8A%E4%B8%8B%E6%96%87--array-constructor-context)
+- [数组 / Arrays](#%E6%95%B0%E7%BB%84--arrays)
+    - [录入 / Typing](#%E5%BD%95%E5%85%A5--typing)
+    - [定长数组 / Fixed size arrays](#%E5%AE%9A%E9%95%BF%E6%95%B0%E7%BB%84--fixed-size-arrays)
+    - [条目化 / Itemization](#%E6%9D%A1%E7%9B%AE%E5%8C%96--itemization)
+    - [字面量数组 / Literal arrays](#%E5%AD%97%E9%9D%A2%E9%87%8F%E6%95%B0%E7%BB%84--literal-arrays)
+    - [可变性 / Mutability](#%E5%8F%AF%E5%8F%98%E6%80%A7--mutability)
+        - [赋值 / Assigning](#%E8%B5%8B%E5%80%BC--assigning)
+        - [绑定 / Binding](#%E7%BB%91%E5%AE%9A--binding)
+
+<!-- /MarkdownTOC -->
+
+
+<a id="%E5%88%97%E8%A1%A8%E5%AD%97%E9%9D%A2%E9%87%8F--literal-lists"></a>
 # 列表字面量 / Literal lists
 
 字面量 [`List`](https://docs.perl6.org/type/List) 由逗号和分号**而不是**括号创建：
@@ -91,6 +126,7 @@ say (1, 2)[-1]; # Error
 say ((<a b>,<c d>),(<e f>,<g h>))[1;0;1]; # says "f" 
 ```
 
+<a id="-%E7%AC%A6%E5%8F%B7--the--sigil"></a>
 # @ 符号 / The @ sigil
 
 Perl 6 中名带有 `@` 符号的变量应该包含某种类似列表的对象。当然，其他变量也可能包含这些对象，但是 `@` 符号变量总是包含这些对象。
@@ -113,6 +149,7 @@ One of the ways `@`-sigiled variables act like lists is by always supporting [po
 my @a := 1; # Type check failed in binding; expected Positional but got Int 
 ```
 
+<a id="%E9%87%8D%E7%BD%AE%E5%88%97%E8%A1%A8%E5%AE%B9%E5%99%A8--reset-a-list-container"></a>
 # 重置列表容器 / Reset a list container
 
 从位置容器中删除所有元素可以赋值 [`Empty`](https://docs.perl6.org/type/Slip#Empty)、空列表 `()` 或者 空列表的 `Slip` 形式给容器。
@@ -126,6 +163,7 @@ my @a = 1, 2, 3;
 @a = |();
 ```
 
+<a id="%E8%BF%AD%E4%BB%A3--iteration"></a>
 # 迭代 / Iteration
 
 可以迭代所有列表，这意味着按顺序从列表中取出每个元素，并在最后一个元素之后停止：
@@ -136,6 +174,7 @@ All lists may be iterated, which means taking each element from the list in orde
 for 1, 2, 3 { .say }  # OUTPUT: «1␤2␤3␤» 
 ```
 
+<a id="%E5%8D%95%E5%8F%82%E6%95%B0%E8%A7%84%E5%88%99--single-argument-rule"></a>
 ## 单参数规则 / Single Argument Rule
 
 传递给迭代器（如 `for` ）的参数集被视为单个参数，而不是多个参数；即 `some-iterator( a, b, c, ...)` 将始终被视为 `some-iterator( list-or-array(a, b, c))`，而不是 `(some-iterator(a))(b)...`，即迭代应用迭代器到第一个参数，然后是下一个参数的结果，依此类推。在这个例子中
@@ -173,6 +212,7 @@ for @list -> @element {
 
 Since what `for` receives is a single argument, it will be treated as a list of elements to iterate over. The rule of thumb is that [if there's a comma, anything preceding it is an element](https://perl6advent.wordpress.com/2015/12/14/day-15-2015-the-year-of-the-great-list-refactor/) and the list thus created becomes the *single element*. That happens in the case of the two arrays separated by a comma which are the third in the `Array` we are iterating. In general, quoting the article linked above, the single argument rule *... makes for behavior as the programmer would expect*.
 
+<a id="%E6%88%90%E5%91%98%E6%B5%8B%E8%AF%95--testing-for-elements"></a>
 # 成员测试 / Testing for elements
 
 要测试是否为列表或者数组的成员，可以使用 ["是否成员"](https://docs.perl6.org/language/setbagmix#infix_%28elem%29) [`Set`](https://docs.perl6.org/type/Set) 操作符
@@ -201,6 +241,7 @@ except that, if possible, it won't actually do the conversion.
 
 It basically compares the value with each element in the array using the [===](https://docs.perl6.org/routine/===) infix operator. If you want to use another way to compare values, you probably should use [first](https://docs.perl6.org/routine/first#%28List%29_routine_first).
 
+<a id="%E5%BA%8F%E5%88%97--sequences"></a>
 ## 序列 / Sequences
 
 并不是所有的列表都充满了元素。有些只创建所需的元素。这些被称为序列，其类型为 [Seq](https://docs.perl6.org/type/Seq)。当它发生时，循环返回 `Seq`。
@@ -257,6 +298,7 @@ my @s := (loop { 42.say }).list;
 
 You may also use the `.cache` method instead of `.list`, depending on how you want the references handled. See the [page on `Seq`](https://docs.perl6.org/type/Seq) for details.
 
+<a id="%E4%BD%BF%E7%94%A8-iterator--using-iterator"></a>
 ## 使用 `.iterator` / Using `.iterator`
 
 所有列表都混合在[迭代器](https://docs.perl6.org/type/Iterator)角色中，因此它们可以使用 `.iterator` 方法对列表进行更好的控制。我们可以这样使用它，例如：
@@ -278,6 +320,7 @@ repeat {
 
 Instead of using the iterator implicitly as we do in `for` loops, we explicitly assign it to the `$odd-iterator` variable to work over the odd elements of the sequence only. That way, we can skip even elements using `.skip-one`. We do have to test explicitly for termination, which we do in the `until` expression. When there's nothing left to iterate, `$odd` will have the value `IterationEnd`. Please check the [documentation on `Iterator`s](https://docs.perl6.org/type/Iterator) for the methods and functions that are available.
 
+<a id="slips"></a>
 ## Slips
 
 有时，你希望将列表的元素插入到另一个列表中。这可以通过一种特殊类型的列表来实现，称为 [Slip](https://docs.perl6.org/type/Slip)。
@@ -300,6 +343,7 @@ say (1, |$(2, 3), 4) eqv (1, 2, 3, 4);       # OUTPUT: «True␤»
 say (1, slip($(2, 3)), 4) eqv (1, 2, 3, 4);  # OUTPUT: «False␤» 
 ```
 
+<a id="%E6%83%B0%E6%80%A7%E5%88%97%E8%A1%A8--lazy-lists"></a>
 # 惰性列表 / Lazy lists
 
 `List`、`Seq`、`Array` 和任何其他实现 [Iterator](https://docs.perl6.org/type/Iterator) 角色的类都是惰性的，这意味着它们的值是按需计算的，并存储以备以后使用。创建懒惰对象的方法之一是使用 [gather/take](https://docs.perl6.org/language/control#gather%2Ftake) 或[序列运算符](https://docs.perl6.org/language/operators#infix_...)。你还可以编写一个实现角色[迭代器](https://docs.perl6.org/type/Iterator)的类，并在调用 [is-lazy](https://docs.perl6.org/routine/is-lazy) 时返回 `True`。请注意，某些方法（如 `elems`）不能在惰性列表中调用，并将导致引发 [Exception](https://docs.perl6.org/type/Exception)。
@@ -348,6 +392,7 @@ say @lazy-array[10..15]; # OUTPUT: «(1024 2048 4096 8192 16384 32768)␤»
 say @lazy-array.is-lazy; # OUTPUT: «True␤» 
 ```
 
+<a id="%E4%B8%8D%E5%8F%98%E6%80%A7--immutability"></a>
 # 不变性 / Immutability
 
 到目前为止我们讨论过的列表（`List`、`Seq`和 `Slip`）都是不可变的。这意味着你不能从中删除元素，也不能重新绑定现有元素：
@@ -374,12 +419,14 @@ $a.say;            # OUTPUT: «42␤»
 
 that is, it is only the list structure itself – how many elements there are and each element's identity – that is immutable. The immutability is not contagious past the identity of the element.
 
+<a id="%E5%88%97%E8%A1%A8%E4%B8%8A%E4%B8%8B%E6%96%87--list-contexts"></a>
 # 列表上下文 / List contexts
 
 到目前为止，我们主要是在中性环境下处理列表。列表实际上在语法级别上对上下文非常敏感。
 
 So far we have mostly dealt with lists in neutral contexts. Lists are actually very context sensitive on a syntactical level.
 
+<a id="%E5%88%97%E8%A1%A8%E5%88%86%E9%85%8D%E4%B8%8A%E4%B8%8B%E6%96%87--list-assignment-context"></a>
 ## 列表分配上下文 / List assignment context
 
 当一个列表（或者将要转换成列表的东西）出现在赋值的右侧，变成一个 `@` 变量时，它会被“急切地”评估。例如，这意味着 `Seq` 将被迭代，直到不能再生成任何元素。这是你不希望放置无限列表的地方之一，以免程序挂起，最终耗尽内存：
@@ -399,6 +446,7 @@ say @divisors; # OUTPUT: «[2 5 7]␤»
 
 The [`gather` statement](https://docs.perl6.org/language/control#index-entry-lazy_list_gather) creates a lazy list, which is eagerly evaluated when assigned to `@divisors`.
 
+<a id="%E6%89%81%E5%B9%B3%E5%8C%96%E2%80%9C%E4%B8%8A%E4%B8%8B%E6%96%87%E2%80%9D--flattening-context"></a>
 ## 扁平化“上下文” / Flattening "context"
 
 当你有一个包含子列表的列表，但你只需要一个简单列表时，可以将该列表展平以生成一个值序列，就像删除了所有括号一样。不管括号嵌套多少层，这都有效。
@@ -432,13 +480,14 @@ my @a = 2, (3, 4);                 # Arrays are special, see below
 for (1, @a, 5).flat { .say };      # OUTPUT: «1␤2␤(3 4)␤5␤» 
 ```
 
-## 参数列表（捕获）上下文 / Argument list (Capture) context
+<a id="%E5%8F%82%E6%95%B0%E5%88%97%E8%A1%A8%EF%BC%88capture%EF%BC%89%E4%B8%8A%E4%B8%8B%E6%96%87--argument-list-capture-context"></a>
+## 参数列表（Capture）上下文 / Argument list (Capture) context
 
-当列表显示为函数或方法调用的参数时，将使用特殊的语法规则：列表将立即转换为 `Capture`。`Capture` 本身有一个列表（`.list`）和一个哈希（`.hash`）。任何键未被引用或未加括号的 `Pair` 文本都不会进入 `.list`。相反，它们被认为是命名参数并被压缩到 `.hash`。有关此处理的详细信息，请参阅 [`Capture`页面](https://docs.perl6.org/type/Capture)。
+当列表显示为函数或方法调用的参数时，将使用特殊的语法规则：列表将立即转换为 `Capture` 对象。`Capture` 本身有一个列表（`.list`）和一个哈希（`.hash`）。任何键未被引用或未加括号的 `Pair` 文本都不会进入 `.list`。相反，它们被认为是命名参数并被压缩到 `.hash`。有关此处理的详细信息，请参阅 [`Capture`页面](https://docs.perl6.org/type/Capture)。
 
 When a list appears as arguments to a function or method call, special syntax rules are at play: the list is immediately converted into a `Capture`. A `Capture` itself has a List (`.list`) and a Hash (`.hash`). Any `Pair` literals whose keys are not quoted, or which are not parenthesized, never make it into `.list`. Instead, they are considered to be named arguments and squashed into `.hash`. See the [page on `Capture`](https://docs.perl6.org/type/Capture) for the details of this processing.
 
-考虑以下方法从 `List` 创建新的 `Array`。这些方法将 `List` 放在参数列表上下文中，因此 `Array` 只包含 `1` 和 `2`，而不包含 `Pair` `:c(3)`，这是被忽略的。
+考虑以下方法从 `List` 创建新的 `Array`。这些方法将 `List` 放在参数列表上下文中，因此 `Array` 只包含 `1` 和 `2`，而不包含 `Pair` `:c(3)`，它会被忽略。
 
 Consider the following ways to make a new `Array` from a `List`. These ways place the `List` in an argument list context and because of that, the `Array` only contains `1` and `2` but not the `Pair` `:c(3)`, which is ignored.
 
@@ -447,6 +496,8 @@ Array.new(1, 2, :c(3));
 Array.new: 1, 2, :c(3);
 new Array: 1, 2, :c(3);
 ```
+
+相反，这些方法不会将 `List` 放在参数列表上下文中，因此所有元素，甚至 `Pair` `:c(3)`，都放在 `Array` 中。
 
 In contrast, these ways do not place the `List` in argument list context, so all the elements, even the `Pair` `:c(3)`, are placed in the `Array`.
 
@@ -458,6 +509,8 @@ my @a = 1, 2, :c(3); Array.new: @a;
 my @a = 1, 2, :c(3); new Array: @a;
 ```
 
+在参数列表上下文中，应用于有 `Positional` 角色的对象的 `|` 前缀运算符始终将列表元素作为位置参数展平给 `Capture` 对象，而应用于有 `Associative` 角色的对象的 `|` 前缀运算符会将键值对作为命名参数给 `Capture` 对象：
+
 In argument list context the `|` prefix operator applied to a `Positional` will always slip list elements as positional arguments to the Capture, while a `|` prefix operator applied to an `Associative` will slip pairs in as named parameters:
 
 ```Perl6
@@ -467,9 +520,14 @@ my %a = "c" => 3;
 Array.new(1, |%a, 4);    # Array contains 1, 4 
 ```
 
-## Slice indexing context
+<a id="%E5%88%87%E7%89%87%E7%B4%A2%E5%BC%95%E4%B8%8A%E4%B8%8B%E6%96%87--slice-indexing-context"></a>
+## 切片索引上下文 / Slice indexing context
+
+从[切片下标](https://docs.perl6.org/language/subscripts#Slices)中的 `List` 来看，它的特别之处就是没有什么特别的：因为切片的 [adverbs](https://docs.perl6.org/language/subscripts#Adverbs) 附加在 `]` 之后，切片的内部**不是**一个参数列表，不会有键值对形式的特殊处理。
 
 From the perspective of the `List` inside a [slice subscript](https://docs.perl6.org/language/subscripts#Slices), is only remarkable in that it is unremarkable: because [adverbs](https://docs.perl6.org/language/subscripts#Adverbs) to a slice are attached after the `]`, the inside of a slice is **not** an argument list, and no special processing of pair forms happens.
+
+大多数 `Positional` 类型都会对切片索引的每个元素强制使用整数，因此在切片索引中出现的键值对将生成错误：
 
 Most `Positional` types will enforce an integer coercion on each element of a slice index, so pairs appearing there will generate an error, anyway:
 
@@ -477,13 +535,19 @@ Most `Positional` types will enforce an integer coercion on each element of a sl
 (1, 2, 3)[1, 2, :c(3)] # OUTPUT: «Method 'Int' not found for invocant of class 'Pair'␤» 
 ```
 
+…但是，这完全取决于类型——如果它定义了键值对的顺序，那么它可以将 `:c(3)` 视为有效索引。
+
 ...however this is entirely up to the type – if it defines an order for pairs, it could consider `:c(3)` a valid index.
+
+切片内的索引通常不会自动展平，但子列表也不会强制为 `Int`。相反，列表结构保持不变，导致嵌套的切片操作复制结果中的结构：
 
 Indices inside a slice are usually not automatically flattened, but neither are sublists usually coerced to `Int`. Instead, the list structure is kept intact, causing a nested slice operation that replicates the structure in the result:
 
 ```Perl6
 say ("a", "b", "c")[(1, 2), (0, 1)] eqv (("b", "c"), ("a", "b")) # OUTPUT: «True␤» 
 ```
+
+切片也可以使用*半列表*跨多个维度进行，半列表是用分号分隔的切片列表：
 
 Slices can be taken also across several dimensions using *semilists*, which are lists of slices separated by semicolons:
 
@@ -492,11 +556,16 @@ my @sliceable = [[ ^10 ], ['a'..'h'], ['Ⅰ'..'Ⅺ']];
 say @sliceable[ ^3; 4..6 ]; #OUTPUT: «(4 5 6 e f g Ⅴ Ⅵ Ⅶ)␤» 
 ```
 
+它是从三个第一维度 (`^3`) 中选择第 4 到第 6 个元素。
+
 which is selecting the 4 to 6th element from the three first dimensions (`^3`).
 
-## Range as slice
+<a id="%E8%8C%83%E5%9B%B4%E4%B8%BA%E5%88%87%E7%89%87--range-as-slice"></a>
+## 范围为切片 / Range as slice
 
-A [`Range`](https://docs.perl6.org/type/Range) is a container for a lower and an upper boundary, either of which may be excluded. Generating a slice with a `Range`will include any index between the bounds, though an infinite Range will [truncate](https://docs.perl6.org/language/subscripts#Truncating_slices) non-existent elements. An infinite range with excluded upper boundary (e.g. `0..^Inf`) is still infinite and will reach all elements.
+[`Range`](https://docs.perl6.org/type/Range) 是上下边界的容器，可以只有上边界或者只有下边界。生成带有 `Range` 的切片将包含边界之间的任何索引，但无限范围将 [截断](https://docs.perl6.org/language/subscripts#Truncating_slices)不存在的元素。具有排除上边界的无限范围仍然是无限的，并且将到达所有元素。
+
+A [`Range`](https://docs.perl6.org/type/Range) is a container for a lower and an upper boundary, either of which may be excluded. Generating a slice with a `Range` will include any index between the bounds, though an infinite Range will [truncate](https://docs.perl6.org/language/subscripts#Truncating_slices) non-existent elements. An infinite range with excluded upper boundary (e.g. `0..^Inf`) is still infinite and will reach all elements.
 
 ```Perl6
 my @a = 1..5;
@@ -507,6 +576,9 @@ say @a[0..^*];    # OUTPUT: «(1 2 3 4 5)␤»
 say @a[0..Inf-1]; # OUTPUT: «(1 2 3 4 5)␤» 
 ```
 
+请注意，当上边界是 WhateverCode 而不是 Whatever 时，范围不是无限的，而是一个生成 Range 的可调用函数。这是 [..](https://docs.perl6.org/type/Range) 运算符的正常行为。下标运算符 [[\]](https://docs.perl6.org/language/subscripts#Slices) 评估 WhateverCode 时将
+列表的 `.elems` 作为参数，并使用结果范围进行切片：
+
 Note that when the upper boundary is a WhateverCode instead of just a Whatever, the range is not infinite but becomes a Callable producing Ranges. This is normal behavior of the [..](https://docs.perl6.org/type/Range) operator. The subscript operator [[\]](https://docs.perl6.org/language/subscripts#Slices) evaluates the WhateverCode providing the list's `.elems` as an argument and uses the resulting range to slice:
 
 ```Perl6
@@ -516,9 +588,14 @@ Note that when the upper boundary is a WhateverCode instead of just a Whatever, 
     say @a[0..^*/2];  # OUTPUT: «(1 2 3)␤» 
 ```
 
+请注意，`0..^*` 和 `0..^*+0` 在下标中的行为一致，尽管其中一个是无限范围，另一个是生成范围的 WhateverCode，但 `0..*+0` 将为你提供额外的尾随 `Nil`，因为与无限范围 `0..*` 不同，它不会截断。
+
 Notice that `0..^*` and `0..^*+0` behave consistently in subscripts despite one being an infinite range and the other a WhateverCode producing ranges, but `0..*+0` will give you an additional trailing `Nil` because, unlike the infinite range `0..*`, it does not truncate.
 
-## Array constructor context
+<a id="%E6%95%B0%E7%BB%84%E6%9E%84%E9%80%A0%E5%99%A8%E4%B8%8A%E4%B8%8B%E6%96%87--array-constructor-context"></a>
+## 数组构造器上下文 / Array constructor context
+
+在数组字面量中，初始化值的列表不在 capture 上下文中，只是一个普通的列表。然而，它被急切地求值，就像在赋值中一样。
 
 Inside an Array Literal, the list of initialization values is not in capture context and is just a normal list. It is, however, eagerly evaluated just as in assignment.
 
@@ -528,9 +605,14 @@ say so [ 1, 2, :c(3) ] eqv Array.new((1, 2, :c(3))); # OUTPUT: «True␤»
 (while $++ < 2 { 42.say; 43 }).map: *.say;           # OUTPUT: «42␤43␤42␤43␤» 
 ```
 
+这给我们带来了数组…
+
 Which brings us to Arrays...
 
-# Arrays
+<a id="%E6%95%B0%E7%BB%84--arrays"></a>
+# 数组 / Arrays
+
+数组与列表的区别主要有三种：它们的元素可以被类型化，它们自动条目化它们的元素，并且它们是可变的。否则，它们是列表。
 
 Arrays differ from lists in three major ways: Their elements may be typed, they automatically itemize their elements, and they are mutable. Otherwise they are Lists and are accepted wherever lists are.
 
@@ -538,11 +620,16 @@ Arrays differ from lists in three major ways: Their elements may be typed, they 
 say Array ~~ List     # OUTPUT: «True␤» 
 ```
 
+第四个更微妙的不同之处在于，当使用数组时，有时很难保持懒惰或使用无限序列。
+
 A fourth, more subtle, way they differ is that when working with Arrays, it can sometimes be harder to maintain laziness or work with infinite sequences.
 
-## Typing
+<a id="%E5%BD%95%E5%85%A5--typing"></a>
+## 录入 / Typing
 
-Arrays may be typed such that their slots perform a typecheck whenever they are assigned to. An Array that only allows `Int`values to be assigned is of type `Array[Int]` and one can create one with `Array[Int].new`. If you intend to use an `@`-sigiled variable only for this purpose, you may change its type by specifying the type of the elements when declaring it:
+数组可以有类型，这样在赋值时会执行类型检查。只允许分配 `Int` 值的数组的类型为 `Array[Int]`，可以使用 `Array[Int].new` 创建一个数组。如果你只打算为此目的使用 `@` 变量，则可以通过在声明元素时指定元素类型来更改其类型：
+
+Arrays may be typed such that their slots perform a typecheck whenever they are assigned to. An Array that only allows `Int` values to be assigned is of type `Array[Int]` and one can create one with `Array[Int].new`. If you intend to use an `@`-sigiled variable only for this purpose, you may change its type by specifying the type of the elements when declaring it:
 
 ```Perl6
 my Int @a = 1, 2, 3;              # An Array that contains only Ints 
@@ -561,6 +648,8 @@ say @b eq (1, 2, 3);              # says True, because eq only checks values
 @a[0] = "foo";                    # error: Type check failed in assignment 
 ```
 
+在上例中我们我们绑定一个有类型的数组对象到无类型的 `@` 变量。反过来是不行的，你不可以绑定一个错误类型的数组到一个带类型的 `@` 变量：
+
 In the above example we bound a typed Array object to a `@`-sigil variable for which no type had been specified. The other way around does not work – you may not bind an Array that has the wrong type to a typed `@`-sigiled variable:
 
 ```Perl6
@@ -570,6 +659,8 @@ my Int @b := Array[Int].new(1, 2, 3); # fine
 @b := Array.new(1, 2, 3);             # error: Type check failed in binding 
 ```
 
+使用类型化数组时，必须记住它们名义上是类型化的。这意味着数组的声明类型才是重要的。以下子例程声明：
+
 When working with typed arrays, it is important to remember that they are nominally typed. This means the declared type of an array is what matters. Given the following sub declaration:
 
 ```Perl6
@@ -577,6 +668,8 @@ sub mean(Int @a) {
     @a.sum / @a.elems
 }
 ```
+
+传递 Array[Int] 参数没问题：
 
 Calls that pass an Array[Int] will be successful:
 
@@ -587,6 +680,8 @@ say mean(Array[Int].new(1, 3, 5));  # Anonymous Array[Int]
 say mean(my Int @ = 1, 3, 5);       # Another anonymous Array[Int] 
 ```
 
+但是，由于传递一个非类型化数组，以下调用都将失败，即使该数组恰好在传递点包含 Int 值：
+
 However, the following calls will all fail, due to passing an untyped array, even if the array just happens to contain Int values at the point it is passed:
 
 ```Perl6
@@ -596,13 +691,19 @@ say mean([1, 3, 5]);                # Same
 say mean(Array.new(1, 3, 5));       # Same again 
 ```
 
+请注意，在任何给定的编译器中，可能会有一些奇特的方法来绕过数组上的类型检查，因此在处理不受信任的输入时，最好在重要的地方执行额外的类型检查：
+
 Note that in any given compiler, there may be fancy, under-the-hood, ways to bypass the type check on arrays, so when handling untrusted input, it can be good practice to perform additional type checks, where it matters:
 
 ```Perl6
 for @a -> Int $i { $_++.say };
 ```
 
+但是，只要你坚持在代码的可信区域内执行正常的赋值操作，这就不会是问题，并且如果在编译时无法捕获类型检查错误，则在赋值给数组的过程中，类型检查错误将立即发生。Perl 6 中提供的用于列表操作的核心函数都不应该产生一个不稳定的有类型的数组。
+
 However, as long as you stick to normal assignment operations inside a trusted area of code, this will not be a problem, and typecheck errors will happen promptly during assignment to the array, if they cannot be caught at compile time. None of the core functions provided in Perl 6 for operating on lists should ever produce a wonky typed Array.
+
+不存在的元素（索引时）或已分配 `Nil` 的元素将采用默认值。此默认值可以使用 `is default` 特性按变量进行调整。请注意，无类型的 `@` 变量的元素类型为 `Mu`，但其默认值是未定义的 `Any`：
 
 Nonexistent elements (when indexed), or elements to which `Nil` has been assigned, will assume a default value. This default may be adjusted on a variable-by-variable basis with the `is default` trait. Note that an untyped `@`-sigiled variable has an element type of `Mu`, however its default value is an undefined `Any`:
 
@@ -617,7 +718,10 @@ my Numeric @n is default(Real);
 @n[0].say;                      # OUTPUT: «(Real)␤» 
 ```
 
-## Fixed size arrays
+<a id="%E5%AE%9A%E9%95%BF%E6%95%B0%E7%BB%84--fixed-size-arrays"></a>
+## 定长数组 / Fixed size arrays
+
+要限制 `Array` 的维度，请在数组容器名称后的方括号中提供由 `,` 或 `;` 分隔的维度，以防有多个维度；这些维度也被称为 *shaped* 数组。此类数组的值将默认为 `Any`。运行时可以通过 `shape` 方法访问形状。
 
 To limit the dimensions of an `Array`, provide the dimensions separated by `,` or `;` in square brackets after the name of the array container in case there is more than one dimension; these are called *shaped* arrays too. The values of such a kind of `Array` will default to `Any`. The shape can be accessed at runtime via the `shape` method.
 
@@ -631,12 +735,16 @@ say @just-three.perl;
 # OUTPUT: «Array.new(:shape(3,), ["alpha", "beta", "kappa"])␤» 
 ```
 
+Shape 将控制可按维度分配的元素数量：
+
 Shape will control the amount of elements that can be assigned by dimension:
 
 ```Perl6
 my @just-two[2] = <alpha beta kappa>;
 # Will throw exception: «Index 2 for dimension 1 out of range (must be 0..1)» 
 ```
+
+赋值给固定大小的数组将把列表的列表提升为数组的数组（使其在进程中变为可改变）。
 
 Assignment to a fixed size `Array` will promote a List of Lists to an Array of Arrays (making then mutable in the process).
 
@@ -648,13 +756,22 @@ say @a.perl;
 # OUTPUT: «Array.new(:shape(2, 2), [1, 2], [3, 42])␤» 
 ```
 
+如第三条语句所示，你也可以直接赋值给 shape 数组中的元素。**注**：第二条声明仅适用于 2018.09 的版本。
+
 As the third statement shows, you can assign directly to an element in a shaped array too. **Note**: the second statement works only from version 2018.09.
 
-## Itemization
+<a id="%E6%9D%A1%E7%9B%AE%E5%8C%96--itemization"></a>
+## 条目化 / Itemization
+
+对于大多数情况，`Array` 由多个槽组成，每个槽都包含正确类型的标量。每个这样的标量依次包含该类型的值。 Perl 6 将自动检查值的类型，并在初始化、分配或构造数组时创建包含这些值的标量。
 
 For most uses, `Array`s consist of a number of slots each containing a `Scalar` of the correct type. Every such `Scalar`, in turn, contains a value of that type. Perl 6 will automatically type-check values and create Scalars to contain them when Arrays are initialized, assigned to, or constructed.
 
+这实际上是深刻理解 Perl 6 列表处理最难的部分之一。
+
 This is actually one of the trickiest parts of Perl 6 list handling to get a firm understanding of.
+
+首先，请注意，因为假定数组中的条目化，所以它本质上意味着如果你不亲自将它们放在数组中，那么将把 `$(…)` 放在分配给数组的所有内容周围。另一方面，Array.perl 不将 `$` 放在显式显示变量中，与 List.perl 不同：
 
 First, be aware that because itemization in Arrays is assumed, it essentially means that `$(…)`s are being put around everything that you assign to an array, if you do not put them there yourself. On the other side, Array.perl does not put `$` to explicitly show scalars, unlike List.perl:
 
@@ -664,7 +781,11 @@ First, be aware that because itemization in Arrays is assumed, it essentially me
                             # ...but actually means: "[$(1, 2), $(3, 4)]" 
 ```
 
+结果发现，所有这些额外的美元符号和圆括号对用户来说都是一种伤害，而不是一种好处。基本上，当你看到一个方括号时，记住看不见的美元符号。
+
 It was decided all those extra dollar signs and parentheses were more of an eye sore than a benefit to the user. Basically, when you see a square bracket, remember the invisible dollar signs.
+
+第二，记住这些看不见的美元符号也可以防止展平，所以您不能通过对 `flat` 或 `.flat` 的正常调用真正展平数组中的元素。
 
 Second, remember that these invisible dollar signs also protect against flattening, so you cannot really flatten the elements inside of an Array with a normal call to `flat` or `.flat`.
 
@@ -673,13 +794,19 @@ Second, remember that these invisible dollar signs also protect against flatteni
 [(1, 2), $(3, 4)].flat.perl.say; # OUTPUT: «($(1, 2), $(3, 4)).Seq␤» 
 ```
 
+因为方括号不能保护自己不被展平，所以仍然可以使用 `flat` 将数组中的元素溢出到周围的列表中。
+
 Since the square brackets do not themselves protect against flattening, you can still spill the elements out of an Array into a surrounding list using `flat`.
 
 ```Perl6
 (0, [(1, 2), $(3, 4)], 5).flat.perl.say; # OUTPUT: «(0, $(1, 2), $(3, 4), 5).Seq␤» 
 ```
 
+…然而，元素本身是一体的。
+
 ...the elements themselves, however, stay in one piece.
+
+如果有深度嵌套的数组需要展平的数据，这会使用户对你提供的数据感到厌烦。目前，他们必须手动对结构进行深度映射，以取消嵌套：
 
 This can irk users of data you provide if you have deeply nested Arrays where they want flat data. Currently they have to deeply map the structure by hand to undo the nesting:
 
@@ -687,7 +814,15 @@ This can irk users of data you provide if you have deeply nested Arrays where th
 say gather [0, [(1, 2), [3, 4]], $(5, 6)].deepmap: *.take; # OUTPUT: «(1 2 3 4 5 6)␤» 
 ```
 
+……Perl 6 的未来版本可能会找到一种更简单的方法。但是，当非逐项列表足够时，不从函数返回数组或条目化列表是应该考虑的对用户的一种礼貌：
+
 ... Future versions of Perl 6 might find a way to make this easier. However, not returning Arrays or itemized lists from functions, when non-itemized lists are sufficient, is something that one should consider as a courtesy to their users:
+
+- 使用 `Slip`如果要始终与周围的列表合并。
+- 使用非条目化列表当你想让用户更容易展平时。
+- 使用条目化数组保护用户不想展平的数据。
+- 使用 `Array` 作为条目化列表的非条目化列表，如果恰当的话。
+- 使用 `Array` 如果用户想要在不首先拷贝它的情况下转换结果。
 
 - Use `Slip`s when you want to always merge with surrounding lists.
 - Use non-itemized lists when you want to make it easy for the user to flatten.
@@ -695,13 +830,21 @@ say gather [0, [(1, 2), [3, 4]], $(5, 6)].deepmap: *.take; # OUTPUT: «(1 2 3 4 
 - Use `Arrays` as non-itemized lists of itemized lists, if appropriate.
 - Use `Array`s if the user is going to want to mutate the result without copying it first.
 
+数组的所有元素都被条目化（在标量容器中）这一事实，与其说是一个普遍强制的规则，不如说是一个君子协定，而且在类型化数组中进行类型检查的执行情况也不太好。请参阅下面有关绑定到数组插槽的部分。
+
 The fact that all elements of an array are itemized (in `Scalar` containers) is more a gentleman's agreement than a universally enforced rule, and it is less well enforced that typechecks in typed arrays. See the section below on binding to Array slots.
 
-## Literal arrays
+<a id="%E5%AD%97%E9%9D%A2%E9%87%8F%E6%95%B0%E7%BB%84--literal-arrays"></a>
+## 字面量数组 / Literal arrays
+
+字面量 `Array` 是用方括号内的 `List` 构造的。`List` 被急切地迭代（如果可能的话，在编译时），其中的值被执行类型检查并条目化。方括号本身在扁平化时会将元素溢出到周围的列表中，但元素本身不会由于逐项化而溢出。
 
 Literal `Array`s are constructed with a `List` inside square brackets. The `List` is eagerly iterated (at compile time if possible) and values in it are each type-checked and itemized. The square brackets themselves will spill elements into surrounding lists when flattened, but the elements themselves will not spill due to the itemization.
 
-## Mutability
+<a id="%E5%8F%AF%E5%8F%98%E6%80%A7--mutability"></a>
+## 可变性 / Mutability
+
+与列表不同，`Array` 是可变的。元素可以删除、添加或更改。
 
 Unlike lists, `Array`s are mutable. Elements may deleted, added, or changed.
 
@@ -716,7 +859,10 @@ my @a = "a", "b", "c";
 @a.say;                  # OUTPUT: «[a c d c]␤» 
 ```
 
-### Assigning
+<a id="%E8%B5%8B%E5%80%BC--assigning"></a>
+### 赋值 / Assigning
+
+将列表赋给 `Array` 是非惰性的。列表将被全部估值，不应是无限的，否则程序可能挂起。同样，对 `Array` 的一个切片的赋值也是非惰性的，但只能达到所请求的有限元素数：
 
 Assignment of a list to an `Array` is eager. The list will be entirely evaluated, and should not be infinite or the program may hang. Assignment to a slice of an `Array` is, likewise, eager, but only up to the requested number of elements, which may be finite:
 
@@ -726,9 +872,14 @@ my @a;
 @a.say;                     # OUTPUT: «[42 42 42]␤» 
 ```
 
+在赋值时，将对每个值进行类型检查，以确保它是 `Array` 的允许类型。任何 `Scalar` 都将从每个值中删除，并在其周围包裹一个新的 `Scalar`。
+
 During assignment, each value will be typechecked to ensure it is a permitted type for the `Array`. Any `Scalar` will be stripped from each value and a new `Scalar` will be wrapped around it.
 
-### Binding
+<a id="%E7%BB%91%E5%AE%9A--binding"></a>
+### 绑定 / Binding
+
+单个数组元素的绑定方式可能与 `$` 变量的绑定方式相同：
 
 Individual Array slots may be bound the same way `$`-sigiled variables are:
 
@@ -740,5 +891,7 @@ my @a = 1, 2, 3;
 $b = "bar";
 @a.say;          # OUTPUT: «[1 2 "bar"]␤» 
 ```
+
+……但强烈建议不要将 `Array` 槽直接绑定到值。如果你这样做了，就可以期待内置功能带来的惊喜。唯一可以这样做的时间是，如果需要知道值和`Scalar` 包装值之间的差异的可变容器，或者对于非常大的 `Array`，不能使用原生类型数组。这样的东西不应该传给毫无戒心的用户。
 
 ... But binding `Array` slots directly to values is strongly discouraged. If you do, expect surprises with built-in functions. The only time this would be done is if a mutable container that knows the difference between values and `Scalar`-wrapped values is needed, or for very large `Array`s where a native-typed array cannot be used. Such a creature should never be passed back to unsuspecting users.
