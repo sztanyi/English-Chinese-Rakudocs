@@ -92,7 +92,7 @@ if 'Life, the Universe and Everything' ~~ / and / {
 };
 ```
 
-匹配结果存储在 `$/` 变量中并且也从匹配中返回。如果匹配成功, 那么返回结果就是 [Match](https://docs.perl6.org/type/Match) 类型, 否则它就是 [Nil](https://docs.perl6.org/type/Nil)。
+匹配结果存储在 `$/` 变量中并且也从匹配中返回。如果匹配成功, 那么返回结果是 [Match](https://docs.perl6.org/type/Match) 类型, 否则它就是 [Nil](https://docs.perl6.org/type/Nil)。
 
 Match results are stored in the `$/` variable and are also returned from the match. The result is of type [Match](https://docs.perl6.org/type/Match) if the match was successful; otherwise it is [Nil](https://docs.perl6.org/type/Nil).
 
@@ -307,6 +307,8 @@ To match against a Unicode property you can use either smartmatch or [`uniprop`]
 "a" ~~ / <:Block('Basic Latin')> /;    # OUTPUT: «｢a｣␤» 
 ```
 
+下面这些是用作匹配的 Unicode 通用类别：
+
 These are the Unicode general categories used for matching:
 
 | Short | Long                    |
@@ -350,9 +352,15 @@ These are the Unicode general categories used for matching:
 | Zp    | Paragraph_Separator     |
 | Zs    | Space_Separator         |
 
+例如， `<:Lu>` 匹配一个大写字母。
+
 For example, `<:Lu>` matches a single, upper-case letter.
 
+它的对立面格式是 `<:!property>`。因此，`<:!Lu>` 匹配一个不是大写的字母。
+
 Its negation is this: `<:!property>`. So, `<:!Lu>` matches a single character that is not an upper-case letter.
+
+不同类别可以利用中缀运算符一起使用：
 
 Categories can be used together, with an infix operator:
 
@@ -361,19 +369,25 @@ Categories can be used together, with an infix operator:
 | +        | set union      |
 | -        | set difference |
 
+匹配一个小写字母或者一个数字，写为 `<:Ll+:N>`、`<:Ll+:Number>` 或者 `<+ :Lowercase_Letter + :Number>`。
+
 To match either a lower-case letter or a number, write `<:Ll+:N>` or `<:Ll+:Number>` or `<+ :Lowercase_Letter + :Number>`.
+
+可以将类别或者类别的子集编组，例如：
 
 It's also possible to group categories and sets of categories with parentheses; for example:
 
-```
+```Perl6
 say $0 if 'perl6' ~~ /\w+(<:Ll+:N>)/ # OUTPUT: «｢6｣␤» 
 ```
 
-## Enumerated character classes and ranges
+## 枚举字符类和范围 / Enumerated character classes and ranges
+
+有时，现有的通配符和字符类是不够的。幸运的是，定义自己的也较简单。你可以在 `<[ ]>` 中放置任意数量的字符和字符范围（在端点之间用两个点表示），可以有空格。
 
 Sometimes the pre-existing wildcards and character classes are not enough. Fortunately, defining your own is fairly simple. Within `<[ ]>`, you can put any number of single characters and ranges of characters (expressed with two dots between the end points), with or without whitespace.
 
-```
+```Perl6
 "abacabadabacaba" ~~ / <[ a .. c 1 2 3 ]>* /;
 # Unicode hex codepoint range 
 "ÀÁÂÃÄÅÆ" ~~ / <[ \x[00C0] .. \x[00C6] ]>* /;
@@ -381,89 +395,121 @@ Sometimes the pre-existing wildcards and character classes are not enough. Fortu
 "αβγ" ~~ /<[\c[GREEK SMALL LETTER ALPHA]..\c[GREEK SMALL LETTER GAMMA]]>*/;
 ```
 
+在 `< >` 中，你可以使用 `+` 和 `-` 添加或删除多个范围定义，甚至混合在上面的一些 Unicode 类别中。你还可以在 `[ ]` 之间为字符类编写反斜杠形式。
+
 Within the `< >` you can use `+` and `-` to add or remove multiple range definitions and even mix in some of the Unicode categories above. You can also write the backslashed forms for character classes between the `[ ]`.
 
-```
+```Perl6
 / <[\d] - [13579]> /;
 # starts with \d and removes odd ASCII digits, but not quite the same as 
 / <[02468]> /;
 # because the first one also contains "weird" unicodey digits 
 ```
 
+你也可以在列表中包含 Unicode 属性：
+
 You can include Unicode properties in the list as well:
 
-```
+```Perl6
 /<:Zs + [\x9] - [\xA0]>/
 # Any character with "Zs" property, or a tab, but not a newline 
 ```
 
+你可以使用 `\` 转义正则表达式中有意义的字符：
+
 You can use `\` to escape characters that would have some meaning in the regular expression:
 
-```
+```Perl6
 say "[ hey ]" ~~ /<-[ \] \[ \s ]>+/; # OUTPUT: «｢hey｣␤» 
 ```
 
+否定一个字符类，请在左尖括号后加一个 `-` 号：
+
 To negate a character class, put a `-` after the opening angle bracket:
 
-```
+```Perl6
 say 'no quotes' ~~ /  <-[ " ]> + /;  # matches characters except " 
 ```
 
+分析以引号分隔的字符串的常见模式涉及否定的字符类：
+
 A common pattern for parsing quote-delimited strings involves negated character classes:
 
-```
+```Perl6
 say '"in quotes"' ~~ / '"' <-[ " ]> * '"'/;
 ```
 
+这个正则首先匹配一个引号，然后匹配任何不是引号的字符，然后再匹配一个引号。上述例子中的 `*` 和 `+` 的含义将在下一节的量词中解释。
+
 This regex first matches a quote, then any characters that aren't quotes, and then a quote again. The meaning of `*` and `+` in the examples above are explained in the next section on quantifiers.
+
+正如你可以使用 `-` 来设置单个值的集合差和反面一样，你也可以在前面显式地放一个 `+`：
 
 Just as you can use the `-` for both set difference and negation of a single value, you can also explicitly put a `+` in front:
 
-```
+```Perl6
 / <+[123]> /  # same as <[123]> 
 ```
 
-# Quantifiers
+# 量词 / Quantifiers
+
+量词使前面的元素匹配可变的次数。例如，`a+` 匹配一个或多个 `a` 字符。
 
 A quantifier makes the preceding atom match a variable number of times. For example, `a+` matches one or more `a` characters.
 
+量词比连接更紧密，因此 `ab+` 匹配一个 `a`，后跟一个或多个 `b`。这与引号括起来的引用不同，`'ab'+` 匹配 `ab`、 `abab` 和 `ababab` 等字符。
+
 Quantifiers bind tighter than concatenation, so `ab+` matches one `a` followed by one or more `b`s. This is different for quotes, so `'ab'+` matches the strings `ab`, `abab`, `ababab` etc.
 
-## One or more: `+`
+## 一个或多个: `+` / One or more: `+`
+
+`+` 量词使前面的元素匹配一次或多次，没有上限。
 
 The `+` quantifier makes the preceding atom match one or more times, with no upper limit.
 
+例如，要匹配 `key=value` 字符串的话，你可以这样写正则：
+
 For example, to match strings of the form `key=value`, you can write a regex like this:
 
-```
+```Perl6
 / \w+ '=' \w+ /
 ```
 
-## Zero or more: `*`
+## 零个或多个: `*` / Zero or more: `*`
+
+`*` 量词使前面的元素匹配零次或者多次，没有上限。
 
 The `*` quantifier makes the preceding atom match zero or more times, with no upper limit.
 
+例如，允许 `a` 和 `b` 之间有可选的空白符，你可以写为：
+
 For example, to allow optional whitespace between `a` and `b` you can write:
 
-```
+```Perl6
 / a \s* b /
 ```
 
-## Zero or one: `?`
+## 零个或一个: `?` / Zero or one: `?`
+
+`?` 量词使前面的元素匹配量词或者一次。
 
 The `?` quantifier makes the preceding atom match zero or once.
 
+例如，匹配 `dog` 或者 `dogs`，你可以写为：
+
 For example, to match `dog` or `dogs`, you can write:
 
-```
+```Perl6
 / dogs? /
 ```
 
-## General quantifier: `** min..max`
+## 通用量词: `** min..max` / General quantifier: `** min..max`
+
+要对一个元素进行任意次数的量化，请使用 `**` 量词，该量词在其右侧接受一个 [Int](https://docs.perl6.org/type/Int) 或 [Range](https://docs.perl6.org/type/Range)。如果指定了 [Range](https://docs.perl6.org/type/Range)，则两个端点指定要匹配的最小和最大次数。
 
 To quantify an atom an arbitrary number of times, use the `**` quantifier, which takes a single [Int](https://docs.perl6.org/type/Int) or a [Range](https://docs.perl6.org/type/Range) on the right-hand side that specifies the number of times to match. If [Range](https://docs.perl6.org/type/Range) is specified, the end-points specify the minimum and maximum number of times to match.
 
-```
+```Perl6
 say 'abcdefg' ~~ /\w ** 4/;      # OUTPUT: «｢abcd｣␤» 
 say 'a'       ~~ /\w **  2..5/;  # OUTPUT: «Nil␤» 
 say 'abc'     ~~ /\w **  2..5/;  # OUTPUT: «｢abc｣␤» 
@@ -473,26 +519,32 @@ say 'abcdefg' ~~ /\w ** ^3/;     # OUTPUT: «｢ab｣␤»
 say 'abcdefg' ~~ /\w ** 1..*/;   # OUTPUT: «｢abcdefg｣␤» 
 ```
 
+只支持量词右侧的基本字面量语法，以避免与其他正则构造混淆。如果需要使用更复杂的表达式，例如由变量构成的 [Range](https://docs.perl6.org/type/Range)，请将 [Range](https://docs.perl6.org/type/Range) 括在大括号中：
+
 Only basic literal syntax for the right-hand side of the quantifier is supported, to avoid ambiguities with other regex constructs. If you need to use a more complex expression, for example, a [Range](https://docs.perl6.org/type/Range) made from variables, enclose the [Range](https://docs.perl6.org/type/Range) into curly braces:
 
-```
+```Perl6
 my $start = 3;
 say 'abcdefg' ~~ /\w ** {$start .. $start+2}/; # OUTPUT: «｢abcde｣␤» 
 say 'abcdefg' ~~ /\w ** {π.Int}/;              # OUTPUT: «｢abc｣␤» 
 ```
 
+负数值被当做零：
+
 Negative values are treated like zero:
 
-```
+```Perl6
 say 'abcdefg' ~~ /\w ** {-Inf}/;     # OUTPUT: «｢｣␤» 
 say 'abcdefg' ~~ /\w ** {-42}/;      # OUTPUT: «｢｣␤» 
 say 'abcdefg' ~~ /\w ** {-10..-42}/; # OUTPUT: «｢｣␤» 
 say 'abcdefg' ~~ /\w ** {-42..-10}/; # OUTPUT: «｢｣␤» 
 ```
 
+如果结果值为 `Inf` 或 `NaN`，或结果 [Range](https://docs.perl6.org/type/Range)为空、非数字、包含 `NaN` 终结点或最小有效终结点为 `Inf`，则将引发 `X::Syntax::Regex::QuantifierValue` 异常：
+
 If then, the resultant value is `Inf` or `NaN` or the resultant [Range](https://docs.perl6.org/type/Range) is empty, non-Numeric, contains `NaN` end-points, or has minimum effective end-point as `Inf`, the `X::Syntax::Regex::QuantifierValue` exception will be thrown:
 
-```
+```Perl6
 (try say 'abcdefg' ~~ /\w ** {42..10}/  )
     orelse say ($!.^name, $!.empty-range);
     # OUTPUT: «(X::Syntax::Regex::QuantifierValue True)␤» 
@@ -513,22 +565,28 @@ If then, the resultant value is `Inf` or `NaN` or the resultant [Range](https://
     # OUTPUT: «(X::Syntax::Regex::QuantifierValue True)␤» 
 ```
 
-## Modified quantifier: `%`, `%%`
+## 修改过的量词：`%`, `%%` / Modified quantifier: `%`, `%%`
+
+为了更容易地匹配逗号分割那样的值, 你可以在以上任何一个量词后面加上一个 `%` 修饰符以指定某个修饰符必须出现在每一次匹配之间。例如, `a+ % ','` 会匹配 `a` 、`a,a` 或 `a,a,a` 等等。如果还要匹配末尾的分隔符（ `a,` 或者 `a,a,` ）, 那么使用 %% 代替 %。
 
 To more easily match things like comma separated values, you can tack on a `%` modifier to any of the above quantifiers to specify a separator that must occur between each of the matches. For example, `a+ % ','` will match `a` or `a,a` or `a,a,a`, etc. To also match trailing delimiters ( `a,` or `a,a,` ), you can use `%%` instead of `%`.
 
+量词与 `%` 交互，并控制可以成功匹配的总重复次数，因此 `a* % ','` 也与空字符串匹配。如果想要匹配用逗号分隔的词，需要嵌套一个普通量词和一个修改过的量词：
+
 The quantifier interacts with `%` and controls the number of overall repetitions that can match successfully, so `a* % ','` also matches the empty string. If you want match words delimited by commas, you might need to nest an ordinary and a modified quantifier:
 
-```
+```Perl6
 say so 'abc,def' ~~ / ^ [\w+] ** 1 % ',' $ /;  # Output: «False» 
 say so 'abc,def' ~~ / ^ [\w+] ** 2 % ',' $ /;  # Output: «True» 
 ```
 
-## Preventing backtracking: `:`
+## 阻止回溯: `:` / Preventing backtracking: `:`
+
+你可以在正则表达式中通过为量词附加一个 `:` 修饰符来阻止回溯:
 
 You can prevent backtracking in regexes by attaching a `:` modifier to the quantifier:
 
-```
+```Perl6
 my $str = "ACG GCT ACT An interesting chain";
 say $str ~~ /<[ACGT\s]>+ \s+ (<[A..Z a..z \s]>+)/;
 # OUTPUT: «｢ACG GCT ACT An interesting chain｣␤ 0 => ｢An interesting chain｣␤» 
@@ -536,11 +594,15 @@ say $str ~~ /<[ACGT\s]>+: \s+ (<[A..Z a..z \s]>+)/;
 # OUTPUT: «Nil␤» 
 ```
 
+在第二种情况下，`An` 中的 `A` 已经被正则模式“吸收”，从而阻止了模式第二部分在 `\s+` 之后的匹配。一般来说，我们想要的是相反的：防止回溯来精确匹配我们正在寻找的。
+
 In the second case, the `A` in `An` had already been "absorbed" by the pattern, preventing the matching of the second part of the pattern, after `\s+`. Generally we will want the opposite: prevent backtracking to match precisely what we are looking for.
+
+在大多数情况下，出于效率原因，你会希望防止回溯，例如：
 
 In most cases, you will want to prevent backtracking for efficiency reasons, for instance here:
 
-```
+```Perl6
 say $str ~~ m:g/[(<[ACGT]> **: 3) \s*]+ \s+ (<[A..Z a..z \s]>+)/;
 # OUTPUT: 
 # (｢ACG GCT ACT An interesting chain｣ 
@@ -550,9 +612,11 @@ say $str ~~ m:g/[(<[ACGT]> **: 3) \s*]+ \s+ (<[A..Z a..z \s]>+)/;
 # 1 => ｢An interesting chain｣) 
 ```
 
+不过，在这种情况下，不使用 `**` 后面的 `:`效果是一样的。最好创建不会被回溯的 *token*：
+
 Although in this case, eliminating the `:` from behind `**` would make it behave exactly in the same way. The best use is to create *tokens* that will not be backtracked:
 
-```
+```Perl6
 $_ = "ACG GCT ACT IDAQT";
 say  m:g/[(\w+:) \s*]+ (\w+) $$/;
 # OUTPUT: 
@@ -563,25 +627,27 @@ say  m:g/[(\w+:) \s*]+ (\w+) $$/;
 # 1 => ｢IDAQT｣) 
 ```
 
+没有 `\w+` 后的 `:` 的话，*ID* 部分的捕获就只剩下 `T` 了，因为正则模式会往前匹配所有的东西，留下一个字母来匹配行末的 `\w+` 表达式。
+
 Without the `:` following `\w+`, the *ID* part captured would have been simply `T`, since the pattern would go ahead and match everything, leaving a single letter to match the `\w+` expression at the end of the line.
 
 ## Greedy versus frugal quantifiers: `?`
 
 By default, quantifiers request a greedy match:
 
-```
+```Perl6
 'abababa' ~~ /a .* a/ && say ~$/;   # OUTPUT: «abababa␤» 
 ```
 
 You can attach a `?` modifier to the quantifier to enable frugal matching:
 
-```
+```Perl6
 'abababa' ~~ /a .*? a/ && say ~$/;   # OUTPUT: «aba␤» 
 ```
 
 You can also enable frugal matching for general quantifiers:
 
-```
+```Perl6
 say '/foo/o/bar/' ~~ /\/.**?{1..10}\//;  # OUTPUT: «｢/foo/｣␤» 
 say '/foo/o/bar/' ~~ /\/.**!{1..10}\//;  # OUTPUT: «｢/foo/o/bar/｣␤» 
 ```
@@ -594,14 +660,14 @@ To match one of several possible alternatives, separate them by `||`; the first 
 
 For example, `ini` files have the following form:
 
-```
+```Perl6
 [section]
 key = value
 ```
 
 Hence, if you parse a single line of an `ini` file, it can be either a section or a key-value pair and the regex would be (to a first approximation):
 
-```
+```Perl6
 / '[' \w+ ']' || \S+ \s* '=' \s* \S* /
 ```
 
@@ -609,7 +675,7 @@ That is, either a word surrounded by square brackets, or a string of non-whitesp
 
 An empty string as the first branch is ignored, to allow you to format branches consistently. You could have written the previous example as
 
-```
+```Perl6
 /
 || '[' \w+ ']'
 || \S+ \s* '=' \s* \S*
@@ -626,7 +692,7 @@ Briefly, what `|` does is this:
 
 - First, select the branch which has the longest declarative prefix.
 
-```
+```Perl6
 say "abc" ~~ /ab | a.* /;                 # Output: ⌜abc⌟ 
 say "abc" ~~ /ab | a {} .* /;             # Output: ⌜ab⌟ 
 say "if else" ~~ / if | if <.ws> else /;  # Output: ｢if｣ 
@@ -637,7 +703,7 @@ As is shown above, `a.*` is a declarative prefix, while `a {} .*` terminates at 
 
 - If it's a tie, select the match with the highest specificity.
 
-```
+```Perl6
 say "abc" ~~ /a. | ab { print "win" } /;  # Output: win｢ab｣ 
 ```
 
@@ -645,7 +711,7 @@ When two alternatives match at the same length, the tie is broken by specificity
 
 - If it's still a tie, use additional tie-breakers.
 
-```
+```Perl6
 say "abc" ~~ /a\w| a. { print "lose" } /; # Output: ⌜ab⌟ 
 ```
 
@@ -657,7 +723,7 @@ For more details, see [the LTM strategy](https://design.perl6.org/S05.html#Longe
 
 Using a quoted list in a regex is equivalent to specifying the longest-match alternation of the list's elements. So, the following match:
 
-```
+```Perl6
 say 'food' ~~ /< f fo foo food >/;      # OUTPUT: «｢food｣␤» 
 ```
 

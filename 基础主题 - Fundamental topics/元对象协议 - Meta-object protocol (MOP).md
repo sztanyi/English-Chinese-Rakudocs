@@ -43,7 +43,7 @@ Here, the calls with `.^` are calls to the meta object, so `A.^compose` is a sho
 
 As the example above demonstrates, all object oriented features are available to the user, not just to the compiler. In fact the compiler just uses such calls to meta objects.
 
-# Metamethods](https://docs.perl6.org/language/mop#___top)
+# Metamethods
 
 These are introspective macros that resemble method calls.
 
@@ -100,7 +100,7 @@ say (1, 2, 3).VAR ~~ Scalar;  # OUTPUT: «False␤»
 say $(1, 2, 3).VAR ~~ Scalar; # OUTPUT: «True␤» 
 ```
 
-# Structure of the meta object system](https://docs.perl6.org/language/mop#___top)
+# Structure of the meta object system
 
 **Note:** this documentation largely reflects the meta object system as implemented by the [Rakudo Perl 6 compiler](https://rakudo.org/), since the [design documents](https://design.perl6.org/) are very light on details.
 
@@ -110,7 +110,7 @@ Many of the these meta classes share common functionality. For example roles, gr
 
 Most meta classes have a `compose` method that you must call when you're done creating or modifying a meta object. It creates method caches, validates things and so on, and weird behavior ensues if you forget to call it, so don't :-).
 
-## Bootstrapping concerns](https://docs.perl6.org/language/mop#___top)
+## Bootstrapping concerns
 
 You might wonder how `Metamodel::ClassHOW` can be a class, when being a class is defined in terms of `Metamodel::ClassHOW`, or how the roles responsible for role handling can be roles. The answer is *by magic*.
 
@@ -118,7 +118,7 @@ Just kidding. Bootstrapping is implementation specific. Rakudo does it by using 
 
 Since the object model is bootstrapped in terms of lower-level types, introspection can sometimes return low-level types instead of the ones you expect, like an NQP-level routine instead of a normal [Routine](https://docs.perl6.org/type/Routine) object, or a bootstrap-attribute instead of [Attribute](https://docs.perl6.org/type/Attribute).
 
-## Composition time and static reasoning](https://docs.perl6.org/language/mop#___top)
+## Composition time and static reasoning
 
 In Perl 6, a type is constructed as it is parsed, so in the beginning, it must be mutable. However if all types were always mutable, all reasoning about them would get invalidated at any modification of a type. For example the list of parent types and thus the result of type checking can change during that time.
 
@@ -128,7 +128,7 @@ If you create types through the meta-object system directly, you must call `.^co
 
 Most meta classes also use composition time to calculate some properties like the method resolution order, publish a method cache, and other house-keeping tasks. Meddling with types after they have been composed is sometimes possible, but usually a recipe for disaster. Don't do it.
 
-## Power and responsibility](https://docs.perl6.org/language/mop#___top)
+## Power and responsibility
 
 The meta object protocol offers much power that regular Perl 6 code intentionally limits, such as calling private methods on classes that don't trust you, peeking into private attributes, and other things that usually simply aren't done.
 
@@ -136,7 +136,7 @@ Regular Perl 6 code has many safety checks in place; not so the meta model. It i
 
 So be extra careful and thoughtful when writing meta types.
 
-## Power, convenience and pitfalls](https://docs.perl6.org/language/mop#___top)
+## Power, convenience and pitfalls
 
 The meta object protocol is designed to be powerful enough to implement the Perl 6 object system. This power occasionally comes at the cost of convenience.
 
