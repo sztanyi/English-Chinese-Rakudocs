@@ -1035,15 +1035,23 @@ Anchors are zero-width regex elements. Hence they do not use up a character of t
 | ^       | Start of string     | "⏏two\nlines"        |
 | ^^      | Start of line       | "⏏two\n⏏lines"       |
 
-# Zero-width assertions
+# 零宽度断言 / Zero-width assertions
+
+ 零宽度断言可以帮助你实施自己的定位符。
 
 Zero-Width Assertions can help you implement your own anchor.
 
+零宽度断言将另一个正则转换为定位符，使它们不消耗输入字符串的字符。有两种变体：向前看和向后看断言。
+
 A zero-width assertion turns another regex into an anchor, making them consume no characters of the input string. There are two variants: lookahead and lookbehind assertions.
+
+从技术上讲，定位符也是零宽度断言，它们既可以向前看，也可以向后看。
 
 Technically, anchors are also zero-width assertions, and they can look both ahead and behind.
 
-## Lookahead assertions
+## 向前看断言 / Lookahead assertions
+
+要检查某个模式是否出现在另一个模式之前，请通过 `before` 断言使用向前看断言。其形式如下：
 
 To check that a pattern appears before another pattern, use a lookahead assertion via the `before` assertion. This has the form:
 
@@ -1051,11 +1059,15 @@ To check that a pattern appears before another pattern, use a lookahead assertio
 <?before pattern>
 ```
 
+因此，要搜索字符串 `foo`（紧跟字符串 `bar`），请使用以下正则：
+
 Thus, to search for the string `foo` which is immediately followed by the string `bar`, use the following regexp:
 
 ```Perl6
 / foo <?before bar> /
 ```
+
+例如：
 
 For example:
 
@@ -1063,17 +1075,23 @@ For example:
 say "foobar" ~~ / foo <?before bar> /;  # OUTPUT: «foo␤» 
 ```
 
+但是，如果你想寻找一个模式**不是**立即跟随某个模式，那么你需要使用向前看断言的否定，格式是：
+
 However, if you want to search for a pattern which is **not** immediately followed by some pattern, then you need to use a negative lookahead assertion, this has the form:
 
 ```Perl6
 <!before pattern>
 ```
 
+在下面的示例中，所有不在 `bar` 之前出现的 `foo` 将匹配：
+
 In the following example, all occurrences of `foo` which is not before `bar` would match with
 
 ```Perl6
 say "foobaz" ~~ / foo <!before bar> /;  # OUTPUT: «foo␤» 
 ```
+
+向前看断言也可以用于其他模式，如字符范围、内插变量、下标等。在这种情况下，使用 `？` 或者 `！` 对于否定形式就够用了。例如，以下各行产生的结果完全相同：
 
 Lookahead assertions can be used also with other patterns, like characters ranges, interpolated variables, subscripts and so on. In such cases it does suffice to use a `?`, or a `!` for the negate form. For instance, the following lines all produce the very same result:
 
@@ -1084,6 +1102,8 @@ my @ending_letters = <d e f>;
 say 'abcdefg' ~~ rx{ abc <?@ending_letters> };   # OUTPUT: ｢abc｣ 
 ```
 
+向前看断言的一个实际用途是在替换中，在你只希望替换特定上下文中的正则匹配项时。例如，你可能只想替换后面跟着单位的数字（如 *kg*），而不替换其他数字：
+
 A practical use of lookahead assertions is in substitutions, where you only want to substitute regex matches that are in a certain context. For example, you might want to substitute only numbers that are followed by a unit (like *kg*), but not other numbers:
 
 ```Perl6
@@ -1093,9 +1113,13 @@ s:g[\d+ <?before \s* @units>] = 5 * $/;
 say $_;         # OUTPUT: Please buy 2 packs of sugar, 5 kg each 
 ```
 
+因为向前看断言不是匹配对象的一部分，所以单位没有被替换。
+
 Since the lookahead is not part of the match object, the unit is not substituted.
 
-## Lookbehind assertions
+## 向后看断言 / Lookbehind assertions
+
+要检查模式是否出现在另一个模式之后，请通过 `after` 断言使用向后看断言。其格式如下：
 
 To check that a pattern appears after another pattern, use a lookbehind assertion via the `after` assertion. This has the form:
 
@@ -1103,11 +1127,15 @@ To check that a pattern appears after another pattern, use a lookbehind assertio
 <?after pattern>
 ```
 
+因此，搜索在字符串 `foo` 之后的 `bar` 字符串，使用如下正则：
+
 Therefore, to search for the string `bar` immediately preceded by the string `foo`, use the following regexp:
 
 ```Perl6
 / <?after foo> bar /
 ```
+
+例如：
 
 For example:
 
@@ -1115,17 +1143,23 @@ For example:
 say "foobar" ~~ / <?after foo> bar /;   # OUTPUT: «bar␤» 
 ```
 
+但是，如果你想寻找一个模式，而这个模式**不是**在某个模式之后的，那么你就需要使用向后看断言的否定，格式是：
+
 However, if you want to search for a pattern which is **not** immediately preceded by some pattern, then you need to use a negative lookbehind assertion, this has the form:
 
 ```Perl6
 <!after pattern>
 ```
 
+因此，下列正则匹配所有在其后没有 `foo` 字符串的 `bar`。
+
 Hence all occurrences of `bar` which do not have `foo` before them would be matched by
 
 ```Perl6
 say "fotbar" ~~ / <!after foo> bar /;    # OUTPUT: «bar␤» 
 ```
+
+与向前看的情况一样，零宽度断言不*消耗*字符，如下所示：
 
 These are, as in the case of lookahead, zero-width assertions which do not *consume* characters, like here:
 
@@ -1134,9 +1168,13 @@ say "atfoobar" ~~ / (.**3) .**2 <?after foo> bar /;
 # OUTPUT: «｢atfoobar｣␤ 0 => ｢atf｣␤» 
 ```
 
+在这里，我们捕获 `bar` 前 5 个字符中的前 3 个，但前提是 `bar` 前面有 `foo`。断言为零宽度的事实允许我们使用断言中的部分字符进行捕获。
+
 where we capture the first 3 of the 5 characters before bar, but only if `bar` is preceded by `foo`. The fact that the assertion is zero-width allows us to use part of the characters in the assertion for capture.
 
-# Grouping and capturing
+# 分组与捕获 / Grouping and capturing
+
+在常规（非正则）Perl 6 中，可以使用括号将事物分组在一起，通常是为了覆盖运算符优先级：
 
 In regular (non-regex) Perl 6, you can use parentheses to group things together, usually to override operator precedence:
 
@@ -1145,12 +1183,16 @@ say 1 + 4 * 2;     # OUTPUT: «9␤», parsed as 1 + (4 * 2)
 say (1 + 4) * 2;   # OUTPUT: «10␤» 
 ```
 
+在正则中也有同样的分组功能：
+
 The same grouping facility is available in regexes:
 
 ```Perl6
 / a || b c /;      # matches 'a' or 'bc' 
 / ( a || b ) c /;  # matches 'ac' or 'bc' 
 ```
+
+同样的分组也适用于量词：
 
 The same grouping applies to quantifiers:
 
@@ -1160,9 +1202,13 @@ The same grouping applies to quantifiers:
 / (a || b)+ /;     # matches a string of 'a's and 'b's, except empty string 
 ```
 
+未量化的捕获生成一个 [Match](https://docs.perl6.org/type/Match) 对象。当捕获被量化时（除了用 `？` 量词）捕获变为 [Match](https://docs.perl6.org/type/Match) 对象的列表。
+
 An unquantified capture produces a [Match](https://docs.perl6.org/type/Match) object. When a capture is quantified (except with the `?` quantifier) the capture becomes a list of [Match](https://docs.perl6.org/type/Match) objects instead.
 
-## Capturing
+## 捕获 / Capturing
+
+圆括号不只是分组，它们还*捕获*；也就是说，它们使组内匹配的字符串可用作变量，也可用作结果 [Match](https://docs.perl6.org/type/Match) 对象的元素：
 
 The round parentheses don't just group, they also *capture*; that is, they make the string matched within the group available as a variable, and also as an element of the resulting [Match](https://docs.perl6.org/type/Match) object:
 
@@ -1175,6 +1221,8 @@ if $str ~~ /'number ' (\d+) / {
 }
 ```
 
+括号对从左到右编号，从零开始。
+
 Pairs of parentheses are numbered left to right, starting from zero.
 
 ```Perl6
@@ -1183,7 +1231,11 @@ if 'abc' ~~ /(a) b (c)/ {
 }
 ```
 
+`$0` 和 `$1` 等语法是简略的表达形式。通过将匹配对象 `$/` 用作列表，这些捕获可以使用 `$/` 得到，因此 `$0` 实际上是 `$/[0]` 的语法糖。
+
 The `$0` and `$1` etc. syntax is shorthand. These captures are canonically available from the match object `$/` by using it as a list, so `$0` is actually syntactic sugar for `$/[0]`.
+
+将匹配对象强制为列表提供了以编程方式访问所有元素的简单方法：
 
 Coercing the match object to a list gives an easy way to programmatically access all elements:
 
@@ -1193,9 +1245,13 @@ if 'abc' ~~ /(a) b (c)/ {
 }
 ```
 
-## Non-capturing grouping
+## 非捕获分组 / Non-capturing grouping
+
+正则中的括号执行双重角色：它们将正则元素分组在内部，并捕获与内部子正则匹配的元素。
 
 The parentheses in regexes perform a double role: they group the regex elements inside and they capture what is matched by the sub-regex inside.
+
+要仅获取分组行为，可以使用方括号 `[ ... ]`。 默认情况下，它不会捕获。
 
 To get only the grouping behavior, you can use square brackets `[ ... ]` which, by default, don't capture.
 
@@ -1205,13 +1261,19 @@ if 'abc' ~~ / [a||b] (c) / {
 }
 ```
 
+如果不需要捕获，请使用非捕获 `[ ... ]` 分组，使用它的好处是：
+
 If you do not need the captures, using non-capturing `[ ... ]` groups provides the following benefits:
+
+- 它们更清楚地传达了正则的意图;
+- 它们使计算捕获组变得更容易;
+- 它们使匹配变得快一点.
 
 - they more cleanly communicate the regex intent;
 - they make it easier to count the capturing groups that do mean;
 - they make matching a bit faster.
 
-## Capture numbers
+## 匹配数 / Capture numbers
 
 It is stated above that captures are numbered from left to right. While true in principle, this is also over simplification.
 
@@ -2308,6 +2370,8 @@ say $/<x>;          # OUTPUT: Nil
 say $/<capital>;    # OUTPUT: Nil 
 ```
 
-# Best practices and gotchas
+# 最佳实践和成功案例 / Best practices and gotchas
+
+[最佳实践和成功案例](https://docs.perl6.org/language/regexes-best-practices) 提供有关如何在编写正则表达式和语法时避免常见陷阱的有用信息。
 
 The [Regexes: Best practices and gotchas](https://docs.perl6.org/language/regexes-best-practices) provides useful information on how to avoid common pitfalls when writing regexes and grammars.
