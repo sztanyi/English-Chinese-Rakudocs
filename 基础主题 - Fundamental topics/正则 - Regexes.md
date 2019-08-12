@@ -1,3 +1,5 @@
+原文：https://docs.perl6.org/language/regexes
+
 # 正则 / Regexes
 
 与字符串匹配的模式
@@ -150,13 +152,13 @@ say $text ~~ / .* /;
 
 There are predefined character classes of the form `\w`. Its negation is written with an upper-case letter, `\W`.
 
-### `\n` 和 `\N` / `\n` and `\N`
+### `\n` 和 `\N`
 
 `\n` matches a single, logical newline character. `\N` matches a single character that's not a logical newline.
 
 What is considered as a single newline character is defined via the compile time variable [`$?NL`](https://docs.perl6.org/language/variables#index-entry-%24%3FNL), and the [newline pragma](https://docs.perl6.org/language/pragmas); therefore, `\n` is supposed to be able to match either a Unix-like newline `"\n"`, a Microsoft Windows style one `"\r\n"`, or one in the Mac style `"\r"`.
 
-### `\t` 和 `\T` / `\t` and `\T`
+### `\t` 和 `\T`
 
 `\t` 匹配一个制表符 `U+0009`。`\T` 匹配一个非制表符的字符。
 
@@ -166,7 +168,7 @@ What is considered as a single newline character is defined via the compile time
 
 Note that exotic tabs like the `U+000B VERTICAL TABULATION` character are not included here.
 
-### `\h` 和 `\H` / `\h` and `\H`
+### `\h` 和 `\H`
 
 `\h` 匹配一个水平空白符。`\H`匹配一个非水平空白符的字符。
 
@@ -187,7 +189,7 @@ U+2001 EM QUAD
 
 Vertical whitespace such as newline characters are explicitly excluded; those can be matched with `\v`; `\s` matches any kind of whitespace.
 
-### `\v` 和 `\V` / `\v` and `\V`
+### `\v` 和 `\V`
 
 `\v` 匹配单个垂直空白符字符。`\V` 匹配非垂直空白符字符。
 
@@ -211,7 +213,7 @@ U+2029 PARAGRAPH SEPARATOR
 
 Use `\s` to match any kind of whitespace, not just vertical whitespace.
 
-### `\s` 和 `\S` / `\s` and `\S`
+### `\s` 和 `\S`
 
 `\s` matches a single whitespace character. `\S` matches a single character that is not whitespace.
 
@@ -220,7 +222,7 @@ say $/.prematch if 'Match the first word.' ~~ / \s+ /;
 # OUTPUT: «Match␤» 
 ```
 
-### `\d` and `\D`
+### `\d` 和 `\D`
 
 `\d` 匹配单个数字（Unicode 属性 `N`）而 `\D` 匹配单个非数字的字符。
 
@@ -246,7 +248,7 @@ U+0E53 ๓ THAI DIGIT THREE
 U+17E5 ៥ KHMER DIGIT FIVE
 ```
 
-### `\w` 和 `\W` / `\w` and `\W`
+### `\w` 和 `\W`
 
 `\w` 匹配单个单词字符，例如：一个字母（Unicode 类别 L），一个数字或者一个下划线。`\W` 匹配一个非单词字符的字符
 
@@ -286,7 +288,7 @@ Examples of word characters:
 | <ww>     |           | Within word                                       |
 | <xdigit> |           | Hexadecimal digit [0-9A-Fa-f]                     |
 
-注意字符类 `<same>`、 `<wb>` 以及 `<ww>` 也称作零长度断言，他们不会真是匹配某个字符。
+注意字符类 `<same>`、 `<wb>` 以及 `<ww>` 也称作零长度断言，他们不会真的匹配某个字符。
 
 Note that the character classes `<same>`, `<wb>` and `<ww>` are so called zero-width assertions, which do not really match a character.
 
@@ -612,7 +614,7 @@ say $str ~~ m:g/[(<[ACGT]> **: 3) \s*]+ \s+ (<[A..Z a..z \s]>+)/;
 # 1 => ｢An interesting chain｣) 
 ```
 
-不过，在这种情况下，不使用 `**` 后面的 `:`效果是一样的。最好创建不会被回溯的 *token*：
+不过，在这种情况下，不使用 `**` 后面的 `:` 效果是一样的。最好创建不会被回溯的 *token*：
 
 Although in this case, eliminating the `:` from behind `**` would make it behave exactly in the same way. The best use is to create *tokens* that will not be backtracked:
 
@@ -1275,9 +1277,15 @@ If you do not need the captures, using non-capturing `[ ... ]` groups provides t
 
 ## 匹配数 / Capture numbers
 
+如上所述，捕获从左到右进行编号。虽然原则上是正确的，但这也过于简单化了。
+
 It is stated above that captures are numbered from left to right. While true in principle, this is also over simplification.
 
+为了完整起见，列出了以下规则。当你发现自己经常使用它们时，应该考虑使用命名捕获（可能还有子规则）。
+
 The following rules are listed for the sake of completeness. When you find yourself using them regularly, it's worth considering named captures (and possibly subrules) instead.
+
+备选项重置捕获计数：
 
 Alternations reset the capture count:
 
@@ -1286,6 +1294,8 @@ Alternations reset the capture count:
 # $0  $1      $0  $1  $2 
 ```
 
+例子：
+
 Example:
 
 ```Perl6
@@ -1293,6 +1303,8 @@ if 'abc' ~~ /(x)(y) || (a)(.)(.)/ {
     say ~$1;        # OUTPUT: «b␤» 
 }
 ```
+
+如果两个或更多备选项有不同数量的捕获，捕获数最多的备选项决定下一个捕获的索引：
 
 If two (or more) alternations have a different number of captures, the one with the most captures determines the index of the next capture:
 
@@ -1303,7 +1315,9 @@ if 'abcd' ~~ / a [ b (.) || (x) (y) ] (.) / {
 }
 ```
 
-Captures can be nested, in which case they are numbered per level
+捕获可以嵌套，在这种情况下，它们是按级别编号的；级别 0 将使用捕获变量，但它将成为一个列表，其余级别将作为该列表的元素。
+
+Captures can be nested, in which case they are numbered per level; level 0 gets to use the capture variables, but it will become a list with the rest of the levels behaving as elements of that list
 
 ```Perl6
 if 'abc' ~~ / ( a (.) (.) ) / {
@@ -1312,17 +1326,41 @@ if 'abc' ~~ / ( a (.) (.) ) / {
 }
 ```
 
+如果需要从另一个捕获中引用捕获，请首先将其存储在变量中：
+
 If you need to refer to a capture from within another capture, store it in a variable first:
 
+这些捕获变量仅在正则之外可用。
+
+These capture variables are only available outside the regex.
+
 ```Perl6
+# ！！错误！！ $0 指的是第二个捕获*里面*的捕获
 # !!WRONG!! The $0 refers to a capture *inside* the second capture 
 say "11" ~~ /(\d) ($0)/; # OUTPUT: «Nil␤» 
- 
+```
+
+为了使它们在正则中可用，需要在匹配项后面插入一个代码块；如果没有任何有意义的操作，则此代码块可能为空：
+
+In order to make them available inside the regex, you need to insert a code block behind the match; this code block may be empty if there's nothing meaningful to do:
+
+```Perl6
+# 正确： $0 存入了第二个捕获之外的变量中，在它被使用在第二个捕获里面之前
 # CORRECT: $0 is saved into a variable outside the second capture 
-# before it is used inside (the `{}` is needed to update the current match) 
+# before it is used inside
 say "11" ~~ /(\d) {} :my $c = $0; ($c)/; # OUTPUT: «｢11｣␤ 0 => ｢1｣␤ 1 => ｢1｣␤» 
 say "Matched $c"; # OUTPUT: «␤Matched 1␤» 
 ```
+
+此代码块发布正则内的捕获，以便将其分配给其他变量或用于后续匹配
+
+This code block publishes the capture inside the regex, so that it can be assigned to other variables or used for subsequent matches
+
+```Perl6
+say "11" ~~ /(\d) {} $0/; # OUTPUT: «｢11｣␤ 0 => ｢1｣␤» 
+```
+
+`:my` 使 `$c` 变量确定在正则之内以及正则所在的范围。在这种情况下，我们可以在下一句话中使用它来显示正则中匹配的内容。这可用于在正则表达式内部进行调试，例如：
 
 `:my` helps scoping the `$c` variable within the regex and beyond; in this case we can use it in the next sentence to show what has been matched inside the regex. This can be used for debugging inside regular expressions, for instance:
 
@@ -1331,6 +1369,27 @@ my $paragraph="line\nline2\nline3";
 $paragraph ~~ rx| :my $counter = 0; ( \V* { ++$counter } ) *%% \n |;
 say "Matched $counter lines"; # OUTPUT: «Matched 3 lines␤» 
 ```
+
+由于 `:my` 代码块只是声明，因此匹配项变量 `$/` 或编号的匹配项（如 `$0`）在它们中不可用，除非它们以前是通过插入空代码块（或任何代码块）发布的：
+
+Since `:my` blocks are simply declarations, the match variable `$/` or numbered matches such as `$0` will not be available in them unless they are previously published by inserting the empty block (or any block):
+
+```Perl6
+"aba" ~~ / (a) b {} :my $c = $/; /;
+say $c; # OUTPUT: «｢ab｣␤ 0 => ｢a｣␤» 
+```
+
+任何其他代码块也将显示变量并使其在声明中可用：
+
+Any other code block will also reveal the variables and make them available in declarations:
+
+```Perl6
+"aba" ~~ / (a) {say "Check so far ", ~$/} b :my $c = ~$0; /;
+# OUTPUT: «Check so far a␤» 
+say "Capture $c"; # OUTPUT: «Capture a␤» 
+```
+
+与类中的 [`our`](https://docs.perl6.org/syntax/our) 类似，`:our` 可用于 [Grammar](https://docs.perl6.org/type/Grammar) 中声明可通过其完全限定名从 grammar 外部访问的变量：
 
 The `:our`, similarly to [`our`](https://docs.perl6.org/syntax/our) in classes, can be used in [Grammar](https://docs.perl6.org/type/Grammar)s to declare variables that can be accessed, via its fully qualified name, from outside the grammar:
 
@@ -1346,9 +1405,11 @@ say HasOur.parse('Þor is mighty'); # OUTPUT: «｢Þor is mighty｣␤»
 say $HasOur::our;                  # OUTPUT: «Þor␤» 
 ```
 
+解析成功后，我们使用变量 `$our` 的完全限定名称来访问其值，该值只能是 `Þor`。
+
 Once the parsing has been done successfully, we use the FQN name of the `$our` variable to access its value, that can be none other than `Þor`.
 
-## Named captures
+## 命名捕获 / Named captures
 
 Instead of numbering captures, you can also give them names. The generic, and slightly verbose, way of naming captures is like this:
 
