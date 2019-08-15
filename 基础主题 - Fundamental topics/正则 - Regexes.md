@@ -1411,6 +1411,8 @@ Once the parsing has been done successfully, we use the FQN name of the `$our` v
 
 ## 命名捕获 / Named captures
 
+你也可以给捕获命名，而不是给它们编号。通用的、稍微冗长的命名捕获方法如下：
+
 Instead of numbering captures, you can also give them names. The generic, and slightly verbose, way of naming captures is like this:
 
 ```Perl6
@@ -1419,11 +1421,19 @@ if 'abc' ~~ / $<myname> = [ \w+ ] / {
 }
 ```
 
+上面示例中的方括号（通常不捕获）现在将捕获具有给定名称的分组。
+
 The square brackets in the above example, which don't usually capture, will now capture its grouping with the given name.
+
+对命名捕获的访问 `$<myname>`，是将匹配对象索引为哈希的简写，换句话说，它可以是：`$/{ 'myname' }` 或 `$/<myname>`。
 
 The access to the named capture, `$<myname>`, is a shorthand for indexing the match object as a hash, in other words: `$/{ 'myname' }` or `$/<myname>`.
 
+在上面的示例中，我们也可以使用括号，但它们的作用与方括号完全相同。捕获的组只能通过其名称作为匹配对象中的键进行访问，而不能从其在带有 `$/[0]` 或 `$0` 的列表中的位置进行访问。
+
 We can also use parentheses in the above example, but they will work exactly the same as square brackets. The captured group will only be accessible by its name as a key from the match object and not from its position in the list with `$/[0]` or `$0`.
+
+命名捕获也可以使用常规捕获组语法嵌套：
 
 Named captures can also be nested using regular capture group syntax:
 
@@ -1434,6 +1444,8 @@ if 'abc-abc-abc' ~~ / $<string>=( [ $<part>=[abc] ]* % '-' ) / {
     say ~$<string><part>[0]; # OUTPUT: «abc␤» 
 }
 ```
+
+将匹配项对象强制转换为哈希可以方便地通过编程访问所有命名捕获：
 
 Coercing the match object to a hash gives you easy programmatic access to all named captures:
 
@@ -1451,9 +1463,13 @@ if 'count=23' ~~ / $<variable>=\w+ '=' $<value>=\w+ / {
 }
 ```
 
+获取命名捕获的一个更方便的方法是使用命名正则，如 [子规则](https://docs.perl6.org/language/regexes#Subrules) 部分所述。
+
 A more convenient way to get named captures is by using named regex as discussed in the [Subrules](https://docs.perl6.org/language/regexes#Subrules) section.
 
-## Capture markers: `<( )>`
+## 捕获标识符： `<( )>` / Capture markers: `<( )>`
+
+`<(` 标记表示匹配的整体捕获的开始，而相应的 `)>` 标记表示结束点。`<(` 类似于其他语言的 \K，用于放弃在 `\K` 之前找到的所有匹配项。
 
 A `<(` token indicates the start of the match's overall capture, while the corresponding `)>` token indicates its endpoint. The `<(`is similar to other languages \K to discard any matches found before the `\K`.
 
@@ -1462,15 +1478,23 @@ say 'abc' ~~ / a <( b )> c/;            # OUTPUT: «｢b｣␤»
 say 'abc' ~~ / <(a <( b )> c)>/;        # OUTPUT: «｢bc｣␤» 
 ```
 
+如上例所示，你可以看到 `<(` 设置了起点而 `)>` 设置了终点；由于它们实际上彼此独立，因此最内部的起点（连接到 `b`）和最外部的终点（连接到 `c`）获胜。
+
 As in the example above, you can see `<(` sets the start point and `)>` sets the endpoint; since they are actually independent of each other, the inner-most start point wins (the one attached to `b`) and the outer-most end wins (the one attached to `c`).
 
-# Substitution
+# 替换 / Substitution
+
+正则表达式也可用于用一段文本替换另一段文本。可以将其用于任何内容，从更正拼写错误（例如，将 'Perl Jam' 替换为 'Pearl Jam'），到将 ISO8601 日期从 `yyyy-mm-ddThh:mm:ssZ` 重新格式化为 `mm-dd-yy h:m {AM,PM}`。
 
 Regular expressions can also be used to substitute one piece of text for another. You can use this for anything, from correcting a spelling error (e.g., replacing 'Perl Jam' with 'Pearl Jam'), to reformatting an ISO8601 date from `yyyy-mm-ddThh:mm:ssZ` to `mm-dd-yy h:m {AM,PM}` and beyond.
 
+就像编辑器中的搜索和替换对话框一样，`s/ / /` 运算符有两个边，一个是左侧，另一个是右侧。左边是匹配表达式的位置，右边是要替换它的位置。
+
 Just like the search-and-replace editor's dialog box, the `s/ / /` operator has two sides, a left and right side. The left side is where your matching expression goes, and the right side is what you want to replace it with.
 
-## Lexical conventions
+## 词法约定 / Lexical conventions
+
+替换的编写方式与匹配类似，但替换运算符同时具有要匹配的正则区域和要替换的文本：
 
 Substitutions are written similarly to matching, but the substitution operator has both an area for the regex to match, and the text to substitute:
 
@@ -1478,6 +1502,8 @@ Substitutions are written similarly to matching, but the substitution operator h
 s/replace/with/;           # a substitution that is applied to $_ 
 $str ~~ s/replace/with/;   # a substitution applied to a scalar 
 ```
+
+替换运算符允许除斜线以外的分隔符：
 
 The substitution operator allows delimiters other than the slash:
 
@@ -1487,13 +1513,19 @@ s!replace!with!;
 s,replace,with,;
 ```
 
+请注意，冒号 `:` 和平衡分隔符（如 `{}` 或 `()`）都不能是替换分隔符。冒号与副词冲突，如 `s:i/Foo/bar/`，其他分隔符用于其他目的。
+
 Note that neither the colon `:` nor balancing delimiters such as `{}` or `()` can be substitution delimiters. Colons clash with adverbs such as `s:i/Foo/bar/` and the other delimiters are used for other purposes.
+
+如果使用平衡大括号、方括号或圆括号，则替换的工作方式如下：
 
 If you use balancing curly braces, square brackets, or parentheses, the substitution works like this instead:
 
 ```Perl6
 s[replace] = 'with';
 ```
+
+右侧现在是一个（未引用）Perl 6 表达式，其中 `$/` 作为当前匹配项可用：
 
 The right-hand side is now a (not quoted) Perl 6 expression, in which `$/` is available as the current match:
 
@@ -1503,9 +1535,13 @@ s:g[ \d+ ] =  2 * $/;
 .say;                    # OUTPUT: «some 22 words 42␤» 
 ```
 
+与 `m//` 运算符类似，替换的正则部分忽略空白。注释，就像在Perl6中一般一样，从散列字符开始，转到当前行的末尾。
+
 Like the `m//` operator, whitespace is ignored in the regex part of a substitution. Comments, as in Perl 6 in general, start with the hash character `#` and go to the end of the current line.
 
-## Replacing string literals
+## 替换字符串文字 / Replacing string literals
+
+最简单的替换是字符串文字。要替换的字符串位于替换运算符的左侧，要替换的字符串位于右侧；例如：
 
 The simplest thing to replace is a string literal. The string you want to replace goes on the left-hand side of the substitution operator, and the string you want to replace it with goes on the right-hand side; for example:
 
@@ -1515,6 +1551,8 @@ s/Replace/Entrap/;
 .say;                    # OUTPUT: «The Entrapments␤» 
 ```
 
+字母数字字符和下划线是字面匹配的，就像在它的表亲 `m//` 运算符中一样。所有其他字符必须用反斜杠 `\` 转义或包含在引号中：
+
 Alphanumeric characters and the underscore are literal matches, just as in its cousin the `m//` operator. All other characters must be escaped with a backslash `\` or included in quotes:
 
 ```Perl6
@@ -1523,7 +1561,11 @@ s/Space\:/Party like it's/;
 .say                        # OUTPUT: «Party like it's 1999␤» 
 ```
 
+注意，匹配限制只适用于替换表达式的左侧。
+
 Note that the matching restrictions only apply to the left-hand side of the substitution expression.
+
+默认情况下，仅在第一次匹配时进行替换：
 
 By default, substitutions are only done on the first match:
 
@@ -1533,7 +1575,9 @@ s/tw/on/;                     # replace 'tw' with 'on' once
 .say;                         # OUTPUT: «There can be only two␤» 
 ```
 
-## Wildcards and character classes
+## 通配符和字符类 / Wildcards and character classes
+
+任何可以进入 `m//` 运算符的内容都可以进入替换运算符的左侧，包括通配符和字符类。当要匹配的文本不是静态的，例如尝试匹配字符串中间的数字，这很方便：
 
 Anything that can go into the `m//` operator can go into the left-hand side of the substitution operator, including wildcards and character classes. This is handy when the text you're matching isn't static, such as trying to match a number in the middle of a string:
 
@@ -1545,7 +1589,9 @@ s/\d+/7/;         # replace any sequence of digits with '7'
 
 Of course, you can use any of the `+`, `*` and `?` modifiers, and they'll behave just as they would in the `m//` operator's context.
 
-## Capturing groups
+## 捕获分组 / Capturing groups
+
+正如在匹配操作符中一样，左侧允许捕获组，匹配的内容填充了 `$0`..`$n` 变量和 `$/` 对象：
 
 Just as in the match operator, capturing groups are allowed on the left-hand side, and the matched contents populate the `$0`..`$n` variables and the `$/` object:
 
@@ -1557,6 +1603,8 @@ s/ (\d+)\-(\d+)\-(\d+) /today/;   # replace YYYY-MM-DD with 'today'
 "$/[1]-$/[2]-$/[0]".say;          # OUTPUT: «01-23-2016␤» 
 ```
 
+变量 `$0`、`$1`、`$/` 中的任何一个也可以在运算符的右侧使用，这样就可以操纵刚刚匹配的内容。通过这种方式，您可以将日期的`YYYY`、`MM` 和 `DD` 部分分开，并将它们重新格式化为 `MM-DD-YYYY` 顺序：
+
 Any of these variables `$0`, `$1`, `$/` can be used on the right-hand side of the operator as well, so you can manipulate what you've just matched. This way you can separate out the `YYYY`, `MM` and `DD` parts of a date and reformat them into `MM-DD-YYYY`order:
 
 ```Perl6
@@ -1564,6 +1612,8 @@ $_ = '2016-01-23 18:09:00';
 s/ (\d+)\-(\d+)\-(\d+) /$1-$2-$0/;    # transform YYYY-MM-DD to MM-DD-YYYY 
 .say;                                 # OUTPUT: «01-23-2016 18:09:00␤» 
 ```
+
+也可以使用命名捕获：
 
 Named capture can be used too:
 
@@ -1573,6 +1623,8 @@ s/ $<y>=(\d+)\-$<m>=(\d+)\-$<d>=(\d+) /$<m>-$<d>-$<y>/;
 .say;                                 # OUTPUT: «01-23-2016 18:09:00␤» 
 ```
 
+由于右侧实际上是一个常规的 Perl 6 内插字符串，因此可以将时间从 `HH:MM` 重新格式化为 `h:MM {AM,PM}`。像这样：
+
 Since the right-hand side is effectively a regular Perl 6 interpolated string, you can reformat the time from `HH:MM` to `h:MM {AM,PM}` like so:
 
 ```Perl6
@@ -1581,13 +1633,21 @@ s/(\d+)\:(\d+)/{$0 % 12}\:$1 {$0 < 12 ?? 'AM' !! 'PM'}/;
 .say;                                 # OUTPUT: «6:38 PM␤» 
 ```
 
+使用上面的模运算符 `%` 可以将示例代码保持在 80 个字符以下，但在其他方面与 `$0 < 12 ?? $0 !! $0 - 12` 一样.当结合解析器表达式语法的强大功能，可以使用“正则表达式”来解析几乎所有的文本。
+
 Using the modulo `%` operator above keeps the sample code under 80 characters, but is otherwise the same as `$0 < 12 ?? $0 !! $0 - 12 `. When combined with the power of the Parser Expression Grammars that **really** underlies what you're seeing here, you can use "regular expressions" to parse pretty much any text out there.
 
-## Common adverbs
+## 常用副词 / Common adverbs
+
+可以应用于正则表达式的副词的完整列表可以在本文档的其他地方可以找到（[节副词](https://docs.perl6.org/language/regexes#Adverbs)），但最常见的可能是 `:g` 和 `:i`。
 
 The full list of adverbs that you can apply to regular expressions can be found elsewhere in this document ([section Adverbs](https://docs.perl6.org/language/regexes#Adverbs)), but the most common are probably `:g` and `:i`.
 
+- 全局副词 `:g`
+
 - Global adverb `:g`
+
+通常，在给定的字符串中只进行一次匹配，但是添加 `:g` 修饰符会覆盖该行为，因此在任何地方都可以进行替换。替换是非递归的；例如：
 
 Ordinarily, matches are only made once in a given string, but adding the `:g` modifier overrides that behavior, so that substitutions are made everywhere possible. Substitutions are non-recursive; for example:
 
@@ -1597,9 +1657,15 @@ s:g/na/nana,/;    # substitute 'nana,' for 'na'
 .say;             # OUTPUT: «I can say "banana,nana," but I don't ...␤» 
 ```
 
+在这里，`na` 在原始字符串中被发现两次，每次都有一个替换。不过，替换仅应用于原始字符串。结果字符串未受影响。
+
 Here, `na` was found twice in the original string and each time there was a substitution. The substitution only applied to the original string, though. The resulting string was not impacted.
 
+- 忽略大小写副词 `:i`
+
 - Insensitive adverb `:i`
+
+通常，匹配是区分大小写的。`s/foo/bar/` 只与 `'foo'` 匹配，不与 `'Foo'` 匹配。但是，如果使用副词 `:i`，则匹配将不区分大小写。
 
 Ordinarily, matches are case-sensitive. `s/foo/bar/` will only match `'foo'` and not `'Foo'`. If the adverb `:i` is used, though, matches become case-insensitive.
 
@@ -1612,13 +1678,21 @@ s:i/fruit/vegetable/;
 .say;                          # OUTPUT: «vegetable␤» 
 ```
 
+有关这些副词实际操作的更多信息，请参阅本文档的[副词部分](https://docs.perl6.org/language/regexes#Adverbs)部分。
+
 For more information on what these adverbs are actually doing, refer to the [section Adverbs](https://docs.perl6.org/language/regexes#Adverbs) section of this document.
+
+这些只是可以用替换操作符应用的一些转换。现实世界中的一些简单用法包括从日志文件中删除个人数据、将 MySQL 时间戳编辑为 PostgreSQL 格式、更改 HTML 文件中的版权信息以及清理 Web 应用程序中的表单字段。
 
 These are just a few of the transformations you can apply with the substitution operator. Some of the simpler uses in the real world include removing personal data from log files, editing MySQL timestamps into PostgreSQL format, changing copyright information in HTML files and sanitizing form fields in a web application.
 
+顺便说一句，正则表达式新手经常会不知所措，认为他们的正则表达式需要匹配行中的每一段数据，包括他们想要匹配的数据。写得足够匹配你正在寻找的数据，不多也不少。
+
 As an aside, novices to regular expressions often get overwhelmed and think that their regular expression needs to match every piece of data in the line, including what they want to match. Write just enough to match the data you're looking for, no more, no less.
 
-# Tilde for nesting structures
+# 嵌套结构的波浪符号 / Tilde for nesting structures
+
+`~` 运算符是一个帮助器，用于将嵌套子规则与特定终结符匹配为目标。它被设计成放置在一个开始和结束分隔符对之间，如下所示：
 
 The `~` operator is a helper for matching nested subrules with a specific terminator as the goal. It is designed to be placed between an opening and closing delimiter pair, like so:
 
@@ -1626,11 +1700,15 @@ The `~` operator is a helper for matching nested subrules with a specific termin
 / '(' ~ ')' <expression> /
 ```
 
+然而，它大多忽略了左边的参数，并作用于接下来的两个原子（可以量化）。它对接下来的两个原子的作用是“旋转”它们，使它们实际上以相反的顺序匹配。因此，乍一看，上面的表达只是以下内容的简写：
+
 However, it mostly ignores the left argument, and operates on the next two atoms (which may be quantified). Its operation on those next two atoms is to "twiddle" them so that they are actually matched in reverse order. Hence the expression above, at first blush, is merely shorthand for:
 
 ```Perl6
 / '(' <expression> ')' /
 ```
+
+但除此之外，当它重写原子时，它还插入一个装置，该装置将设置内部表达式来识别终结符，并在内部表达式未在所需的闭合原子上终止时生成适当的错误消息。所以它确实也注意到了左边的分隔符，实际上它重写了我们的示例，结果类似于：
 
 But beyond that, when it rewrites the atoms it also inserts the apparatus that will set up the inner expression to recognize the terminator, and to produce an appropriate error message if the inner expression does not terminate on the required closing atom. So it really does pay attention to the left delimiter as well, and it actually rewrites our example to something more like:
 
@@ -1638,20 +1716,25 @@ But beyond that, when it rewrites the atoms it also inserts the apparatus that w
 $<OPEN> = '(' <SETGOAL: ')'> <expression> [ $GOAL || <FAILGOAL> ]
 ```
 
+FAILGOAL 是一种特殊的方法，可以由用户定义，在解析失败时将调用它：
+
 FAILGOAL is a special method that can be defined by the user and it will be called on parse failure:
 
 ```Perl6
-grammar A { token TOP { '[' ~ ']' \w+  };
-            method FAILGOAL($goal) {
-                die "Cannot find $goal near position {self.pos}"
-            }
+grammar A {
+    token TOP { '[' ~ ']' \w+  };
+    method FAILGOAL($goal) {
+        die "Cannot find $goal near position {self.pos}"
+    }
 }
- 
+
 say A.parse: '[good]';  # OUTPUT: «｢[good]｣␤» 
 A.parse: '[bad';        # will throw FAILGOAL exception 
 CATCH { default { put .^name, ': ', .Str } };
 # OUTPUT: «X::AdHoc: Cannot find ']'  near position 4␤» 
 ```
+
+请注意，即使没有开始分隔符，也可以使用此构造设置结束构造的期望值：
 
 Note that you can use this construct to set up expectations for a closing construct even when there's no opening delimiter:
 
@@ -1660,7 +1743,11 @@ Note that you can use this construct to set up expectations for a closing constr
 "(3)" ~~ / <?> ~ ')' \d+ /;  # RESULT: «｢3)｣» 
 ```
 
+这里 `<？>` 成功匹配空字符串。
+
 Here `<?>` successfully matches the null string.
+
+正则捕获的顺序是原始的：
 
 The order of the regex capture is original:
 
@@ -1670,7 +1757,9 @@ say $0; # OUTPUT: «｢c｣␤»
 say $1; # OUTPUT: «｢b｣␤» 
 ```
 
-# Subrules
+# 子规则 / Subrules
+
+就像可以将代码片段放入子例程一样，也可以将正则片段放入命名规则中。
 
 Just like you can put pieces of code into subroutines, you can also put pieces of regex into named rules.
 
@@ -1681,9 +1770,15 @@ if "abc\ndef" ~~ /<line> def/ {
 }
 ```
 
+命名正则可以用 `my regex named-regex { body here }` 声明，并用 `<named regex>` 调用。同时，调用一个命名的正则会白送一个同名的命名捕获。
+
 A named regex can be declared with `my regex named-regex { body here }`, and called with `<named-regex>`. At the same time, calling a named regex installs a named capture with the same name.
 
+要使捕获具有与正则不同的名称，请使用语法 `<capture-name=named-regex>`。如果不需要捕获，前导点号或与号将禁止它：如果它是在同一类或语法中声明的方法，使用 `<&named-regex>`；如果在同一词汇上下文中声明的正则，则使用 `<.named-regex>`。
+
 To give the capture a different name from the regex, use the syntax `<capture-name=named-regex>`. If no capture is desired, a leading dot or ampersand will suppress it: `<.named-regex>` if it is a method declared in the same class or grammar, `<&named-regex>` for a regex declared in the same lexical context.
+
+以下是用于分析 `ini` 文件的更完整的代码：
 
 Here's more complete code for parsing `ini` files:
 
@@ -1721,9 +1816,11 @@ say %config.perl;
 #           :quotas(${:jack("123"), :joy("42")})}» 
 ```
 
+命名正则可以并且应该在 [grammars](https://docs.perl6.org/language/grammars) 中分组。预先定义的子规则列表列在设计文档 [S05-regex](https://design.perl6.org/S05.html#Predefined_Subrules) 中。
+
 Named regexes can and should be grouped in [grammars](https://docs.perl6.org/language/grammars). A list of predefined subrules is listed in [S05-regex](https://design.perl6.org/S05.html#Predefined_Subrules) of design documents.
 
-# Regex interpolation
+# 正则插值 / Regex interpolation
 
 Instead of using a literal pattern for a regex match you can use a variable that holds that pattern.
 
