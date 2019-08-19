@@ -1822,7 +1822,11 @@ Named regexes can and should be grouped in [grammars](https://docs.perl6.org/lan
 
 # 正则插值 / Regex interpolation
 
+您可以使用变量保存该模式，而不是使用文本模式进行正则匹配。
+
 Instead of using a literal pattern for a regex match you can use a variable that holds that pattern.
+
+然后这个变量可以插入正则中使用，这意味着它被用作它所持有的模式。
 
 This variable can then be 'interpolated' which means it is used as though it is the pattern that it holds.
 
@@ -1831,7 +1835,11 @@ my Str $pattern = 'camelia';
 say 'camelia' ~~ / $pattern /;             # OUTPUT: «｢camelia｣␤» 
 ```
 
+如果要插入的变量是静态类型的 `Str` 或 `str`，并且只是按字面量插入，那么编译器可以对其进行优化，并且运行得更快（如上面的 `$pattern`）。
+
 If the variable to be interpolated is statically typed as a `Str` or `str` and only interpolated literally, then the compiler can optimize it and it runs much faster (like `$pattern` above ).
+
+有时您可能希望匹配正则中生成的字符串。这可以通过以下方式完成：
 
 Sometimes you may want to match a generated string in a regex. This can be done in the following way:
 
@@ -1840,9 +1848,15 @@ my Str $pattern = 'ailemac';
 say 'camelia' ~~ / $($pattern.flip) /;     # OUTPUT: «｢camelia｣␤» 
 ```
 
+有四种方法可以将字符串作为模式插入正则。即使用 `$pattern`、`$($pattern)`、`<$pattern>` 或 `<{$pattern.method}>`。
+
 There are four ways you can interpolate a string into regex as a pattern. That is using `$pattern`, `$($pattern)`, `<$pattern>` or `<{$pattern.method}>`.
 
+请注意，上面的两个示例以词法插入字符串，而 `<$pattern>` 和 `<$pattern.method>` 会导致[隐式 EVAL](https://docs.perl6.org/language/traps#%3C%7B%24x%7D%3E_vs_%24%28%24x%29%3A_Implicit_EVAL)，这是一个已知的陷阱。
+
 Note that the two examples above interpolate the string lexically, while `<$pattern>` and `<{$pattern.method}>` causes [implicit EVAL](https://docs.perl6.org/language/traps#%3C%7B%24x%7D%3E_vs_%24%28%24x%29%3A_Implicit_EVAL), which is a known trap.
+
+以下是显示所有四种方法的示例：
 
 Here are examples showing all four ways:
 
@@ -1865,6 +1879,8 @@ say $text ~~ / <$pattern2> /;              # OUTPUT: «｢camelia｣␤»
 say $text ~~ / <{$pattern2}> /;            # OUTPUT: «｢camelia｣␤» 
 ```
 
+当一个数组变量被插入到一个正则中时，正则引擎会像处理正则元素的一个 `|` 备选项一样处理它（请参阅上面[嵌入列表](https://docs.perl6.org/language/regexes#Quoted_lists_are_LTM_matches)上的文档，如上图所示）。单个元素的插值规则与标量相同，因此字符串和数字按字面量匹配，而 [/type/regex](https://docs.perl6.org/type/Regex) 对象与正则匹配。正如普通的 `|` 插值一样，最长的匹配也会成功：
+
 When an array variable is interpolated into a regex, the regex engine handles it like a `|` alternative of the regex elements (see the documentation on [embedded lists](https://docs.perl6.org/language/regexes#Quoted_lists_are_LTM_matches), above). The interpolation rules for individual elements are the same as for scalars, so strings and numbers match literally, and [/type/Regex](https://docs.perl6.org/type/Regex) objects match as regexes. Just as with ordinary `|` interpolation, the longest match succeeds:
 
 ```Perl6
@@ -1872,13 +1888,21 @@ my @a = '2', 23, rx/a.+/;
 say ('b235' ~~ /  b @a /).Str;      # OUTPUT: «b23» 
 ```
 
+在正则表达式中使用哈希是保留的。
+
 The use of hashes in regexes is reserved.
 
-## Regex boolean condition check
+## 正则布尔条件检查 / Regex boolean condition check
+
+特殊运算符 `<?{}>` 允许对布尔表达式进行计算，该布尔表达式可以在正则表达式继续之前对匹配项执行语义计算。换句话说，可以在布尔上下文中检查正则表达式的一部分，从而使整个匹配无效（或允许其继续），即使从语法角度来看匹配成功。
 
 The special operator `<?{}>` allows the evaluation of a boolean expression that can perform a semantic evaluation of the match before the regular expression continues. In other words, it is possible to check in a boolean context a part of a regular expression and therefore invalidate the whole match (or allow it to continue) even if the match succeeds from a syntactic point of view.
 
+尤其是 `<?{}>` 运算符需要一个 `True` 值，以便允许正则表达式匹配，而它的否定形式 `<!{}>` 需要 `False` 值。
+
 In particular the `<?{}>` operator requires a `True` value in order to allow the regular expression to match, while its negated form `<!{}>` requires a `False` value.
+
+为了演示上述运算符，请考虑以下涉及简单的 IPv4 地址匹配的示例：
 
 In order to demonstrate the above operator, please consider the following example that involves a simple IPv4 address matching:
 
@@ -1889,6 +1913,8 @@ $localhost ~~ / ^ <ipv4-octet> ** 4 % "." $ /;
 say $/<ipv4-octet>;   # OUTPUT: [｢127｣ ｢0｣ ｢0｣ ｢1｣] 
 ```
 
+`octet` 正则表达式与最多由 1 到 3 位数字组成的数字匹配。每一个匹配都是由 `<?{}>` 的结果驱动的。固定值 `True` 意味着正则表达式匹配必须始终被视为良好。作为一个反例，使用特殊的常量值 `False` 将使匹配无效，即使正则表达式从语法角度匹配：
+
 The `octet` regular expression matches against a number made by one up to three digits. Each match is driven by the result of the `<?{}>`, that being the fixed value of `True` means that the regular expression match has to be always considered as good. As a counter-example, using the special constant value `False` will invalidate the match even if the regular expression matches from a syntactic point of view:
 
 ```Perl6
@@ -1898,6 +1924,8 @@ $localhost ~~ / ^ <ipv4-octet> ** 4 % "." $ /;
 say $/<ipv4-octet>;   # OUTPUT: Nil 
 ```
 
+从以上示例中可以清楚地看到，可以改进语义检查，例如确保每个*八位字节*实际上是有效的 IPv4 八位字节：
+
 From the above examples, it should be clear that it is possible to improve the semantic check, for instance ensuring that each *octet* is really a valid IPv4 octet:
 
 ```Perl6
@@ -1906,6 +1934,8 @@ my regex ipv4-octet { \d ** 1..3 <?{ $/.Int <= 255 && $/.Int >= 0 }> }
 $localhost ~~ / ^ <ipv4-octet> ** 4 % "." $ /;
 say $/<ipv4-octet>;   # OUTPUT: [｢127｣ ｢0｣ ｢0｣ ｢1｣] 
 ```
+
+请注意，不需要内嵌计算正则表达式，也可以调用正则方法来获取布尔值：
 
 Please note that it is not required to evaluate the regular expression in-line, but also a regular method can be called to get the boolean value:
 
@@ -1917,6 +1947,8 @@ $localhost ~~ / ^ <ipv4-octet> ** 4 % "." $ /;
 say $/<ipv4-octet>;   # OUTPUT: [｢127｣ ｢0｣ ｢0｣ ｢1｣] 
 ```
 
+当然， 使用 `<?{}>` 的否定形式 `<!{}>`，相同的布尔值可以用否定形式重写：
+
 Of course, being `<!{}>` the negation form of `<?{}>` the same boolean evaluation can be rewritten in a negated form:
 
 ```Perl6
@@ -1927,11 +1959,17 @@ $localhost ~~ / ^ <ipv4-octet> ** 4 % "." $ /;
 say $/<ipv4-octet>;   # OUTPUT: [｢127｣ ｢0｣ ｢0｣ ｢1｣] 
 ```
 
-# Adverbs
+# 副词 / Adverbs
+
+副词是一个或多个以冒号 `:` 开头的字母组合，用于修改正则的工作方式，并为某些类型的重复任务提供方便的快捷方式。
 
 Adverbs, which modify how regexes work and provide convenient shortcuts for certain kinds of recurring tasks, are combinations of one or more letters preceded by a colon `:`.
 
+所谓的*正则*副词适用于正则定义时；此外，*匹配*副词适用于正则与字符串匹配的时候，*替换*副词仅适用于替换。
+
 The so-called *regex* adverbs apply at the point where a regex is defined; additionally, *matching* adverbs apply at the point that a regex matches against a string and *substitution* adverbs are applied exclusively in substitutions.
+
+这种区别常常模糊，因为匹配和声明通常在文本上很接近，但是使用匹配的方法形式，即 `.match`，可以清楚地区分。
 
 This distinction often blurs, because matching and declaration are often textually close but using the method form of matching, that is, `.match`, makes the distinction clear.
 
@@ -1943,12 +1981,16 @@ say "Abra abra CADABRA".match($regex,:ex);
 # OUTPUT: «(｢Abra｣ ｢abra｣ ｢ADABRA｣ ｢ADA｣ ｢ABRA｣)␤» 
 ```
 
+在第一个例子中，匹配副词（`:exhaustive`）与正则副词（`:i`）相邻，事实上，正则声明和匹配被一起使用；但是，通过使用 `match`，它比 `:i` 更清楚，仅在定义 `$regex` 变量和 `:ex`（`:exhaustive` 的缩写）作为匹配时的参数。事实上，匹配副词甚至不能在 regex 的定义中使用：
+
 In the first example, the matching adverb (`:exhaustive`) is contiguous to the regex adverb (`:i`), and as a matter of fact, the "definition" and the "matching" go together; however, by using `match` it becomes clear than `:i` is only used when defining the `$regex` variable, and `:ex` (short for `:exhaustive`) as an argument when matching. As a matter of fact, matching adverbs cannot even be used in the definition of a regex:
 
 ```Perl6
 my $regex = rx:ex/:i a \w+ a /;
 # ===SORRY!=== Error while compiling (...)␤Adverb ex not allowed on rx 
 ```
+
+类似于 `:i` 的正则副词进入定义行，类似于 `:overlap` 的匹配副词（可以缩写为 `:ov`）附加到匹配调用：
 
 Regex adverbs like `:i` go into the definition line and matching adverbs like `:overlap` (which can be abbreviated to `:ov`) are appended to the match call:
 
@@ -1960,19 +2002,29 @@ for 'baA'.match($regex, :overlap) -> $m {
 # OUTPUT: «ba␤aA␤» 
 ```
 
-## Regex adverbs
+## 正则副词 / Regex adverbs
+
+在正则声明时出现的副词是实际正则的一部分，并影响 Perl 6 编译器如何将正则转换为二进制代码。
 
 The adverbs that appear at the time of a regex declaration are part of the actual regex and influence how the Perl 6 compiler translates the regex into binary code.
 
+例如，`:ignorecase` （`:i`）副词告诉编译器忽略大写字母、小写字母和标题字母之间的区别。
+
 For example, the `:ignorecase` (`:i`) adverb tells the compiler to ignore the distinction between upper case, lower case and title case letters.
 
+因此，`'a' ~~ /A/` 是错误的，但 `'a' ~~ /:i A/` 是成功的匹配。
+
 So `'a' ~~ /A/` is false, but `'a' ~~ /:i A/` is a successful match.
+
+正则副词可以出现在正则声明之前或内部，并且只影响后面出现的正则部分（词汇上）。请注意，出现在正则前面的正则副词必须出现在将正则引入分析器的内容之后，例如 'rx' 或 'm' 或裸 '/'。这是非法的：
 
 Regex adverbs can come before or inside a regex declaration and only affect the part of the regex that comes afterwards, lexically. Note that regex adverbs appearing before the regex must appear after something that introduces the regex to the parser, like 'rx' or 'm' or a bare '/'. This is NOT valid:
 
 ```Perl6
 my $rx1 = :i/a/;      # adverb is before the regex is recognized => exception 
 ```
+
+但是这些是合法的：
 
 but these are valid:
 
@@ -1982,12 +2034,16 @@ my $rx2 = m:i/a/;      # before
 my $rx3 = /:i a/;      # inside 
 ```
 
+这两个正则是等价的：
+
 These two regexes are equivalent:
 
 ```Perl6
 my $rx1 = rx:i/a/;      # before 
 my $rx2 = rx/:i a/;     # inside 
 ```
+
+而这两个不是等价的：
 
 Whereas these two are not:
 
@@ -1996,6 +2052,8 @@ my $rx3 = rx/a :i b/;   # matches only the b case insensitively
 my $rx4 = rx/:i a b/;   # matches completely case insensitively 
 ```
 
+方括号和圆括号限制副词的范围：
+
 Square brackets and parentheses limit the scope of an adverb:
 
 ```Perl6
@@ -2003,11 +2061,15 @@ Square brackets and parentheses limit the scope of an adverb:
 / [:i a b] c /;         # matches 'ABc' but not 'ABC' 
 ```
 
+当两个副词同时使用时，它们的冒号保持在前面。
+
 When two adverbs are used together, they keep their colon at the front
 
 ```Perl6
 "þor is Þor" ~~ m:g:i/þ/;  # OUTPUT: «(｢þ｣ ｢Þ｣)␤» 
 ```
+
+这意味着当一个 `:` 后面有两个元音时，它们对应于同一个副词，就像在 `:ov` 或 `:P5` 中一样。
 
 That implies that when there are two vowels together after a `:`, they correspond to the same adverb, as in `:ov` or `:P5`.
 
