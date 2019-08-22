@@ -10,6 +10,86 @@ Pattern matching against strings
 
 Regular expressions, *regexes* for short, are a sequence of characters that describe a pattern of text. Pattern matching is the process of matching those patterns to actual text.
 
+<!-- MarkdownTOC -->
+
+- [词法约定 / Lexical conventions](#%E8%AF%8D%E6%B3%95%E7%BA%A6%E5%AE%9A--lexical-conventions)
+- [字面量 / Literals](#%E5%AD%97%E9%9D%A2%E9%87%8F--literals)
+- [通配符 / Wildcards](#%E9%80%9A%E9%85%8D%E7%AC%A6--wildcards)
+- [字符类 / Character classes](#%E5%AD%97%E7%AC%A6%E7%B1%BB--character-classes)
+  - [带反斜杠的字符类 / Backslashed character classes](#%E5%B8%A6%E5%8F%8D%E6%96%9C%E6%9D%A0%E7%9A%84%E5%AD%97%E7%AC%A6%E7%B1%BB--backslashed-character-classes)
+    - [`\n` 和 `\N`](#n-%E5%92%8C-n)
+    - [`\t` 和 `\T`](#t-%E5%92%8C-t)
+    - [`\h` 和 `\H`](#h-%E5%92%8C-h)
+    - [`\v` 和 `\V`](#v-%E5%92%8C-v)
+    - [`\s` 和 `\S`](#s-%E5%92%8C-s)
+    - [`\d` 和 `\D`](#d-%E5%92%8C-d)
+    - [`\w` 和 `\W`](#w-%E5%92%8C-w)
+  - [预定义的字符串类 / Predefined character classes](#%E9%A2%84%E5%AE%9A%E4%B9%89%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%B1%BB--predefined-character-classes)
+  - [Unicode 属性 / Unicode properties](#unicode-%E5%B1%9E%E6%80%A7--unicode-properties)
+  - [枚举字符类和范围 / Enumerated character classes and ranges](#%E6%9E%9A%E4%B8%BE%E5%AD%97%E7%AC%A6%E7%B1%BB%E5%92%8C%E8%8C%83%E5%9B%B4--enumerated-character-classes-and-ranges)
+- [量词 / Quantifiers](#%E9%87%8F%E8%AF%8D--quantifiers)
+  - [一个或多个: `+` / One or more: `+`](#%E4%B8%80%E4%B8%AA%E6%88%96%E5%A4%9A%E4%B8%AA---one-or-more-)
+  - [零个或多个: `*` / Zero or more: `*`](#%E9%9B%B6%E4%B8%AA%E6%88%96%E5%A4%9A%E4%B8%AA---zero-or-more-)
+  - [零个或一个: `?` / Zero or one: `?`](#%E9%9B%B6%E4%B8%AA%E6%88%96%E4%B8%80%E4%B8%AA---zero-or-one-)
+  - [通用量词: `** min..max` / General quantifier: `** min..max`](#%E9%80%9A%E7%94%A8%E9%87%8F%E8%AF%8D--minmax--general-quantifier--minmax)
+  - [分隔修饰的量词：`%`, `%%` / Modified quantifier: `%`, `%%`](#%E5%88%86%E9%9A%94%E4%BF%AE%E9%A5%B0%E7%9A%84%E9%87%8F%E8%AF%8D%EF%BC%9A%25-%25%25--modified-quantifier-%25-%25%25)
+  - [阻止回溯: `:` / Preventing backtracking: `:`](#%E9%98%BB%E6%AD%A2%E5%9B%9E%E6%BA%AF---preventing-backtracking-)
+  - [贪婪与节俭量词： `?` / Greedy versus frugal quantifiers: `?`](#%E8%B4%AA%E5%A9%AA%E4%B8%8E%E8%8A%82%E4%BF%AD%E9%87%8F%E8%AF%8D%EF%BC%9A---greedy-versus-frugal-quantifiers-)
+- [备选项: `||` / Alternation: `||`](#%E5%A4%87%E9%80%89%E9%A1%B9-%7C%7C--alternation-%7C%7C)
+- [最长的备选项： `|` / Longest alternation: `|`](#%E6%9C%80%E9%95%BF%E7%9A%84%E5%A4%87%E9%80%89%E9%A1%B9%EF%BC%9A-%7C--longest-alternation-%7C)
+  - [引用的列表是 LTM 匹配项 / Quoted lists are LTM matches](#%E5%BC%95%E7%94%A8%E7%9A%84%E5%88%97%E8%A1%A8%E6%98%AF-ltm-%E5%8C%B9%E9%85%8D%E9%A1%B9--quoted-lists-are-ltm-matches)
+- [连接： `&&` / Conjunction: `&&`](#%E8%BF%9E%E6%8E%A5%EF%BC%9A---conjunction-)
+- [连接： `&` / Conjunction: `&`](#%E8%BF%9E%E6%8E%A5%EF%BC%9A---conjunction--1)
+- [定位符 / Anchors](#%E5%AE%9A%E4%BD%8D%E7%AC%A6--anchors)
+  - [字符串开始和结束 / Start of string and end of string](#%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%BC%80%E5%A7%8B%E5%92%8C%E7%BB%93%E6%9D%9F--start-of-string-and-end-of-string)
+  - [行开始和结束 / Start of line and end of line](#%E8%A1%8C%E5%BC%80%E5%A7%8B%E5%92%8C%E7%BB%93%E6%9D%9F--start-of-line-and-end-of-line)
+  - [词边界 / Word boundary](#%E8%AF%8D%E8%BE%B9%E7%95%8C--word-boundary)
+  - [左右词边界 / Left and right word boundary](#%E5%B7%A6%E5%8F%B3%E8%AF%8D%E8%BE%B9%E7%95%8C--left-and-right-word-boundary)
+  - [定位符概述 / Summary of anchors](#%E5%AE%9A%E4%BD%8D%E7%AC%A6%E6%A6%82%E8%BF%B0--summary-of-anchors)
+- [零宽度断言 / Zero-width assertions](#%E9%9B%B6%E5%AE%BD%E5%BA%A6%E6%96%AD%E8%A8%80--zero-width-assertions)
+  - [向前看断言 / Lookahead assertions](#%E5%90%91%E5%89%8D%E7%9C%8B%E6%96%AD%E8%A8%80--lookahead-assertions)
+  - [向后看断言 / Lookbehind assertions](#%E5%90%91%E5%90%8E%E7%9C%8B%E6%96%AD%E8%A8%80--lookbehind-assertions)
+- [分组与捕获 / Grouping and capturing](#%E5%88%86%E7%BB%84%E4%B8%8E%E6%8D%95%E8%8E%B7--grouping-and-capturing)
+  - [捕获 / Capturing](#%E6%8D%95%E8%8E%B7--capturing)
+  - [非捕获分组 / Non-capturing grouping](#%E9%9D%9E%E6%8D%95%E8%8E%B7%E5%88%86%E7%BB%84--non-capturing-grouping)
+  - [匹配数 / Capture numbers](#%E5%8C%B9%E9%85%8D%E6%95%B0--capture-numbers)
+  - [命名捕获 / Named captures](#%E5%91%BD%E5%90%8D%E6%8D%95%E8%8E%B7--named-captures)
+  - [捕获标识符： `` / Capture markers: ``](#%E6%8D%95%E8%8E%B7%E6%A0%87%E8%AF%86%E7%AC%A6%EF%BC%9A--capture-markers-)
+- [替换 / Substitution](#%E6%9B%BF%E6%8D%A2--substitution)
+  - [词法约定 / Lexical conventions](#%E8%AF%8D%E6%B3%95%E7%BA%A6%E5%AE%9A--lexical-conventions-1)
+  - [替换字符串文字 / Replacing string literals](#%E6%9B%BF%E6%8D%A2%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%96%87%E5%AD%97--replacing-string-literals)
+  - [通配符和字符类 / Wildcards and character classes](#%E9%80%9A%E9%85%8D%E7%AC%A6%E5%92%8C%E5%AD%97%E7%AC%A6%E7%B1%BB--wildcards-and-character-classes)
+  - [捕获分组 / Capturing groups](#%E6%8D%95%E8%8E%B7%E5%88%86%E7%BB%84--capturing-groups)
+  - [常用副词 / Common adverbs](#%E5%B8%B8%E7%94%A8%E5%89%AF%E8%AF%8D--common-adverbs)
+- [嵌套结构的波浪符号 / Tilde for nesting structures](#%E5%B5%8C%E5%A5%97%E7%BB%93%E6%9E%84%E7%9A%84%E6%B3%A2%E6%B5%AA%E7%AC%A6%E5%8F%B7--tilde-for-nesting-structures)
+- [子规则 / Subrules](#%E5%AD%90%E8%A7%84%E5%88%99--subrules)
+- [正则插值 / Regex interpolation](#%E6%AD%A3%E5%88%99%E6%8F%92%E5%80%BC--regex-interpolation)
+  - [正则布尔条件检查 / Regex boolean condition check](#%E6%AD%A3%E5%88%99%E5%B8%83%E5%B0%94%E6%9D%A1%E4%BB%B6%E6%A3%80%E6%9F%A5--regex-boolean-condition-check)
+- [副词 / Adverbs](#%E5%89%AF%E8%AF%8D--adverbs)
+  - [正则副词 / Regex adverbs](#%E6%AD%A3%E5%88%99%E5%89%AF%E8%AF%8D--regex-adverbs)
+    - [忽略标记 / Ignoremark](#%E5%BF%BD%E7%95%A5%E6%A0%87%E8%AE%B0--ignoremark)
+    - [棘轮 / Ratchet](#%E6%A3%98%E8%BD%AE--ratchet)
+    - [空格信号 / Sigspace](#%E7%A9%BA%E6%A0%BC%E4%BF%A1%E5%8F%B7--sigspace)
+    - [兼容 Perl 5 正则副词 / Perl 5 compatibility adverb](#%E5%85%BC%E5%AE%B9-perl-5-%E6%AD%A3%E5%88%99%E5%89%AF%E8%AF%8D--perl-5-compatibility-adverb)
+  - [匹配副词 / Matching adverbs](#%E5%8C%B9%E9%85%8D%E5%89%AF%E8%AF%8D--matching-adverbs)
+    - [位置副词 / Positional adverbs](#%E4%BD%8D%E7%BD%AE%E5%89%AF%E8%AF%8D--positional-adverbs)
+    - [Continue](#continue)
+    - [穷举 / Exhaustive](#%E7%A9%B7%E4%B8%BE--exhaustive)
+    - [全局搜索 / Global](#%E5%85%A8%E5%B1%80%E6%90%9C%E7%B4%A2--global)
+    - [Pos](#pos)
+    - [重叠 / Overlap](#%E9%87%8D%E5%8F%A0--overlap)
+  - [替换副词 / Substitution adverbs](#%E6%9B%BF%E6%8D%A2%E5%89%AF%E8%AF%8D--substitution-adverbs)
+    - [Samecase](#samecase)
+    - [Samemark](#samemark)
+    - [Samespace](#samespace)
+- [回溯 / Backtracking](#%E5%9B%9E%E6%BA%AF--backtracking)
+- [`$/`在每次匹配正则表达式时更改 / `$/` changes each time a regular expression is matched](#%24%E5%9C%A8%E6%AF%8F%E6%AC%A1%E5%8C%B9%E9%85%8D%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%97%B6%E6%9B%B4%E6%94%B9--%24-changes-each-time-a-regular-expression-is-matched)
+- [最佳实践和成功案例 / Best practices and gotchas](#%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E5%92%8C%E6%88%90%E5%8A%9F%E6%A1%88%E4%BE%8B--best-practices-and-gotchas)
+
+<!-- /MarkdownTOC -->
+
+
+<a id="%E8%AF%8D%E6%B3%95%E7%BA%A6%E5%AE%9A--lexical-conventions"></a>
 # 词法约定 / Lexical conventions
 
 Perl 6 编写正则有特殊的语法：
@@ -58,6 +138,7 @@ Comments work within a regular expression:
 / word #`(match lexical "word") / 
 ```
 
+<a id="%E5%AD%97%E9%9D%A2%E9%87%8F--literals"></a>
 # 字面量 / Literals
 
 正则最简单的情况是匹配一个字符串字面量：
@@ -98,6 +179,7 @@ if 'Life, the Universe and Everything' ~~ / and / {
 
 Match results are stored in the `$/` variable and are also returned from the match. The result is of type [Match](https://docs.perl6.org/type/Match) if the match was successful; otherwise it is [Nil](https://docs.perl6.org/type/Nil).
 
+<a id="%E9%80%9A%E9%85%8D%E7%AC%A6--wildcards"></a>
 # 通配符 / Wildcards
 
 在正则中未转义的 `.` 匹配任一字符。
@@ -144,20 +226,24 @@ say $text ~~ / .* /;
 # OUTPUT «｢Although I am a␤multi-line text,␤now can be matched␤with /.*/␤｣» 
 ```
 
+<a id="%E5%AD%97%E7%AC%A6%E7%B1%BB--character-classes"></a>
 # 字符类 / Character classes
 
+<a id="%E5%B8%A6%E5%8F%8D%E6%96%9C%E6%9D%A0%E7%9A%84%E5%AD%97%E7%AC%A6%E7%B1%BB--backslashed-character-classes"></a>
 ## 带反斜杠的字符类 / Backslashed character classes
 
 存在类似 `\w` 形式的字符类。其否定为大写形式字符 `\W`。
 
 There are predefined character classes of the form `\w`. Its negation is written with an upper-case letter, `\W`.
 
+<a id="n-%E5%92%8C-n"></a>
 ### `\n` 和 `\N`
 
 `\n` matches a single, logical newline character. `\N` matches a single character that's not a logical newline.
 
 What is considered as a single newline character is defined via the compile time variable [`$?NL`](https://docs.perl6.org/language/variables#index-entry-%24%3FNL), and the [newline pragma](https://docs.perl6.org/language/pragmas); therefore, `\n` is supposed to be able to match either a Unix-like newline `"\n"`, a Microsoft Windows style one `"\r\n"`, or one in the Mac style `"\r"`.
 
+<a id="t-%E5%92%8C-t"></a>
 ### `\t` 和 `\T`
 
 `\t` 匹配一个制表符 `U+0009`。`\T` 匹配一个非制表符的字符。
@@ -168,6 +254,7 @@ What is considered as a single newline character is defined via the compile time
 
 Note that exotic tabs like the `U+000B VERTICAL TABULATION` character are not included here.
 
+<a id="h-%E5%92%8C-h"></a>
 ### `\h` 和 `\H`
 
 `\h` 匹配一个水平空白符。`\H`匹配一个非水平空白符的字符。
@@ -189,6 +276,7 @@ U+2001 EM QUAD
 
 Vertical whitespace such as newline characters are explicitly excluded; those can be matched with `\v`; `\s` matches any kind of whitespace.
 
+<a id="v-%E5%92%8C-v"></a>
 ### `\v` 和 `\V`
 
 `\v` 匹配单个垂直空白符字符。`\V` 匹配非垂直空白符字符。
@@ -213,6 +301,7 @@ U+2029 PARAGRAPH SEPARATOR
 
 Use `\s` to match any kind of whitespace, not just vertical whitespace.
 
+<a id="s-%E5%92%8C-s"></a>
 ### `\s` 和 `\S`
 
 `\s` matches a single whitespace character. `\S` matches a single character that is not whitespace.
@@ -222,6 +311,7 @@ say $/.prematch if 'Match the first word.' ~~ / \s+ /;
 # OUTPUT: «Match␤» 
 ```
 
+<a id="d-%E5%92%8C-d"></a>
 ### `\d` 和 `\D`
 
 `\d` 匹配单个数字（Unicode 属性 `N`）而 `\D` 匹配单个非数字的字符。
@@ -248,6 +338,7 @@ U+0E53 ๓ THAI DIGIT THREE
 U+17E5 ៥ KHMER DIGIT FIVE
 ```
 
+<a id="w-%E5%92%8C-w"></a>
 ### `\w` 和 `\W`
 
 `\w` 匹配单个单词字符，例如：一个字母（Unicode 类别 L），一个数字或者一个下划线。`\W` 匹配一个非单词字符的字符
@@ -266,6 +357,7 @@ Examples of word characters:
 0409 Љ CYRILLIC CAPITAL LETTER LJE
 ```
 
+<a id="%E9%A2%84%E5%AE%9A%E4%B9%89%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%B1%BB--predefined-character-classes"></a>
 ## 预定义的字符串类 / Predefined character classes
 
 | Class    | Shorthand | Description                                       |
@@ -292,6 +384,7 @@ Examples of word characters:
 
 Note that the character classes `<same>`, `<wb>` and `<ww>` are so called zero-width assertions, which do not really match a character.
 
+<a id="unicode-%E5%B1%9E%E6%80%A7--unicode-properties"></a>
 ## Unicode 属性 / Unicode properties
 
 到目前为止提到的字符类大多是为了方便；另一种方法是使用 Unicode 字符属性。他们是以 `<:property>` 的形式出现，其中 `property` 可以是一个短的或者长的 Unicode 通用类别名。他们使用键值对语法。
@@ -383,6 +476,7 @@ It's also possible to group categories and sets of categories with parentheses; 
 say $0 if 'perl6' ~~ /\w+(<:Ll+:N>)/ # OUTPUT: «｢6｣␤» 
 ```
 
+<a id="%E6%9E%9A%E4%B8%BE%E5%AD%97%E7%AC%A6%E7%B1%BB%E5%92%8C%E8%8C%83%E5%9B%B4--enumerated-character-classes-and-ranges"></a>
 ## 枚举字符类和范围 / Enumerated character classes and ranges
 
 有时，现有的通配符和字符类是不够的。幸运的是，定义自己的也较简单。你可以在 `<[ ]>` 中放置任意数量的字符和字符范围（在端点之间用两个点表示），可以有空格。
@@ -453,6 +547,7 @@ Just as you can use the `-` for both set difference and negation of a single val
 / <+[123]> /  # same as <[123]> 
 ```
 
+<a id="%E9%87%8F%E8%AF%8D--quantifiers"></a>
 # 量词 / Quantifiers
 
 量词使前面的元素匹配可变的次数。例如，`a+` 匹配一个或多个 `a` 字符。
@@ -463,6 +558,7 @@ A quantifier makes the preceding atom match a variable number of times. For exam
 
 Quantifiers bind tighter than concatenation, so `ab+` matches one `a` followed by one or more `b`s. This is different for quotes, so `'ab'+` matches the strings `ab`, `abab`, `ababab` etc.
 
+<a id="%E4%B8%80%E4%B8%AA%E6%88%96%E5%A4%9A%E4%B8%AA---one-or-more-"></a>
 ## 一个或多个: `+` / One or more: `+`
 
 `+` 量词使前面的元素匹配一次或多次，没有上限。
@@ -477,6 +573,7 @@ For example, to match strings of the form `key=value`, you can write a regex lik
 / \w+ '=' \w+ /
 ```
 
+<a id="%E9%9B%B6%E4%B8%AA%E6%88%96%E5%A4%9A%E4%B8%AA---zero-or-more-"></a>
 ## 零个或多个: `*` / Zero or more: `*`
 
 `*` 量词使前面的元素匹配零次或者多次，没有上限。
@@ -491,6 +588,7 @@ For example, to allow optional whitespace between `a` and `b` you can write:
 / a \s* b /
 ```
 
+<a id="%E9%9B%B6%E4%B8%AA%E6%88%96%E4%B8%80%E4%B8%AA---zero-or-one-"></a>
 ## 零个或一个: `?` / Zero or one: `?`
 
 `?` 量词使前面的元素匹配量词或者一次。
@@ -505,6 +603,7 @@ For example, to match `dog` or `dogs`, you can write:
 / dogs? /
 ```
 
+<a id="%E9%80%9A%E7%94%A8%E9%87%8F%E8%AF%8D--minmax--general-quantifier--minmax"></a>
 ## 通用量词: `** min..max` / General quantifier: `** min..max`
 
 要对一个元素进行任意次数的量化，请使用 `**` 量词，该量词在其右侧接受一个 [Int](https://docs.perl6.org/type/Int) 或 [Range](https://docs.perl6.org/type/Range)。如果指定了 [Range](https://docs.perl6.org/type/Range)，则两个端点指定要匹配的最小和最大次数。
@@ -567,13 +666,14 @@ If then, the resultant value is `Inf` or `NaN` or the resultant [Range](https://
     # OUTPUT: «(X::Syntax::Regex::QuantifierValue True)␤» 
 ```
 
-## 修改过的量词：`%`, `%%` / Modified quantifier: `%`, `%%`
+<a id="%E5%88%86%E9%9A%94%E4%BF%AE%E9%A5%B0%E7%9A%84%E9%87%8F%E8%AF%8D%EF%BC%9A%25-%25%25--modified-quantifier-%25-%25%25"></a>
+## 分隔修饰的量词：`%`, `%%` / Modified quantifier: `%`, `%%`
 
 为了更容易地匹配逗号分割那样的值, 你可以在以上任何一个量词后面加上一个 `%` 修饰符以指定某个修饰符必须出现在每一次匹配之间。例如, `a+ % ','` 会匹配 `a` 、`a,a` 或 `a,a,a` 等等。如果还要匹配末尾的分隔符（ `a,` 或者 `a,a,` ）, 那么使用 %% 代替 %。
 
 To more easily match things like comma separated values, you can tack on a `%` modifier to any of the above quantifiers to specify a separator that must occur between each of the matches. For example, `a+ % ','` will match `a` or `a,a` or `a,a,a`, etc. To also match trailing delimiters ( `a,` or `a,a,` ), you can use `%%` instead of `%`.
 
-量词与 `%` 交互，并控制可以成功匹配的总重复次数，因此 `a* % ','` 也与空字符串匹配。如果想要匹配用逗号分隔的词，需要嵌套一个普通量词和一个修改过的量词：
+量词与 `%` 交互，并控制可以成功匹配的总重复次数，因此 `a* % ','` 也与空字符串匹配。如果想要匹配用逗号分隔的词，需要嵌套一个普通量词和一个分隔修饰量词：
 
 The quantifier interacts with `%` and controls the number of overall repetitions that can match successfully, so `a* % ','` also matches the empty string. If you want match words delimited by commas, you might need to nest an ordinary and a modified quantifier:
 
@@ -582,6 +682,7 @@ say so 'abc,def' ~~ / ^ [\w+] ** 1 % ',' $ /;  # Output: «False»
 say so 'abc,def' ~~ / ^ [\w+] ** 2 % ',' $ /;  # Output: «True» 
 ```
 
+<a id="%E9%98%BB%E6%AD%A2%E5%9B%9E%E6%BA%AF---preventing-backtracking-"></a>
 ## 阻止回溯: `:` / Preventing backtracking: `:`
 
 你可以在正则表达式中通过为量词附加一个 `:` 修饰符来阻止回溯:
@@ -633,6 +734,7 @@ say  m:g/[(\w+:) \s*]+ (\w+) $$/;
 
 Without the `:` following `\w+`, the *ID* part captured would have been simply `T`, since the pattern would go ahead and match everything, leaving a single letter to match the `\w+` expression at the end of the line.
 
+<a id="%E8%B4%AA%E5%A9%AA%E4%B8%8E%E8%8A%82%E4%BF%AD%E9%87%8F%E8%AF%8D%EF%BC%9A---greedy-versus-frugal-quantifiers-"></a>
 ## 贪婪与节俭量词： `?` / Greedy versus frugal quantifiers: `?`
 
 默认情况下，量词是贪婪的：
@@ -664,6 +766,7 @@ say '/foo/o/bar/' ~~ /\/.**!{1..10}\//;  # OUTPUT: «｢/foo/o/bar/｣␤»
 
 Greedy matching can be explicitly requested with the `!` modifier.
 
+<a id="%E5%A4%87%E9%80%89%E9%A1%B9-%7C%7C--alternation-%7C%7C"></a>
 # 备选项: `||` / Alternation: `||`
 
 匹配多个可能的备选项中的一个，将他们用 `||` 分隔；第一个匹配上的备选项胜出。
@@ -706,6 +809,7 @@ An empty string as the first branch is ignored, to allow you to format branches 
 
 Even in non-backtracking contexts, the alternation operator `||` tries all the branches in order until the first one matches.
 
+<a id="%E6%9C%80%E9%95%BF%E7%9A%84%E5%A4%87%E9%80%89%E9%A1%B9%EF%BC%9A-%7C--longest-alternation-%7C"></a>
 # 最长的备选项： `|` / Longest alternation: `|`
 
 简而言之，在用 `|` 分隔的正则分支中，最长的 token 匹配获胜，与正则中的文本顺序无关。然而，`|` 真正做的不止这些。它不决定哪个分支在完成整个匹配后获胜，而是遵循[最长令牌匹配（LTM）策略](https://design.perl6.org/S05.html#Longest-token_matching)。
@@ -759,6 +863,7 @@ If the tie breaker above doesn't work, then the textually earlier alternative ta
 
 For more details, see [the LTM strategy](https://design.perl6.org/S05.html#Longest-token_matching).
 
+<a id="%E5%BC%95%E7%94%A8%E7%9A%84%E5%88%97%E8%A1%A8%E6%98%AF-ltm-%E5%8C%B9%E9%85%8D%E9%A1%B9--quoted-lists-are-ltm-matches"></a>
 ## 引用的列表是 LTM 匹配项 / Quoted lists are LTM matches
 
 在正则中使用引用列表等同于指定列表元素的最长匹配备选项。因此，以下匹配：
@@ -807,6 +912,7 @@ say 'food' ~~ /@increasingly-edible/;   # OUTPUT: «｢food｣␤»
 
 This is documented further under [Regex Interpolation](https://docs.perl6.org/language/regexes#Regex_interpolation), below.
 
+<a id="%E8%BF%9E%E6%8E%A5%EF%BC%9A---conjunction-"></a>
 # 连接： `&&` / Conjunction: `&&`
 
 如果所有以 `&&` 分隔的段与目标字符串的相同子字符串匹配，则成功匹配。这些段从左到右进行计算。
@@ -832,6 +938,7 @@ say 'abc' ~~ / <?before a> .. /;      # OUTPUT: «｢ab｣␤»
 
 Just like with `||`, empty first branches are ignored.
 
+<a id="%E8%BF%9E%E6%8E%A5%EF%BC%9A---conjunction--1"></a>
 # 连接： `&` / Conjunction: `&`
 
 就像正则中的 `&&`，如果所有以 `&` 分隔的段与目标字符串的同一部分匹配，则成功匹配。
@@ -846,12 +953,14 @@ Much like `&&` in a regex, it matches successfully if all segments separated by 
 
 Just like with `||` and `&`, empty first branches are ignored.
 
+<a id="%E5%AE%9A%E4%BD%8D%E7%AC%A6--anchors"></a>
 # 定位符 / Anchors
 
 正则表达式在整个字符串中搜索匹配项。有时候这不是你想要的。定位符只在字符串中的特定位置匹配，因此将正则匹配定位到该位置。
 
 Regexes search an entire string for matches. Sometimes this is not what you want. Anchors match only at certain positions in the string, thereby anchoring the regex match to that position.
 
+<a id="%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%BC%80%E5%A7%8B%E5%92%8C%E7%BB%93%E6%9D%9F--start-of-string-and-end-of-string"></a>
 ## 字符串开始和结束 / Start of string and end of string
 
 `^` 定位符只匹配字符串的开头：
@@ -911,6 +1020,7 @@ say so $str ~~ /^Keep   /;   # OUTPUT: «True␤»
 say so $str ~~ /^and    /;   # OUTPUT: «False␤» 
 ```
 
+<a id="%E8%A1%8C%E5%BC%80%E5%A7%8B%E5%92%8C%E7%BB%93%E6%9D%9F--start-of-line-and-end-of-line"></a>
 ## 行开始和结束 / Start of line and end of line
 
 `^^` 定位符在逻辑行的开头匹配。也就是说，要么在字符串的开头，要么在换行符之后。但是，它在字符串末尾不匹配，即使它以换行符结尾。 
@@ -956,6 +1066,7 @@ say so $str ~~ / scan $$/;        # OUTPUT: «False␤»
 say so $str ~~ / '."' $$/;        # OUTPUT: «True␤» 
 ```
 
+<a id="%E8%AF%8D%E8%BE%B9%E7%95%8C--word-boundary"></a>
 ## 词边界 / Word boundary
 
 要匹配任何单词边界，请使用 `<|w>` 或 `<?wb>` 这在其他语言中类似于 `\b`。要匹配相反的字符，任何不绑定单词的字符，请使用 `<!|w>` 或 `<!wb>`。这在其他语言中类似于 `\B`。
@@ -971,6 +1082,7 @@ say "two-words" ~~ / two<|w>\-<|w>words /;    # OUTPUT: «｢two-words｣␤»
 say "twowords" ~~ / two<!|w><!|w>words /;     # OUTPUT: «｢twowords｣» 
 ```
 
+<a id="%E5%B7%A6%E5%8F%B3%E8%AF%8D%E8%BE%B9%E7%95%8C--left-and-right-word-boundary"></a>
 ## 左右词边界 / Left and right word boundary
 
 `<<` 匹配左侧的词边界。它匹配左边的一个非单词字符，或者字符串开头，右边有一个单词字符的位置。
@@ -1018,6 +1130,7 @@ say "stuff here!!!".subst(:g, /<</, '|');   # OUTPUT: «|stuff |here!!!␤»
 say "stuff here!!!".subst(:g, /<|w>/, '|'); # OUTPUT: «|stuff| |here|!!!␤» 
 ```
 
+<a id="%E5%AE%9A%E4%BD%8D%E7%AC%A6%E6%A6%82%E8%BF%B0--summary-of-anchors"></a>
 ## 定位符概述 / Summary of anchors
 
 定位符是零宽度正则元素。因此，它们不使用输入字符串的字符，也就是说，正则引擎尝试匹配的当前位置不会前进。一个好的心理模型是，它们匹配的位置在字符串的两个字符之间，或者在输入字符串的第一个字符之前，或者在最后一个字符之后。
@@ -1037,6 +1150,7 @@ Anchors are zero-width regex elements. Hence they do not use up a character of t
 | ^       | Start of string     | "⏏two\nlines"        |
 | ^^      | Start of line       | "⏏two\n⏏lines"       |
 
+<a id="%E9%9B%B6%E5%AE%BD%E5%BA%A6%E6%96%AD%E8%A8%80--zero-width-assertions"></a>
 # 零宽度断言 / Zero-width assertions
 
  零宽度断言可以帮助你实施自己的定位符。
@@ -1051,6 +1165,7 @@ A zero-width assertion turns another regex into an anchor, making them consume n
 
 Technically, anchors are also zero-width assertions, and they can look both ahead and behind.
 
+<a id="%E5%90%91%E5%89%8D%E7%9C%8B%E6%96%AD%E8%A8%80--lookahead-assertions"></a>
 ## 向前看断言 / Lookahead assertions
 
 要检查某个模式是否出现在另一个模式之前，请通过 `before` 断言使用向前看断言。其形式如下：
@@ -1119,6 +1234,7 @@ say $_;         # OUTPUT: Please buy 2 packs of sugar, 5 kg each
 
 Since the lookahead is not part of the match object, the unit is not substituted.
 
+<a id="%E5%90%91%E5%90%8E%E7%9C%8B%E6%96%AD%E8%A8%80--lookbehind-assertions"></a>
 ## 向后看断言 / Lookbehind assertions
 
 要检查模式是否出现在另一个模式之后，请通过 `after` 断言使用向后看断言。其格式如下：
@@ -1174,6 +1290,7 @@ say "atfoobar" ~~ / (.**3) .**2 <?after foo> bar /;
 
 where we capture the first 3 of the 5 characters before bar, but only if `bar` is preceded by `foo`. The fact that the assertion is zero-width allows us to use part of the characters in the assertion for capture.
 
+<a id="%E5%88%86%E7%BB%84%E4%B8%8E%E6%8D%95%E8%8E%B7--grouping-and-capturing"></a>
 # 分组与捕获 / Grouping and capturing
 
 在常规（非正则）Perl 6 中，可以使用括号将事物分组在一起，通常是为了覆盖运算符优先级：
@@ -1208,6 +1325,7 @@ The same grouping applies to quantifiers:
 
 An unquantified capture produces a [Match](https://docs.perl6.org/type/Match) object. When a capture is quantified (except with the `?` quantifier) the capture becomes a list of [Match](https://docs.perl6.org/type/Match) objects instead.
 
+<a id="%E6%8D%95%E8%8E%B7--capturing"></a>
 ## 捕获 / Capturing
 
 圆括号不只是分组，它们还*捕获*；也就是说，它们使组内匹配的字符串可用作变量，也可用作结果 [Match](https://docs.perl6.org/type/Match) 对象的元素：
@@ -1247,6 +1365,7 @@ if 'abc' ~~ /(a) b (c)/ {
 }
 ```
 
+<a id="%E9%9D%9E%E6%8D%95%E8%8E%B7%E5%88%86%E7%BB%84--non-capturing-grouping"></a>
 ## 非捕获分组 / Non-capturing grouping
 
 正则中的括号执行双重角色：它们将正则元素分组在内部，并捕获与内部子正则匹配的元素。
@@ -1275,6 +1394,7 @@ If you do not need the captures, using non-capturing `[ ... ]` groups provides t
 - they make it easier to count the capturing groups that do mean;
 - they make matching a bit faster.
 
+<a id="%E5%8C%B9%E9%85%8D%E6%95%B0--capture-numbers"></a>
 ## 匹配数 / Capture numbers
 
 如上所述，捕获从左到右进行编号。虽然原则上是正确的，但这也过于简单化了。
@@ -1409,6 +1529,7 @@ say $HasOur::our;                  # OUTPUT: «Þor␤»
 
 Once the parsing has been done successfully, we use the FQN name of the `$our` variable to access its value, that can be none other than `Þor`.
 
+<a id="%E5%91%BD%E5%90%8D%E6%8D%95%E8%8E%B7--named-captures"></a>
 ## 命名捕获 / Named captures
 
 你也可以给捕获命名，而不是给它们编号。通用的、稍微冗长的命名捕获方法如下：
@@ -1467,6 +1588,7 @@ if 'count=23' ~~ / $<variable>=\w+ '=' $<value>=\w+ / {
 
 A more convenient way to get named captures is by using named regex as discussed in the [Subrules](https://docs.perl6.org/language/regexes#Subrules) section.
 
+<a id="%E6%8D%95%E8%8E%B7%E6%A0%87%E8%AF%86%E7%AC%A6%EF%BC%9A--capture-markers-"></a>
 ## 捕获标识符： `<( )>` / Capture markers: `<( )>`
 
 `<(` 标记表示匹配的整体捕获的开始，而相应的 `)>` 标记表示结束点。`<(` 类似于其他语言的 \K，用于放弃在 `\K` 之前找到的所有匹配项。
@@ -1482,6 +1604,7 @@ say 'abc' ~~ / <(a <( b )> c)>/;        # OUTPUT: «｢bc｣␤»
 
 As in the example above, you can see `<(` sets the start point and `)>` sets the endpoint; since they are actually independent of each other, the inner-most start point wins (the one attached to `b`) and the outer-most end wins (the one attached to `c`).
 
+<a id="%E6%9B%BF%E6%8D%A2--substitution"></a>
 # 替换 / Substitution
 
 正则表达式也可用于用一段文本替换另一段文本。可以将其用于任何内容，从更正拼写错误（例如，将 'Perl Jam' 替换为 'Pearl Jam'），到将 ISO8601 日期从 `yyyy-mm-ddThh:mm:ssZ` 重新格式化为 `mm-dd-yy h:m {AM,PM}`。
@@ -1492,6 +1615,7 @@ Regular expressions can also be used to substitute one piece of text for another
 
 Just like the search-and-replace editor's dialog box, the `s/ / /` operator has two sides, a left and right side. The left side is where your matching expression goes, and the right side is what you want to replace it with.
 
+<a id="%E8%AF%8D%E6%B3%95%E7%BA%A6%E5%AE%9A--lexical-conventions-1"></a>
 ## 词法约定 / Lexical conventions
 
 替换的编写方式与匹配类似，但替换运算符同时具有要匹配的正则区域和要替换的文本：
@@ -1539,6 +1663,7 @@ s:g[ \d+ ] =  2 * $/;
 
 Like the `m//` operator, whitespace is ignored in the regex part of a substitution. Comments, as in Perl 6 in general, start with the hash character `#` and go to the end of the current line.
 
+<a id="%E6%9B%BF%E6%8D%A2%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%96%87%E5%AD%97--replacing-string-literals"></a>
 ## 替换字符串文字 / Replacing string literals
 
 最简单的替换是字符串文字。要替换的字符串位于替换运算符的左侧，要替换的字符串位于右侧；例如：
@@ -1575,6 +1700,7 @@ s/tw/on/;                     # replace 'tw' with 'on' once
 .say;                         # OUTPUT: «There can be only two␤» 
 ```
 
+<a id="%E9%80%9A%E9%85%8D%E7%AC%A6%E5%92%8C%E5%AD%97%E7%AC%A6%E7%B1%BB--wildcards-and-character-classes"></a>
 ## 通配符和字符类 / Wildcards and character classes
 
 任何可以进入 `m//` 运算符的内容都可以进入替换运算符的左侧，包括通配符和字符类。当要匹配的文本不是静态的，例如尝试匹配字符串中间的数字，这很方便：
@@ -1589,6 +1715,7 @@ s/\d+/7/;         # replace any sequence of digits with '7'
 
 Of course, you can use any of the `+`, `*` and `?` modifiers, and they'll behave just as they would in the `m//` operator's context.
 
+<a id="%E6%8D%95%E8%8E%B7%E5%88%86%E7%BB%84--capturing-groups"></a>
 ## 捕获分组 / Capturing groups
 
 正如在匹配操作符中一样，左侧允许捕获组，匹配的内容填充了 `$0`..`$n` 变量和 `$/` 对象：
@@ -1603,7 +1730,7 @@ s/ (\d+)\-(\d+)\-(\d+) /today/;   # replace YYYY-MM-DD with 'today'
 "$/[1]-$/[2]-$/[0]".say;          # OUTPUT: «01-23-2016␤» 
 ```
 
-变量 `$0`、`$1`、`$/` 中的任何一个也可以在运算符的右侧使用，这样就可以操纵刚刚匹配的内容。通过这种方式，您可以将日期的`YYYY`、`MM` 和 `DD` 部分分开，并将它们重新格式化为 `MM-DD-YYYY` 顺序：
+变量 `$0`、`$1`、`$/` 中的任何一个也可以在运算符的右侧使用，这样就可以操纵刚刚匹配的内容。通过这种方式，你可以将日期的`YYYY`、`MM` 和 `DD` 部分分开，并将它们重新格式化为 `MM-DD-YYYY` 顺序：
 
 Any of these variables `$0`, `$1`, `$/` can be used on the right-hand side of the operator as well, so you can manipulate what you've just matched. This way you can separate out the `YYYY`, `MM` and `DD` parts of a date and reformat them into `MM-DD-YYYY`order:
 
@@ -1637,6 +1764,7 @@ s/(\d+)\:(\d+)/{$0 % 12}\:$1 {$0 < 12 ?? 'AM' !! 'PM'}/;
 
 Using the modulo `%` operator above keeps the sample code under 80 characters, but is otherwise the same as `$0 < 12 ?? $0 !! $0 - 12 `. When combined with the power of the Parser Expression Grammars that **really** underlies what you're seeing here, you can use "regular expressions" to parse pretty much any text out there.
 
+<a id="%E5%B8%B8%E7%94%A8%E5%89%AF%E8%AF%8D--common-adverbs"></a>
 ## 常用副词 / Common adverbs
 
 可以应用于正则表达式的副词的完整列表可以在本文档的其他地方可以找到（[节副词](https://docs.perl6.org/language/regexes#Adverbs)），但最常见的可能是 `:g` 和 `:i`。
@@ -1690,6 +1818,7 @@ These are just a few of the transformations you can apply with the substitution 
 
 As an aside, novices to regular expressions often get overwhelmed and think that their regular expression needs to match every piece of data in the line, including what they want to match. Write just enough to match the data you're looking for, no more, no less.
 
+<a id="%E5%B5%8C%E5%A5%97%E7%BB%93%E6%9E%84%E7%9A%84%E6%B3%A2%E6%B5%AA%E7%AC%A6%E5%8F%B7--tilde-for-nesting-structures"></a>
 # 嵌套结构的波浪符号 / Tilde for nesting structures
 
 `~` 运算符是一个帮助器，用于将嵌套子规则与特定终结符匹配为目标。它被设计成放置在一个开始和结束分隔符对之间，如下所示：
@@ -1757,6 +1886,7 @@ say $0; # OUTPUT: «｢c｣␤»
 say $1; # OUTPUT: «｢b｣␤» 
 ```
 
+<a id="%E5%AD%90%E8%A7%84%E5%88%99--subrules"></a>
 # 子规则 / Subrules
 
 就像可以将代码片段放入子例程一样，也可以将正则片段放入命名规则中。
@@ -1820,9 +1950,10 @@ say %config.perl;
 
 Named regexes can and should be grouped in [grammars](https://docs.perl6.org/language/grammars). A list of predefined subrules is listed in [S05-regex](https://design.perl6.org/S05.html#Predefined_Subrules) of design documents.
 
+<a id="%E6%AD%A3%E5%88%99%E6%8F%92%E5%80%BC--regex-interpolation"></a>
 # 正则插值 / Regex interpolation
 
-您可以使用变量保存该模式，而不是使用文本模式进行正则匹配。
+你可以使用变量保存该模式，而不是使用文本模式进行正则匹配。
 
 Instead of using a literal pattern for a regex match you can use a variable that holds that pattern.
 
@@ -1839,7 +1970,7 @@ say 'camelia' ~~ / $pattern /;             # OUTPUT: «｢camelia｣␤»
 
 If the variable to be interpolated is statically typed as a `Str` or `str` and only interpolated literally, then the compiler can optimize it and it runs much faster (like `$pattern` above ).
 
-有时您可能希望匹配正则中生成的字符串。这可以通过以下方式完成：
+有时你可能希望匹配正则中生成的字符串。这可以通过以下方式完成：
 
 Sometimes you may want to match a generated string in a regex. This can be done in the following way:
 
@@ -1892,6 +2023,7 @@ say ('b235' ~~ /  b @a /).Str;      # OUTPUT: «b23»
 
 The use of hashes in regexes is reserved.
 
+<a id="%E6%AD%A3%E5%88%99%E5%B8%83%E5%B0%94%E6%9D%A1%E4%BB%B6%E6%A3%80%E6%9F%A5--regex-boolean-condition-check"></a>
 ## 正则布尔条件检查 / Regex boolean condition check
 
 特殊运算符 `<?{}>` 允许对布尔表达式进行计算，该布尔表达式可以在正则表达式继续之前对匹配项执行语义计算。换句话说，可以在布尔上下文中检查正则表达式的一部分，从而使整个匹配无效（或允许其继续），即使从语法角度来看匹配成功。
@@ -1959,6 +2091,7 @@ $localhost ~~ / ^ <ipv4-octet> ** 4 % "." $ /;
 say $/<ipv4-octet>;   # OUTPUT: [｢127｣ ｢0｣ ｢0｣ ｢1｣] 
 ```
 
+<a id="%E5%89%AF%E8%AF%8D--adverbs"></a>
 # 副词 / Adverbs
 
 副词是一个或多个以冒号 `:` 开头的字母组合，用于修改正则的工作方式，并为某些类型的重复任务提供方便的快捷方式。
@@ -2002,6 +2135,7 @@ for 'baA'.match($regex, :overlap) -> $m {
 # OUTPUT: «ba␤aA␤» 
 ```
 
+<a id="%E6%AD%A3%E5%88%99%E5%89%AF%E8%AF%8D--regex-adverbs"></a>
 ## 正则副词 / Regex adverbs
 
 在正则声明时出现的副词是实际正则的一部分，并影响 Perl 6 编译器如何将正则转换为二进制代码。
@@ -2073,7 +2207,10 @@ When two adverbs are used together, they keep their colon at the front
 
 That implies that when there are two vowels together after a `:`, they correspond to the same adverb, as in `:ov` or `:P5`.
 
-### Ignoremark
+<a id="%E5%BF%BD%E7%95%A5%E6%A0%87%E8%AE%B0--ignoremark"></a>
+### 忽略标记 / Ignoremark
+
+`:ignoremark` 或 `:m` 副词指示正则引擎仅比较基本字符，并忽略其他标记，如组合重音：
 
 The `:ignoremark` or `:m` adverb instructs the regex engine to only compare base characters, and ignore additional marks such as combining accents:
 
@@ -2083,9 +2220,14 @@ say so 'a' ~~ rx:ignoremark /ä/;    # OUTPUT: «True»
 say so 'ỡ' ~~ rx:ignoremark /o/;    # OUTPUT: «True> 
 ```
 
-### Ratchet
+<a id="%E6%A3%98%E8%BD%AE--ratchet"></a>
+### 棘轮 / Ratchet
+
+`:ratchet` 或 `:r` 副词导致正则引擎无法回溯（请参阅[回溯](https://docs.perl6.org/language/regexes#Backtracking)）。助记符：一个[棘轮]（https://en.wikipedia.org/wiki/ratchet device%29）只能朝一个方向移动，不能后退。
 
 The `:ratchet` or `:r` adverb causes the regex engine to not backtrack (see [backtracking](https://docs.perl6.org/language/regexes#Backtracking)). Mnemonic: a [ratchet](https://en.wikipedia.org/wiki/Ratchet_%28device%29) only moves in one direction and can't backtrack.
+
+如果没有这个副词，正则表达式的某些部分将尝试不同的方法来匹配字符串，以便使正则表达式的其他部分能够匹配。例如，在 `'abc' ~~ /\w+ ./`，首先 `\w+` 会吃掉整个字符串 `abc`，然后 `.` 会失败。因此，`\w+` 放弃了一个字符，只匹配 `ab`，`.` 可以成功匹配字符串 `c`。放弃字符的过程（或者在交替的情况下，尝试不同的分支）称为回溯。
 
 Without this adverb, parts of a regex will try different ways to match a string in order to make it possible for other parts of the regex to match. For example, in `'abc' ~~ /\w+ ./`, the `\w+` first eats up the whole string, `abc` but then the `.` fails. Thus `\w+`gives up a character, matching only `ab`, and the `.` can successfully match the string `c`. This process of giving up characters (or in the case of alternations, trying a different branch) is known as backtracking.
 
@@ -2094,9 +2236,15 @@ say so 'abc' ~~ / \w+ . /;        # OUTPUT: «True␤»
 say so 'abc' ~~ / :r \w+ . /;     # OUTPUT: «False␤» 
 ```
 
+棘轮运动可以是一种优化，因为回溯成本很高。但更重要的是，它与人类如何解析文本密切相关。如果你有一个正则  `my regex identifier { \w+ }`  和 `my regex keyword { if | else | endif }`，那么如果下一个规则不成功，你会直观地期望 `identifier` 吞噬一个完整的单词，而不会让它放弃到下一个规则的结尾。
+
 Ratcheting can be an optimization, because backtracking is costly. But more importantly, it closely corresponds to how humans parse a text. If you have a regex `my regex identifier { \w+ }` and `my regex keyword { if | else | endif }`, you intuitively expect the `identifier` to gobble up a whole word and not have it give up its end to the next rule, if the next rule otherwise fails.
 
+例如，你不希望将单词 `motif` 解析为标识符 `mot`，后跟关键字 `if`。相反，你希望将 `motif` 解析为一个标识符；如果解析器随后希望有 `if`，那么最好是让它失败，而不是让它以你不希望的方式解析输入。
+
 For example, you don't expect the word `motif` to be parsed as the identifier `mot` followed by the keyword `if`. Instead, you expect `motif` to be parsed as one identifier; and if the parser expects an `if` afterwards, best that it should fail than have it parse the input in a way you don't expect.
+
+由于在解析器中棘轮行为通常是可取的，所以有一个声明棘轮正则的快捷方式：
 
 Since ratcheting behavior is often desirable in parsers, there's a shortcut to declaring a ratcheting regex:
 
@@ -2106,7 +2254,10 @@ my token thing { ... };
 my regex thing { :r ... };
 ```
 
-### Sigspace
+<a id="%E7%A9%BA%E6%A0%BC%E4%BF%A1%E5%8F%B7--sigspace"></a>
+### 空格信号 / Sigspace
+
+**:sigspace** 或者 **:s** 副词使空格变得重要。
 
 The **:sigspace** or **:s** adverb makes whitespace significant in a regex.
 
@@ -2116,11 +2267,19 @@ say so "I used a photo shop" ~~ m:i:s/ photo shop /;   # OUTPUT: «True␤»
 say so "I used Photoshop®"   ~~ m:i:s/ photo shop /;   # OUTPUT: «False␤»
 ```
 
+`m:s/ photo shop /` 的作用与 `m/ photo <.ws> shop <.ws> /` 相同。默认情况下，`<.ws> ` 确保单词是分开的，因此 `a b` 和 `^&` 将在中间匹配 `<.ws> `，但 `ab` 不会。
+
 `m:s/ photo shop /` acts the same as `m/ photo <.ws> shop <.ws> /`. By default, `<.ws> `makes sure that words are separated, so `a b` and `^&` will match `<.ws> `in the middle, but `ab` won't.
+
+正则中的空白变成 `<.ws>` 的位置取决于空白之前的内容。在上面的示例中，正则开头的空白不会变成 `<.ws>`，但字符后面的空白会变成。一般来说，规则是如果一个术语可能匹配什么东西，那么它后面的空白将变成 `<.ws>`。
 
 Where whitespace in a regex turns into `<.ws>` depends on what comes before the whitespace. In the above example, whitespace in the beginning of a regex doesn't turn into `<.ws>`, but whitespace after characters does. In general, the rule is that if a term might match something, whitespace after it will turn into `<.ws>`.
 
+另外，如果空格是在一个术语之后*但是*在一个量词（`+`、 `*`、 或者 `?`）之前，`<.ws>` 在每次匹配术语之后都会被匹配。所以，`foo +` 变成了 `[ foo <.ws> ]+`。另外一方面，在空格之后的量词作为正常意义的空格；例如，"`foo+ `" 成为了 `foo+ <.ws>`。
+
 In addition, if whitespace comes after a term but *before* a quantifier (`+`, `*`, or `?`), `<.ws>` will be matched after every match of the term. So, `foo +` becomes `[ foo <.ws> ]+`. On the other hand, whitespace *after* a quantifier acts as normal significant whitespace; e.g., "`foo+ `" becomes `foo+ <.ws>`.
+
+总之，此代码：
 
 In all, this code:
 
@@ -2142,6 +2301,8 @@ rx :s {
 }
 ```
 
+成为了：
+
 Becomes:
 
 ```Perl6
@@ -2162,21 +2323,25 @@ rx {
 }
 ```
 
+如果使用 `rule` 关键字声明总之，则会同时隐含 `:sigspace` 和 `:ratchet` 副词。
+
 If a regex is declared with the `rule` keyword, both the `:sigspace` and `:ratchet` adverbs are implied.
+
+Grammar 提供了一种简单的方法来覆盖匹配的内容：
 
 Grammars provide an easy way to override what `<.ws>` matches:
 
 ```Perl6
 grammar Demo {
     token ws {
-        <!ww>       # only match when not within a word 
-        \h*         # only match horizontal whitespace 
+        <!ww>       # 仅当不在词中时匹配 / only match when not within a word 
+        \h*         # 仅匹配横向空格 / only match horizontal whitespace 
     }
     rule TOP {      # called by Demo.parse; 
         a b '.'
     }
 }
- 
+
 # doesn't parse, whitespace required between a and b 
 say so Demo.parse("ab.");                 # OUTPUT: «False␤» 
 say so Demo.parse("a b.");                # OUTPUT: «True␤» 
@@ -2186,9 +2351,14 @@ say so Demo.parse("a\tb .");              # OUTPUT: «True␤»
 say so Demo.parse("a\tb\n.");             # OUTPUT: «False␤» 
 ```
 
+在分析某些空格（例如垂直空格）很重要的文件格式时，建议重写 `ws`。
+
 When parsing file formats where some whitespace (for example, vertical whitespace) is significant, it's advisable to override `ws`.
 
-### Perl 5 compatibility adverb
+<a id="%E5%85%BC%E5%AE%B9-perl-5-%E6%AD%A3%E5%88%99%E5%89%AF%E8%AF%8D--perl-5-compatibility-adverb"></a>
+### 兼容 Perl 5 正则副词 / Perl 5 compatibility adverb
+
+**:Perl5** 或 **:P5** 副词将正则解析和匹配转换为 Perl 5 正则的行为方式：
 
 The **:Perl5** or **:P5** adverb switch the Regex parsing and matching to the way Perl 5 regexes behave:
 
@@ -2198,15 +2368,25 @@ so 'hello world' ~~ m/^hello (world)/;         # OUTPUT: «False␤»
 so 'hello world' ~~ m/^ 'hello ' ('world')/;   # OUTPUT: «True␤» 
 ```
 
+当然，在 Perl 6 中建议使用常规的行为，并且更为惯用，但是当需要与 Perl 5 兼容时，**:Perl5** 副词非常有用。
+
 The regular behavior is recommended and more idiomatic in Perl 6 of course, but the **:Perl5** adverb can be useful when compatibility with Perl5 is required.
 
-## Matching adverbs
+<a id="%E5%8C%B9%E9%85%8D%E5%89%AF%E8%AF%8D--matching-adverbs"></a>
+## 匹配副词 / Matching adverbs
+
+与正则副词（与正则声明绑定）不同，匹配副词只在字符串与正则匹配时才有意义。
 
 In contrast to regex adverbs, which are tied to the declaration of a regex, matching adverbs only make sense when matching a string against a regex.
 
+它们永远不能出现在正则内部，只能出现在外部——要么作为 `m/.../` 匹配的一部分，要么作为 `match` 方法的参数。
+
 They can never appear inside a regex, only on the outside – either as part of an `m/.../` match or as arguments to a match method.
 
-### Positional adverbs
+<a id="%E4%BD%8D%E7%BD%AE%E5%89%AF%E8%AF%8D--positional-adverbs"></a>
+### 位置副词 / Positional adverbs
+
+位置副词使表达式只与指定位置的字符串匹配：
 
 Positional adverbs make the expression match only the string in the indicated position:
 
@@ -2218,6 +2398,8 @@ say $data ~~ m:3rd/fo+/;      # OUTPUT: «｢fooo｣␤»
 say $data ~~ m:nth(1,3)/fo+/; # OUTPUT: «(｢fo｣ ｢fooo｣)␤» 
 ```
 
+如你所见，副词参数也可以是一个列表。实际上，`:nth` 副词和其他副词没有区别。你可以根据易读性来选择它们。从 6.d 开始，你还可以使用 `Junction` 作为参数。
+
 As you can see, the adverb argument can also be a list. There's actually no difference between the `:nth` adverb and the rest. You choose them only based on legibility. From 6.d, you can also use `Junction`s as arguments.
 
 ```Perl6
@@ -2225,9 +2407,14 @@ my $data = "f fo foo fooo foooo fooooo foooooo";
 say $data ~~ m:st(1|8)/fo+/;  # OUTPUT: «True␤» 
 ```
 
+在这种情况下，其中一个存在（1），因此它返回 True。注意我们使用了 `:st`。如前所述，它在功能上是等效的，明显比使用 `:nth` 更不容易辨认，所以建议使用最后一种形式。
+
 In this case, one of them exists (1), so it returns True. Observe that we have used `:st`. As said above, it's functionally equivalent, although obviously less legible than using `:nth`, so this last form is advised.
 
+<a id="continue"></a>
 ### Continue
+
+`:continue` 或短 `:c` 副词接受一个参数。参数是正则应该开始搜索的位置。默认情况下，它从字符串的开头进行搜索，但 `:c` 将覆盖该字符串。如果没有为 `:c` 指定位置，它将默认为 `0`，除非设置了 `$/`，在这种情况下，它默认为 `$/.to`。
 
 The `:continue` or short `:c` adverb takes an argument. The argument is the position where the regex should start to search. By default, it searches from the start of the string, but `:c` overrides that. If no position is specified for `:c`, it will default to `0` unless `$/` is set, in which case, it defaults to `$/.to`.
 
@@ -2238,6 +2425,8 @@ given 'a1xa2' {
 }
 ```
 
+*注意：* 与 `:pos` 不同，带 :continue() 的匹配项将尝试进一步匹配，而不是直接报失败：
+
 *Note:* unlike `:pos`, a match with :continue() will attempt to match further in the string, instead of failing:
 
 ```Perl6
@@ -2245,7 +2434,10 @@ say "abcdefg" ~~ m:c(3)/e.+/; # OUTPUT: «｢efg｣␤»
 say "abcdefg" ~~ m:p(3)/e.+/; # OUTPUT: «False␤» 
 ```
 
-### Exhaustive
+<a id="%E7%A9%B7%E4%B8%BE--exhaustive"></a>
+### 穷举 / Exhaustive
+
+要查找一个正则的所有可能匹配项（包括重叠的匹配项）和几个从同一位置开始的匹配项，请使用 `:exhaustive`（简称为 `:ex`）副词。
 
 To find all possible matches of a regex – including overlapping ones – and several ones that start at the same position, use the `:exhaustive` (short `:ex`) adverb.
 
@@ -2256,6 +2448,8 @@ given 'abracadabra' {
     }
 }
 ```
+
+上面的代码产生这个输出：
 
 The above code produces this output:
 
@@ -2272,7 +2466,10 @@ The above code produces this output:
            abra
 ```
 
-### Global
+<a id="%E5%85%A8%E5%B1%80%E6%90%9C%E7%B4%A2--global"></a>
+### 全局搜索 / Global
+
+不是搜索一个匹配并返回一个[匹配对象](https://docs.perl6.org/type/Match)，而是搜索每个不重叠的匹配并返回到[列表](https://docs.perl6.org/type/List)。为此，请使用 `:global` 副词：
 
 Instead of searching for just one match and returning a [Match object](https://docs.perl6.org/type/Match), search for every non-overlapping match and return them in a [List](https://docs.perl6.org/type/List). In order to do this, use the `:global` adverb:
 
@@ -2284,9 +2481,14 @@ given 'several words here' {
 }
 ```
 
+`:g` 是 `:global` 的简写。
+
 `:g` is shorthand for `:global`.
 
+<a id="pos"></a>
 ### Pos
+
+将匹配锚定在字符串中的特定位置：
 
 Anchor the match at a specific position in the string:
 
@@ -2298,7 +2500,11 @@ given 'abcdef' {
 }
 ```
 
+`：p `是 `:pos` 的简写。
+
 `:p` is shorthand for `:pos`.
+
+*注意：* 与 `:continue` 不同，用 :pos() 锚定的匹配将失败，而不是试图进一步匹配字符串：
 
 *Note:* unlike `:continue`, a match anchored with :pos() will fail, instead of attempting to match further down the string:
 
@@ -2307,7 +2513,10 @@ say "abcdefg" ~~ m:c(3)/e.+/; # OUTPUT: «｢efg｣␤»
 say "abcdefg" ~~ m:p(3)/e.+/; # OUTPUT: «False␤» 
 ```
 
-### Overlap
+<a id="%E9%87%8D%E5%8F%A0--overlap"></a>
+### 重叠 / Overlap
+
+要获得多个匹配，包括重叠匹配，但每个起始位置只有一个（最长），请指定 `:overlap`（简写为 `:ov`）副词：
 
 To get several matches, including overlapping matches, but only one (the longest) from each starting position, specify the `:overlap` (short `:ov`) adverb:
 
@@ -2319,6 +2528,8 @@ given 'abracadabra' {
 }
 ```
 
+输出结果
+
 produces
 
 ```Perl6
@@ -2328,11 +2539,17 @@ produces
            abra
 ```
 
-## Substitution adverbs
+<a id="%E6%9B%BF%E6%8D%A2%E5%89%AF%E8%AF%8D--substitution-adverbs"></a>
+## 替换副词 / Substitution adverbs
+
+可以将匹配副词（如 `:global`、 `:pos` 等）应用于替换。此外，有一些副词只对替换有意义，因为它们将属性从匹配字符串转移到替换字符串。
 
 You can apply matching adverbs (such as `:global`, `:pos` etc.) to substitutions. In addition, there are adverbs that only make sense for substitutions, because they transfer a property from the matched string to the replacement string.
 
+<a id="samecase"></a>
 ### Samecase
+
+`:samecase` 或 `:ii` 替换副词表示替换的正则部分的 `:ignorecase` 副词，此外还将大小写信息携带到替换字符串：
 
 The `:samecase` or `:ii` substitution adverb implies the `:ignorecase` adverb for the regex part of the substitution, and in addition carries the case information to the replacement string:
 
@@ -2342,9 +2559,14 @@ s:global:samecase[the] = 'a';
 say $_;                 # OUTPUT: «A cat chases a dog» 
 ```
 
+在这里，你可以看到第一个替换字符串 `a` 为大写，因为匹配字符串的第一个字符串也是大写字母。
+
 Here you can see that the first replacement string `a` got capitalized, because the first string of the matched string was also a capital letter.
 
+<a id="samemark"></a>
 ### Samemark
+
+`:samemark` 或 `:mm` 副词表示正则的 `:ignoremark`，此外，还将标记从匹配字符复制到替换字符串：
 
 The `:samemark` or `:mm` adverb implies `:ignoremark` for the regex, and in addition, copies the markings from the matched characters to the replacement string:
 
@@ -2354,7 +2576,10 @@ given 'äộñ' {
 }
 ```
 
+<a id="samespace"></a>
 ### Samespace
+
+`:samespace` 或 `:ss` 替换修饰符暗示正则的 `:sigspace` 修饰符，此外，还将空白从匹配字符串复制到替换字符串：
 
 The `:samespace` or `:ss` substitution modifier implies the `:sigspace` modifier for the regex, and in addition, copies the whitespace from the matched string to the replacement string:
 
@@ -2364,11 +2589,18 @@ say S:samespace/a ./c d/.perl given "a\tb";     # OUTPUT: «"c\td"»
 say S:samespace/a ./c d/.perl given "a\nb";     # OUTPUT: «"c\nd"» 
 ```
 
+`ss/.../.../` 句法形式是 `s:samespace/.../.../` 的简写。
+
 The `ss/.../.../` syntactic form is a shorthand for `s:samespace/.../.../`.
 
-# Backtracking
+<a id="%E5%9B%9E%E6%BA%AF--backtracking"></a>
+# 回溯 / Backtracking
+
+在计算正则表达式时，Perl 6 默认为*回溯*的。回溯是一种允许引擎尝试不同的匹配以使正则表达式的每个部分都成功的技术。这是昂贵的，因为它要求引擎在第一次匹配时尽可能地消耗掉字符，然后向后调整，以确保所有正则表达式部分都有机会匹配。
 
 Perl 6 defaults to *backtracking* when evaluating regular expressions. Backtracking is a technique that allows the engine to try different matching in order to allow every part of a regular expression to succeed. This is costly, because it requires the engine to usually eat up as much as possible in the first match and then adjust going backwards in order to ensure all regular expression parts have a chance to match.
+
+为了更好地理解回溯，请考虑以下示例：
 
 In order to better understand backtracking, consider the following example:
 
@@ -2377,7 +2609,11 @@ my $string = 'PostgreSQL is an SQL database!';
 say $string ~~ /(.+)(SQL) (.+) $1/; # OUTPUT: ｢PostgreSQL is an SQL｣ 
 ```
 
+在上面的例子中，字符串必须与第二次出现的单词 *SQL* 匹配，在前面吃掉所有字符，而忽略其余字符。
+
 What happens in the above example is that the string has to be matched against the second occurrence of the word *SQL*, eating all characters before and leaving out the rest.
+
+由于可以在正则表达式中执行一段代码，因此也可以检查正则表达式本身中的 [Match](https://docs.perl6.org/type/Match) 对象：
 
 Since it is possible to execute a piece of code within a regular expression, it is also possible to inspect the [Match](https://docs.perl6.org/type/Match) object within the regular expression itself:
 
@@ -2397,6 +2633,8 @@ sub show-captures( Match $m ){
 $string ~~ /(.+)(SQL) (.+) $1 (.+) { show-captures( $/ );  }/;
 ```
 
+`show-captures` 方法将抛出 `$/` 中的所有元素，产生以下输出：
+
 The `show-captures` method will dump all the elements of `$/` producing the following output:
 
 ```Perl6
@@ -2407,7 +2645,11 @@ Capture 2 =  is an
 [Postgre][SQL][ is an ]
 ```
 
+显示字符串已围绕第二次出现的*sql*进行拆分，即第一次捕获（ `$/[1]` ）的重复。
+
 showing that the string has been split around the second occurrence of *SQL*, that is the repetition of the first capture (`$/[1]`).
+
+有了它，现在可以看到引擎如何回溯找到上面的匹配项：它足以在正则表达式的中间移动 `show-captures`，特别是在重复第一个捕获 `$1` 以查看其实际运行之前：
 
 With that in place, it is now possible to see how the engine backtracks to find the above match: it does suffice to move the `show-captures` in the middle of the regular expression, in particular before the repetition of the first capture `$1` to see it in action:
 
@@ -2426,6 +2668,8 @@ sub show-captures( Match $m ){
  
 $string ~~ / (.+)(SQL) (.+) { show-captures( $/ );  } $1 /;
 ```
+
+输出将更加详细，并将显示多个迭代，最后一个迭代是 *winning*。以下是输出的摘录：
 
 The output will be much more verbose and will show several iterations, with the last one being the *winning*. The following is an excerpt of the output:
 
@@ -2451,7 +2695,11 @@ Capture 2 =  is an
 [Postgre][SQL][ is an ]
 ```
 
+在第一次迭代中，*PostgreSQL* 的 *SQL* 部分保留在单词中：这不是正则表达式所要求的，因此需要另一次迭代。第二次迭代将向后移动，特别是向后移动一个字符（从而删除最后一个 *!*）再次尝试匹配，导致失败，*SQL* 仍然保留在 *PostgreSQL* 中。经过多次迭代，最终结果是匹配的。
+
 In the first iteration the *SQL* part of *PostgreSQL* is kept within the word: that is not what the regular expression asks for, so there's the need for another iteration. The second iteration will move back, in particular one character back (removing thus the final *!*) and try to match again, resulting in a fail since again the *SQL* is still kept within *PostgreSQL*. After several iterations, the final result is match.
+
+值得注意的是，最后一次迭代是数字 *24*，而这个数字正是从字符串末尾到第一次出现 *SQL* 之间的距离，以字符数表示：
 
 It is worth noting that the final iteration is number *24*, and that such number is exactly the distance, in number of chars, from the end of the string to the first *SQL* occurrence:
 
@@ -2459,9 +2707,15 @@ It is worth noting that the final iteration is number *24*, and that such number
 say $string.chars - $string.index: 'SQL'; # OUTPUT: 23 
 ```
 
+由于从字符串的最末端到 *SQL* 的最前面的 *S* 有 23 个字符，回溯引擎将需要 23 个“无用”匹配来找到正确的匹配，即需要 24 个步骤来获得最终结果。
+
 Since there are 23 chars from the very end of the string to the very first *S* of *SQL* the backtracking engine will need 23 "useless" matches to find the right one, that is will need 24 steps to get the final result.
 
+回溯是一种昂贵的机器，因此在只能找到*正向*匹配的情况下，可以禁用它。
+
 Backtracking is a costly machinery, therefore it is possible to disable it in those cases where the matching can be found *forward* only.
+
+对于上述示例，禁用回溯意味着正则表达式将没有任何匹配的机会：
 
 With regards to the above example, disabling backtracking means the regular expression will not have any chance to match:
 
@@ -2470,7 +2724,11 @@ say $string ~~ /(.+)(SQL) (.+) $1/;      # OUTPUT: ｢PostgreSQL is an SQL｣
 say $string ~~ / :r (.+)(SQL) (.+) $1/;  # OUTPUT: Nil 
 ```
 
+事实上，如 *iteration 1* 输出所示，正则表达式引擎的第一个匹配项将是 `PostgreSQL is an `、 `SQL`、 `database`，它不会为匹配另一个出现的单词 *SQL* 留出任何空间（在正则表达式中为 `$1`）。由于引擎无法后退并更改要匹配的路径，所以正则表达式失败。
+
 The fact is that, as shown in the *iteration 1* output, the first match of the regular expression engine will be `PostgreSQL is an `, `SQL`, `database` that does not leave out any room for matching another occurrence of the word *SQL* (as `$1` in the regular expression). Since the engine is not able to get backward and change the path to match, the regular expression fails.
+
+值得注意的是，禁用回溯不会阻止引擎尝试几种方法来匹配正则表达式。考虑以下稍微改变的示例：
 
 It is worth noting that disabling backtracking will not prevent the engine to try several ways to match the regular expression. Consider the following slightly changed example:
 
@@ -2478,6 +2736,8 @@ It is worth noting that disabling backtracking will not prevent the engine to tr
 my $string = 'PostgreSQL is an SQL database!';
 say $string ~~ / (SQL) (.+) $1 /; # OUTPUT: Nil 
 ```
+
+由于在单词 *SQL* 之前没有字符的规范，因此引擎将与最右边的单词 *SQL* 匹配，并从此处继续。由于没有剩余的 *SQL* 重复，匹配失败。在正则表达式中引入一段打印 Match 对象内容的代码可以检查引擎所执行的操作：
 
 Since there is no specification for a character before the word *SQL*, the engine will match against the rightmost word *SQL*and go forward from there. Since there is no repetition of *SQL* remaining, the match fails. It is possible, again, to inspect what the engine performs introducing a dumping piece of code within the regular expression:
 
@@ -2497,6 +2757,8 @@ sub show-captures( Match $m ){
 $string ~~ / (SQL) (.+) { show-captures( $/ ); } $1 /;
 ```
 
+产生相当简单的输出：
+
 that produces a rather simple output:
 
 ```Perl6
@@ -2510,6 +2772,8 @@ Capture 0 = SQL
 Capture 1 =  database!
 [SQL][ database!]
 ```
+
+即使使用 [:r](https://docs.perl6.org/language/regexes#Ratchet) 副词来防止回溯也不会改变：
 
 Even using the [:r](https://docs.perl6.org/language/regexes#Ratchet) adverb to prevent backtracking will not change things:
 
@@ -2529,6 +2793,8 @@ sub show-captures( Match $m ){
 $string ~~ / :r (SQL) (.+) { show-captures( $/ ); } $1 /;
 ```
 
+输出将保持不变：
+
 and the output will remain the same:
 
 ```Perl6
@@ -2543,9 +2809,14 @@ Capture 1 =  database!
 [SQL][ database!]
 ```
 
+这表明禁用回溯并不意味着禁用匹配引擎的可能多次迭代，而是禁用向后匹配调优。
+
 This demonstrate that disabling backtracking does not mean disabling possible multiple iterations of the matching engine, but rather disabling the backward matching tuning.
 
-# `$/` changes each time a regular expression is matched
+<a id="%24%E5%9C%A8%E6%AF%8F%E6%AC%A1%E5%8C%B9%E9%85%8D%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%97%B6%E6%9B%B4%E6%94%B9--%24-changes-each-time-a-regular-expression-is-matched"></a>
+# `$/`在每次匹配正则表达式时更改 / `$/` changes each time a regular expression is matched
+
+值得注意的是，每次使用正则表达式时，都会重置返回的[匹配对象](https://docs.perl6.org/type/Match)（即 `$/`）。换句话说，`$/` 总是指最后一个匹配的正则表达式：
 
 It is worth noting that each time a regular expression is used, the [Match object](https://docs.perl6.org/type/Match) returned (i.e., `$/`) is reset. In other words, `$/`always refers to the very last regular expression matched:
 
@@ -2556,6 +2827,8 @@ say $/;  # OUTPUT: ｢S｣
 say 'hit an x!' if $answer ~~ / x /;
 say $/;  # OUTPUT: Nil 
 ```
+
+`$/` 的重置独立于正则表达式匹配的范围：
 
 The reset of `$/` applies independently from the scope where the regular expression is matched:
 
@@ -2575,6 +2848,8 @@ if True {
 say $/;  # OUTPUT: Nil 
 ```
 
+同样的概念也适用于命名捕获：
+
 The very same concept applies to named captures:
 
 ```Perl6
@@ -2590,6 +2865,7 @@ say $/<x>;          # OUTPUT: Nil
 say $/<capital>;    # OUTPUT: Nil 
 ```
 
+<a id="%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E5%92%8C%E6%88%90%E5%8A%9F%E6%A1%88%E4%BE%8B--best-practices-and-gotchas"></a>
 # 最佳实践和成功案例 / Best practices and gotchas
 
 [最佳实践和成功案例](https://docs.perl6.org/language/regexes-best-practices) 提供有关如何在编写正则表达式和语法时避免常见陷阱的有用信息。
