@@ -38,8 +38,8 @@ Regular expressions, *regexes* for short, are a sequence of characters that desc
 - [备选项: `||` / Alternation: `||`](#%E5%A4%87%E9%80%89%E9%A1%B9-%7C%7C--alternation-%7C%7C)
 - [最长的备选项： `|` / Longest alternation: `|`](#%E6%9C%80%E9%95%BF%E7%9A%84%E5%A4%87%E9%80%89%E9%A1%B9%EF%BC%9A-%7C--longest-alternation-%7C)
   - [引用的列表是 LTM 匹配项 / Quoted lists are LTM matches](#%E5%BC%95%E7%94%A8%E7%9A%84%E5%88%97%E8%A1%A8%E6%98%AF-ltm-%E5%8C%B9%E9%85%8D%E9%A1%B9--quoted-lists-are-ltm-matches)
-- [连接： `&&` / Conjunction: `&&`](#%E8%BF%9E%E6%8E%A5%EF%BC%9A---conjunction-)
-- [连接： `&` / Conjunction: `&`](#%E8%BF%9E%E6%8E%A5%EF%BC%9A---conjunction--1)
+- [合取： `&&` / Conjunction: `&&`](#%E5%90%88%E5%8F%96%EF%BC%9A---conjunction-)
+- [合取： `&` / Conjunction: `&`](#%E5%90%88%E5%8F%96%EF%BC%9A---conjunction--1)
 - [定位符 / Anchors](#%E5%AE%9A%E4%BD%8D%E7%AC%A6--anchors)
   - [字符串开始和结束 / Start of string and end of string](#%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%BC%80%E5%A7%8B%E5%92%8C%E7%BB%93%E6%9D%9F--start-of-string-and-end-of-string)
   - [行开始和结束 / Start of line and end of line](#%E8%A1%8C%E5%BC%80%E5%A7%8B%E5%92%8C%E7%BB%93%E6%9D%9F--start-of-line-and-end-of-line)
@@ -87,8 +87,6 @@ Regular expressions, *regexes* for short, are a sequence of characters that desc
 - [最佳实践和成功案例 / Best practices and gotchas](#%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E5%92%8C%E6%88%90%E5%8A%9F%E6%A1%88%E4%BE%8B--best-practices-and-gotchas)
 
 <!-- /MarkdownTOC -->
-
-
 <a id="%E8%AF%8D%E6%B3%95%E7%BA%A6%E5%AE%9A--lexical-conventions"></a>
 # 词法约定 / Lexical conventions
 
@@ -912,8 +910,8 @@ say 'food' ~~ /@increasingly-edible/;   # OUTPUT: «｢food｣␤»
 
 This is documented further under [Regex Interpolation](https://docs.perl6.org/language/regexes#Regex_interpolation), below.
 
-<a id="%E8%BF%9E%E6%8E%A5%EF%BC%9A---conjunction-"></a>
-# 连接： `&&` / Conjunction: `&&`
+<a id="%E5%90%88%E5%8F%96%EF%BC%9A---conjunction-"></a>
+# 合取： `&&` / Conjunction: `&&`
 
 如果所有以 `&&` 分隔的段与目标字符串的相同子字符串匹配，则成功匹配。这些段从左到右进行计算。
 
@@ -938,8 +936,8 @@ say 'abc' ~~ / <?before a> .. /;      # OUTPUT: «｢ab｣␤»
 
 Just like with `||`, empty first branches are ignored.
 
-<a id="%E8%BF%9E%E6%8E%A5%EF%BC%9A---conjunction--1"></a>
-# 连接： `&` / Conjunction: `&`
+<a id="%E5%90%88%E5%8F%96%EF%BC%9A---conjunction--1"></a>
+# 合取： `&` / Conjunction: `&`
 
 就像正则中的 `&&`，如果所有以 `&` 分隔的段与目标字符串的同一部分匹配，则成功匹配。
 
