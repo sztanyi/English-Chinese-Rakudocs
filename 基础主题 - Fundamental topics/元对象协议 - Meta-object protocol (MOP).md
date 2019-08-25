@@ -63,6 +63,27 @@ Here, the calls with `.^` are calls to the meta object, so `A.^compose` is a sho
 
 As the example above demonstrates, all object oriented features are available to the user, not just to the compiler. In fact the compiler just uses such calls to meta objects.
 
+<!-- MarkdownTOC -->
+
+- [元方法 / Metamethods](#%E5%85%83%E6%96%B9%E6%B3%95--metamethods)
+    - [WHAT](#what)
+    - [WHICH](#which)
+    - [WHO](#who)
+    - [WHERE](#where)
+    - [HOW](#how)
+    - [WHY](#why)
+    - [DEFINITE](#definite)
+    - [VAR](#var)
+- [元对象系统的结构 / Structure of the meta object system](#%E5%85%83%E5%AF%B9%E8%B1%A1%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%BB%93%E6%9E%84--structure-of-the-meta-object-system)
+    - [引导问题 / Bootstrapping concerns](#%E5%BC%95%E5%AF%BC%E9%97%AE%E9%A2%98--bootstrapping-concerns)
+    - [创作时间与静态推理 / Composition time and static reasoning](#%E5%88%9B%E4%BD%9C%E6%97%B6%E9%97%B4%E4%B8%8E%E9%9D%99%E6%80%81%E6%8E%A8%E7%90%86--composition-time-and-static-reasoning)
+    - [权力和责任 / Power and responsibility](#%E6%9D%83%E5%8A%9B%E5%92%8C%E8%B4%A3%E4%BB%BB--power-and-responsibility)
+    - [力量、便利和陷阱 / Power, convenience and pitfalls](#%E5%8A%9B%E9%87%8F%E3%80%81%E4%BE%BF%E5%88%A9%E5%92%8C%E9%99%B7%E9%98%B1--power-convenience-and-pitfalls)
+
+<!-- /MarkdownTOC -->
+
+
+<a id="%E5%85%83%E6%96%B9%E6%B3%95--metamethods"></a>
 # 元方法 / Metamethods
 
 这些是类似于方法调用的自省宏。
@@ -73,6 +94,7 @@ These are introspective macros that resemble method calls.
 
 Metamethods are generally named with ALLCAPS, and it is considered good style to avoid creating your own methods with ALLCAPS names. This will avoid conflicts with any metamethods that may appear in future versions of the language.
 
+<a id="what"></a>
 ## WHAT
 
 类型的类型对象。这是一个可以在不产生错误或警告的情况下重载的伪方法，但将被忽略。
@@ -83,24 +105,28 @@ The type object of the type. This is a pseudo-method that can be overloaded with
 
 For example `42.WHAT` returns the `Int` type object.
 
+<a id="which"></a>
 ## WHICH
 
 对象的标识值。这可用于散列和身份比较，以及如何实现 `===` 中缀运算符。
 
 The object's identity value. This can be used for hashing and identity comparison, and is how the `===` infix operator is implemented.
 
+<a id="who"></a>
 ## WHO
 
 支持该对象的包。
 
 The package supporting the object.
 
+<a id="where"></a>
 ## WHERE
 
 对象的内存地址。注意，在使用移动/压缩垃圾收集器的实现中，这是不稳定的。使用 `WHICH` 作为稳定的标识指示器。
 
 The memory address of the object. Note that this is not stable in implementations with moving/compacting garbage collectors. Use `WHICH` for a stable identity indicator.
 
+<a id="how"></a>
 ## HOW
 
 返回元类对象，如“高阶运作”。
@@ -115,12 +141,14 @@ say (%).HOW.^name # OUTPUT: «Perl6::Metamodel::ClassHOW+{<anon>}␤»
 
 `HOW` returns an object of type `Perl6::Metamodel::ClassHOW` in this case; objects of this type are used to build classes. The same operation on the `&` sigil will return `Perl6::Metamodel::ParametricRoleGroupHOW`. You will be calling this object whenever you use the `^` syntax to access meta methods. In fact, the code above is equivalent to `say (&).HOW.HOW.name(&)` which is much more unwieldy. [Metamodel::ClassHOW](https://docs.perl6.org/type/Metamodel::ClassHOW) is part of the Rakudo implementation, so use with caution.
 
+<a id="why"></a>
 ## WHY
 
 附加的 Pod 值。
 
 The attached Pod value.
 
+<a id="definite"></a>
 ## DEFINITE
 
 对象具有有效的具体表示形式。这是一种虚假的方法，可以被覆盖而不产生错误或警告，但将被忽视。
@@ -131,6 +159,7 @@ The object has a valid concrete representation. This is a pseudo-method that can
 
 Returns `True` for instances and `False` for type objects.
 
+<a id="var"></a>
 ## VAR
 
 返回隐含的 `Scalar` 对象（如果有）。
@@ -148,6 +177,7 @@ say (1, 2, 3).VAR ~~ Scalar;  # OUTPUT: «False␤»
 say $(1, 2, 3).VAR ~~ Scalar; # OUTPUT: «True␤» 
 ```
 
+<a id="%E5%85%83%E5%AF%B9%E8%B1%A1%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%BB%93%E6%9E%84--structure-of-the-meta-object-system"></a>
 # 元对象系统的结构 / Structure of the meta object system
 
 **注：**本文档主要反映了由[Rakudo Perl 6编译器](https://rakudo.org/)实现的元对象系统，因为 [设计文档](https://design.perl6.org/) 非常详细。
@@ -166,40 +196,66 @@ Many of the these meta classes share common functionality. For example roles, gr
 
 Most meta classes have a `compose` method that you must call when you're done creating or modifying a meta object. It creates method caches, validates things and so on, and weird behavior ensues if you forget to call it, so don't :-).
 
-## 自举问题 / Bootstrapping concerns
+<a id="%E5%BC%95%E5%AF%BC%E9%97%AE%E9%A2%98--bootstrapping-concerns"></a>
+## 引导问题 / Bootstrapping concerns
 
-您可能想知道，当 `Metamodel::ClassHOW` 定义为类时，`Metamodel::ClassHOW` 是如何成为类的，或者负责角色处理的角色是如何成为角色的。答案是*魔法*。
+你可能想知道，当 `Metamodel::ClassHOW` 定义为类时，`Metamodel::ClassHOW` 是如何成为类的，或者负责角色处理的角色是如何成为角色的。答案是*魔法*。
 
 You might wonder how `Metamodel::ClassHOW` can be a class, when being a class is defined in terms of `Metamodel::ClassHOW`, or how the roles responsible for role handling can be roles. The answer is *by magic*.
 
-只是开个玩笑。引导是特定于实现的。Rakudo 是通过使用实现它自己的语言的对象系统来实现的，它恰好（几乎）是 Perl 6: NQP 的一个子集，Not Quite Perl。NQP 有一个名为 `knowhow` 的类似类的原始类，用于引导其自己的类和角色实现。`knowhow` 是建立在 NQP 下虚拟机提供的原语之上。
+只是开个玩笑。引导是特定于实现的。Rakudo 是通过使用实现它自己的语言的对象系统来实现的，它恰好（几乎）是 Perl 6: NQP 的一个子集，Not Quite Perl。NQP 有一个名为 `knowhow` 的类似类的原始类，用于引导其自己的类和角色实现。`knowhow` 是建立在 NQP 下虚拟机的原始类之上的。
 
 Just kidding. Bootstrapping is implementation specific. Rakudo does it by using the object system of the language in which itself is implemented, which happens to be (nearly) a subset of Perl 6: NQP, Not Quite Perl. NQP has a primitive, class-like kind called `knowhow`, which is used to bootstrap its own classes and roles implementation. `knowhow` is built on primitives that the virtual machine under NQP provides.
 
+由于对象模型是以较低级别的类型引导的，因此自省有时可以返回较低级别的类型，而不是你期望的类型，例如 NQP 级别的例程而不是普通的[例程](https://docs.perl6.org/type/Routine) 对象，或者引导属性而不是[属性](https://docs.perl6.org/type/Attribute)。
+
 Since the object model is bootstrapped in terms of lower-level types, introspection can sometimes return low-level types instead of the ones you expect, like an NQP-level routine instead of a normal [Routine](https://docs.perl6.org/type/Routine) object, or a bootstrap-attribute instead of [Attribute](https://docs.perl6.org/type/Attribute).
 
-## Composition time and static reasoning
+<a id="%E5%88%9B%E4%BD%9C%E6%97%B6%E9%97%B4%E4%B8%8E%E9%9D%99%E6%80%81%E6%8E%A8%E7%90%86--composition-time-and-static-reasoning"></a>
+## 创作时间与静态推理 / Composition time and static reasoning
+
+在 Perl 6 中，类型是在解析时构造的，因此在开始时，它必须是可变的。但是，如果所有类型都是可变的，那么在对类型进行任何修改时，关于它们的所有推理都将失效。例如，父类型的列表，因此类型检查的结果可以在这段时间内更改。
 
 In Perl 6, a type is constructed as it is parsed, so in the beginning, it must be mutable. However if all types were always mutable, all reasoning about them would get invalidated at any modification of a type. For example the list of parent types and thus the result of type checking can change during that time.
 
+因此，为了充分利用这两个方面，有时类型会从可变类型转换为不可变类型。这称为 *composition*，对于语法声明的类型，当类型声明被完全解析时（通常在解析右大括号时）会发生这种情况。
+
 So to get the best of both worlds, there is a time when a type transitions from mutable to immutable. This is called *composition*, and for syntactically declared types, it happens when the type declaration is fully parsed (so usually when the closing curly brace is parsed).
+
+如果直接通过元对象系统创建类型，则必须先对其调用 `.^compose `才能使其完全正常工作。
 
 If you create types through the meta-object system directly, you must call `.^compose` on them before they become fully functional.
 
+大多数元类还使用合成时间来计算一些属性，比如方法解析顺序、发布方法缓存和其他的家务活。有时可能会在类型组合完成后再对它们进行干预，但这通常会导致灾难。别这样做。
+
 Most meta classes also use composition time to calculate some properties like the method resolution order, publish a method cache, and other house-keeping tasks. Meddling with types after they have been composed is sometimes possible, but usually a recipe for disaster. Don't do it.
 
-## Power and responsibility
+<a id="%E6%9D%83%E5%8A%9B%E5%92%8C%E8%B4%A3%E4%BB%BB--power-and-responsibility"></a>
+## 权力和责任 / Power and responsibility
+
+元对象协议提供了常规 Perl 6 代码有意限制的强大功能，例如在不信任你的类上调用私有方法、窥视私有属性以及其他通常根本不做的事情。
 
 The meta object protocol offers much power that regular Perl 6 code intentionally limits, such as calling private methods on classes that don't trust you, peeking into private attributes, and other things that usually simply aren't done.
 
+常规的 Perl 6 代码有很多安全检查，而元模型则没有。它靠近底层虚拟机，违反与虚拟机的契约会导致各种奇怪的行为，在正常代码中，这些行为显然是错误。
+
 Regular Perl 6 code has many safety checks in place; not so the meta model. It is close to the underlying virtual machine, and violating the contracts with the VM can lead to all sorts of strange behaviors that, in normal code, would obviously be bugs.
+
+所以在编写元类型时要格外小心和周到。
 
 So be extra careful and thoughtful when writing meta types.
 
-## Power, convenience and pitfalls
+<a id="%E5%8A%9B%E9%87%8F%E3%80%81%E4%BE%BF%E5%88%A9%E5%92%8C%E9%99%B7%E9%98%B1--power-convenience-and-pitfalls"></a>
+## 力量、便利和陷阱 / Power, convenience and pitfalls
+
+元对象协议设计得足够强大，可以实现 Perl 6 对象系统。这种力量有时会以便利为代价。
 
 The meta object protocol is designed to be powerful enough to implement the Perl 6 object system. This power occasionally comes at the cost of convenience.
 
+例如，当你编写 `my $x = 42` 然后继续在 `$x` 上调用方法时，这些方法中的大多数最终都是作用于[整数](https://docs.perl6.org/type/Int) 42，而不是作用于存储它的[标量容器](https://docs.perl6.org/type/Scalar)。这是普通 Perl 6 中的一个便利。元对象协议的许多部分不能提供自动忽略标量容器的便利性，因为它们也用于实现这些标量容器。所以如果你写  `my $t = MyType; ... ; $t.^compose` 你是在编写 `$` 变量表示的标量，而不是 `MyType`。
+
 For example, when you write `my $x = 42` and then proceed to call methods on `$x`, most of these methods end up acting on the [integer](https://docs.perl6.org/type/Int) 42, not on the [scalar container](https://docs.perl6.org/type/Scalar) in which it is stored. This is a piece of convenience found in ordinary Perl 6. Many parts of the meta object protocol cannot afford to offer the convenience of automatically ignoring scalar containers, because they are used to implement those scalar containers as well. So if you write `my $t = MyType; ... ; $t.^compose` you are composing the Scalar that the `$`-sigiled variable implies, not `MyType`.
+
+其结果是，你需要对 Perl 6 的细微之处有一个相当详细的了解，以便在使用 MOP 时避免陷阱，并且不能期望普通 Perl 6 代码提供相同的“按我的意思做”的便利。
 
 The consequence is that you need to have a rather detailed understanding of the subtleties of Perl 6 in order to avoid pitfalls when working with the MOP, and can't expect the same "do what I mean" convenience that ordinary Perl 6 code offers.
