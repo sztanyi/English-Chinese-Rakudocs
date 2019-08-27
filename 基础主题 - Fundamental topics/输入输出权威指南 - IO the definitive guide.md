@@ -18,7 +18,7 @@ Correctly use Perl 6 IO
         - [从文件读取 / Reading from files](#%E4%BB%8E%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96--reading-from-files)
             - [使用 IO::Path / Using IO::Path](#%E4%BD%BF%E7%94%A8-iopath--using-iopath)
             - [使用 IO::Handle / Using IO::Handle](#%E4%BD%BF%E7%94%A8-iohandle--using-iohandle)
-- [做事情的错误方式 / The wrong way to do things](#%E5%81%9A%E4%BA%8B%E6%83%85%E7%9A%84%E9%94%99%E8%AF%AF%E6%96%B9%E5%BC%8F--the-wrong-way-to-do-things)
+- [错误的做事方式 / The wrong way to do things](#%E9%94%99%E8%AF%AF%E7%9A%84%E5%81%9A%E4%BA%8B%E6%96%B9%E5%BC%8F--the-wrong-way-to-do-things)
     - [不要碰 $*SPEC / Leave $*SPEC alone](#%E4%B8%8D%E8%A6%81%E7%A2%B0-%24spec--leave-%24spec-alone)
     - [字符串化 IO::Path / Stringifying IO::Path](#%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8C%96-iopath--stringifying-iopath)
     - [注意 $*cwd / Be mindful of $*CWD](#%E6%B3%A8%E6%84%8F-%24cwd--be-mindful-of-%24cwd)
@@ -206,8 +206,8 @@ The [IO::Handle](https://docs.perl6.org/type/IO::Handle) gives you [.read](https
 
 Unlike some languages, the handle won't get automatically closed when the scope it's defined in is left. Instead, it'll remain open until it's garbage collected. To make the closing business easier, some of the methods let you specify a `:close` argument, you can also use the [`will leave` trait](https://docs.perl6.org/language/phasers#index-entry-will_trait), or the `does auto-close` trait provided by the [`Trait::IO`](https://modules.perl6.org/dist/Trait::IO) module.
 
-<a id="%E5%81%9A%E4%BA%8B%E6%83%85%E7%9A%84%E9%94%99%E8%AF%AF%E6%96%B9%E5%BC%8F--the-wrong-way-to-do-things"></a>
-# 做事情的错误方式 / The wrong way to do things
+<a id="%E9%94%99%E8%AF%AF%E7%9A%84%E5%81%9A%E4%BA%8B%E6%96%B9%E5%BC%8F--the-wrong-way-to-do-things"></a>
+# 错误的做事方式 / The wrong way to do things
 
 本节介绍 Perl6 IO 不该做的事情。
 

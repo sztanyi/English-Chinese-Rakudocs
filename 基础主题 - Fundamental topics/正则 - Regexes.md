@@ -16,7 +16,7 @@ Regular expressions, *regexes* for short, are a sequence of characters that desc
 - [字面量 / Literals](#%E5%AD%97%E9%9D%A2%E9%87%8F--literals)
 - [通配符 / Wildcards](#%E9%80%9A%E9%85%8D%E7%AC%A6--wildcards)
 - [字符类 / Character classes](#%E5%AD%97%E7%AC%A6%E7%B1%BB--character-classes)
-  - [带反斜杠的字符类 / Backslashed character classes](#%E5%B8%A6%E5%8F%8D%E6%96%9C%E6%9D%A0%E7%9A%84%E5%AD%97%E7%AC%A6%E7%B1%BB--backslashed-character-classes)
+  - [反斜杠字符类 / Backslashed character classes](#%E5%8F%8D%E6%96%9C%E6%9D%A0%E5%AD%97%E7%AC%A6%E7%B1%BB--backslashed-character-classes)
     - [`\n` 和 `\N`](#n-%E5%92%8C-n)
     - [`\t` 和 `\T`](#t-%E5%92%8C-t)
     - [`\h` 和 `\H`](#h-%E5%92%8C-h)
@@ -34,7 +34,7 @@ Regular expressions, *regexes* for short, are a sequence of characters that desc
   - [通用量词: `** min..max` / General quantifier: `** min..max`](#%E9%80%9A%E7%94%A8%E9%87%8F%E8%AF%8D--minmax--general-quantifier--minmax)
   - [分隔修饰的量词：`%`, `%%` / Modified quantifier: `%`, `%%`](#%E5%88%86%E9%9A%94%E4%BF%AE%E9%A5%B0%E7%9A%84%E9%87%8F%E8%AF%8D%EF%BC%9A%25-%25%25--modified-quantifier-%25-%25%25)
   - [阻止回溯: `:` / Preventing backtracking: `:`](#%E9%98%BB%E6%AD%A2%E5%9B%9E%E6%BA%AF---preventing-backtracking-)
-  - [贪婪与节俭量词： `?` / Greedy versus frugal quantifiers: `?`](#%E8%B4%AA%E5%A9%AA%E4%B8%8E%E8%8A%82%E4%BF%AD%E9%87%8F%E8%AF%8D%EF%BC%9A---greedy-versus-frugal-quantifiers-)
+  - [贪婪对比节俭量词： `?` / Greedy versus frugal quantifiers: `?`](#%E8%B4%AA%E5%A9%AA%E5%AF%B9%E6%AF%94%E8%8A%82%E4%BF%AD%E9%87%8F%E8%AF%8D%EF%BC%9A---greedy-versus-frugal-quantifiers-)
 - [备选项: `||` / Alternation: `||`](#%E5%A4%87%E9%80%89%E9%A1%B9-%7C%7C--alternation-%7C%7C)
 - [最长的备选项： `|` / Longest alternation: `|`](#%E6%9C%80%E9%95%BF%E7%9A%84%E5%A4%87%E9%80%89%E9%A1%B9%EF%BC%9A-%7C--longest-alternation-%7C)
   - [引用的列表是 LTM 匹配项 / Quoted lists are LTM matches](#%E5%BC%95%E7%94%A8%E7%9A%84%E5%88%97%E8%A1%A8%E6%98%AF-ltm-%E5%8C%B9%E9%85%8D%E9%A1%B9--quoted-lists-are-ltm-matches)
@@ -227,8 +227,8 @@ say $text ~~ / .* /;
 <a id="%E5%AD%97%E7%AC%A6%E7%B1%BB--character-classes"></a>
 # 字符类 / Character classes
 
-<a id="%E5%B8%A6%E5%8F%8D%E6%96%9C%E6%9D%A0%E7%9A%84%E5%AD%97%E7%AC%A6%E7%B1%BB--backslashed-character-classes"></a>
-## 带反斜杠的字符类 / Backslashed character classes
+<a id="%E5%8F%8D%E6%96%9C%E6%9D%A0%E5%AD%97%E7%AC%A6%E7%B1%BB--backslashed-character-classes"></a>
+## 反斜杠字符类 / Backslashed character classes
 
 存在类似 `\w` 形式的字符类。其否定为大写形式字符 `\W`。
 
@@ -732,8 +732,8 @@ say  m:g/[(\w+:) \s*]+ (\w+) $$/;
 
 Without the `:` following `\w+`, the *ID* part captured would have been simply `T`, since the pattern would go ahead and match everything, leaving a single letter to match the `\w+` expression at the end of the line.
 
-<a id="%E8%B4%AA%E5%A9%AA%E4%B8%8E%E8%8A%82%E4%BF%AD%E9%87%8F%E8%AF%8D%EF%BC%9A---greedy-versus-frugal-quantifiers-"></a>
-## 贪婪与节俭量词： `?` / Greedy versus frugal quantifiers: `?`
+<a id="%E8%B4%AA%E5%A9%AA%E5%AF%B9%E6%AF%94%E8%8A%82%E4%BF%AD%E9%87%8F%E8%AF%8D%EF%BC%9A---greedy-versus-frugal-quantifiers-"></a>
+## 贪婪对比节俭量词： `?` / Greedy versus frugal quantifiers: `?`
 
 默认情况下，量词是贪婪的：
 
