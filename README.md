@@ -17,6 +17,7 @@ IT 类翻译文章往往中文太生硬，英文太难懂。何不对照看。
     - [枚举 - Enumeration](https://github.com/sztanyi/perl6doc/blob/master/%E5%9F%BA%E7%A1%80%E4%B8%BB%E9%A2%98%20-%20Fundamental%20topics/%E6%9E%9A%E4%B8%BE%20-%20Enumeration.md)
     - [函数 - Functions](https://github.com/sztanyi/perl6doc/blob/master/%E5%9F%BA%E7%A1%80%E4%B8%BB%E9%A2%98%20-%20Fundamental%20topics/%E5%87%BD%E6%95%B0%20-%20Functions.md)
     - [语法 - Grammars](https://github.com/sztanyi/perl6doc/blob/master/%E5%9F%BA%E7%A1%80%E4%B8%BB%E9%A2%98%20-%20Fundamental%20topics/%E8%AF%AD%E6%B3%95%20-%20Grammars.md)
+    - [哈希和映射 - Hashes and maps](https://github.com/sztanyi/perl6doc/blob/master/%E5%9F%BA%E7%A1%80%E4%B8%BB%E9%A2%98%20-%20Fundamental%20topics/%E5%93%88%E5%B8%8C%E5%92%8C%E6%98%A0%E5%B0%84%20-%20Hashes%20and%20maps.md)
     - [输入输出权威指南 - Input/Output the definitive guide](https://github.com/sztanyi/perl6doc/blob/master/%E5%9F%BA%E7%A1%80%E4%B8%BB%E9%A2%98%20-%20Fundamental%20topics/%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97%20-%20IO%20the%20definitive%20guide.md)
     - [元对象协议 - Meta-object protocol (MOP)](https://github.com/sztanyi/perl6doc/blob/master/%E5%9F%BA%E7%A1%80%E4%B8%BB%E9%A2%98%20-%20Fundamental%20topics/%E5%85%83%E5%AF%B9%E8%B1%A1%E5%8D%8F%E8%AE%AE%20-%20Meta-object%20protocol%20(MOP).md)
     - [原生调用接口 - Native calling interface](https://github.com/sztanyi/perl6doc/blob/master/%E5%9F%BA%E7%A1%80%E4%B8%BB%E9%A2%98%20-%20Fundamental%20topics/%E5%8E%9F%E7%94%9F%E8%B0%83%E7%94%A8%E6%8E%A5%E5%8F%A3%20-%20Native%20calling%20interface.md)

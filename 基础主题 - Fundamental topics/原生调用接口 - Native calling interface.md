@@ -1,12 +1,16 @@
-# Native calling interface
+# 原生调用协议 / Native calling interface
+
+调用遵循 C 语言调用约定的动态库
 
 Call into dynamic libraries that follow the C calling convention
 
-# Getting started
+# 开始 / Getting started
+
+`NativeCall` 最简单的用法如下：
 
 The simplest imaginable use of `NativeCall` would look something like this:
 
-```
+```Perl6
 use NativeCall;
 sub some_argless_function() is native('something') { * }
 some_argless_function();
@@ -26,7 +30,7 @@ Sometimes you want the name of your Perl subroutine to be different from the nam
 
 NativeCall provides a `symbol` trait for you to specify the name of the native routine in your library that may be different from your Perl subroutine name.
 
-```
+```Perl6
 unit module Foo;
 use NativeCall;
 our sub init() is native('foo') is symbol('FOO_INIT') { * }
@@ -38,7 +42,7 @@ Inside of `libfoo` there is a routine called `FOO_INIT` but, since we're creatin
 
 Normal Perl 6 signatures and the `returns` trait are used in order to convey the type of arguments a native function expects and what it returns. Here is an example.
 
-```
+```Perl6
 use NativeCall;
 sub add(int32, int32) returns int32 is native("calculator") { * }
 ```
@@ -47,14 +51,14 @@ Here, we have declared that the function takes two 32-bit integers and returns a
 
 For strings, there is an additional `encoded` trait to give some extra hints on how to do the marshaling.
 
-```
+```Perl6
 use NativeCall;
 sub message_box(Str is encoded('utf8')) is native('gui') { * }
 ```
 
 To specify how to marshal string return types, just apply this trait to the routine itself.
 
-```
+```Perl6
 use NativeCall;
 sub input_box() returns Str is encoded('utf8') is native('gui') { * }
 ```
@@ -63,7 +67,7 @@ Note that a `NULL` string pointer can be passed by passing the Str type object; 
 
 If the C function requires the lifetime of a string to exceed the function call, the argument must be manually encoded and passed as `CArray[uint8]`:
 
-```
+```Perl6
 use NativeCall;
 # C prototype is void set_foo(const char *) 
 sub set_foo(CArray[uint8]) is native('foo') { * }
@@ -78,14 +82,14 @@ my $array = CArray[uint8].new($string.encode.list);
 set_foo($array);
 # ... 
 use_foo();
-# It's fine if $array goes out of scope starting from here. 
+# It's fine if $array goes out of scope starting from here.
 ```
 
 # Specifying the native representation
 
 When working with native functions, sometimes you need to specify what kind of native data structure is going to be used. `is repr` is the term employed for that.
 
-```
+```Perl6
 use NativeCall;
  
 class timespec is repr('CStruct') {
@@ -108,16 +112,16 @@ The original function we are calling, [clock_gettime](https://linux.die.net/man/
 
 When the signature of your native function needs a pointer to some native type (`int32`, `uint32`, etc.) all you need to do is declare the argument `is rw` :
 
-```
+```Perl6
 use NativeCall;
 # C prototype is void my_version(int *major, int *minor) 
 sub my_version(int32 is rw, int32 is rw) is native('foo') { * }
-my_version(my int32 $major, my int32 $minor); # Pass a pointer to 
+my_version(my int32 $major, my int32 $minor); # Pass a pointer to
 ```
 
 Sometimes you need to get a pointer (for example, a library handle) back from a C library. You don't care about what it points to - you just need to keep hold of it. The Pointer type provides for this.
 
-```
+```Perl6
 use NativeCall;
 sub Foo_init() returns Pointer is native("foo") { * }
 sub Foo_free(Pointer) is native("foo") { * }
@@ -125,7 +129,7 @@ sub Foo_free(Pointer) is native("foo") { * }
 
 This works out OK, but you may fancy working with a type named something better than Pointer. It turns out that any class with the representation "CPointer" can serve this role. This means you can expose libraries that work on handles by writing a class like this:
 
-```
+```Perl6
 use NativeCall;
  
 class FooHandle is repr('CPointer') {
@@ -159,7 +163,7 @@ Note that the CPointer representation can do nothing more than hold a C pointer.
 
 Of course, you can always have an empty class:
 
-```
+```Perl6
 class DoorHandle is repr('CPointer') { }
 ```
 
@@ -173,7 +177,7 @@ C libraries can expose pointers to C functions as return values of functions and
 
 Example of invoking a function pointer "$fptr" returned by a function "f", using a signature defining the desired function parameters and return value:
 
-```
+```Perl6
 sub f() returns Pointer is native('mylib') { * }
  
 my $fptr    = f();
@@ -190,7 +194,7 @@ Perl 6 arrays, which support amongst other things laziness, are laid out in memo
 
 Here is an example of passing a C array.
 
-```
+```Perl6
 sub RenderBarChart(Str, int32, CArray[Str], CArray[num64]) is native("chart") { * }
 my @titles := CArray[Str].new;
 @titles[0]  = 'Me';
@@ -205,7 +209,7 @@ RenderBarChart('Weights (kg)', 3, @titles, @values);
 
 Note that binding was used to `@titles`, *not* assignment! If you assign, you are putting the values into a Perl 6 array, and it will not work out. If this all freaks you out, forget you ever knew anything about the `@` sigil and just use `$` all the way when using NativeCall.
 
-```
+```Perl6
 use NativeCall;
 my $titles = CArray[Str].new;
 $titles[0] = 'Me';
@@ -217,14 +221,14 @@ Getting return values for arrays works out just the same.
 
 Some library APIs may take an array as a buffer that will be populated by the C function and, for instance, return the actual number of items populated:
 
-```
+```Perl6
 use NativeCall;
 sub get_n_ints(CArray[int32], int32) returns int32 is native('ints') { * }
 ```
 
 In these cases it is important that the CArray has at least the number of elements that are going to be populated before passing it to the native subroutine, otherwise the C function may stomp all over Perl's memory leading to possibly unpredictable behavior:
 
-```
+```Perl6
 my $number_of_ints = 10;
 my $ints = CArray[int32].allocate($number_of_ints); # instantiates an array with 10 elements 
 my $n = get_n_ints($ints, $number_of_ints);
@@ -232,7 +236,7 @@ my $n = get_n_ints($ints, $number_of_ints);
 
 *Note*: `allocate` was introduced in Rakudo 2018.05. Before that, you had to use this mechanism to extend an array to a number of elements:
 
-```
+```Perl6
 my $ints = CArray[int32].new;
 my $number_of_ints = 10;
 $ints[$number_of_ints - 1] = 0; # extend the array to 10 items 
@@ -241,8 +245,6 @@ $ints[$number_of_ints - 1] = 0; # extend the array to 10 items
 The memory management of arrays is important to understand. When you create an array yourself, then you can add elements to it as you wish and it will be expanded for you as required. However, this may result in it being moved in memory (assignments to existing elements will never cause this, however). This means you'd best know what you're doing if you twiddle with an array after passing it to a C library.
 
 By contrast, when a C library returns an array to you, then the memory can not be managed by NativeCall, and it doesn't know where the array ends. Presumably, something in the library API tells you this (for example, you know that when you see a null element, you should read no further). Note that NativeCall can offer you no protection whatsoever here - do the wrong thing, and you will get a segfault or cause memory corruption. This isn't a shortcoming of NativeCall, it's the way the big bad native world works. Scared? Here, have a hug. Good luck!
-
-
 
 ## CArray methods
 
@@ -254,7 +256,7 @@ Besides the usual methods available on every Perl 6 instance, `CArray` provides 
 
 As an example, consider the following simple piece of code:
 
-```
+```Perl6
 use NativeCall;
  
 my $native-array = CArray[int32].new( 1, 2, 3, 4, 5 );
@@ -275,7 +277,7 @@ for 0..$native-array.elems - 1 -> $position {
 
 that produces the following output
 
-```
+```Perl6
 Number of elements: 5
 Current element is: 1
 Current element is: 2
@@ -293,7 +295,7 @@ Element at position 4 is 5
 
 Thanks to representation polymorphism, it's possible to declare a normal looking Perl 6 class that, under the hood, stores its attributes in the same way a C compiler would lay them out in a similar struct definition. All it takes is a quick use of the "repr" trait:
 
-```
+```Perl6
 class Point is repr('CStruct') {
     has num64 $.x;
     has num64 $.y;
@@ -306,7 +308,7 @@ CStruct objects are passed to native functions by reference and native functions
 
 NativeCall currently doesn't put object members in containers, so assigning new values to them (with =) doesn't work. Instead, you have to bind new values to the private members:
 
-```
+```Perl6
 class MyStruct is repr('CStruct') {
     has CArray[num64] $!arr;
     has Str $!str;
@@ -329,7 +331,7 @@ As you may have predicted by now, a NULL pointer is represented by the type obje
 
 Likewise, it is possible to declare a Perl 6 class that stores its attributes the same way a C compiler would lay them out in a similar `union` definition; using the `CUnion` representation:
 
-```
+```Perl6
 use NativeCall;
  
 class MyUnion is repr('CUnion') {
@@ -345,7 +347,7 @@ say nativesizeof(MyUnion.new);  # OUTPUT: «8␤»
 
 CStructs and CUnions can be in turn referenced by—or embedded into—a surrounding CStruct and CUnion. To say the former we use `has` as usual, and to do the latter we use the `HAS` declarator instead:
 
-```
+```Perl6
 class MyStruct is repr('CStruct') {
     has Point $.point;  # referenced 
     has int32 $.flags;
@@ -369,7 +371,7 @@ When allocating a struct for use as a struct, make sure that you allocate your o
 
 ### In your Perl 6 code...
 
-```
+```Perl6
 class AStringAndAnInt is repr("CStruct") {
   has Str $.a_string;
   has int32 $.an_int32;
@@ -387,7 +389,7 @@ In this code we first set up our members, `$.a_string` and `$.an_int32`. After t
 
 ### In your C code...
 
-```
+```Perl6
 typedef struct a_string_and_an_int32_t_ {
   char *a_string;
   int32_t an_int32;
@@ -397,7 +399,7 @@ typedef struct a_string_and_an_int32_t_ {
 
 Here's the structure. Notice how we've got a `char *` there.
 
-```
+```Perl6
 void init_struct(a_string_and_an_int32_t *target, char *str, int32_t int32) {
   target->an_int32 = int32;
   target->a_string = strdup(str);
@@ -409,7 +411,7 @@ void init_struct(a_string_and_an_int32_t *target, char *str, int32_t int32) {
 
 In this function we initialize the C structure by assigning an integer by value, and passing the string by reference. The function allocates memory that it points <char *a_string> to within the structure as it copies the string. (Note you will also have to manage deallocation of the memory as well to avoid memory leaks.)
 
-```
+```Perl6
 # A long time ago in a galaxy far, far away... 
 my $foo = AStringAndAnInt.new(a_string => "str", an_int => 123);
 say "foo is {$foo.a_string} and {$foo.an_int32}";
@@ -420,7 +422,7 @@ say "foo is {$foo.a_string} and {$foo.an_int32}";
 
 You can type your `Pointer` by passing the type as a parameter. It works with the native type but also with `CArray` and `CStruct`defined types. NativeCall will not implicitly allocate the memory for it even when calling `new` on them. It's mostly useful in the case of a C routine returning a pointer, or if it's a pointer embedded in a `CStruct`.
 
-```
+```Perl6
 use NativeCall;
 sub strdup(Str $s --> Pointer[Str]) is native {*}
 my Pointer[Str] $p = strdup("Success!");
@@ -429,7 +431,7 @@ say $p.deref;
 
 You have to call `.deref` on `Pointer`s to access the embedded type. In the example above, declaring the type of the pointer avoids typecasting error when dereferenced. Please note that the original [`strdup`](https://en.cppreference.com/w/c/experimental/dynamic/strdup) returns a pointer to `char`; we are using `Pointer<Str>`.
 
-```
+```Perl6
 my Pointer[int32] $p; #For a pointer on int32; 
 my Pointer[MyCstruct] $p2 = some_c_routine();
 my MyCstruct $mc = $p2.deref;
@@ -438,7 +440,7 @@ say $mc.field1;
 
 It's quite common for a native function to return a pointer to an array of elements. Typed pointers can be dereferenced as an array to obtain individual elements.
 
-```
+```Perl6
 my $n = 5;
 # returns a pointer to an array of length $n 
 my Pointer[Point] $plot = some_other_c_routine($n);
@@ -452,7 +454,7 @@ for 1 .. $n -> $i {
 
 Pointers can also be updated to reference successive elements in the array:
 
-```
+```Perl6
 my Pointer[Point] $elem = $plot;
 # show differences between successive points 
 for 1 ..^ $n {
@@ -473,7 +475,7 @@ Void pointers can also be used by declaring them `Pointer[void]`. Please consult
 
 Let's say there is some C code that caches strings passed, like so:
 
-```
+```Perl6
 #include <stdlib.h> 
  
 static char *__VERSION;
@@ -495,7 +497,7 @@ set_version(char *version)
 
 If you were to write bindings for `get_version` and `set_version`, they would initially look like this, but will not work as intended:
 
-```
+```Perl6
 sub get_version(--> Str)     is native('./version') { * }
 sub set_version(Str --> Str) is native('./version') { * }
  
@@ -506,7 +508,7 @@ say set_version('1.0.1'); # Double free; segfaults
 
 This code segfaults on the second `set_version` call because it tries to free the string passed on the first call after the garbage collector had already done so. If the garbage collector shouldn't free a string passed to a native function, use `explicitly-manage` with it:
 
-```
+```Perl6
 say set_version(explicitly-manage('1.0.0')); # 1.0.0 
 say get_version;                             # 1.0.0 
 say set_version(explicitly-manage('1.0.1')); # 1.0.1 
@@ -519,23 +521,23 @@ Bear in mind all memory management for explicitly managed strings must be handle
 
 [Blob](https://docs.perl6.org/type/Blob)s and [Buf](https://docs.perl6.org/type/Buf)s are the Perl 6 way of storing binary data. We can use them for interchange of data with native functions and data structures, although not directly. We will have to use [`nativecast`](https://docs.perl6.org/routine/nativecast).
 
-```
+```Perl6
 my $blob = Blob.new(0x22, 0x33);
 my $src = nativecast(Pointer, $blob);
 ```
 
-This `$src` can then be used as an argument for any native function that takes a Pointer. The opposite, putting values pointed to by a `Pointer` into a `Buf` or using it to initialize a `Blob` is not directly supported. You might want to use [`NativeHelpers::Blob`](https://github.com/salortiz/NativeHelpers-Blob)to do this kind of operations.
+This `$src` can then be used as an argument for any native function that takes a Pointer. The opposite, putting values pointed to by a `Pointer` into a `Buf` or using it to initialize a `Blob` is not directly supported. You might want to use [`NativeHelpers::Blob`](https://github.com/salortiz/NativeHelpers-Blob) to do this kind of operations.
 
-```
+```Perl6
 my $esponja = blob-from-pointer( $inter, :2elems, :type(Blob[int8]));
 say $esponja;
 ```
 
 # Function arguments
 
-NativeCall also supports native functions that take functions as arguments. One example of this is using function pointers as callbacks in an event-driven system. When binding these functions via NativeCall, one need only provide the equivalent signature as [a constraint on the code parameter](https://docs.perl6.org/type/Signature#Constraining_signatures_of_Callables):
+NativeCall also supports native functions that take functions as arguments. One example of this is using function pointers as callbacks in an event-driven system. When binding these functions via NativeCall, one needs only provide the equivalent signature as [a constraint on the code parameter](https://docs.perl6.org/type/Signature#Constraining_signatures_of_Callables). In the case of NativeCall, however, as of Rakudo 2019.07, a space between the function argument and the signature, and the colon of a normal Signature literal is omitted, as in:
 
-```
+```Perl6
 use NativeCall;
 # void SetCallback(int (*callback)(const char *)) 
 my sub SetCallback(&callback (Str --> int32)) is native('mylib') { * }
@@ -547,7 +549,7 @@ Note: the native code is responsible for memory management of values passed to P
 
 The `native` trait accepts the library name, the full path, or a subroutine returning either of the two. When using the library name, the name is assumed to be prepended with "lib" and appended with ".so" (or just appended with ".dll" on Windows), and will be searched for in the paths in the LD_LIBRARY_PATH (PATH on Windows) environment variable.
 
-```
+```Perl6
 use NativeCall;
 constant LIBMYSQL = 'mysqlclient';
 constant LIBFOO = '/usr/lib/libfoo.so.1';
@@ -563,11 +565,15 @@ sub bar is native(LIBFOO) {*}
 sub baz is native(LIBBAR) {*}
 ```
 
-You can also put an incomplete path like './foo' and NativeCall will automatically put the right extension according to the platform specification.
+You can also put an incomplete path like './foo' and NativeCall will automatically put the right extension according to the platform specification. If you wish to suppress this expansion, simply pass the string as the body of a block.
+
+```Perl6
+sub bar is native({ './lib/Non Standard Naming Scheme' }) {*}
+```
 
 BE CAREFUL: the `native` trait and `constant` are evaluated at compile time. Don't write a constant that depends on a dynamic variable like:
 
-```
+```Perl6
 # WRONG: 
 constant LIBMYSQL = %*ENV<P6LIB_MYSQLCLIENT> || 'mysqlclient';
 ```
@@ -580,7 +586,7 @@ If you write `native('foo')` NativeCall will search libfoo.so under Unix like sy
 
 To avoid that, the `native` trait allows you to specify the API/ABI version. It can be a full version or just a part of it. (Try to stick to Major version, some BSD code does not care for Minor.)
 
-```
+```Perl6
 use NativeCall;
 sub foo1 is native('foo', v1) {*} # Will try to load libfoo.so.1 
 sub foo2 is native('foo', v1.2.3) {*} # Will try to load libfoo.so.1.2.3 
@@ -593,7 +599,7 @@ sub foo3 is native($lib) {*}
 
 The `native` trait also accepts a `Callable` as argument, allowing you to provide your own way to handle the way it will find the library file to load.
 
-```
+```Perl6
 use NativeCall;
 sub foo is native(sub {'libfoo.so.42'}) {*}
 ```
@@ -606,7 +612,7 @@ If you want to call a C function that's already loaded, either from the standard
 
 For example on a UNIX-like operating system, you could use the following code to print the home directory of the current user:
 
-```
+```Perl6
 use NativeCall;
 my class PwStruct is repr('CStruct') {
     has Str $.pw_name;
@@ -629,7 +635,7 @@ Though of course `$*HOME` is a much easier way :-)
 
 Variables exported by a library – also named "global" or "extern" variables – can be accessed using `cglobal`. For example:
 
-```
+```Perl6
 my $var := cglobal('libc.so.6', 'errno', int32)
 ```
 
@@ -645,7 +651,7 @@ The `NativeCall` library exports several subroutines to help you work with data 
 
 ## sub nativecast
 
-```
+```Perl6
 sub nativecast($target-type, $source) is export(:DEFAULT)
 ```
 
@@ -655,7 +661,7 @@ As a special case, if a [Signature](https://docs.perl6.org/type/Signature) is su
 
 ## sub cglobal
 
-```
+```Perl6
 sub cglobal($libname, $symbol, $target-type) is export is rw
 ```
 
@@ -663,7 +669,7 @@ This returns a [Proxy](https://docs.perl6.org/type/Proxy) object that provides a
 
 ## sub nativesizeof
 
-```
+```Perl6
 sub nativesizeof($obj) is export(:DEFAULT)
 ```
 
@@ -671,7 +677,7 @@ This returns the size in bytes of the supplied object, it can be thought of as b
 
 ## sub explicitly-manage
 
-```
+```Perl6
 sub explicitly-manage($str) is export(:DEFAULT)
 ```
 
@@ -691,7 +697,7 @@ The PostgreSQL examples in [DBIish](https://github.com/perl6/DBIish/blob/master/
 
 To use the MySQL example in [DBIish](https://github.com/perl6/DBIish/blob/master/examples/mysql.p6), you'll need to install MySQL server locally; on Debian-esque systems it can be installed with something like:
 
-```
+```Perl6
 wget https://dev.mysql.com/get/mysql-apt-config_0.8.10-1_all.deb
 sudo dpkg -i mysql-apt-config_0.8.10-1_all.deb # Don't forget to select 5.6.x 
 sudo apt-get update
@@ -701,7 +707,7 @@ sudo apt-get install libmysqlclient18 -y
 
 Prepare your system along these lines before trying out the examples:
 
-```
+```Perl6
 $ mysql -u root -p
 SET PASSWORD = PASSWORD('sa');
 DROP DATABASE test;
@@ -712,7 +718,7 @@ CREATE DATABASE test;
 
 Here is an example of a Windows API call:
 
-```
+```Perl6
 use NativeCall;
  
 sub MessageBoxA(int32, Str, Str, int32)
@@ -731,7 +737,7 @@ This is an example for calling a standard function and using the returned inform
 
 The Linux manual provides the following information about the C callable function:
 
-```
+```Perl6
 int getaddrinfo(const char *node, const char *service,
        const struct addrinfo *hints,
        struct addrinfo **res);
@@ -741,7 +747,7 @@ The function returns a response code 0 = error, 1 = success. The data are extrac
 
 From the table of NativeCall Types we know that an `int` is `int32`. We also know that a `char *` is one of the forms C for a C `Str`, which maps simply to Str. But `addrinfo` is a structure, which means we will need to write our own Type class. However, the function declaration is straightforward:
 
-```
+```Perl6
 sub getaddrinfo( Str $node, Str $service, Addrinfo $hints, Pointer $res is rw )
     returns int32
     is native
@@ -752,7 +758,7 @@ Note that $res is to be written by the function, so it must be labeled as rw. Si
 
 We now have to handle structure Addrinfo. The Linux Manual provides this information:
 
-```
+```Perl6
 struct addrinfo {
                int              ai_flags;
                int              ai_family;
@@ -769,9 +775,9 @@ The `int, char*` parts are straightforward. Some research indicates that `sockle
 
 The complication is `sockaddr` which differs depending on whether `ai_socktype` is undefined, INET, or INET6 (a standard v4 IP address or a v6 address).
 
-So we create a Perl 6 `class` to map to the C `struct addrinfo`; while we're at it, we also create another class for `SockAddr` which is needed for it.
+So we create a Perl 6 `class` to map to the C `struct addrinfo`; while we're at it, we also create another class for `SockAddr`which is needed for it.
 
-```
+```Perl6
 class SockAddr is repr('CStruct') {
     has int32    $.sa_family;
     has Str      $.sa_data;
@@ -794,7 +800,7 @@ The `is rw` on the last three attributes reflects that these were defined in C t
 
 The important thing here for mapping to a C `Struct` is the structure of the state part of the class, that is the attributes. However, a class can have methods and `NativeCall` does not 'touch' them for mapping to C. This means that we can add extra methods to the class to unpack the attributes in a more readable manner, e.g.,
 
-```
+```Perl6
 method flags {
     do for AddrInfo-Flags.enums { .key if $!ai_flags +& .value }
 }
@@ -808,7 +814,7 @@ In order to get a human readable IP address, there is the C function `inet_ntop`
 
 Putting all these together, leads to the following program:
 
-```
+```Perl6
 #!/usr/bin/env perl6 
  
 use v6;
@@ -944,7 +950,7 @@ sub MAIN() {
 
 This produces the following output:
 
-```
+```Perl6
 return val: 0
 Name: google.com
 AF_INET SOCK_STREAM

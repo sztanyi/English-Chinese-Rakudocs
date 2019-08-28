@@ -1,9 +1,26 @@
+原文：https://docs.perl6.org/language/hashmap
+
 # 哈希和映射 / Hashes and maps
 
 使用关联数组/字典/哈希
 
 Working with associative arrays/dictionaries/hashes
 
+<!-- MarkdownTOC -->
+
+- [关联角色和关联类 / The associative role and associative classes](#%E5%85%B3%E8%81%94%E8%A7%92%E8%89%B2%E5%92%8C%E5%85%B3%E8%81%94%E7%B1%BB--the-associative-role-and-associative-classes)
+- [可变哈希和不变映射 / Mutable hashes and immutable maps](#%E5%8F%AF%E5%8F%98%E5%93%88%E5%B8%8C%E5%92%8C%E4%B8%8D%E5%8F%98%E6%98%A0%E5%B0%84--mutable-hashes-and-immutable-maps)
+- [哈希赋值 / Hash assignment](#%E5%93%88%E5%B8%8C%E8%B5%8B%E5%80%BC--hash-assignment)
+    - [哈希切片 / Hash slices](#%E5%93%88%E5%B8%8C%E5%88%87%E7%89%87--hash-slices)
+    - [非字符串键（对象哈希） / Non-string keys \(object hash\)](#%E9%9D%9E%E5%AD%97%E7%AC%A6%E4%B8%B2%E9%94%AE%EF%BC%88%E5%AF%B9%E8%B1%A1%E5%93%88%E5%B8%8C%EF%BC%89--non-string-keys-object-hash)
+    - [约束值类型 / Constraint value types](#%E7%BA%A6%E6%9D%9F%E5%80%BC%E7%B1%BB%E5%9E%8B--constraint-value-types)
+- [在哈希键和值上遍历 / Looping over hash keys and values](#%E5%9C%A8%E5%93%88%E5%B8%8C%E9%94%AE%E5%92%8C%E5%80%BC%E4%B8%8A%E9%81%8D%E5%8E%86--looping-over-hash-keys-and-values)
+    - [就地编辑值 / In place editing of values](#%E5%B0%B1%E5%9C%B0%E7%BC%96%E8%BE%91%E5%80%BC--in-place-editing-of-values)
+
+<!-- /MarkdownTOC -->
+
+
+<a id="%E5%85%B3%E8%81%94%E8%A7%92%E8%89%B2%E5%92%8C%E5%85%B3%E8%81%94%E7%B1%BB--the-associative-role-and-associative-classes"></a>
 # 关联角色和关联类 / The associative role and associative classes
 
 [Associative](https://docs.perl6.org/type/Associative) 角色是哈希和映射以及其他类（如 [MixHash](https://docs.perl6.org/type/MixHash)）的基础。它定义了将在关联类中使用的两种类型；默认情况下，你可以使用任何类型（只要是 [Any](https://docs.perl6.org/type/Any) 的子类都可以）[作为键](https://docs.perl6.org/language/hashmap#Non-string_keys_%28object_hash%29)（尽管它的键将会被强制转为字符串）和任何对象作为值。可以使用 `of` 和 `keyof` 方法访问这些类型。
@@ -78,6 +95,7 @@ We override `DELETE-KEY`, `ASSIGN-KEY` and `BIND-KEY`, but only to throw an exce
 
 Making classes associative provides a very convenient way of using and working with them using hashes; an example can be seen in [Cro](https://cro.services/docs/reference/cro-http-client#Setting_the_request_body), which uses it extensively for the convenience of using hashes to define structured requests and express its response.
 
+<a id="%E5%8F%AF%E5%8F%98%E5%93%88%E5%B8%8C%E5%92%8C%E4%B8%8D%E5%8F%98%E6%98%A0%E5%B0%84--mutable-hashes-and-immutable-maps"></a>
 # 可变哈希和不变映射 / Mutable hashes and immutable maps
 
 `Hash` 是从键到值的可变映射（在其他编程语言中称为 *dictionary*、 *hash table* 或 *map*）。这些值都是标量容器，这意味着你可以分配给它们。[Map](https://docs.perl6.org/type/Map) 是不可变的。一旦一个键与一个值配对，就不能更改此配对。
@@ -120,6 +138,7 @@ my %h;
 %h{'new key'} = 'new value';
 ```
 
+<a id="%E5%93%88%E5%B8%8C%E8%B5%8B%E5%80%BC--hash-assignment"></a>
 # 哈希赋值 / Hash assignment
 
 将元素列表赋给散列变量首先清空该变量，然后迭代右侧的元素。如果一个元素是一个 [Pair](https://docs.perl6.org/type/Pair)，那么它的键将作为一个新的哈希键，其值将作为该键的新哈希值。否则，该值被强制转换为 [Str](https://docs.perl6.org/type/Str)并用作哈希键，而列表的下一个元素则作为相应的值。
@@ -253,11 +272,11 @@ my @people = [
 sub lookup-user (Hash $h) { #`(Do something...) $h }
  
 my @names = map {
-    # While this creates a hash: 
+    # 这会创建一个哈希 / While this creates a hash: 
     my  $query = { name => "$person<firstName> $person<lastName>" };
     say $query.^name;      # OUTPUT: «Hash␤» 
  
-    # Doing this will create a Block. Oh no! 
+    # 这样做会创建一个代码块，因为多个 $_ 被使用 / Doing this will create a Block. Oh no! 
     my  $query2 = { name => "$_<firstName> $_<lastName>" };
     say $query2.^name;       # OUTPUT: «Block␤» 
     say $query2<name>;       # fails 
@@ -269,9 +288,14 @@ my @names = map {
 }, @people;
 ```
 
+如果使用了 `%()` 哈希构造函数，就可以避免这种情况。仅使用大括号创建块。
+
 This would have been avoided if you had used the `%()` hash constructor. Only use curly braces for creating Blocks.
 
-## Hash slices
+<a id="%E5%93%88%E5%B8%8C%E5%88%87%E7%89%87--hash-slices"></a>
+## 哈希切片 / Hash slices
+
+可以使用一个切片同时指定多个键。
 
 You can assign to multiple keys at the same time with a slice.
 
@@ -280,15 +304,18 @@ my %h; %h<a b c> = 2 xx *; %h.perl.say;  # OUTPUT: «{:a(2), :b(2), :c(2)}␤»
 my %h; %h<a b c> = ^3;     %h.perl.say;  # OUTPUT: «{:a(0), :b(1), :c(2)}␤»
 ```
 
+<a id="%E9%9D%9E%E5%AD%97%E7%AC%A6%E4%B8%B2%E9%94%AE%EF%BC%88%E5%AF%B9%E8%B1%A1%E5%93%88%E5%B8%8C%EF%BC%89--non-string-keys-object-hash"></a>
+## 非字符串键（对象哈希） / Non-string keys (object hash)
 
-
-## Non-string keys (object hash)
+默认情况下，`{ }` 中的键被强制转换为字符串。要用非字符串键组成哈希，请使用冒号前缀：
 
 By default keys in `{ }` are forced to strings. To compose a hash with non-string keys, use a colon prefix:
 
 ```Perl6
 my $when = :{ (now) => "Instant", (DateTime.now) => "DateTime" };
 ```
+
+注意，当对象作为键时，您通常不能使用 `<...>` 构造进行键查找，因为它只创建字符串和 [allomorphs](https://docs.perl6.org/language/glossary#index-entry-Allomorph)。使用 `{...}` 代替：
 
 Note that with objects as keys, you often cannot use the `<...>` construct for key lookup, as it creates only strings and [allomorphs](https://docs.perl6.org/language/glossary#index-entry-Allomorph). Use the `{...}` instead:
 
@@ -300,6 +327,8 @@ Note that with objects as keys, you often cannot use the `<...>` construct for k
 :{ <0> => 42 }<0>.say;   # IntStr as key, IntStr in lookup; OUTPUT: «42␤»
 ```
 
+*小心*：Rakudo 的实现目前错误地将[相同的规则](https://docs.perl6.org/routine/%7B%20%7D#%28Operators%29_term_%7B_%7D) 应用于 `:{ }` 和它在 `{ }` 中的应用一样，并且可以在某些情况下构造 [Block](https://docs.perl6.org/type/Block)。为了避免这种情况，可以直接实例化参数化哈希。还支持 `%` 标记变量的参数化：
+
 *Note*: Rakudo implementation currently erroneously applies [the same rules](https://docs.perl6.org/routine/%7B%20%7D#%28Operators%29_term_%7B_%7D) for `:{ }` as it does for `{ }` and can construct a [Block](https://docs.perl6.org/type/Block) in certain circumstances. To avoid that, you can instantiate a parameterized Hash directly. Parameterization of `%`-sigiled variables is also supported:
 
 ```Perl6
@@ -308,6 +337,8 @@ my     %foo2{Int} =  0  => "x"; # Int keys and Any values
 my Num %foo3{Int} =  0  => 0e0; # Int keys and Num values 
 Hash[Num,Int].new: 0, 0e0;      # Int keys and Num values
 ```
+
+现在，如果您想定义一个使用对象作为键的散列，而且对象不会被强制类型转换，那么对象散列就是您需要的。
 
 Now if you want to define a hash to preserve the objects you are using as keys *as the **exact** objects you are providing to the hash to use as keys*, then object hashes are what you are looking for.
 
@@ -325,9 +356,13 @@ for %intervals.sort -> (:$key, :$value) {
 }
 ```
 
+此示例使用只接受类型为 [Instant](https://docs.perl6.org/type/Instant) 的键的对象哈希来实现基本的、但类型安全的日志记录机制。我们使用一个命名的 [state](https://docs.perl6.org/language/variables#The_state_declarator) 变量来跟踪前面的 `Instant`，以便提供一个间隔。
+
 This example uses an object hash that only accepts keys of type [Instant](https://docs.perl6.org/type/Instant) to implement a rudimentary, yet type-safe, logging mechanism. We utilize a named [state](https://docs.perl6.org/language/variables#The_state_declarator) variable for keeping track of the previous `Instant` so that we can provide an interval.
 
-The whole point of object hashes is to keep keys as objects-in-themselves. Currently object hashes utilize the [WHICH](https://docs.perl6.org/routine/WHICH)method of an object, which returns a unique identifier for every mutable object. This is the keystone upon which the object identity operator ([===](https://docs.perl6.org/routine/===)) rests. Order and containers really matter here as the order of `.keys` is undefined and one anonymous list is never [===](https://docs.perl6.org/routine/===) to another.
+对象散列的全部要点是将键作为对象保存在它们自身中。当前对象散列使用对象的 [WHICH](https://docs.perl6.org/routine/WHICH) 方法，该方法为每个可变对象返回唯一标识符。这是对象标识操作符（[===](https://docs.perl6.org/routine/===)）的基础。这里的顺序和容器真的很重要，因为 `.keys` 的顺序未定义，并且一个匿名列表与另一个列表使用 [===](https://docs.perl6.org/routine/===) 比较时不会有相等的时候。
+
+The whole point of object hashes is to keep keys as objects-in-themselves. Currently object hashes utilize the [WHICH](https://docs.perl6.org/routine/WHICH) method of an object, which returns a unique identifier for every mutable object. This is the keystone upon which the object identity operator ([===](https://docs.perl6.org/routine/===)) rests. Order and containers really matter here as the order of `.keys` is undefined and one anonymous list is never [===](https://docs.perl6.org/routine/===) to another.
 
 ```Perl6
 my %intervals{Instant};
@@ -342,7 +377,11 @@ say ($first-instant, $second-instant) === %intervals.keys.sort; # OUTPUT: «Fals
 say $first-instant === %intervals.keys.sort[0];                 # OUTPUT: «True␤» 
 ```
 
+由于 `Instant` 定义了自己的比较方法，因此在我们的示例中，根据 [cmp](https://docs.perl6.org/routine/cmp) 进行的排序将始终提供最早的即时对象作为它返回的 [List](https://docs.perl6.org/type/List) 中的第一个元素。
+
 Since `Instant` defines its own comparison methods, in our example a sort according to [cmp](https://docs.perl6.org/routine/cmp) will always provide the earliest instant object as the first element in the [List](https://docs.perl6.org/type/List) it returns.
+
+如果您想接受哈希中的任何对象，可以使用 [Any](https://docs.perl6.org/type/Any)！
 
 If you would like to accept any object whatsoever in your hash, you can use [Any](https://docs.perl6.org/type/Any)!
 
@@ -353,13 +392,19 @@ my %h{Any};
 %h{"completely different"} = "Monty Python references are neither DateTimes nor Instants";
 ```
 
+有一种使用绑定的更简洁的语法。
+
 There is a more concise syntax which uses binding.
 
 ```Perl6
 my %h := :{ (now) => "Instant", (DateTime.now) => "DateTime" };
 ```
 
+绑定是必要的，因为对象散列是关于非常实在的、特定的对象的，这是绑定非常擅长跟踪的东西，但是关于哪个分配本身并不太重要。
+
 The binding is necessary because an object hash is about very solid, specific objects, which is something that binding is great at keeping track of but about which assignment doesn't concern itself much.
+
+自从 6.d 发布以来，[`Junction`s](https://docs.perl6.org/type/Junction) 也可以用作哈希键。结果也将是与键同一类型的 `Junction`。
 
 Since 6.d was released, [`Junction`s](https://docs.perl6.org/type/Junction) can also be used as hash keys. The result will also be a `Junction` of the same type used as key.
 
@@ -370,6 +415,8 @@ say %hash{"b"^"c"};   # OUTPUT: «one(2, 3)␤»
 say %hash{"a" & "c"}; # OUTPUT: «all(1, 3)␤»
 ```
 
+如果使用任何类型的 Junction 来定义键，它将具有将 `Junction` 的元素定义为单独键的相同效果：
+
 If a Junction of any kind is used to define a key, it will have the same effect of defining elements of the `Junction` as separate keys:
 
 ```Perl6
@@ -377,7 +424,10 @@ my %hash = %( "a"|"b" => 1, c => 2 );
 say %hash{"b"|"c"};       # OUTPUT: «any(1, 2)␤» 
 ```
 
-## Constraint value types
+<a id="%E7%BA%A6%E6%9D%9F%E5%80%BC%E7%B1%BB%E5%9E%8B--constraint-value-types"></a>
+## 约束值类型 / Constraint value types
+
+在声明符和名称之间放置一个类型对象，以约束 `Hash` 的所有值的类型。
 
 Place a type object in-between the declarator and the name to constrain the type of all values of a `Hash`.
 
@@ -395,17 +445,23 @@ try {
 # Type check failed in assignment to %h; expected Int but got Str ("string")
 ```
 
+您可以通过更易读的语法来实现这一点。
+
 You can do the same by a more readable syntax.
 
 ```Perl6
 my %h of Int; # the same as my Int %h
 ```
 
+如果要约束 `Hash` 的所有键的类型，请在变量名后面添加 `{Type}`。
+
 If you want to constraint the type of all keys of a `Hash`, add `{Type}` following the name of variable.
 
 ```Perl6
 my %h{Int};
 ```
+
+甚至把这两个约束放在一起。
 
 Even put these two constraints together.
 
@@ -435,7 +491,10 @@ try {
 # Type check failed in binding to parameter 'key'; expected Int but got Str ("string")
 ```
 
-# Looping over hash keys and values
+<a id="%E5%9C%A8%E5%93%88%E5%B8%8C%E9%94%AE%E5%92%8C%E5%80%BC%E4%B8%8A%E9%81%8D%E5%8E%86--looping-over-hash-keys-and-values"></a>
+# 在哈希键和值上遍历 / Looping over hash keys and values
+
+处理哈希中元素的一个常见习惯用法是循环键和值，例如，
 
 A common idiom for processing the elements in a hash is to loop over the keys and values, for instance,
 
@@ -445,6 +504,8 @@ for %vowels.kv -> $vowel, $index {
   "$vowel: $index".say;
 }
 ```
+
+给出与此类似的输出：
 
 gives output similar to this:
 
@@ -456,7 +517,11 @@ u: 5
 i: 3
 ```
 
+其中，我们使用 `kv` 方法从散列中提取键及其各自的值，以便将这些值传递到循环中。
+
 where we have used the `kv` method to extract the keys and their respective values from the hash, so that we can pass these values into the loop.
+
+请注意，不能依赖键和值的打印顺序；对于同一程序的不同运行，哈希的元素并不总是以相同的方式存储在内存中。实际上，自 2018.05 版以来，每次调用的顺序都是不同的。有时人们希望处理排序后的元素，例如哈希的键。如果你想按字母顺序打印元音的列表，那么你可以写
 
 Note that the order of the keys and values printed cannot be relied upon; the elements of a hash are not always stored the same way in memory for different runs of the same program. In fact, since version 2018.05, the order is guaranteed to be different in every invocation. Sometimes one wishes to process the elements sorted on, e.g., the keys of the hash. If one wishes to print the list of vowels in alphabetical order then one would write
 
@@ -467,6 +532,8 @@ for %vowels.sort(*.key)>>.kv -> ($vowel, $index) {
 }
 ```
 
+这会打印出
+
 which prints
 
 ```Perl6
@@ -476,6 +543,8 @@ i: 3
 o: 4
 u: 5
 ```
+
+按字母顺序排列。为了达到这个结果，我们按键对元音散列进行排序（`%vowels.sort(*.key)`），然后通过一元超级运算符 `>>` 向每个元素应用 `.kv` 方法来请求其键和值，从而生成键/值列表的[列表](https://docs.perl6.org/type/List)。要提取键/值，需要将变量括在括号中。
 
 in alphabetical order as desired. To achieve this result, we sorted the hash of vowels by key (`%vowels.sort(*.key)`) which we then ask for its keys and values by applying the `.kv` method to each element via the unary `>>` hyperoperator resulting in a [List](https://docs.perl6.org/type/List) of key/value lists. To extract the key/value the variables thus need to be wrapped in parentheses.
 
@@ -488,9 +557,14 @@ for %vowels.sort(*.key)>>.kv.flat -> $vowel, $index {
 }
 ```
 
+您还可以使用 [destructuring](https://docs.perl6.org/type/Signature#Destructuring_arguments) 遍历 `Hash`。
+
 You can also loop over a `Hash` using [destructuring](https://docs.perl6.org/type/Signature#Destructuring_arguments).
 
-## In place editing of values
+<a id="%E5%B0%B1%E5%9C%B0%E7%BC%96%E8%BE%91%E5%80%BC--in-place-editing-of-values"></a>
+## 就地编辑值 / In place editing of values
+
+有时您可能希望在对哈希值进行迭代时修改这些值。
 
 There may be times when you would like to modify the values of a hash while iterating over them.
 
@@ -502,6 +576,8 @@ CATCH { default { put .^name, ': ', .Str } };
 # OUTPUT: «X::AdHoc: Cannot assign to a readonly variable or a value␤»
 ```
 
+这通常是通过如下发送键和值来完成的。
+
 This is traditionally accomplished by sending both the key and the value as follows.
 
 ```Perl6
@@ -509,12 +585,16 @@ my %answers = illuminatus => 23, hitchhikers => 42;
 for %answers.kv -> $k,$v { %answers{$k} = $v + 10 };
 ```
 
+但是，可以利用代码块的签名来指定要对值进行读写访问。
+
 However, it is possible to leverage the signature of the block in order to specify that you would like read-write access to the values.
 
 ```Perl6
 my %answers = illuminatus => 23, hitchhikers => 42;
 for %answers.values -> $v is rw { $v += 10 };
 ```
+
+即使在对象散列的情况下，也不可能直接就地编辑散列键；但是，可以删除一个键并添加一个新的键/值对以获得相同的结果。例如，给定此哈希值：
 
 It is not possible directly to do in-place editing of hash keys, even in the case of object hashes; however, a key can be deleted and a new key/value pair added to achieve the same results. For example, given this hash:
 
@@ -526,6 +606,8 @@ for %h.keys.sort -> $k {
 }
 say ''; # OUTPUT: «a => 1; b => 2;»␤ 
 ```
+
+用 'bb' 替换键 'b'，但保留 'b' 值作为新键的值：
 
 replace key 'b' with 'bb' but retain 'b's value as the new key's value:
 
