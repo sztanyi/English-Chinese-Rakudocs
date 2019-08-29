@@ -16,11 +16,19 @@ sub some_argless_function() is native('something') { * }
 some_argless_function();
 ```
 
+第一行导入各种特性和类型。下一行看起来像是一个有点扭曲的相对普通的 Perl 6 子声明。我们使用 "native" 特性来指定函数实际上是在原生库中定义的。将为您添加特定于平台的扩展名（例如，`.so` 或 `.dll`），以及任何常用前缀（例如，'lib'）。
+
 The first line imports various traits and types. The next line looks like a relatively ordinary Perl 6 sub declaration—with a twist. We use the "native" trait in order to specify that the sub is actually defined in a native library. The platform-specific extension (e.g., `.so` or `.dll`), as well as any customary prefixes (e.g., 'lib') will be added for you.
+
+第一次调用“某些无参数函数”时，将加载 "libsomething"，并在其中找到 "some_argless_function"。然后再调用这个找到的函数。由于保留了符号句柄，因此后续调用将更快。
 
 The first time you call "some_argless_function", the "libsomething" will be loaded and the "some_argless_function" will be located in it. A call will then be made. Subsequent calls will be faster, since the symbol handle is retained.
 
+当然，大多数函数都接受参数或返回值，但是您所能做的其他一切只是添加到这个简单的模式中，声明一个 Perl 6 函数，用您想要调用的符号命名它，并用 "native" 特性标记它。
+
 Of course, most functions take arguments or return values—but everything else that you can do is just adding to this simple pattern of declaring a Perl 6 sub, naming it after the symbol you want to call and marking it with the "native" trait.
+
+您还需要声明和使用原生类型。有关详细信息，请查看[原生类型页面](https://docs.perl6.org/language/nativetypes)。
 
 You will also need to declare and use native types. Please check [the native types page](https://docs.perl6.org/language/nativetypes) for more information.
 

@@ -315,7 +315,7 @@ By default keys in `{ }` are forced to strings. To compose a hash with non-strin
 my $when = :{ (now) => "Instant", (DateTime.now) => "DateTime" };
 ```
 
-注意，当对象作为键时，您通常不能使用 `<...>` 构造进行键查找，因为它只创建字符串和 [allomorphs](https://docs.perl6.org/language/glossary#index-entry-Allomorph)。使用 `{...}` 代替：
+注意，当对象作为键时，你通常不能使用 `<...>` 构造进行键查找，因为它只创建字符串和 [allomorphs](https://docs.perl6.org/language/glossary#index-entry-Allomorph)。使用 `{...}` 代替：
 
 Note that with objects as keys, you often cannot use the `<...>` construct for key lookup, as it creates only strings and [allomorphs](https://docs.perl6.org/language/glossary#index-entry-Allomorph). Use the `{...}` instead:
 
@@ -338,7 +338,7 @@ my Num %foo3{Int} =  0  => 0e0; # Int keys and Num values
 Hash[Num,Int].new: 0, 0e0;      # Int keys and Num values
 ```
 
-现在，如果您想定义一个使用对象作为键的散列，而且对象不会被强制类型转换，那么对象散列就是您需要的。
+现在，如果你想定义一个使用对象作为键的散列，而且对象不会被强制类型转换，那么对象散列就是你需要的。
 
 Now if you want to define a hash to preserve the objects you are using as keys *as the **exact** objects you are providing to the hash to use as keys*, then object hashes are what you are looking for.
 
@@ -381,7 +381,7 @@ say $first-instant === %intervals.keys.sort[0];                 # OUTPUT: «True
 
 Since `Instant` defines its own comparison methods, in our example a sort according to [cmp](https://docs.perl6.org/routine/cmp) will always provide the earliest instant object as the first element in the [List](https://docs.perl6.org/type/List) it returns.
 
-如果您想接受哈希中的任何对象，可以使用 [Any](https://docs.perl6.org/type/Any)！
+如果你想接受哈希中的任何对象，可以使用 [Any](https://docs.perl6.org/type/Any)！
 
 If you would like to accept any object whatsoever in your hash, you can use [Any](https://docs.perl6.org/type/Any)!
 
@@ -445,7 +445,7 @@ try {
 # Type check failed in assignment to %h; expected Int but got Str ("string")
 ```
 
-您可以通过更易读的语法来实现这一点。
+你可以通过更易读的语法来实现这一点。
 
 You can do the same by a more readable syntax.
 
@@ -557,14 +557,14 @@ for %vowels.sort(*.key)>>.kv.flat -> $vowel, $index {
 }
 ```
 
-您还可以使用 [destructuring](https://docs.perl6.org/type/Signature#Destructuring_arguments) 遍历 `Hash`。
+你还可以使用 [destructuring](https://docs.perl6.org/type/Signature#Destructuring_arguments) 遍历 `Hash`。
 
 You can also loop over a `Hash` using [destructuring](https://docs.perl6.org/type/Signature#Destructuring_arguments).
 
 <a id="%E5%B0%B1%E5%9C%B0%E7%BC%96%E8%BE%91%E5%80%BC--in-place-editing-of-values"></a>
 ## 就地编辑值 / In place editing of values
 
-有时您可能希望在对哈希值进行迭代时修改这些值。
+有时你可能希望在对哈希值进行迭代时修改这些值。
 
 There may be times when you would like to modify the values of a hash while iterating over them.
 
