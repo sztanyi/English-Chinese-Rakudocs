@@ -16,7 +16,7 @@ sub some_argless_function() is native('something') { * }
 some_argless_function();
 ```
 
-第一行导入各种特性和类型。下一行看起来像是一个有点扭曲的相对普通的 Perl 6 子声明。我们使用 "native" 特性来指定函数实际上是在原生库中定义的。将为您添加特定于平台的扩展名（例如，`.so` 或 `.dll`），以及任何常用前缀（例如，'lib'）。
+第一行导入各种特性和类型。下一行看起来像是一个有点扭曲的相对普通的 Perl 6 子声明。我们使用 "native" 特性来指定函数实际上是在原生库中定义的。将为你添加特定于平台的扩展名（例如，`.so` 或 `.dll`），以及任何常用前缀（例如，'lib'）。
 
 The first line imports various traits and types. The next line looks like a relatively ordinary Perl 6 sub declaration—with a twist. We use the "native" trait in order to specify that the sub is actually defined in a native library. The platform-specific extension (e.g., `.so` or `.dll`), as well as any customary prefixes (e.g., 'lib') will be added for you.
 
@@ -24,17 +24,21 @@ The first line imports various traits and types. The next line looks like a rela
 
 The first time you call "some_argless_function", the "libsomething" will be loaded and the "some_argless_function" will be located in it. A call will then be made. Subsequent calls will be faster, since the symbol handle is retained.
 
-当然，大多数函数都接受参数或返回值，但是您所能做的其他一切只是添加到这个简单的模式中，声明一个 Perl 6 函数，用您想要调用的符号命名它，并用 "native" 特性标记它。
+当然，大多数函数都接受参数或返回值，但是你所能做的其他一切只是添加到这个简单的模式中，声明一个 Perl 6 函数，用你想要调用的符号命名它，并用 "native" 特性标记它。
 
 Of course, most functions take arguments or return values—but everything else that you can do is just adding to this simple pattern of declaring a Perl 6 sub, naming it after the symbol you want to call and marking it with the "native" trait.
 
-您还需要声明和使用原生类型。有关详细信息，请查看[原生类型页面](https://docs.perl6.org/language/nativetypes)。
+你还需要声明和使用原生类型。有关详细信息，请查看[原生类型页面](https://docs.perl6.org/language/nativetypes)。
 
 You will also need to declare and use native types. Please check [the native types page](https://docs.perl6.org/language/nativetypes) for more information.
 
-# Changing names
+# 更名 / Changing names
+
+有时，你希望 Perl 子例程的名称与你正在加载的库中使用的名称不同。可能名称很长，或者大小写不同，或者在你试图创建的模块上下文中很麻烦。
 
 Sometimes you want the name of your Perl subroutine to be different from the name used in the library you're loading. Maybe the name is long or has different casing or is otherwise cumbersome within the context of the module you are trying to create.
+
+NativeCall 提供了一个 `symbol` 特性，用于指定库中原生例程的名称，该名称可能与 Perl 子例程的名称不同。
 
 NativeCall provides a `symbol` trait for you to specify the name of the native routine in your library that may be different from your Perl subroutine name.
 
@@ -44,9 +48,13 @@ use NativeCall;
 our sub init() is native('foo') is symbol('FOO_INIT') { * }
 ```
 
+在 `libfoo` 内部有一个名为 `FOO_INIT` 的例程，但是，由于我们正在创建一个名为 Foo 的模块，我们宁愿将该例程称为 `Foo::init`，所以我们使用 `symbol` 特性来指定 `libfoo` 中符号的名称，并根据需要调用子例程（"init"）。
+
 Inside of `libfoo` there is a routine called `FOO_INIT` but, since we're creating a module called Foo and we'd rather call the routine as `Foo::init`, we use the `symbol` trait to specify the name of the symbol in `libfoo` and call the subroutine whatever we want ("init" in this case).
 
-# Passing and returning values
+# 传递和返回值 / Passing and returning values
+
+普通的 Perl 6 签名和 'returns' 特性用于传递原生函数期望的参数类型及其返回的内容。下面是一个例子。
 
 Normal Perl 6 signatures and the `returns` trait are used in order to convey the type of arguments a native function expects and what it returns. Here is an example.
 
@@ -55,7 +63,11 @@ use NativeCall;
 sub add(int32, int32) returns int32 is native("calculator") { * }
 ```
 
+这里，我们声明了函数接受两个 32 位整数并返回一个 32 位整数。你可以在[原生类型](https://docs.perl6.org/language/nativetypes)页面中找到可以传递的其他类型。请注意，缺少 `returns` 特性用于指示 `void` 返回类型。*不要*在指针参数化之外的任何地方使用 `void` 类型。
+
 Here, we have declared that the function takes two 32-bit integers and returns a 32-bit integer. You can find the other types that you may pass in the [native types](https://docs.perl6.org/language/nativetypes) page. Note that the lack of a `returns` trait is used to indicate `void` return type. Do *not*use the `void` type anywhere except in the Pointer parameterization.
+
+对于字符串，还有一个附加的 `encoded` 特性来提供一些关于如何进行封送处理的额外提示。
 
 For strings, there is an additional `encoded` trait to give some extra hints on how to do the marshaling.
 
@@ -64,6 +76,8 @@ use NativeCall;
 sub message_box(Str is encoded('utf8')) is native('gui') { * }
 ```
 
+要指定如何封送字符串返回类型，只需将此特性应用于例程本身。
+
 To specify how to marshal string return types, just apply this trait to the routine itself.
 
 ```Perl6
@@ -71,18 +85,25 @@ use NativeCall;
 sub input_box() returns Str is encoded('utf8') is native('gui') { * }
 ```
 
+请注意，可以通过传递 Str 类型对象来传递 `NULL` 字符串指针；类型对象也将表示 `NULL` 返回。
+
 Note that a `NULL` string pointer can be passed by passing the Str type object; a `NULL` return will also be represented by the type object.
+
+如果 C 函数要求字符串的生存期超过函数调用，则必须手动对参数进行编码，并将其作为 `CArray[uint8]` 传递：
 
 If the C function requires the lifetime of a string to exceed the function call, the argument must be manually encoded and passed as `CArray[uint8]`:
 
 ```Perl6
 use NativeCall;
+
 # C prototype is void set_foo(const char *) 
 sub set_foo(CArray[uint8]) is native('foo') { * }
+
 # C prototype is void use_foo(void) 
 sub use_foo() is native('foo') { * } # will use pointer stored by set_foo() 
  
 my $string = "FOO";
+
 # The lifetime of this variable must be equal to the required lifetime of 
 # the data passed to the C function. 
 my $array = CArray[uint8].new($string.encode.list);
@@ -93,7 +114,9 @@ use_foo();
 # It's fine if $array goes out of scope starting from here.
 ```
 
-# Specifying the native representation
+# 详细说明原生表示 / Specifying the native representation
+
+在使用原生函数时，有时需要指定将使用哪种原生数据结构。使用 `is repr` 来指定。
 
 When working with native functions, sometimes you need to specify what kind of native data structure is going to be used. `is repr` is the term employed for that.
 
@@ -114,9 +137,13 @@ my $result = clock_gettime( 0, $this-time);
 say "$result, $this-time"; # OUTPUT: «0, timespec<65385480>␤» 
 ```
 
+我们调用的原始函数 [clock_gettime](https://linux.die.net/man/3/clock_gettime) 使用指向 `timespec` 结构的指针作为第二个参数。我们在这里将其声明为 [class](https://docs.perl6.org/syntax/class)，但将其表示形式指定为 `is repr('CStruct')`，以指示它对应于 C 数据结构。当我们创建该类的对象时，我们创建的正是 `clock_gettime` 所期望的指针类型。这样，可以无缝地将数据传输到原生接口或从原生接口传输数据。
+
 The original function we are calling, [clock_gettime](https://linux.die.net/man/3/clock_gettime), uses a pointer to the `timespec` struct as second argument. We declare it as a [class](https://docs.perl6.org/syntax/class) here, but specify its representation as `is repr('CStruct')`, to indicate it corresponds to a C data structure. When we create an object of that class, we are creating exactly the kind of pointer `clock_gettime` expects. This way, data can be transferred seamlessly to and from the native interface.
 
-# Basic use of pointers
+# 指针的基本使用 / Basic use of pointers
+
+当原生函数的签名需要指向某个原生类型（`int32`，`uint32`，等等）的指针时，只需声明参数 `is rw`:
 
 When the signature of your native function needs a pointer to some native type (`int32`, `uint32`, etc.) all you need to do is declare the argument `is rw` :
 
@@ -127,6 +154,8 @@ sub my_version(int32 is rw, int32 is rw) is native('foo') { * }
 my_version(my int32 $major, my int32 $minor); # Pass a pointer to
 ```
 
+有时你需要从 C 库中获取一个指针（例如库句柄）。你不在乎它指的是什么-你只需要抓住它。Pointer 类型为此而生。
+
 Sometimes you need to get a pointer (for example, a library handle) back from a C library. You don't care about what it points to - you just need to keep hold of it. The Pointer type provides for this.
 
 ```Perl6
@@ -134,6 +163,8 @@ use NativeCall;
 sub Foo_init() returns Pointer is native("foo") { * }
 sub Foo_free(Pointer) is native("foo") { * }
 ```
+
+这是可行的，但你可能会喜欢使用名字比 Pointer 更好的类型事实证明，任何具有表示 "CPointer" 的类都可以充当这个角色。这意味着你可以通过编写这样的类来公开处理句柄的库：
 
 This works out OK, but you may fancy working with a type named something better than Pointer. It turns out that any class with the representation "CPointer" can serve this role. This means you can expose libraries that work on handles by writing a class like this:
 
@@ -167,7 +198,11 @@ class FooHandle is repr('CPointer') {
 }
 ```
 
+请注意，CPointer 表示只能保存 C 指针。这意味着类不能有额外的属性。然而，对于简单的库来说，这可能是一个向其公开面向对象接口的好方法。
+
 Note that the CPointer representation can do nothing more than hold a C pointer. This means that your class cannot have extra attributes. However, for simple libraries this may be a neat way to expose an object oriented interface to it.
+
+当然，你可以始终拥有一个空类：
 
 Of course, you can always have an empty class:
 
@@ -175,13 +210,21 @@ Of course, you can always have an empty class:
 class DoorHandle is repr('CPointer') { }
 ```
 
+像使用指针一样使用这个类，但有可能获得更好的类型安全性和更可读的代码。
+
 And just use the class as you would use Pointer, but with potential for better type safety and more readable code.
+
+类型对象再次用于表示空指针。
 
 Once again, type objects are used to represent NULL pointers.
 
-# Function pointers
+# 函数指针 / Function pointers
+
+C 库可以将指向 C 函数的指针公开为函数的返回值和结构（如结构和联合）的成员。
 
 C libraries can expose pointers to C functions as return values of functions and as members of Structures like, e.g., structs and unions.
+
+调用函数 "f" 返回的函数指针 "$fptr" 的示例，使用定义所需函数参数和返回值的签名：
 
 Example of invoking a function pointer "$fptr" returned by a function "f", using a signature defining the desired function parameters and return value:
 
@@ -194,11 +237,17 @@ my &newfunc = nativecast(:(Str, size_t --> int32), $fptr);
 say newfunc("test", 4);
 ```
 
-# Arrays
+# 数组 / Arrays
+
+NativeCall 对数组有一些支持。它被限制使用机器大小的整数、双精度数和字符串、大小数值类型、指针数组、结构数组和数组的数组。
 
 NativeCall has some support for arrays. It is constrained to work with machine-size integers, doubles and strings, sized numeric types, arrays of pointers, arrays of structs, and arrays of arrays.
 
+Perl 6 数组除了支持惰性之外，在内存中的布局与C数组截然不同。因此，NativeCall 库提供了一种更为原始的 CArray 类型，在使用 C 数组时必须使用它。
+
 Perl 6 arrays, which support amongst other things laziness, are laid out in memory in a radically different way to C arrays. Therefore, the NativeCall library offers a much more primitive CArray type, which you must use if working with C arrays.
+
+下面是传递 C 数组的示例。
 
 Here is an example of passing a C array.
 
@@ -215,6 +264,8 @@ my @values := CArray[num64].new;
 RenderBarChart('Weights (kg)', 3, @titles, @values);
 ```
 
+请注意，绑定用于 `@titles`，*而不是*赋值！如果你赋值，你将把这些值放入一个 Perl 6 数组中，它将不起作用。如果这一切都让你抓狂了，那就忘了你对 `@` 符号有任何了解，在使用 NativeCall 时只需一直使用 `$`。
+
 Note that binding was used to `@titles`, *not* assignment! If you assign, you are putting the values into a Perl 6 array, and it will not work out. If this all freaks you out, forget you ever knew anything about the `@` sigil and just use `$` all the way when using NativeCall.
 
 ```Perl6
@@ -225,7 +276,11 @@ $titles[1] = 'You';
 $titles[2] = 'Hagrid';
 ```
 
+获取数组的返回值的效果是一样的。
+
 Getting return values for arrays works out just the same.
+
+某些库 API 可能将数组作为缓冲区，该缓冲区将由 C 函数填充，例如，返回实际填充的项目数：
 
 Some library APIs may take an array as a buffer that will be populated by the C function and, for instance, return the actual number of items populated:
 
@@ -233,6 +288,8 @@ Some library APIs may take an array as a buffer that will be populated by the C 
 use NativeCall;
 sub get_n_ints(CArray[int32], int32) returns int32 is native('ints') { * }
 ```
+
+在这些情况下，在将 CArray 传递给原生子程序之前，填充元素的数量是很重要的，否则 C 函数可能会在 Perl 的内存中堆积，从而导致可能无法预测的行为：
 
 In these cases it is important that the CArray has at least the number of elements that are going to be populated before passing it to the native subroutine, otherwise the C function may stomp all over Perl's memory leading to possibly unpredictable behavior:
 
@@ -242,6 +299,8 @@ my $ints = CArray[int32].allocate($number_of_ints); # instantiates an array with
 my $n = get_n_ints($ints, $number_of_ints);
 ```
 
+*注*： `allocate` 在 Rakudo 2018.05 中引入。在此之前，必须使用此机制将数组扩展到多个元素：
+
 *Note*: `allocate` was introduced in Rakudo 2018.05. Before that, you had to use this mechanism to extend an array to a number of elements:
 
 ```Perl6
@@ -250,17 +309,29 @@ my $number_of_ints = 10;
 $ints[$number_of_ints - 1] = 0; # extend the array to 10 items 
 ```
 
+要理解数组的内存管理是很重要的。当你自己创建一个数组时，你可以根据需要向它添加元素，并且它将根据需要进行扩展。但是，这可能会导致它在内存中被移动（但是，对现有元素的分配永远不会导致这种情况）。这意味着，如果在将数组传递到 C 库后，再操作数组，你最好知道自己在做什么。
+
 The memory management of arrays is important to understand. When you create an array yourself, then you can add elements to it as you wish and it will be expanded for you as required. However, this may result in it being moved in memory (assignments to existing elements will never cause this, however). This means you'd best know what you're doing if you twiddle with an array after passing it to a C library.
+
+相反，当 C 库向你返回一个数组时，内存就不能由 NativeCall 管理，而且它不知道数组的结束位置。想必，库 API 中的某些内容告诉了你这一点（例如，你知道当你看到一个空元素时，不应该再进一步阅读）。请注意，NativeCall 在这里不能为你提供任何保护—做错误的事情，你将得到一个 segfault 或导致内存损坏。这不是 NativeCall 的缺点，这是又大又坏的原生世界的工作方式。害怕了？来，拥抱一下。祝你好运！
 
 By contrast, when a C library returns an array to you, then the memory can not be managed by NativeCall, and it doesn't know where the array ends. Presumably, something in the library API tells you this (for example, you know that when you see a null element, you should read no further). Note that NativeCall can offer you no protection whatsoever here - do the wrong thing, and you will get a segfault or cause memory corruption. This isn't a shortcoming of NativeCall, it's the way the big bad native world works. Scared? Here, have a hug. Good luck!
 
-## CArray methods
+## CArray 方法 / CArray methods
+
+除了每个 Perl 6 实例上可用的常规方法之外，`CArray` 还提供了以下方法，从 Perl 6 的角度来看，这些方法可以用来和它进行交互：
 
 Besides the usual methods available on every Perl 6 instance, `CArray` provides the following methods that can be used to interact with the it from the Perl 6 point of view:
+
+- `elems` 提供了数组中的元素数；
+- `at-pos` 在给定位置提供特定元素（从零开始）；
+- `list` 提供从原生数组迭代器生成数组中元素的[列表](https://docs.perl6.org/type/List)。
 
 - `elems` provides the number of elements within the array;
 - `AT-POS` provides a specific element at the given position (starting from zero);
 - `list` provides the [List](https://docs.perl6.org/type/List) of elements within the array building it from the native array iterator.
+
+例如，考虑以下简单的代码：
 
 As an example, consider the following simple piece of code:
 
@@ -283,6 +354,8 @@ for 0..$native-array.elems - 1 -> $position {
  
 ```
 
+产生以下输出
+
 that produces the following output
 
 ```Perl6
@@ -299,7 +372,9 @@ Element at position 3 is 4
 Element at position 4 is 5
 ```
 
-# Structs
+# 结构体 / Structs
+
+由于表示多态性，可以声明一个外观正常的 Perl 6 类，该类在底层以 C 编译器将它们放在类似结构定义中的方式存储其属性。只需使用 "repr" 特性：
 
 Thanks to representation polymorphism, it's possible to declare a normal looking Perl 6 class that, under the hood, stores its attributes in the same way a C compiler would lay them out in a similar struct definition. All it takes is a quick use of the "repr" trait:
 
@@ -310,9 +385,15 @@ class Point is repr('CStruct') {
 }
 ```
 
+属性只能是 NativeCall 知道如何封送到结构字段中的类型。当前，结构可以包含机器大小的整数、双精度数、字符串和其他 NativeCall 对象（CArrays，以及使用 CPointer 和 CStruct repr 的对象）。除此之外，你可以对一个类执行通常的一组操作；你甚至可以让一些属性来自角色或从另一个类继承它们。当然，方法也很好。疯狂吧！
+
 The attributes can only be of the types that NativeCall knows how to marshal into struct fields. Currently, structs can contain machine-sized integers, doubles, strings, and other NativeCall objects (CArrays, and those using the CPointer and CStruct reprs). Other than that, you can do the usual set of things you would with a class; you could even have some of the attributes come from roles or have them inherited from another class. Of course, methods are completely fine too. Go wild!
 
+CStruct 对象通过引用传递给原生函数，原生函数还必须通过引用返回 CStruct 对象。这些引用的内存管理规则非常类似于数组的规则，但更简单，因为从未调整结构的大小。当你创建一个结构时，内存是为你管理的，当指向 CStruct 实例的变量消失时，当 GC 遇到它时，内存将被释放。当基于 CStruct 的类型用作原生函数的返回类型时，GC 不会为你管理内存。
+
 CStruct objects are passed to native functions by reference and native functions must also return CStruct objects by reference. The memory management rules for these references are very much like the rules for arrays, though simpler since a struct is never resized. When you create a struct, the memory is managed for you and when the variable(s) pointing to the instance of a CStruct go away, the memory will be freed when the GC gets to it. When a CStruct-based type is used as the return type of a native function, the memory is not managed for you by the GC.
+
+NativeCall 当前不将对象成员放入容器中，因此为其分配新值（with=）不起作用。相反，你必须将新值绑定到私有成员：
 
 NativeCall currently doesn't put object members in containers, so assigning new values to them (with =) doesn't work. Instead, you have to bind new values to the private members:
 
@@ -333,9 +414,13 @@ class MyStruct is repr('CStruct') {
 }
 ```
 
+正如你现在所预测的，空指针由结构类型的类型对象表示。
+
 As you may have predicted by now, a NULL pointer is represented by the type object of the struct type.
 
 ## CUnions
+
+同样，可以声明一个 Perl 6 类，它以 C 编译器在类似的 `union` 定义中对其属性进行布局的方式存储其属性；使用 `CUnion` 表示：
 
 Likewise, it is possible to declare a Perl 6 class that stores its attributes the same way a C compiler would lay them out in a similar `union` definition; using the `CUnion` representation:
 
@@ -351,7 +436,9 @@ say nativesizeof(MyUnion.new);  # OUTPUT: «8␤»
                                 # ie. max(sizeof(MyUnion.flags32), sizeof(MyUnion.flags64)) 
 ```
 
-## Embedding CStructs and CUnions
+## 嵌入 CStruct 和 CUnion / Embedding CStructs and CUnions
+
+CStruct 和 CUnion 可以依次被周围的 CStruct 和 CUnion 所引用或嵌入。要说前者，我们像往常一样使用 `has`，而要说后者，我们使用 `HAS` 声明符：
 
 CStructs and CUnions can be in turn referenced by—or embedded into—a surrounding CStruct and CUnion. To say the former we use `has` as usual, and to do the latter we use the `HAS` declarator instead:
 
@@ -373,11 +460,13 @@ say nativesizeof(MyStruct2.new);  # OUTPUT: «24␤»
                                   # ie. sizeof(struct Point) + sizeof(int32_t) 
 ```
 
-## Notes on memory management
+## 内存管理注意事项 / Notes on memory management
+
+当分配用作结构的结构时，请确保在 C 函数中分配自己的内存。如果要将结构传递到需要提前分配 `Str`/`char*` 的 C 函数中，请确保在将结构传递到函数之前为 `Str` 类型的变量分配一个容器。
 
 When allocating a struct for use as a struct, make sure that you allocate your own memory in your C functions. If you're passing a struct into a C function which needs a `Str`/`char*` allocated ahead of time, be sure to assign a container for a variable of type `Str` prior to passing your struct into the function.
 
-### In your Perl 6 code...
+### 在你的 Perl 6 代码中 / In your Perl 6 code...
 
 ```Perl6
 class AStringAndAnInt is repr("CStruct") {
@@ -393,11 +482,13 @@ class AStringAndAnInt is repr("CStruct") {
  
 ```
 
+在这段代码中，我们首先设置成员 `$.a_string` 和 `$.an_int32`。在此之后，我们声明 `init_struct()` 函数为了 `init()` 方法可以将其进行包装；然后从 `BUILD` 调用此函数，以便在返回创建的对象之前有效地分配值。
+
 In this code we first set up our members, `$.a_string` and `$.an_int32`. After that we declare our `init_struct()` function for the `init()` method to wrap around; this function is then called from `BUILD` to effectively assign the values before returning the created object.
 
-### In your C code...
+### 在你的 C 代码中 / In your C code...
 
-```Perl6
+```C
 typedef struct a_string_and_an_int32_t_ {
   char *a_string;
   int32_t an_int32;
@@ -405,9 +496,11 @@ typedef struct a_string_and_an_int32_t_ {
  
 ```
 
+这是结构。注意这里有一个 `char *`。
+
 Here's the structure. Notice how we've got a `char *` there.
 
-```Perl6
+```C
 void init_struct(a_string_and_an_int32_t *target, char *str, int32_t int32) {
   target->an_int32 = int32;
   target->a_string = strdup(str);
@@ -416,6 +509,8 @@ void init_struct(a_string_and_an_int32_t *target, char *str, int32_t int32) {
 }
  
 ```
+
+在这个函数中，我们通过按值分配一个整数并通过引用传递字符串来初始化 C 结构。函数在复制字符串时，在结构中分配指向 <char *a_string> 的内存。（注意，你还必须管理内存的释放，以避免内存泄漏。）
 
 In this function we initialize the C structure by assigning an integer by value, and passing the string by reference. The function allocates memory that it points <char *a_string> to within the structure as it copies the string. (Note you will also have to manage deallocation of the memory as well to avoid memory leaks.)
 
@@ -426,7 +521,7 @@ say "foo is {$foo.a_string} and {$foo.an_int32}";
 # OUTPUT: «foo is str and 123␤» 
 ```
 
-# Typed pointers
+# 类型化指针 / Typed pointers
 
 You can type your `Pointer` by passing the type as a parameter. It works with the native type but also with `CArray` and `CStruct`defined types. NativeCall will not implicitly allocate the memory for it even when calling `new` on them. It's mostly useful in the case of a C routine returning a pointer, or if it's a pointer embedded in a `CStruct`.
 
@@ -483,7 +578,7 @@ Void pointers can also be used by declaring them `Pointer[void]`. Please consult
 
 Let's say there is some C code that caches strings passed, like so:
 
-```Perl6
+```C
 #include <stdlib.h> 
  
 static char *__VERSION;
