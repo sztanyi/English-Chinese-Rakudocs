@@ -1,9 +1,52 @@
+原文：https://docs.perl6.org/language/nativecall
+
 # 原生调用协议 / Native calling interface
 
 调用遵循 C 语言调用约定的动态库
 
 Call into dynamic libraries that follow the C calling convention
 
+<!-- MarkdownTOC -->
+
+- [开始 / Getting started](#%E5%BC%80%E5%A7%8B--getting-started)
+- [更名 / Changing names](#%E6%9B%B4%E5%90%8D--changing-names)
+- [传递和返回值 / Passing and returning values](#%E4%BC%A0%E9%80%92%E5%92%8C%E8%BF%94%E5%9B%9E%E5%80%BC--passing-and-returning-values)
+- [详细说明原生表示 / Specifying the native representation](#%E8%AF%A6%E7%BB%86%E8%AF%B4%E6%98%8E%E5%8E%9F%E7%94%9F%E8%A1%A8%E7%A4%BA--specifying-the-native-representation)
+- [指针的基本使用 / Basic use of pointers](#%E6%8C%87%E9%92%88%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8--basic-use-of-pointers)
+- [函数指针 / Function pointers](#%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88--function-pointers)
+- [数组 / Arrays](#%E6%95%B0%E7%BB%84--arrays)
+    - [CArray 方法 / CArray methods](#carray-%E6%96%B9%E6%B3%95--carray-methods)
+- [结构体 / Structs](#%E7%BB%93%E6%9E%84%E4%BD%93--structs)
+    - [CUnions](#cunions)
+    - [嵌入 CStruct 和 CUnion / Embedding CStructs and CUnions](#%E5%B5%8C%E5%85%A5-cstruct-%E5%92%8C-cunion--embedding-cstructs-and-cunions)
+    - [内存管理注意事项 / Notes on memory management](#%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9--notes-on-memory-management)
+        - [在你的 Perl 6 代码中 / In your Perl 6 code...](#%E5%9C%A8%E4%BD%A0%E7%9A%84-perl-6-%E4%BB%A3%E7%A0%81%E4%B8%AD--in-your-perl-6-code)
+        - [在你的 C 代码中 / In your C code...](#%E5%9C%A8%E4%BD%A0%E7%9A%84-c-%E4%BB%A3%E7%A0%81%E4%B8%AD--in-your-c-code)
+- [类型化指针 / Typed pointers](#%E7%B1%BB%E5%9E%8B%E5%8C%96%E6%8C%87%E9%92%88--typed-pointers)
+- [字符串 / Strings](#%E5%AD%97%E7%AC%A6%E4%B8%B2--strings)
+    - [显式内存管理 / Explicit memory management](#%E6%98%BE%E5%BC%8F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86--explicit-memory-management)
+    - [缓冲区和二进制大对象 / Buffers and blobs](#%E7%BC%93%E5%86%B2%E5%8C%BA%E5%92%8C%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%A4%A7%E5%AF%B9%E8%B1%A1--buffers-and-blobs)
+- [函数参数 / Function arguments](#%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0--function-arguments)
+- [库路径和名称 / Library paths and names](#%E5%BA%93%E8%B7%AF%E5%BE%84%E5%92%8C%E5%90%8D%E7%A7%B0--library-paths-and-names)
+    - [ABI/API 版本 / ABI/API version](#abiapi-%E7%89%88%E6%9C%AC--abiapi-version)
+    - [例程 / Routine](#%E4%BE%8B%E7%A8%8B--routine)
+    - [调用标准库 / Calling into the standard library](#%E8%B0%83%E7%94%A8%E6%A0%87%E5%87%86%E5%BA%93--calling-into-the-standard-library)
+- [导出变量 / Exported variables](#%E5%AF%BC%E5%87%BA%E5%8F%98%E9%87%8F--exported-variables)
+- [C++ 支持 / C++ support](#c-%E6%94%AF%E6%8C%81--c-support)
+- [帮助程序函数 / Helper functions](#%E5%B8%AE%E5%8A%A9%E7%A8%8B%E5%BA%8F%E5%87%BD%E6%95%B0--helper-functions)
+    - [nativecast 子例程 / sub nativecast](#nativecast-%E5%AD%90%E4%BE%8B%E7%A8%8B--sub-nativecast)
+    - [cglobal 子例程 / sub cglobal](#cglobal-%E5%AD%90%E4%BE%8B%E7%A8%8B--sub-cglobal)
+    - [nativesizeof 子例程 / sub nativesizeof](#nativesizeof-%E5%AD%90%E4%BE%8B%E7%A8%8B--sub-nativesizeof)
+    - [explicitly-manage 子例程 / sub explicitly-manage](#explicitly-manage-%E5%AD%90%E4%BE%8B%E7%A8%8B--sub-explicitly-manage)
+- [例子 / Examples](#%E4%BE%8B%E5%AD%90--examples)
+    - [PostgreSQL](#postgresql)
+    - [MySQL](#mysql)
+    - [微软 Windows 系统 / Microsoft Windows](#%E5%BE%AE%E8%BD%AF-windows-%E7%B3%BB%E7%BB%9F--microsoft-windows)
+    - [调用 C 函数的简短教程 / Short tutorial on calling a C function](#%E8%B0%83%E7%94%A8-c-%E5%87%BD%E6%95%B0%E7%9A%84%E7%AE%80%E7%9F%AD%E6%95%99%E7%A8%8B--short-tutorial-on-calling-a-c-function)
+
+<!-- /MarkdownTOC -->
+
+<a id="%E5%BC%80%E5%A7%8B--getting-started"></a>
 # 开始 / Getting started
 
 `NativeCall` 最简单的用法如下：
@@ -32,6 +75,7 @@ Of course, most functions take arguments or return values—but everything else 
 
 You will also need to declare and use native types. Please check [the native types page](https://docs.perl6.org/language/nativetypes) for more information.
 
+<a id="%E6%9B%B4%E5%90%8D--changing-names"></a>
 # 更名 / Changing names
 
 有时，你希望 Perl 子例程的名称与你正在加载的库中使用的名称不同。可能名称很长，或者大小写不同，或者在你试图创建的模块上下文中很麻烦。
@@ -52,6 +96,7 @@ our sub init() is native('foo') is symbol('FOO_INIT') { * }
 
 Inside of `libfoo` there is a routine called `FOO_INIT` but, since we're creating a module called Foo and we'd rather call the routine as `Foo::init`, we use the `symbol` trait to specify the name of the symbol in `libfoo` and call the subroutine whatever we want ("init" in this case).
 
+<a id="%E4%BC%A0%E9%80%92%E5%92%8C%E8%BF%94%E5%9B%9E%E5%80%BC--passing-and-returning-values"></a>
 # 传递和返回值 / Passing and returning values
 
 普通的 Perl 6 签名和 'returns' 特性用于传递原生函数期望的参数类型及其返回的内容。下面是一个例子。
@@ -114,6 +159,7 @@ use_foo();
 # It's fine if $array goes out of scope starting from here.
 ```
 
+<a id="%E8%AF%A6%E7%BB%86%E8%AF%B4%E6%98%8E%E5%8E%9F%E7%94%9F%E8%A1%A8%E7%A4%BA--specifying-the-native-representation"></a>
 # 详细说明原生表示 / Specifying the native representation
 
 在使用原生函数时，有时需要指定将使用哪种原生数据结构。使用 `is repr` 来指定。
@@ -141,6 +187,7 @@ say "$result, $this-time"; # OUTPUT: «0, timespec<65385480>␤»
 
 The original function we are calling, [clock_gettime](https://linux.die.net/man/3/clock_gettime), uses a pointer to the `timespec` struct as second argument. We declare it as a [class](https://docs.perl6.org/syntax/class) here, but specify its representation as `is repr('CStruct')`, to indicate it corresponds to a C data structure. When we create an object of that class, we are creating exactly the kind of pointer `clock_gettime` expects. This way, data can be transferred seamlessly to and from the native interface.
 
+<a id="%E6%8C%87%E9%92%88%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8--basic-use-of-pointers"></a>
 # 指针的基本使用 / Basic use of pointers
 
 当原生函数的签名需要指向某个原生类型（`int32`，`uint32`，等等）的指针时，只需声明参数 `is rw`:
@@ -218,6 +265,7 @@ And just use the class as you would use Pointer, but with potential for better t
 
 Once again, type objects are used to represent NULL pointers.
 
+<a id="%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88--function-pointers"></a>
 # 函数指针 / Function pointers
 
 C 库可以将指向 C 函数的指针公开为函数的返回值和结构（如结构和联合）的成员。
@@ -237,6 +285,7 @@ my &newfunc = nativecast(:(Str, size_t --> int32), $fptr);
 say newfunc("test", 4);
 ```
 
+<a id="%E6%95%B0%E7%BB%84--arrays"></a>
 # 数组 / Arrays
 
 NativeCall 对数组有一些支持。它被限制使用机器大小的整数、双精度数和字符串、大小数值类型、指针数组、结构数组和数组的数组。
@@ -317,6 +366,7 @@ The memory management of arrays is important to understand. When you create an a
 
 By contrast, when a C library returns an array to you, then the memory can not be managed by NativeCall, and it doesn't know where the array ends. Presumably, something in the library API tells you this (for example, you know that when you see a null element, you should read no further). Note that NativeCall can offer you no protection whatsoever here - do the wrong thing, and you will get a segfault or cause memory corruption. This isn't a shortcoming of NativeCall, it's the way the big bad native world works. Scared? Here, have a hug. Good luck!
 
+<a id="carray-%E6%96%B9%E6%B3%95--carray-methods"></a>
 ## CArray 方法 / CArray methods
 
 除了每个 Perl 6 实例上可用的常规方法之外，`CArray` 还提供了以下方法，从 Perl 6 的角度来看，这些方法可以用来和它进行交互：
@@ -372,6 +422,7 @@ Element at position 3 is 4
 Element at position 4 is 5
 ```
 
+<a id="%E7%BB%93%E6%9E%84%E4%BD%93--structs"></a>
 # 结构体 / Structs
 
 由于表示多态性，可以声明一个外观正常的 Perl 6 类，该类在底层以 C 编译器将它们放在类似结构定义中的方式存储其属性。只需使用 "repr" 特性：
@@ -418,6 +469,7 @@ class MyStruct is repr('CStruct') {
 
 As you may have predicted by now, a NULL pointer is represented by the type object of the struct type.
 
+<a id="cunions"></a>
 ## CUnions
 
 同样，可以声明一个 Perl 6 类，它以 C 编译器在类似的 `union` 定义中对其属性进行布局的方式存储其属性；使用 `CUnion` 表示：
@@ -436,6 +488,7 @@ say nativesizeof(MyUnion.new);  # OUTPUT: «8␤»
                                 # ie. max(sizeof(MyUnion.flags32), sizeof(MyUnion.flags64)) 
 ```
 
+<a id="%E5%B5%8C%E5%85%A5-cstruct-%E5%92%8C-cunion--embedding-cstructs-and-cunions"></a>
 ## 嵌入 CStruct 和 CUnion / Embedding CStructs and CUnions
 
 CStruct 和 CUnion 可以依次被周围的 CStruct 和 CUnion 所引用或嵌入。要说前者，我们像往常一样使用 `has`，而要说后者，我们使用 `HAS` 声明符：
@@ -460,12 +513,14 @@ say nativesizeof(MyStruct2.new);  # OUTPUT: «24␤»
                                   # ie. sizeof(struct Point) + sizeof(int32_t) 
 ```
 
+<a id="%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9--notes-on-memory-management"></a>
 ## 内存管理注意事项 / Notes on memory management
 
 当分配用作结构的结构时，请确保在 C 函数中分配自己的内存。如果要将结构传递到需要提前分配 `Str`/`char*` 的 C 函数中，请确保在将结构传递到函数之前为 `Str` 类型的变量分配一个容器。
 
 When allocating a struct for use as a struct, make sure that you allocate your own memory in your C functions. If you're passing a struct into a C function which needs a `Str`/`char*` allocated ahead of time, be sure to assign a container for a variable of type `Str` prior to passing your struct into the function.
 
+<a id="%E5%9C%A8%E4%BD%A0%E7%9A%84-perl-6-%E4%BB%A3%E7%A0%81%E4%B8%AD--in-your-perl-6-code"></a>
 ### 在你的 Perl 6 代码中 / In your Perl 6 code...
 
 ```Perl6
@@ -486,6 +541,7 @@ class AStringAndAnInt is repr("CStruct") {
 
 In this code we first set up our members, `$.a_string` and `$.an_int32`. After that we declare our `init_struct()` function for the `init()` method to wrap around; this function is then called from `BUILD` to effectively assign the values before returning the created object.
 
+<a id="%E5%9C%A8%E4%BD%A0%E7%9A%84-c-%E4%BB%A3%E7%A0%81%E4%B8%AD--in-your-c-code"></a>
 ### 在你的 C 代码中 / In your C code...
 
 ```C
@@ -521,9 +577,12 @@ say "foo is {$foo.a_string} and {$foo.an_int32}";
 # OUTPUT: «foo is str and 123␤» 
 ```
 
+<a id="%E7%B1%BB%E5%9E%8B%E5%8C%96%E6%8C%87%E9%92%88--typed-pointers"></a>
 # 类型化指针 / Typed pointers
 
-You can type your `Pointer` by passing the type as a parameter. It works with the native type but also with `CArray` and `CStruct`defined types. NativeCall will not implicitly allocate the memory for it even when calling `new` on them. It's mostly useful in the case of a C routine returning a pointer, or if it's a pointer embedded in a `CStruct`.
+你可以通过将类型作为参数传递来键入 `Pointer`。它可以与原生类型一起使用，也可以与 `CArray` 和 `CStruct` 定义的类型一起使用。即使对 NativeCall 调用 `new`，也不会隐式地为其分配内存。对于返回指针的 C 例程，或者是嵌入在 `CStruct` 中的指针，它最有用。
+
+You can type your `Pointer` by passing the type as a parameter. It works with the native type but also with `CArray` and `CStruct` defined types. NativeCall will not implicitly allocate the memory for it even when calling `new` on them. It's mostly useful in the case of a C routine returning a pointer, or if it's a pointer embedded in a `CStruct`.
 
 ```Perl6
 use NativeCall;
@@ -531,6 +590,8 @@ sub strdup(Str $s --> Pointer[Str]) is native {*}
 my Pointer[Str] $p = strdup("Success!");
 say $p.deref;
 ```
+
+你必须调用 `Pointer` 上的 `.deref` 才能访问嵌入的类型。在上面的示例中，声明指针的类型可以避免取消引用时的类型转换错误。请注意，原始的 [`strdup`](https://en.cppreference.com/w/c/experimental/dynamic/strdup) 返回指向 `char` 的指针；我们使用的是 `Pointer<Str>`。
 
 You have to call `.deref` on `Pointer`s to access the embedded type. In the example above, declaring the type of the pointer avoids typecasting error when dereferenced. Please note that the original [`strdup`](https://en.cppreference.com/w/c/experimental/dynamic/strdup) returns a pointer to `char`; we are using `Pointer<Str>`.
 
@@ -540,6 +601,8 @@ my Pointer[MyCstruct] $p2 = some_c_routine();
 my MyCstruct $mc = $p2.deref;
 say $mc.field1;
 ```
+
+原生函数返回指向元素数组的指针是很常见的。类型化指针可以作为数组解引用以获取单个元素。
 
 It's quite common for a native function to return a pointer to an array of elements. Typed pointers can be dereferenced as an array to obtain individual elements.
 
@@ -554,6 +617,8 @@ for 1 .. $n -> $i {
     say "$i: ($x, $y)";
 }
 ```
+
+还可以更新指针以引用数组中的连续元素：
 
 Pointers can also be updated to reference successive elements in the array:
 
@@ -570,11 +635,17 @@ for 1 ..^ $n {
 }
 ```
 
+void 指针也可以通过声明它们 `Pointer[void]` 来使用。有关主题的详细信息，请参阅[原生类型文档](https://docs.perl6.org/language/nativetypes#The_void_type)。
+
 Void pointers can also be used by declaring them `Pointer[void]`. Please consult [the native types documentation](https://docs.perl6.org/language/nativetypes#The_void_type) for more information on the subject.
 
-# Strings
+<a id="%E5%AD%97%E7%AC%A6%E4%B8%B2--strings"></a>
+# 字符串 / Strings
 
-## Explicit memory management
+<a id="%E6%98%BE%E5%BC%8F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86--explicit-memory-management"></a>
+## 显式内存管理 / Explicit memory management
+
+假设有一些 C 代码缓存传递的字符串，比如：
 
 Let's say there is some C code that caches strings passed, like so:
 
@@ -598,6 +669,8 @@ set_version(char *version)
 }
 ```
 
+如果你要为 `get_version` 和 `set_version` 编写绑定，它们最初会像这样，但不会按预期工作：
+
 If you were to write bindings for `get_version` and `set_version`, they would initially look like this, but will not work as intended:
 
 ```Perl6
@@ -609,6 +682,8 @@ say get_version;          # Differs on each run
 say set_version('1.0.1'); # Double free; segfaults 
 ```
 
+这段代码在第二个 `set_version` 调用中出错，因为它试图释放垃圾收集器完成后第一个调用传递的字符串。如果垃圾收集器不释放传递给原生函数的字符串，请将 `explicitly-manage` 与它一起使用：
+
 This code segfaults on the second `set_version` call because it tries to free the string passed on the first call after the garbage collector had already done so. If the garbage collector shouldn't free a string passed to a native function, use `explicitly-manage` with it:
 
 ```Perl6
@@ -618,9 +693,14 @@ say set_version(explicitly-manage('1.0.1')); # 1.0.1
 say get_version;                             # 1.0.1 
 ```
 
+记住，显式管理字符串的所有内存管理必须由 C 库本身或通过 NativeCall API 来处理，以防止内存泄漏。
+
 Bear in mind all memory management for explicitly managed strings must be handled by the C library itself or through the NativeCall API to prevent memory leaks.
 
-## Buffers and blobs
+<a id="%E7%BC%93%E5%86%B2%E5%8C%BA%E5%92%8C%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%A4%A7%E5%AF%B9%E8%B1%A1--buffers-and-blobs"></a>
+## 缓冲区和二进制大对象 / Buffers and blobs
+
+[Blob](https://docs.perl6.org/type/Blob) 和 [Buf](https://docs.perl6.org/type/Buf) 是 Perl 6 存储二进制数据的方法。我们可以使用它们与原生函数和数据结构交换数据，尽管不是直接的。我们必须使用 [`nativecast`](https://docs.perl6.org/routine/nativecast)。
 
 [Blob](https://docs.perl6.org/type/Blob)s and [Buf](https://docs.perl6.org/type/Buf)s are the Perl 6 way of storing binary data. We can use them for interchange of data with native functions and data structures, although not directly. We will have to use [`nativecast`](https://docs.perl6.org/routine/nativecast).
 
@@ -629,6 +709,8 @@ my $blob = Blob.new(0x22, 0x33);
 my $src = nativecast(Pointer, $blob);
 ```
 
+然后，这个 `$src` 可以用作接受指针的任何原生函数的参数。相反，不直接支持将 `Pointer` 指向的值放入 `Buf` 或使用它初始化 `Blob`。你可能希望使用 [`NativeHelpers::Blob`](https://github.com/salortiz/NativeHelpers-Blob) 执行此类操作。
+
 This `$src` can then be used as an argument for any native function that takes a Pointer. The opposite, putting values pointed to by a `Pointer` into a `Buf` or using it to initialize a `Blob` is not directly supported. You might want to use [`NativeHelpers::Blob`](https://github.com/salortiz/NativeHelpers-Blob) to do this kind of operations.
 
 ```Perl6
@@ -636,7 +718,10 @@ my $esponja = blob-from-pointer( $inter, :2elems, :type(Blob[int8]));
 say $esponja;
 ```
 
-# Function arguments
+<a id="%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0--function-arguments"></a>
+# 函数参数 / Function arguments
+
+NativeCall 还支持将函数作为参数的本机函数。其中一个例子是在事件驱动系统中使用函数指针作为回调。通过nativeCall绑定这些函数时，只需提供与[代码参数约束]相同的签名（https://docs.perl6.org/type/signature constraining_signatures_of_callables）。但是，对于 nativeCall，从 rakudo 2019.07 开始，函数参数和签名之间的空格以及普通签名文本的冒号被省略，如下所示：
 
 NativeCall also supports native functions that take functions as arguments. One example of this is using function pointers as callbacks in an event-driven system. When binding these functions via NativeCall, one needs only provide the equivalent signature as [a constraint on the code parameter](https://docs.perl6.org/type/Signature#Constraining_signatures_of_Callables). In the case of NativeCall, however, as of Rakudo 2019.07, a space between the function argument and the signature, and the colon of a normal Signature literal is omitted, as in:
 
@@ -646,9 +731,14 @@ use NativeCall;
 my sub SetCallback(&callback (Str --> int32)) is native('mylib') { * }
 ```
 
+注意：原生代码负责以这种方式传递给 Perl 6 回调的值的内存管理。换句话说，NativeCall 不会释放传递给回调的字符串。
+
 Note: the native code is responsible for memory management of values passed to Perl 6 callbacks this way. In other words, NativeCall will not free() strings passed to callbacks.
 
-# Library paths and names
+<a id="%E5%BA%93%E8%B7%AF%E5%BE%84%E5%92%8C%E5%90%8D%E7%A7%B0--library-paths-and-names"></a>
+# 库路径和名称 / Library paths and names
+
+`native` 特性接受库名、完整路径或返回这两者之一的子例程。当使用库名称时，假定名称前面加上 "lib" 和 ".so"（或在 Windows 上加上 ".dll"），并将在 LD_LIBRARY_PATH（Windows 为 PATH）环境变量的路径中进行搜索。
 
 The `native` trait accepts the library name, the full path, or a subroutine returning either of the two. When using the library name, the name is assumed to be prepended with "lib" and appended with ".so" (or just appended with ".dll" on Windows), and will be searched for in the paths in the LD_LIBRARY_PATH (PATH on Windows) environment variable.
 
@@ -668,11 +758,15 @@ sub bar is native(LIBFOO) {*}
 sub baz is native(LIBBAR) {*}
 ```
 
+你还可以放置不完整的路径，如 './foo'，NativeCall 将根据平台规范自动放置正确的扩展名。如果希望抑制此扩展，只需将字符串作为代码块体传递。
+
 You can also put an incomplete path like './foo' and NativeCall will automatically put the right extension according to the platform specification. If you wish to suppress this expansion, simply pass the string as the body of a block.
 
 ```Perl6
 sub bar is native({ './lib/Non Standard Naming Scheme' }) {*}
 ```
+
+注意：编译时对 `native` 特性和 `constant` 进行评估。不要编写依赖于动态变量的常量，例如：
 
 BE CAREFUL: the `native` trait and `constant` are evaluated at compile time. Don't write a constant that depends on a dynamic variable like:
 
@@ -681,11 +775,18 @@ BE CAREFUL: the `native` trait and `constant` are evaluated at compile time. Don
 constant LIBMYSQL = %*ENV<P6LIB_MYSQLCLIENT> || 'mysqlclient';
 ```
 
+这将保留编译时给定的值。模块将被预编译，`LIBMYSQL` 将保留模块预编译时获取的值。
+
 This will keep the value given at compile time. A module will be precompiled and `LIBMYSQL` will keep the value it acquires when the module gets precompiled.
 
-## ABI/API version
+<a id="abiapi-%E7%89%88%E6%9C%AC--abiapi-version"></a>
+## ABI/API 版本 / ABI/API version
+
+如果编写 `native('foo')` NativeCall，将在类 Unix 系统下搜索 libfoo.so（OS X 上的 libfoo.dynlib，Win32 上的 foo.dll）。在大多数现代系统中，它将要求你或模块的用户安装开发包，建议始终向共享库提供 API/ABI版本，因此 libfoo.so 结尾通常是开发包提供的符号链接。
 
 If you write `native('foo')` NativeCall will search libfoo.so under Unix like system (libfoo.dynlib on OS X, foo.dll on win32). In most modern system it will require you or the user of your module to install the development package because it's recommended to always provide an API/ABI version to a shared library, so libfoo.so ends often being a symbolic link provided only by a development package.
+
+为了避免这种情况发生，`native` 特性允许你指定API/ABI 版本。它可以是完整版本，也可以只是其中的一部分。（尽量坚持主版本，有些 BSD 代码不关心次版本。）
 
 To avoid that, the `native` trait allows you to specify the API/ABI version. It can be a full version or just a part of it. (Try to stick to Major version, some BSD code does not care for Minor.)
 
@@ -698,7 +799,10 @@ my List $lib = ('foo', 'v1');
 sub foo3 is native($lib) {*}
 ```
 
-## Routine
+<a id="%E4%BE%8B%E7%A8%8B--routine"></a>
+## 例程 / Routine
+
+`native` 特性还接受 `Callable` 作为参数，允许你提供自己的方法来处理它将查找要加载的库文件的方式。
 
 The `native` trait also accepts a `Callable` as argument, allowing you to provide your own way to handle the way it will find the library file to load.
 
@@ -707,11 +811,18 @@ use NativeCall;
 sub foo is native(sub {'libfoo.so.42'}) {*}
 ```
 
+它只在第一次调用 sub 时调用。
+
 It will only be called at the first invocation of the sub.
 
-## Calling into the standard library
+<a id="%E8%B0%83%E7%94%A8%E6%A0%87%E5%87%86%E5%BA%93--calling-into-the-standard-library"></a>
+## 调用标准库 / Calling into the standard library
+
+如果你想从标准库或你自己的程序调用已经加载的 C 函数，可以省略该值，`is native` 中的值也一样。
 
 If you want to call a C function that's already loaded, either from the standard library or from your own program, you can omit the value, so `is native`.
+
+例如，在类 Unix 的操作系统上，可以使用以下代码打印当前用户的主目录：
 
 For example on a UNIX-like operating system, you could use the following code to print the home directory of the current user:
 
@@ -732,9 +843,14 @@ sub getpwuid(uint32 $uid) returns PwStruct is native { * };
 say getpwuid(getuid()).pw_dir;
 ```
 
+当然，`$*HOME` 是一个简单得多的方法：—）
+
 Though of course `$*HOME` is a much easier way :-)
 
-# Exported variables
+<a id="%E5%AF%BC%E5%87%BA%E5%8F%98%E9%87%8F--exported-variables"></a>
+# 导出变量 / Exported variables
+
+库导出的变量（也称为“全局”或“外部”变量）可以使用 `cglobal` 访问。例如：
 
 Variables exported by a library – also named "global" or "extern" variables – can be accessed using `cglobal`. For example:
 
@@ -742,65 +858,98 @@ Variables exported by a library – also named "global" or "extern" variables �
 my $var := cglobal('libc.so.6', 'errno', int32)
 ```
 
+此代码绑定到 `$var` 一个新的 [Proxy](https://docs.perl6.org/type/Proxy) 对象，该对象将其所有访问重定向到由 "libc.so.6" 库导出的名为 "errno" 的整数变量。
+
 This code binds to `$var` a new [Proxy](https://docs.perl6.org/type/Proxy) object that redirects all its accesses to the integer variable named "errno" as exported by the "libc.so.6" library.
 
-# C++ support
+<a id="c-%E6%94%AF%E6%8C%81--c-support"></a>
+# C++ 支持 / C++ support
+
+NativeCall 支持使用 C++ 类和方法，如在 <https://github.com/rakudo/rakudo/blob/master/t/04-nativecall/13-cpp-mangling.t>（及其关联 C++ 文件）中所示。请注意，目前它还没有 C 支持那样经过测试和开发。
 
 NativeCall offers support to use classes and methods from C++ as shown in <https://github.com/rakudo/rakudo/blob/master/t/04-nativecall/13-cpp-mangling.t> (and its associated C++ file). Note that at the moment it's not as tested and developed as C support.
 
-# Helper functions
+<a id="%E5%B8%AE%E5%8A%A9%E7%A8%8B%E5%BA%8F%E5%87%BD%E6%95%B0--helper-functions"></a>
+# 帮助程序函数 / Helper functions
+
+`NativeCall` 库导出多个子例程以帮助你处理来自本机库的数据。
 
 The `NativeCall` library exports several subroutines to help you work with data from native libraries.
 
-## sub nativecast
+<a id="nativecast-%E5%AD%90%E4%BE%8B%E7%A8%8B--sub-nativecast"></a>
+## nativecast 子例程 / sub nativecast
 
 ```Perl6
 sub nativecast($target-type, $source) is export(:DEFAULT)
 ```
 
+这将将指针 `$source` 强制转换为 `$target-type` 的对象。源指针通常是通过调用返回指针的原生子例程或作为 `struct` 的成员获得的，例如，在 `C` 库定义中可以将其指定为 `void *`，但也可以从指针强制转换为更具体的类型一个。
+
 This will *cast* the Pointer `$source` to an object of `$target-type`. The source pointer will typically have been obtained from a call to a native subroutine that returns a pointer or as a member of a `struct`, this may be specified as `void *` in the `C` library definition for instance, but you may also cast from a pointer to a less specific type to a more specific one.
+
+在特殊情况下，如果将[签名](https://docs.perl6.org/type/Signature)作为 `$target-type` 提供，则将返回一个 `subroutine`，它将调用由 `$source` 指向的原生函数，方法与用 `native` 特性声明的子例程相同。这在[函数指针](https://docs.perl6.org/language/nativecall#Function_pointers)中描述。
 
 As a special case, if a [Signature](https://docs.perl6.org/type/Signature) is supplied as `$target-type` then a `subroutine` will be returned which will call the native function pointed to by `$source` in the same way as a subroutine declared with the `native` trait. This is described in [Function Pointers](https://docs.perl6.org/language/nativecall#Function_pointers).
 
-## sub cglobal
+<a id="cglobal-%E5%AD%90%E4%BE%8B%E7%A8%8B--sub-cglobal"></a>
+## cglobal 子例程 / sub cglobal
 
 ```Perl6
 sub cglobal($libname, $symbol, $target-type) is export is rw
 ```
 
+这将返回一个 [Proxy](https://docs.perl6.org/type/Proxy) 对象，该对象提供对指定库公开的名为 `$symbol` 的 `extern` 的访问。库的指定方式与 `native` 特性相同。
+
 This returns a [Proxy](https://docs.perl6.org/type/Proxy) object that provides access to the `extern` named `$symbol` that is exposed by the specified library. The library can be specified in the same ways that they can be to the `native` trait.
 
-## sub nativesizeof
+<a id="nativesizeof-%E5%AD%90%E4%BE%8B%E7%A8%8B--sub-nativesizeof"></a>
+## nativesizeof 子例程 / sub nativesizeof
 
 ```Perl6
 sub nativesizeof($obj) is export(:DEFAULT)
 ```
 
+这将返回所提供对象的字节大小，可以认为它等同于  **C** 中的 `sizeof`。对象可以是内置的原生类型，如 `int64` 或 `num64`、`CArray` 或具有 `repr`、`CStruct`、`CUnion` 或 `CPointer` 的类。
+
 This returns the size in bytes of the supplied object, it can be thought of as being equivalent to `sizeof` in **C**. The object can be a builtin native type such as `int64` or `num64`, a `CArray` or a class with the `repr` `CStruct`, `CUnion` or `CPointer`.
 
-## sub explicitly-manage
+<a id="explicitly-manage-%E5%AD%90%E4%BE%8B%E7%A8%8B--sub-explicitly-manage"></a>
+## explicitly-manage 子例程 / sub explicitly-manage
 
 ```Perl6
 sub explicitly-manage($str) is export(:DEFAULT)
 ```
 
+这将返回给定 `Str` 的 `CStr` 对象。如果返回的字符串传递给 NativeCall 子例程，则运行时的垃圾收集器将不会释放该字符串。
+
 This returns a `CStr` object for the given `Str`. If the string returned is passed to a NativeCall subroutine, it will not be freed by the runtime's garbage collector.
 
-# Examples
+<a id="%E4%BE%8B%E5%AD%90--examples"></a>
+# 例子 / Examples
+
+一些特定的例子，以及在特定平台中使用上述例子的说明。
 
 Some specific examples, and instructions to use examples above in particular platforms.
 
+<a id="postgresql"></a>
 ## PostgreSQL
+
+[DBIish](https://github.com/perl6/DBIish/blob/master/examples/pg.p6) 中的 PostgreSQL 示例使用原生调用库，而 `is native` 则使用 Windows 中的原生 `_putenv` 函数调用。
 
 The PostgreSQL examples in [DBIish](https://github.com/perl6/DBIish/blob/master/examples/pg.p6) make use of the NativeCall library and `is native` to use the native `_putenv` function call in Windows.
 
+<a id="mysql"></a>
 ## MySQL
+
+**注意：**请记住，自 Stretch 版本以来，Debian 已经用 Mariadb 替换了 MySQL，因此如果要安装 MySQL，请使用 [MySQL APT repository](https://dev.mysql.com/downloads/repo/apt/) 而不是默认的存储库。
 
 **NOTE:** Please bear in mind that, under the hood, Debian has substituted MySQL with MariaDB since the Stretch version, so if you want to install MySQL, use [MySQL APT repository](https://dev.mysql.com/downloads/repo/apt/) instead of the default repository.
 
+要使用 [DBIish](https://github.com/perl6/DBIish/blob/master/examples/mysql.p6) 中的 MySQL 示例，你需要在本地安装 MySQL 服务器；在 Debian-esque 系统上，它可以安装如下内容：
+
 To use the MySQL example in [DBIish](https://github.com/perl6/DBIish/blob/master/examples/mysql.p6), you'll need to install MySQL server locally; on Debian-esque systems it can be installed with something like:
 
-```Perl6
+```Shell
 wget https://dev.mysql.com/get/mysql-apt-config_0.8.10-1_all.deb
 sudo dpkg -i mysql-apt-config_0.8.10-1_all.deb # Don't forget to select 5.6.x 
 sudo apt-get update
@@ -808,16 +957,21 @@ sudo apt-get install mysql-community-server -y
 sudo apt-get install libmysqlclient18 -y
 ```
 
+在尝试示例之前，请按照以下步骤准备系统：
+
 Prepare your system along these lines before trying out the examples:
 
-```Perl6
+```Shell
 $ mysql -u root -p
 SET PASSWORD = PASSWORD('sa');
 DROP DATABASE test;
 CREATE DATABASE test;
 ```
 
-## Microsoft Windows
+<a id="%E5%BE%AE%E8%BD%AF-windows-%E7%B3%BB%E7%BB%9F--microsoft-windows"></a>
+## 微软 Windows 系统 / Microsoft Windows
+
+以下是 Windows API 调用的示例：
 
 Here is an example of a Windows API call:
 
@@ -832,36 +986,51 @@ sub MessageBoxA(int32, Str, Str, int32)
 MessageBoxA(0, "We have NativeCall", "ohai", 64);
 ```
 
-## Short tutorial on calling a C function
+<a id="%E8%B0%83%E7%94%A8-c-%E5%87%BD%E6%95%B0%E7%9A%84%E7%AE%80%E7%9F%AD%E6%95%99%E7%A8%8B--short-tutorial-on-calling-a-c-function"></a>
+## 调用 C 函数的简短教程 / Short tutorial on calling a C function
+
+这是一个调用标准函数并在 Perl 6 程序中使用返回信息的示例。
 
 This is an example for calling a standard function and using the returned information in a Perl 6 program.
 
+`getaddrinfo` 是一个 POSIX 标准函数，用于获取有关网络节点的网络信息，例如 `google.com`。它是一个有趣的函数，因为它演示了 NativeCall 的许多元素。
+
 `getaddrinfo` is a POSIX standard function for obtaining network information about a network node, e.g., `google.com`. It is an interesting function to look at because it illustrates a number of the elements of NativeCall.
+
+Linux 手册提供了关于 C 可调用函数的以下信息：
 
 The Linux manual provides the following information about the C callable function:
 
-```Perl6
+```C
 int getaddrinfo(const char *node, const char *service,
        const struct addrinfo *hints,
        struct addrinfo **res);
 ```
 
+函数返回响应代码 0 = error，1 = success。数据从 `addrinfo` 元素的链接列表中提取，第一个元素由 `res` 指向。
+
 The function returns a response code 0 = error, 1 = success. The data are extracted from a linked list of `addrinfo` elements, with the first element pointed to by `res`.
+
+从 NativeCall 类型表中，我们知道 `int` 是 `int32`。我们还知道 `char *` 是 `Str` 的 C 形式之一，它简单地映射到 Str。但是 `addrinfo` 是一个结构，这意味着我们需要编写自己的类型类。但是，函数声明很简单：
 
 From the table of NativeCall Types we know that an `int` is `int32`. We also know that a `char *` is one of the forms C for a C `Str`, which maps simply to Str. But `addrinfo` is a structure, which means we will need to write our own Type class. However, the function declaration is straightforward:
 
-```Perl6
+```C
 sub getaddrinfo( Str $node, Str $service, Addrinfo $hints, Pointer $res is rw )
     returns int32
     is native
     { * }
 ```
 
+注意 $res 是由函数编写的，所以它必须标记为 rw。因为库是标准 POSIX，所以库名称可以是类型定义或空值。
+
 Note that $res is to be written by the function, so it must be labeled as rw. Since the library is standard POSIX, the library name can be the Type definition or null.
+
+我们现在必须处理结构 Addrinfo。Linux 手册提供了以下信息：
 
 We now have to handle structure Addrinfo. The Linux Manual provides this information:
 
-```Perl6
+```C
 struct addrinfo {
                int              ai_flags;
                int              ai_family;
@@ -874,11 +1043,17 @@ struct addrinfo {
            };
 ```
 
+`int, char*` 部分很简单。一些研究表明，`socklen_t` 可以依赖于体系结构，但至少是 32 位的无符号整数。所以 `socklen_t` 可以映射到 `uint32` 类型。
+
 The `int, char*` parts are straightforward. Some research indicates that `socklen_t` can be architecture dependent, but is an unsigned integer of at least 32 bits. So `socklen_t` can be mapped to the `uint32` type.
+
+复杂的情况是 `sockaddr`，这取决于 `ai_socktype` 是否是未定义的、是 INET 还是 INET6（标准 v4 IP 地址还是 v6 地址）。
 
 The complication is `sockaddr` which differs depending on whether `ai_socktype` is undefined, INET, or INET6 (a standard v4 IP address or a v6 address).
 
-So we create a Perl 6 `class` to map to the C `struct addrinfo`; while we're at it, we also create another class for `SockAddr`which is needed for it.
+因此，我们创建了一个 Perl 6 `class` 来映射到 C `struct addrinfo`；在这里，我们还为 `SockAddr` 创建了另一个类，这是它所需要的。
+
+So we create a Perl 6 `class` to map to the C `struct addrinfo`; while we're at it, we also create another class for `SockAddr` which is needed for it.
 
 ```Perl6
 class SockAddr is repr('CStruct') {
@@ -899,7 +1074,11 @@ class Addrinfo is repr('CStruct') {
 }
 ```
 
+最后三个属性上的 `is rw` 表示这些属性在 C 中定义为指针。
+
 The `is rw` on the last three attributes reflects that these were defined in C to be pointers.
+
+这里映射到 C `Struct` 的重要内容是类的状态部分的结构，即属性。但是，类可以有方法，`NativeCall` 不“触摸”它们以映射到 C。这意味着我们可以向类添加额外的方法以更可读的方式解包属性，例如，
 
 The important thing here for mapping to a C `Struct` is the structure of the state part of the class, that is the attributes. However, a class can have methods and `NativeCall` does not 'touch' them for mapping to C. This means that we can add extra methods to the class to unpack the attributes in a more readable manner, e.g.,
 
@@ -909,11 +1088,19 @@ method flags {
 }
 ```
 
+通过定义适当的 `enum`，`flags` 将返回一个键字符串，而不是一个位压缩整数。
+
 By defining an appropriate `enum`, `flags` will return a string of keys rather than a bit packed integer.
+
+`sockaddr` 结构中最有用的信息是节点的地址，这取决于套接字的家族。因此，我们可以将方法 `address` 添加到 Perl 6 类中，该类根据家族解释地址。
 
 The most useful information in the `sockaddr` structure is the address of node, which depends on the family of the Socket. So we can add method `address` to the Perl 6 class that interprets the address depending on the family.
 
+为了获得一个人类可读的 IP 地址，有一个 C 函数 `inet_ntop`，它返回一个 `char *` 给定一个缓冲区，并带有 `addrinfo`。
+
 In order to get a human readable IP address, there is the C function `inet_ntop` which returns a `char *` given a buffer with the `addrinfo`.
+
+把所有这些放在一起，可以得到以下程序：
 
 Putting all these together, leads to the following program:
 
@@ -1050,6 +1237,8 @@ sub MAIN() {
     freeaddrinfo($res);
 }
 ```
+
+这将产生以下输出：
 
 This produces the following output:
 
