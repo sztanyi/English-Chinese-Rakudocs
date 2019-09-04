@@ -59,7 +59,7 @@ say 4/5; # OUTPUT: «0.8
 
 The type produced by this division is either a [Rat](https://docs.perl6.org/type/Rat) or a [Num](https://docs.perl6.org/type/Num) type. The [Rat](https://docs.perl6.org/type/Rat) is produced if, after reduction, the fraction's denominator is smaller than 64 bits, otherwise a [Num](https://docs.perl6.org/type/Num) type is produced.
 
-如果您希望尽可能得到一个 [Int](https://docs.perl6.org/type/Int) 结果，则 [div](https://docs.perl6.org/routine/div) 和 [narrow](https://docs.perl6.org/routine/narrow) 例程可能会有所帮助。[div](https://docs.perl6.org/routine/div) 运算符执行整数除法，丢弃其余部分，而 [narrow](https://docs.perl6.org/routine/narrow) 将数字匹配到最窄的类型：
+如果你希望尽可能得到一个 [Int](https://docs.perl6.org/type/Int) 结果，则 [div](https://docs.perl6.org/routine/div) 和 [narrow](https://docs.perl6.org/routine/narrow) 例程可能会有所帮助。[div](https://docs.perl6.org/routine/div) 运算符执行整数除法，丢弃其余部分，而 [narrow](https://docs.perl6.org/routine/narrow) 将数字匹配到最窄的类型：
 
 The [div](https://docs.perl6.org/routine/div) and [narrow](https://docs.perl6.org/routine/narrow) routines can be helpful if you wish to end up with an [Int](https://docs.perl6.org/type/Int) result, whenever possible. The [div](https://docs.perl6.org/routine/div) operator performs integer division, discarding the remainder, while [narrow](https://docs.perl6.org/routine/narrow) fits the number into the narrowest type it'll fit:
 
@@ -84,7 +84,7 @@ say 1 / 10⁹⁹; # OUTPUT: «1e-99
 » 
 ```
 
-Perl 6 有一个 [FatRat](https://docs.perl6.org/type/FatRat) 类型，提供任意精度分数。在上一个例子中，为什么会产生有限精度的 [Num](https://docs.perl6.org/type/Num) 而不是 [FatRat](https://docs.perl6.org/type/FatRat) 类型？原因是：性能。大多数操作降低一点精度没问题，因此不需要使用更昂贵的 [FatRat](https://docs.perl6.org/type/FatRat) 类型。如果您希望有额外的精度，您需要自己实例化一个。
+Perl 6 有一个 [FatRat](https://docs.perl6.org/type/FatRat) 类型，提供任意精度分数。在上一个例子中，为什么会产生有限精度的 [Num](https://docs.perl6.org/type/Num) 而不是 [FatRat](https://docs.perl6.org/type/FatRat) 类型？原因是：性能。大多数操作降低一点精度没问题，因此不需要使用更昂贵的 [FatRat](https://docs.perl6.org/type/FatRat) 类型。如果你希望有额外的精度，你需要自己实例化一个。
 
 Perl 6 has a [FatRat](https://docs.perl6.org/type/FatRat) type that offers arbitrary precision fractions. How come a limited-precision [Num](https://docs.perl6.org/type/Num) is produced instead of a [FatRat](https://docs.perl6.org/type/FatRat) type in the last example above? The reason is: performance. Most operations are fine with a little bit of precision lost and so do not require the use of a more expensive [FatRat](https://docs.perl6.org/type/FatRat) type. You'll need to instantiate one yourself if you wish to have the extra precision.
 
@@ -95,7 +95,7 @@ Perl 6 has a [FatRat](https://docs.perl6.org/type/FatRat) type that offers arbit
 
 The [Num](https://docs.perl6.org/type/Num) type offers [double-precision floating-point](https://en.wikipedia.org/wiki/Double-precision_floating-point_format) decimal numbers, sometimes called "doubles" in other languages.
 
-[Num](https://docs.perl6.org/type/Num) 字面量的写法是使用字母 `e` 与指数分割开。请记住，即使指数为零，字母 `e` 也是*必需的*，否则您将得到一个 [Rat](https://docs.perl6.org/type/Rat) 有理数字面量：
+[Num](https://docs.perl6.org/type/Num) 字面量的写法是使用字母 `e` 与指数分割开。请记住，即使指数为零，字母 `e` 也是*必需的*，否则你将得到一个 [Rat](https://docs.perl6.org/type/Rat) 有理数字面量：
 
 A [Num](https://docs.perl6.org/type/Num) literal is written with the exponent separated using the letter `e`. Keep in mind that the letter `e` **is required** even if the exponent is zero, as otherwise you'll get a [Rat](https://docs.perl6.org/type/Rat) rational literal instead:
 
@@ -159,7 +159,7 @@ say 2 * 73+10i; # OUTPUT: «146+10i
 » 
 ```
 
-为了避免这些问题，您可以选择使用[复数](https://docs.perl6.org/type/Complex)字面量语法，其中包括使用尖括号包围实部和虚部，**而不包含任何空格**：
+为了避免这些问题，你可以选择使用[复数](https://docs.perl6.org/type/Complex)字面量语法，其中包括使用尖括号包围实部和虚部，**而不包含任何空格**：
 
 To avoid these issues, you can choose to use the [Complex](https://docs.perl6.org/type/Complex) literal syntax instead, which involves surrounding the real and imaginary parts with angle brackets, *without any spaces*:
 
@@ -198,7 +198,7 @@ say .1 + .2 == .3; # OUTPUT: «True
 » 
 ```
 
-如果你在许多常用语言中执行与上述类似的语句, 由于浮点数学的精度，您将得到 `False` 作为答案。要在 Perl 6 中获得相同的结果，你必须使用 [Num](https://docs.perl6.org/type/Num) 字面量：
+如果你在许多常用语言中执行与上述类似的语句, 由于浮点数学的精度，你将得到 `False` 作为答案。要在 Perl 6 中获得相同的结果，你必须使用 [Num](https://docs.perl6.org/type/Num) 字面量：
 
 If you try to execute a statement similar to the above in many common languages, you'll get `False` as the answer, due to imprecision of floating point math. To get the same result in Perl 6, you'd have to use [Num](https://docs.perl6.org/type/Num) literals instead:
 
@@ -207,7 +207,7 @@ say .1e0 + .2e0 == .3e0; # OUTPUT: «False
 » 
 ```
 
-您还可以使用具有 [Int](https://docs.perl6.org/type/Int) 或 [Rat](https://docs.perl6.org/type/Rat) 对象的 [`/` 除法运算符](https://docs.perl6.org/routine/$SOLIDUS)来生成 [Rat](https://docs.perl6.org/type/Rat)：
+你还可以使用具有 [Int](https://docs.perl6.org/type/Int) 或 [Rat](https://docs.perl6.org/type/Rat) 对象的 [`/` 除法运算符](https://docs.perl6.org/routine/$SOLIDUS)来生成 [Rat](https://docs.perl6.org/type/Rat)：
 
 You can also use [`/` division operator](https://docs.perl6.org/routine/$SOLIDUS) with [Int](https://docs.perl6.org/type/Int) or [Rat](https://docs.perl6.org/type/Rat) objects to produce a [Rat](https://docs.perl6.org/type/Rat):
 
@@ -230,7 +230,7 @@ say 3/2²; # OUTPUT: «0.75
 » 
 ```
 
-为了避免这些问题，您可以选择使用 [Rational](https://docs.perl6.org/type/Rational) 字面量语法，它用尖括号括起分子和分母，**不带任何空格**：
+为了避免这些问题，你可以选择使用 [Rational](https://docs.perl6.org/type/Rational) 字面量语法，它用尖括号括起分子和分母，**不带任何空格**：
 
 To avoid these issues, you can choose to use the [Rational](https://docs.perl6.org/type/Rational) literal syntax instead, which involves surrounding the numerator and denominator with angle brackets, *without any spaces*:
 
@@ -310,7 +310,7 @@ say ((42 + FatRat.new(1,2))/99999999999999999999999).^name; # OUTPUT: «FatRat
 
 There's no special operator or syntax available for construction of [FatRat](https://docs.perl6.org/type/FatRat) objects. Simply use [`FatRat.new` method](https://docs.perl6.org/type/FatRat#%28Rational%29_method_new), giving numerator as first positional argument and denominator as the second.
 
-如果您的程序需要大量的 [FatRat](https://docs.perl6.org/type/FatRat) 创建，您可以创建自己的自定义运算符：
+如果你的程序需要大量的 [FatRat](https://docs.perl6.org/type/FatRat) 创建，你可以创建自己的自定义运算符：
 
 If your program requires a significant amount of [FatRat](https://docs.perl6.org/type/FatRat) creation, you could create your own custom operator:
 
@@ -338,7 +338,7 @@ say ⅓.perl;     # OUTPUT: «<1/3>
 » 
 ```
 
-有关更多信息，您可以选择在 [nude](https://docs.perl6.org/routine/nude) 中查看 [Rational](https://docs.perl6.org/type/Rational) 对象，显示其分子和分母：
+有关更多信息，你可以选择在 [nude](https://docs.perl6.org/routine/nude) 中查看 [Rational](https://docs.perl6.org/type/Rational) 对象，显示其分子和分母：
 
 For even more information, you may choose to see the [Rational](https://docs.perl6.org/type/Rational) object in the [nude](https://docs.perl6.org/routine/nude), displaying its **nu**merator and **de**nominator:
 
@@ -379,7 +379,7 @@ Division of [Int](https://docs.perl6.org/type/Int) numerics produces a [Rat](htt
 
 A Zero-Denominator Rational is a numeric that does role [Rational](https://docs.perl6.org/type/Rational), which among core numerics would be [Rat](https://docs.perl6.org/type/Rat) and [FatRat](https://docs.perl6.org/type/FatRat)objects, which has denominator of zero. The numerator of such Rationals is normalized to `-1`, `0`, or `1` depending on whether the original numerator is negative, zero or positive, respectively.
 
-可以在不需要实际除法的情况下执行的操作是非爆炸性的。例如，您可以单独检查 [nude](https://docs.perl6.org/routine/nude) 中的[分子](https://docs.perl6.org/routine/numerator)和[分母](https://docs.perl6.org/routine/denominator)，或执行数学运算，而不会出现任何异常或失败。
+可以在不需要实际除法的情况下执行的操作是非爆炸性的。例如，你可以单独检查 [nude](https://docs.perl6.org/routine/nude) 中的[分子](https://docs.perl6.org/routine/numerator)和[分母](https://docs.perl6.org/routine/denominator)，或执行数学运算，而不会出现任何异常或失败。
 
 Operations that can be performed without requiring actual division to occur are non-explosive. For example, you can separately examine [numerator](https://docs.perl6.org/routine/numerator) and [denominator](https://docs.perl6.org/routine/denominator) in the [nude](https://docs.perl6.org/routine/nude) or perform mathematical operations without any exceptions or failures popping up.
 
@@ -496,7 +496,7 @@ foo <42>;  # OUTPUT: «IntStr
 
 The given allomorph is *already* an object of type [Int](https://docs.perl6.org/type/Int), so it does not get converted to a "plain" [Int](https://docs.perl6.org/type/Int) in this case.
 
-当然，如果没有办法将它们“折叠”到其中一个组件，那么同质异形体的力量将会严重减弱。因此，如果你使用所要强制到的类型的名字显式调用方法，那么您将获得该组件。这同样适用于任何代理方法，例如调用方法 [`.Numeric`](https://docs.perl6.org/routine/Numeric) 而不是 [`.Int`](https://docs.perl6.org/routine/Int) 或使用 [`prefix:<~> `operator](https://docs.perl6.org/routine/~) 运算符而不是 `[.Str`](https://docs.perl6.org/routine/Str) 方法调用。
+当然，如果没有办法将它们“折叠”到其中一个组件，那么同质异形体的力量将会严重减弱。因此，如果你使用所要强制到的类型的名字显式调用方法，那么你将获得该组件。这同样适用于任何代理方法，例如调用方法 [`.Numeric`](https://docs.perl6.org/routine/Numeric) 而不是 [`.Int`](https://docs.perl6.org/routine/Int) 或使用 [`prefix:<~> `operator](https://docs.perl6.org/routine/~) 运算符而不是 `[.Str`](https://docs.perl6.org/routine/Str) 方法调用。
 
 Of course, the power of allomorphs would be severely diminished if there were no way to "collapse" them to one of their components. Thus, if you explicitly call a method with the name of the type to coerce to, you'll get just that component. The same applies to any proxy methods, such as calling method [`.Numeric`](https://docs.perl6.org/routine/Numeric) instead of [`.Int`](https://docs.perl6.org/routine/Int) or using the [`prefix:<~> `operator](https://docs.perl6.org/routine/~) instead of [`.Str`](https://docs.perl6.org/routine/Str) method call.
 
@@ -614,7 +614,7 @@ sub foo(num $y) {}
 class { has int8 $.z }
 ```
 
-有时，您可能希望在不创建任何可用变量的情况下将某些值强制转换为原生类型。没有 `.int` 或类似的强制方法（方法调用是后期的，所以它们不适合这个目的）。相反，只需使用匿名变量：
+有时，你可能希望在不创建任何可用变量的情况下将某些值强制转换为原生类型。没有 `.int` 或类似的强制方法（方法调用是后期的，所以它们不适合这个目的）。相反，只需使用匿名变量：
 
 At times, you may wish to coerce some value to a native type without creating any usable variables. There are no `.int` or similar coercion methods (method calls are latebound, so they're not well-suited for this purpose). Instead, simply use an anonymous variable:
 
@@ -674,7 +674,7 @@ say my uint8 @a = 1000, 2000, 3000; # OUTPUT: «232 208 184
 <a id="%E8%87%AA%E5%8A%A8%E8%A3%85%E7%AE%B1--auto-boxing"></a>
 ## 自动装箱 / Auto-boxing
 
-虽然它们可以被称为“**原生类型** ”，但原生数字实际上并不是具有任何可用方法的类。但是，您*可以*调用这些数字的非原生版本上可用的任何方法。这是怎么回事？
+虽然它们可以被称为“**原生类型** ”，但原生数字实际上并不是具有任何可用方法的类。但是，你*可以*调用这些数字的非原生版本上可用的任何方法。这是怎么回事？
 
 While they can be referred to as "native *types*", native numerics are not actually classes that have any sort of methods available. However, you *can* call any of the methods available on non-native versions of these numerics. What's going on?
 
@@ -688,7 +688,7 @@ say $x.abs; # OUTPUT: «42
 
 This behavior is known as "auto-boxing". The compiler automatically "boxes" the native type into a full-featured higher-level type with all the methods. In other words, the `int8` above was automatically converted to an [Int](https://docs.perl6.org/type/Int) and it's the [Int](https://docs.perl6.org/type/Int) class that then provided the [abs](https://docs.perl6.org/routine/abs) method that was called.
 
-当您使用原生类型获得性能提升时，此详细信息非常重要。如果您正在使用的代码导致执行大量自动装箱，那么使用原生类型的性能可能会比使用非原生类型时*更差*：
+当你使用原生类型获得性能提升时，此详细信息非常重要。如果你正在使用的代码导致执行大量自动装箱，那么使用原生类型的性能可能会比使用非原生类型时*更差*：
 
 This detail is significant when you're using native types for performance gains. If the code you're using results in a lot of auto-boxing being performed you might get *worse* performance with native types than you would with non-natives:
 
@@ -701,11 +701,11 @@ my int $a-native = -42;
 » 
 ```
 
-如您所见，原生变体的速度慢了两倍多。原因是方法调用需要将原生类型装箱，而非原生变体不需要这样的东西，因此性能损失。
+如你所见，原生变体的速度慢了两倍多。原因是方法调用需要将原生类型装箱，而非原生变体不需要这样的东西，因此性能损失。
 
 As you can see above, the native variant is more than twice slower. The reason is the method call requires the native type to be boxed, while no such thing is needed in the non-native variant, hence the performance loss.
 
-在这种特殊情况下，我们可以简单地切换到[abs](https://docs.perl6.org/routine/abs)的子程序形式，它可以使用原生类型而无需装箱。在其他情况下，您可能需要寻找其他解决方案以避免过多的自动装箱，包括切换到部分代码的非原生类型。
+在这种特殊情况下，我们可以简单地切换到[abs](https://docs.perl6.org/routine/abs)的子程序形式，它可以使用原生类型而无需装箱。在其他情况下，你可能需要寻找其他解决方案以避免过多的自动装箱，包括切换到部分代码的非原生类型。
 
 In this particular case, we can simply switch to a subroutine form of [abs](https://docs.perl6.org/routine/abs), which can work with native types without boxing them. In other cases, you may need to seek out other solutions to avoid excessive autoboxing, including switching to non-native types for a portion of the code.
 
@@ -788,7 +788,7 @@ multi f(int, int) {}
 f 42, my int $x; # Successful call 
 ```
 
-这样，您就不必不断将诸如 `$n +> 2` 写为 `$n +> (my int $ = 2)` 了。编译器知道字面量小到足以适合原生类型并将其转换为原生类型。
+这样，你就不必不断将诸如 `$n +> 2` 写为 `$n +> (my int $ = 2)` 了。编译器知道字面量小到足以适合原生类型并将其转换为原生类型。
 
 This way you do not have to constantly write, for example, `$n +> 2` as `$n +> (my int $ = 2)`. The compiler knows the literal is small enough to fit to a native type and converts it to a native.
 
