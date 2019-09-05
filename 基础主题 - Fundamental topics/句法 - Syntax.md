@@ -492,13 +492,19 @@ my $x = do if True { 42 };
 
 assigns the return value of the if statement (here `42`) to the variable `$x`.
 
-# Terms
+# 术语 / Terms
+
+术语是基本名词，可以选择与运算符一起构成表达式。例如变量（`$x`）、类型名（`Int`）、文本（`42`）、声明（`sub f() { }`）和调用（`f()`）。
 
 Terms are the basic nouns that, optionally together with operators, can form expressions. Examples for terms are variables (`$x`), barewords such as type names (`Int`), literals (`42`), declarations (`sub f() { }`) and calls (`f()`).
 
+例如，在表达式 `2 * $salary` 中，`2` 和 `$salary` 是两个术语（一个[整数](https://docs.perl6.org/type/Int)文本和一个[变量](https://docs.perl6.org/language/variables)）。
+
 For example, in the expression `2 * $salary`, `2` and `$salary` are two terms (an [integer](https://docs.perl6.org/type/Int) literal and a [variable](https://docs.perl6.org/language/variables)).
 
-## Variables
+## 变量 / Variables
+
+变量通常以名为 *sigil* 的特殊字符开头，后跟标识符。必须先声明变量，然后才能使用它们。
 
 Variables typically start with a special character called the *sigil*, and are followed by an identifier. Variables must be declared before you can use them.
 
@@ -509,9 +515,13 @@ my $number = 21;
 say $number * 2;
 ```
 
+有关详细信息，请参阅[变量文档](https://docs.perl6.org/language/variables)。
+
 See the [documentation on variables](https://docs.perl6.org/language/variables) for more details.
 
-## Barewords (constants, type names)
+## 裸字（常量、类型名）/ Barewords (constants, type names)
+
+预先声明的标识符可以是自己的术语。这些通常是类型名或常量，但也有 `self` 一词，它指的是调用方法的对象（参见[对象](https://docs.perl6.org/language/objects)），以及无标记变量：
 
 Pre-declared identifiers can be terms on their own. Those are typically type names or constants, but also the term `self` which refers to an object that a method was called on (see [objects](https://docs.perl6.org/language/objects)), and sigilless variables:
 
@@ -533,7 +543,9 @@ say Foo.type-name;     # OUTPUT: «Foo␤»
 #   ^^^ type name
 ```
 
-## Packages and qualified names
+## 包和限定名 / Packages and qualified names
+
+命名实体（如变量、常量、类、模块或子）是命名空间的一部分。名称的嵌套部分使用 `::` 分隔层次结构。一些例子：
 
 Named entities, such as variables, constants, classes, modules or subs, are part of a namespace. Nested parts of a name use `::` to separate the hierarchy. Some examples:
 
@@ -544,15 +556,19 @@ $Foo::($bar)::baz   # compound identifiers that perform interpolations
 Foo::Bar::bob(23)   # function invocation given qualified name
 ```
 
+有关详细信息，请参阅[软件包文档](https://docs.perl6.org/language/packages)。
+
 See the [documentation on packages](https://docs.perl6.org/language/packages) for more details.
 
-## Literals
+## 字面量 / Literals
+
+[字面量](https://en.wikipedia.org/wiki/Literal_%28computer_programming%29)是源代码中常量值的表示。Perl 6 有几个内置类型的字面量，比如 [字符](https://docs.perl6.org/type/Str)、几个数字类型、[键值对](https://docs.perl6.org/type/Pair) 等等。
 
 A [literal](https://en.wikipedia.org/wiki/Literal_%28computer_programming%29) is a representation of a constant value in source code. Perl 6 has literals for several built-in types, like [strings](https://docs.perl6.org/type/Str), several numeric types, [pairs](https://docs.perl6.org/type/Pair) and more.
 
+### 字符串字面量 / String literals
 
-
-### String literals
+字符串字面量由引号包围：
 
 String literals are surrounded by quotes:
 
@@ -561,17 +577,21 @@ say 'a string literal';
 say "a string literal\nthat interprets escape sequences";
 ```
 
+请参阅[引用](https://docs.perl6.org/language/quoting)了解更多选项，包括[转义引用 `q`](https://docs.perl6.org/language/quoting#Escaping:_q)。Perl 6 在字面量中使用标准转义符： `\a \b \t \n \f \r \e`，其含义与[设计文档](https://design.perl6.org/S02.html#Backslash_sequences)中指定的ASCII转义码相同。
+
 See [quoting](https://docs.perl6.org/language/quoting) for many more options, including [the escaping quoting `q`](https://docs.perl6.org/language/quoting#Escaping:_q). Perl 6 uses the standard escape characters in literals: `\a \b \t \n \f \r \e`, with the same meaning as the ASCII escape codes, specified in [the design document](https://design.perl6.org/S02.html#Backslash_sequences).
 
 ```Perl6
 say "🔔\a";  # OUTPUT: «🔔␇␤»
 ```
 
+### 数字字面量 / Number literals
 
+数字字面值通常以十为基数指定（如果需要，可以通过前缀 `0d` 逐字指定），除非像 `0x`（he**x**adecimal，基数 16）、`0o`（**o**ctal，基数 8）或 `0b`（**b**inary，基数 2）这样的前缀或像 `:16<A0>` 这样显式指定基数。与其他编程语言不同，前导零*不*表示基数 8；而是发出编译时警告。
 
-### Number literals
+Number literals are generally specified in base ten (which can be specified literally, if needed, via the prefix `0d`), unless a prefix like `0x` (he**x**adecimal, base 16), `0o` (**o**ctal, base 8) or `0b` (**b**inary, base 2) or an explicit base in adverbial notation like `:16<A0>` specifies it otherwise. Unlike other programming languages, leading zeros do *not* indicate base 8; instead a compile-time warning is issued.
 
-Number literals are generally specified in base ten (which can be specified literally, if needed, via the prefix `0d`), unless a prefix like `0x` (he**x**adecimal, base 16), `0o` (**o**ctal, base 8) or `0b` (**b**inary, base 2) or an explicit base in adverbial notation like `:16<A0> `specifies it otherwise. Unlike other programming languages, leading zeros do *not* indicate base 8; instead a compile-time warning is issued.
+在所有文字格式中，可以使用下划线对数字进行分组，尽管它们不包含任何语义信息；以下文字的计算结果都相同：
 
 In all literal formats, you can use underscores to group digits, although they don't carry any semantic information; the following literals all evaluate to the same number:
 
@@ -582,7 +602,9 @@ In all literal formats, you can use underscores to group digits, although they d
 100_00_00
 ```
 
-#### `Int` literals
+#### `Int` 字面量 / `Int` literals
+
+整数默认为带符号的 10 进制数，但可以使用其他基数。有关详细信息，请参见 [Int](https://docs.perl6.org/type/Int)。
 
 Integers default to signed base-10, but you can use other bases. For details, see [Int](https://docs.perl6.org/type/Int).
 
@@ -595,7 +617,9 @@ Integers default to signed base-10, but you can use other bases. For details, se
 :3<1201>    # arbitrary base, here base 3
 ```
 
-#### `Rat` literals
+#### `Rat` 字面量 / `Rat` literals
+
+[Rat](https://docs.perl6.org/type/Rat) 字面量（有理数）非常常见，在许多其他语言中取代了小数或浮点数。整数除法也会产生 `Rat`。
 
 [Rat](https://docs.perl6.org/type/Rat) literals (rationals) are very common, and take the place of decimals or floats in many other languages. Integer division also results in a `Rat`.
 
@@ -608,7 +632,9 @@ Integers default to signed base-10, but you can use other bases. For details, se
 2/3         # Not actually a literal, but still a Rat
 ```
 
-#### `Num` literals
+#### `Num` 字面量 / `Num` literals
+
+在 `e` 之后以十进制数为基数的指数的科学表示法生成[浮点数](https://docs.perl6.org/type/Num)：
 
 Scientific notation with an integer exponent to base ten after an `e` produces [floating point number](https://docs.perl6.org/type/Num):
 
@@ -620,7 +646,9 @@ Scientific notation with an integer exponent to base ten after an `e` produces [
 2e2.5       # error
 ```
 
-#### `Complex` literals
+#### `Complex` 字面量 / `Complex` literals
+
+[复数](https://docs.perl6.org/type/Complex)数字可以写成虚数（这只是一个附加后缀 `i` 的有理数），也可以写成实数和虚数之和：
 
 [Complex](https://docs.perl6.org/type/Complex) numbers are written either as an imaginary number (which is just a rational number with postfix `i` appended), or as a sum of a real and an imaginary number:
 
@@ -629,13 +657,15 @@ Scientific notation with an integer exponent to base ten after an `e` produces [
 6.123e5i    # note that this is 6.123e5 * i, not 6.123 * 10 ** (5i)
 ```
 
+### 键值对字面量 / Pair literals
 
-
-### Pair literals
+[键值对](https://docs.perl6.org/type/Pair)由一个键和一个值组成，构造它们有两种基本形式：`key => 'value'` 和 `:key('value')`。
 
 [Pairs](https://docs.perl6.org/type/Pair) are made of a key and a value, and there are two basic forms for constructing them: `key => 'value' `and `:key('value')`.
 
-#### Arrow pairs
+#### 箭头键值对 / Arrow pairs
+
+箭头键值对可以有一个表达式、一个字符串字面量或一个“裸标识符”，这是一个具有普通标识符语法的字符串，在左侧不需要引号：
 
 Arrow pairs can have an expression, a string literal or a "bare identifier", which is a string with ordinary-identifier syntax that does not need quotes on the left-hand side:
 
@@ -645,7 +675,9 @@ like-an-identifier-ain't-it => 42
 ('a' ~ 'b') => 1
 ```
 
-#### Adverbial pairs (colon pairs)
+#### 状语键值对（冒号键值对）/ Adverbial pairs (colon pairs)
+
+没有明确值的短格式：
 
 Short forms without explicit values:
 
@@ -656,6 +688,8 @@ my $thing = 42;
 :!thing                 # same as  thing => False
 ```
 
+变量表单还可以与其他标记一起使用，比如 `:&callback` 或 `:@elements`。如果该值是数字字面量，则也可以用以下简短形式表示：
+
 The variable form also works with other sigils, like `:&callback` or `:@elements`. If the value is a number literal, it can also be expressed in this short form:
 
 ```Perl6
@@ -663,13 +697,19 @@ The variable form also works with other sigils, like `:&callback` or `:@elements
 :٤٢thing            # same as  thing => 42
 ```
 
+如果你用另一个字母表，这个顺序是颠倒的
+
 This order is inverted if you use another alphabet
 
 ```Perl6
 :٤٢ث              # same as   ث => ٤٢
 ```
 
+*thaa* 字母在数字前面。
+
 the *thaa* letter precedes the number.
+
+具有明确值的长格式：
 
 Long forms with explicit values:
 
@@ -680,13 +720,15 @@ Long forms with explicit values:
 :thing{a => 'b'}            # same as  thing => { a => 'b' }
 ```
 
+### 布尔值字面量 / Boolean literals
 
-
-### Boolean literals
+`True` 和 `False` 是布尔值字面量；它们的首字母总是大写。
 
 `True` and `False` are Boolean literals; they will always have initial capital letter.
 
-### Array literals
+### 数组字面量 / Array literals
+
+一对方括号可以包围一个表达式以形成逐项[数组](https://docs.perl6.org/type/Array)字面量；通常在以下内容中有一个逗号分隔的列表：
 
 A pair of square brackets can surround an expression to form an itemized [Array](https://docs.perl6.org/type/Array) literal; typically there is a comma-delimited list inside:
 
@@ -694,6 +736,8 @@ A pair of square brackets can surround an expression to form an itemized [Array]
 say ['a', 'b', 42].join(' ');   # OUTPUT: «a b 42␤»
 #   ^^^^^^^^^^^^^^ Array constructor
 ```
+
+如果给构造函数一个 [Iterable](https://docs.perl6.org/type/Iterable)，它将克隆并展平它。如果只需要一个 `Iterable` 元素的 `Array`，请确保在其后使用逗号：
 
 If the constructor is given a single [Iterable](https://docs.perl6.org/type/Iterable), it'll clone and flatten it. If you want an `Array` with just 1 element that is an `Iterable`, ensure to use a comma after it:
 
@@ -703,6 +747,8 @@ say [@a].perl;  # OUTPUT: «[1, 2]␤»
 say [@a,].perl; # OUTPUT: «[[1, 2],]␤»
 ```
 
+`Array` 构造函数不展平其他类型的内容。使用 [Slip](https://docs.perl6.org/type/Slip) 前缀运算符 (`|`) 压平所需的项：
+
 The `Array` constructor does not flatten other types of contents. Use the [Slip](https://docs.perl6.org/type/Slip) prefix operator (`|`) to flatten the needed items:
 
 ```Perl6
@@ -710,6 +756,8 @@ my @a = 1, 2;
 say [@a, 3, 4].perl;  # OUTPUT: «[[1, 2], 3, 4]␤»
 say [|@a, 3, 4].perl; # OUTPUT: «[1, 2, 3, 4]␤»
 ```
+
+[列表](https://docs.perl6.org/type/List)类型可以从数组字面量声明中显式创建，无需从数组强制，在声明时使用**is** [特性](https://docs.perl6.org/language/traits)。
 
 [List](https://docs.perl6.org/type/List) type can be explicitly created from an array literal declaration without a coercion from Array, using **is** [trait](https://docs.perl6.org/language/traits) on declaration.
 
