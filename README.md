@@ -9,6 +9,7 @@ IT 类翻译文章往往中文太生硬，英文太难懂。何不对照看。
 # `目录`
 
 - [基础主题 - Fundamental topics](https://github.com/sztanyi/perl6doc/tree/master/%E5%9F%BA%E7%A1%80%E4%B8%BB%E9%A2%98%20-%20Fundamental%20topics)
+    - [句法 - Syntax](https://github.com/sztanyi/perl6doc/blob/master/%E5%9F%BA%E7%A1%80%E4%B8%BB%E9%A2%98%20-%20Fundamental%20topics/%E5%8F%A5%E6%B3%95%20-%20Syntax.md)
     - [正则 - Regexes](https://github.com/sztanyi/perl6doc/blob/master/%E5%9F%BA%E7%A1%80%E4%B8%BB%E9%A2%98%20-%20Fundamental%20topics/%E6%AD%A3%E5%88%99%20-%20Regexes.md)
     - [容器 - Containers](https://github.com/sztanyi/perl6doc/blob/master/%E5%9F%BA%E7%A1%80%E4%B8%BB%E9%A2%98%20-%20Fundamental%20topics/%E5%AE%B9%E5%99%A8%20-%20Containers.md)
     - [函数 - Functions](https://github.com/sztanyi/perl6doc/blob/master/%E5%9F%BA%E7%A1%80%E4%B8%BB%E9%A2%98%20-%20Fundamental%20topics/%E5%87%BD%E6%95%B0%20-%20Functions.md)
