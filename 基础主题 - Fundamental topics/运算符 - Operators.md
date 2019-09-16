@@ -50,109 +50,109 @@ See [creating operators](https://docs.perl6.org/language/optut) on how to define
     - [方法运算符 `.*` / methodop `.*`](#%E6%96%B9%E6%B3%95%E8%BF%90%E7%AE%97%E7%AC%A6---methodop--5)
     - [方法运算符 `».` / `>>.` - methodop `».` / methodop `>>.`](#%E6%96%B9%E6%B3%95%E8%BF%90%E7%AE%97%E7%AC%A6-%C2%BB-----methodop-%C2%BB--methodop-)
     - [方法运算符 `.postfix` / `.postcircumfix` - methodop `.postfix` / `.postcircumfix`](#%E6%96%B9%E6%B3%95%E8%BF%90%E7%AE%97%E7%AC%A6-postfix--postcircumfix---methodop-postfix--postcircumfix)
-    - [methodop `.:`](#methodop-)
-    - [methodop `.::`](#methodop--1)
-    - [postfix `,=`](#postfix-)
-- [Autoincrement precedence](#autoincrement-precedence)
-    - [prefix](#prefix)
-    - [prefix](#prefix-1)
-    - [postfix](#postfix)
-    - [postfix `--`](#postfix---)
-- [Exponentiation precedence](#exponentiation-precedence)
-    - [infix `**`](#infix-)
-- [Symbolic unary precedence](#symbolic-unary-precedence)
-    - [prefix `?`](#prefix-)
-    - [prefix `!`](#prefix--1)
-    - [prefix `+`](#prefix--2)
-    - [prefix `-`](#prefix--)
-    - [prefix `~`](#prefix-%7E)
-    - [prefix `|`](#prefix-%7C)
-    - [prefix `+^`](#prefix-%5E)
-    - [prefix `~^`](#prefix-%7E%5E)
-    - [prefix `?^`](#prefix-%5E-1)
-    - [prefix `^`](#prefix-%5E-2)
-- [Dotty infix precedence](#dotty-infix-precedence)
-    - [infix `.=`](#infix--1)
-    - [infix `.`](#infix--2)
-- [Multiplicative precedence](#multiplicative-precedence)
-    - [infix `*`](#infix--3)
-    - [infix `/`](#infix--4)
-    - [infix `div`](#infix-div)
-    - [infix `%`](#infix-%25)
-    - [infix `%%`](#infix-%25%25)
-    - [infix `mod`](#infix-mod)
-    - [infix `+&`](#infix--5)
-    - [infix `+<`](#infix--6)
-    - [infix `+>`](#infix--7)
-    - [infix `~&`](#infix-%7E)
-    - [infix `~<`](#infix-%7E-1)
-    - [infix `~>`](#infix-%7E-2)
-    - [infix `gcd`](#infix-gcd)
-    - [infix `lcm`](#infix-lcm)
-- [Additive precedence](#additive-precedence)
-    - [infix `+`](#infix--8)
-    - [infix `-`](#infix--)
-    - [infix `+|`](#infix-%7C)
-    - [infix `+^`](#infix-%5E)
-    - [infix `~|`](#infix-%7E%7C)
-    - [infix `~^`](#infix-%7E%5E)
-    - [infix `?^`](#infix-%5E-1)
-    - [infix `?|`](#infix-%7C-1)
-- [Replication precedence](#replication-precedence)
-    - [infix `x`](#infix-x)
-    - [infix `xx`](#infix-xx)
-- [Concatenation](#concatenation)
-    - [infix `~`](#infix-%7E-3)
-    - [infix `∘`](#infix-%E2%88%98)
-- [Junctive AND \(all\) precedence](#junctive-and-all-precedence)
-    - [infix `&`](#infix--9)
-    - [infix `(&)`, infix `∩`](#infix--infix-%E2%88%A9)
-    - [infix `(.)`, infix `⊍`](#infix--infix-%E2%8A%8D)
-- [Junctive OR \(any\) precedence](#junctive-or-any-precedence)
-    - [infix `|`](#infix-%7C-2)
-    - [infix `(|)`, infix `∪`](#infix-%7C-infix-%E2%88%AA)
-    - [infix `(+)`, infix `⊎`](#infix--infix-%E2%8A%8E)
-    - [infix `(-)`, infix `∖`](#infix---infix-%E2%88%96)
-    - [infix `^`](#infix-%5E-2)
-    - [infix `(^)`, infix `⊖`](#infix-%5E-infix-%E2%8A%96)
-- [Named unary precedence](#named-unary-precedence)
-    - [prefix `temp`](#prefix-temp)
-    - [prefix `let`](#prefix-let)
-- [Nonchaining binary precedence](#nonchaining-binary-precedence)
-    - [infix `does`](#infix-does)
-    - [infix `but`](#infix-but)
-    - [infix `cmp`](#infix-cmp)
-    - [infix `coll`](#infix-coll)
-    - [infix `unicmp`](#infix-unicmp)
-    - [infix `leg`](#infix-leg)
-    - [infix ``](#infix--10)
-    - [infix `..`](#infix--11)
-    - [infix `..^`](#infix-%5E-3)
-    - [infix `^..`](#infix-%5E-4)
-    - [infix `^..^`](#infix-%5E%5E)
-- [Chaining binary precedence](#chaining-binary-precedence)
-    - [infix `==`](#infix--12)
-    - [infix `!=`](#infix--13)
-    - [infix `≠`](#infix-%E2%89%A0)
-    - [infix `<`](#infix--14)
-    - [infix `<=`](#infix--15)
-    - [infix `≤`](#infix-%E2%89%A4)
-    - [infix `>`](#infix--16)
-    - [infix `>=`](#infix--17)
-    - [infix `≥`](#infix-%E2%89%A5)
-    - [infix `eq`](#infix-eq)
-    - [infix `ne`](#infix-ne)
-    - [infix `gt`](#infix-gt)
-    - [infix `ge`](#infix-ge)
-    - [infix `lt`](#infix-lt)
-    - [infix `le`](#infix-le)
-    - [infix `before`](#infix-before)
-    - [infix `after`](#infix-after)
-    - [infix `eqv`](#infix-eqv)
-    - [infix `===`](#infix--18)
-    - [infix `=:=`](#infix--19)
+    - [方法运算符 `.:` / methodop `.:`](#%E6%96%B9%E6%B3%95%E8%BF%90%E7%AE%97%E7%AC%A6---methodop--6)
+    - [方法运算符 `.::` / methodop `.::`](#%E6%96%B9%E6%B3%95%E8%BF%90%E7%AE%97%E7%AC%A6---methodop--7)
+    - [方法运算符 `,=` / postfix `,=`](#%E6%96%B9%E6%B3%95%E8%BF%90%E7%AE%97%E7%AC%A6---postfix-)
+- [自增运算符优先级 / Autoincrement precedence](#%E8%87%AA%E5%A2%9E%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--autoincrement-precedence)
+    - [前缀运算符 `++` / prefix `++`](#%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---prefix-)
+    - [前缀运算符 `--` / prefix `--`](#%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-----prefix---)
+    - [前缀运算符 `++` / prefix `++`](#%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---prefix--1)
+    - [后缀运算符 `--` / postfix `--`](#%E5%90%8E%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-----postfix---)
+- [指数优先级 / Exponentiation precedence](#%E6%8C%87%E6%95%B0%E4%BC%98%E5%85%88%E7%BA%A7--exponentiation-precedence)
+    - [中缀运算符 `**` / infix `**`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix-)
+- [一元运算符优先级 / Symbolic unary precedence](#%E4%B8%80%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--symbolic-unary-precedence)
+    - [前缀运算符 `?` / prefix `?`](#%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---prefix--2)
+    - [前缀运算符 `!` / prefix `!`](#%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---prefix--3)
+    - [前缀运算符 `+` / prefix `+`](#%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---prefix--4)
+    - [前缀运算符 `-` / prefix `-`](#%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6----prefix--)
+    - [前缀运算符 `~` / prefix `~`](#%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7E--prefix-%7E)
+    - [前缀运算符 `|` / prefix `|`](#%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7C--prefix-%7C)
+    - [前缀运算符 `+^` / prefix `+^`](#%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5E--prefix-%5E)
+    - [前缀运算符 `~^` / prefix `~^`](#%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7E%5E--prefix-%7E%5E)
+    - [前缀运算符 `?^` / prefix `?^`](#%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5E--prefix-%5E-1)
+    - [前缀运算符 `^` / prefix `^`](#%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5E--prefix-%5E-2)
+- [带点中缀运算符优先级 / Dotty infix precedence](#%E5%B8%A6%E7%82%B9%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--dotty-infix-precedence)
+    - [中缀运算符 `.=` / infix `.=`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--1)
+    - [中缀运算符 `.` / infix `.`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--2)
+- [乘法优先级 / Multiplicative precedence](#%E4%B9%98%E6%B3%95%E4%BC%98%E5%85%88%E7%BA%A7--multiplicative-precedence)
+    - [中缀运算符 `*` / infix `*`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--3)
+    - [中缀运算符 `/` - infix `/`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6----infix-)
+    - [中缀运算符 `div` / infix `div`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-div--infix-div)
+    - [中缀运算符 `%` / infix `%`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%25--infix-%25)
+    - [中缀运算符 `%%` / infix `%%`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%25%25--infix-%25%25)
+    - [中缀运算符 `mod` / infix `mod`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-mod--infix-mod)
+    - [中缀运算符 `+&` / infix `+&`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--4)
+    - [中缀运算符 `+<` / infix `+<`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--5)
+    - [中缀运算符 `+>` / infix `+>`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--6)
+    - [中缀运算符 `~&` / infix `~&`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7E--infix-%7E)
+    - [中缀运算符 `~<` / infix `~<`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7E--infix-%7E-1)
+    - [中缀运算符 `~>` / infix `~>`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7E--infix-%7E-2)
+    - [中缀运算符 `gcd` / infix `gcd`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-gcd--infix-gcd)
+    - [中缀运算符 `lcm` / infix `lcm`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-lcm--infix-lcm)
+- [加法优先级 / Additive precedence](#%E5%8A%A0%E6%B3%95%E4%BC%98%E5%85%88%E7%BA%A7--additive-precedence)
+    - [中缀运算符 `+` / infix `+`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--7)
+    - [中缀运算符 `-` / infix `-`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6----infix--)
+    - [中缀运算符 `+|` / infix `+|`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7C--infix-%7C)
+    - [中缀运算符 `+^` / infix `+^`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5E--infix-%5E)
+    - [中缀运算符 `~|` / infix `~|`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7E%7C--infix-%7E%7C)
+    - [中缀运算符 `~^` / infix `~^`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7E%5E--infix-%7E%5E)
+    - [中缀运算符 `?^` / infix `?^`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5E--infix-%5E-1)
+    - [中缀运算符 `?|` / infix `?|`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7C--infix-%7C-1)
+- [复制运算符优先级 / Replication precedence](#%E5%A4%8D%E5%88%B6%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--replication-precedence)
+    - [中缀运算符 `x` / infix `x`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-x--infix-x)
+    - [中缀运算符 `xx` / infix `xx`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-xx--infix-xx)
+- [连接操作符 / Concatenation](#%E8%BF%9E%E6%8E%A5%E6%93%8D%E4%BD%9C%E7%AC%A6--concatenation)
+    - [中缀运算符 `~` / infix `~`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7E--infix-%7E-3)
+    - [中缀运算符 `∘` / infix `∘`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%88%98--infix-%E2%88%98)
+- [Junction 与运算符优先级 / Junctive AND \(all\) precedence](#junction-%E4%B8%8E%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--junctive-and-all-precedence)
+    - [中缀运算符 `&` / infix `&`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--8)
+    - [中缀运算符 `(&)`, 中缀运算符 `∩` / infix `(&)`, infix `∩`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6--%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%88%A9--infix--infix-%E2%88%A9)
+    - [中缀运算符 `(.)`， 中缀运算符 `⊍` / infix `(.)`, infix `⊍`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%EF%BC%8C-%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%8D--infix--infix-%E2%8A%8D)
+- [Junction 或运算符优先级 / Junctive OR \(any\) precedence](#junction-%E6%88%96%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--junctive-or-any-precedence)
+    - [中缀运算符 `|` / infix `|`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7C--infix-%7C-2)
+    - [中缀运算符 `(|)`，中缀运算符 `∪` / infix `(|)`, infix `∪`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7C%EF%BC%8C%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%88%AA--infix-%7C-infix-%E2%88%AA)
+    - [中缀运算符 `(+)`，中缀运算符 `⊎` / infix `(+)`, infix `⊎`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%EF%BC%8C%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%8E--infix--infix-%E2%8A%8E)
+    - [中缀运算符 `(-)`，中缀运算符 `∖` / infix `(-)`, infix `∖`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6--%EF%BC%8C%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%88%96--infix---infix-%E2%88%96)
+    - [中缀运算符 `(^)` / infix `^`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5E--infix-%5E-2)
+    - [中缀运算符 `(^)`，中缀运算符 `⊖` / infix `(^)`, infix `⊖`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5E%EF%BC%8C%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%96--infix-%5E-infix-%E2%8A%96)
+- [命名一元运算符优先级 / Named unary precedence](#%E5%91%BD%E5%90%8D%E4%B8%80%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--named-unary-precedence)
+    - [前缀运算符 `temp` / prefix `temp`](#%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-temp--prefix-temp)
+    - [前缀运算符 `let` / prefix `let`](#%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-let--prefix-let)
+- [非链式二元运算符优先级 / Nonchaining binary precedence](#%E9%9D%9E%E9%93%BE%E5%BC%8F%E4%BA%8C%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--nonchaining-binary-precedence)
+    - [中缀运算符 `does` / infix `does`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-does--infix-does)
+    - [中缀运算符 `but` / infix `but`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-but--infix-but)
+    - [中缀运算符 `cmp` / infix `cmp`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-cmp--infix-cmp)
+    - [中缀运算符 `coll` / infix `coll`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-coll--infix-coll)
+    - [中缀运算符 `unicmp` / infix `unicmp`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-unicmp--infix-unicmp)
+    - [中缀运算符 `leg` / infix `leg`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-leg--infix-leg)
+    - [中缀运算符 `` / infix ``](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6--infix-)
+    - [中缀运算符 `..` / infix `..`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--9)
+    - [中缀运算符 `..^` / infix `..^`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5E--infix-%5E-3)
+    - [中缀运算符 `^..` / infix `^..`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5E--infix-%5E-4)
+    - [中缀运算符 `^..^` / infix `^..^`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5E%5E--infix-%5E%5E)
+- [链式二元运算符优先级 / Chaining binary precedence](#%E9%93%BE%E5%BC%8F%E4%BA%8C%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--chaining-binary-precedence)
+    - [中缀运算符 `==` / infix `==`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--10)
+    - [中缀运算符 `!=` / infix `!=`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--11)
+    - [中缀运算符 `≠` / infix `≠`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%89%A0--infix-%E2%89%A0)
+    - [中缀运算符 `<` / infix `<`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--12)
+    - [中缀运算符 `<=` / infix `<=`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--13)
+    - [中缀运算符 `≤` / infix `≤`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%89%A4--infix-%E2%89%A4)
+    - [中缀运算符 `>` / infix `>`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--14)
+    - [中缀运算符 `>=` / infix `>=`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--15)
+    - [中缀运算符 `≥` / infix `≥`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%89%A5--infix-%E2%89%A5)
+    - [中缀运算符 `eq` / infix `eq`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-eq--infix-eq)
+    - [中缀运算符 `ne` / infix `ne`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-ne--infix-ne)
+    - [中缀运算符 `gt` / infix `gt`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-gt--infix-gt)
+    - [中缀运算符 `ge` / infix `ge`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-ge--infix-ge)
+    - [中缀运算符 `lt` / infix `lt`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-lt--infix-lt)
+    - [中缀运算符 `le` / infix `le`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-le--infix-le)
+    - [中缀运算符 `before` / infix `before`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-before--infix-before)
+    - [中缀运算符 `after` / infix `after`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-after--infix-after)
+    - [中缀运算符 `eqv` / infix `eqv`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-eqv--infix-eqv)
+    - [infix `===`](#infix-)
+    - [infix `=:=`](#infix--1)
     - [infix `~~`](#infix-%7E%7E)
-    - [infix `=~=`](#infix-%7E-4)
+    - [infix `=~=`](#infix-%7E)
     - [infix \(elem\), infix ∈»](#infix-elem-infix-%E2%88%88%C2%BB)
     - [infix `∉`](#infix-%E2%88%89)
     - [infix \(cont\), infix ∋»](#infix-cont-infix-%E2%88%8B%C2%BB)
@@ -166,16 +166,16 @@ See [creating operators](https://docs.perl6.org/language/optut) on how to define
     - [infix `(>=)`, infix `⊇`](#infix--infix-%E2%8A%87)
     - [infix `⊉`](#infix-%E2%8A%89)
 - [Tight AND precedence](#tight-and-precedence)
-    - [infix `&&`](#infix--20)
+    - [infix `&&`](#infix--2)
 - [Tight OR precedence](#tight-or-precedence)
     - [infix `||`](#infix-%7C%7C)
-    - [infix `^^`](#infix-%5E%5E-1)
-    - [infix `//`](#infix--21)
+    - [infix `^^`](#infix-%5E%5E)
+    - [infix `//`](#infix--3)
     - [infix `min`](#infix-min)
     - [infix `max`](#infix-max)
     - [infix `minmax`](#infix-minmax)
 - [Conditional operator precedence](#conditional-operator-precedence)
-    - [infix `?? !!`](#infix---1)
+    - [infix `?? !!`](#infix--)
     - [infix `ff`](#infix-ff)
     - [infix `^ff`](#infix-%5Eff)
     - [infix `ff^`](#infix-ff%5E)
@@ -185,22 +185,22 @@ See [creating operators](https://docs.perl6.org/language/optut) on how to define
     - [infix `fff^`](#infix-fff%5E)
     - [infix `^fff^`](#infix-%5Efff%5E)
 - [Item assignment precedence](#item-assignment-precedence)
-    - [infix `=`](#infix--22)
-    - [infix `=>`](#infix--23)
+    - [infix `=`](#infix--4)
+    - [infix `=>`](#infix--5)
 - [Loose unary precedence](#loose-unary-precedence)
     - [prefix `not`](#prefix-not)
     - [prefix `so`](#prefix-so)
 - [Comma operator precedence](#comma-operator-precedence)
-    - [infix `,`](#infix--24)
-    - [infix `:`](#infix--25)
+    - [infix `,`](#infix--6)
+    - [infix `:`](#infix--7)
 - [List infix precedence](#list-infix-precedence)
     - [infix `Z`](#infix-z)
-    - [infix `X`](#infix-x-1)
-    - [infix `...`](#infix--26)
+    - [infix `X`](#infix-x)
+    - [infix `...`](#infix--8)
 - [List prefix precedence](#list-prefix-precedence)
-    - [infix `=`](#infix--27)
-    - [infix `:=`](#infix--28)
-    - [infix `::=`](#infix--29)
+    - [infix `=`](#infix--9)
+    - [infix `:=`](#infix--10)
+    - [infix `::=`](#infix--11)
     - [listop `...`](#listop-)
     - [listop `!!!`](#listop--1)
     - [listop `???`](#listop--2)
@@ -214,8 +214,8 @@ See [creating operators](https://docs.perl6.org/language/optut) on how to define
     - [infix `orelse`](#infix-orelse)
     - [infix `xor`](#infix-xor)
 - [Sequencer precedence](#sequencer-precedence)
-    - [infix `==>`](#infix--30)
-    - [infix `<==`](#infix--31)
+    - [infix `==>`](#infix--12)
+    - [infix `<==`](#infix--13)
 - [Identity](#identity)
 
 <!-- /MarkdownTOC -->
@@ -636,7 +636,7 @@ say (<a b>, <c d e>)».elems;        # OUTPUT: «(2 3)␤»
 say (<a b>, <c d e>)».&{ .elems };  # OUTPUT: «((1 1) (1 1 1))␤»
 ```
 
-您可以将超级运算符链接起来，以对列表的列表进行解构。
+你可以将超级运算符链接起来，以对列表的列表进行解构。
 
 You can chain hyper operators to destructure a List of Lists.
 
@@ -668,7 +668,7 @@ sub plus { $^a + $^b };
 say [[&plus]] 1, 2, 3;          # OUTPUT: «6␤»
 ```
 
-参数列表不展开即遍历。这意味着您可以将嵌套列表传递给列表中缀运算符的缩减形式：
+参数列表不展开即遍历。这意味着你可以将嵌套列表传递给列表中缀运算符的缩减形式：
 
 The argument list is iterated without flattening. This means that you can pass a nested list to the reducing form of a list infix operator:
 
@@ -742,7 +742,7 @@ say so 1 S& 2 S& 3;  # OUTPUT: «True␤»
 <a id="%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6%E5%B5%8C%E5%A5%97--nesting-of-metaoperators"></a>
 # 元运算符嵌套 / Nesting of metaoperators
 
-为了避免在链接元运算符时出现歧义，请使用方括号帮助编译器理解您。
+为了避免在链接元运算符时出现歧义，请使用方括号帮助编译器理解你。
 
 To avoid ambiguity when chaining metaoperators, use square brackets to help the compiler understand you.
 
@@ -846,7 +846,7 @@ sub postcircumfix:<[ ]>(@container, **@index,
                         :$k, :$v, :$kv, :$p, :$exists, :$delete)
 ```
 
-用于对 @container 的零个或多个元素进行位置访问的通用接口，也称为“数组索引运算符”。
+用于对数组容器的零个或多个元素进行位置访问的通用接口，也称为“数组索引运算符”。
 
 Universal interface for positional access to zero or more elements of a @container, a.k.a. "array indexing operator".
 
@@ -1115,6 +1115,8 @@ Take care to avoid a [common mistake](https://docs.perl6.org/language/traps#Usin
 <a id="%E6%96%B9%E6%B3%95%E8%BF%90%E7%AE%97%E7%AC%A6-postfix--postcircumfix---methodop-postfix--postcircumfix"></a>
 ## 方法运算符 `.postfix` / `.postcircumfix` - methodop `.postfix` / `.postcircumfix`
 
+在大多数情况下，点号可以放在后缀或后环缀：
+
 In most cases, a dot may be placed before a postfix or postcircumfix:
 
 ```Perl6
@@ -1122,6 +1124,8 @@ my @a;
 @a[1, 2, 3];
 @a.[1, 2, 3]; # Same
 ```
+
+这对视觉清晰度或简洁性很有用。例如，如果一个对象的属性是一个函数，在属性名后面放一对圆括号将成为方法调用的一部分。因此，要么必须使用两对括号，要么必须在括号前面加一个点，以将其与方法调用分开。
 
 This can be useful for visual clarity or brevity. For example, if an object's attribute is a function, putting a pair of parentheses after the attribute name will become part of the method call. So, either two pairs of parentheses must be used or a dot has to come before the parentheses to separate it from the method call.
 
@@ -1132,9 +1136,11 @@ class Operation {
 }
 my $addition = Operation.new(:symbol<+>, :function{ $^a + $^b });
 say $addition.function()(1, 2);   # OUTPUT: «3␤» 
-# OR 
+# OR
 say $addition.function.(1, 2);    # OUTPUT: «3␤»
 ```
+
+但是，如果后缀是一个标识符，它将被解释为一个普通的方法调用。
 
 If the postfix is an identifier, however, it will be interpreted as a normal method call.
 
@@ -1142,10 +1148,14 @@ If the postfix is an identifier, however, it will be interpreted as a normal met
 1.i # No such method 'i' for invocant of type 'Int' 
 ```
 
+从技术上讲，不是真正的运算符；它是编译器中的句法特例。
+
 Technically, not a real operator; it's syntax special-cased in the compiler.
 
-<a id="methodop-"></a>
-## methodop `.:`
+<a id="%E6%96%B9%E6%B3%95%E8%BF%90%E7%AE%97%E7%AC%A6---methodop--6"></a>
+## 方法运算符 `.:` / methodop `.:`
+
+前缀形式的运算符仍然可以像方法一样调用，即使用 `.` 方法运算符符号，在它前面加一个冒号。例如：
 
 An operator in prefix form can still be called like a method, that is, using the `.` methodop notation, by preceding it by a colon. For example:
 
@@ -1155,10 +1165,14 @@ say ++$a;       # OUTPUT: «2␤»
 say $a.:<++>;   # OUTPUT: «3␤»
 ```
 
+从技术上讲，不是真正的运算符；它是编译器中的句法特例，这就是为什么它被归类为一个*方法运算符*。
+
 Technically, not a real operator; it's syntax special-cased in the compiler, that is why it's classified as a *methodop*.
 
-<a id="methodop--1"></a>
-## methodop `.::`
+<a id="%E6%96%B9%E6%B3%95%E8%BF%90%E7%AE%97%E7%AC%A6---methodop--7"></a>
+## 方法运算符 `.::` / methodop `.::`
+
+类限定的方法调用，用于调用在父类或角色中定义的方法，即使在子类中重新定义了该方法。
 
 A class-qualified method call, used to call a method as defined in a parent class or role, even after it has been redefined in the child class.
 
@@ -1172,8 +1186,10 @@ class Foo is Bar {
 say Foo.Bar::baz;       # OUTPUT: «42␤»
 ```
 
-<a id="postfix-"></a>
-## postfix `,=`
+<a id="%E6%96%B9%E6%B3%95%E8%BF%90%E7%AE%97%E7%AC%A6---postfix-"></a>
+## 方法运算符 `,=` / postfix `,=`
+
+创建一个对象，该对象以依赖于类的方式连接左侧变量和右侧表达式的内容：
 
 Creates an object that concatenates, in a class-dependent way, the contents of the variable on the left hand side and the expression on the right hand side:
 
@@ -1183,15 +1199,17 @@ my %a = :11a, :22b;
 say %a # OUTPUT: «{a => 11, b => 22, x => 33}␤»
 ```
 
-<a id="autoincrement-precedence"></a>
-# Autoincrement precedence
+<a id="%E8%87%AA%E5%A2%9E%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--autoincrement-precedence"></a>
+# 自增运算符优先级 / Autoincrement precedence
 
-<a id="prefix"></a>
-## prefix 
+<a id="%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---prefix-"></a>
+## 前缀运算符 `++` / prefix `++`
 
 ```Perl6
 multi sub prefix:<++>($x is rw) is assoc<non>
 ```
+
+这是。将其参数增加一并返回更新后的值。
 
 This is the . Increments its argument by one and returns the updated value.
 
@@ -1201,14 +1219,18 @@ say ++$x;   # OUTPUT: «4␤»
 say $x;     # OUTPUT: «4␤»
 ```
 
+它通过在参数上调用 [succ](https://docs.perl6.org/routine/succ)（意为 *successor*） 方法来工作，该方法允许自定义类型自由实现自己的增量语义。
+
 It works by calling the [succ](https://docs.perl6.org/routine/succ) method (for *successor*) on its argument, which gives custom types the freedom to implement their own increment semantics.
 
-<a id="prefix-1"></a>
-## prefix 
+<a id="%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-----prefix---"></a>
+## 前缀运算符 `--` / prefix `--`
 
 ```Perl6
 multi sub prefix:<-->($x is rw) is assoc<non>
 ```
+
+将其参数递减一并返回更新后的值。
 
 Decrements its argument by one and returns the updated value.
 
@@ -1218,14 +1240,18 @@ say --$x;   # OUTPUT: «2␤»
 say $x;     # OUTPUT: «2␤»
 ```
 
+它的工作方式是在参数上调用 [pred](https://docs.perl6.org/routine/pred)（意为 *precondence*）方法，这给了自定义类型实现自减语义的自由。
+
 It works by calling the [pred](https://docs.perl6.org/routine/pred) method (for *predecessor*) on its argument, which gives custom types the freedom to implement their own decrement semantics.
 
-<a id="postfix"></a>
-## postfix 
+<a id="%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---prefix--1"></a>
+## 前缀运算符 `++` / prefix `++`
 
 ```Perl6
 multi sub postfix:<++>($x is rw) is assoc<non>
 ```
+
+将其参数增加一并返回原始值。
 
 Increments its argument by one and returns the original value.
 
@@ -1235,7 +1261,11 @@ say $x++;   # OUTPUT: «3␤»
 say $x;     # OUTPUT: «4␤»
 ```
 
+它通过在参数上调用 [succ](https://docs.perl6.org/routine/succ) 方法来工作，该方法允许自定义类型自由实现自增语义。
+
 It works by calling the [succ](https://docs.perl6.org/routine/succ) method (for *successor*) on its argument, which gives custom types the freedom to implement their own increment semantics.
+
+注意，这不一定返回其参数；例如，对于未定义的值，它返回 0：
 
 Note that this does not necessarily return its argument; e.g., for undefined values, it returns 0:
 
@@ -1245,6 +1275,8 @@ say $x++;   # OUTPUT: «0␤»
 say $x;     # OUTPUT: «1␤»
 ```
 
+[Str](https://docs.perl6.org/type/Str) 上的增量将增加字符串的数字部分，并将结果字符串分配给容器。`is rw` 容器是必需的。
+
 Increment on [Str](https://docs.perl6.org/type/Str) will increment the number part of a string and assign the resulting string to the container. A `is rw`-container is required.
 
 ```Perl6
@@ -1253,12 +1285,14 @@ say $filename++ for 1..3;
 # OUTPUT: «somefile-001.txt␤somefile-002.txt␤somefile-003.txt␤»
 ```
 
-<a id="postfix---"></a>
-## postfix `--` 
+<a id="%E5%90%8E%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-----postfix---"></a>
+## 后缀运算符 `--` / postfix `--` 
 
 ```Perl6
 multi sub postfix:<-->($x is rw) is assoc<non>
 ```
+
+将其参数递减一并返回原始值。
 
 Decrements its argument by one and returns the original value.
 
@@ -1268,7 +1302,11 @@ say $x--;   # OUTPUT: «3␤»
 say $x;     # OUTPUT: «2␤»
 ```
 
+它的工作方式是在参数上调用 [pred](https://docs.perl6.org/routine/pred) 方法，这给了自定义类型实现自己自减语义的自由。
+
 It works by calling the [pred](https://docs.perl6.org/routine/pred) method (for *predecessor*) on its argument, which gives custom types the freedom to implement their own decrement semantics.
+
+注意，这不一定返回其参数；例如，对于未定义的值，它返回 0：
 
 Note that this does not necessarily return its argument;e.g., for undefined values, it returns 0:
 
@@ -1278,6 +1316,8 @@ say $x--;   # OUTPUT: «0␤»
 say $x;     # OUTPUT: «-1␤»
 ```
 
+[Str](https://docs.perl6.org/type/Str) 上的减量将减少字符串的数字部分，并将结果字符串分配给容器。`is rw` 容器是必需的。数字部分减到小于 0 是被禁止的并会抛出 `X::AdHoc` 异常。
+
 Decrement on [Str](https://docs.perl6.org/type/Str) will decrement the number part of a string and assign the resulting string to the container. A `is rw`-container is required. Crossing 0 is prohibited and throws `X::AdHoc`.
 
 ```Perl6
@@ -1286,19 +1326,25 @@ say $filename-- for 1..3;
 # OUTPUT: «somefile-003.txt␤somefile-002.txt␤somefile-001.txt␤»
 ```
 
-<a id="exponentiation-precedence"></a>
-# Exponentiation precedence
+<a id="%E6%8C%87%E6%95%B0%E4%BC%98%E5%85%88%E7%BA%A7--exponentiation-precedence"></a>
+# 指数优先级 / Exponentiation precedence
 
-<a id="infix-"></a>
-## infix `**`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix-"></a>
+## 中缀运算符 `**` / infix `**`
 
 ```Perl6
 multi sub infix:<**>(Any, Any --> Numeric:D) is assoc<right>
 ```
 
+指数运算符将两个参数强制转换为[数值](https://docs.perl6.org/type/Numeric)，并计算左边数值的对于右边数值的指数。
+
 The exponentiation operator coerces both arguments to [Numeric](https://docs.perl6.org/type/Numeric) and calculates the left-hand-side raised to the power of the right-hand side.
 
+如果右边是非负整数，左边是任意精度类型（[Int](https://docs.perl6.org/type/Int)、[FatRat](https://docs.perl6.org/type/FatRat)），则执行计算时不会损失精度。
+
 If the right-hand side is a non-negative integer and the left-hand side is an arbitrary precision type ([Int](https://docs.perl6.org/type/Int), [FatRat](https://docs.perl6.org/type/FatRat)), then the calculation is carried out without loss of precision.
+
+Unicode 上标将以完全相同的方式运行。
 
 Unicode superscripts will behave in exactly the same way.
 
@@ -1307,6 +1353,8 @@ sub squared( Int $num ) { $num² };
 say squared($_) for ^5; OUTPUT: «0␤1␤4␤9␤16␤»
 ```
 
+它也适用于多个 Unicode 上标数字的序列：
+
 It also works for sequences of several Unicode superscript numbers:
 
 ```Perl6
@@ -1314,66 +1362,90 @@ sub twenty-second-power( Int $num ) { $num²² };
 say twenty-second-power($_) for ^5; # OUTPUT: «0␤1␤4194304␤31381059609␤17592186044416␤»
 ```
 
-<a id="symbolic-unary-precedence"></a>
-# Symbolic unary precedence
+<a id="%E4%B8%80%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--symbolic-unary-precedence"></a>
+# 一元运算符优先级 / Symbolic unary precedence
 
-<a id="prefix-"></a>
-## prefix `?`
+<a id="%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---prefix--2"></a>
+## 前缀运算符 `?` / prefix `?`
 
 ```Perl6
 multi sub prefix:<?>(Mu --> Bool:D)
 ```
 
+布尔值上下文运算符。
+
 Boolean context operator.
+
+通过调用参数的 `Bool` 方法将其强制为 [Bool](https://docs.perl6.org/type/Bool)。注意，这会折叠 [Junction](https://docs.perl6.org/type/Junction) 类型。
 
 Coerces the argument to [Bool](https://docs.perl6.org/type/Bool) by calling the `Bool` method on it. Note that this collapses [Junction](https://docs.perl6.org/type/Junction)s.
 
-<a id="prefix--1"></a>
-## prefix `!`
+<a id="%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---prefix--3"></a>
+## 前缀运算符 `!` / prefix `!`
 
 ```Perl6
 multi sub prefix:<!>(Mu --> Bool:D)
 ```
 
+否认布尔上下文运算符。
+
 Negated boolean context operator.
+
+通过调用参数的 `Bool` 方法将其强制为 [Bool](https://docs.perl6.org/type/Bool) 类型。注意，这会折叠 [Junction](https://docs.perl6.org/type/Junction) 类型。
+
+通过调用参数的 `Bool` 方法将其强制为 [Bool](https://docs.perl6.org/type/Bool) 类型，并返回结果的否定值。注意，这会折叠[Junction](https://docs.perl6.org/type/Junction) 类型。
 
 Coerces the argument to [Bool](https://docs.perl6.org/type/Bool) by calling the `Bool` method on it, and returns the negation of the result. Note that this collapses [Junction](https://docs.perl6.org/type/Junction)s.
 
-<a id="prefix--2"></a>
-## prefix `+`
+<a id="%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---prefix--4"></a>
+## 前缀运算符 `+` / prefix `+`
 
 ```Perl6
 multi sub prefix:<+>(Any --> Numeric:D)
 ```
 
+数值上下文运算符。
+
 Numeric context operator.
+
+通过调用参数上的 `Numeric` 方法将其强制为[数值](https://docs.perl6.org/type/Numeric)。
 
 Coerces the argument to [Numeric](https://docs.perl6.org/type/Numeric) by calling the `Numeric` method on it.
 
-<a id="prefix--"></a>
-## prefix `-`
+<a id="%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6----prefix--"></a>
+## 前缀运算符 `-` / prefix `-`
 
 ```Perl6
 multi sub prefix:<->(Any --> Numeric:D)
 ```
 
+否定数值上下文运算符。
+
 Negative numeric context operator.
+
+通过调用参数上的 `Numeric` 方法将其强制为[数值](https://docs.perl6.org/type/Numeric)，并返回结果的否定值。
 
 Coerces the argument to [Numeric](https://docs.perl6.org/type/Numeric) by calling the `Numeric` method on it, and then negates the result.
 
-<a id="prefix-%7E"></a>
-## prefix `~`
+<a id="%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7E--prefix-%7E"></a>
+## 前缀运算符 `~` / prefix `~`
 
 ```Perl6
 multi sub prefix:<~>(Any --> Str:D)
 ```
 
+字符串上下文运算符。
+
 String context operator.
+
+通过调用 [Str](https://docs.perl6.org/type/Str) 方法，将参数强制为 [Str](https://docs.perl6.org/type/Str) 类型。
 
 Coerces the argument to [Str](https://docs.perl6.org/type/Str) by calling the [Str](https://docs.perl6.org/type/List#method_Str) method on it.
 
-<a id="prefix-%7C"></a>
-## prefix `|`
+<a id="%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7C--prefix-%7C"></a>
+## 前缀运算符 `|` / prefix `|`
+
+将类型为 [Capture](https://docs.perl6.org/type/Capture)、[Pair](https://docs.perl6.org/type/Pair)、[List](https://docs.perl6.org/type/List)、[Map](https://docs.perl6.org/type/Map) 和 [Hash](https://docs.perl6.org/type/Hash) 的对象展平成参数列表。
 
 Flattens objects of type [Capture](https://docs.perl6.org/type/Capture), [Pair](https://docs.perl6.org/type/Pair), [List](https://docs.perl6.org/type/List), [Map](https://docs.perl6.org/type/Map) and [Hash](https://docs.perl6.org/type/Hash) into an argument list.
 
@@ -1385,43 +1457,59 @@ slurpee( <a b c d>, { e => 3 }, 'e' => 'f' => 33 )
 # OUTPUT: «\(("a", "b", "c", "d"), {:e(3)}, :e(:f(33)))␤»
 ```
 
+有关此主题的详细信息，请参阅 [`Signature` 页面，特别是有关捕获的部分](https://docs.perl6.org/type/Signature#Capture_parameters)。
+
 Please see the [`Signature` page, specially the section on Captures](https://docs.perl6.org/type/Signature#Capture_parameters) for more information on the subject.
+
+在参数列表之外，它返回一个 [Slip](https://docs.perl6.org/type/Slip)，这使得它扁平化为外部列表。在[参数列表](https://docs.perl6.org/language/list#Argument_list_(Capture)_context)中，[`Positional`](https://docs.perl6.org/type/Positional) 部分将变为位置参数，[`Associative`](https://docs.perl6.org/type/Associative) 部分变为命名参数。
 
 Outside of argument lists, it returns a [Slip](https://docs.perl6.org/type/Slip), which makes it flatten into the outer list. Inside [argument list](https://docs.perl6.org/language/list#Argument_list_(Capture)_context) [`Positional`s](https://docs.perl6.org/type/Positional) are turned into positional arguments and [`Associative`s](https://docs.perl6.org/type/Associative) are turned into named arguments.
 
-<a id="prefix-%5E"></a>
-## prefix `+^`
+<a id="%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5E--prefix-%5E"></a>
+## 前缀运算符 `+^` / prefix `+^`
 
 ```Perl6
 multi sub prefix:<+^>(Any --> Int:D)
 ```
 
+整数位求反运算符：将参数强制为 [Int](https://docs.perl6.org/type/Int)，并对结果进行位求反，假定[二的补码](https://en.wikipedia.org/wiki/Two%27s_complement)。
+
 Integer bitwise negation operator: Coerces the argument to [Int](https://docs.perl6.org/type/Int) and does a bitwise negation on the result, assuming [two's complement](https://en.wikipedia.org/wiki/Two%27s_complement).
 
-<a id="prefix-%7E%5E"></a>
-## prefix `~^`
+<a id="%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7E%5E--prefix-%7E%5E"></a>
+## 前缀运算符 `~^` / prefix `~^`
+
+将参数强制为非变量编码字符串缓冲区类型（例如 `buf8`、`buf16`、`buf32`），然后翻转该缓冲区中的每个位。
 
 Coerces the argument to a non-variable-encoding string buffer type (e.g. `buf8`, `buf16`, `buf32`) and then flips each bit in that buffer.
 
+请注意，这一点尚未实现。。。
+
 Please note that this has not yet been implemented.
 
-<a id="prefix-%5E-1"></a>
-## prefix `?^`
+<a id="%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5E--prefix-%5E-1"></a>
+## 前缀运算符 `?^` / prefix `?^`
 
 ```Perl6
 multi sub prefix:<?^>(Mu --> Bool:D)
 ```
 
-Boolean bitwise negation operator: Coerces the argument to [Bool](https://docs.perl6.org/type/Bool) and then does a bit flip, which makes it the same as `prefix:<!> `.
+布尔位求反运算符：将参数强制为 [Bool](https://docs.perl6.org/type/Bool)，然后进行位翻转，使其与 `prefix:<!>` 相同。
 
-<a id="prefix-%5E-2"></a>
-## prefix `^`
+Boolean bitwise negation operator: Coerces the argument to [Bool](https://docs.perl6.org/type/Bool) and then does a bit flip, which makes it the same as `prefix:<!>`.
+
+<a id="%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5E--prefix-%5E-2"></a>
+## 前缀运算符 `^` / prefix `^`
 
 ```Perl6
 multi sub prefix:<^>(Any --> Range:D)
 ```
 
+*upto* 运算符.
+
 *upto* operator.
+
+将参数强制为[数值](https://docs.perl6.org/type/Numeric)，并生成从 0 到（但不包括）参数的范围。
 
 Coerces the argument to [Numeric](https://docs.perl6.org/type/Numeric), and generates a range from 0 up to (but excluding) the argument.
 
@@ -1430,15 +1518,21 @@ say ^5;         # OUTPUT: «0..^5␤»
 for ^5 { }      # 5 iterations
 ```
 
-<a id="dotty-infix-precedence"></a>
-# Dotty infix precedence
+<a id="%E5%B8%A6%E7%82%B9%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--dotty-infix-precedence"></a>
+# 带点中缀运算符优先级 / Dotty infix precedence
+
+这些运算符与它们的方法后缀对应项类似，但需要周围的空白（在和/或之后）来区分它们。
 
 These operators are like their Method Postfix counterparts, but require surrounding whitespace (before and/or after) to distinguish them.
 
-<a id="infix--1"></a>
-## infix `.=`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--1"></a>
+## 中缀运算符 `.=` / infix `.=`
+
+对左侧容器中的值调用右侧方法，替换左侧容器中的结果值。
 
 Calls the right-side method on the value in the left-side container, replacing the resulting value in the left-side container.
+
+在大多数情况下，其行为与后缀赋值函数相同，但优先级较低：
 
 In most cases, this behaves identically to the postfix mutator, but the precedence is lower:
 
@@ -1451,10 +1545,14 @@ say ++$a .= abs;
 #           in block <unit> at <tmp> line 1␤␤» 
 ```
 
-<a id="infix--2"></a>
-## infix `.`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--2"></a>
+## 中缀运算符 `.` / infix `.`
+
+调用左侧调用者右侧的方法（其名称必须是字母）。
 
 Calls the following method (whose name must be alphabetic) on the left-side invocant.
+
+注意，运算符的中缀形式的优先级略低于后缀 `.meth`。
 
 Note that the infix form of the operator has a slightly lower precedence than postfix `.meth`.
 
@@ -1467,48 +1565,62 @@ say -5 .abs;     # following whitespace is optional
 # OUTPUT: «5␤»
 ```
 
-<a id="multiplicative-precedence"></a>
-# Multiplicative precedence
+<a id="%E4%B9%98%E6%B3%95%E4%BC%98%E5%85%88%E7%BA%A7--multiplicative-precedence"></a>
+# 乘法优先级 / Multiplicative precedence
 
-<a id="infix--3"></a>
-## infix `*`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--3"></a>
+## 中缀运算符 `*` / infix `*`
 
 ```Perl6
 multi sub infix:<*>(Any, Any --> Numeric:D)
 ```
 
+乘法运算符。
+
 Multiplication operator.
+
+将两个参数强制转换为[数值](https://docs.perl6.org/type/Numeric)并将它们相乘。结果是较宽的类型。有关详细信息，请参见[数值](https://docs.perl6.org/type/Numeric)。
 
 Coerces both arguments to [Numeric](https://docs.perl6.org/type/Numeric) and multiplies them. The result is of the wider type. See [Numeric](https://docs.perl6.org/type/Numeric) for details.
 
-<a id="infix--4"></a>
-## infix `/`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6----infix-"></a>
+## 中缀运算符 `/` - infix `/`
 
 ```Perl6
 multi sub infix:</>(Any, Any --> Numeric:D)
 ```
 
+除法运算符。
+
 Division operator.
+
+将两个参数强制转换为[数值](https://docs.perl6.org/type/Numeric)并将左数除以右数。[Int](https://docs.perl6.org/type/Int) 的除法返回 [Rat](https://docs.perl6.org/type/Rat) 值，否则[数值](https://docs.perl6.org/type/Numeric)中描述的“较宽类型”规则适用。
 
 Coerces both argument to [Numeric](https://docs.perl6.org/type/Numeric) and divides the left through the right number. Division of [Int](https://docs.perl6.org/type/Int) values returns [Rat](https://docs.perl6.org/type/Rat), otherwise the "wider type" rule described in [Numeric](https://docs.perl6.org/type/Numeric) holds.
 
-<a id="infix-div"></a>
-## infix `div`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-div--infix-div"></a>
+## 中缀运算符 `div` / infix `div`
 
 ```Perl6
 multi sub infix:<div>(Int:D, Int:D --> Int:D)
 ```
 
+整数除法运算符。向下舍入。
+
 Integer division operator. Rounds down.
 
-<a id="infix-%25"></a>
-## infix `%`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%25--infix-%25"></a>
+## 中缀运算符 `%` / infix `%`
 
 ```Perl6
 multi sub infix:<%>($x, $y --> Numeric:D)
 ```
 
+模运算符。首先强制为[数值](https://docs.perl6.org/type/Numeric)。
+
 Modulo operator. Coerces to [Numeric](https://docs.perl6.org/type/Numeric) first.
+
+一般来说，以下标识成立：
 
 Generally the following identity holds:
 
@@ -1517,175 +1629,224 @@ my ($x, $y) = 1,2;
 $x % $y == $x - floor($x / $y) * $y
 ```
 
-<a id="infix-%25%25"></a>
-## infix `%%`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%25%25--infix-%25%25"></a>
+## 中缀运算符 `%%` / infix `%%`
 
 ```Perl6
 multi sub infix:<%%>($a, $b --> Bool:D)
 ```
 
+可除性运算符。如果 `$a % $b == 0`，则返回 `True`。
+
 Divisibility operator. Returns `True` if `$a % $b == 0`.
 
-<a id="infix-mod"></a>
-## infix `mod`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-mod--infix-mod"></a>
+## 中缀运算符 `mod` / infix `mod`
 
 ```Perl6
 multi sub infix:<mod>(Int:D $a, Int:D $b --> Int:D)
 ```
 
+整数模运算符。返回整数模运算的剩余部分。
+
 Integer modulo operator. Returns the remainder of an integer modulo operation.
 
-<a id="infix--5"></a>
-## infix `+&`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--4"></a>
+## 中缀运算符 `+&` / infix `+&`
 
 ```Perl6
 multi sub infix:<+&>($a, $b --> Int:D)
 ```
 
+数值按位*与*运算符。将两个参数强制为 [Int](https://docs.perl6.org/type/Int)，并假设二的补码，执行按位*与*操作。
+
 Numeric bitwise *AND* operator. Coerces both arguments to [Int](https://docs.perl6.org/type/Int) and does a bitwise *AND* operation assuming two's complement.
 
-<a id="infix--6"></a>
-## infix `+<`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--5"></a>
+## 中缀运算符 `+<` / infix `+<`
 
 ```Perl6
 multi sub infix:<< +< >>($a, $b --> Int:D)
 ```
 
+整数位向左移位。
+
 Integer bit shift to the left.
 
-<a id="infix--7"></a>
-## infix `+>`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--6"></a>
+## 中缀运算符 `+>` / infix `+>`
 
 ```Perl6
 multi sub infix:<< +> >>($a, $b --> Int:D)
 ```
 
+整数位向右移位。
+
 Integer bit shift to the right.
 
-<a id="infix-%7E"></a>
-## infix `~&`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7E--infix-%7E"></a>
+## 中缀运算符 `~&` / infix `~&`
 
+将每个参数强制为非变量编码字符串缓冲区类型（例如 `buf8`、`buf16`、`buf32`），然后对两个缓冲区的相应整数执行逐位与运算，用零填充较短的缓冲区。
 Coerces each argument to a non-variable-encoding string buffer type (e.g. `buf8`, `buf16`, `buf32`) and then performs a numeric bitwise AND on corresponding integers of the two buffers, padding the shorter buffer with zeroes.
 
-<a id="infix-%7E-1"></a>
-## infix `~<`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7E--infix-%7E-1"></a>
+## 中缀运算符 `~<` / infix `~<`
+
+将左参数强制为非变量编码字符串缓冲区类型（例如 `buf8`、`buf16`、`buf32`），然后对缓冲区的位执行数值按位左移。
 
 Coerces the left argument to a non-variable-encoding string buffer type (e.g. `buf8`, `buf16`, `buf32`) and then performs a numeric bitwise left shift on the bits of the buffer.
 
+请注意，这一点尚未实现。
+
 Please note that this has not yet been implemented.
 
-<a id="infix-%7E-2"></a>
-## infix `~>`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7E--infix-%7E-2"></a>
+## 中缀运算符 `~>` / infix `~>`
+
+将左参数强制为非变量编码字符串缓冲区类型（例如 `buf8`、`buf16`、`buf32`），然后对缓冲区的位执行数字按位左移。
 
 Coerces the left argument to a non-variable-encoding string buffer type (e.g. `buf8`, `buf16`, `buf32`) and then performs a numeric bitwise right shift on the bits of the buffer.
 
+请注意，这一点尚未实现。
+
 Please note that this has not yet been implemented.
 
-<a id="infix-gcd"></a>
-## infix `gcd`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-gcd--infix-gcd"></a>
+## 中缀运算符 `gcd` / infix `gcd`
 
 ```Perl6
 multi sub infix:<gcd>($a, $b --> Int:D)
 ```
 
+将两个参数强制为 [Int](https://docs.perl6.org/type/Int) 并返回最大公约数。如果其中一个参数为 0，则返回另一个参数（当两个参数均为 0 时，运算符返回 0）。
+
 Coerces both arguments to [Int](https://docs.perl6.org/type/Int) and returns the greatest common divisor. If one of its arguments is 0, the other is returned (when both arguments are 0, the operator returns 0).
 
-<a id="infix-lcm"></a>
-## infix `lcm`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-lcm--infix-lcm"></a>
+## 中缀运算符 `lcm` / infix `lcm`
 
 ```Perl6
 multi sub infix:<lcm>($a, $b --> Int:D)
 ```
 
+将两个参数强制为 [Int](https://docs.perl6.org/type/Int) 并返回最小公倍数；也就是说，可由两个参数除尽的最小整数。
+
 Coerces both arguments to [Int](https://docs.perl6.org/type/Int) and returns the least common multiple; that is, the smallest integer that is evenly divisible by both arguments.
 
-<a id="additive-precedence"></a>
-# Additive precedence
+<a id="%E5%8A%A0%E6%B3%95%E4%BC%98%E5%85%88%E7%BA%A7--additive-precedence"></a>
+# 加法优先级 / Additive precedence
 
-<a id="infix--8"></a>
-## infix `+`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--7"></a>
+## 中缀运算符 `+` / infix `+`
 
 ```Perl6
 multi sub infix:<+>($a, $b --> Numeric:D)
 ```
 
+加法运算符。
+
 Addition operator.
+
+将两个参数强制为[Numeric](https://docs.perl6.org/type/Numeric)并将它们相加。
 
 Coerces both arguments to [Numeric](https://docs.perl6.org/type/Numeric) and adds them.
 
-<a id="infix--"></a>
-## infix `-`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6----infix--"></a>
+## 中缀运算符 `-` / infix `-`
 
 ```Perl6
 multi sub infix:<->($a, $b --> Numeric:D)
 ```
 
+减法运算符。
+
 Subtraction operator.
+
+将两个参数强制为 [Numeric](https://docs.perl6.org/type/Numeric)并从第一个参数中减去第二个参数。
 
 Coerces both arguments to [Numeric](https://docs.perl6.org/type/Numeric) and subtracts the second from the first.
 
-<a id="infix-%7C"></a>
-## infix `+|`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7C--infix-%7C"></a>
+## 中缀运算符 `+|` / infix `+|`
 
 ```Perl6
 multi sub infix:<+|>($a, $b --> Int:D)
 ```
 
+整数按位或运算符：将两个参数强制为 [Int](https://docs.perl6.org/type/Int)，并执行按位*或*操作。
+
 Integer bitwise OR operator: Coerces both arguments to [Int](https://docs.perl6.org/type/Int) and does a bitwise *OR* (inclusive OR) operation.
 
-<a id="infix-%5E"></a>
-## infix `+^`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5E--infix-%5E"></a>
+## 中缀运算符 `+^` / infix `+^`
 
 ```Perl6
 multi sub infix:<+^>($a, $b --> Int:D)
 ```
 
+整数位异或运算符：将两个参数强制为 [Int](https://docs.perl6.org/type/Int)，并执行位*异或*操作。
+
 Integer bitwise XOR operator: Coerces both arguments to [Int](https://docs.perl6.org/type/Int) and does a bitwise *XOR* (exclusive OR) operation.
 
-<a id="infix-%7E%7C"></a>
-## infix `~|`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7E%7C--infix-%7E%7C"></a>
+## 中缀运算符 `~|` / infix `~|`
+
+将每个参数强制为非变量编码字符串缓冲区类型（例如 `buf8`、`buf16`、`buf32`），然后对两个缓冲区的相应整数执行逐位或数字运算，用零填充较短的缓冲区。
 
 Coerces each argument to a non-variable-encoding string buffer type (e.g. `buf8`, `buf16`, `buf32`) and then performs a numeric bitwise OR on corresponding integers of the two buffers, padding the shorter buffer with zeroes.
 
-<a id="infix-%7E%5E"></a>
-## infix `~^`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7E%5E--infix-%7E%5E"></a>
+## 中缀运算符 `~^` / infix `~^`
+
+将每个参数强制为非变量编码字符串缓冲区类型（例如 `buf8`、`buf16`、`buf32`），然后对两个缓冲区的相应整数执行数字位异或，用零填充较短的缓冲区。
 
 Coerces each argument to a non-variable-encoding string buffer type (e.g. `buf8`, `buf16`, `buf32`) and then performs a numeric bitwise XOR on corresponding integers of the two buffers, padding the shorter buffer with zeroes.
 
-<a id="infix-%5E-1"></a>
-## infix `?^`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5E--infix-%5E-1"></a>
+## 中缀运算符 `?^` / infix `?^`
 
 ```Perl6
 multi sub infix:<?^>(Mu $x = Bool::False)
 multi sub infix:<?^>(Mu \a, Mu \b)
 ```
 
+布尔位异或运算符：将参数强制为 [Bool](https://docs.perl6.org/type/Bool) 并对其执行逻辑异或：只有其中一个参数为真值时，它才会返回真值。它返回单个参数的标识。
+
 Boolean bitwise XOR operator: Coerces the argument(s) to [Bool](https://docs.perl6.org/type/Bool) and performs logical XOR on them: it will return True if and only if just one of the argument is true. It returns identity on a single argument.
 
-<a id="infix-%7C-1"></a>
-## infix `?|`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7C--infix-%7C-1"></a>
+## 中缀运算符 `?|` / infix `?|`
 
 ```Perl6
 multi sub infix:<?|>($a, $b --> Bool:D)
 ```
 
+布尔逻辑或运算符。
+
 Boolean logical OR operator.
+
+将两个参数强制为 [Bool](https://docs.perl6.org/type/Bool) 并执行逻辑*或*操作。
 
 Coerces both arguments to [Bool](https://docs.perl6.org/type/Bool) and does a logical *OR* (inclusive OR) operation.
 
-<a id="replication-precedence"></a>
-# Replication precedence
+<a id="%E5%A4%8D%E5%88%B6%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--replication-precedence"></a>
+# 复制运算符优先级 / Replication precedence
 
-<a id="infix-x"></a>
-## infix `x`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-x--infix-x"></a>
+## 中缀运算符 `x` / infix `x`
 
 ```Perl6
 sub infix:<x>($a, $b --> Str:D)
 ```
 
+字符串复制运算符。
+
 String repetition operator.
 
-Repeats the string `$a` `$b` times, if necessary coercing `$a` to [`Str`](https://docs.perl6.org/type/Str) and `$b` [`Int`](https://docs.perl6.org/type/Int). Returns an empty string if `$b <= 0 `. An exception `X::Numeric::CannotConvert` will be thrown if `$b` is `-Inf` or `NaN`.
+重复字符串 `$a` `$b` 次，如果需要，强制将 `$a` 转换为 [`Str`](https://docs.perl6.org/type/Str) 和 `$b` 转换为 [`Int`](https://docs.perl6.org/type/Int)。如果 `$b` 小于 0，则返回空字符串。如果 `$b` 是 `-Inf` 或 `NaN`，则将引发异常 `X::Numeric::CannotConvert`。
+
+Repeats the string `$a` `$b` times, if necessary coercing `$a` to [`Str`](https://docs.perl6.org/type/Str) and `$b` [`Int`](https://docs.perl6.org/type/Int). Returns an empty string if `$b <= 0`. An exception `X::Numeric::CannotConvert` will be thrown if `$b` is `-Inf` or `NaN`.
 
 ```Perl6
 say 'ab' x 3;           # OUTPUT: «ababab␤» 
@@ -1696,10 +1857,14 @@ my $b = 3.5;
 say $a x $b;            # OUTPUT: «aaa␤»
 ```
 
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-xx--infix-xx"></a>
+## 中缀运算符 `xx` / infix `xx`
+
+列表重复运算符
+
 List repetition operator
 
-<a id="infix-xx"></a>
-## infix `xx`
+定义：
 
 Defined as:
 
@@ -1716,7 +1881,11 @@ multi sub infix:<xx>(Mu \x, Bool:D $b)
 multi sub infix:<xx>(Mu \x, Int:D $n)
 ```
 
-In general, it returns a Sequence of `$a` repeated and evaluated `$b` times (`$b` is coerced to [Int](https://docs.perl6.org/type/Int)). If `$b <= 0 `, the empty list is returned. It will return an error with no operand, and return the operand itself with a single operand. An exception `X::Numeric::CannotConvert` will be thrown if `$b` is `-Inf` or `NaN`.
+一般来说，它返回一个重复的 `$a` 序列并计算 `$b` 次（`$b` 被强制为 [Int](https://docs.perl6.org/type/Int)）。如果 `$b` 小于 0，则返回空列表。它将返回一个没有操作数的错误，并用一个操作数返回操作数本身。如果 `$b` 是 `-Inf` 或 `NaN`，则将引发异常 `X::Numeric::CannotConvert`。
+
+In general, it returns a Sequence of `$a` repeated and evaluated `$b` times (`$b` is coerced to [Int](https://docs.perl6.org/type/Int)). If `$b <= 0`, the empty list is returned. It will return an error with no operand, and return the operand itself with a single operand. An exception `X::Numeric::CannotConvert` will be thrown if `$b` is `-Inf` or `NaN`.
+
+运算符左手边的子项每次都重复计算，所以
 
 The left-hand side is evaluated for each repetition, so
 
@@ -1725,23 +1894,31 @@ say [1, 2] xx 5;
 # OUTPUT: «([1 2] [1 2] [1 2] [1 2] [1 2])␤»
 ```
 
+返回五个不同的数组（但每次都有相同的内容），并且
+
 returns five distinct arrays (but with the same content each time), and
 
 ```Perl6
 rand xx 3
 ```
 
+返回三个独立确定的伪随机数。
+
 returns three pseudo random numbers that are determined independently.
+
+右边可以是 `*`，在这种情况下，将返回一个惰性的无限列表。
 
 The right-hand side can be `*`, in which case a lazy, infinite list is returned. If it's a `Bool`, a `Seq` with a single element is returned if it's `True`.
 
-<a id="concatenation"></a>
-# Concatenation
+<a id="%E8%BF%9E%E6%8E%A5%E6%93%8D%E4%BD%9C%E7%AC%A6--concatenation"></a>
+# 连接操作符 / Concatenation
+
+与其他中缀运算符一样，这些运算符可以与元运算符组合，例如[赋值运算符](https://docs.perl6.org/language/operators#Assignment_operators)。
 
 Same as the rest of the infix operators, these can be combined with metaoperators such as [assignment](https://docs.perl6.org/language/operators#Assignment_operators), for instance.
 
-<a id="infix-%7E-3"></a>
-## infix `~`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7E--infix-%7E-3"></a>
+## 中缀运算符 `~` / infix `~`
 
 ```Perl6
 multi sub infix:<~>(Any,   Any)
@@ -1749,14 +1926,16 @@ multi sub infix:<~>(Str:D, Str:D)
 multi sub infix:<~>(Buf:D, Buf:D)
 ```
 
+这是字符串连接运算符，它将两个参数强制转换为 [Str](https://docs.perl6.org/type/Str) 并连接它们。如果两个参数都是 [Buf](https://docs.perl6.org/type/Buf)，则返回一个组合缓冲区。
+
 This is the string concatenation operator, which coerces both arguments to [Str](https://docs.perl6.org/type/Str) and concatenates them. If both arguments are [Buf](https://docs.perl6.org/type/Buf), a combined buffer is returned.
 
 ```Perl6
 say 'ab' ~ 'c';     # OUTPUT: «abc␤»
 ```
 
-<a id="infix-%E2%88%98"></a>
-## infix `∘`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%88%98--infix-%E2%88%98"></a>
+## 中缀运算符 `∘` / infix `∘`
 
 ```Perl6
 multi sub infix:<∘>()
@@ -1764,7 +1943,11 @@ multi sub infix:<∘>(&f)
 multi sub infix:<∘>(&f, &g --> Block:D)
 ```
 
+函数合成运算符 `infix:<∘>` 或 `infix:<o>` 组合了两个函数，因此使用右函数的返回值调用左函数。如果左函数的 [`.count`](https://docs.perl6.org/routine/count)（即参数个数） 大于 1，则右边函数的返回值将 [slipped](https://docs.perl6.org/type/Slip)（展平） 给到左边函数。
+
 The function composition operator `infix:<∘>` or `infix:<o>` combines two functions, so that the left function is called with the return value of the right function. If the [`.count`](https://docs.perl6.org/routine/count) of the left function is greater than 1, the return value of the right function will be [slipped](https://docs.perl6.org/type/Slip) into the left function.
+
+右手边函数的 `.count` 和 `.arity` 都将保持不变。
 
 Both `.count` and `.arity` of the right-hand side will be maintained.
 
@@ -1774,17 +1957,22 @@ sub g($p){ say 'g'; $p * 2 }
  
 my &composed = &f ∘ &g;
 say composed 2; # OUTPUT: «g␤f␤2␤» 
+
 # equivalent to: 
 say 2.&g.&f;
+
 # or to: 
 say f g 2;
 sub f($a, $b, $c) { [~] $c, $b, $a }
 sub g($str){ $str.comb }
 my &composed = &f ∘ &g;
 say composed 'abc'; # OUTPUT: «cba␤» 
+
 # equivalent to: 
-say f |g 'abc';
+say f | g 'abc';
 ```
+
+单个参数候选者按原样返回给定参数。零参数候选者返回一个标识例程，该例程只返回其参数。
 
 The single-arg candidate returns the given argument as is. The zero-arg candidate returns an identity routine that simply returns its argument.
 
@@ -1796,29 +1984,37 @@ my &composed = [∘];
 say composed 'foo'; # OUTPUT: «foo␤»
 ```
 
-<a id="junctive-and-all-precedence"></a>
-# Junctive AND (all) precedence
+<a id="junction-%E4%B8%8E%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--junctive-and-all-precedence"></a>
+# Junction 与运算符优先级 / Junctive AND (all) precedence
 
-<a id="infix--9"></a>
-## infix `&`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--8"></a>
+## 中缀运算符 `&` / infix `&`
 
 ```Perl6
 multi sub infix:<&>($a, $b --> Junction:D) is assoc<list>
 ```
 
+All junction 类型运算符。
+
 All junction operator.
+
+从其参数创建一个 *all* [Junction](https://docs.perl6.org/type/Junction)。请参阅 [Junction](https://docs.perl6.org/type/Junction) 了解更多详细信息。
 
 Creates an *all* [Junction](https://docs.perl6.org/type/Junction) from its arguments. See [Junction](https://docs.perl6.org/type/Junction) for more details.
 
-<a id="infix--infix-%E2%88%A9"></a>
-## infix `(&)`, infix `∩`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6--%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%88%A9--infix--infix-%E2%88%A9"></a>
+## 中缀运算符 `(&)`, 中缀运算符 `∩` / infix `(&)`, infix `∩`
 
 ```Perl6
 multi sub infix:<(&)>(**@p)
 multi sub infix:<∩>(**@p)
 ```
 
+集合交运算符。
+
 Intersection operator.
+
+返回其所有参数的**交集**。这将创建一个新的[集合](https://docs.perl6.org/type/Set)，如果所有参数都不是 [Bag](https://docs.perl6.org/type/Bag)、[BagHash](https://docs.perl6.org/type/BagHash)、[Mix](https://docs.perl6.org/type/Mix) 或 [MixHash](https://docs.perl6.org/type/MixHash)。
 
 Returns the **intersection** of all of its arguments. This creates a new [Set](https://docs.perl6.org/type/Set) that contains only the elements common to all of the arguments if none of the arguments are a [Bag](https://docs.perl6.org/type/Bag), [BagHash](https://docs.perl6.org/type/BagHash), [Mix](https://docs.perl6.org/type/Mix) or [MixHash](https://docs.perl6.org/type/MixHash).
 
@@ -1827,23 +2023,31 @@ say <a b c> (&) <b c d>; # OUTPUT: «set(b c)␤»
 <a b c d> ∩ <b c d e> ∩ <c d e f>; # OUTPUT: «set(c d)␤» 
 ```
 
+如果任何参数是 [Baggy](https://docs.perl6.org/type/Baggy) 或 [Mixy](https://docs.perl6.org/type/Mixy)，则结果是一个包含公共元素的新 `Bag`（或 `Mix`），每个元素的权重都是最大的*公共*权重（即该元素在所有参数上的权重的最小值）。
+
 If any of the arguments are [Baggy](https://docs.perl6.org/type/Baggy) or [Mixy](https://docs.perl6.org/type/Mixy)>, the result is a new `Bag` (or `Mix`) containing the common elements, each weighted by the largest *common* weight (which is the minimum of the weights of that element over all arguments).
 
 ```Perl6
 say <a a b c a> (&) bag(<a a b c c>); # OUTPUT: «Bag(a(2), b, c)␤» 
 ```
 
+`∩` 相当于 `(&)`，在代码点 U+2229 处。
+
 `∩` is equivalent to `(&)`, at codepoint U+2229 (INTERSECTION).
 
-<a id="infix--infix-%E2%8A%8D"></a>
-## infix `(.)`, infix `⊍`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%EF%BC%8C-%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%8D--infix--infix-%E2%8A%8D"></a>
+## 中缀运算符 `(.)`， 中缀运算符 `⊍` / infix `(.)`, infix `⊍`
 
 ```Perl6
 multi sub infix:<(.)>(**@p)
 multi sub infix:<⊍>(**@p)
 ```
 
+Baggy（Bag 类型的）乘法运算符。
+
 Baggy multiplication operator.
+
+返回其参数的 Baggy **乘法**，即一个 [Bag](https://docs.perl6.org/type/Bag)，该参数包含参数的每个元素，元素在参数之间的权重相乘得到新的权重。如果任何参数是 [Mixy](https://docs.perl6.org/type/Mixy)，则返回 [Mix](https://docs.perl6.org/type/Mix)。
 
 Returns the Baggy **multiplication** of its arguments, i.e., a [Bag](https://docs.perl6.org/type/Bag) that contains each element of the arguments with the weights of the element across the arguments multiplied together to get the new weight. Returns a [Mix](https://docs.perl6.org/type/Mix) if any of the arguments is a [Mixy](https://docs.perl6.org/type/Mixy).
 
@@ -1853,17 +2057,21 @@ say <a b c> (.) <a b c d>; # OUTPUT: «Bag(a, b, c)␤»
 say <a a b c a d> ⊍ bag(<a a b c c>); # OUTPUT: «Bag(a(6), b, c(2))␤» 
 ```
 
+`⊍` 相当于 `(.)`，在代码点 U+228D 处。
+
 `⊍` is equivalent to `(.)`, at codepoint U+228D (MULTISET MULTIPLICATION).
 
-<a id="junctive-or-any-precedence"></a>
-# Junctive OR (any) precedence
+<a id="junction-%E6%88%96%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--junctive-or-any-precedence"></a>
+# Junction 或运算符优先级 / Junctive OR (any) precedence
 
-<a id="infix-%7C-2"></a>
-## infix `|`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7C--infix-%7C-2"></a>
+## 中缀运算符 `|` / infix `|`
 
 ```Perl6
 multi sub infix:<|>($a, $b --> Junction:D) is assoc<list>
 ```
+
+从其参数创建 *any* [Junction](https://docs.perl6.org/type/Junction)。
 
 Creates an *any* [Junction](https://docs.perl6.org/type/Junction) from its arguments.
 
@@ -1873,17 +2081,23 @@ say $three-letters.perl; # OUTPUT: «any(/<[a b c]>/, /<[i j k]>/, /<[x y z]>/)�
 say 'b' ~~ $three-letters; # OUTPUT: «True␤»
 ```
 
+这首先创建三个正则表达式的 `any` `Junction`（每个正则表达式都匹配三个字母中的任意一个），然后使用智能匹配检查字母 `b` 是否匹配其中任何一个，从而得到正匹配。有关更多详细信息，请参见 [Junction](https://docs.perl6.org/type/Junction)。
+
 This first creates an `any` `Junction` of three regular expressions (every one of them matching any of 3 letters), and then uses smartmatching to check whether the letter `b` matches any of them, resulting in a positive match. See also [Junction](https://docs.perl6.org/type/Junction) for more details.
 
-<a id="infix-%7C-infix-%E2%88%AA"></a>
-## infix `(|)`, infix `∪`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7C%EF%BC%8C%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%88%AA--infix-%7C-infix-%E2%88%AA"></a>
+## 中缀运算符 `(|)`，中缀运算符 `∪` / infix `(|)`, infix `∪`
 
 ```Perl6
 multi sub infix:<(|)>(**@p)
 multi sub infix:<∪>(**@p)
 ```
 
+集合并运算符。
+
 Union operator.
+
+返回其所有参数的**并集**。这将创建一个新的[集合](https://docs.perl6.org/type/Set)，其中包含其参数包含的所有元素（如果没有参数是 [Bag](https://docs.perl6.org/type/Bag)、[BagHash](https://docs.perl6.org/type/BagHash)、[Mix](https://docs.perl6.org/type/Mix) 或 [MixHash](https://docs.perl6.org/type/MixHash)。
 
 Returns the **union** of all of its arguments. This creates a new [Set](https://docs.perl6.org/type/Set) that contains all the elements its arguments contain if none of the arguments are a [Bag](https://docs.perl6.org/type/Bag), [BagHash](https://docs.perl6.org/type/BagHash), [Mix](https://docs.perl6.org/type/Mix) or [MixHash](https://docs.perl6.org/type/MixHash).
 
@@ -1891,23 +2105,31 @@ Returns the **union** of all of its arguments. This creates a new [Set](https://
 say <a b d> ∪ bag(<a a b c>); # OUTPUT: «Bag(a(2), b, c, d)␤» 
 ```
 
-If any of the arguments are [Baggy](https://docs.perl6.org/type/Baggy) or [Mixy](https://docs.perl6.org/type/Mixy)>, the result is a new `Bag` (or `Mix`) containing all the elements, each weighted by the *highest* weight that appeared for that element.
+如果任何参数是 [Baggy](https://docs.perl6.org/type/Baggy) 或 [Mixy](https://docs.perl6.org/type/Mixy)，则结果是一个包含所有元素的新 `Bag`（或 `Mix`），每个元素都由该元素出现的*最高*权重加权。
+
+If any of the arguments are [Baggy](https://docs.perl6.org/type/Baggy) or [Mixy](https://docs.perl6.org/type/Mixy), the result is a new `Bag` (or `Mix`) containing all the elements, each weighted by the *highest* weight that appeared for that element.
 
 ```Perl6
 say <a b d> ∪ bag(<a a b c>); # OUTPUT: «Bag(a(2), b, c, d)␤» 
 ```
 
+`∪` 相当于 `(|)`，在代码点 U+222A 处。
+
 `∪` is equivalent to `(|)`, at codepoint U+222A (UNION).
 
-<a id="infix--infix-%E2%8A%8E"></a>
-## infix `(+)`, infix `⊎`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%EF%BC%8C%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%8E--infix--infix-%E2%8A%8E"></a>
+## 中缀运算符 `(+)`，中缀运算符 `⊎` / infix `(+)`, infix `⊎`
 
 ```Perl6
 multi sub infix:<(+)>(**@p)
 multi sub infix:<⊎>(**@p)
 ```
 
+Baggy（Bag 类型的） 加法运算符。
+
 Baggy addition operator.
+
+返回其参数的 Baggy **和**。这将从参数的每个元素创建一个新的 [Bag](https://docs.perl6.org/type/Bag)，如果没有参数是 [Mix](https://docs.perl6.org/type/Mix) 或 [MixHash](https://docs.perl6.org/type/MixHash)，则将元素的权重相加以获得新的权重。
 
 Returns the Baggy **addition** of its arguments. This creates a new [Bag](https://docs.perl6.org/type/Bag) from each element of the arguments with the weights of the element added together to get the new weight, if none of the arguments are a [Mix](https://docs.perl6.org/type/Mix) or [MixHash](https://docs.perl6.org/type/MixHash).
 
@@ -1915,23 +2137,31 @@ Returns the Baggy **addition** of its arguments. This creates a new [Bag](https:
 say <a a b c a d> (+) <a a b c c>; # OUTPUT: «Bag(a(5), b(2), c(3), d)␤» 
 ```
 
+如果任何参数是 [Mixy](https://docs.perl6.org/type/Mixy)，则结果是一个新的 `Mix`。
+
 If any of the arguments is a [Mixy](https://docs.perl6.org/type/Mixy), the result is a new `Mix`.
 
 ```Perl6
 say <a b c> (+) (a => 2.5, b => 3.14).Mix; # OUTPUT: «Mix(a(3.5), b(4.14), c)␤» 
 ```
 
+`⊎` 相当于 `(+)`，在代码点 U+228E 处。
+
 `⊎` is equivalent to `(+)`, at codepoint U+228E (MULTISET UNION).
 
-<a id="infix---infix-%E2%88%96"></a>
-## infix `(-)`, infix `∖`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6--%EF%BC%8C%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%88%96--infix---infix-%E2%88%96"></a>
+## 中缀运算符 `(-)`，中缀运算符 `∖` / infix `(-)`, infix `∖`
 
 ```Perl6
 multi sub infix:<(-)>(**@p)
 multi sub infix:<∖>(**@p)
 ```
 
+集合差运算符。
+
 Set difference operator.
+
+返回其所有参数的**集合差**。这将创建一个新的[集合](https://docs.perl6.org/type/Set)，其中包含第一个参数拥有的所有元素，但其他参数没有，即第一个参数的所有元素减去其他参数的元素。但前提是没有参数是 [Bag](https://docs.perl6.org/type/Bag)、[BagHash](https://docs.perl6.org/type/BagHash)、[Mix](https://docs.perl6.org/type/Mix) 或 [MixHash](https://docs.perl6.org/type/MixHash)。
 
 Returns the **set difference** of all its arguments. This creates a new [Set](https://docs.perl6.org/type/Set) that contains all the elements the first argument has but the rest of the arguments don't, i.e., of all the elements of the first argument, minus the elements from the other arguments. But only if none of the arguments are a [Bag](https://docs.perl6.org/type/Bag), [BagHash](https://docs.perl6.org/type/BagHash), [Mix](https://docs.perl6.org/type/Mix) or [MixHash](https://docs.perl6.org/type/MixHash).
 
@@ -1940,28 +2170,36 @@ say <a a b c a d> (-) <a a b c c>; # OUTPUT: «set(d)␤»
 say <a b c d e> (-) <a b c> (-) <a b d>; # OUTPUT: «set(e)␤» 
 ```
 
-If any of the arguments are [Baggy](https://docs.perl6.org/type/Baggy) or [Mixy](https://docs.perl6.org/type/Mixy)>, the result is a new `Bag` (or `Mix`) containing all the elements remaining after the first argument with its weight subtracted by the weight of that element in each of the other arguments.
+如果任何参数是 [Baggy](https://docs.perl6.org/type/Baggy) 或 [Mixy](https://docs.perl6.org/type/Mixy)，则结果是一个新的 `Bag`（或 `Mix`）包含第一个参数之后剩余的所有元素，其权重减去其他每个参数中该元素的权重。
+
+If any of the arguments are [Baggy](https://docs.perl6.org/type/Baggy) or [Mixy](https://docs.perl6.org/type/Mixy), the result is a new `Bag` (or `Mix`) containing all the elements remaining after the first argument with its weight subtracted by the weight of that element in each of the other arguments.
 
 ```Perl6
 say <a a b c a d> (-) bag(<a b c c>); # OUTPUT: «Bag(a(2), d)␤» 
 say <a a b c a d>  ∖  mix(<a b c c>); # OUTPUT: «Mix(a(2), c(-1), d)␤» 
 ```
 
+`∖` 相当于 `(-)`，在代码点 U+2216 处。
+
 `∖` is equivalent to `(-)`, at codepoint U+2216 (SET MINUS).
 
-<a id="infix-%5E-2"></a>
-## infix `^`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5E--infix-%5E-2"></a>
+## 中缀运算符 `(^)` / infix `^`
 
 ```Perl6
 multi sub infix:<^>($a, $b --> Junction:D) is assoc<list>
 ```
 
+One junction 运算符.
+
 One junction operator.
+
+从其参数创建一个 *one* [Junction](https://docs.perl6.org/type/Junction)。请参阅 [Junction](https://docs.perl6.org/type/Junction) 了解更多详细信息。
 
 Creates a *one* [Junction](https://docs.perl6.org/type/Junction) from its arguments. See [Junction](https://docs.perl6.org/type/Junction) for more details.
 
-<a id="infix-%5E-infix-%E2%8A%96"></a>
-## infix `(^)`, infix `⊖`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5E%EF%BC%8C%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%96--infix-%5E-infix-%E2%8A%96"></a>
+## 中缀运算符 `(^)`，中缀运算符 `⊖` / infix `(^)`, infix `⊖`
 
 ```Perl6
 multi sub infix:<(^)>($a, $b)
@@ -1971,7 +2209,11 @@ multi sub infix:<(^)>(**@p)
 multi sub infix:<⊖>(**@p)
 ```
 
+对称集合差运算符。
+
 Symmetric set difference operator.
+
+返回其所有参数的**对称集合差**。这将创建一个新的[集合](https://docs.perl6.org/type/Set)，由 `$a` 中有但 `$b` 中没有的所有元素和 `$b` 中有但 `$a` 中没有的所有元素组成，如果参数都不是 [Bag](https://docs.perl6.org/type/Bag)、[BagHash](https://docs.perl6.org/type/BagHash)、[Mix](https://docs.perl6.org/type/Mix) 或 [MixHash](https://docs.perl6.org/type/MixHash)。相当于 `($a ∖ $b) ∪ ($b ∖ $a)`。
 
 Returns the **symmetric set difference** of all its arguments. This creates a new [Set](https://docs.perl6.org/type/Set) made up of all the elements that `$a` has but `$b` doesn't and all the elements `$b` has but `$a` doesn't if none of the arguments are a [Bag](https://docs.perl6.org/type/Bag), [BagHash](https://docs.perl6.org/type/BagHash), [Mix](https://docs.perl6.org/type/Mix) or [MixHash](https://docs.perl6.org/type/MixHash). Equivalent to `($a ∖ $b) ∪ ($b ∖ $a)`.
 
@@ -1979,23 +2221,29 @@ Returns the **symmetric set difference** of all its arguments. This creates a ne
 say <a b> (^) <b c>; # OUTPUT: «set(a c)␤» 
 ```
 
-If any of the arguments are [Baggy](https://docs.perl6.org/type/Baggy) or [Mixy](https://docs.perl6.org/type/Mixy)>, the result is a new `Bag` (or `Mix`).
+如果任何参数是 [Baggy](https://docs.perl6.org/type/Baggy) 或 [Mixy](https://docs.perl6.org/type/Mixy)，则结果是一个新的 `Bag`（或 `Mix`）。
+
+If any of the arguments are [Baggy](https://docs.perl6.org/type/Baggy) or [Mixy](https://docs.perl6.org/type/Mixy), the result is a new `Bag` (or `Mix`).
 
 ```Perl6
 say <a b> ⊖ bag(<b c>); # OUTPUT: «Bag(a, c)␤» 
 ```
 
+`⊖` 相当于 `(^)`，在代码点 U+2296 处。
+
 `⊖` is equivalent to `(^)`, at codepoint U+2296 (CIRCLED MINUS).
 
-<a id="named-unary-precedence"></a>
-# Named unary precedence
+<a id="%E5%91%BD%E5%90%8D%E4%B8%80%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--named-unary-precedence"></a>
+# 命名一元运算符优先级 / Named unary precedence
 
-<a id="prefix-temp"></a>
-## prefix `temp`
+<a id="%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-temp--prefix-temp"></a>
+## 前缀运算符 `temp` / prefix `temp`
 
 ```Perl6
 sub prefix:<temp>(Mu $a is rw)
 ```
+
+“临时化”作为参数传递的变量。变量以与外部作用域中相同的值开头，但可以在此作用域中分配新值。退出作用域后，变量将还原为其原始值。
 
 "temporizes" the variable passed as the argument. The variable begins with the same value as it had in the outer scope, but can be assigned new values in this scope. Upon exiting the scope, the variable will be restored to its original value.
 
@@ -2011,11 +2259,15 @@ say $a; # OUTPUT: «three␤»
 say $a; # OUTPUT: «three␤»
 ```
 
+你还可以在调用 temp 时立即赋值：
+
 You can also assign immediately as part of the call to temp:
 
 ```Perl6
 temp $a = "five";
 ```
+
+请注意，一旦离开 `temp` 所在的代码块，`temp` 效果就会被移除。如果要在 `temp` 效果消失后从 [Promise](https://docs.perl6.org/type/Promise) 中访问该值，你将获得原始值，而不是 `temp`：
 
 Be warned the `temp` effects get removed once the block is left. If you were to access the value from, say, within a [Promise](https://docs.perl6.org/type/Promise) after the `temp` was undone, you'd get the original value, not the `temp` one:
 
@@ -2041,12 +2293,14 @@ sleep 2;
 # PROMISE
 ```
 
-<a id="prefix-let"></a>
-## prefix `let`
+<a id="%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-let--prefix-let"></a>
+## 前缀运算符 `let` / prefix `let`
 
 ```Perl6
 sub prefix:<let>(Mu $a is rw)
 ```
+
+引用外部作用域中的变量，如果代码块以失败退出，该变量的值将被还原，这意味着代码块返回了定义的对象。
 
 Refers to a variable in an outer scope whose value will be restored if the block exits unsuccessfully, implying that the block returned a defined object.
 
@@ -2065,19 +2319,25 @@ my $name = "Jane Doe";
 say "We got $name";
 ```
 
+此代码为 `$name` 提供默认名称。如果用户退出输入提示或只是没有为 `$name` 提供有效输入，`let` 将恢复顶部提供的默认值。如果用户输入是有效的，代码块不会终止，`$name` 将保持输入值。
+
 This code provides a default name for `$name`. If the user exits from the prompt or simply does not provide a valid input for `$name`; `let` will restore the default value provided at the top. If user input is valid, it will keep that.
 
-<a id="nonchaining-binary-precedence"></a>
-# Nonchaining binary precedence
+<a id="%E9%9D%9E%E9%93%BE%E5%BC%8F%E4%BA%8C%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--nonchaining-binary-precedence"></a>
+# 非链式二元运算符优先级 / Nonchaining binary precedence
 
-<a id="infix-does"></a>
-## infix `does`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-does--infix-does"></a>
+## 中缀运算符 `does` / infix `does`
 
 ```Perl6
 sub infix:<does>(Mu $obj, Mu $role) is assoc<non>
 ```
 
+在运行时将角色 `$role` 混入对象 `$obj`。需要对象 `$obj` 是可修改的。
+
 Mixes `$role` into `$obj` at runtime. Requires `$obj` to be mutable.
+
+类似于 [but](https://docs.perl6.org/routine/but) 操作符，角色 `$role` 可以改为一个实例化对象，在这种情况下，操作符将自动为你创建一个角色。角色将包含一个名为 `$obj.^name` 的方法，该方法返回 `$obj`：
 
 Similar to [but](https://docs.perl6.org/routine/but) operator, the `$role` can instead be an instantiated object, in which case, the operator will create a role for you automatically. The role will contain a single method named the same as `$obj.^name` and that returns `$obj`:
 
@@ -2088,17 +2348,23 @@ $o does "modded";
 put $o;            # OUTPUT: «modded␤»
 ```
 
+如果已经存在同名的方法，则以最后一个混入角色为准。
+
 If methods of the same name are present already, the last mixed in role takes precedence.
 
-<a id="infix-but"></a>
-## infix `but`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-but--infix-but"></a>
+## 中缀运算符 `but` / infix `but`
 
 ```Perl6
 multi sub infix:<but>(Mu $obj1, Mu   $role) is assoc<non>
 multi sub infix:<but>(Mu $obj1, Mu:D $obj2) is assoc<non>
 ```
 
+创建一个混入角色 `$role` 的 `$obj` 对象副本。因为对象 `$obj` 没有被修改，`but` 可以用于用角色混入方法创建不可变的值。
+
 Creates a copy of `$obj` with `$role` mixed in. Since `$obj` is not modified, `but` can be used to created immutable values with mixins.
+
+`but` 右边参数可以提供实例化的对象，而不是角色。在这种情况下，操作员将自动为你创建角色。角色将包含一个名为 `$obj.^name` 的方法，该方法返回 `$obj`：
 
 Instead of a role, you can provide an instantiated object. In this case, the operator will create a role for you automatically. The role will contain a single method named the same as `$obj.^name` and that returns `$obj`:
 
@@ -2109,7 +2375,11 @@ say $forty-two.^name; # OUTPUT: «Int+{<anon|1>}␤»
 say $forty-two.Str;   # OUTPUT: «forty two␤» 
 ```
 
+调用 `^name` 表明变量是一个 `Int`，其中混合了匿名对象。但是，这个对象是 `Str` 类型的，所以通过角色混入，变量被赋予了一个具有该名称的方法，这就是我们在最后一句中使用的方法。
+
 Calling `^name` shows that the variable is an `Int` with an anonymous object mixed in. However, that object is of type `Str`, so the variable, through the mixin, is endowed with a method with that name, which is what we use in the last sentence.
+
+我们也可以混合类，甚至可以动态创建。
 
 We can also mixin classes, even created on the fly.
 
@@ -2119,10 +2389,12 @@ say $s.Warbles.hi;    # OUTPUT: «hello␤»
 say $s + 42;          # OUTPUT: «54␤» 
 ```
 
+要访问混进去的类，如上所述，我们使用第二句话中所示的类名。如果已经存在同名的方法，则以最后一个混入角色为准。可以在用逗号分隔的括号中提供方法列表。在这种情况下，将在运行时报告冲突。
+
 To access the mixed-in class, as above, we use the class name as is shown in the second sentence. If methods of the same name are present already, the last mixed in role takes precedence. A list of methods can be provided in parentheses separated by comma. In this case conflicts will be reported at runtime.
 
-<a id="infix-cmp"></a>
-## infix `cmp`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-cmp--infix-cmp"></a>
+## 中缀运算符 `cmp` / infix `cmp`
 
 ```Perl6
 multi sub infix:<cmp>(Any,       Any)
@@ -2131,9 +2403,15 @@ multi sub infix:<cmp>(Str:D,     Str:D)
 multi sub infix:<cmp>(Version:D, Version:D)
 ```
 
+通用，“智能”三路比较器。
+
 Generic, "smart" three-way comparator.
 
+用字符串语义比较字符串，用数字语义比较数字，[Pair](https://docs.perl6.org/type/Pair) 对象首先按键比较，然后按值比较等等。
+
 Compares strings with string semantics, numbers with number semantics, [Pair](https://docs.perl6.org/type/Pair) objects first by key and then by value etc.
+
+如果 `$a eqv $b` 为真值，则 `$a cmp $b` 总是返回 `Order::Same`。
 
 if `$a eqv $b`, then `$a cmp $b` always returns `Order::Same`.
 
@@ -2143,8 +2421,10 @@ say 4        cmp 4.0;        # OUTPUT: «Same␤»
 say 'b'      cmp 'a';        # OUTPUT: «More␤»
 ```
 
-<a id="infix-coll"></a>
-## infix `coll`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-coll--infix-coll"></a>
+## 中缀运算符 `coll` / infix `coll`
+
+定义：
 
 Defined as:
 
@@ -2154,6 +2434,8 @@ multi sub infix:<coll>(Cool:D \a, Cool:D \b --> Order:D)
 multi sub infix:<coll>(Pair:D \a, Pair:D \b --> Order:D)
 ```
 
+`coll` 是一个排序运算符，它接受对 `Str`、`Cool` 或 `Pair` 对，并返回使用 `$*COLLATION` 排序规则的 `Order`。例如，默认行为忽略变音符号和大写。
+
 `coll` is a sorting operator that takes pairs of `Str`s, `Cool`s or `Pair`s and returns an `Order` that uses the `$*COLLATION` order. The default behavior disregards diacritic marks and capitalization, for instance.
 
 ```Perl6
@@ -2161,12 +2443,18 @@ say "b" cmp "à";  # OUTPUT: «Less␤»
 say "b" coll "à"; # OUTPUT: «More␤»
 ```
 
+在第一种情况下，考虑字典顺序或码位顺序。第二种是使用 `coll`，不考虑变音符号，按照直觉顺序进行排序。
+
 In the first case, lexicographic or codepoint order is taken into account. In the second, which uses `coll`, the diacritic is not considered and sorting happens according to intuitive order.
+
+**注意：**这些还没有在 JVM 中实现。
 
 **NOTE:** These are not yet implemented in the JVM.
 
-<a id="infix-unicmp"></a>
-## infix `unicmp`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-unicmp--infix-unicmp"></a>
+## 中缀运算符 `unicmp` / infix `unicmp`
+
+定义：
 
 Defined as:
 
@@ -2176,6 +2464,8 @@ multi sub infix:<unicmp>(Pair:D \a, Pair:D \b --> Order:D)
 multi sub infix:<coll>(Pair:D \a, Pair:D \b --> Order:D)
 ```
 
+与根据码位进行排序的 cmp 运算符不同，`unicmp` 和 `coll` 根据大多数用户的预期进行排序，也就是说，不考虑特定字符的大小写等方面。
+
 Unlike the cmp operator which sorts according to codepoint, `unicmp` and `coll` sort according to how most users would expect, that is, disregarding aspects of the particular character like capitalization.
 
 ```Perl6
@@ -2184,19 +2474,27 @@ say 'a' coll 'Z';   # Less
 say 'a' cmp 'Z';    # More
 ```
 
+`coll` 和 `unicmp` 的主要区别在于前者的行为可以通过 [`$*COLLATION`](https://docs.perl6.org/type/Any#index-entry-%24*COLLATION-%24*COLLATION) 动态变量来更改。
+
 The main difference between `coll` and `unicmp` is that the behavior of the former can be changed by the [`$*COLLATION`](https://docs.perl6.org/type/Any#index-entry-%24*COLLATION-%24*COLLATION) dynamic variable.
+
+**注意：**这些还没有在 JVM 中实现。
 
 **NOTE:** These are not yet implemented in the JVM.
 
-<a id="infix-leg"></a>
-## infix `leg`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-leg--infix-leg"></a>
+## 中缀运算符 `leg` / infix `leg`
 
 ```Perl6
 multi sub infix:<leg>(Any,   Any)
 multi sub infix:<leg>(Str:D, Str:D)
 ```
 
+字符串三向比较器。*less、equal 或 greater？* 的简称。
+
 String three-way comparator. Short for *less, equal or greater?*.
+
+将两个参数强制为 [Str](https://docs.perl6.org/type/Str)，然后进行词典比较。
 
 Coerces both arguments to [Str](https://docs.perl6.org/type/Str) and then does a lexicographic comparison.
 
@@ -2206,66 +2504,86 @@ say 'a' leg 'a';       # OUTPUT: «Same␤»
 say 'b' leg 'a';       # OUTPUT: «More␤»
 ```
 
-<a id="infix--10"></a>
-## infix `<=>`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6--infix-"></a>
+## 中缀运算符 `<=>` / infix `<=>`
 
 ```Perl6
 multi sub infix:«<=>»($a, $b --> Order:D) is assoc<non>
 ```
 
+数值三向比较器。
+
 Numeric three-way comparator.
+
+将两个参数强制转换为[实数](https://docs.perl6.org/type/Real)类型，然后进行数值比较。
 
 Coerces both arguments to [Real](https://docs.perl6.org/type/Real) and then does a numeric comparison.
 
-<a id="infix--11"></a>
-## infix `..`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--9"></a>
+## 中缀运算符 `..` / infix `..`
 
 ```Perl6
 multi sub infix:<..>($a, $b --> Range:D) is assoc<non>
 ```
 
+范围运算符
+
 Range operator
+
+从参数构造一个[范围](https://docs.perl6.org/type/Range)。
 
 Constructs a [Range](https://docs.perl6.org/type/Range) from the arguments.
 
-<a id="infix-%5E-3"></a>
-## infix `..^`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5E--infix-%5E-3"></a>
+## 中缀运算符 `..^` / infix `..^`
 
 ```Perl6
 multi sub infix:<..^>($a, $b --> Range:D) is assoc<non>
 ```
 
+右开范围运算符。
+
 Right-open range operator.
+
+从参数构造[范围](https://docs.perl6.org/type/Range)，不包括终点。
 
 Constructs a [Range](https://docs.perl6.org/type/Range) from the arguments, excluding the end point.
 
-<a id="infix-%5E-4"></a>
-## infix `^..`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5E--infix-%5E-4"></a>
+## 中缀运算符 `^..` / infix `^..`
 
 ```Perl6
 multi sub infix:<^..>($a, $b --> Range:D) is assoc<non>
 ```
 
+左开范围运算符。
+
 Left-open range operator.
+
+从参数构造[范围](https://docs.perl6.org/type/Range)，不包括起点。
 
 Constructs a [Range](https://docs.perl6.org/type/Range) from the arguments, excluding the start point.
 
-<a id="infix-%5E%5E"></a>
-## infix `^..^`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5E%5E--infix-%5E%5E"></a>
+## 中缀运算符 `^..^` / infix `^..^`
 
 ```Perl6
 multi sub infix:<^..^>($a, $b --> Range:D) is assoc<non>
 ```
 
+开放范围运算符
+
 Open range operator
+
+从参数构造[范围](https://docs.perl6.org/type/Range)，不包括起点和终点。
 
 Constructs a [Range](https://docs.perl6.org/type/Range) from the arguments, excluding both start and end point.
 
-<a id="chaining-binary-precedence"></a>
-# Chaining binary precedence
+<a id="%E9%93%BE%E5%BC%8F%E4%BA%8C%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--chaining-binary-precedence"></a>
+# 链式二元运算符优先级 / Chaining binary precedence
 
-<a id="infix--12"></a>
-## infix `==`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--10"></a>
+## 中缀运算符 `==` / infix `==`
 
 ```Perl6
 multi sub infix:<==>(Any, Any)
@@ -2277,32 +2595,46 @@ multi sub infix:<==>(Complex:D, Complex:D)
 multi sub infix:<==>(Numeric:D, Numeric:D)
 ```
 
+数值相等运算符。
+
 Numeric equality operator.
+
+将两个参数强制为[数值](https://docs.perl6.org/type/Numeric)（如果需要）；如果它们相等，则返回真值。
 
 Coerces both arguments to [Numeric](https://docs.perl6.org/type/Numeric) (if necessary); returns `True` if they are equal.
 
-<a id="infix--13"></a>
-## infix `!=`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--11"></a>
+## 中缀运算符 `!=` / infix `!=`
 
 ```Perl6
 sub infix:<!=>(Mu, Mu --> Bool:D)
 ```
 
+数值不相等运算符。
+
 Numeric inequality operator.
+
+将两个参数强制为[数值](https://docs.perl6.org/type/Numeric)（如果需要）；如果它们是不同的，则返回真值。
 
 Coerces both arguments to [Numeric](https://docs.perl6.org/type/Numeric) (if necessary); returns `True` if they are distinct.
 
+是 `!==` 的别名。
+
 Is an alias to `!==`.
 
-<a id="infix-%E2%89%A0"></a>
-## infix `≠`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%89%A0--infix-%E2%89%A0"></a>
+## 中缀运算符 `≠` / infix `≠`
+
+数值不相等运算符。
 
 Numeric inequality operator.
 
+相当于 [!=](https://docs.perl6.org/routine/!=)，在码位 U+2260。
+
 Equivalent to [!=](https://docs.perl6.org/routine/!=), at codepoint U+2260 (NOT EQUAL TO).
 
-<a id="infix--14"></a>
-## infix `<`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--12"></a>
+## 中缀运算符 `<` / infix `<`
 
 ```Perl6
 multi sub infix:«<»(Int:D, Int:D)
@@ -2310,12 +2642,16 @@ multi sub infix:«<»(Num:D, Num:D)
 multi sub infix:«<»(Real:D, Real:D)
 ```
 
+数值小于运算符。
+
 Numeric less than operator.
+
+将两个参数强制为[实数](https://docs.perl6.org/type/Real)（如果需要）；如果第一个参数小于第二个参数，则返回真值。
 
 Coerces both arguments to [Real](https://docs.perl6.org/type/Real) (if necessary); returns `True` if the first argument is smaller than the second.
 
-<a id="infix--15"></a>
-## infix `<=`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--13"></a>
+## 中缀运算符 `<=` / infix `<=`
 
 ```Perl6
 multi sub infix:«<=»(Int:D, Int:D)
@@ -2323,19 +2659,27 @@ multi sub infix:«<=»(Num:D, Num:D)
 multi sub infix:«<=»(Real:D, Real:D)
 ```
 
+数值小于或等于运算符。
+
 Numeric less than or equal to operator.
+
+将两个参数强制为[实数](https://docs.perl6.org/type/Real)（如果需要）；如果第一个参数小于或等于第二个参数，则返回真值。
 
 Coerces both arguments to [Real](https://docs.perl6.org/type/Real) (if necessary); returns `True` if the first argument is smaller than or equal to the second.
 
-<a id="infix-%E2%89%A4"></a>
-## infix `≤`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%89%A4--infix-%E2%89%A4"></a>
+## 中缀运算符 `≤` / infix `≤`
+
+数值小于或等于运算符。
 
 Numeric less than or equal to operator.
 
+相当于 [<=](https://docs.perl6.org/language/routine/%3C=)，在码位 U+2264。
+
 Equivalent to [<=](https://docs.perl6.org/language/routine/%3C=), at codepoint U+2264 (LESS-THAN OR EQUAL TO).
 
-<a id="infix--16"></a>
-## infix `>`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--14"></a>
+## 中缀运算符 `>` / infix `>`
 
 ```Perl6
 multi sub infix:«>»(Int:D, Int:D)
@@ -2343,12 +2687,16 @@ multi sub infix:«>»(Num:D, Num:D)
 multi sub infix:«>»(Real:D, Real:D)
 ```
 
+数值大于运算符。
+
 Numeric greater than operator.
+
+将两个参数强制为[实数](https://docs.perl6.org/type/Real)（如果需要）；如果第一个参数大于第二个参数，则返回真值。
 
 Coerces both arguments to [Real](https://docs.perl6.org/type/Real) (if necessary); returns `True` if the first argument is larger than the second.
 
-<a id="infix--17"></a>
-## infix `>=`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--15"></a>
+## 中缀运算符 `>=` / infix `>=`
 
 ```Perl6
 multi sub infix:«>=»(Int:D, Int:D)
@@ -2356,103 +2704,147 @@ multi sub infix:«>=»(Num:D, Num:D)
 multi sub infix:«>=»(Real:D, Real:D)
 ```
 
+数值大于或等于运算符。
+
 Numeric greater than or equal to operator.
+
+将两个参数强制为[实数](https://docs.perl6.org/type/Real)（如果需要）；如果第一个参数大于或等于第二个参数，则返回真值。
 
 Coerces both arguments to [Real](https://docs.perl6.org/type/Real) (if necessary); returns `True` if the first argument is larger than or equal to the second.
 
-<a id="infix-%E2%89%A5"></a>
-## infix `≥`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%89%A5--infix-%E2%89%A5"></a>
+## 中缀运算符 `≥` / infix `≥`
+
+数值大于或等于运算符。
 
 Numeric greater than or equal to operator.
 
+相当于 [>=](https://docs.perl6.org/routine/%3E=)，在码位 U+2265。
+
 Equivalent to [>=](https://docs.perl6.org/routine/%3E=), at codepoint U+2265 (GREATER-THAN OR EQUAL TO).
 
-<a id="infix-eq"></a>
-## infix `eq`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-eq--infix-eq"></a>
+## 中缀运算符 `eq` / infix `eq`
 
 ```Perl6
 multi sub infix:<eq>(Any,   Any)
 multi sub infix:<eq>(Str:D, Str:D)
 ```
 
+字符串等于运算符。
+
 String equality operator.
+
+将两个参数强制为 [Str](https://docs.perl6.org/type/Str)（如果需要）；如果两个参数相等，则返回真值。
 
 Coerces both arguments to [Str](https://docs.perl6.org/type/Str) (if necessary); returns `True` if both are equal.
 
+助记符：*等于*
+
 Mnemonic: *equal*
 
-<a id="infix-ne"></a>
-## infix `ne`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-ne--infix-ne"></a>
+## 中缀运算符 `ne` / infix `ne`
 
 ```Perl6
 multi sub infix:<ne>(Mu,    Mu)
 multi sub infix:<ne>(Str:D, Str:D)
 ```
 
+字符串不等于运算符。
+
 String inequality operator.
+
+将两个参数强制为 [Str](https://docs.perl6.org/type/Str)（如果需要）；如果两个参数相等，则返回假值。
 
 Coerces both arguments to [Str](https://docs.perl6.org/type/Str) (if necessary); returns `False` if both are equal.
 
+助记符：*不等于*
+
 Mnemonic: *not equal*
 
-<a id="infix-gt"></a>
-## infix `gt`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-gt--infix-gt"></a>
+## 中缀运算符 `gt` / infix `gt`
 
 ```Perl6
 multi sub infix:<gt>(Mu,    Mu)
 multi sub infix:<gt>(Str:D, Str:D)
 ```
 
+字符串大于运算符。
+
 String greater than operator.
+
+将两个参数强制为 [Str](https://docs.perl6.org/type/Str)（如果需要）；如果第一个参数大于第二个，则返回假值，取决于词典比较。
 
 Coerces both arguments to [Str](https://docs.perl6.org/type/Str) (if necessary); returns `True` if the first is larger than the second, as determined by lexicographic comparison.
 
+助记符：*大于*
+
 Mnemonic: *greater than*
 
-<a id="infix-ge"></a>
-## infix `ge`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-ge--infix-ge"></a>
+## 中缀运算符 `ge` / infix `ge`
 
 ```Perl6
 multi sub infix:<ge>(Mu,    Mu)
 multi sub infix:<ge>(Str:D, Str:D)
 ```
 
+字符串大于或等于运算符。
+
 String greater than or equal to operator.
+
+将两个参数强制为 [Str](https://docs.perl6.org/type/Str)（如果需要）；如果第一个参数大于第二个，则返回真值，取决于词典比较。
 
 Coerces both arguments to [Str](https://docs.perl6.org/type/Str) (if necessary); returns `True` if the first is equal to or larger than the second, as determined by lexicographic comparison.
 
+助记符：*大于或等于*
+
 Mnemonic: *greater or equal*
 
-<a id="infix-lt"></a>
-## infix `lt`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-lt--infix-lt"></a>
+## 中缀运算符 `lt` / infix `lt`
 
 ```Perl6
 multi sub infix:<lt>(Mu,    Mu)
 multi sub infix:<lt>(Str:D, Str:D)
 ```
 
+字符串小于运算符。
+
 String less than operator.
+
+将两个参数强制为 [Str](https://docs.perl6.org/type/Str)（如果需要）；如果第一个参数小于第二个，则返回真值，取决于词典比较。
 
 Coerces both arguments to [Str](https://docs.perl6.org/type/Str) (if necessary); returns `True` if the first is smaller than the second, as determined by lexicographic comparison.
 
+助记符：*小于*
+
 Mnemonic: *less than*
 
-<a id="infix-le"></a>
-## infix `le`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-le--infix-le"></a>
+## 中缀运算符 `le` / infix `le`
 
 ```Perl6
 multi sub infix:<le>(Mu,    Mu)
 multi sub infix:<le>(Str:D, Str:D)
 ```
 
+字符串小于或等于运算符。
+
 String less than or equal to operator.
+
+将两个参数强制为 [Str](https://docs.perl6.org/type/Str)（如果需要）；如果第一个参数等于或小于第二个，则返回真值，取决于词典比较。
 
 Coerces both arguments to [Str](https://docs.perl6.org/type/Str) (if necessary); returns `True` if the first is equal to or smaller than the second, as determined by lexicographic comparison.
 
+助记符：*小于或等于*
+
 Mnemonic: *less or equal*
 
-<a id="infix-before"></a>
-## infix `before`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-before--infix-before"></a>
+## 中缀运算符 `before` / infix `before`
 
 ```Perl6
 multi sub infix:<before>(Any,       Any)
@@ -2461,10 +2853,12 @@ multi sub infix:<before>(Str:D,     Str:D)
 multi sub infix:<before>(Version:D, Version:D)
 ```
 
+通用排序，使用与 [cmp](https://docs.perl6.org/routine/cmp) 运算符相同的语义。如果第一个参数小于第二个参数，则返回真值。
+
 Generic ordering, uses the same semantics as [cmp](https://docs.perl6.org/routine/cmp). Returns `True` if the first argument is smaller than the second.
 
-<a id="infix-after"></a>
-## infix `after`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-after--infix-after"></a>
+## 中缀运算符 `after` / infix `after`
 
 ```Perl6
 multi sub infix:<after>(Any,       Any)
@@ -2473,14 +2867,18 @@ multi sub infix:<after>(Str:D,     Str:D)
 multi sub infix:<after>(Version:D, Version:D)
 ```
 
+通用排序，使用与 [cmp](https://docs.perl6.org/routine/cmp) 运算符相同的语义。如果第一个参数大于第二个参数，则返回真值。
+
 Generic ordering, uses the same semantics as [cmp](https://docs.perl6.org/routine/cmp). Returns `True` if the first argument is larger than the second.
 
-<a id="infix-eqv"></a>
-## infix `eqv`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-eqv--infix-eqv"></a>
+## 中缀运算符 `eqv` / infix `eqv`
 
 ```Perl6
 sub infix:<eqv>(Any, Any)
 ```
+
+等价运算符。如果两个参数在结构上相同，即来自同一类型且（递归地）包含等效值，则返回真值。
 
 Equivalence operator. Returns `True` if the two arguments are structurally the same, i.e. from the same type and (recursively) contain equivalent values.
 
@@ -2491,6 +2889,8 @@ say 1 eqv 2;                    # OUTPUT: «False␤»
 say 1 eqv 1.0;                  # OUTPUT: «False␤»
 ```
 
+不能比较惰性 [`Iterables`](https://docs.perl6.org/type/Iterable) 类型，因为它们被认为是无限的。但是，如果两个惰性 `Iterable` 是不同类型的，或者只有一个 `Iterable` 是惰性的，则运算符将尽力返回假值。
+
 Lazy [`Iterables`](https://docs.perl6.org/type/Iterable) cannot be compared, as they're assumed to be infinite. However, the operator will do its best and return `False` if the two lazy `Iterables` are of different types or if only one `Iterable` is lazy.
 
 ```Perl6
@@ -2500,6 +2900,8 @@ say (1…∞) eqv (1…3);      # Same types, but only one is lazy; OUTPUT: «Fa
     orelse say $!.^name;  # OUTPUT: «X::Cannot::Lazy␤»
 ```
 
+默认的 `eqv` 运算符甚至可以用于任意对象。例如，`eqv` 将同一对象的两个实例视为在结构上等效：
+
 The default `eqv` operator even works with arbitrary objects. E.g., `eqv` will consider two instances of the same object as being structurally equivalent:
 
 ```Perl6
@@ -2508,6 +2910,8 @@ my class A {
 }
 say A.new(a => 5) eqv A.new(a => 5);  # OUTPUT: «True␤»
 ```
+
+尽管上面的示例按预期工作，`eqv` 代码可能会返回到较慢的代码路径以完成其工作。避免这种情况的一种方法是实现适当的中缀 `eqv` 运算符：
 
 Although the above example works as intended, the `eqv` code might fall back to a slower code path in order to do its job. One way to avoid this is to implement an appropriate infix `eqv` operator:
 
@@ -2519,6 +2923,8 @@ multi infix:<eqv>(A $l, A $r) { $l.a eqv $r.a }
 say A.new(a => 5) eqv A.new(a => 5);            # OUTPUT: «True␤»
 ```
 
+请注意，`eqv` 不是对每种容器类型都递归地工作，例如 `Set`：
+
 Note that `eqv` does not work recursively on every kind of container type, e.g. `Set`:
 
 ```Perl6
@@ -2527,6 +2933,8 @@ my class A {
 }
 say Set(A.new(a => 5)) eqv Set(A.new(a => 5));  # OUTPUT: «False␤»
 ```
+
+即使这两个集合的内容是 `eqv`，但它们不是。原因是 `eqv` 将相等性检查委托给 `Set` 对象，该对象依赖于按元素比较。将类 `A` 转换为 [value 类型](https://docs.perl6.org/type/ValueObjAt)，给它一个 `WHICH` 方法来产生预期的行为：
 
 Even though the contents of the two sets are `eqv`, the sets are not. The reason is that `eqv` delegates the equality check to the `Set` object which relies on element-wise `===` comparison. Turning the class `A` into a [value type](https://docs.perl6.org/type/ValueObjAt) by giving it a `WHICH` method produces the expected behavior:
 
@@ -2540,7 +2948,7 @@ my class A {
 say Set(A.new(a => 5)) eqv Set(A.new(a => 5));  # OUTPUT: «True␤»
 ```
 
-<a id="infix--18"></a>
+<a id="infix-"></a>
 ## infix `===`
 
 ```Perl6
@@ -2574,7 +2982,7 @@ say 1 === 1.0;              # OUTPUT: «False␤»
 
 If you want to create a class that should act as a value type, then that class must create an instance method `WHICH`, that should return a [ValueObjAt](https://docs.perl6.org/type/ValueObjAt) object that won't change for the lifetime of the object.
 
-<a id="infix--19"></a>
+<a id="infix--1"></a>
 ## infix `=:=`
 
 ```Perl6
@@ -2611,7 +3019,7 @@ Here is a partial list of some of the built-in smartmatching functionality. For 
 | Set/Bag         | equal element values         |
 | Any:D           | object identity              |
 
-<a id="infix-%7E-4"></a>
+<a id="infix-%7E"></a>
 ## infix `=~=`
 
 ```Perl6
@@ -2890,7 +3298,7 @@ say 4 !(>=) (1,2,3); # OUTPUT: «True␤»
 <a id="tight-and-precedence"></a>
 # Tight AND precedence
 
-<a id="infix--20"></a>
+<a id="infix--2"></a>
 ## infix `&&`
 
 Returns the first argument that evaluates to `False` in boolean context, otherwise returns the last argument.
@@ -2921,7 +3329,7 @@ sub c { die "never called" };
 say a() || b() || c();      # OUTPUT: «1␤»
 ```
 
-<a id="infix-%5E%5E-1"></a>
+<a id="infix-%5E%5E"></a>
 ## infix `^^`
 
 Short-circuit exclusive-or. Returns the true argument if there is one (and only one). Returns the last argument if all arguments are false. Returns `Nil` when more than one argument is true.
@@ -2936,7 +3344,7 @@ say 0 ^^ 42 ^^ 1 ^^ die "never called";  # OUTPUT: «Nil␤»
 
 Note that the semantics of this operator may not be what you assume: infix `^^` flips to the first true value it finds and then flips to Nil *forever* after the second, no matter how many more true values there are. (In other words, it has "find the one true value" semantics, not "boolean parity" semantics.)
 
-<a id="infix--21"></a>
+<a id="infix--3"></a>
 ## infix `//`
 
 The defined-or operator or infix // returns the first defined operand, or else the last operand. Short-circuits.
@@ -3005,7 +3413,7 @@ my %loser = points => 20, misses => 10;
 <a id="conditional-operator-precedence"></a>
 # Conditional operator precedence
 
-<a id="infix---1"></a>
+<a id="infix--"></a>
 ## infix `?? !!`
 
 Also called *ternary* or *conditional* operator, `$condition ?? $true !! $false` evaluates `$condition` and returns the expression right behind ??, in this case `$true` if it is `True`, otherwise evaluates and returns the expression behind !!, `$false` in this case.
@@ -3199,7 +3607,7 @@ This operator cannot be overloaded, as it's handled specially by the compiler.
 <a id="item-assignment-precedence"></a>
 # Item assignment precedence
 
-<a id="infix--22"></a>
+<a id="infix--4"></a>
 ## infix `=`
 
 ```Perl6
@@ -3210,7 +3618,7 @@ Called the *item assignment operator*, it Places the value of the right-hand sid
 
 (Note that item assignment and list assignment have different precedence levels, and the syntax of the left-hand side decides whether an equal sign `=` is parsed as item assignment or list assignment operator).
 
-<a id="infix--23"></a>
+<a id="infix--5"></a>
 ## infix `=>`
 
 ```Perl6
@@ -3257,7 +3665,7 @@ Evaluates its argument in boolean context (and thus collapses [Junction](https:/
 <a id="comma-operator-precedence"></a>
 # Comma operator precedence
 
-<a id="infix--24"></a>
+<a id="infix--6"></a>
 ## infix `,`
 
 ```Perl6
@@ -3286,7 +3694,7 @@ say %features;  # OUTPUT: «{god => Þor, is => mighty, wields => hammer}␤»
 
 The comma is also used syntactically as the separator of arguments in calls.
 
-<a id="infix--25"></a>
+<a id="infix--7"></a>
 ## infix `:`
 
 Used as an argument separator just like infix `,` and marks the argument to its left as the invocant. That turns what would otherwise be a function call into a method call.
@@ -3327,7 +3735,7 @@ say 1..3 Z~ <a b c> Z~ 'x' xx 3;    # OUTPUT: «(1ax 2bx 3cx)␤»
 
 
 
-<a id="infix-x-1"></a>
+<a id="infix-x"></a>
 ## infix `X`
 
 Defined as:
@@ -3353,7 +3761,7 @@ The `X` operator also exists as a metaoperator, in which case the inner lists ar
 # produces (1a9 1b9 1c9 2a9 2b9 2c9 3a9 3b9 3c9)
 ```
 
-<a id="infix--26"></a>
+<a id="infix--8"></a>
 ## infix `...` 
 
 ```Perl6
@@ -3424,14 +3832,14 @@ say 1, 2, 4, 8, 16 ... $end;
 <a id="list-prefix-precedence"></a>
 # List prefix precedence
 
-<a id="infix--27"></a>
+<a id="infix--9"></a>
 ## infix `=`
 
 In this context, it acts as the list assignment operator. Its exact semantics are left to the container type on the left-hand side. See [Array](https://docs.perl6.org/type/Array) and [Hash](https://docs.perl6.org/type/Hash) for common cases.
 
 The distinction between item assignment and list assignment is determined by the parser depending on the syntax of the left-hand side.
 
-<a id="infix--28"></a>
+<a id="infix--10"></a>
 ## infix `:=`
 
 Binding operator. Whereas `$x = $y` puts the value in `$y` into `$x`, `$x := $y` makes `$x` and `$y` the same thing.
@@ -3458,7 +3866,7 @@ If type constrains on variables or containers are present a type check will be p
 
 Please note that `:=` is a compile time operator. As such it can not be referred to at runtime and thus can't be used as an argument to metaoperators.
 
-<a id="infix--29"></a>
+<a id="infix--11"></a>
 ## infix `::=`
 
 Read-only binding operator, not yet implemented in Rakudo. See [`infix :=`](https://docs.perl6.org/routine/:=).
@@ -3620,7 +4028,7 @@ When chaining, returns the operand that evaluates to `True`, if and only if ther
 <a id="sequencer-precedence"></a>
 # Sequencer precedence
 
-<a id="infix--30"></a>
+<a id="infix--12"></a>
 ## infix `==>`
 
 This feed operator takes the result from the left and passes it to the next (right) routine as the last parameter.
@@ -3704,7 +4112,7 @@ The feed operator lets you construct method-chaining-like patterns out of routin
 
 Note: In the future, this operator will see some change as it gains the ability to run list operations in parallel. It will enforce that the **left** operand is enclosable as a closure (that can be cloned and run in a subthread).
 
-<a id="infix--31"></a>
+<a id="infix--13"></a>
 ## infix `<==`
 
 This leftward feed operator takes the result from the right and passes it to the previous (left) routine as the last parameter. This elucidates the right-to-left dataflow for a series of list manipulating functions.
