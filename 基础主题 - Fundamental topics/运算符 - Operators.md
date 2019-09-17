@@ -149,14 +149,14 @@ See [creating operators](https://docs.perl6.org/language/optut) on how to define
     - [中缀运算符 `before` / infix `before`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-before--infix-before)
     - [中缀运算符 `after` / infix `after`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-after--infix-after)
     - [中缀运算符 `eqv` / infix `eqv`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-eqv--infix-eqv)
-    - [infix `===`](#infix-)
-    - [infix `=:=`](#infix--1)
-    - [infix `~~`](#infix-%7E%7E)
-    - [infix `=~=`](#infix-%7E)
-    - [infix \(elem\), infix ∈»](#infix-elem-infix-%E2%88%88%C2%BB)
-    - [infix `∉`](#infix-%E2%88%89)
-    - [infix \(cont\), infix ∋»](#infix-cont-infix-%E2%88%8B%C2%BB)
-    - [infix `∌`](#infix-%E2%88%8C)
+    - [中缀运算符 `===` / infix `===`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--16)
+    - [中缀运算符 `=:=` / infix `=:=`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--17)
+    - [中缀运算符 `~~` / infix `~~`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7E%7E--infix-%7E%7E)
+    - [中缀运算符 `=~=` / infix `=~=`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7E--infix-%7E-4)
+    - [中缀运算符 \(elem\)，中缀运算符 ∈» / infix \(elem\), infix ∈»](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-elem%EF%BC%8C%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%88%88%C2%BB--infix-elem-infix-%E2%88%88%C2%BB)
+    - [中缀运算符 `∉` / infix `∉`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%88%89--infix-%E2%88%89)
+    - [中缀运算符 \(cont\)，中缀运算符 ∋» / infix \(cont\), infix ∋»](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-cont%EF%BC%8C%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%88%8B%C2%BB--infix-cont-infix-%E2%88%8B%C2%BB)
+    - [中缀运算符 `∌` / infix `∌`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%88%8C--infix-%E2%88%8C)
     - [infix `(<)`, infix `⊂`](#infix--infix-%E2%8A%82)
     - [infix `⊄`](#infix-%E2%8A%84)
     - [infix `(<=)`, infix `⊆`](#infix--infix-%E2%8A%86)
@@ -166,11 +166,11 @@ See [creating operators](https://docs.perl6.org/language/optut) on how to define
     - [infix `(>=)`, infix `⊇`](#infix--infix-%E2%8A%87)
     - [infix `⊉`](#infix-%E2%8A%89)
 - [Tight AND precedence](#tight-and-precedence)
-    - [infix `&&`](#infix--2)
+    - [infix `&&`](#infix-)
 - [Tight OR precedence](#tight-or-precedence)
     - [infix `||`](#infix-%7C%7C)
     - [infix `^^`](#infix-%5E%5E)
-    - [infix `//`](#infix--3)
+    - [infix `//`](#infix--1)
     - [infix `min`](#infix-min)
     - [infix `max`](#infix-max)
     - [infix `minmax`](#infix-minmax)
@@ -185,22 +185,22 @@ See [creating operators](https://docs.perl6.org/language/optut) on how to define
     - [infix `fff^`](#infix-fff%5E)
     - [infix `^fff^`](#infix-%5Efff%5E)
 - [Item assignment precedence](#item-assignment-precedence)
-    - [infix `=`](#infix--4)
-    - [infix `=>`](#infix--5)
+    - [infix `=`](#infix--2)
+    - [infix `=>`](#infix--3)
 - [Loose unary precedence](#loose-unary-precedence)
     - [prefix `not`](#prefix-not)
     - [prefix `so`](#prefix-so)
 - [Comma operator precedence](#comma-operator-precedence)
-    - [infix `,`](#infix--6)
-    - [infix `:`](#infix--7)
+    - [infix `,`](#infix--4)
+    - [infix `:`](#infix--5)
 - [List infix precedence](#list-infix-precedence)
     - [infix `Z`](#infix-z)
     - [infix `X`](#infix-x)
-    - [infix `...`](#infix--8)
+    - [infix `...`](#infix--6)
 - [List prefix precedence](#list-prefix-precedence)
-    - [infix `=`](#infix--9)
-    - [infix `:=`](#infix--10)
-    - [infix `::=`](#infix--11)
+    - [infix `=`](#infix--7)
+    - [infix `:=`](#infix--8)
+    - [infix `::=`](#infix--9)
     - [listop `...`](#listop-)
     - [listop `!!!`](#listop--1)
     - [listop `???`](#listop--2)
@@ -214,8 +214,8 @@ See [creating operators](https://docs.perl6.org/language/optut) on how to define
     - [infix `orelse`](#infix-orelse)
     - [infix `xor`](#infix-xor)
 - [Sequencer precedence](#sequencer-precedence)
-    - [infix `==>`](#infix--12)
-    - [infix `<==`](#infix--13)
+    - [infix `==>`](#infix--10)
+    - [infix `<==`](#infix--11)
 - [Identity](#identity)
 
 <!-- /MarkdownTOC -->
@@ -2923,7 +2923,7 @@ multi infix:<eqv>(A $l, A $r) { $l.a eqv $r.a }
 say A.new(a => 5) eqv A.new(a => 5);            # OUTPUT: «True␤»
 ```
 
-请注意，`eqv` 不是对每种容器类型都递归地工作，例如 `Set`：
+请注意，`eqv` 不是对每种容器类型都递归地比较，例如 `Set`：
 
 Note that `eqv` does not work recursively on every kind of container type, e.g. `Set`:
 
@@ -2934,7 +2934,7 @@ my class A {
 say Set(A.new(a => 5)) eqv Set(A.new(a => 5));  # OUTPUT: «False␤»
 ```
 
-即使这两个集合的内容是 `eqv`，但它们不是。原因是 `eqv` 将相等性检查委托给 `Set` 对象，该对象依赖于按元素比较。将类 `A` 转换为 [value 类型](https://docs.perl6.org/type/ValueObjAt)，给它一个 `WHICH` 方法来产生预期的行为：
+即使这两个集合的内容是相等的，但集合本身不相等。原因是 `eqv` 将相等性检查委托给 `Set` 对象，该对象依赖于元素以 `===` 比较。给它一个 `WHICH` 方法将类 `A` 转换为 [value 类型](https://docs.perl6.org/type/ValueObjAt)来产生预期的行为：
 
 Even though the contents of the two sets are `eqv`, the sets are not. The reason is that `eqv` delegates the equality check to the `Set` object which relies on element-wise `===` comparison. Turning the class `A` into a [value type](https://docs.perl6.org/type/ValueObjAt) by giving it a `WHICH` method produces the expected behavior:
 
@@ -2948,12 +2948,14 @@ my class A {
 say Set(A.new(a => 5)) eqv Set(A.new(a => 5));  # OUTPUT: «True␤»
 ```
 
-<a id="infix-"></a>
-## infix `===`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--16"></a>
+## 中缀运算符 `===` / infix `===`
 
 ```Perl6
 sub infix:<===>(Any, Any)
 ```
+
+值标识运算符。如果两个参数是同一个对象，则返回真值，而不考虑任何容器化。
 
 Value identity operator. Returns `True` if both arguments are the same object, disregarding any containerization.
 
@@ -2964,6 +2966,8 @@ say $a === $a;              # OUTPUT: «True␤»
 say A.new === A.new;        # OUTPUT: «False␤» 
 say A === A;                # OUTPUT: «True␤»
 ```
+
+对于值类型，`===` 的行为类似于 `eqv`：
 
 For value types, `===` behaves like `eqv`:
 
@@ -2978,16 +2982,22 @@ say $b === 'a';             # OUTPUT: «True␤»
 say 1 === 1.0;              # OUTPUT: «False␤»
 ```
 
+`===` 使用 [WHICH](https://docs.perl6.org/routine/WHICH) 方法获取对象标识。
+
 `===` uses the [WHICH](https://docs.perl6.org/routine/WHICH) method to obtain the object identity.
+
+如果您想创建一个应该作为值类型的类，那么该类必须创建一个实例方法 `WHICH`，它应该返回一个在对象生命周期内不会改变的 [ValueObjAt](https://docs.perl6.org/type/ValueObjAt) 对象。
 
 If you want to create a class that should act as a value type, then that class must create an instance method `WHICH`, that should return a [ValueObjAt](https://docs.perl6.org/type/ValueObjAt) object that won't change for the lifetime of the object.
 
-<a id="infix--1"></a>
-## infix `=:=`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--17"></a>
+## 中缀运算符 `=:=` / infix `=:=`
 
 ```Perl6
 multi sub infix:<=:=>(Mu \a, Mu \b)
 ```
+
+容器标识运算符。如果两个参数绑定到同一容器，则返回真值。如果返回真值，通常意味着修改一个也将修改另一个。
 
 Container identity operator. Returns `True` if both arguments are bound to the same container. If it returns `True`, it generally means that modifying one will also modify the other.
 
@@ -3002,10 +3012,14 @@ $a = 5;
 say $b;             # OUTPUT: «5␤»
 ```
 
-<a id="infix-%7E%7E"></a>
-## infix `~~`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7E%7E--infix-%7E%7E"></a>
+## 中缀运算符 `~~` / infix `~~`
+
+智能匹配运算符将左边的别名设为 `$_`，然后对右边求值并调用 `.ACCEPTS($_)`。语义留给右侧操作数的类型。
 
 The smartmatch operator aliases the left-hand side to `$_`, then evaluates the right-hand side and calls `.ACCEPTS($_)` on it. The semantics are left to the type of the right-hand side operand.
+
+下面是一些内置智能匹配功能的部分列表。有关完整的详细信息，请参见 [ACCEPTS](https://docs.perl6.org/routine/ACCEPTS) 操作员右侧类型的文档。
 
 Here is a partial list of some of the built-in smartmatching functionality. For full details, see [ACCEPTS](https://docs.perl6.org/routine/ACCEPTS) documentation for the type on the right-hand side of the operator.
 
@@ -3019,8 +3033,8 @@ Here is a partial list of some of the built-in smartmatching functionality. For 
 | Set/Bag         | equal element values         |
 | Any:D           | object identity              |
 
-<a id="infix-%7E"></a>
-## infix `=~=`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7E--infix-%7E-4"></a>
+## 中缀运算符 `=~=` / infix `=~=`
 
 ```Perl6
 multi sub infix:<=~=>(Any, Any)
@@ -3032,6 +3046,8 @@ multi sub infix:<=~=>(Complex:D, Complex:D)
 multi sub infix:<=~=>(Numeric:D, Numeric:D)
 ```
 
+近似相等运算符 `≅`（其 ASCII 变体为 `=~=`）计算左侧和右侧之间的相对差，如果差小于 `$*TOLERANCE`（默认为 1e-15），则返回真值。但是，如果两边都是零，那么它会检查两边之间的绝对差是否小于 `$*TOLERANCE`。注意，该运算符不是算术对称的（不做 ± Δ）：
+
 The approximately-equal operator `≅`, whose ASCII variant is `=~=`, calculates the relative difference between the left-hand and right-hand sides and returns `True` if the difference is less than `$*TOLERANCE` (which defaults to 1e-15). However, if either side is zero then it checks that the absolute difference between the sides is less than `$*TOLERANCE`. Note that this operator is not arithmetically symmetrical (doesn't do ± Δ):
 
 ```Perl6
@@ -3040,12 +3056,16 @@ say ($x + $*TOLERANCE) =~= $x;   # OUTPUT: «False␤»
 say ($x - $*TOLERANCE) =~= $x;   # OUTPUT: «True␤»
 ```
 
+公差应该可以通过副词修改：
+
 The tolerance is supposed to be modifiable via an adverb:
 
 ```Perl6
 my ($x, $y) = 42, 42.1;
 say $x =~= $y :tolerance(.1);
 ```
+
+然而，这一点尚未实现。同样的效果也可以通过赋值 $*TOLERANCE 来实现。
 
 However, this is not yet implemented. The same effect can be achieved by assigning to $*TOLERANCE.
 
@@ -3058,6 +3078,8 @@ However, this is not yet implemented. The same effect can be achieved by assigni
 
 Note that setting $*TOLERANCE = 0 will cause all comparisons to fail.
 
+请注意，设置 $*TOLERANCE = 0 将导致所有比较失败。
+
 ```Perl6
 {
     my $*TOLERANCE = 0;
@@ -3065,15 +3087,19 @@ Note that setting $*TOLERANCE = 0 will cause all comparisons to fail.
 }
 ```
 
-<a id="infix-elem-infix-%E2%88%88%C2%BB"></a>
-## infix (elem), infix ∈»
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-elem%EF%BC%8C%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%88%88%C2%BB--infix-elem-infix-%E2%88%88%C2%BB"></a>
+## 中缀运算符 (elem)，中缀运算符 ∈» / infix (elem), infix ∈»
 
 ```Perl6
 multi sub infix:<(elem)>($a,$b --> Bool:D)
 multi sub infix:<∈>($a,$b --> Bool:D)
 ```
 
+成员运算符。
+
 Membership operator.
+
+如果 `$a` 是 `$b` 的*成员*则返回真值。
 
 Returns `True` if `$a` is an **element** of `$b`.
 
@@ -3082,16 +3108,22 @@ say 2 (elem) (1, 2, 3); # OUTPUT: «True␤»
 say 4 ∈ (1, 2, 3); # OUTPUT: «False␤» 
 ```
 
+`∈` 等同于 `(elem)`，在码位 U+2208。
+
 `∈` is equivalent to `(elem)`, at codepoint U+2208 (ELEMENT OF).
 
-<a id="infix-%E2%88%89"></a>
-## infix `∉`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%88%89--infix-%E2%88%89"></a>
+## 中缀运算符 `∉` / infix `∉`
 
 ```Perl6
 multi sub infix:<∉>($a,$b --> Bool:D)
 ```
 
+非成员运算符。
+
 Non-membership operator.
+
+如果 `$a` 不是 `$b` 的*成员*则返回真值。相当于 `!(elem)`。
 
 Returns `True` if `$a` is **not** an **element** of `$b`. Equivalent to `!(elem)`.
 
@@ -3100,42 +3132,57 @@ say 4 ∉ (1, 2, 3); # OUTPUT: «True␤»
 say 2 !(elem) (1, 2, 3); # OUTPUT: «False␤» 
 ```
 
+`∉` 在码位 U+2209。
+
 `∉` is codepoint U+2209 (NOT AN ELEMENT OF).
 
-<a id="infix-cont-infix-%E2%88%8B%C2%BB"></a>
-## infix (cont), infix ∋»
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-cont%EF%BC%8C%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%88%8B%C2%BB--infix-cont-infix-%E2%88%8B%C2%BB"></a>
+## 中缀运算符 (cont)，中缀运算符 ∋» / infix (cont), infix ∋»
 
 ```Perl6
 multi sub infix:<(cont)>($a,$b --> Bool:D)
 multi sub infix:<∋>($a,$b --> Bool:D)
 ```
 
+成员运算符。
+
 Membership operator.
 
-Returns `True` if `$a` is an **element** of `$b`.
+如果 `$b` 是 `$a` 的*成员*则返回真值。
+
+Returns `True` if `$a` is an **element** to `$b`.
 
 ```Perl6
 say (1,2,3) (cont) 2; # OUTPUT: «True␤» 
 say (1, 2, 3) ∋ 4; # OUTPUT: «False␤» 
 ```
 
+`∈` 等同于 `(cont)`，在码位 U+220B。
+
 `∋` is equivalent to `(cont)`, at codepoint U+220B (CONTAINS AS MEMBER).
 
-<a id="infix-%E2%88%8C"></a>
-## infix `∌`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%88%8C--infix-%E2%88%8C"></a>
+## 中缀运算符 `∌` / infix `∌`
 
 ```Perl6
 multi sub infix:<∌>($a,$b --> Bool:D)
 ```
 
+非成员运算符。
+
 Non-membership operator.
 
-Returns `True` if `$a` is **not** an **element** of `$b`. Equivalent to `!(cont)`.
+如果 `$b` 不是 `$a` 的*成员*则返回真值。相当于 `!(cont)`。
+
+
+Returns `True` if `$a` is **not** an **element** to `$b`. Equivalent to `!(cont)`.
 
 ```Perl6
 say (1,2,3) ∌ 4; # OUTPUT: «True␤» 
 say (1,2,3) !(cont) 2; # OUTPUT: «False␤» 
 ```
+
+`∉` 在码位 U+220C。
 
 `∉` is codepoint U+220C (DOES NOT CONTAIN AS MEMBER).
 
@@ -3298,7 +3345,7 @@ say 4 !(>=) (1,2,3); # OUTPUT: «True␤»
 <a id="tight-and-precedence"></a>
 # Tight AND precedence
 
-<a id="infix--2"></a>
+<a id="infix-"></a>
 ## infix `&&`
 
 Returns the first argument that evaluates to `False` in boolean context, otherwise returns the last argument.
@@ -3344,7 +3391,7 @@ say 0 ^^ 42 ^^ 1 ^^ die "never called";  # OUTPUT: «Nil␤»
 
 Note that the semantics of this operator may not be what you assume: infix `^^` flips to the first true value it finds and then flips to Nil *forever* after the second, no matter how many more true values there are. (In other words, it has "find the one true value" semantics, not "boolean parity" semantics.)
 
-<a id="infix--3"></a>
+<a id="infix--1"></a>
 ## infix `//`
 
 The defined-or operator or infix // returns the first defined operand, or else the last operand. Short-circuits.
@@ -3607,7 +3654,7 @@ This operator cannot be overloaded, as it's handled specially by the compiler.
 <a id="item-assignment-precedence"></a>
 # Item assignment precedence
 
-<a id="infix--4"></a>
+<a id="infix--2"></a>
 ## infix `=`
 
 ```Perl6
@@ -3618,7 +3665,7 @@ Called the *item assignment operator*, it Places the value of the right-hand sid
 
 (Note that item assignment and list assignment have different precedence levels, and the syntax of the left-hand side decides whether an equal sign `=` is parsed as item assignment or list assignment operator).
 
-<a id="infix--5"></a>
+<a id="infix--3"></a>
 ## infix `=>`
 
 ```Perl6
@@ -3665,7 +3712,7 @@ Evaluates its argument in boolean context (and thus collapses [Junction](https:/
 <a id="comma-operator-precedence"></a>
 # Comma operator precedence
 
-<a id="infix--6"></a>
+<a id="infix--4"></a>
 ## infix `,`
 
 ```Perl6
@@ -3694,7 +3741,7 @@ say %features;  # OUTPUT: «{god => Þor, is => mighty, wields => hammer}␤»
 
 The comma is also used syntactically as the separator of arguments in calls.
 
-<a id="infix--7"></a>
+<a id="infix--5"></a>
 ## infix `:`
 
 Used as an argument separator just like infix `,` and marks the argument to its left as the invocant. That turns what would otherwise be a function call into a method call.
@@ -3761,7 +3808,7 @@ The `X` operator also exists as a metaoperator, in which case the inner lists ar
 # produces (1a9 1b9 1c9 2a9 2b9 2c9 3a9 3b9 3c9)
 ```
 
-<a id="infix--8"></a>
+<a id="infix--6"></a>
 ## infix `...` 
 
 ```Perl6
@@ -3832,14 +3879,14 @@ say 1, 2, 4, 8, 16 ... $end;
 <a id="list-prefix-precedence"></a>
 # List prefix precedence
 
-<a id="infix--9"></a>
+<a id="infix--7"></a>
 ## infix `=`
 
 In this context, it acts as the list assignment operator. Its exact semantics are left to the container type on the left-hand side. See [Array](https://docs.perl6.org/type/Array) and [Hash](https://docs.perl6.org/type/Hash) for common cases.
 
 The distinction between item assignment and list assignment is determined by the parser depending on the syntax of the left-hand side.
 
-<a id="infix--10"></a>
+<a id="infix--8"></a>
 ## infix `:=`
 
 Binding operator. Whereas `$x = $y` puts the value in `$y` into `$x`, `$x := $y` makes `$x` and `$y` the same thing.
@@ -3866,7 +3913,7 @@ If type constrains on variables or containers are present a type check will be p
 
 Please note that `:=` is a compile time operator. As such it can not be referred to at runtime and thus can't be used as an argument to metaoperators.
 
-<a id="infix--11"></a>
+<a id="infix--9"></a>
 ## infix `::=`
 
 Read-only binding operator, not yet implemented in Rakudo. See [`infix :=`](https://docs.perl6.org/routine/:=).
@@ -4028,7 +4075,7 @@ When chaining, returns the operand that evaluates to `True`, if and only if ther
 <a id="sequencer-precedence"></a>
 # Sequencer precedence
 
-<a id="infix--12"></a>
+<a id="infix--10"></a>
 ## infix `==>`
 
 This feed operator takes the result from the left and passes it to the next (right) routine as the last parameter.
@@ -4112,7 +4159,7 @@ The feed operator lets you construct method-chaining-like patterns out of routin
 
 Note: In the future, this operator will see some change as it gains the ability to run list operations in parallel. It will enforce that the **left** operand is enclosable as a closure (that can be cloned and run in a subthread).
 
-<a id="infix--13"></a>
+<a id="infix--11"></a>
 ## infix `<==`
 
 This leftward feed operator takes the result from the right and passes it to the previous (left) routine as the last parameter. This elucidates the right-to-left dataflow for a series of list manipulating functions.
