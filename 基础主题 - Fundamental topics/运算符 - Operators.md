@@ -36,11 +36,11 @@ See [creating operators](https://docs.perl6.org/language/optut) on how to define
 - [术语 / Terms](#%E6%9C%AF%E8%AF%AD--terms)
 - [方法后缀优先级 / Method postfix precedence](#%E6%96%B9%E6%B3%95%E5%90%8E%E7%BC%80%E4%BC%98%E5%85%88%E7%BA%A7--method-postfix-precedence)
     - [后环缀运算符 `[ ]` / postcircumfix `[ ]`](#%E5%90%8E%E7%8E%AF%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6----postcircumfix--)
-    - [后环缀 `{ }` / postcircumfix `{ }`](#%E5%90%8E%E7%8E%AF%E7%BC%80----postcircumfix--)
-    - [后环缀 `` / postcircumfix ``](#%E5%90%8E%E7%8E%AF%E7%BC%80--postcircumfix-)
-    - [后环缀 `` / postcircumfix ``](#%E5%90%8E%E7%8E%AF%E7%BC%80--postcircumfix--1)
-    - [后环缀 `« »` / postcircumfix `« »`](#%E5%90%8E%E7%8E%AF%E7%BC%80-%C2%AB-%C2%BB--postcircumfix-%C2%AB-%C2%BB)
-    - [后环缀 `( )` / postcircumfix `( )`](#%E5%90%8E%E7%8E%AF%E7%BC%80----postcircumfix---1)
+    - [后环缀运算符 `{ }` / postcircumfix `{ }`](#%E5%90%8E%E7%8E%AF%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6----postcircumfix---1)
+    - [后环缀运算符 `` / postcircumfix ``](#%E5%90%8E%E7%8E%AF%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6--postcircumfix-)
+    - [后环缀运算符 `` / postcircumfix ``](#%E5%90%8E%E7%8E%AF%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6--postcircumfix--1)
+    - [后环缀运算符 `« »` / postcircumfix `« »`](#%E5%90%8E%E7%8E%AF%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%C2%AB-%C2%BB--postcircumfix-%C2%AB-%C2%BB)
+    - [后环缀运算符 `( )` / postcircumfix `( )`](#%E5%90%8E%E7%8E%AF%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6----postcircumfix---2)
     - [方法运算符 `.` / methodop `.`](#%E6%96%B9%E6%B3%95%E8%BF%90%E7%AE%97%E7%AC%A6---methodop-)
     - [方法运算符 `.&` / methodop `.&`](#%E6%96%B9%E6%B3%95%E8%BF%90%E7%AE%97%E7%AC%A6---methodop--1)
     - [方法运算符 `.=` / methodop `.=`](#%E6%96%B9%E6%B3%95%E8%BF%90%E7%AE%97%E7%AC%A6---methodop--2)
@@ -157,23 +157,23 @@ See [creating operators](https://docs.perl6.org/language/optut) on how to define
     - [中缀运算符 `∉` / infix `∉`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%88%89--infix-%E2%88%89)
     - [中缀运算符 \(cont\)，中缀运算符 ∋» / infix \(cont\), infix ∋»](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-cont%EF%BC%8C%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%88%8B%C2%BB--infix-cont-infix-%E2%88%8B%C2%BB)
     - [中缀运算符 `∌` / infix `∌`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%88%8C--infix-%E2%88%8C)
-    - [infix `(<)`, infix `⊂`](#infix--infix-%E2%8A%82)
-    - [infix `⊄`](#infix-%E2%8A%84)
-    - [infix `(<=)`, infix `⊆`](#infix--infix-%E2%8A%86)
-    - [infix `⊈`](#infix-%E2%8A%88)
-    - [infix `(>)`, infix `⊃`](#infix--infix-%E2%8A%83)
-    - [infix `⊅`](#infix-%E2%8A%85)
-    - [infix `(>=)`, infix `⊇`](#infix--infix-%E2%8A%87)
-    - [infix `⊉`](#infix-%E2%8A%89)
-- [Tight AND precedence](#tight-and-precedence)
-    - [infix `&&`](#infix-)
-- [Tight OR precedence](#tight-or-precedence)
-    - [infix `||`](#infix-%7C%7C)
-    - [infix `^^`](#infix-%5E%5E)
-    - [infix `//`](#infix--1)
-    - [infix `min`](#infix-min)
-    - [infix `max`](#infix-max)
-    - [infix `minmax`](#infix-minmax)
+    - [中缀运算符 `(<)`, 中缀运算符 `⊂` / infix `(<)`, infix `⊂`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6--%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%82--infix--infix-%E2%8A%82)
+    - [中缀运算符 `⊄` / infix `⊄`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%84--infix-%E2%8A%84)
+    - [中缀运算符 `(<=)`, 中缀运算符 `⊆` / infix `(<=)`, infix `⊆`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6--%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%86--infix--infix-%E2%8A%86)
+    - [中缀运算符 `⊈` / infix `⊈`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%88--infix-%E2%8A%88)
+    - [中缀运算符 `(>)`, 中缀运算符  `⊃` / infix `(>)`, infix `⊃`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6--%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%83--infix--infix-%E2%8A%83)
+    - [中缀运算符 `⊅` / infix `⊅`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%85--infix-%E2%8A%85)
+    - [中缀运算符 `(>=)`，中缀运算符 `⊇` / infix `(>=)`, infix `⊇`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%EF%BC%8C%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%87--infix--infix-%E2%8A%87)
+    - [中缀运算符 `⊉` / infix `⊉`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%89--infix-%E2%8A%89)
+- [逻辑与操作符优先级 / Tight AND precedence](#%E9%80%BB%E8%BE%91%E4%B8%8E%E6%93%8D%E4%BD%9C%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--tight-and-precedence)
+    - [中缀运算符 `&&` / infix `&&`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--18)
+- [逻辑或操作符优先级 / Tight OR precedence](#%E9%80%BB%E8%BE%91%E6%88%96%E6%93%8D%E4%BD%9C%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--tight-or-precedence)
+    - [中缀运算符 `||` / infix `||`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7C%7C--infix-%7C%7C)
+    - [中缀运算符 `^^` / infix `^^`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5E%5E--infix-%5E%5E-1)
+    - [中缀运算符 `//` / infix `//`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--19)
+    - [中缀运算符 `min` / infix `min`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-min--infix-min)
+    - [中缀运算符 `max` / infix `max`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-max--infix-max)
+    - [中缀运算符 `minmax` / infix `minmax`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-minmax--infix-minmax)
 - [Conditional operator precedence](#conditional-operator-precedence)
     - [infix `?? !!`](#infix--)
     - [infix `ff`](#infix-ff)
@@ -185,22 +185,22 @@ See [creating operators](https://docs.perl6.org/language/optut) on how to define
     - [infix `fff^`](#infix-fff%5E)
     - [infix `^fff^`](#infix-%5Efff%5E)
 - [Item assignment precedence](#item-assignment-precedence)
-    - [infix `=`](#infix--2)
-    - [infix `=>`](#infix--3)
+    - [infix `=`](#infix-)
+    - [infix `=>`](#infix--1)
 - [Loose unary precedence](#loose-unary-precedence)
     - [prefix `not`](#prefix-not)
     - [prefix `so`](#prefix-so)
 - [Comma operator precedence](#comma-operator-precedence)
-    - [infix `,`](#infix--4)
-    - [infix `:`](#infix--5)
+    - [infix `,`](#infix--2)
+    - [infix `:`](#infix--3)
 - [List infix precedence](#list-infix-precedence)
     - [infix `Z`](#infix-z)
     - [infix `X`](#infix-x)
-    - [infix `...`](#infix--6)
+    - [infix `...`](#infix--4)
 - [List prefix precedence](#list-prefix-precedence)
-    - [infix `=`](#infix--7)
-    - [infix `:=`](#infix--8)
-    - [infix `::=`](#infix--9)
+    - [infix `=`](#infix--5)
+    - [infix `:=`](#infix--6)
+    - [infix `::=`](#infix--7)
     - [listop `...`](#listop-)
     - [listop `!!!`](#listop--1)
     - [listop `???`](#listop--2)
@@ -214,8 +214,8 @@ See [creating operators](https://docs.perl6.org/language/optut) on how to define
     - [infix `orelse`](#infix-orelse)
     - [infix `xor`](#infix-xor)
 - [Sequencer precedence](#sequencer-precedence)
-    - [infix `==>`](#infix--10)
-    - [infix `<==`](#infix--11)
+    - [infix `==>`](#infix--8)
+    - [infix `<==`](#infix--9)
 - [Identity](#identity)
 
 <!-- /MarkdownTOC -->
@@ -867,8 +867,8 @@ say @alphabet[0..3].perl            # OUTPUT: «("a", "B", "C", "d")␤»
 
 See [Subscripts](https://docs.perl6.org/language/subscripts), for a more detailed explanation of this operator's behavior and for how to implement support for it in custom types.
 
-<a id="%E5%90%8E%E7%8E%AF%E7%BC%80----postcircumfix--"></a>
-## 后环缀 `{ }` / postcircumfix `{ }`
+<a id="%E5%90%8E%E7%8E%AF%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6----postcircumfix---1"></a>
+## 后环缀运算符 `{ }` / postcircumfix `{ }`
 
 ```Perl6
 sub postcircumfix:<{ }>(%container, **@key,
@@ -894,8 +894,8 @@ say %color;             # OUTPUT: «banana => yellowish, kiwi => green, lime => 
 
 See [`postcircumfix < >`](https://docs.perl6.org/routine/%3C%20%3E#(Operators)_postcircumfix_%3C_%3E) and [`postcircumfix « »`](https://docs.perl6.org/routine/%C2%AB%20%C2%BB#(Operators)_postcircumfix_%C2%AB_%C2%BB) for convenient shortcuts, and [Subscripts](https://docs.perl6.org/language/subscripts) for a more detailed explanation of this operator's behavior and how to implement support for it in custom types.
 
-<a id="%E5%90%8E%E7%8E%AF%E7%BC%80--postcircumfix-"></a>
-## 后环缀 `<>` / postcircumfix `<>`
+<a id="%E5%90%8E%E7%8E%AF%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6--postcircumfix-"></a>
+## 后环缀运算符 `<>` / postcircumfix `<>`
 
 反容器化运算符，它从容器中提取值并使其独立于容器类型。
 
@@ -914,8 +914,8 @@ say %config-hash.perl; # OUTPUT: «{:files(3), :path("/home/perl6/perl6.pod6")}�
 
 It's a `Hash` in both cases, and it can be used like that; however, in the first case it was in item context, and in the second case it has been extracted to its proper context.
 
-<a id="%E5%90%8E%E7%8E%AF%E7%BC%80--postcircumfix--1"></a>
-## 后环缀 `< >` / postcircumfix `< >`
+<a id="%E5%90%8E%E7%8E%AF%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6--postcircumfix--1"></a>
+## 后环缀运算符 `< >` / postcircumfix `< >`
 
 [后环缀 `{ }`](https://docs.perl6.org/routine/%7B%20%7D#(Operators)_postcircumfix_{_}) 的快捷方式，该快捷方式使用与同名的[引用词运算符](https://docs.perl6.org/routine/%3C%20%3E#circumfix_%3C_%3E)相同的规则引用其参数。
 
@@ -932,8 +932,8 @@ say %color<strawberry>:exists;    # OUTPUT: «False␤»
 
 Technically, not a real operator; it's syntactic sugar that's turned into the `{ }` postcircumfix operator at compile-time.
 
-<a id="%E5%90%8E%E7%8E%AF%E7%BC%80-%C2%AB-%C2%BB--postcircumfix-%C2%AB-%C2%BB"></a>
-## 后环缀 `« »` / postcircumfix `« »`
+<a id="%E5%90%8E%E7%8E%AF%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%C2%AB-%C2%BB--postcircumfix-%C2%AB-%C2%BB"></a>
+## 后环缀运算符 `« »` / postcircumfix `« »`
 
 [后环缀 `{ }`](https://docs.perl6.org/routine/%7B%20%7D#(Operators)_postcircumfix_{_})的快捷方式，该快捷方式使用与同名的[引用词插值运算符](https://docs.perl6.org/language/quoting#Word_quoting_with_interpolation_and_quote_protection:_%C2%AB_%C2%BB)相同的规则引用其参数。
 
@@ -949,8 +949,8 @@ say %color«cherry "$fruit"».perl;   # OUTPUT: «("red", "green")␤»
 
 Technically, not a real operator; it's syntactic sugar that's turned into the `{ }` postcircumfix operator at compile-time.
 
-<a id="%E5%90%8E%E7%8E%AF%E7%BC%80----postcircumfix---1"></a>
-## 后环缀 `( )` / postcircumfix `( )`
+<a id="%E5%90%8E%E7%8E%AF%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6----postcircumfix---2"></a>
+## 后环缀运算符 `( )` / postcircumfix `( )`
 
 函数调用运算符将调用者视为[可调用的](https://docs.perl6.org/type/Callable)并使用括号之间的表达式作为参数调用它。
 
@@ -3174,7 +3174,6 @@ Non-membership operator.
 
 如果 `$b` 不是 `$a` 的*成员*则返回真值。相当于 `!(cont)`。
 
-
 Returns `True` if `$a` is **not** an **element** to `$b`. Equivalent to `!(cont)`.
 
 ```Perl6
@@ -3186,15 +3185,19 @@ say (1,2,3) !(cont) 2; # OUTPUT: «False␤»
 
 `∉` is codepoint U+220C (DOES NOT CONTAIN AS MEMBER).
 
-<a id="infix--infix-%E2%8A%82"></a>
-## infix `(<)`, infix `⊂`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6--%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%82--infix--infix-%E2%8A%82"></a>
+## 中缀运算符 `(<)`, 中缀运算符 `⊂` / infix `(<)`, infix `⊂`
 
 ```Perl6
 multi sub infix:<< (<) >>($a,$b --> Bool:D)
 multi sub infix:<⊂>($a,$b --> Bool:D)
 ```
 
+子集运算符。
+
 Subset of operator.
+
+如果 `$a` 是 `$b` 的一个*严格子集*，则返回真值，即 `$a` 的所有元素都是 `$b` 的元素，但 `$a` 的集合小于 `$b`。
 
 Returns `True` if `$a` is a **strict subset** of `$b`, i.e., that all the elements of `$a` are elements of `$b` but `$a` is a smaller set than `$b`.
 
@@ -3204,16 +3207,22 @@ say (2,3) (<) (2,3,1); # OUTPUT: «True␤»
 say 4 ⊂ (1,2,3); # OUTPUT: «False␤» 
 ```
 
+`⊂` 等同于 `(<)`，在码位 U+2282。
+
 `⊂` is equivalent to `(<)`, at codepoint U+2282 (SUBSET OF).
 
-<a id="infix-%E2%8A%84"></a>
-## infix `⊄`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%84--infix-%E2%8A%84"></a>
+## 中缀运算符 `⊄` / infix `⊄`
 
 ```Perl6
 multi sub infix:<⊄>($a,$b --> Bool:D)
 ```
 
+非子集运算符。
+
 Not a subset of operator.
+
+如果 `$a` *不*是 `$b` 的一个*严格子集*，则返回真值。相当于 `!(<)`。
 
 Returns `True` if `$a` is **not** a `strict subset` of `$b`. Equivalent to `!(<)`.
 
@@ -3223,17 +3232,23 @@ say (2,3) ⊄ (2,3,1); # OUTPUT: «False␤»
 say 4 !(<) (1,2,3); # OUTPUT: «True␤» 
 ```
 
+`⊄` 在码位 U+2284。
+
 `⊄` is codepoint U+2284 (NOT A SUBSET OF).
 
-<a id="infix--infix-%E2%8A%86"></a>
-## infix `(<=)`, infix `⊆`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6--%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%86--infix--infix-%E2%8A%86"></a>
+## 中缀运算符 `(<=)`, 中缀运算符 `⊆` / infix `(<=)`, infix `⊆`
 
 ```Perl6
 multi sub infix:<< (<=) >>($a,$b --> Bool:D)
 multi sub infix:<⊆>($a,$b --> Bool:D)
 ```
 
+包含于运算符。
+
 Subset of or equal to operator.
+
+如果 `$a` 是 `$b` 的**子集**，则返回真值，即 `$a` 的所有元素都是 `$b` 的元素，但 `$a` 的集合大小小于或等于 `$b` 的集合。
 
 Returns `True` if `$a` is a **subset** of `$b`, i.e., that all the elements of `$a` are elements of `$b` but `$a` is a smaller or equal sized set than `$b`.
 
@@ -3243,16 +3258,22 @@ say (2,3) (<=) (2,3,1); # OUTPUT: «True␤»
 say 4 ⊆ (1,2,3); # OUTPUT: «False␤» 
 ```
 
+`⊆` 等同于 `(<=)`，在码位 U+2286。
+
 `⊆` is equivalent to `(<=)`, at codepoint U+2286 (SUBSET OF OR EQUAL TO).
 
-<a id="infix-%E2%8A%88"></a>
-## infix `⊈`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%88--infix-%E2%8A%88"></a>
+## 中缀运算符 `⊈` / infix `⊈`
 
 ```Perl6
 multi sub infix:<⊈>($a,$b --> Bool:D)
 ```
 
+不包含于运算符。
+
 Not a subset of nor equal to operator.
+
+如果 `$a` 不是 `$b` 的**子集**，则返回真值。相当于 `!(<=)`。
 
 Returns `True` if `$a` is **not** a `subset` of `$b`. Equivalent to `!(<=)`.
 
@@ -3262,17 +3283,23 @@ say (2,3) ⊄ (2,3,1); # OUTPUT: «False␤»
 say 4 !(<=) (1,2,3); # OUTPUT: «True␤» 
 ```
 
+`⊈` 在码位 U+2288。
+
 `⊈` is codepoint U+2288 (NEITHER A SUBSET OF NOR EQUAL TO).
 
-<a id="infix--infix-%E2%8A%83"></a>
-## infix `(>)`, infix `⊃`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6--%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%83--infix--infix-%E2%8A%83"></a>
+## 中缀运算符 `(>)`, 中缀运算符  `⊃` / infix `(>)`, infix `⊃`
 
 ```Perl6
 multi sub infix:<< (>) >>($a,$b --> Bool:D)
 multi sub infix:<⊃>($a,$b --> Bool:D)
 ```
 
+超集运算符。
+
 Superset of operator.
+
+如果 `$a` 是 `$b` 的**严格超集**，则返回真值，即 `$b` 的所有元素都是 `$a` 的元素，但 `$a` 的集合大于 `$b`。
 
 Returns `True` if `$a` is a **strict superset** of `$b`, i.e., that all the elements of `$b` are elements of `$a` but `$a` is a larger set than `$b`.
 
@@ -3282,16 +3309,22 @@ say (1,2,3) (>) (2,3); # OUTPUT: «True␤»
 say 4 ⊃ (1,2,3); # OUTPUT: «False␤» 
 ```
 
+`⊃` 等同于 `(>)`，在码位 U+2283。
+
 `⊃` is equivalent to `(>)`, at codepoint U+2283 (SUPERSET OF).
 
-<a id="infix-%E2%8A%85"></a>
-## infix `⊅`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%85--infix-%E2%8A%85"></a>
+## 中缀运算符 `⊅` / infix `⊅`
 
 ```Perl6
 multi sub infix:<⊅>($a,$b --> Bool:D)
 ```
 
+非超集运算符。
+
 Not a superset of operator.
+
+如果 `$a` 不是 `$b` 的**严格超集**，则返回真值。相当于 `!(>)`
 
 Returns `True` if `$a` is **not** a `strict superset` of `$b`. Equivalent to `!(>)`.
 
@@ -3301,17 +3334,23 @@ say (1,2,3) ⊅ (2,3); # OUTPUT: «False␤»
 say 4 !(>) (1,2,3); # OUTPUT: «True␤» 
 ```
 
+`⊅` 在码位 U+2285。
+
 `⊅` is codepoint U+2285 (NOT A SUPERSET OF).
 
-<a id="infix--infix-%E2%8A%87"></a>
-## infix `(>=)`, infix `⊇`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%EF%BC%8C%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%87--infix--infix-%E2%8A%87"></a>
+## 中缀运算符 `(>=)`，中缀运算符 `⊇` / infix `(>=)`, infix `⊇`
 
 ```Perl6
 multi sub infix:<< (>=) >>($a,$b --> Bool:D)
 multi sub infix:<⊇>($a,$b --> Bool:D)
 ```
 
+超集或等于运算符。
+
 Superset of or equal to operator.
+
+如果 `$a` 是 `$b` 的**超集**，则返回真值，即 `$b` 的所有元素都是 `$a` 的元素，但 `$a` 的集合大小大于或等于 `$b`。
 
 Returns `True` if `$a` is a **superset** of `$b`, i.e., that all the elements of `$b` are elements of `$a` but `$a` is a larger or equal sized set than `$b`.
 
@@ -3321,16 +3360,22 @@ say (1,2,3) (>=) (2,3); # OUTPUT: «True␤»
 say 4 ⊇ (1,2,3); # OUTPUT: «False␤» 
 ```
 
+`⊇` 等同于 `(>=)`，在码位 U+2287。
+
 `⊇` is equivalent to `(>=)`, at codepoint U+2287 (SUPERSET OF OR EQUAL TO).
 
-<a id="infix-%E2%8A%89"></a>
-## infix `⊉`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%89--infix-%E2%8A%89"></a>
+## 中缀运算符 `⊉` / infix `⊉`
 
 ```Perl6
 multi sub infix:<⊉>($a,$b --> Bool:D)
 ```
 
+非超集也不等于运算符。
+
 Not a superset of nor equal to operator.
+
+如果 `$a` *不*是 `$b` 的超集。相当于 `!(>=)`。
 
 Returns `True` if `$a` is **not** a `superset` of `$b`. Equivalent to `!(>=)`.
 
@@ -3340,15 +3385,21 @@ say (1,2,3) ⊉ (2,3); # OUTPUT: «False␤»
 say 4 !(>=) (1,2,3); # OUTPUT: «True␤» 
 ```
 
+`⊉` 在码位 U+2289。
+
 `⊉` is codepoint U+2289 (NEITHER A SUPERSET OF OR EQUAL TO).
 
-<a id="tight-and-precedence"></a>
-# Tight AND precedence
+<a id="%E9%80%BB%E8%BE%91%E4%B8%8E%E6%93%8D%E4%BD%9C%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--tight-and-precedence"></a>
+# 逻辑与操作符优先级 / Tight AND precedence
 
-<a id="infix-"></a>
-## infix `&&`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--18"></a>
+## 中缀运算符 `&&` / infix `&&`
+
+返回在布尔上下文中计算结果为假值的第一个参数，否则返回最后一个参数。
 
 Returns the first argument that evaluates to `False` in boolean context, otherwise returns the last argument.
+
+请注意，这种运算符有短路效果，即如果其中一个参数的计算结果为错误值，则永远不会计算右侧的参数。
 
 Note that this short-circuits, i.e. if one of the arguments evaluates to a false value, the arguments to the right are never evaluated.
 
@@ -3359,13 +3410,17 @@ sub c { die "never called" };
 say a() && b() && c();      # OUTPUT: «0␤»
 ```
 
-<a id="tight-or-precedence"></a>
-# Tight OR precedence
+<a id="%E9%80%BB%E8%BE%91%E6%88%96%E6%93%8D%E4%BD%9C%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--tight-or-precedence"></a>
+# 逻辑或操作符优先级 / Tight OR precedence
 
-<a id="infix-%7C%7C"></a>
-## infix `||`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7C%7C--infix-%7C%7C"></a>
+## 中缀运算符 `||` / infix `||`
+
+返回在布尔上下文中计算结果为真值的第一个参数，否则返回最后一个参数。
 
 Returns the first argument that evaluates to `True` in boolean context, otherwise returns the last argument.
+
+请注意，这种运算符有短路效果；即，如果其中一个参数的计算结果为真值，则不计算其余参数。
 
 Note that this short-circuits; i.e., if one of the arguments evaluates to a true value, the remaining arguments are not evaluated.
 
@@ -3376,10 +3431,14 @@ sub c { die "never called" };
 say a() || b() || c();      # OUTPUT: «1␤»
 ```
 
-<a id="infix-%5E%5E"></a>
-## infix `^^`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5E%5E--infix-%5E%5E-1"></a>
+## 中缀运算符 `^^` / infix `^^`
+
+短路异或。如果有一个（并且只有一个）真值，则返回真值参数。如果所有参数都为假值，则返回最后一个参数。当多个参数为真值时返回 `Nil`。
 
 Short-circuit exclusive-or. Returns the true argument if there is one (and only one). Returns the last argument if all arguments are false. Returns `Nil` when more than one argument is true.
+
+此运算符短路效果为在第二个真结果之后不计算任何参数。
 
 This operator short-circuits in the sense that it does not evaluate any arguments after a 2nd true result.
 
@@ -3389,10 +3448,14 @@ say '' ^^ 0;                             # OUTPUT: «0␤»
 say 0 ^^ 42 ^^ 1 ^^ die "never called";  # OUTPUT: «Nil␤»
 ```
 
+注意，这个操作符的语义可能不是您所假设的：中缀运算符 `^^` 翻到它找到的第一个真值，然后在第二个真值之后永为 Nil，不管还有多少真值。（换句话说，它有“查找一个真实值”语义，而不是“布尔奇偶性”语义。）
+
 Note that the semantics of this operator may not be what you assume: infix `^^` flips to the first true value it finds and then flips to Nil *forever* after the second, no matter how many more true values there are. (In other words, it has "find the one true value" semantics, not "boolean parity" semantics.)
 
-<a id="infix--1"></a>
-## infix `//`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--19"></a>
+## 中缀运算符 `//` / infix `//`
+
+已定义否则运算符或中缀运算符 // 返回第一个定义的操作数，否则返回最后一个操作数。有短路计算效果。
 
 The defined-or operator or infix // returns the first defined operand, or else the last operand. Short-circuits.
 
@@ -3400,8 +3463,10 @@ The defined-or operator or infix // returns the first defined operand, or else t
 say Any // 0 // 42;         # OUTPUT: «0␤»
 ```
 
-<a id="infix-min"></a>
-## infix `min`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-min--infix-min"></a>
+## 中缀运算符 `min` / infix `min`
+
+返回由 [cmp](https://docs.perl6.org/routine/cmp) 语义确定的最小参数。
 
 Returns the smallest of the arguments, as determined by [cmp](https://docs.perl6.org/routine/cmp) semantics.
 
@@ -3410,8 +3475,10 @@ my $foo = 42;
 $foo min= 0   # read as: $foo decreases to 0
 ```
 
-<a id="infix-max"></a>
-## infix `max`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-max--infix-max"></a>
+## 中缀运算符 `max` / infix `max`
+
+返回由 [cmp](https://docs.perl6.org/routine/cmp) 语义确定的最大参数。
 
 Returns the largest of the arguments, as determined by [cmp](https://docs.perl6.org/routine/cmp) semantics.
 
@@ -3420,8 +3487,10 @@ my $foo = -42;
 $foo max= 0   # read as: $foo increases to 0
 ```
 
-<a id="infix-minmax"></a>
-## infix `minmax`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-minmax--infix-minmax"></a>
+## 中缀运算符 `minmax` / infix `minmax`
+
+返回 [Range](https://docs.perl6.org/type/Range) 从值的最低到最高，由 [cmp](https://docs.perl6.org/routine/cmp) 语义决定。例如：
 
 Returns the [Range](https://docs.perl6.org/type/Range) starting from the lowest to the highest of the values, as determined by the [cmp](https://docs.perl6.org/routine/cmp) semantics. For instance:
 
@@ -3654,7 +3723,7 @@ This operator cannot be overloaded, as it's handled specially by the compiler.
 <a id="item-assignment-precedence"></a>
 # Item assignment precedence
 
-<a id="infix--2"></a>
+<a id="infix-"></a>
 ## infix `=`
 
 ```Perl6
@@ -3665,7 +3734,7 @@ Called the *item assignment operator*, it Places the value of the right-hand sid
 
 (Note that item assignment and list assignment have different precedence levels, and the syntax of the left-hand side decides whether an equal sign `=` is parsed as item assignment or list assignment operator).
 
-<a id="infix--3"></a>
+<a id="infix--1"></a>
 ## infix `=>`
 
 ```Perl6
@@ -3712,7 +3781,7 @@ Evaluates its argument in boolean context (and thus collapses [Junction](https:/
 <a id="comma-operator-precedence"></a>
 # Comma operator precedence
 
-<a id="infix--4"></a>
+<a id="infix--2"></a>
 ## infix `,`
 
 ```Perl6
@@ -3741,7 +3810,7 @@ say %features;  # OUTPUT: «{god => Þor, is => mighty, wields => hammer}␤»
 
 The comma is also used syntactically as the separator of arguments in calls.
 
-<a id="infix--5"></a>
+<a id="infix--3"></a>
 ## infix `:`
 
 Used as an argument separator just like infix `,` and marks the argument to its left as the invocant. That turns what would otherwise be a function call into a method call.
@@ -3808,7 +3877,7 @@ The `X` operator also exists as a metaoperator, in which case the inner lists ar
 # produces (1a9 1b9 1c9 2a9 2b9 2c9 3a9 3b9 3c9)
 ```
 
-<a id="infix--6"></a>
+<a id="infix--4"></a>
 ## infix `...` 
 
 ```Perl6
@@ -3879,14 +3948,14 @@ say 1, 2, 4, 8, 16 ... $end;
 <a id="list-prefix-precedence"></a>
 # List prefix precedence
 
-<a id="infix--7"></a>
+<a id="infix--5"></a>
 ## infix `=`
 
 In this context, it acts as the list assignment operator. Its exact semantics are left to the container type on the left-hand side. See [Array](https://docs.perl6.org/type/Array) and [Hash](https://docs.perl6.org/type/Hash) for common cases.
 
 The distinction between item assignment and list assignment is determined by the parser depending on the syntax of the left-hand side.
 
-<a id="infix--8"></a>
+<a id="infix--6"></a>
 ## infix `:=`
 
 Binding operator. Whereas `$x = $y` puts the value in `$y` into `$x`, `$x := $y` makes `$x` and `$y` the same thing.
@@ -3913,7 +3982,7 @@ If type constrains on variables or containers are present a type check will be p
 
 Please note that `:=` is a compile time operator. As such it can not be referred to at runtime and thus can't be used as an argument to metaoperators.
 
-<a id="infix--9"></a>
+<a id="infix--7"></a>
 ## infix `::=`
 
 Read-only binding operator, not yet implemented in Rakudo. See [`infix :=`](https://docs.perl6.org/routine/:=).
@@ -4075,7 +4144,7 @@ When chaining, returns the operand that evaluates to `True`, if and only if ther
 <a id="sequencer-precedence"></a>
 # Sequencer precedence
 
-<a id="infix--10"></a>
+<a id="infix--8"></a>
 ## infix `==>`
 
 This feed operator takes the result from the left and passes it to the next (right) routine as the last parameter.
@@ -4159,7 +4228,7 @@ The feed operator lets you construct method-chaining-like patterns out of routin
 
 Note: In the future, this operator will see some change as it gains the ability to run list operations in parallel. It will enforce that the **left** operand is enclosable as a closure (that can be cloned and run in a subthread).
 
-<a id="infix--11"></a>
+<a id="infix--9"></a>
 ## infix `<==`
 
 This leftward feed operator takes the result from the right and passes it to the previous (left) routine as the last parameter. This elucidates the right-to-left dataflow for a series of list manipulating functions.
