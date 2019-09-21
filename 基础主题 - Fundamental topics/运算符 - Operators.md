@@ -174,33 +174,33 @@ See [creating operators](https://docs.perl6.org/language/optut) on how to define
     - [中缀运算符 `min` / infix `min`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-min--infix-min)
     - [中缀运算符 `max` / infix `max`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-max--infix-max)
     - [中缀运算符 `minmax` / infix `minmax`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-minmax--infix-minmax)
-- [Conditional operator precedence](#conditional-operator-precedence)
-    - [infix `?? !!`](#infix--)
-    - [infix `ff`](#infix-ff)
-    - [infix `^ff`](#infix-%5Eff)
-    - [infix `ff^`](#infix-ff%5E)
-    - [infix `^ff^`](#infix-%5Eff%5E)
-    - [infix `fff`](#infix-fff)
-    - [infix `^fff`](#infix-%5Efff)
-    - [infix `fff^`](#infix-fff%5E)
-    - [infix `^fff^`](#infix-%5Efff%5E)
-- [Item assignment precedence](#item-assignment-precedence)
-    - [infix `=`](#infix-)
-    - [infix `=>`](#infix--1)
+- [条件运算符优先级 / Conditional operator precedence](#%E6%9D%A1%E4%BB%B6%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--conditional-operator-precedence)
+    - [中缀运算符  `?? !!` / infix `?? !!`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6----infix---1)
+    - [中缀运算符  `ff` / infix `ff`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-ff--infix-ff)
+    - [中缀运算符  `^ff` / infix `^ff`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5Eff--infix-%5Eff)
+    - [中缀运算符  `ff^` / infix `ff^`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-ff%5E--infix-ff%5E)
+    - [中缀运算符  `^ff^` / infix `^ff^`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5Eff%5E--infix-%5Eff%5E)
+    - [中缀运算符  `fff` / infix `fff`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-fff--infix-fff)
+    - [中缀运算符  `^fff` / infix `^fff`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5Efff--infix-%5Efff)
+    - [中缀运算符  `fff^` / infix `fff^`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-fff%5E--infix-fff%5E)
+    - [中缀运算符  `^fff^` / infix `^fff^`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5Efff%5E--infix-%5Efff%5E)
+- [项目赋值运算符优先级 / Item assignment precedence](#%E9%A1%B9%E7%9B%AE%E8%B5%8B%E5%80%BC%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--item-assignment-precedence)
+    - [中缀运算符 `=` / infix `=`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--20)
+    - [中缀运算符 `=>` / infix `=>`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--21)
 - [Loose unary precedence](#loose-unary-precedence)
     - [prefix `not`](#prefix-not)
     - [prefix `so`](#prefix-so)
 - [Comma operator precedence](#comma-operator-precedence)
-    - [infix `,`](#infix--2)
-    - [infix `:`](#infix--3)
+    - [infix `,`](#infix-)
+    - [infix `:`](#infix--1)
 - [List infix precedence](#list-infix-precedence)
     - [infix `Z`](#infix-z)
     - [infix `X`](#infix-x)
-    - [infix `...`](#infix--4)
+    - [infix `...`](#infix--2)
 - [List prefix precedence](#list-prefix-precedence)
-    - [infix `=`](#infix--5)
-    - [infix `:=`](#infix--6)
-    - [infix `::=`](#infix--7)
+    - [infix `=`](#infix--3)
+    - [infix `:=`](#infix--4)
+    - [infix `::=`](#infix--5)
     - [listop `...`](#listop-)
     - [listop `!!!`](#listop--1)
     - [listop `???`](#listop--2)
@@ -214,8 +214,8 @@ See [creating operators](https://docs.perl6.org/language/optut) on how to define
     - [infix `orelse`](#infix-orelse)
     - [infix `xor`](#infix-xor)
 - [Sequencer precedence](#sequencer-precedence)
-    - [infix `==>`](#infix--8)
-    - [infix `<==`](#infix--9)
+    - [infix `==>`](#infix--6)
+    - [infix `<==`](#infix--7)
 - [Identity](#identity)
 
 <!-- /MarkdownTOC -->
@@ -2986,7 +2986,7 @@ say 1 === 1.0;              # OUTPUT: «False␤»
 
 `===` uses the [WHICH](https://docs.perl6.org/routine/WHICH) method to obtain the object identity.
 
-如果您想创建一个应该作为值类型的类，那么该类必须创建一个实例方法 `WHICH`，它应该返回一个在对象生命周期内不会改变的 [ValueObjAt](https://docs.perl6.org/type/ValueObjAt) 对象。
+如果你想创建一个应该作为值类型的类，那么该类必须创建一个实例方法 `WHICH`，它应该返回一个在对象生命周期内不会改变的 [ValueObjAt](https://docs.perl6.org/type/ValueObjAt) 对象。
 
 If you want to create a class that should act as a value type, then that class must create an instance method `WHICH`, that should return a [ValueObjAt](https://docs.perl6.org/type/ValueObjAt) object that won't change for the lifetime of the object.
 
@@ -3448,7 +3448,7 @@ say '' ^^ 0;                             # OUTPUT: «0␤»
 say 0 ^^ 42 ^^ 1 ^^ die "never called";  # OUTPUT: «Nil␤»
 ```
 
-注意，这个操作符的语义可能不是您所假设的：中缀运算符 `^^` 翻到它找到的第一个真值，然后在第二个真值之后永为 Nil，不管还有多少真值。（换句话说，它有“查找一个真实值”语义，而不是“布尔奇偶性”语义。）
+注意，这个操作符的语义可能不是你所假设的：中缀运算符 `^^` 翻到它找到的第一个真值，然后在第二个真值之后永为 Nil，不管还有多少真值。（换句话说，它有“查找一个真实值”语义，而不是“布尔奇偶性”语义。）
 
 Note that the semantics of this operator may not be what you assume: infix `^^` flips to the first true value it finds and then flips to Nil *forever* after the second, no matter how many more true values there are. (In other words, it has "find the one true value" semantics, not "boolean parity" semantics.)
 
@@ -3503,11 +3503,15 @@ Returns the [Range](https://docs.perl6.org/type/Range) starting from the lowest 
 'z' minmax 'k';  # "k".."z" 
 ```
 
+如果最低值和最高值重合，则运算符返回由相同值生成的 [Range](https://docs.perl6.org/type/Range)：
+
 If the lowest and highest values coincide, the operator returns a [Range](https://docs.perl6.org/type/Range) made by the same value:
 
 ```Perl6
 1 minmax 1;  # 1..1 
 ```
+
+应用于 [List](https://docs.perl6.org/type/List) 时，运算符计算所有可用值中的最低值和最高值：
 
 When applied to [List](https://docs.perl6.org/type/List)s, the operator evaluates the lowest and highest values among all available values:
 
@@ -3515,6 +3519,8 @@ When applied to [List](https://docs.perl6.org/type/List)s, the operator evaluate
 (10,20,30) minmax (0,11,22,33);       # 0..33 
 ('a','b','z') minmax ('c','d','w');   # "a".."z" 
 ```
+
+类似地，当应用于 [Hash](https://docs.perl6.org/type/Hash) 时，它执行 [cmp](https://docs.perl6.org/routine/cmp) 方式比较：
 
 Similarly, when applied to [Hash](https://docs.perl6.org/type/Hash)es, it performs a [cmp](https://docs.perl6.org/routine/cmp) way comparison:
 
@@ -3526,22 +3532,28 @@ my %loser = points => 20, misses => 10;
 # ${:misses(10), :points(20)}..${:misses(10), :points(30)} 
 ```
 
-<a id="conditional-operator-precedence"></a>
-# Conditional operator precedence
+<a id="%E6%9D%A1%E4%BB%B6%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--conditional-operator-precedence"></a>
+# 条件运算符优先级 / Conditional operator precedence
 
-<a id="infix--"></a>
-## infix `?? !!`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6----infix---1"></a>
+## 中缀运算符  `?? !!` / infix `?? !!`
+
+也称为*三元*或*条件*运算符，`$condition ?? $true !! $false` 计算 `$condition` 并返回 ?? 后面的表达式，在本例中，返回 `$true` 如果是 `$condition` 为真值，否则求值并返回 !! 后面的表达式，在本例中返回 `$false`。
 
 Also called *ternary* or *conditional* operator, `$condition ?? $true !! $false` evaluates `$condition` and returns the expression right behind ??, in this case `$true` if it is `True`, otherwise evaluates and returns the expression behind !!, `$false` in this case.
 
-<a id="infix-ff"></a>
-## infix `ff`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-ff--infix-ff"></a>
+## 中缀运算符  `ff` / infix `ff`
 
 ```Perl6
 sub infix:<ff>(Mu $a, Mu $b)
 ```
 
+也称为*触发器*运算符，将这两个参数与 `$_`（即 `$_ ~~ $a` 和 `$_ ~~ $b`）进行比较。计算结果为 `False`，直到左侧智能匹配返回为 `True`，此时计算结果为 `True`，直到右侧智能匹配为 `True`。
+
 Also called the *flipflop operator*, compares both arguments to `$_` (that is, `$_ ~~ $a` and `$_ ~~ $b`). Evaluates to `False` until the left-hand smartmatch is `True`, at which point it evaluates to `True` until the right-hand smartmatch is `True`.
+
+实际上，左边的参数是“开始”条件，右边的参数是“停止”条件。此构造通常仅用于拾取特定的行。例如：
 
 In effect, the left-hand argument is the "start" condition and the right-hand is the "stop" condition. This construct is typically used to pick up only a certain section of lines. For example:
 
@@ -3563,6 +3575,8 @@ my @codelines = gather for $excerpt.lines {
 say @codelines.join("\n");
 ```
 
+匹配开始条件后，运算符将把相同的 `$_` 匹配到停止条件，如果成功，则相应地执行操作。在本例中，仅打印第一个元素：
+
 After matching the start condition, the operator will then match the same `$_` to the stop condition and act accordingly if successful. In this example, only the first element is printed:
 
 ```Perl6
@@ -3570,6 +3584,8 @@ for <AB C D B E F> {
     say $_ if /A/ ff /B/;  # OUTPUT: «AB␤» 
 }
 ```
+
+如果你只想对开始条件进行测试，并且没有停止条件，则可以使用 `*`。
 
 If you only want to test against a start condition and have no stop condition, `*` can be used as such.
 
@@ -3579,18 +3595,26 @@ for <A B C D E> {
 }
 ```
 
+对于类似 `sed` 的版本，在开始条件成功后，不对停止条件尝试 `$_`，请参见 [fff](https://docs.perl6.org/routine/fff)。
+
 For the `sed`-like version, which does *not* try `$_` on the stop condition after succeeding on the start condition, see [fff](https://docs.perl6.org/routine/fff).
+
+这个运算符不能重载，因为它是由编译器特别处理的。
 
 This operator cannot be overloaded, as it's handled specially by the compiler.
 
-<a id="infix-%5Eff"></a>
-## infix `^ff`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5Eff--infix-%5Eff"></a>
+## 中缀运算符  `^ff` / infix `^ff`
 
 ```Perl6
 sub infix:<^ff>(Mu $a, Mu $b)
 ```
 
+工作方式与 [ff](https://docs.perl6.org/routine/ff) 类似，但对于与开始条件匹配的项（包括也与停止条件匹配的项），它不返回 `True`。
+
 Works like [ff](https://docs.perl6.org/routine/ff), except it does not return `True` for items matching the start condition (including items also matching the stop condition).
+
+对比：
 
 A comparison:
 
@@ -3600,16 +3624,22 @@ say $_ if /A/ ff /C/ for @list;    # OUTPUT: «A␤B␤C␤»
 say $_ if /A/ ^ff /C/ for @list;   # OUTPUT: «B␤C␤»
 ```
 
+sed 类版本可以在 [`^fff`](https://docs.perl6.org/routine/$CIRCUMFLEX_ACCENTfff) 中找到。
+
 The sed-like version can be found in [`^fff`](https://docs.perl6.org/routine/$CIRCUMFLEX_ACCENTfff).
+
+这个运算符不能重载，因为它是由编译器特别处理的。
 
 This operator cannot be overloaded, as it's handled specially by the compiler.
 
-<a id="infix-ff%5E"></a>
-## infix `ff^`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-ff%5E--infix-ff%5E"></a>
+## 中缀运算符  `ff^` / infix `ff^`
 
 ```Perl6
 sub infix:<ff^>(Mu $a, Mu $b)
 ```
+
+工作方式与 [ff](https://docs.perl6.org/routine/ff) 类似，但对于与停止条件匹配的项（包括首先与开始条件匹配的项），它不返回 `True`。
 
 Works like [ff](https://docs.perl6.org/routine/ff), except it does not return `True` for items matching the stop condition (including items that first matched the start condition).
 
@@ -3619,16 +3649,22 @@ say $_ if /A/ ff /C/ for @list;    # OUTPUT: «A␤B␤C␤»
 say $_ if /A/ ff^ /C/ for @list;   # OUTPUT: «A␤B␤»
 ```
 
+sed 类版本可以在 [fff^](https://docs.perl6.org/routine/fff$CIRCUMFLEX_ACCENT) 中找到。
+
 The sed-like version can be found in [fff^](https://docs.perl6.org/routine/fff$CIRCUMFLEX_ACCENT).
+
+这个运算符不能重载，因为它是由编译器特别处理的。
 
 This operator cannot be overloaded, as it's handled specially by the compiler.
 
-<a id="infix-%5Eff%5E"></a>
-## infix `^ff^`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5Eff%5E--infix-%5Eff%5E"></a>
+## 中缀运算符  `^ff^` / infix `^ff^`
 
 ```Perl6
 sub infix:<^ff^>(Mu $a, Mu $b)
 ```
+
+工作方式类似于 [ff](https://docs.perl6.org/routine/ff)，但对于与停止或启动条件（或两者）匹配的项，它不返回 `True`。
 
 Works like [ff](https://docs.perl6.org/routine/ff), except it does not return `True` for items matching either the stop or start condition (or both).
 
@@ -3638,18 +3674,26 @@ say $_ if /A/ ff /C/ for @list;    # OUTPUT: «A␤B␤C␤»
 say $_ if /A/ ^ff^ /C/ for @list;  # OUTPUT: «B␤»
 ```
 
+sed 类版本可以在 [`^fff^`](https://docs.perl6.org/routine/$CIRCUMFLEX_ACCENTfff$CIRCUMFLEX_ACCENT) 中找到。
+
 The sed-like version can be found in [`^fff^`](https://docs.perl6.org/routine/$CIRCUMFLEX_ACCENTfff$CIRCUMFLEX_ACCENT).
+
+这个运算符不能重载，因为它是由编译器特别处理的。
 
 This operator cannot be overloaded, as it's handled specially by the compiler.
 
-<a id="infix-fff"></a>
-## infix `fff`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-fff--infix-fff"></a>
+## 中缀运算符  `fff` / infix `fff`
 
 ```Perl6
 sub infix:<fff>(Mu $a, Mu $b)
 ```
 
+执行类似 sed 的触发器操作，它返回 `False`，直到 `$_` 智能匹配左参数，然后返回 `True`，直到 `$_` 智能匹配右参数。
+
 Performs a sed-like flipflop operation, wherein it returns `False` until the left argument smartmatches against `$_`, then returns `True` until the right argument smartmatches against `$_`.
+
+与 [ff](https://docs.perl6.org/routine/ff) 类似，只是它每次调用只尝试一个参数。也就是说，如果 `$_` 智能匹配左参数，`fff` 将**不**尝试将相同的 `$_` 与右参数匹配。
 
 Works similarly to [ff](https://docs.perl6.org/routine/ff), except that it only tries one argument per invocation. That is, if `$_` smartmatches the left argument, `fff` will **not** then try to match that same `$_` against the right argument.
 
@@ -3659,16 +3703,22 @@ for <AB C D B E F> {
 }
 ```
 
+非 sed 类型的触发器（在成功地将左参数与 `$_` 匹配之后，将尝试对右参数使用相同的 `$_`，并相应地执行操作）。见 [ff](https://docs.perl6.org/routine/ff)。
+
 The non-sed-like flipflop (which after successfully matching the left argument against `$_` will try that same `$_` against the right argument and act accordingly). See [ff](https://docs.perl6.org/routine/ff).
+
+这个运算符不能重载，因为它是由编译器特别处理的。
 
 This operator cannot be overloaded, as it's handled specially by the compiler.
 
-<a id="infix-%5Efff"></a>
-## infix `^fff`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5Efff--infix-%5Efff"></a>
+## 中缀运算符  `^fff` / infix `^fff`
 
 ```Perl6
 sub infix:<^fff>(Mu $a, Mu $b)
 ```
+
+与 [fff](https://docs.perl6.org/routine/fff) 类似，但对于左参数的匹配，它不返回真值。
 
 Like [fff](https://docs.perl6.org/routine/fff), except it does not return true for matches to the left argument.
 
@@ -3678,16 +3728,22 @@ say $_ if /A/ fff /C/ for @list;   # OUTPUT: «A␤B␤C␤»
 say $_ if /A/ ^fff /C/ for @list;  # OUTPUT: «B␤C␤»
 ```
 
+对于非 sed 版本，请参见 [`^ff`](https://docs.perl6.org/routine/$CIRCUMFLEX_ACCENTff)。
+
 For the non-sed version, see [`^ff`](https://docs.perl6.org/routine/$CIRCUMFLEX_ACCENTff).
+
+这个运算符不能重载，因为它是由编译器特别处理的。
 
 This operator cannot be overloaded, as it's handled specially by the compiler.
 
-<a id="infix-fff%5E"></a>
-## infix `fff^`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-fff%5E--infix-fff%5E"></a>
+## 中缀运算符  `fff^` / infix `fff^`
 
 ```Perl6
 sub infix:<fff^>(Mu $a, Mu $b)
 ```
+
+与 [fff](https://docs.perl6.org/routine/fff) 类似，只不过对于右参数的匹配不返回真值。
 
 Like [fff](https://docs.perl6.org/routine/fff), except it does not return true for matches to the right argument.
 
@@ -3697,16 +3753,22 @@ say $_ if /A/ fff /C/ for @list;   # OUTPUT: «A␤B␤C␤»
 say $_ if /A/ fff^ /C/ for @list;  # OUTPUT: «A␤B␤»
 ```
 
+对于非 sed 版本，请参见 [ff^](https://docs.perl6.org/routine/ff$CIRCUMFLEX_ACCENT)。
+
 For the non-sed version, see [ff^](https://docs.perl6.org/routine/ff$CIRCUMFLEX_ACCENT).
+
+这个运算符不能重载，因为它是由编译器特别处理的。
 
 This operator cannot be overloaded, as it's handled specially by the compiler.
 
-<a id="infix-%5Efff%5E"></a>
-## infix `^fff^`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5Efff%5E--infix-%5Efff%5E"></a>
+## 中缀运算符  `^fff^` / infix `^fff^`
 
 ```Perl6
 sub infix:<^fff^>(Mu $a, Mu $b)
 ```
+
+与 [fff](https://docs.perl6.org/routine/fff) 类似，但对于左参数或右参数的匹配，它不返回真值。
 
 Like [fff](https://docs.perl6.org/routine/fff), except it does not return true for matches to either the left or right argument.
 
@@ -3716,34 +3778,48 @@ say $_ if /A/ fff /C/ for @list;   # OUTPUT: «A␤B␤C␤»
 say $_ if /A/ ^fff^ /C/ for @list; # OUTPUT: «B␤»
 ```
 
+对于非 sed 版本，请参见 [`^ff^`](https://docs.perl6.org/routine/$CIRCUMFLEX_ACCENTff$CIRCUMFLEX_ACCENT)。
+
 For the non-sed version, see [`^ff^`](https://docs.perl6.org/routine/$CIRCUMFLEX_ACCENTff$CIRCUMFLEX_ACCENT).
+
+这个运算符不能重载，因为它是由编译器特别处理的。
 
 This operator cannot be overloaded, as it's handled specially by the compiler.
 
-<a id="item-assignment-precedence"></a>
-# Item assignment precedence
+<a id="%E9%A1%B9%E7%9B%AE%E8%B5%8B%E5%80%BC%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--item-assignment-precedence"></a>
+# 项目赋值运算符优先级 / Item assignment precedence
 
-<a id="infix-"></a>
-## infix `=`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--20"></a>
+## 中缀运算符 `=` / infix `=`
 
 ```Perl6
     sub infix:<=>(Mu $a is rw, Mu $b)
 ```
 
+称为*项目赋值运算符*，它将右侧的值放入左侧的容器中。它的确切语义留给左侧的容器类型。
+
 Called the *item assignment operator*, it Places the value of the right-hand side into the container on the left-hand side. Its exact semantics are left to the container type on the left-hand side.
+
+（注意，项赋值和列表赋值具有不同的优先级，左侧的语法决定等号 `=` 是被解析为项赋值还是列表赋值运算符）。
 
 (Note that item assignment and list assignment have different precedence levels, and the syntax of the left-hand side decides whether an equal sign `=` is parsed as item assignment or list assignment operator).
 
-<a id="infix--1"></a>
-## infix `=>`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--21"></a>
+## 中缀运算符 `=>` / infix `=>`
 
 ```Perl6
 sub infix:«=>»($key, Mu $value --> Pair:D)
 ```
 
+[Pair](https://docs.perl6.org/type/Pair) 构造器.
+
 [Pair](https://docs.perl6.org/type/Pair) constructor.
 
+构造一个 [Pair](https://docs.perl6.org/type/Pair) 对象，左侧为键，右侧为值。
+
 Constructs a [Pair](https://docs.perl6.org/type/Pair) object with the left-hand side as the key and the right-hand side as the value.
+
+注意 `=>` 操作符是语法上特殊的案例，因为它允许在左侧使用未加引号的标识符。
 
 Note that the `=> `operator is syntactically special-cased, in that it allows unquoted identifier on the left-hand side.
 
@@ -3753,7 +3829,11 @@ say $p.key;         # OUTPUT: «a␤»
 say $p.value;       # OUTPUT: «1␤»
 ```
 
+参数列表中的一个 [Pair](https://docs.perl6.org/type/Pair) 在左边有一个未被引用的标识符，它被解释为一个命名参数。
+
 A [Pair](https://docs.perl6.org/type/Pair) within an argument list with an unquoted identifier on the left is interpreted as a named argument.
+
+有关创建 `Pair` 对象的更多方法，请参见[术语语言文档](https://docs.perl6.org/language/terms#Pair)。
 
 See [the Terms language documentation](https://docs.perl6.org/language/terms#Pair) for more ways to create `Pair` objects.
 
@@ -3781,7 +3861,7 @@ Evaluates its argument in boolean context (and thus collapses [Junction](https:/
 <a id="comma-operator-precedence"></a>
 # Comma operator precedence
 
-<a id="infix--2"></a>
+<a id="infix-"></a>
 ## infix `,`
 
 ```Perl6
@@ -3810,7 +3890,7 @@ say %features;  # OUTPUT: «{god => Þor, is => mighty, wields => hammer}␤»
 
 The comma is also used syntactically as the separator of arguments in calls.
 
-<a id="infix--3"></a>
+<a id="infix--1"></a>
 ## infix `:`
 
 Used as an argument separator just like infix `,` and marks the argument to its left as the invocant. That turns what would otherwise be a function call into a method call.
@@ -3877,7 +3957,7 @@ The `X` operator also exists as a metaoperator, in which case the inner lists ar
 # produces (1a9 1b9 1c9 2a9 2b9 2c9 3a9 3b9 3c9)
 ```
 
-<a id="infix--4"></a>
+<a id="infix--2"></a>
 ## infix `...` 
 
 ```Perl6
@@ -3948,14 +4028,14 @@ say 1, 2, 4, 8, 16 ... $end;
 <a id="list-prefix-precedence"></a>
 # List prefix precedence
 
-<a id="infix--5"></a>
+<a id="infix--3"></a>
 ## infix `=`
 
 In this context, it acts as the list assignment operator. Its exact semantics are left to the container type on the left-hand side. See [Array](https://docs.perl6.org/type/Array) and [Hash](https://docs.perl6.org/type/Hash) for common cases.
 
 The distinction between item assignment and list assignment is determined by the parser depending on the syntax of the left-hand side.
 
-<a id="infix--6"></a>
+<a id="infix--4"></a>
 ## infix `:=`
 
 Binding operator. Whereas `$x = $y` puts the value in `$y` into `$x`, `$x := $y` makes `$x` and `$y` the same thing.
@@ -3982,7 +4062,7 @@ If type constrains on variables or containers are present a type check will be p
 
 Please note that `:=` is a compile time operator. As such it can not be referred to at runtime and thus can't be used as an argument to metaoperators.
 
-<a id="infix--7"></a>
+<a id="infix--5"></a>
 ## infix `::=`
 
 Read-only binding operator, not yet implemented in Rakudo. See [`infix :=`](https://docs.perl6.org/routine/:=).
@@ -4144,7 +4224,7 @@ When chaining, returns the operand that evaluates to `True`, if and only if ther
 <a id="sequencer-precedence"></a>
 # Sequencer precedence
 
-<a id="infix--8"></a>
+<a id="infix--6"></a>
 ## infix `==>`
 
 This feed operator takes the result from the left and passes it to the next (right) routine as the last parameter.
@@ -4228,7 +4308,7 @@ The feed operator lets you construct method-chaining-like patterns out of routin
 
 Note: In the future, this operator will see some change as it gains the ability to run list operations in parallel. It will enforce that the **left** operand is enclosable as a closure (that can be cloned and run in a subthread).
 
-<a id="infix--9"></a>
+<a id="infix--7"></a>
 ## infix `<==`
 
 This leftward feed operator takes the result from the right and passes it to the previous (left) routine as the last parameter. This elucidates the right-to-left dataflow for a series of list manipulating functions.
