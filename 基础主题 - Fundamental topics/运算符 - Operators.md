@@ -2,7 +2,7 @@
 
 # 运算符 / Operators
 
-常见的 Perl 6 中缀、前缀、后缀等等！
+常见的 Perl 6 中缀、前缀、后缀运算符等等！
 
 Common Perl 6 infixes, prefixes, postfixes, and more!
 
@@ -15,19 +15,19 @@ See [creating operators](https://docs.perl6.org/language/optut) on how to define
 - [运算符分类 / Operator classification](#%E8%BF%90%E7%AE%97%E7%AC%A6%E5%88%86%E7%B1%BB--operator-classification)
 - [元运算符 / Metaoperators](#%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6--metaoperators)
 - [替换运算符 / Substitution operators](#%E6%9B%BF%E6%8D%A2%E8%BF%90%E7%AE%97%E7%AC%A6--substitution-operators)
-    - [`s///` 就地替换 / `s///` in-place substitution](#s-%E5%B0%B1%E5%9C%B0%E6%9B%BF%E6%8D%A2--s-in-place-substitution)
-    - [`S///` 非破坏性替换 / `S///` non-destructive substitution](#s-%E9%9D%9E%E7%A0%B4%E5%9D%8F%E6%80%A7%E6%9B%BF%E6%8D%A2--s-non-destructive-substitution)
-    - [`tr///` 就地转写 / `tr///` in-place transliteration](#tr-%E5%B0%B1%E5%9C%B0%E8%BD%AC%E5%86%99--tr-in-place-transliteration)
-    - [`TR///` 非破坏性转写 / `TR///` non-destructive transliteration](#tr-%E9%9D%9E%E7%A0%B4%E5%9D%8F%E6%80%A7%E8%BD%AC%E5%86%99--tr-non-destructive-transliteration)
+    - [`s///` 就地替换 - `s///` in-place substitution](#s-%E5%B0%B1%E5%9C%B0%E6%9B%BF%E6%8D%A2---s-in-place-substitution)
+    - [`S///` 非破坏性替换 - `S///` non-destructive substitution](#s-%E9%9D%9E%E7%A0%B4%E5%9D%8F%E6%80%A7%E6%9B%BF%E6%8D%A2---s-non-destructive-substitution)
+    - [`tr///` 就地转写 - `tr///` in-place transliteration](#tr-%E5%B0%B1%E5%9C%B0%E8%BD%AC%E5%86%99---tr-in-place-transliteration)
+    - [`TR///` 非破坏性转写 - `TR///` non-destructive transliteration](#tr-%E9%9D%9E%E7%A0%B4%E5%9D%8F%E6%80%A7%E8%BD%AC%E5%86%99---tr-non-destructive-transliteration)
 - [赋值运算符 / Assignment operators](#%E8%B5%8B%E5%80%BC%E8%BF%90%E7%AE%97%E7%AC%A6--assignment-operators)
-- [否定关系运算符 / Negated relational operators](#%E5%90%A6%E5%AE%9A%E5%85%B3%E7%B3%BB%E8%BF%90%E7%AE%97%E7%AC%A6--negated-relational-operators)
-- [反向运算符 / Reversed operators](#%E5%8F%8D%E5%90%91%E8%BF%90%E7%AE%97%E7%AC%A6--reversed-operators)
+- [否定关系型运算符 / Negated relational operators](#%E5%90%A6%E5%AE%9A%E5%85%B3%E7%B3%BB%E5%9E%8B%E8%BF%90%E7%AE%97%E7%AC%A6--negated-relational-operators)
+- [反转运算符 / Reversed operators](#%E5%8F%8D%E8%BD%AC%E8%BF%90%E7%AE%97%E7%AC%A6--reversed-operators)
 - [超运算符 / Hyper operators](#%E8%B6%85%E8%BF%90%E7%AE%97%E7%AC%A6--hyper-operators)
 - [归约元运算符 / Reduction metaoperators](#%E5%BD%92%E7%BA%A6%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6--reduction-metaoperators)
 - [交叉运算符 / Cross operators](#%E4%BA%A4%E5%8F%89%E8%BF%90%E7%AE%97%E7%AC%A6--cross-operators)
 - [Zip 元运算符 / Zip metaoperator](#zip-%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6--zip-metaoperator)
 - [序列运算符 / Sequential operators](#%E5%BA%8F%E5%88%97%E8%BF%90%E7%AE%97%E7%AC%A6--sequential-operators)
-- [元运算符嵌套 / Nesting of metaoperators](#%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6%E5%B5%8C%E5%A5%97--nesting-of-metaoperators)
+- [元运算符的嵌套 / Nesting of metaoperators](#%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6%E7%9A%84%E5%B5%8C%E5%A5%97--nesting-of-metaoperators)
 - [术语优先级 / Term precedence](#%E6%9C%AF%E8%AF%AD%E4%BC%98%E5%85%88%E7%BA%A7--term-precedence)
     - [术语 `` / term ``](#%E6%9C%AF%E8%AF%AD--term-)
     - [术语 `( )` / term `( )`](#%E6%9C%AF%E8%AF%AD----term--)
@@ -208,22 +208,22 @@ See [creating operators](https://docs.perl6.org/language/optut) on how to define
 - [宽松的与运算符优先级 / Loose AND precedence](#%E5%AE%BD%E6%9D%BE%E7%9A%84%E4%B8%8E%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--loose-and-precedence)
     - [中缀运算符 `and` / infix `and`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-and--infix-and)
     - [中缀运算符 `andthen` / infix `andthen`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-andthen--infix-andthen)
-    - [infix `notandthen`](#infix-notandthen)
-- [Loose OR precedence](#loose-or-precedence)
-    - [infix `or`](#infix-or)
-    - [infix `orelse`](#infix-orelse)
-    - [infix `xor`](#infix-xor)
-- [Sequencer precedence](#sequencer-precedence)
-    - [infix `==>`](#infix-)
-    - [infix `<==`](#infix--1)
-- [Identity](#identity)
+    - [中缀运算符 `notandthen` / infix `notandthen`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-notandthen--infix-notandthen)
+- [宽松的或运算符优先级 / Loose OR precedence](#%E5%AE%BD%E6%9D%BE%E7%9A%84%E6%88%96%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--loose-or-precedence)
+    - [中缀运算符 `or` / infix `or`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-or--infix-or)
+    - [中缀运算符 `orelse` / infix `orelse`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-orelse--infix-orelse)
+    - [中缀运算符 `xor` / infix `xor`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-xor--infix-xor)
+- [序列器优先级 / Sequencer precedence](#%E5%BA%8F%E5%88%97%E5%99%A8%E4%BC%98%E5%85%88%E7%BA%A7--sequencer-precedence)
+    - [中缀运算符 `==>` / infix `==>`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--28)
+    - [中缀运算符 `<==` / infix `<==`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--29)
+- [标识 / Identity](#%E6%A0%87%E8%AF%86--identity)
 
 <!-- /MarkdownTOC -->
 
 <a id="%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--operator-precedence"></a>
 # 运算符优先级 / Operator precedence
 
-在像 `1 + 2 * 3` 这样的表达式中，首先计算 `2 * 3`，因为中缀 `*` 比 `+` 具有更高的**优先级**。
+在像 `1 + 2 * 3` 这样的表达式中，首先计算 `2 * 3`，因为中缀运算符 `*` 比 `+` 具有更高的**优先级**。
 
 In an expression like `1 + 2 * 3`, the `2 * 3` is evaluated first because the infix `*` has tighter **precedence** than the `+`.
 
@@ -283,7 +283,7 @@ For unary operators this is interpreted as:
 | R    | right | !($a!)          |
 | N    | non   | ILLEGAL         |
 
-在下面的运算符描述中，假定默认为左结合。
+在下面的运算符描述中，假定默认为*左*结合。
 
 In the operator descriptions below, a default associativity of *left* is assumed.
 
@@ -311,11 +311,11 @@ infix:<+>(1, 2);                # same as 1 + 2
 circumfix:«[ ]»(<a b c>);       # same as [<a b c>]
 ```
 
-作为特殊情况，*listop*（列表运算符）可以作为一个术语或前缀。子例程调用是最常见的列表运算符。其他情况还包括元归约中缀运算符（`[+]1、2、3`）和 [前缀 ...](https://docs.perl6.org/language/operators#prefix_...)等存根运算符。
+作为特殊情况，*listop*（列表运算符）可以作为一个术语或前缀。子例程调用是最常见的列表运算符。其他情况还包括元归约中缀运算符（`[+]1、2、3`）和 [前缀 ...](https://docs.perl6.org/language/operators#prefix_...) 等存根运算符。
 
 As a special case, a *listop* (list operator) can stand either as a term or as a prefix. Subroutine calls are the most common listops. Other cases include meta-reduced infix operators (`[+] 1, 2, 3`) and the [prefix ...](https://docs.perl6.org/language/operators#prefix_...) etc. stub operators.
 
-定义自定义运算符包含在[定义运算符函数](https://docs.perl6.org/language/functions#Defining_operators)中。
+定义自定义运算符在文档[定义运算符函数](https://docs.perl6.org/language/functions#Defining_operators)中会介绍。
 
 Defining custom operators is covered in [Defining operators functions](https://docs.perl6.org/language/functions#Defining_operators).
 
@@ -333,8 +333,8 @@ Metaoperators can be parameterized with other operators or subroutines in the sa
 
 Each substitution operator comes into two main forms: a lowercase one (e.g., `s///`) that performs *in-place* (i.e., *destructive* behavior; and an uppercase form (e.g., `S///`) that provides a *non-destructive* behavior.
 
-<a id="s-%E5%B0%B1%E5%9C%B0%E6%9B%BF%E6%8D%A2--s-in-place-substitution"></a>
-## `s///` 就地替换 / `s///` in-place substitution
+<a id="s-%E5%B0%B1%E5%9C%B0%E6%9B%BF%E6%8D%A2---s-in-place-substitution"></a>
+## `s///` 就地替换 - `s///` in-place substitution
 
 ```Perl6
 my $str = 'old string';
@@ -346,7 +346,7 @@ say $str; # OUTPUT: «new string␤»
 
 `s///` operates on the `$_` topical variable, changing it in place. It uses the given [`Regex`](https://docs.perl6.org/type/Regex) to find portions to replace and changes them to the provided replacement string. Sets `$/` to the [`Match`](https://docs.perl6.org/type/Match) object or, if multiple matches were made, a [`List`](https://docs.perl6.org/type/List) of `Match` objects. Returns `$/`.
 
-通常将此运算符与 `~~` 智能匹配运算符一起使用，因为它将左侧别名设为 `$_`，而 `s///` 使用 `$_`。
+通常将此运算符与 `~~` 智能匹配运算符一起使用，因为它将 `$_` 设置为左侧的别名 ，而 `s///` 使用 `$_`。
 
 It's common to use this operator with the `~~` smartmatch operator, as it aliases left-hand side to `$_`, which `s///` uses.
 
@@ -359,7 +359,7 @@ my $str = 'foo muCKed into the lEn';
  
 # replace second 'o' with 'x' 
 $str ~~ s:2nd/o/x/;
- 
+
 # replace 'M' or 'L' followed by non-whitespace stuff with 'd' 
 # and lower-cased version of that stuff: 
 $str ~~ s :g :i/<[ML]> (\S+)/d{lc $0}/;
@@ -382,8 +382,8 @@ say $str; # OUTPUT: «fox den␤»
 
 Non-paired characters can simply replace the original slashes. Paired characters, like curly braces, are used only on the match portion, with the substitution given by assignment (of anything: a string, a routine call, etc.).
 
-<a id="s-%E9%9D%9E%E7%A0%B4%E5%9D%8F%E6%80%A7%E6%9B%BF%E6%8D%A2--s-non-destructive-substitution"></a>
-## `S///` 非破坏性替换 / `S///` non-destructive substitution
+<a id="s-%E9%9D%9E%E7%A0%B4%E5%9D%8F%E6%80%A7%E6%9B%BF%E6%8D%A2---s-non-destructive-substitution"></a>
+## `S///` 非破坏性替换 - `S///` non-destructive substitution
 
 ```Perl6
 say S/o .+ d/new/ with 'old string';      # OUTPUT: «new string␤» 
@@ -394,12 +394,12 @@ S:g/« (.)/$0.uc()/.say for <foo bar ber>; # OUTPUT: «Foo␤Bar␤Ber␤»
 
 `S///` uses the same semantics as the `s///` operator, except it leaves the original string intact and *returns the resultant string* instead of `$/` (`$/` still being set to the same values as with `s///`).
 
-**注意：**由于结果是作为返回值获得的，因此将此运算符与 `~~ ` 智能匹配运算符一起使用是错误的，并将发出警告。若要对不是此运算符使用的 `$_` 的变量执行替换，请将其别名为 `$_` 使用 `given`、`with`，或任何其他方式。或者，使用 [`.subst` 方法](https://docs.perl6.org/routine/subst)。
+**注意：**由于结果是作为返回值获得的，因此将此运算符与 `~~ ` 智能匹配运算符一起使用是错误的，并将发出警告。若要对不是此运算符使用的 `$_` 变量执行替换，请使用 `given`、`with`，或任何其他方式将其别名设置为 `$_`。或者，使用 [`.subst` 方法](https://docs.perl6.org/routine/subst)。
 
 **Note:** since the result is obtained as a return value, using this operator with the `~~` smartmatch operator is a mistake and will issue a warning. To execute the substitution on a variable that isn't the `$_` this operator uses, alias it to `$_` with `given`, `with`, or any other way. Alternatively, use the [`.subst` method](https://docs.perl6.org/routine/subst).
 
-<a id="tr-%E5%B0%B1%E5%9C%B0%E8%BD%AC%E5%86%99--tr-in-place-transliteration"></a>
-## `tr///` 就地转写 / `tr///` in-place transliteration
+<a id="tr-%E5%B0%B1%E5%9C%B0%E8%BD%AC%E5%86%99---tr-in-place-transliteration"></a>
+## `tr///` 就地转写 - `tr///` in-place transliteration
 
 ```Perl6
 my $str = 'old string';
@@ -407,7 +407,7 @@ $str ~~ tr/dol/wne/;
 say $str; # OUTPUT: «new string␤»
 ```
 
-`tr///` 对 `$_` 主题变量进行操作并对其。它的行为类似于使用单个[键值对](https://docs.perl6.org/type/Pair)参数调用的 [`Str.trans`](https://docs.perl6.org/routine/trans)，其中键是匹配部分（上面示例中的字符 `dol`），值是替换部分（上面示例中的字符 `wne`）。接受与 [`Str.trans`](https://docs.perl6.org/routine/trans) 相同的副词。返回 [StrDistance](https://docs.perl6.org/type/StrDistance) 对象，该对象测量原始值与返回结果字符串之间的距离。
+`tr///` 对 `$_` 主题变量进行操作并对其进行就地变更。它的行为类似于使用单个 [Pair](https://docs.perl6.org/type/Pair) 参数调用的 [`Str.trans`](https://docs.perl6.org/routine/trans)，其中键是匹配部分（上面示例中的字符 `dol`），值是替换部分（上面示例中的字符 `wne`）。接受与 [`Str.trans`](https://docs.perl6.org/routine/trans) 相同的副词。返回 [StrDistance](https://docs.perl6.org/type/StrDistance) 对象，该对象测量原始值与返回结果字符串之间的距离。
 
 `tr///` operates on the `$_` topical variable and changes it in place. It behaves similar to [`Str.trans`](https://docs.perl6.org/routine/trans) called with a single [Pair](https://docs.perl6.org/type/Pair) argument, where key is the matching part (characters `dol` in the example above) and value is the replacement part (characters `wne` in the example above). Accepts the same adverbs as [`Str.trans`](https://docs.perl6.org/routine/trans). Returns the [StrDistance](https://docs.perl6.org/type/StrDistance) object that measures the distance between original value and the resultant string.
 
@@ -417,8 +417,8 @@ $str ~~ tr:c:d/dol st//;
 say $str; # OUTPUT: «ring␤»
 ```
 
-<a id="tr-%E9%9D%9E%E7%A0%B4%E5%9D%8F%E6%80%A7%E8%BD%AC%E5%86%99--tr-non-destructive-transliteration"></a>
-## `TR///` 非破坏性转写 / `TR///` non-destructive transliteration
+<a id="tr-%E9%9D%9E%E7%A0%B4%E5%9D%8F%E6%80%A7%E8%BD%AC%E5%86%99---tr-non-destructive-transliteration"></a>
+## `TR///` 非破坏性转写 - `TR///` non-destructive transliteration
 
 ```Perl6
 with 'old string' {
@@ -437,7 +437,7 @@ say TR:d/dol // with 'old string'; # OUTPUT: «string␤»
 <a id="%E8%B5%8B%E5%80%BC%E8%BF%90%E7%AE%97%E7%AC%A6--assignment-operators"></a>
 # 赋值运算符 / Assignment operators
 
-中缀运算符可以与赋值运算符组合，以修改值并一次性将结果应用于容器。如果可能的话，容器将被自动激活。一些例子：
+中缀运算符可以与赋值运算符组合，以修改值并一次性将结果应用于容器。如果可能的话，容器将被自动地生动化。一些例子：
 
 Infix operators can be combined with the assignment operator to modify a value and apply the result to a container in one go. Containers will be autovivified if possible. Some examples:
 
@@ -474,8 +474,8 @@ $a = 3.14;
 $a .= round;      # RESULT: «3»
 ```
 
-<a id="%E5%90%A6%E5%AE%9A%E5%85%B3%E7%B3%BB%E8%BF%90%E7%AE%97%E7%AC%A6--negated-relational-operators"></a>
-# 否定关系运算符 / Negated relational operators 
+<a id="%E5%90%A6%E5%AE%9A%E5%85%B3%E7%B3%BB%E5%9E%8B%E8%BF%90%E7%AE%97%E7%AC%A6--negated-relational-operators"></a>
+# 否定关系型运算符 / Negated relational operators 
 
 返回 `Bool` 的关系运算符的结果可以用前缀 `!` 否定。为避免与 `!!` 运算符的视觉混淆，不能修改已经以 `!` 开头的任何运算符.
 
@@ -495,8 +495,8 @@ my $today = Date.today;
 say so $release !before $today;     # OUTPUT: «False␤»
 ```
 
-<a id="%E5%8F%8D%E5%90%91%E8%BF%90%E7%AE%97%E7%AC%A6--reversed-operators"></a>
-# 反向运算符 / Reversed operators 
+<a id="%E5%8F%8D%E8%BD%AC%E8%BF%90%E7%AE%97%E7%AC%A6--reversed-operators"></a>
+# 反转运算符 / Reversed operators 
 
 任何中缀运算符将它的两个参数用前缀 `R` 反转调用。操作数的关联性也会反转。
 
@@ -549,7 +549,7 @@ my ($a, $b, $c);
 say "$a, $c";       #  OUTPUT: «1, 3␤»
 ```
 
-一元运算符的超级形式有指向运算符的尖位和待操作列表的钝端。
+一元运算符的超级形式将尖端指向运算符，钝端指向待操作列表。
 
 Hyper forms of unary operators have the pointy bit aimed at the operator and the blunt end at the list to be operated on.
 
@@ -569,7 +569,7 @@ Hyper operators are defined recursively on nested arrays.
 say -« [[1, 2], 3]; # OUTPUT: «[[-1 -2] -3]␤»
 ```
 
-此外，可以以无序、并发的方式调用方法。结果列表将按顺序排列。请注意，所有超运算符都是并行运算的的候选人，如果这些方法有副作用，有你哭的时候。优化器完全控制超运算符，这就是用户无法定义它们的原因。
+此外，可以以无序、并发的方式调用方法。结果列表将按顺序排列。请注意，所有超运算符都是并行运算的的候选人，但是如果这些方法有副作用，有你哭的时候。优化器完全控制超运算符，这就是用户无法定义它们的原因。
 
 Also, methods can be called in an out of order, concurrent fashion. The resulting list will be in order. Note that all hyper operators are candidates for parallelism and will cause tears if the methods have side effects. The optimizer has full reign over hyper operators, which is the reason that they cannot be defined by the user.
 
@@ -739,8 +739,8 @@ The sequential metaoperator, `S`, will suppress any concurrency or reordering do
 say so 1 S& 2 S& 3;  # OUTPUT: «True␤»
 ```
 
-<a id="%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6%E5%B5%8C%E5%A5%97--nesting-of-metaoperators"></a>
-# 元运算符嵌套 / Nesting of metaoperators
+<a id="%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6%E7%9A%84%E5%B5%8C%E5%A5%97--nesting-of-metaoperators"></a>
+# 元运算符的嵌套 / Nesting of metaoperators
 
 为了避免在链接元运算符时出现歧义，请使用方括号帮助编译器理解你。
 
@@ -4201,7 +4201,7 @@ Short-circuits so that it returns the first operand that evaluates to `False`, o
 <a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-andthen--infix-andthen"></a>
 ## 中缀运算符 `andthen` / infix `andthen`
 
-当遇到第一个[未定义](https://docs.perl6.org/routine/defined)参数时，`andthen` 运算符返回 [`Empty`](https://docs.perl6.org/type/Slip#index-entry-Empty-Empty)，否则返回最后一个参数。最后一个参数按原样返回，根本不检查其是否定义。左边的计算结果绑定到右边的 `$_` 上，或者如果右边是一个 [`Callable`](https://docs.perl6.org/type/Callable) 作为参数传递，其 [count](https://docs.perl6.org/routine/count) （函数参数个数）必须是 `0` 或 `1`。
+当遇到第一个[未定义](https://docs.perl6.org/routine/defined)参数时，`andthen` 运算符返回 [`Empty`](https://docs.perl6.org/type/Slip#index-entry-Empty-Empty)，否则返回最后一个参数。最后一个参数按原样返回，不检查其是否定义。左边的计算结果绑定到右边的 `$_` 上，或者如果右边是一个 [`Callable`](https://docs.perl6.org/type/Callable) 作为参数传递，其[函数参数个数](https://docs.perl6.org/routine/count) 必须是 `0` 或 `1`。
 
 The `andthen` operator returns [`Empty`](https://docs.perl6.org/type/Slip#index-entry-Empty-Empty) upon encountering the first [undefined](https://docs.perl6.org/routine/defined) argument, otherwise the last argument. Last argument is returned as-is, without being checked for definedness at all. Short-circuits. The result of the left side is bound to `$_` for the right side, or passed as arguments if the right side is a [`Callable`](https://docs.perl6.org/type/Callable), whose [count](https://docs.perl6.org/routine/count) must be `0` or `1`.
 
@@ -4221,7 +4221,7 @@ load-data() andthen .return; # return loaded data, if it's defined
 die "Failed to load data!!";
 ```
 
-只有当子例程返回与 `/good/` 匹配的任何条目时，上面的示例才会打印 `good data is good`，并且除非加载数据返回定义的值，否则将消亡。别名行为允许我们在操作符之间通过管道传递值。
+只有当子例程返回与 `/good/` 匹配的任何条目时，上面的示例才会打印 `good data is good`，并且除非加载数据返回定义的值，否则程序将退出。别名行为允许我们在操作符之间通过管道传递值。
 
 The above example will print `good data is good` only if the subroutine returned any items that match `/good/` and will die unless loading data returned a defined value. The aliasing behavior lets us pipe the values across the operator.
 
@@ -4234,10 +4234,14 @@ The `andthen` operator is a close relative of [`with` statement modifier](https:
 42 andthen .say;
 ```
 
-<a id="infix-notandthen"></a>
-## infix `notandthen`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-notandthen--infix-notandthen"></a>
+## 中缀运算符 `notandthen` / infix `notandthen`
+
+`notandthen` 运算符在遇到第一个[已定义](https://docs.perl6.org/routine/defined)参数时返回 [`Empty`](https://docs.perl6.org/type/Slip#index-entry-Empty-Empty)，否则返回最后一个参数。最后一个参数按原样返回，不检查其定义。左边的结果绑定到右边的 `$_` 上，或者如果右边是一个 [`Callable`](https://docs.perl6.org/type/Callable) 则左边的结果作为参数传递，其[函数参数个数](https://docs.perl6.org/routine/count)必须是 `0` 或 `1`。
 
 The `notandthen` operator returns [`Empty`](https://docs.perl6.org/type/Slip#index-entry-Empty-Empty) upon encountering the first [defined](https://docs.perl6.org/routine/defined) argument, otherwise the last argument. Last argument is returned as-is, without being checked for definedness at all. Short-circuits. The result of the left side is bound to `$_` for the right side, or passed as arguments if the right side is a [`Callable`](https://docs.perl6.org/type/Callable), whose [count](https://docs.perl6.org/routine/count) must be `0` or `1`.
+
+乍一看，[notandthen](https://docs.perl6.org/routine/notandthen) 可能看起来与 [orelse](https://docs.perl6.org/routine/orelse) 运算符相同。区别很微妙：[notandthen](https://docs.perl6.org/routine/notandthen) 在遇到[定义的](https://docs.perl6.org/routine/defined)项（这不是最后一个项）时返回 [`Empty`](https://docs.perl6.org/type/Slip#index-entry-Empty-Empty)，而 [orelse](https://docs.perl6.org/routine/orelse) 返回该定义的项。换句话说，[notandthen](https://docs.perl6.org/routine/notandthen) 是一种在未定义项时执行的方法，而 [orelse](https://docs.perl6.org/routine/orelse) 是获取第一个定义项的方法：
 
 At first glance, [notandthen](https://docs.perl6.org/routine/notandthen) might appear to be the same thing as the [orelse](https://docs.perl6.org/routine/orelse) operator. The difference is subtle: [notandthen](https://docs.perl6.org/routine/notandthen) returns [`Empty`](https://docs.perl6.org/type/Slip#index-entry-Empty-Empty) when it encounters a [defined](https://docs.perl6.org/routine/defined) item (that isn't the last item), whereas [orelse](https://docs.perl6.org/routine/orelse) returns that item. In other words, [notandthen](https://docs.perl6.org/routine/notandthen) is a means to act when items aren't defined, whereas [orelse](https://docs.perl6.org/routine/orelse) is a means to obtain the first defined item:
 
@@ -4254,6 +4258,8 @@ all-sensors-down Nil, 42, Nil
 say first-working-sensor Nil, 42, Nil;  # OUTPUT:«42␤» 
 ```
 
+`notandthen` 运算符是 [`without` 语句修饰符](https://docs.perl6.org/syntax/with%20orwith%20without)，一些编译器编译 `without` 为 `notandthen`，这意味着下面这两行具有相同的行为：
+
 The `notandthen` operator is a close relative of [`without` statement modifier](https://docs.perl6.org/syntax/with%20orwith%20without), and some compilers compile `without` to `notandthen`, meaning these two lines have equivalent behavior:
 
 ```Perl6
@@ -4263,23 +4269,33 @@ sub good-things { fail }
 good-things() notandthen 'boo'.say;
 ```
 
-<a id="loose-or-precedence"></a>
-# Loose OR precedence
+<a id="%E5%AE%BD%E6%9D%BE%E7%9A%84%E6%88%96%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--loose-or-precedence"></a>
+# 宽松的或运算符优先级 / Loose OR precedence
 
-<a id="infix-or"></a>
-## infix `or`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-or--infix-or"></a>
+## 中缀运算符 `or` / infix `or`
+
+与 [infix `||`](https://docs.perl6.org/routine/%7C%7C) 相同，但优先级较低。
 
 Same as [infix `||`](https://docs.perl6.org/routine/%7C%7C), except with looser precedence.
 
+返回在布尔上下文中计算为 `True` 的第一个参数，或者最后一个参数，它有短路效果。请注意 `or` 很容易被误用。请参阅[陷阱](https://docs.perl6.org/language/traps#Loose_boolean_operators)。
+
 Returns the first argument that evaluates to `True` in boolean context, or otherwise the last argument, it short-circuits. Please note that `or` is easy to misuse. See [traps](https://docs.perl6.org/language/traps#Loose_boolean_operators).
 
-<a id="infix-orelse"></a>
-## infix `orelse`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-orelse--infix-orelse"></a>
+## 中缀运算符 `orelse` / infix `orelse`
+
+`orelse` 操作符类似于 `中缀运算符 //`，除了具有较宽松的优先级和 `$_` 别名。
 
 The `orelse` operator is similar to `infix //`, except with looser precedence and `$_` aliasing.
 
+返回第一个定义的参数，否则返回最后一个参数。最后一个参数按原样返回，不检查其定义。左边的结果绑定到右边的 `$_` 上，或者如果右边是一个 [`Callable`](https://docs.perl6.org/type/Callable) 则左边的结果作为参数传递，其[函数参数个数](https://docs.perl6.org/routine/count)必须是 `0` 或 `1`。
+
 Returns the first defined argument, or else the last argument. Last argument is returned as-is, without being checked for definedness at all. Short-circuits. The result of the left side is bound to `$_` for the right side, or passed as an argument if the right side is a [`Callable`](https://docs.perl6.org/type/Callable), whose [count](https://docs.perl6.org/routine/count) must be `0` or `1`.
-。， 
+
+此运算符对于处理例程返回的 [Failure](https://docs.perl6.org/type/Failure) 非常有用，因为预期值通常是[定义的](https://docs.perl6.org/routine/defined)和 [Failure](https://docs.perl6.org/type/Failure) 从不是：
+
 This operator is useful for handling [Failures](https://docs.perl6.org/type/Failure) returned by routines since the expected value is usually [defined](https://docs.perl6.org/routine/defined) and [Failure](https://docs.perl6.org/type/Failure) never is:
 
 ```Perl6
@@ -4300,20 +4316,28 @@ meows-processor3;           # OUTPUT: «something's wrong␤»
 meows-processor3;           # OUTPUT: «🐱␤»
 ```
 
-<a id="infix-xor"></a>
-## infix `xor`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-xor--infix-xor"></a>
+## 中缀运算符 `xor` / infix `xor`
+
+与 [infix `^^`](https://docs.perl6.org/routine/$CIRCUMFLEX_ACCENT$CIRCUMFLEX_ACCENT) 相同，但优先级较低。
 
 Same as [infix `^^`](https://docs.perl6.org/routine/$CIRCUMFLEX_ACCENT$CIRCUMFLEX_ACCENT), except with looser precedence.
 
+返回在布尔上下文中计算为 `True` 的操作数，如果且仅当其他操作数在布尔上下文中计算为 `False` 时返回。如果两个操作数都被评估为 `False`，则返回最后一个参数。如果两个操作数都被评估为 `True`，返回 `Nil`。
+
 Returns the operand that evaluates to `True` in boolean context, if and only if the other operand evaluates to `False` in boolean context. If both operands evaluate to `False`, returns the last argument. If both operands evaluate to `True`, returns `Nil`.
+
+当链接时，返回计算为 `True` 的操作数，当且仅当有一个这样的操作数时。如果多于一个操作数为真，则在评估第二操作数后短路并返回 `Nil`。如果所有操作数都为假，则返回最后一个操作数。
 
 When chaining, returns the operand that evaluates to `True`, if and only if there is one such operand. If more than one operand is true, it short-circuits after evaluating the second and returns `Nil`. If all operands are false, returns the last one.
 
-<a id="sequencer-precedence"></a>
-# Sequencer precedence
+<a id="%E5%BA%8F%E5%88%97%E5%99%A8%E4%BC%98%E5%85%88%E7%BA%A7--sequencer-precedence"></a>
+# 序列器优先级 / Sequencer precedence
 
-<a id="infix-"></a>
-## infix `==>`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--28"></a>
+## 中缀运算符 `==>` / infix `==>`
+
+这个 feed 操作符从左边取结果，并把它传递给下一个（右）例程作为最后一个参数。
 
 This feed operator takes the result from the left and passes it to the next (right) routine as the last parameter.
 
@@ -4322,12 +4346,16 @@ my @array = (1, 2, 3, 4, 5);
 @array ==> sum() ==> say();   # OUTPUT: «15␤»
 ```
 
+上面这个简单的例子相当于写：
+
 This simple example, above, is the equivalent of writing:
 
 ```Perl6
 my @array = (1, 2, 3, 4, 5);
 say(sum(@array));             # OUTPUT: «15␤»
 ```
+
+或者如果使用方法：
 
 Or if using methods:
 
@@ -4336,7 +4364,11 @@ my @array = (1, 2, 3, 4, 5);
 @array.sum.say;               # OUTPUT: «15␤»
 ```
 
+优先级非常松散，因此您需要使用括号来分配结果，或者您甚至可以使用另一个 feed 运算符！如果例程/方法只接受一个参数，或者第一个参数是块，则通常需要用括号调用（尽管最后一个例程/方法不需要这样做）。
+
 The precedence is very loose so you will need to use parentheses to assign the result or you can even just use another feed operator! In the case of routines/methods that take a single argument or where the first argument is a block, it's often required that you call with parentheses (though this is not required for the very last routine/method).
+
+这个“传统”结构，从底部读到顶部，用最后两行创建要处理的数据结构。
 
 This "traditional" structure, read bottom-to-top, with the last two lines creating the data structure that is going to be processed
 
@@ -4349,6 +4381,8 @@ my @result = map { .uniparse },                    # (3) Converts to unicode
 # @result is [⅖ ⅗ ⅜ ⅘ ⅚ ⅝ ⅞]
 ```
 
+现在我们使用 feed 操作符（从左到右）和括号，从上到下阅读
+
 Now we use the feed operator (left-to-right) with parentheses, read top-to-bottom
 
 ```Perl6
@@ -4360,6 +4394,8 @@ my @result = (
 );
 ```
 
+为便于说明，方法链等效代码，自上而下阅读，使用与上述相同的顺序。
+
 For illustration, method chaining equivalent, read top-to-bottom, using the same sequence as above
 
 ```Perl6
@@ -4368,6 +4404,8 @@ my @result = ( <TWO THREE FOUR FIVE SEVEN> »~» " " X~ <FIFTHS SIXTHS EIGHTHS>)
     .grep({ .uniparse })
     .map({ .uniparse });
 ```
+
+虽然在这种特殊情况下，结果是相同的，但是 feed 操作符 `==>` 更清楚地显示了箭头指向数据流的方向的意图。若要在不需要括号的情况下赋值，请使用另一个 feed 运算符
 
 Although in this particular case the result is the same, the feed operator `==>` more clearly shows intent with arrow pointing in the direction of the data flow. To assign without the need of parentheses use another feed operator
 
@@ -4379,6 +4417,8 @@ my @result;
     ==> sort()
     ==> @result;
 ```
+
+捕获部分结果可能很有用，但是，与向左 feed 运算符不同，它需要括号或分号
 
 It can be useful to capture a partial result, however, unlike the leftward feed operator, it does require parentheses or a semicolon
 
@@ -4392,12 +4432,18 @@ my @result;
     ==> @result;
 ```
 
+feed 运算符允许您根据例程和不相关数据的方法的结果构造方法链模式。在方法链中，您仅限于数据上可用的方法或先前方法调用的结果。有了 feed 运算符，这个限制就没有了。所得到的代码也可以比多行中断的一系列方法调用更可读。
+
 The feed operator lets you construct method-chaining-like patterns out of routines and the results of methods on unrelated data. In method-chaining, you are restricted to the methods available on the data or the result of previous method call. With feed operators, that restriction is gone. The resulting code could also be seen to be more readable than a series of method calls broken over multiple lines.
+
+注意：在将来，这个运算符将看到一些变化，因为它获得了并行运行列表操作的能力。它将强制**左**操作数作为闭包封装（可以在子线程中克隆和运行）。
 
 Note: In the future, this operator will see some change as it gains the ability to run list operations in parallel. It will enforce that the **left** operand is enclosable as a closure (that can be cloned and run in a subthread).
 
-<a id="infix--1"></a>
-## infix `<==`
+<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--29"></a>
+## 中缀运算符 `<==` / infix `<==`
+
+这个向左的 feed 运算符从右边取结果，并将其传递给上一个（左）例程作为最后一个参数。这说明了一系列列表操作函数的从右到左的数据流。
 
 This leftward feed operator takes the result from the right and passes it to the previous (left) routine as the last parameter. This elucidates the right-to-left dataflow for a series of list manipulating functions.
 
@@ -4433,18 +4479,26 @@ my @result
     <== <people of earth>;
 ```
 
+与向右 feed 操作符不同，其结果与方法链不密切相关。但是，与上面的传统结构（每个参数用一行分隔）相比，生成的代码比逗号更具示范性。左向 feed 操作符还允许您“闯入”语句并捕获中间结果，这对于调试或获取该结果并在最终结果上创建另一个变体非常有用。
+
 Unlike the rightward feed operator, the result is not closely mappable to method-chaining. However, compared to the traditional structure above where each argument is separated by a line, the resulting code is more demonstrative than commas. The leftward feed operator also allows you to "break into" the statement and capture an intermediary result which can be extremely useful for debugging or to take that result and create another variation on the final result.
+
+注意：在将来，这个运算符将看到一些变化，因为它获得了并行运行列表操作的能力。它将强制将**右**操作数作为闭包封装（可以在子线程中克隆和运行）。
 
 Note: In the future, this operator will see some change as it gains the ability to run list operations in parallel. It will enforce that the **right** operand is enclosable as a closure (that can be cloned and run in a subthread).
 
-<a id="identity"></a>
-# Identity
+<a id="%E6%A0%87%E8%AF%86--identity"></a>
+# 标识 / Identity
+
+一般来说，中缀运算符可以应用于单个元素或空元素，而不会产生错误，通常在 [reduce](https://docs.perl6.org/routine/reduce) 操作的上下文中。
 
 In general, infix operators can be applied to a single or no element without yielding an error, generally in the context of a [reduce](https://docs.perl6.org/routine/reduce) operation.
 
 ```Perl6
 say [-] ()  # OUTPUT: «0␤»
 ```
+
+设计文档阐述了这应该返回[标识值](https://en.wikipedia.org/wiki/Identity_element)，[并且必须为每个操作员指定](http://design.perl6.org/S03.html#Reduction_operators)一个标识值。一般来说，返回的标识元素应该是直观的。但是，这里有一个表，它阐述了如何在 Perl 6 中定义运算符类，该表对应于上述表中的定义，他们是由语言定义的类型和运算符：
 
 The design documents specify that this should return [an identity value](https://en.wikipedia.org/wiki/Identity_element), and that an identity value [must be specified for every operator](http://design.perl6.org/S03.html#Reduction_operators). In general, the identity element returned should be intuitive. However, here is a table that specifies how it is defined for operator classes in Perl 6, which corresponds to the table in the above definition in the types and operators defined by the language:
 
@@ -4460,11 +4514,15 @@ The design documents specify that this should return [an identity value](https:/
 | Or-like Bool   | False                   |
 | And-like Bool  | True                    |
 
+例如，空列表的并集将返回空集：
+
 For instance, union of an empty list will return an empty set:
 
 ```Perl6
 say [∪];  # OUTPUT: «set()␤»
 ```
+
+这仅适用于对空或 0 始终是有效操作数的运算符。例如，将其应用于除法将产生一个异常。
 
 This only applies to operators where empty or 0 is always a valid operand. For instance, applying it to division will yield an exception.
 
