@@ -9,7 +9,7 @@ Correctly use Perl 6 IO
 <!-- MarkdownTOC -->
 
 - [基础 / The basics](#%E5%9F%BA%E7%A1%80--the-basics)
-- [导航路径 / Navigating paths](#%E5%AF%BC%E8%88%AA%E8%B7%AF%E5%BE%84--navigating-paths)
+- [探索路径 / Navigating paths](#%E6%8E%A2%E7%B4%A2%E8%B7%AF%E5%BE%84--navigating-paths)
     - [什么是 IO::Path / What's an IO::Path anyway?](#%E4%BB%80%E4%B9%88%E6%98%AF-iopath--whats-an-iopath-anyway)
     - [操作文件 / Working with files](#%E6%93%8D%E4%BD%9C%E6%96%87%E4%BB%B6--working-with-files)
         - [写入文件 / Writing into files](#%E5%86%99%E5%85%A5%E6%96%87%E4%BB%B6--writing-into-files)
@@ -21,7 +21,7 @@ Correctly use Perl 6 IO
 - [错误的做事方式 / The wrong way to do things](#%E9%94%99%E8%AF%AF%E7%9A%84%E5%81%9A%E4%BA%8B%E6%96%B9%E5%BC%8F--the-wrong-way-to-do-things)
     - [不要碰 $*SPEC / Leave $*SPEC alone](#%E4%B8%8D%E8%A6%81%E7%A2%B0-%24spec--leave-%24spec-alone)
     - [字符串化 IO::Path / Stringifying IO::Path](#%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8C%96-iopath--stringifying-iopath)
-    - [注意 $*cwd / Be mindful of $*CWD](#%E6%B3%A8%E6%84%8F-%24cwd--be-mindful-of-%24cwd)
+    - [注意 $*CWD / Be mindful of $*CWD](#%E6%B3%A8%E6%84%8F-%24cwd--be-mindful-of-%24cwd)
         - [临时化 $*CWD / temp the $*CWD](#%E4%B8%B4%E6%97%B6%E5%8C%96-%24cwd--temp-the-%24cwd)
 
 <!-- /MarkdownTOC -->
@@ -33,7 +33,7 @@ Correctly use Perl 6 IO
 
 The vast majority of common IO work is done by the [IO::Path](https://docs.perl6.org/type/IO::Path) type. If you want to read from or write to a file in some form or shape, this is the class you want. It abstracts away the details of filehandles (or "file descriptors") and so you mostly don't even have to think about them.
 
-在幕后，[IO::Path](https://docs.perl6.org/type/IO::Path) 与 [IO::Handle](https://docs.perl6.org/type/IO::Handle) 一起使用；如果你需要比 [IO::Path](https://docs.perl6.org/type/IO::Path) 提供的更多的控制，可以直接使用的类。在处理其他进程时，例如使用 [Proc](https://docs.perl6.org/type/Proc) 或 [Proc::Async](https://docs.perl6.org/type/Proc::Async) 类型，你还将处理 [IO::Handle](https://docs.perl6.org/type/IO::Handle) 的*子类*： [IO::Pipe](https://docs.perl6.org/type/IO::Pipe)
+在幕后，[IO::Path](https://docs.perl6.org/type/IO::Path) 与 [IO::Handle](https://docs.perl6.org/type/IO::Handle) 一起使用；如果你需要比 [IO::Path](https://docs.perl6.org/type/IO::Path) 更多的控制，可以直接使用 `IO::Handle` 类。在处理其他进程时，例如使用 [Proc](https://docs.perl6.org/type/Proc) 或 [Proc::Async](https://docs.perl6.org/type/Proc::Async) 类型，你还将处理 [IO::Handle](https://docs.perl6.org/type/IO::Handle) 的*子类*： [IO::Pipe](https://docs.perl6.org/type/IO::Pipe)。
 
 Behind the scenes, [IO::Path](https://docs.perl6.org/type/IO::Path) works with [IO::Handle](https://docs.perl6.org/type/IO::Handle); a class which you can use directly if you need a bit more control than what [IO::Path](https://docs.perl6.org/type/IO::Path) provides. When working with other processes, e.g. via [Proc](https://docs.perl6.org/type/Proc) or [Proc::Async](https://docs.perl6.org/type/Proc::Async) types, you'll also be dealing with a *subclass* of [IO::Handle](https://docs.perl6.org/type/IO::Handle): the [IO::Pipe](https://docs.perl6.org/type/IO::Pipe).
 
@@ -49,8 +49,8 @@ Along with all these classes, Perl 6 provides several subroutines that let you i
 
 While [IO::Socket](https://docs.perl6.org/type/IO::Socket) and its subclasses also have to do with Input and Output, this guide does not cover them.
 
-<a id="%E5%AF%BC%E8%88%AA%E8%B7%AF%E5%BE%84--navigating-paths"></a>
-# 导航路径 / Navigating paths
+<a id="%E6%8E%A2%E7%B4%A2%E8%B7%AF%E5%BE%84--navigating-paths"></a>
+# 探索路径 / Navigating paths
 
 <a id="%E4%BB%80%E4%B9%88%E6%98%AF-iopath--whats-an-iopath-anyway"></a>
 ## 什么是 IO::Path / What's an IO::Path anyway?
@@ -63,7 +63,7 @@ To represent paths as either files or directories, use [IO::Path](https://docs.p
 say 'my-file.txt'.IO; # OUTPUT: «"my-file.txt".IO␤» 
 ```
 
-这里似乎缺少了一些东西，没有涉及到卷或绝对路径，但这些信息实际上存在于对象中。你可以通过使用 [`.perl`](https://docs.perl6.org/routine/perl) 方法看到它：
+这里似乎缺少了一些东西，没有涉及到磁盘卷或绝对路径，但这些信息实际上存在于对象中。你可以通过使用 [`.perl`](https://docs.perl6.org/routine/perl) 方法看到它：
 
 It may seem like something is missing here—there is no volume or absolute path involved—but that information is actually present in the object. You can see it by using [`.perl`](https://docs.perl6.org/routine/perl) method:
 
@@ -80,7 +80,7 @@ The two extra attributes—`SPEC` and `CWD`—specify what type of operating sys
 
 This means that regardless of how you made one, an [IO::Path](https://docs.perl6.org/type/IO::Path) object technically always refers to an absolute path. This is why its [`.absolute`](https://docs.perl6.org/routine/absolute) and [`.relative`](https://docs.perl6.org/routine/relative) methods return [Str](https://docs.perl6.org/type/Str) objects and they are the correct way to stringify a path.
 
-但是，不要急于将任何东西串起来。将文件路径作为 [IO::Path](https://docs.perl6.org/type/IO::Path) 对象传递。所有在文件路径上操作的例程都可以处理它们，因此不需要转换它们。
+但是，不要急于将任何东西字符串化。将文件路径作为 [IO::Path](https://docs.perl6.org/type/IO::Path) 对象传递。所有在文件路径上操作的例程都可以处理它们，因此不需要转换它们。
 
 However, don't be in a rush to stringify anything. Pass paths around as [IO::Path](https://docs.perl6.org/type/IO::Path) objects. All the routines that operate on paths can handle them, so there's no need to convert them.
 
@@ -105,16 +105,16 @@ Let's make some files and write and read data from them! The [`spurt`](https://d
 
 The code above creates a file named `my-file.txt` in the current directory and then writes text `I ♥ Perl!` into it. If Perl 6 is your first language, celebrate your accomplishment! Try to open the file you created with some other program to verify what you wrote with your program. If you already know some other language, you may be wondering if this guide missed anything like handling encoding or error conditions.
 
-但是，这就是你所需要的所有代码。默认情况下，字符串将被编码为 `utf-8` 编码，错误通过 [Failure](https://docs.perl6.org/type/Failure) 机制处理：这些是可以使用常规条件处理的异常。在这种情况下，我们会让所有潜在的 [Failures](https://docs.perl6.org/type/Failure) 在调用后都被下沉，因此它们包含的任何 [Exceptions](https://docs.perl6.org/type/Exception) 都将被抛出。
+但是，这就是你所需要的所有代码。默认情况下，字符串将被编码为 `utf-8` 编码，错误通过 [Failure](https://docs.perl6.org/type/Failure) 机制处理：这些是可以使用常规条件处理的异常。在这种情况下，我们会让所有潜在的 [Failure](https://docs.perl6.org/type/Failure) 在调用后都被下沉，因此它们包含的任何 [Exceptions](https://docs.perl6.org/type/Exception) 都将被抛出。
 
 However, that is all the code you need. The string will be encoded in `utf-8` encoding by default and the errors are handled via the [Failure](https://docs.perl6.org/type/Failure) mechanism: these are exceptions you can handle using regular conditionals. In this case, we're letting all potential [Failures](https://docs.perl6.org/type/Failure) get sunk after the call and so any [Exceptions](https://docs.perl6.org/type/Exception) they contain will be thrown.
 
 <a id="%E8%BF%BD%E5%8A%A0%E5%86%85%E5%AE%B9--appending-content"></a>
 #### 追加内容 / Appending content
 
-如果你想向上一节中的文件添加更多内容，[`spurt` 文档](https://docs.perl6.org/routine/spurt) 提到了 `:append` 参数。但是，为了更好地控制，让我们为自己准备一个 [IO::Handle](https://docs.perl6.org/type/IO::Handle) 来处理：
+如果你想向上一节中的文件添加更多内容，[`spurt` 文档](https://docs.perl6.org/routine/spurt)提到了 `:append` 参数。但是，为了更好地控制，让我们为自己准备一个 [IO::Handle](https://docs.perl6.org/type/IO::Handle) 来处理：
 
-If you wanted to add more content to the file we made in previous section, you could note the [`spurt` documentation](https://docs.perl6.org/routine/spurt)mentions `:append` argument. However, for finer control, let's get ourselves an [IO::Handle](https://docs.perl6.org/type/IO::Handle) to work with:
+If you wanted to add more content to the file we made in previous section, you could note the [`spurt` documentation](https://docs.perl6.org/routine/spurt) mentions `:append` argument. However, for finer control, let's get ourselves an [IO::Handle](https://docs.perl6.org/type/IO::Handle) to work with:
 
 ```Perl6
 my $fh = 'my-file.txt'.IO.open: :a;
@@ -127,11 +127,11 @@ $fh.close;
 
 The [`.open`](https://docs.perl6.org/routine/open) method call opens our [IO::Path](https://docs.perl6.org/type/IO::Path) and returns an [IO::Handle](https://docs.perl6.org/type/IO::Handle). We passed `:a` as argument, to indicate we want to open the file for writing in append mode.
 
-在接下来的两行代码中，我们在该 [IO::Handle](https://docs.perl6.org/type/IO::Handle) 方法上使用了常用的 [`.print`](https://docs.perl6.org/routine/print) 来打印包含 11 个文本碎片的行（`'I count: '` 字符串和 10 个数字）。请注意，再一次，[失败]（https://docs.perl6.org/type/failure）机制负责我们所有的错误检查。如果 [`.open`]（https://docs.perl6.org/routine/open）失败，它将返回一个 [Failure](https://docs.perl6.org/type/Failure)，当我们试图调用方法 [`.print`]（https://docs.perl6.org/routine/print）时，它将抛出这个异常。
+在接下来的两行代码中，我们在该 [IO::Handle](https://docs.perl6.org/type/IO::Handle) 方法上使用了常用的 [`.print`](https://docs.perl6.org/routine/print) 来打印包含 11 个文本碎片的行（`'I count: '` 字符串和 10 个数字）。请注意，再一次，[Failure](https://docs.perl6.org/type/Failure) 机制负责我们所有的错误检查。如果 [`.open`](https://docs.perl6.org/routine/open) 失败，它将返回一个 [Failure](https://docs.perl6.org/type/Failure)，当我们试图调用方法 [`.print`]（https://docs.perl6.org/routine/print）时，它将抛出这个异常。
 
 In the next two lines of code, we use the usual [`.print`](https://docs.perl6.org/routine/print) method on that [IO::Handle](https://docs.perl6.org/type/IO::Handle) to print a line with 11 pieces of text (the `'I count: '` string and 10 numbers). Note that, once again, [Failure](https://docs.perl6.org/type/Failure) mechanism takes care of all the error checking for us. If the [`.open`](https://docs.perl6.org/routine/open) fails, it returns a [Failure](https://docs.perl6.org/type/Failure), which will throw when we attempt to call method [`.print`](https://docs.perl6.org/routine/print) on it.
 
-最后，我们通过调用 [`.close`](https://docs.perl6.org/routine/close) 方法来关闭 [IO::Handle](https://docs.perl6.org/type/IO::Handle)。做这件事非常重要，尤其是在大型程序或处理大量文件的程序中，因为许多系统对一个程序可以同时打开的文件数量有限制。如果不关闭句柄，最终将达到该限制，则 [`.open`](https://docs.perl6.org/routine/open) 调用将失败。请注意，与其他一些语言不同，Perl 6 不使用引用计数，因此在保留文件句柄定义的作用域时，文件句柄**不会关闭**。它们只有在被垃圾收集时才会被关闭，如果不关闭句柄，可能会导致程序在*打开的句柄有机会被垃圾收集之前*达到文件限制。
+最后，我们通过调用 [`.close`](https://docs.perl6.org/routine/close) 方法来关闭 [IO::Handle](https://docs.perl6.org/type/IO::Handle)。做这件事非常重要，尤其是在大型程序或处理大量文件的程序中，因为许多系统对一个程序可以同时打开的文件数量有限制。如果不关闭句柄，最终将达到该限制，则 [`.open`](https://docs.perl6.org/routine/open) 调用将失败。请注意，与其他一些语言不同，Perl 6 不使用引用计数，因此在离开文件句柄定义的作用域时，文件句柄**不会关闭**。它们只有在被垃圾收集时才会被关闭，如果不关闭句柄，可能会导致程序在打开的句柄有机会被垃圾收集*之前*达到文件句柄数量限制。
 
 Finally, we close the [IO::Handle](https://docs.perl6.org/type/IO::Handle) by calling the [`.close`](https://docs.perl6.org/routine/close) method on it. It is *important that you do it*, especially in large programs or ones that deal with a lot of files, as many systems have limits to how many files a program can have open at the same time. If you don't close your handles, eventually you'll reach that limit and the [`.open`](https://docs.perl6.org/routine/open) call will fail. Note that unlike some other languages, Perl 6 does not use reference counting, so the filehandles **are NOT closed** when the scope they're defined in is left. They will be closed only when they're garbage collected and failing to close the handles may cause your program to reach the file limit *before* the open handles get a chance to get garbage collected.
 
@@ -154,7 +154,7 @@ say 'my-file.txt'.IO.slurp: :bin;  # OUTPUT: «Buf[uint8]:0x<49 20 e2 99 a5 20 5
 
 The [`.slurp`](https://docs.perl6.org/routine/slurp) method reads entire contents of the file and returns them as a single [Str](https://docs.perl6.org/type/Str) object, or as a [Buf](https://docs.perl6.org/type/Buf) object, if binary mode was requested, by specifying `:bin` named argument.
 
-因为 [slurping](https://docs.perl6.org/routine/slurp) 将整个文件加载到内存中，所以不适合处理大型文件。
+因为 [slurp](https://docs.perl6.org/routine/slurp) 将整个文件加载到内存中，所以不适合处理大型文件。
 
 Since [slurping](https://docs.perl6.org/routine/slurp) loads the entire file into memory, it's not ideal for working with huge files.
 
@@ -178,7 +178,7 @@ Here's another example that prints the first 100 words from a file, without load
 .say for '500-PetaByte-File.txt'.IO.words: 100
 ```
 
-请注意，我们通过将限制参数传递给 [`.words`](https://docs.perl6.org/type/IO::Path#method_words)，而不是使用[列表索引操作](https://docs.perl6.org/language/operators#index-entry-array_indexing_operator-array_subscript_operator-array_indexing_operator)。原因是底层仍有一个文件句柄在使用，在你完全消耗掉返回的 [Seq](https://docs.perl6.org/type/Seq) 之前，该句柄将保持打开状态。如果没有任何内容引用 [Seq](https://docs.perl6.org/type/Seq)，那么在垃圾收集运行期间，最终会关闭句柄，但是在处理大量文件的大型程序中，最好确保立即关闭所有句柄。因此，你应该始终确保来自 [IO::Path](https://docs.perl6.org/type/IO::Path) 的 [`.words`](https://docs.perl6.org/type/IO::Path#method_words) 和 [`.lines`](https://docs.perl6.org/type/IO::Path#method_lines) 方法是[完全重新定义的](https://docs.perl6.org/language/glossary#index-entry-Reify)；这里的 limit 参数可以帮助你实现这一点。
+请注意，我们通过将限制参数传递给 [`.words`](https://docs.perl6.org/type/IO::Path#method_words)，而不是使用[列表索引操作](https://docs.perl6.org/language/operators#index-entry-array_indexing_operator-array_subscript_operator-array_indexing_operator)。原因是底层仍有一个文件句柄在使用，在你完全消耗掉返回的 [Seq](https://docs.perl6.org/type/Seq) 之前，该句柄将保持打开状态。如果没有任何内容引用 [Seq](https://docs.perl6.org/type/Seq)，那么在垃圾收集运行期间，最终会关闭句柄，但是在处理大量文件的大型程序中，最好确保立即关闭所有句柄。因此，你应该始终确保来自 [IO::Path](https://docs.perl6.org/type/IO::Path) 的 [`.words`](https://docs.perl6.org/type/IO::Path#method_words) 和 [`.lines`](https://docs.perl6.org/type/IO::Path#method_lines) 方法是[完全具体化的](https://docs.perl6.org/language/glossary#index-entry-Reify)；这里的 limit 参数可以帮助你实现这一点。
 
 Note that we did this by passing a limit argument to [`.words`](https://docs.perl6.org/type/IO::Path#method_words) instead of, say, using [a list indexing operation](https://docs.perl6.org/language/operators#index-entry-array_indexing_operator-array_subscript_operator-array_indexing_operator). The reason for that is there's still a filehandle in use under the hood, and until you fully consume the returned [Seq](https://docs.perl6.org/type/Seq), the handle will remain open. If nothing references the [Seq](https://docs.perl6.org/type/Seq), eventually the handle will get closed, during a garbage collection run, but in large programs that work with a lot of files, it's best to ensure all the handles get closed right away. So, you should always ensure the [Seq](https://docs.perl6.org/type/Seq) from [IO::Path](https://docs.perl6.org/type/IO::Path)'s [`.words`](https://docs.perl6.org/type/IO::Path#method_words) and [`.lines`](https://docs.perl6.org/type/IO::Path#method_lines) methods is [fully reified](https://docs.perl6.org/language/glossary#index-entry-Reify); and the limit argument is there to help you with that.
 
@@ -202,14 +202,14 @@ given 'some-file.txt'.IO.open {
 
 The [IO::Handle](https://docs.perl6.org/type/IO::Handle) gives you [.read](https://docs.perl6.org/type/IO::Handle#method_read), [.readchars](https://docs.perl6.org/type/IO::Handle#method_readchars), [.get](https://docs.perl6.org/type/IO::Handle#routine_get), [.getc](https://docs.perl6.org/type/IO::Handle#method_getc), [.words](https://docs.perl6.org/type/IO::Handle#routine_words), [.lines](https://docs.perl6.org/type/IO::Handle#routine_lines), [.slurp](https://docs.perl6.org/type/IO::Handle#routine_slurp), [.comb](https://docs.perl6.org/type/IO::Handle#method_comb), [.split](https://docs.perl6.org/type/IO::Handle#method_split), and [.Supply](https://docs.perl6.org/type/IO::Handle#method_Supply) methods to read data from it. Plenty of options; and the catch is you need to close the handle when you're done with it.
 
-与某些语言不同，当句柄定义的作用域被保留时，它不会自动关闭。相反，它将一直保持开放，直到它被垃圾收集。为了使结束业务更容易，有些方法允许你指定一个 `:close` 参数，你还可以使用 [`will leave` 特征](https://docs.perl6.org/language/phasers#index-entry-will_trait)，或者由 [`Trait::IO`](https://modules.perl6.org/dist/Trait::IO) 模组提供的 `does auto-close` 特征。
+与某些语言不同，当离开句柄定义的作用域时，它不会自动关闭。相反，它将一直保持打开，直到被垃圾收集。为了使句柄关闭更容易，有些方法允许你指定一个 `:close` 参数，你还可以使用 [`will leave` 特征](https://docs.perl6.org/language/phasers#index-entry-will_trait)，或者由 [`Trait::IO`](https://modules.perl6.org/dist/Trait::IO) 模组提供的 `does auto-close` 特征。
 
 Unlike some languages, the handle won't get automatically closed when the scope it's defined in is left. Instead, it'll remain open until it's garbage collected. To make the closing business easier, some of the methods let you specify a `:close` argument, you can also use the [`will leave` trait](https://docs.perl6.org/language/phasers#index-entry-will_trait), or the `does auto-close` trait provided by the [`Trait::IO`](https://modules.perl6.org/dist/Trait::IO) module.
 
 <a id="%E9%94%99%E8%AF%AF%E7%9A%84%E5%81%9A%E4%BA%8B%E6%96%B9%E5%BC%8F--the-wrong-way-to-do-things"></a>
 # 错误的做事方式 / The wrong way to do things
 
-本节介绍 Perl6 IO 不该做的事情。
+本节介绍 Perl6 IO *不该*做的事情。
 
 This section describes how NOT to do Perl 6 IO.
 
@@ -220,15 +220,15 @@ This section describes how NOT to do Perl 6 IO.
 
 You may have heard of [`$*SPEC`](https://docs.perl6.org/language/variables#Dynamic_variables) and seen some code or books show its usage for splitting and joining path fragments. Some of the routine names it provides may even look familiar to what you've used in other languages.
 
-但是，除非你正在编写自己的 IO 框架，否则几乎不需要直接使用 [`$*SPEC`](https://docs.perl6.org/language/variables#Dynamic_variables)。[`$*SPEC`](https://docs.perl6.org/language/variables#Dynamic_variables) 提供了低级的东西，它的使用不仅会使你的代码难以阅读，还可能带来安全问题（如 null 字符）！
+但是，除非你正在编写自己的 IO 框架，否则几乎不需要直接使用 [`$*SPEC`](https://docs.perl6.org/language/variables#Dynamic_variables)。[`$*SPEC`](https://docs.perl6.org/language/variables#Dynamic_variables) 提供了底层的东西，它的使用不仅会使你的代码难以阅读，还可能带来安全问题（如 null 字符）！
 
 However, unless you're writing your own IO framework, you almost never need to use [`$*SPEC`](https://docs.perl6.org/language/variables#Dynamic_variables) directly. [`$*SPEC`](https://docs.perl6.org/language/variables#Dynamic_variables) provides low-level stuff and its use will not only make your code tough to read, you'll likely introduce security issues (e.g. null characters)!
 
-[`IO::Path`](https://docs.perl6.org/type/IO::Path) 类型是 Perl 6 世界的老黄牛。它满足了所有路径操作的需要，并提供了快捷例程，使你可以避免处理文件句柄。使用它而不是 [`$*SPEC`](https://docs.perl6.org/language/variables#Dynamic_variables)。
+[`IO::Path`](https://docs.perl6.org/type/IO::Path) 类型是 Perl 6 世界的老黄牛。它满足了所有文件路径操作的需要，并提供了快捷例程，使你可以避免处理文件句柄。使用它而不是 [`$*SPEC`](https://docs.perl6.org/language/variables#Dynamic_variables)。
 
 The [`IO::Path`](https://docs.perl6.org/type/IO::Path) type is the workhorse of Perl 6 world. It caters to all the path manipulation needs as well as provides shortcut routines that let you avoid dealing with filehandles. Use that instead of the [`$*SPEC`](https://docs.perl6.org/language/variables#Dynamic_variables) stuff.
 
-提示：你可以使用 `/` 连接文件路径部件，并将它们馈送给  [`IO::Path`](https://docs.perl6.org/type/IO::Path) 的例程；不管操作系统如何，它们仍然可以对它们执行正确的操作。
+提示：你可以使用 `/` 连接文件路径部件，并将它们馈送给 [`IO::Path`](https://docs.perl6.org/type/IO::Path) 的例程；不管操作系统如何，它们仍然可以对它们执行正确的操作。
 
 Tip: you can join path parts with `/` and feed them to [`IO::Path`](https://docs.perl6.org/type/IO::Path)'s routines; they'll still do The Right Thing™ with them, regardless of the operating system.
 
@@ -256,7 +256,7 @@ say "Hello";
 <a id="%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8C%96-iopath--stringifying-iopath"></a>
 ## 字符串化 IO::Path / Stringifying IO::Path
 
-不要使用 `.Str` 方法来字符串化 [`IO::Path`](https://docs.perl6.org/type/IO::Path) 对象，除非你只想出于信息目的或其他原因将它们显示在某个地方。`.Str` 方法返回用其实例化的 [`IO::Path`](https://docs.perl6.org/type/IO::Path) 的任何基本路径字符串。它不考虑 [`$.CWD` 属性](https://docs.perl6.org/type/IO::Path#attribute_CWD)。例如，此代码被破坏：
+不要使用 `.Str` 方法来字符串化 [`IO::Path`](https://docs.perl6.org/type/IO::Path) 对象，除非你只想出于信息目的或其他原因将它们显示在某个地方。`.Str` 方法返回 [`IO::Path`](https://docs.perl6.org/type/IO::Path) 实例化时用的任何基本路径字符串。它不考虑 [`$.CWD` 属性](https://docs.perl6.org/type/IO::Path#attribute_CWD)。例如，此代码是破损的：
 
 Don't use the `.Str` method to stringify [`IO::Path`](https://docs.perl6.org/type/IO::Path) objects, unless you just want to display them somewhere for information purposes or something. The `.Str` method returns whatever basic path string the [`IO::Path`](https://docs.perl6.org/type/IO::Path) was instantiated with. It doesn't consider the value of the [`$.CWD` attribute](https://docs.perl6.org/type/IO::Path#attribute_CWD). For example, this code is broken:
 
@@ -285,9 +285,9 @@ run <tar -cvvf archive.tar>, $path.relative;
 ```
 
 <a id="%E6%B3%A8%E6%84%8F-%24cwd--be-mindful-of-%24cwd"></a>
-## 注意 $*cwd / Be mindful of $*CWD
+## 注意 $*CWD / Be mindful of $*CWD
 
-虽然通常不在视图中，但默认情况下，每个 [`IO::Path`](https://docs.perl6.org/type/IO::Path) 对象使用当前值 [`$*CWD`](https://docs.perl6.org/language/variables#Dynamic_variables) 来设置其 [`$.CWD` 属性](https://docs.perl6.org/type/IO::Path#attribute_CWD)。这意味着有两件事需要注意。
+虽然通常不在视图中，但默认情况下，每个 [`IO::Path`](https://docs.perl6.org/type/IO::Path) 对象使用 [`$*CWD`](https://docs.perl6.org/language/variables#Dynamic_variables) 的当前值来设置其 [`$.CWD` 属性](https://docs.perl6.org/type/IO::Path#attribute_CWD)。这意味着有两件事需要注意。
 
 While usually out of view, every [`IO::Path`](https://docs.perl6.org/type/IO::Path) object, by default, uses the current value of [`$*CWD`](https://docs.perl6.org/language/variables#Dynamic_variables) to set its [`$.CWD` attribute](https://docs.perl6.org/type/IO::Path#attribute_CWD). This means there are two things to pay attention to.
 
@@ -303,11 +303,11 @@ This code is a mistake:
 my $*CWD = "foo".IO;
 ```
 
-`my $*CWD` 使得 [`$*CWD`](https://docs.perl6.org/language/variables#Dynamic_variables) 未定义。[`.IO`](https://docs.perl6.org/routine/IO) 强制程序继续执行，并将其创建的文件路径的 [`$.CWD` 属性](https://docs.perl6.org/type/IO::Path#attribute_CWD) 设置为未定义的 `$*CWD` 的字符串版本；一个空字符串。
+`my $*CWD` 使得 [`$*CWD`](https://docs.perl6.org/language/variables#Dynamic_variables) 未定义。[`.IO`](https://docs.perl6.org/routine/IO) 强制转换程序继续执行，并将其创建的文件路径的 [`$.CWD` 属性](https://docs.perl6.org/type/IO::Path#attribute_CWD) 设置为未定义的 `$*CWD` 的字符串版本；一个空字符串。
 
 The `my $*CWD` made [`$*CWD`](https://docs.perl6.org/language/variables#Dynamic_variables) undefined. The [`.IO`](https://docs.perl6.org/routine/IO) coercer then goes ahead and sets the [`$.CWD` attribute](https://docs.perl6.org/type/IO::Path#attribute_CWD) of the path it's creating to the stringified version of the undefined `$*CWD`; an empty string.
 
-执行此操作的正确方法是使用 [`temp`](https://docs.perl6.org/routine/temp)，而不是使用 `my`。它将把更改的效果本地化为 [`$*CWD`](https://docs.perl6.org/language/variables#Dynamic_variables)，就像 `my` 一样，但它不会使其未定义，因此 [`.IO`](https://docs.perl6.org/routine/IO) 强制程序仍将获得正确的旧值：
+执行此操作的正确方法是使用 [`temp`](https://docs.perl6.org/routine/temp)，而不是使用 `my`。它将把更改的效果本地化为 [`$*CWD`](https://docs.perl6.org/language/variables#Dynamic_variables)，就像 `my` 一样，但它不会使其未定义，因此 [`.IO`](https://docs.perl6.org/routine/IO) 强制转换程序仍将获得正确的旧值：
 
 The correct way to perform this operation is use [`temp`](https://docs.perl6.org/routine/temp) instead of `my`. It'll localize the effect of changes to [`$*CWD`](https://docs.perl6.org/language/variables#Dynamic_variables), just like `my` would, but it won't make it undefined, so the [`.IO`](https://docs.perl6.org/routine/IO) coercer will still get the correct old value:
 

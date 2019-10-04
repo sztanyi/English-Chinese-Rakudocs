@@ -17,36 +17,36 @@ One often needs to refer to a specific element (or slice of elements) from a col
 - [不存在的成员 / Nonexistent elements](#%E4%B8%8D%E5%AD%98%E5%9C%A8%E7%9A%84%E6%88%90%E5%91%98--nonexistent-elements)
 - [从末尾 / From the end](#%E4%BB%8E%E6%9C%AB%E5%B0%BE--from-the-end)
 - [切片 / Slices](#%E5%88%87%E7%89%87--slices)
-    - [Truncating slices](#truncating-slices)
-    - [Zen slices](#zen-slices)
-- [Multiple dimensions](#multiple-dimensions)
-- [Modifying elements](#modifying-elements)
-- [Autovivification](#autovivification)
-- [Binding](#binding)
-- [Adverbs](#adverbs)
+    - [截断切片 / Truncating slices](#%E6%88%AA%E6%96%AD%E5%88%87%E7%89%87--truncating-slices)
+    - [禅片 / Zen slices](#%E7%A6%85%E7%89%87--zen-slices)
+- [多维 / Multiple dimensions](#%E5%A4%9A%E7%BB%B4--multiple-dimensions)
+- [修改成员 / Modifying elements](#%E4%BF%AE%E6%94%B9%E6%88%90%E5%91%98--modifying-elements)
+- [自动生动化 / Autovivification](#%E8%87%AA%E5%8A%A8%E7%94%9F%E5%8A%A8%E5%8C%96--autovivification)
+- [绑定 / Binding](#%E7%BB%91%E5%AE%9A--binding)
+- [副词 / Adverbs](#%E5%89%AF%E8%AF%8D--adverbs)
     - [`:exists`](#exists)
     - [`:delete`](#delete)
     - [`:p`](#p)
     - [`:kv`](#kv)
     - [`:k`](#k)
     - [`:v`](#v)
-- [Custom types](#custom-types)
-    - [Custom type example](#custom-type-example)
-    - [Methods to implement for positional subscripting](#methods-to-implement-for-positional-subscripting)
-        - [method elems](#method-elems)
-        - [method AT-POS](#method-at-pos)
-        - [method EXISTS-POS](#method-exists-pos)
-        - [method DELETE-POS](#method-delete-pos)
-        - [method ASSIGN-POS](#method-assign-pos)
-        - [method BIND-POS](#method-bind-pos)
-        - [method STORE](#method-store)
-    - [Methods to implement for associative subscripting](#methods-to-implement-for-associative-subscripting)
-        - [method AT-KEY](#method-at-key)
-        - [method EXISTS-KEY](#method-exists-key)
-        - [method DELETE-KEY](#method-delete-key)
-        - [method ASSIGN-KEY](#method-assign-key)
-        - [method BIND-KEY](#method-bind-key)
-        - [method STORE](#method-store-1)
+- [自定义类型 / Custom types](#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%B1%BB%E5%9E%8B--custom-types)
+    - [自定义类型例子 / Custom type example](#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%B1%BB%E5%9E%8B%E4%BE%8B%E5%AD%90--custom-type-example)
+    - [实现位置下标的方法 / Methods to implement for positional subscripting](#%E5%AE%9E%E7%8E%B0%E4%BD%8D%E7%BD%AE%E4%B8%8B%E6%A0%87%E7%9A%84%E6%96%B9%E6%B3%95--methods-to-implement-for-positional-subscripting)
+        - [elems 方法 / method elems](#elems-%E6%96%B9%E6%B3%95--method-elems)
+        - [AT-POS 方法 / method AT-POS](#at-pos-%E6%96%B9%E6%B3%95--method-at-pos)
+        - [EXISTS-POS 方法 / method EXISTS-POS](#exists-pos-%E6%96%B9%E6%B3%95--method-exists-pos)
+        - [DELETE-POS 方法 / method DELETE-POS](#delete-pos-%E6%96%B9%E6%B3%95--method-delete-pos)
+        - [ASSIGN-POS 方法 / method ASSIGN-POS](#assign-pos-%E6%96%B9%E6%B3%95--method-assign-pos)
+        - [BIND-POS 方法 / method BIND-POS](#bind-pos-%E6%96%B9%E6%B3%95--method-bind-pos)
+        - [STORE 方法 / method STORE](#store-%E6%96%B9%E6%B3%95--method-store)
+    - [实现关联下标的方法 / Methods to implement for associative subscripting](#%E5%AE%9E%E7%8E%B0%E5%85%B3%E8%81%94%E4%B8%8B%E6%A0%87%E7%9A%84%E6%96%B9%E6%B3%95--methods-to-implement-for-associative-subscripting)
+        - [AT-KEY 方法 / method AT-KEY](#at-key-%E6%96%B9%E6%B3%95--method-at-key)
+        - [EXISTS-KEY 方法 / method EXISTS-KEY](#exists-key-%E6%96%B9%E6%B3%95--method-exists-key)
+        - [DELETE-KEY 方法 / method DELETE-KEY](#delete-key-%E6%96%B9%E6%B3%95--method-delete-key)
+        - [ASSIGN-KEY 方法 / method ASSIGN-KEY](#assign-key-%E6%96%B9%E6%B3%95--method-assign-key)
+        - [BIND-KEY 方法 / method BIND-KEY](#bind-key-%E6%96%B9%E6%B3%95--method-bind-key)
+        - [STORE 方法 / method STORE](#store-%E6%96%B9%E6%B3%95--method-store-1)
 
 <!-- /MarkdownTOC -->
 
@@ -298,7 +298,7 @@ Be aware that slices are controlled by the *type* of what is passed to ([one dim
 - empty, the full slice known as [Zen slice](https://docs.perl6.org/language/subscripts#Zen_slices)
 - any iterable different from the above ones, normal slice
 
-`*` 和 Zen Slice（空）之间的显著区别是，[Whatever](https://docs.perl6.org/type/Whatever) 星号将导致完全[具体化](https://docs.perl6.org/language/glossary#index-entry-Reify)或单条目化，而 Zen 切片不会。两个版本也 [de-cont](https://perl6advent.wordpress.com/2017/12/02/perl-6-sigils-variables-and-containers/#decont)。
+`*` 和 Zen Slice（空）之间的显著区别是，[Whatever](https://docs.perl6.org/type/Whatever) 星号将导致完全[具体化](https://docs.perl6.org/language/glossary#index-entry-Reify)或单条目化，而 Zen 切片不会。两个版本都会[去容器化](https://perl6advent.wordpress.com/2017/12/02/perl-6-sigils-variables-and-containers/#decont)。
 
 The notable difference between `*` and Zen slice (empty) is that the [Whatever](https://docs.perl6.org/type/Whatever) star will cause full [reification](https://docs.perl6.org/language/glossary#index-entry-Reify) or itemization, while Zen slice won't. Both versions also [de-cont](https://perl6advent.wordpress.com/2017/12/02/perl-6-sigils-variables-and-containers/#decont).
 
@@ -314,7 +314,11 @@ say @alphabet[2];         # OUTPUT: «c␤»
 say @alphabet[2].^name;   # OUTPUT: «Str␤» 
 ```
 
+（关联下标的尖括号形式之所以有效，是因为[词引用](https://docs.perl6.org/language/quoting#Word_quoting:_qw)在单个单词的情况下方便地返回 [Str](https://docs.perl6.org/type/Str)，而在多个单词的情况下则返回 [List](https://docs.perl6.org/type/List)。）
+
 (The angle bracket form for associative subscripts works out because [word quoting](https://docs.perl6.org/language/quoting#Word_quoting:_qw) conveniently returns a [Str](https://docs.perl6.org/type/Str) in case of a single word, but a [List](https://docs.perl6.org/type/List) in case of multiple words.)
+
+事实上，（[当前维度](https://docs.perl6.org/language/subscripts#Multiple_dimensions)）的列表结构下标在切片操作中被保留（但iterable的类型不是-结果总是列表）。
 
 In fact, the list structure of ([the current dimension of](https://docs.perl6.org/language/subscripts#Multiple_dimensions)) the subscript is preserved across the slice operation (but the kind of Iterable is not – the result is always just lists.)
 
@@ -325,8 +329,10 @@ say @alphabet[flat 0, (1..2, (3,))];  # OUTPUT: «(a b c d)␤»
 say flat @alphabet[0, (1..2, (3,))];  # OUTPUT: «(a b c d)␤» 
 ```
 
-<a id="truncating-slices"></a>
-## Truncating slices
+<a id="%E6%88%AA%E6%96%AD%E5%88%87%E7%89%87--truncating-slices"></a>
+## 截断切片 / Truncating slices
+
+引用切片下标中不存在的元素会导致输出 `List` 包含未定义的值（或[其他任何内容](https://docs.perl6.org/language/subscripts#Nonexistent_elements)，所讨论的集合选择返回不存在的元素）：
 
 Referring to nonexistent elements in a slice subscript causes the output `List` to contain undefined values (or [whatever else](https://docs.perl6.org/language/subscripts#Nonexistent_elements) the collection in question chooses to return for nonexistent elements):
 
@@ -334,6 +340,8 @@ Referring to nonexistent elements in a slice subscript causes the output `List` 
 my  @letters = <a b c d e f>;
 say @letters[3..7];  # OUTPUT: «(d e f (Any) (Any))␤» 
 ```
+
+乍一看，这种行为似乎不直观，但在希望在当前不存在值的索引处分配值的情况下，这种行为是可取的。
 
 This behavior, while at first glance may seem unintuitive, is desirable in instances when you want to assign a value at an index in which a value does not currently exist.
 
@@ -345,12 +353,16 @@ say @letters; # OUTPUT: «[]␤»
 say @letters; # OUTPUT: «[a b c d e f g h i j]␤» 
 ```
 
+如果希望结果切片仅包含现有元素，则可以使用 [:v](https://docs.perl6.org/language/subscripts#%3Av) 副词无提示地跳过不存在的元素。
+
 If you want the resulting slice to only include existing elements, you can silently skip the non-existent elements using the [:v](https://docs.perl6.org/language/subscripts#%3Av) adverb.
 
 ```Perl6
 my  @letters = <a b c d e f>;
 say @letters[3..7]:v;  # OUTPUT: «(d e f)␤» 
 ```
+
+通过 [lazy](https://docs.perl6.org/language/list#Lazy_lists) 下标为集合编制索引时的行为与使用热切的对应项编制索引时的行为不同。当通过惰性下标访问时，结果切片将被截断。
 
 The behavior when indexing a collection via [lazy](https://docs.perl6.org/language/list#Lazy_lists) subscripts is different than when indexing with their eager counterparts. When accessing via a lazy subscript, the resulting slice will be truncated.
 
@@ -359,12 +371,18 @@ say @letters[lazy 3..7]; # OUTPUT: «(d e f)␤»
 say @letters[     3..*]; # OUTPUT: «(d e f)␤» 
 ```
 
+这种行为的存在是为了预防大量、可能无限的 `Lists` 的失控生成以及由此产生的内存不足问题。
+
 This behavior exists as a precaution to prevent runaway generation of massive, potentially infinite `Lists` and the out-of-memory issues that occur as a result.
 
-<a id="zen-slices"></a>
-## Zen slices
+<a id="%E7%A6%85%E7%89%87--zen-slices"></a>
+## 禅片 / Zen slices
+
+如果将下标运算符放在对象后面而根本不指定任何索引/键，则将返回被下标的对象本身。因为它是空的，但返回所有内容，所以它被称为“禅片”。
 
 If you put the subscript operator behind an object without specifying any indices/keys at all, it simply returns the subscripted object itself. Since it is empty but returns everything, it is known as a *Zen slice*.
+
+禅切片不同于传递 Whatever 星号（与普通切片一样，无论原始对象的类型如何，它总是返回元素列表）或空列表（返回空切片）：
 
 Zen slicing is different from passing a Whatever-star (which, like a normal slice, always returns a List of elements no matter the type of the original object) or an empty list (which returns an empty slice):
 
@@ -375,6 +393,8 @@ say %bag{};    # OUTPUT: «Bag(apple(3), orange)␤»
 say %bag{*};   # OUTPUT: «(1 3)␤» 
 say %bag{()};  # OUTPUT: «()␤»
 ```
+
+禅切片不[具体化](https://docs.perl6.org/language/glossary#index-entry-Reify)或[缓存](https://docs.perl6.org/routine/cache)，只返回调用者。它通常用于[插值](https://docs.perl6.org/language/quoting#Interpolation:_qq)整个数组/散列成字符串或[去容器化](https://docs.perl6.org/language/glossary#index-entry-decont)。
 
 Zen slicing does not [reify](https://docs.perl6.org/language/glossary#index-entry-Reify) or [cache](https://docs.perl6.org/routine/cache) and merely returns the invocant. It is usually used to [interpolate](https://docs.perl6.org/language/quoting#Interpolation:_qq) entire arrays / hashes into strings or to [decont](https://docs.perl6.org/language/glossary#index-entry-decont).
 
@@ -388,8 +408,10 @@ my $list = <a b c>;
 .say for $list[]; # OUTPUT: «a␤b␤c␤»
 ```
 
-<a id="multiple-dimensions"></a>
-# Multiple dimensions
+<a id="%E5%A4%9A%E7%BB%B4--multiple-dimensions"></a>
+# 多维 / Multiple dimensions
+
+下标中的维度用分号分隔，允许混合元素和维度列表。
 
 Dimensions in subscripts are separated by a semicolon, allowing to mix lists of elements and dimensions.
 
@@ -408,6 +430,8 @@ say %pantheon{'Bragi','Nótt';'consort'}; # 'consort' value for both keys
 # OUTPUT: «(Iðunn Dellingr)␤»
 ```
 
+多维下标与 [Whatever](https://docs.perl6.org/type/Whatever) 结合使用时，可用于展平嵌套列表。
+
 Multidimensional subscripts can be used to flatten nested lists when combined with [Whatever](https://docs.perl6.org/type/Whatever).
 
 ```Perl6
@@ -419,6 +443,8 @@ say @toomany[*;*];
 # OUTPUT: «(a b 1 2)␤»
 ```
 
+您可以根据需要使用任意多个*展平分号*；最多会有任意多个嵌套级别展平分号：
+
 You can use as many *flattening semicolons* as you want; there will be, at most, as many nesting levels flattened as the number of semicolons:
 
 ```Perl6
@@ -426,7 +452,11 @@ say [[1,2,[3,4]],[4,5]][*;*];     # OUTPUT: «(1 2 [3 4] 4 5)␤»
 say [[1,2,[3,4]],[4,5]][*;*;*;*]; # OUTPUT: «(1 2 3 4 4 5)␤»
 ```
 
+在第一个例子中，一个 `Whatever` 小于层数，最深的一个不会被压平；在第二个例子中，所有的数都被展平了，因为它大于层数。
+
 In the first example, with one `Whatever` less than the number of levels, the deepest one will not be flattened; in the second case it is, since it's greater than the number of levels.
+
+您可以使用 [Whatever](https://docs.perl6.org/type/Whatever) 在多维下标中选择范围或“行”。
 
 You can use [Whatever](https://docs.perl6.org/type/Whatever) to select ranges or "rows" in multidimensional subscripts.
 
@@ -439,11 +469,13 @@ say @a.sort( { $_[1] } ); # sort by 2nd column
 # OUTPUT: «((2 a 4) (5 b 3) (1 c 6))␤»
 ```
 
-<a id="modifying-elements"></a>
-# Modifying elements
+<a id="%E4%BF%AE%E6%94%B9%E6%88%90%E5%91%98--modifying-elements"></a>
+# 修改成员 / Modifying elements
 
-<a id="autovivification"></a>
-# Autovivification
+<a id="%E8%87%AA%E5%8A%A8%E7%94%9F%E5%8A%A8%E5%8C%96--autovivification"></a>
+# 自动生动化 / Autovivification
+
+下标参与“自动生动化”，即数组和散列在需要时自动出现的过程，这样您就可以构建嵌套的数据结构，而不必在每个级别预先声明集合类型：
 
 Subscripts participate in "autovivification", i.e. the process by which arrays and hashes automatically spring into existence when needed, so that you can build nested data structures without having to pre-declare the collection type at each level:
 
@@ -455,28 +487,38 @@ $beatles{"White Album"}[0] = "Back in the U.S.S.R.";  # autovivification!
 say $beatles.perl;  # OUTPUT: «${"White Album" => $["Back in the U.S.S.R."]}␤» 
 ```
 
+`$beatles` 开始时未定义，但成为一个 [Hash](https://docs.perl6.org/type/Hash) 对象，因为它在赋值中被 `{ }` 下标寻址。类似地，`$beatles{"White Album"}` 由于在赋值中用 `[ ]` 下标而成为一个 [Array](https://docs.perl6.org/type/Array) 对象。
+
 `$beatles` started out undefined, but became a [Hash](https://docs.perl6.org/type/Hash) object because it was subscripted with `{ }` in the assignment. Similarly, `$beatles{"White Album"}` became an [Array](https://docs.perl6.org/type/Array) object due to being subscripted with `[ ]` in the assignment.
+
+请注意，订阅本身不会导致自动生动化：只有当下标链的结果被*赋值*给（或以其他方式发生转变）时，才会发生这种情况。
 
 Note that the subscripting itself does not cause autovivification: It only happens when the result of the subscripting chain is *assigned* to (or otherwise mutated).
 
-<a id="binding"></a>
-# Binding
+<a id="%E7%BB%91%E5%AE%9A--binding"></a>
+# 绑定 / Binding
+
+下标表达式也可以用作绑定语句的左侧。如果下标集合的类型支持，则这将使用指定的容器替换在集合的“槽”中自然找到的任何值容器。
 
 A subscripting expression may also be used as the left-hand-side of a binding statement. If supported by the subscripted collection's type, this replaces whatever value container would be naturally found at that "slot" of the collection, with the specified container.
+
+内置的 [Array](https://docs.perl6.org/type/Array) 和 [Hash](https://docs.perl6.org/type/Hash) 类型支持此功能，以便构建复杂的链接数据结构：
 
 The built-in [Array](https://docs.perl6.org/type/Array) and [Hash](https://docs.perl6.org/type/Hash) types support this in order to allow building complex linked data structures:
 
 ```Perl6
 my @a = 10, 11, 12, 13;
 my $x = 1;
- 
+
 @a[2] := $x;  # Bound! (@a[2] and $x refer to the same container now.) 
- 
+
 $x++; @a[2]++;
- 
+
 say @a;  # OUTPUT: «[10 11 3 13]␤» 
 say $x;  # OUTPUT: «3␤»
 ```
+
+当惰性数据结构是较大数据结构的一部分时，这特别有用。
 
 This can be specially useful when lazy data structures are part of a bigger one.
 
@@ -494,14 +536,22 @@ for %sequences.keys -> $s {
 # OUTPUT: 0.6180339887498949 times 20. 
 ```
 
+在这种情况下，散列键绑定到延迟生成的序列。它们是绑定的，这意味着无论计算出什么状态，哈希值和绑定到的序列都会共享，从而加快后续元素的计算速度。
+
 In this case, hash keys are bound to lazily generated sequences. The fact that they are bound means that whatever state has been computed is shared by the hash value and the sequence it's bound to, making computations of subsequent elements faster.
+
+底层机制见[方法 BIND-POS](https://docs.perl6.org/language/subscripts#method_BIND-POS) 和 [方法 BIND-KEY](https://docs.perl6.org/language/subscripts#method_BIND-KEY)。
 
 See [method BIND-POS](https://docs.perl6.org/language/subscripts#method_BIND-POS) and [method BIND-KEY](https://docs.perl6.org/language/subscripts#method_BIND-KEY) for the underlying mechanism.
 
-<a id="adverbs"></a>
-# Adverbs
+<a id="%E5%89%AF%E8%AF%8D--adverbs"></a>
+# 副词 / Adverbs
+
+下标操作的返回值和可能的副作用可以使用副词控制；这些副词在相关的下标[运算符](https://docs.perl6.org/language/operators#Method_postfix_precedence)上定义。
 
 The return value and possible side-effect of a subscripting operation can be controlled using adverbs; these are defined on the relevant subscript [operators](https://docs.perl6.org/language/operators#Method_postfix_precedence).
+
+注意运算符副词的相对松散的优先级，这可能要求您在复合表达式中添加括号：
 
 Beware of the relatively loose precedence of operator adverbs, which may require you to add parentheses in compound expressions:
 
@@ -511,10 +561,14 @@ if $foo || (%hash<key>:exists) { ... }  # correct
 if $foo or %hash<key>:exists { ... }    # also correct 
 ```
 
+支持的副词有：
+
 The supported adverbs are:
 
 <a id="exists"></a>
 ## `:exists`
+
+返回请求的元素是否存在，而不是返回元素的实际值。这可用于区分具有未定义值的元素和完全不属于集合的元素：
 
 Returns whether or not the requested element exists, instead of returning the element's actual value. This can be used to distinguish between elements with an undefined value, and elements that aren't part of the collection at all:
 
@@ -532,17 +586,23 @@ say %fruit<banana>:exists;       # OUTPUT: «False␤»
 say %fruit<apple banana>:exists; # OUTPUT: «(True False)␤»
 ```
 
+也可以否定以测试是否不存在：
+
 May also be negated to test for non-existence:
 
 ```Perl6
 say %fruit<apple banana>:!exists; # OUTPUT: «(False True)␤» 
 ```
 
+要检查切片中*所有*元素是否存在，请使用 [all](https://docs.perl6.org/routine/all) 副词：
+
 To check if *all* elements of a slice exist, use an [all](https://docs.perl6.org/routine/all) junction:
 
 ```Perl6
 if all %fruit<apple orange banana>:exists { ... }
 ```
+
+它可以用于多维数组和散列：
 
 It can be used on multi-dimensional arrays and hashes:
 
@@ -556,12 +616,18 @@ say %multi-dim{1;'foo';3}:exists;            # OUTPUT: «True␤»
 say %multi-dim{1;'bar';3}:exists;            # OUTPUT: «False␤»
 ```
 
+`:exists` 可以与 [:delete](https://docs.perl6.org/language/subscripts#%3Adelete) 和 [:p](https://docs.perl6.org/language/subscripts#%3Ap)/[:kv](https://docs.perl6.org/language/subscripts#%3Akv) 副词组合使用，在这种情况下，行为由这些副词决定，除了任何返回的元素*值*被相应的 [Bool](https://docs.perl6.org/type/Bool) 替换表示元素*存在*。
+
 `:exists` can be combined with the [:delete](https://docs.perl6.org/language/subscripts#%3Adelete) and [:p](https://docs.perl6.org/language/subscripts#%3Ap)/[:kv](https://docs.perl6.org/language/subscripts#%3Akv) adverbs - in which case the behavior is determined by those adverbs, except that any returned element *value* is replaced with the corresponding [Bool](https://docs.perl6.org/type/Bool) indicating element *existence*.
+
+底层机制见[方法 EXISTS-POS](https://docs.perl6.org/language/subscripts#method_EXISTS-POS) 和 [方法 EXISTS-KEY](https://docs.perl6.org/language/subscripts#method_EXISTS-KEY)。
 
 See [method EXISTS-POS](https://docs.perl6.org/language/subscripts#method_EXISTS-POS) and [method EXISTS-KEY](https://docs.perl6.org/language/subscripts#method_EXISTS-KEY) for the underlying mechanism.
 
 <a id="delete"></a>
 ## `:delete`
+
+从集合中删除元素，或者，如果集合支持，则在给定索引处创建一个孔（占位），并返回其值。
 
 Delete the element from the collection or, if supported by the collection, creates a hole at the given index, in addition to returning its value.
 
@@ -576,6 +642,8 @@ say %fruit<peach orange>:delete;  # OUTPUT: «(17 10)␤»
 say %fruit;                       # OUTPUT: «{banana => 4}␤»
 ```
 
+请注意，赋值 `Nil` 会将给定索引处的容器还原为其默认值。它不会造成孔。可以使用 `:exists` 测试创建的孔，但迭代不会跳过它们，而是生成未定义的值。
+
 Note that assigning `Nil` will revert the container at the given index to its default value. It will not create a hole. The created holes can be tested for with `:exists` but iteration will not skip them and produce undefined values instead.
 
 ```Perl6
@@ -587,6 +655,8 @@ say @a[1]:exists;
 # OUTPUT: «1␤(Any)␤3␤»
 ```
 
+副词的否定形式实际上并没有删除这个成分。这意味着您可以传递标志以使其成为条件：
+
 With the negated form of the adverb, the element is not actually deleted. This means you can pass a flag to make it conditional:
 
 ```Perl6
@@ -594,12 +664,18 @@ say %fruit<apple> :delete($flag);  # deletes the element only if $flag is
                                    # true, but always returns the value. 
 ```
 
+可以与 [:exists](https://docs.perl6.org/language/subscripts#%3Aexists) 以及 [:p](https://docs.perl6.org/language/subscripts#%3Ap)/[:kv](https://docs.perl6.org/language/subscripts#%3Akv)/[:k](https://docs.perl6.org/language/subscripts#%3Ak)/[:v](https://docs.perl6.org/language/subscripts#%3Av) 副词结合使用 - 在这种情况下返回值将由这些副词决定，但元素同时也将被删除。
+
 Can be combined with the [:exists](https://docs.perl6.org/language/subscripts#%3Aexists) and [:p](https://docs.perl6.org/language/subscripts#%3Ap)/[:kv](https://docs.perl6.org/language/subscripts#%3Akv)/[:k](https://docs.perl6.org/language/subscripts#%3Ak)/[:v](https://docs.perl6.org/language/subscripts#%3Av) adverbs - in which case the return value will be determined by those adverbs, but the element will at the same time also be deleted.
+
+底层机制见[方法 DELETE-POS](https://docs.perl6.org/language/subscripts#method_DELETE-POS) 和[方法 DELETE-KEY](https://docs.perl6.org/language/subscripts#method_DELETE-KEY)。
 
 See [method DELETE-POS](https://docs.perl6.org/language/subscripts#method_DELETE-POS) and [method DELETE-KEY](https://docs.perl6.org/language/subscripts#method_DELETE-KEY) for the underlying mechanism.
 
 <a id="p"></a>
 ## `:p`
+
+以 [Pair](https://docs.perl6.org/type/Pair) 的形式返回索引/键和元素的值，并自动跳过不存在的元素：
 
 Return both the index/key and the value of the element, in the form of a [Pair](https://docs.perl6.org/type/Pair), and silently skip nonexistent elements:
 
@@ -613,18 +689,26 @@ say %month<Feb>:p;          # OUTPUT: «Feb => 2␤»
 say %month<Jan Foo Mar>:p;  # OUTPUT: «(Jan => 1 Mar => 3)␤»
 ```
 
+如果不想跳过不存在的元素，请使用否定形式：
+
 If you *don't* want to skip nonexistent elements, use the negated form:
 
 ```Perl6
 say %month<Jan Foo Mar>:!p;  # OUTPUT: «(Jan => 1 Foo => (Any) Mar => 3)␤» 
 ```
 
+可以与 [:exists](https://docs.perl6.org/language/subscripts#%3Aexists) 和 [:delete](https://docs.perl6.org/language/subscripts#%3Adelete) 副词组合使用。
+
 Can be combined with the [:exists](https://docs.perl6.org/language/subscripts#%3Aexists) and [:delete](https://docs.perl6.org/language/subscripts#%3Adelete) adverbs.
+
+另请参见 [pairs](https://docs.perl6.org/routine/pairs) 例程。
 
 See also the [pairs](https://docs.perl6.org/routine/pairs) routine.
 
 <a id="kv"></a>
 ## `:kv`
+
+以 [List](https://docs.perl6.org/type/List) 的形式返回索引/键和元素的值，并自动跳过不存在的元素。当在[切片](https://docs.perl6.org/language/subscripts#Slices)上使用时，返回值是键和值交错的单一平面列表：
 
 Return both the index/key and the value of the element, in the form of a [List](https://docs.perl6.org/type/List), and silently skip nonexistent elements. When used on a [slice](https://docs.perl6.org/language/subscripts#Slices), the return value is a single flat list of interleaved keys and values:
 
@@ -638,11 +722,15 @@ say %month<Feb>:kv;          # OUTPUT: «(Feb 2)␤»
 say %month<Jan Foo Mar>:kv;  # OUTPUT: «(Jan 1 Mar 3)␤»
 ```
 
+如果*不*想跳过不存在的元素，请使用否定形式：
+
 If you *don't* want to skip nonexistent elements, use the negated form:
 
 ```Perl6
 say %month<Jan Foo Mar>:!kv;  # OUTPUT: «(Jan 1 Foo (Any) Mar 3)␤» 
 ```
+
+这个副词通常用于在切片上迭代：
 
 This adverb is commonly used to iterate over slices:
 
@@ -652,12 +740,18 @@ for %month<Feb Mar>:kv -> $month, $i {
 }
 ```
 
+可以与 [:exists](https://docs.perl6.org/language/subscripts#%3Aexists) 和 [:delete](https://docs.perl6.org/language/subscripts#%3Adelete) 副词组合使用。
+
 Can be combined with the [:exists](https://docs.perl6.org/language/subscripts#%3Aexists) and [:delete](https://docs.perl6.org/language/subscripts#%3Adelete) adverbs.
+
+另请参见 [kv](https://docs.perl6.org/routine/kv) 例程。
 
 See also the [kv](https://docs.perl6.org/routine/kv) routine.
 
 <a id="k"></a>
 ## `:k`
+
+只返回元素的索引/键，而不是其值，并悄悄地跳过不存在的元素：
 
 Return only the index/key of the element, rather than its value, and silently skip nonexistent elements:
 
@@ -671,16 +765,22 @@ say %month<Feb>:k;          # OUTPUT: «Feb␤»
 say %month<Jan Foo Mar>:k;  # OUTPUT: «(Jan Mar)␤»
 ```
 
+如果*不*想跳过不存在的元素，请使用否定形式：
+
 If you *don't* want to skip nonexistent elements, use the negated form:
 
 ```Perl6
 say %month<Jan Foo Mar>:!k;  # OUTPUT: «(Jan Foo Mar)␤» 
 ```
 
+另请参见 [keys](https://docs.perl6.org/routine/keys) 例程。
+
 See also the [keys](https://docs.perl6.org/routine/keys) routine.
 
 <a id="v"></a>
 ## `:v`
+
+返回元素的裸值（而不是潜在地返回可变值容器），并自动跳过不存在的元素：
 
 Return the bare value of the element (rather than potentially returning a mutable value container), and silently skip nonexistent elements:
 
@@ -696,20 +796,28 @@ say %month<Feb>:v;          # OUTPUT: «2␤»
 say %month<Jan Foo Mar>:v;  # OUTPUT: «(1 3)␤» 
 ```
 
+如果*不*想跳过不存在的元素，请使用否定形式：
+
 If you *don't* want to skip nonexistent elements, use the negated form:
 
 ```Perl6
 say %month<Jan Foo Mar>:!v;  # OUTPUT: «(1 (Any) 3)␤» 
 ```
 
+另请参见 [values](https://docs.perl6.org/routine/values) 例程。
+
 See also the [values](https://docs.perl6.org/routine/values) routine.
 
-<a id="custom-types"></a>
-# Custom types
+<a id="%E8%87%AA%E5%AE%9A%E4%B9%89%E7%B1%BB%E5%9E%8B--custom-types"></a>
+# 自定义类型 / Custom types
+
+本页描述的下标接口并不是 Perl 6 内置集合类型的专有接口，您可以（而且应该）将它们用于任何希望通过索引或键访问数据的自定义类型。
 
 The subscripting interfaces described on this page are not meant to be exclusive to Perl 6's built-in collection types - you can (and should) reuse them for any custom type that wants to provide access to data by index or key.
 
-You don't have to manually overload the [`postcircumfix [ \]`](https://docs.perl6.org/routine/[%20]#postcircumfix_[_]) and [`postcircumfix { }`](https://docs.perl6.org/routine/%7B%20%7D#postcircumfix_{_}) operators and re-implement all their magic, to achieve that - instead, you can rely on the fact that their standard implementation dispatches to a well-defined set of low-level methods behind the scenes. For example:
+您不必手动重载[后环缀运算符 `[ ]`](https://docs.perl6.org/routine/[%20]#postcircumfix_[_]) 和[后环缀运算符 `{ }`]（https://docs.perl6.org/routine/%7b%20%7d{postcircumfix{}）运算符并重新实现它们的所有魔力，要实现这一点，您可以依赖于它们的标准实现分派给一组定义良好的底层方法。例如：
+
+You don't have to manually overload the [`postcircumfix [ ]`](https://docs.perl6.org/routine/[%20]#postcircumfix_[_]) and [`postcircumfix { }`](https://docs.perl6.org/routine/%7B%20%7D#postcircumfix_{_}) operators and re-implement all their magic, to achieve that - instead, you can rely on the fact that their standard implementation dispatches to a well-defined set of low-level methods behind the scenes. For example:
 
 | when you write: | this gets called behind the scenes:            |
 | --------------- | ---------------------------------------------- |
@@ -718,12 +826,18 @@ You don't have to manually overload the [`postcircumfix [ \]`](https://docs.perl
 | @foo[3, 4, 5]   | @foo.AT-POS(3), @foo.AT-POS(4), @foo.AT-POS(5) |
 | @foo[*-1]       | @foo.AT-POS(@foo.elems - 1)                    |
 
+因此，为了使下标正常工作，您只需要实现或委托自定义类型的那些低级方法[下面详细介绍](https://docs.perl6.org/language/subscripts#Methods_to_implement_for_positional_subscripting)。
+
 So in order to make subscripting work, you only have to implement or delegate those low-level methods ([detailed below](https://docs.perl6.org/language/subscripts#Methods_to_implement_for_positional_subscripting)) for your custom type.
+
+如果这样做了，还应该让您的类型分别组成 [`Positional`](https://docs.perl6.org/type/Positional) 或 [`Associative`](https://docs.perl6.org/type/Associative) 角色。这本身并没有添加任何功能，但是声明（并且可以用于检查）类型实现了相应的订阅接口。
 
 If you do, you should also let your type compose the [`Positional`](https://docs.perl6.org/type/Positional) or [`Associative`](https://docs.perl6.org/type/Associative) role, respectively. This doesn't add any functionality per se, but announces (and may be used to check) that the type implements the corresponding subscripting interface.
 
-<a id="custom-type-example"></a>
-## Custom type example
+<a id="%E8%87%AA%E5%AE%9A%E4%B9%89%E7%B1%BB%E5%9E%8B%E4%BE%8B%E5%AD%90--custom-type-example"></a>
+## 自定义类型例子 / Custom type example
+
+设想一个 `HTTP::Header` 类型，尽管它是一个具有特殊行为的自定义类，但可以像散列一样索引：
 
 Imagine a `HTTP::Header` type which, despite being a custom class with special behavior, can be indexed like a hash:
 
@@ -740,6 +854,8 @@ say $request.header<Accept-Language>.perl;  # OUTPUT: «["en", "fr"]␤»
 my $rawheader = $request.header.Str;  # stringify according to HTTP spec 
 ```
 
+实现这个类的一个简单方法是给它一个类型为 [Hash](https://docs.perl6.org/type/Hash) 的属性，并将所有与下标和迭代相关的功能委托给该属性（使用自定义类型约束以确保用户不会在其中插入任何无效的内容）：
+
 A simple way to implement this class would be to give it an attribute of type [Hash](https://docs.perl6.org/type/Hash), and delegate all subscripting and iterating related functionality to that attribute (using a custom type constraint to make sure users don't insert anything invalid into it):
 
 ```Perl6
@@ -754,6 +870,8 @@ class HTTP::Header does Associative {
 }
 ```
 
+但是，HTTP 头字段名应该是不区分大小写的（首选骆驼式命名法）。我们可以通过将 `*-KEY` 和 `push` 方法从 `handles` 列表中取出，并像这样分别实现它们来实现这种情况：
+
 However, HTTP header field names are supposed to be case-insensitive (and preferred in camel-case). We can accommodate this by taking the `*-KEY` and `push` methods out of the `handles` list, and implementing them separately like this:
 
 ```Perl6
@@ -761,11 +879,15 @@ method AT-KEY     ($key) is rw { %!fields{normalize-key $key}        }
 method EXISTS-KEY ($key)       { %!fields{normalize-key $key}:exists }
 method DELETE-KEY ($key)       { %!fields{normalize-key $key}:delete }
 method push(*@_) { #`[not shown, for brevity] }
- 
+
 sub normalize-key ($key) { $key.subst(/\w+/, *.tc, :g) }
 ```
 
+注意 `%!fields` 返回一个合适的可读可写容器，我们的 `AT-KEY` 可以简单地传递给它。
+
 Note that subscripting `%!fields` returns an appropriate rw container, which our `AT-KEY` can simply pass on.
+
+但是，我们可能更喜欢对用户输入不那么严格，而是自己清理字段值。在这种情况下，我们可以删除 `%!fields` 上的 `StrOrArrayOfStr` 类型约束，并将我们的 `AT-KEY` 实现替换为一个返回自定义 `Proxy` 容器的实现，该容器负责净化赋值时的值：
 
 However, we may prefer to be less strict about user input and instead take care of sanitizing the field values ourselves. In that case, we can remove the `StrOrArrayOfStr` type constraint on `%!fields`, and replace our `AT-KEY` implementation with one that returns a custom `Proxy` container which takes care of sanitizing values on assignment:
 
@@ -786,80 +908,112 @@ multi method AT-KEY (::?CLASS:D: $key) is rw {
 }
 ```
 
+请注意，将方法声明为 `multi`，并将其限制为 `:D` （已定义的调用者），可以确保未定义的情况被传递到 `Any` 提供的默认实现（涉及自动生动化）。
+
 Note that declaring the method as `multi` and restricting it to `:D` (defined invocants) makes sure that the undefined case is passed through to the default implementation provided by `Any` (which is involved in auto-vivification).
 
-<a id="methods-to-implement-for-positional-subscripting"></a>
-## Methods to implement for positional subscripting
+<a id="%E5%AE%9E%E7%8E%B0%E4%BD%8D%E7%BD%AE%E4%B8%8B%E6%A0%87%E7%9A%84%E6%96%B9%E6%B3%95--methods-to-implement-for-positional-subscripting"></a>
+## 实现位置下标的方法 / Methods to implement for positional subscripting
 
-In order to make index-based subscripting via [`postcircumfix [ \]`](https://docs.perl6.org/routine/[%20]#postcircumfix_[_]) work for your custom type, you should implement at least `elems`, `AT-POS` and `EXISTS-POS` - and optionally others as detailed below.
+为了使通过[后环缀运算符 `[ ]`](https://docs.perl6.org/routine/[%20]#postcircumfix_[_]) 进行的基于索引的下标能够适用于您的自定义类型，您应该至少实现 `elems`、`AT-POS` 和 `EXISTS-POS`-以及下面详细描述的可选的其他类型。
 
-<a id="method-elems"></a>
-### method elems
+In order to make index-based subscripting via [`postcircumfix [ ]`](https://docs.perl6.org/routine/[%20]#postcircumfix_[_]) work for your custom type, you should implement at least `elems`, `AT-POS` and `EXISTS-POS` - and optionally others as detailed below.
+
+<a id="elems-%E6%96%B9%E6%B3%95--method-elems"></a>
+### elems 方法 / method elems
 
 ```Perl6
 multi method elems(::?CLASS:D:)
 ```
 
+应返回一个数字，指示对象中有多少可下标元素。可以由用户直接调用，也可以由[后环缀运算符 `[ ]`](https://docs.perl6.org/routine/[%20]#postcircumfix_[_]) 从末尾索引元素时调用，如 `@foo[*-1]`。
+
 Expected to return a number indicating how many subscriptable elements there are in the object. May be called by users directly, and is also called by [`postcircumfix [ \]`](https://docs.perl6.org/routine/[%20]#postcircumfix_[_]) when indexing elements from the end, as in `@foo[*-1]`.
+
+如果未实现，则您的类型将从 `Any` 继承默认实现，该 `Any` 始终为已定义的调用者返回 `1`，这很可能不是您想要的。因此，如果不能根据位置类型知道元素的数量，则添加一个 [fail](https://docs.perl6.org/routine/fail) 或者 [die](https://docs.perl6.org/routine/die) 实现，以避免默默地做错误的事情。
 
 If not implemented, your type will inherit the default implementation from `Any` that always returns `1` for defined invocants - which is most likely not what you want. So if the number of elements cannot be known for your positional type, add an implementation that [fail](https://docs.perl6.org/routine/fail)s or [die](https://docs.perl6.org/routine/die)s, to avoid silently doing the wrong thing.
 
-<a id="method-at-pos"></a>
-### method AT-POS
+<a id="at-pos-%E6%96%B9%E6%B3%95--method-at-pos"></a>
+### AT-POS 方法 / method AT-POS
 
 ```Perl6
 multi method AT-POS (::?CLASS:D: $index)
 ```
 
-Expected to return the element at position `$index`. This is what [`postcircumfix [ \]`](https://docs.perl6.org/routine/[%20]#postcircumfix_[_]) normally calls.
+应返回位于 `$index` 位置的元素。这就是通常所说的[后环缀运算符 `[ ]`](https://docs.perl6.org/routine/[%20]#postcircumfix_[_])。
+
+Expected to return the element at position `$index`. This is what [`postcircumfix [ ]`](https://docs.perl6.org/routine/[%20]#postcircumfix_[_]) normally calls.
+
+如果您希望元素是可变的（就像它们是内置的 [Array](https://docs.perl6.org/type/Array) 类型，那么您必须确保以读取时计算为元素值的项容器的形式返回它，并在赋值时更新它。（请记住使用 `return-rw` 或 `is rw` 例程特性来实现此功能；请参见[示例](https://docs.perl6.org/language/subscripts#Custom_type_example)。）
 
 If you want an element to be mutable (like they are for the built-in [Array](https://docs.perl6.org/type/Array) type), you'll have to make sure to return it in the form of an item container that evaluates to the element's value when read, and updates it when assigned to. (Remember to use `return-rw` or the `is rw` routine trait to make that work; see the [example](https://docs.perl6.org/language/subscripts#Custom_type_example).)
 
-<a id="method-exists-pos"></a>
-### method EXISTS-POS
+<a id="exists-pos-%E6%96%B9%E6%B3%95--method-exists-pos"></a>
+### EXISTS-POS 方法 / method EXISTS-POS
 
 ```Perl6
 multi method EXISTS-POS (::?CLASS:D: $index)
 ```
 
-Expected to return a Bool indicating whether or not there is an element at position `$index`. This is what [`postcircumfix [ \]`](https://docs.perl6.org/routine/[%20]#postcircumfix_[_]) calls when invoked like `@foo[42]:exists`.
+预期返回一个 Bool，指示在位置 `$index` 是否有一个元素。这就是[后环缀运算符 `[ ]`](https://docs.perl6.org/routine/[%20]#postcircumfix_[_]) 在调用如 `@foo[42]:exists` 时调用的内容。
+
+Expected to return a Bool indicating whether or not there is an element at position `$index`. This is what [`postcircumfix [ ]`](https://docs.perl6.org/routine/[%20]#postcircumfix_[_]) calls when invoked like `@foo[42]:exists`.
+
+元素的“存在”意味着什么，取决于您的类型。
 
 What "existence" of an element means, is up to your type.
 
+如果您不实现这一点，您的类型将继承 `Any` 中的默认实现，它将返回索引 0 返回 True，并为任何其他索引返回 False - 这可能不是您想要的。因此，如果不能对您的类型进行元素存在性检查，那么添加一个会 [fail](https://docs.perl6.org/routine/fail) 或 [die](https://docs.perl6.org/routine/die) 的实现，以避免默默地做错误的事情。
+
 If you don't implement this, your type will inherit the default implementation from `Any`, which returns True for 0 and False for any other index - which is probably not what you want. So if checking for element existence cannot be done for your type, add an implementation that [fail](https://docs.perl6.org/routine/fail)s or [die](https://docs.perl6.org/routine/die)s, to avoid silently doing the wrong thing.
 
-<a id="method-delete-pos"></a>
-### method DELETE-POS
+<a id="delete-pos-%E6%96%B9%E6%B3%95--method-delete-pos"></a>
+### DELETE-POS 方法 / method DELETE-POS
 
 ```Perl6
 multi method DELETE-POS (::?CLASS:D: $index)
 ```
 
-Expected to delete the element at position `$index`, and return the value it had. This is what [`postcircumfix [ \]`](https://docs.perl6.org/routine/[%20]#postcircumfix_[_]) calls when invoked like `@foo[42]:delete`.
+预期将删除位置 `$index` 处的元素，并返回其所具有的值。这就是[后环缀运算符 `[ ]`](https://docs.perl6.org/routine/[%20]#postcircumfix_[_]) 在调用如 `@foo[42]:delete` 时调用的内容。
+
+Expected to delete the element at position `$index`, and return the value it had. This is what [`postcircumfix [ ]`](https://docs.perl6.org/routine/[%20]#postcircumfix_[_]) calls when invoked like `@foo[42]:delete`.
+
+元素的“删除”意味着什么，取决于您的类型。
 
 What "deleting" an element means, is up to your type.
 
+实现此方法是可选的；如果不实现，尝试从该类型的对象中删除元素的用户将得到适当的错误消息。
+
 Implementing this method is optional; if you don't, users trying to delete elements from an object of this type will get an appropriate error message.
 
-<a id="method-assign-pos"></a>
-### method ASSIGN-POS
+<a id="assign-pos-%E6%96%B9%E6%B3%95--method-assign-pos"></a>
+### ASSIGN-POS 方法 / method ASSIGN-POS
 
 ```Perl6
 multi method ASSIGN-POS (::?CLASS:D: $index, $new)
 ```
 
+期望将元素在位置 `$index` 设置为 `$new`。实现这一点完全是可选的；如果不实现，则使用 `self.AT-POS($index) = $new` 替代，如果自己实现它，则应确保它具有相同的效果。
+
 Expected to set the element at position `$index` to the value `$new`. Implementing this is entirely optional; if you don't, `self.AT-POS($index) = $new` is used instead, and if you do, you should make sure it has the same effect.
+
+这意味着在性能优化中选择一个选项，因此 `@numbers[5] = "five"` 这样的简单赋值就可以运行，而不必调用 `AT-POS` （这需要创建和返回一个可能昂贵的容器对象）。
 
 This is meant as an opt-in performance optimization, so that simple assignments like `@numbers[5] = "five"` can operate without having to call `AT-POS` (which would have to create and return a potentially expensive container object).
 
+请注意，实现 `ASSIGN-POS` 并*不能*帮助你将 `AT-POS` 方法变成 `rw`，因为较少的琐碎赋值/修改(如 `@numbers[5]++`)仍将使用 `AT-POS`。
+
 Note that implementing `ASSIGN-POS` does *not* relieve you from making `AT-POS` an `rw` method though, because less trivial assignments/modifications such as `@numbers[5]++` will still use `AT-POS`.
 
-<a id="method-bind-pos"></a>
-### method BIND-POS
+<a id="bind-pos-%E6%96%B9%E6%B3%95--method-bind-pos"></a>
+### BIND-POS 方法 / method BIND-POS
 
 ```Perl6
 multi method BIND-POS (::?CLASS:D: $index, \new)
 ```
+
+预期将值或容器 `new` 绑定到位置 `$index` 处的槽上，以替换任何自然在该位置找到的容器。这就是当您写这代码所调用的：
 
 Expected to bind the value or container `new` to the slot at position `$index`, replacing any container that would be naturally found there. This is what is called when you write:
 
@@ -868,14 +1022,18 @@ my $x = 10;
 @numbers[5] := $x;
 ```
 
+泛型 [Array](https://docs.perl6.org/type/Array) 类支持这一点，以允许构建复杂的链接数据结构，但是对于更多特定于域的类型，它可能没有意义，所以不要觉得必须实现它。如果不这样做，用户在尝试绑定到该类型对象的位置槽时将得到适当的错误消息。
+
 The generic [Array](https://docs.perl6.org/type/Array) class supports this in order to allow building complex linked data structures, but for more domain-specific types it may not make sense, so don't feel compelled to implement it. If you don't, users will get an appropriate error message when they try to bind to a positional slot of an object of this type.
 
-<a id="method-store"></a>
-### method STORE
+<a id="store-%E6%96%B9%E6%B3%95--method-store"></a>
+### STORE 方法 / method STORE
 
 ```Perl6
 method STORE (::?CLASS:D: \values, :$initialize)
 ```
+
+只有当您希望支持此语法时，才应提供此方法：
 
 This method should only be supplied if you want to support this syntax:
 
@@ -883,7 +1041,11 @@ This method should only be supplied if you want to support this syntax:
 my @a is Foo = 1,2,3;
 ```
 
+它用于绑定您的 `Positional` 角色的实现。
+
 Which is used for binding your implementation of the `Positional` role.
+
+`STORE` 应接受用于(重新)初始化对象的值。当第一次在对象上调用方法时，可选的命名参数将包含一个 `True` 值。它应该会返回调用者。
 
 `STORE` should accept the values to (re-)initialize the object with. The optional named parameter will contain a `True` value when the method is called on the object for the first time. It should return the invocant.
 
@@ -912,71 +1074,101 @@ say @string.Str;    # OUTPUT: «((G A A) (T C C))␤»
 say @string.Str;    # OUTPUT: «((A C G) (T C G))␤» 
 ```
 
+这段代码考虑了 `$initialize` 的值，只有当我们第一次为使用 `is` 语法声明的变量赋值时， `$initialize` 才会被设置为 `True`。`STORE` 方法应该设置 `self` 变量，并在所有情况下返回它，包括在变量已经初始化时。
+
 This code takes into account the value of `$initialize`, which is set to `True` only if we are assigning a value to a variable declared using the `is` syntax for the first time. The `STORE` method should set the `self` variable and return it in all cases, including when the variable has already been initialized.
 
-<a id="methods-to-implement-for-associative-subscripting"></a>
-## Methods to implement for associative subscripting
+<a id="%E5%AE%9E%E7%8E%B0%E5%85%B3%E8%81%94%E4%B8%8B%E6%A0%87%E7%9A%84%E6%96%B9%E6%B3%95--methods-to-implement-for-associative-subscripting"></a>
+## 实现关联下标的方法 / Methods to implement for associative subscripting
+
+为了使基于键的下标通过[后环缀运算符 `{ }`](https://docs.perl6.org/routine/%7B%20%7D#postcircumfix_{_}) 为您的自定义类型工作，您应该至少实现 `AT-KEY` 和 `EXISTS-KEY` - 和其他选项，详见下文。
 
 In order to make key-based subscripting via [`postcircumfix { }`](https://docs.perl6.org/routine/%7B%20%7D#postcircumfix_{_}) work for your custom type, you should implement at least `AT-KEY` and `EXISTS-KEY` - and optionally others as detailed below.
 
-<a id="method-at-key"></a>
-### method AT-KEY
+<a id="at-key-%E6%96%B9%E6%B3%95--method-at-key"></a>
+### AT-KEY 方法 / method AT-KEY
 
 ```Perl6
 multi method AT-KEY (::?CLASS:D: $key)
 ```
 
+预期将返回与 `$key` 相关的元素。这是[后环缀运算符 `{ }`](https://docs.perl6.org/routine/%7B%20%7D#postcircumfix_{_}) 通常的调用方式。
+
 Expected to return the element associated with `$key`. This is what [`postcircumfix { }`](https://docs.perl6.org/routine/%7B%20%7D#postcircumfix_{_}) normally calls.
+
+如果您希望一个元素是可变的（就像内置的 [Hash](https://docs.perl6.org/type/Hash) 类型)那样），您必须确保以条目容器的形式返回它，该容器在读取时计算元素的值，并在给它赋值时更新它。(请记住使用 `return-rw` 或 `is rw` 常规特征来实现该功能；请参见[示例](https://docs.perl6.org/language/subscripts#Custom_type_example)。
 
 If you want an element to be mutable (like they are for the built-in [Hash](https://docs.perl6.org/type/Hash) type), you'll have to make sure to return it in the form of an item container that evaluates to the element's value when read, and updates it when assigned to. (Remember to use `return-rw` or the `is rw` routine trait to make that work; see the [example](https://docs.perl6.org/language/subscripts#Custom_type_example).)
 
+另一方面，如果您希望您的集合是只读的，请直接返回非容器值。
+
 On the other hand if you want your collection to be read-only, feel free to return non-container values directly.
 
-<a id="method-exists-key"></a>
-### method EXISTS-KEY
+<a id="exists-key-%E6%96%B9%E6%B3%95--method-exists-key"></a>
+### EXISTS-KEY 方法 / method EXISTS-KEY
 
 ```Perl6
 multi method EXISTS-KEY (::?CLASS:D: $key)
 ```
 
+预期返回一个 Bool，指示是否存在与 `$key` 相关的元素。这就是[后环缀运算符 `{ }`](https://docs.perl6.org/routine/%7B%20%7D#postcircumfix_{_}) 在调用如 `%foo<aa>:exists` 时调用的内容。
+
 Expected to return a Bool indicating whether or not there is an element associated with `$key`. This is what [`postcircumfix { }`](https://docs.perl6.org/routine/%7B%20%7D#postcircumfix_{_}) calls when invoked like `%foo<aa>:exists`.
+
+元素的“存在”意味着什么，取决于您的类型。
 
 What "existence" of an element means, is up to your type.
 
+如果不实现这一点，类型将继承 `Any` 的默认实现，`Any` 总是返回 False - 这可能不是您想要的结果。因此，如果不能对您的类型进行元素存在性检查，那么添加一个会 [fail](https://docs.perl6.org/routine/fail) 或 [die](https://docs.perl6.org/routine/die) 的实现，以避免默默地做错误的事情。
+
 If you don't implement this, your type will inherit the default implementation from `Any`, which always returns False - which is probably not what you want. So if checking for element existence cannot be done for your type, add an implementation that [fail](https://docs.perl6.org/routine/fail)s or [die](https://docs.perl6.org/routine/die)s, to avoid silently doing the wrong thing.
 
-<a id="method-delete-key"></a>
-### method DELETE-KEY
+<a id="delete-key-%E6%96%B9%E6%B3%95--method-delete-key"></a>
+### DELETE-KEY 方法 / method DELETE-KEY
 
 ```Perl6
 multi method DELETE-KEY (::?CLASS:D: $key)
 ```
 
+预期将删除与 `$key` 相关的元素，并返回其所具有的值。这就是[后环缀运算符 `{ }`](https://docs.perl6.org/routine/%7B%20%7D#postcircumfix_{_}) 在调用如 `%foo<aa>:delete` 时调用的内容。
+
 Expected to delete the element associated with `$key`, and return the value it had. This is what [`postcircumfix { }`](https://docs.perl6.org/routine/%7B%20%7D#postcircumfix_{_}) calls when invoked like `%foo<aa>:delete`.
+
+一个元素的“删除”意味着什么，取决于您的类型 - 尽管它通常应该导致 `EXISTS-KEY` 方法对那个键的返回值为 `False`。
 
 What "deleting" an element means, is up to your type - though it should usually cause `EXISTS-KEY` to become `False` for that key.
 
+实现此方法是可选的；如果不实现，尝试从该类型的对象中删除元素的用户将得到适当的错误消息。
+
 Implementing this method is optional; if you don't, users trying to delete elements from an object of this type will get an appropriate error message.
 
-<a id="method-assign-key"></a>
-### method ASSIGN-KEY
+<a id="assign-key-%E6%96%B9%E6%B3%95--method-assign-key"></a>
+### ASSIGN-KEY 方法 / method ASSIGN-KEY
 
 ```Perl6
 multi method ASSIGN-KEY (::?CLASS:D: $key, $new)
 ```
 
+期望将与 `$key` 关联的元素设置为 `$new`。实现这个完全是可选的；如果不实现，则使用 `self.AT-KEY($key) = $new` 替代，如果自己实现它，则应确保它具有相同的效果。
+
 Expected to set the element associated with `$key` to the value `$new`. Implementing this is entirely optional; if you don't, `self.AT-KEY($key) = $new` is used instead, and if you do, you should make sure it has the same effect.
+
+这意味着在性能优化中选择一个选项，因此 `%age<Claire> = 29` 这样的简单赋值就可以运行，而不必调用 `AT-KEY` （这需要创建和返回一个可能昂贵的容器对象）。
 
 This is meant as an opt-in performance optimization, so that simple assignments `%age<Claire> = 29` can operate without having to call `AT-KEY` (which would have to create and return a potentially expensive container object).
 
+请注意，实现 `ASSIGN-POS` 并*不能*帮助你将 `AT-KEY` 方法变成 `rw`，因为较少的琐碎赋值/修改(如 `%age<Claire>++`)仍将使用 `AT-KEY`。
+
 Note that implementing `ASSIGN-KEY` does *not* relieve you from making `AT-KEY` an `rw` method though, because less trivial assignments/modifications such as `%age<Claire>++` will still use `AT-KEY`.
 
-<a id="method-bind-key"></a>
-### method BIND-KEY
+<a id="bind-key-%E6%96%B9%E6%B3%95--method-bind-key"></a>
+### BIND-KEY 方法 / method BIND-KEY
 
 ```Perl6
 multi method BIND-KEY (::?CLASS:D: $key, \new)
 ```
+
+预期将值或容器 `new` 绑定到与 `$key` 相关的槽上，以替换任何自然在该位置找到的容器。这就是当您写这代码所调用的：
 
 Expected to bind the value or container `new` to the slot associated with `$key`, replacing any container that would be naturally found there. This is what is called when you write:
 
@@ -985,14 +1177,18 @@ my $x = 10;
 %age<Claire> := $x;
 ```
 
+泛型 [Hash](https://docs.perl6.org/type/Hash) 类支持这一点，以允许构建复杂的链接数据结构，但对于更多特定于域的类型，它可能没有意义，所以不必感到必须实现它。如果没有实现，则当用户试图绑定到此类型对象的关联插槽时，将获得适当的错误消息。
+
 The generic [Hash](https://docs.perl6.org/type/Hash) class supports this in order to allow building complex linked data structures, but for more domain-specific types it may not make sense, so don't feel compelled to implement it. If you don't, users will get an appropriate error message when they try to bind to an associative slot of an object of this type.
 
-<a id="method-store-1"></a>
-### method STORE
+<a id="store-%E6%96%B9%E6%B3%95--method-store-1"></a>
+### STORE 方法 / method STORE
 
 ```Perl6
 method STORE (::?CLASS:D: \values, :$initialize)
 ```
+
+只有当您希望支持以下内容时，才应提供此方法：
 
 This method should only be supplied if you want to support the:
 
@@ -1000,6 +1196,10 @@ This method should only be supplied if you want to support the:
 my %h is Foo = a => 42, b => 666;
 ```
 
+绑定您的 `Associative` 角色的实现的语法。
+
 syntax for binding your implementation of the `Associative` role.
+
+应该接受用于(重新)初始化对象的值，该值可以由 `Pair` 组成，也可以由单独的键/值对组成。当第一次在对象上调用方法时，可选的命名参数将包含一个 `True` 值。应该返回调用者。
 
 Should accept the values to (re-)initialize the object with, which either could consist of `Pair`s, or separate key/value pairs. The optional named parameter will contain a `True` value when the method is called on the object for the first time. Should return the invocant.

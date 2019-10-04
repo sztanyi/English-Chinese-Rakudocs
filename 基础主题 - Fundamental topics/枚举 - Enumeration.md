@@ -6,7 +6,7 @@
 
 An example using the enum type
 
-`enum` 类型在 Perl 6 中比其他语言复杂得多，细节见[ enum 的类型说明](https://docs.perl6.org/language/typesystem#enum)。
+`enum` 类型在 Perl 6 中比其他语言复杂得多，细节见 [enum 的类型说明](https://docs.perl6.org/language/typesystem#enum)。
 
 The `enum` type is much more complex in Perl 6 than in some other languages, and the details are found in [its type description](https://docs.perl6.org/language/typesystem#enum).
 

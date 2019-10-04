@@ -302,7 +302,7 @@ Operators can occur in several positions relative to a term:
 | term1[term2]  | postcircumfix |
 | .+(term)      | method        |
 
-每个运算符（方法运算符除外）也可用作子例程。例程的名称由运算符类别构成，后跟冒号，然后是由构成运算符的符号构成的列表引号构造：
+每个运算符（方法运算符除外）也可用作子例程。例程的名称由运算符类别构成，后跟冒号，然后是由运算符符号和列表引号构成：
 
 Each operator (except method operators) is also available as a subroutine. The name of the routine is formed from the operator category, followed by a colon, then a list quote construct with the symbol(s) that make up the operator:
 
@@ -311,7 +311,7 @@ infix:<+>(1, 2);                # same as 1 + 2
 circumfix:«[ ]»(<a b c>);       # same as [<a b c>]
 ```
 
-作为特殊情况，*listop*（列表运算符）可以作为一个术语或前缀。子例程调用是最常见的列表运算符。其他情况还包括元归约中缀运算符（`[+]1、2、3`）和 [前缀 ...](https://docs.perl6.org/language/operators#prefix_...) 等存根运算符。
+作为特殊情况，列表运算符可以作为一个术语或前缀。子例程调用是最常见的列表运算符。其他情况还包括元归约中缀运算符（`[+]1、2、3`）和[前缀 ...](https://docs.perl6.org/language/operators#prefix_...) 等存根运算符。
 
 As a special case, a *listop* (list operator) can stand either as a term or as a prefix. Subroutine calls are the most common listops. Other cases include meta-reduced infix operators (`[+] 1, 2, 3`) and the [prefix ...](https://docs.perl6.org/language/operators#prefix_...) etc. stub operators.
 
