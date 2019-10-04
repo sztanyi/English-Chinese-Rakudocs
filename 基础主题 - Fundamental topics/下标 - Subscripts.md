@@ -1,3 +1,5 @@
+原文：https://docs.perl6.org/language/subscripts
+
 # 下标 / Subscripts
 
 通过索引或键访问数据结构元素
