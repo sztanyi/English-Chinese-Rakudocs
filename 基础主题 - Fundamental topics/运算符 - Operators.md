@@ -356,14 +356,14 @@ Regex captures can be referenced in the replacement part; it takes the same adve
 
 ```Perl6
 my $str = 'foo muCKed into the lEn';
- 
+
 # replace second 'o' with 'x' 
 $str ~~ s:2nd/o/x/;
 
 # replace 'M' or 'L' followed by non-whitespace stuff with 'd' 
 # and lower-cased version of that stuff: 
 $str ~~ s :g :i/<[ML]> (\S+)/d{lc $0}/;
- 
+
 say $str; # OUTPUT: «fox ducked into the den␤»
 ```
 
@@ -437,7 +437,7 @@ say TR:d/dol // with 'old string'; # OUTPUT: «string␤»
 <a id="%E8%B5%8B%E5%80%BC%E8%BF%90%E7%AE%97%E7%AC%A6--assignment-operators"></a>
 # 赋值运算符 / Assignment operators
 
-中缀运算符可以与赋值运算符组合，以修改值并一次性将结果应用于容器。如果可能的话，容器将被自动地生动化。一些例子：
+中缀运算符可以与赋值运算符组合，以修改值并一次性将结果应用于容器。如果可能的话，容器将被自动生动化。一些例子：
 
 Infix operators can be combined with the assignment operator to modify a value and apply the result to a container in one go. Containers will be autovivified if possible. Some examples:
 
