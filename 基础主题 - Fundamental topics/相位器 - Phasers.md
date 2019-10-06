@@ -349,7 +349,7 @@ Execution in the context of a block has its own phases.
 
 Block-leaving phasers wait until the call stack is actually unwound to run. Unwinding happens only after some exception handler decides to handle the exception that way. That is, just because an exception is thrown past a stack frame does not mean we have officially left the block yet, since the exception might be resumable. In any case, exception handlers are specified to run within the dynamic scope of the failing code, whether or not the exception is resumable. The stack is unwound and the phasers are called only if an exception is not resumed.
 
-这些情况可以在块内多次发生。所以它们并不是真正的特征，确切地说，它们将自己添加到存储在实际特征中的列表中。如果您检查块的 `ENTER` 特性，您会发现它实际上是一个位相器列表，而不是单个位相器。
+这些情况可以在块内多次发生。所以它们并不是真正的特征，确切地说，它们将自己添加到存储在实际特征中的列表中。如果你检查块的 `ENTER` 特性，你会发现它实际上是一个位相器列表，而不是单个位相器。
 
 These can occur multiple times within the block. So they aren't really traits, exactly--they add themselves onto a list stored in the actual trait. If you examine the `ENTER` trait of a block, you'll find that it's really a list of phasers rather than a single phaser.
 
@@ -482,7 +482,7 @@ Runs at loop initialization, before ENTER.
 <a id="next"></a>
 ## NEXT
 
-在 LEAVE 之前，当循环继续运行时（或者通过 `next`，或者因为您到达循环的底部并继续循环）。
+在 LEAVE 之前，当循环继续运行时（或者通过 `next`，或者因为你到达循环的底部并继续循环）。
 
 Runs when loop is continued (either through `next` or because you got to the bottom of the loop and are looping back around), before LEAVE.
 

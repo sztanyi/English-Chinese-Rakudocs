@@ -48,7 +48,7 @@ Or two codepoints:
 a +  ́ (U+61 "LATIN SMALL LETTER A" + U+301 "COMBINING ACUTE ACCENT")
 ```
 
-Perl 6 将这两个输入转换为一个代码点，这是为规范化形式 C（*NFC*）指定的。在大多数情况下，这是有用的，这意味着两个等价的输入都是相同的。Unicode 有一个规范等价的概念，它允许我们确定字符串的规范形式，允许我们正确地比较和操作字符串，而不必担心文本会丢失这些属性。默认情况下，您从 Perl 6 处理或输出的任何文本都将以“规范”形式出现，即使在对字符串进行修改或连接时也是如此(有关如何避免这种情况，请参阅下面的内容)。有关规范化表单 C 和规范等价的更详细信息，请参见 Unicode 基金会关于[规范化和规范等价](https://unicode.org/reports/tr15/#Canon_Compat_Equivalence)的页面。
+Perl 6 将这两个输入转换为一个代码点，这是为规范化形式 C（*NFC*）指定的。在大多数情况下，这是有用的，这意味着两个等价的输入都是相同的。Unicode 有一个规范等价的概念，它允许我们确定字符串的规范形式，允许我们正确地比较和操作字符串，而不必担心文本会丢失这些属性。默认情况下，你从 Perl 6 处理或输出的任何文本都将以“规范”形式出现，即使在对字符串进行修改或连接时也是如此(有关如何避免这种情况，请参阅下面的内容)。有关规范化表单 C 和规范等价的更详细信息，请参见 Unicode 基金会关于[规范化和规范等价](https://unicode.org/reports/tr15/#Canon_Compat_Equivalence)的页面。
 
 Perl 6 will turn both these inputs into one codepoint, as is specified for Normalization Form C (**NFC**). In most cases this is useful and means that two inputs that are equivalent are both treated the same. Unicode has a concept of canonical equivalence which allows us to determine the canonical form of a string, allowing us to properly compare strings and manipulate them, without having to worry about the text losing these properties. By default, any text you process or output from Perl 6 will be in this “canonical” form, even when making modifications or concatenations to the string (see below for how to avoid this). For more detailed information about Normalization Form C and canonical equivalence, see the Unicode Foundation's page on [Normalization and Canonical Equivalence](https://unicode.org/reports/tr15/#Canon_Compat_Equivalence).
 
@@ -56,7 +56,7 @@ Perl 6 will turn both these inputs into one codepoint, as is specified for Norma
 
 One case where we don't default to this, is for the names of files. This is because the names of files must be accessed exactly as the bytes are written on the disk.
 
-为了避免规范化，您可以使用名为 [UTF8-C8](https://docs.perl6.org/language/unicode#UTF8-C8) 的特殊编码格式。将这种编码与任何文件句柄一起使用，将允许您读取磁盘上的确切字节，而无需规范化。如果你用 UTF8 打印出来，它们在打印出来时可能看起来很滑稽。如果您将它打印到输出编码为 UTF8-C8 的句柄上，那么它将按照您通常所期望的那样呈现，并且是字节精确复制的字节。关于 MoarVM 的 [UTF8-C8](https://docs.perl6.org/language/unicode#UTF8-C8) 的更多技术细节如下所述。
+为了避免规范化，你可以使用名为 [UTF8-C8](https://docs.perl6.org/language/unicode#UTF8-C8) 的特殊编码格式。将这种编码与任何文件句柄一起使用，将允许你读取磁盘上的确切字节，而无需规范化。如果你用 UTF8 打印出来，它们在打印出来时可能看起来很滑稽。如果你将它打印到输出编码为 UTF8-C8 的句柄上，那么它将按照你通常所期望的那样呈现，并且是字节精确复制的字节。关于 MoarVM 的 [UTF8-C8](https://docs.perl6.org/language/unicode#UTF8-C8) 的更多技术细节如下所述。
 
 To avoid normalization you can use a special encoding format called [UTF8-C8](https://docs.perl6.org/language/unicode#UTF8-C8). Using this encoding with any filehandle will allow you to read the exact bytes as they are on disk, without normalization. They may look funny when printed out, if you print it out using a UTF8 handle. If you print it out to a handle where the output encoding is UTF8-C8, then it will render as you would normally expect, and be a byte for byte exact copy. More technical details on [UTF8-C8](https://docs.perl6.org/language/unicode#UTF8-C8) on MoarVM are described below.
 
@@ -90,7 +90,7 @@ say Buf.new(ord('A'), 0xFE, ord('Z')).decode('utf8-c8');
 #  OUTPUT: «A􏿽xFEZ␤»
 ```
 
-您可以看到 UTF8-C8 使用的两个初始代码点是如何出现在这里的，就在 “FE” 之前。您可以使用这种类型的编码来读取具有未知编码的文件：
+你可以看到 UTF8-C8 使用的两个初始代码点是如何出现在这里的，就在 “FE” 之前。你可以使用这种类型的编码来读取具有未知编码的文件：
 
 You can see how the two initial codepoints used by UTF8-C8 show up here, right before the "FE". You can use this type of encoding to read files with unknown encoding:
 
@@ -116,7 +116,7 @@ Please note that this encoding so far is not supported in the JVM implementation
 <a id="%E8%BE%93%E5%85%A5-unicode-%E4%BB%A3%E7%A0%81%E7%82%B9%E5%92%8C%E4%BB%A3%E7%A0%81%E7%82%B9%E5%BA%8F%E5%88%97--entering-unicode-codepoints-and-codepoint-sequences"></a>
 # 输入 Unicode 代码点和代码点序列 / Entering unicode codepoints and codepoint sequences
 
-您可以按数字(十进制和十六进制)输入 Unicode 代码点。例如，名为 "latin capital letter ae with macron" 的字符有十进制代码点 482 和十六进制编码点 0x1E2：
+你可以按数字(十进制和十六进制)输入 Unicode 代码点。例如，名为 "latin capital letter ae with macron" 的字符有十进制代码点 482 和十六进制编码点 0x1E2：
 
 You can enter Unicode codepoints by number (decimal as well as hexadecimal). For example, the character named "latin capital letter ae with macron" has decimal codepoint 482 and hexadecimal codepoint 0x1E2:
 
@@ -125,7 +125,7 @@ say "\c[482]"; # OUTPUT: «Ǣ␤»
 say "\x1E2";   # OUTPUT: «Ǣ␤»
 ```
 
-您还可以按名称访问 Unicode 代码点：Perl 6 支持所有 Unicode 名称。
+你还可以按名称访问 Unicode 代码点：Perl 6 支持所有 Unicode 名称。
 
 You can also access Unicode codepoints by name: Perl 6 supports all Unicode names.
 
@@ -200,7 +200,7 @@ say "\c[NBSP]".uniname; # OUTPUT: «NO-BREAK SPACE␤»
 <a id="%E5%91%BD%E5%90%8D%E5%BA%8F%E5%88%97--named-sequences"></a>
 ## 命名序列 / Named sequences
 
-您还可以使用任何[命名序列](https://www.unicode.org/Public/UCD/latest/ucd/NamedSequences.txt)，这些不是单个代码点，而是它们的序列。[从 2017.02 Rakudo 开始]
+你还可以使用任何[命名序列](https://www.unicode.org/Public/UCD/latest/ucd/NamedSequences.txt)，这些不是单个代码点，而是它们的序列。[从 2017.02 Rakudo 开始]
 
 You can also use any of the [Named Sequences](https://www.unicode.org/Public/UCD/latest/ucd/NamedSequences.txt), these are not single codepoints, but sequences of them. [Starting in Rakudo 2017.02]
 
