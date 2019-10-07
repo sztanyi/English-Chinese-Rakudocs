@@ -1,0 +1,987 @@
+原文：https://docs.perl6.org/language/typesystem
+
+# 类型系统 / Type system
+
+Perl 6 类型系统简介
+
+Introduction to the type system of Perl 6
+
+<!-- MarkdownTOC -->
+
+- [Perl 6 类型的定义 / Definition of a Perl 6 type](#perl-6-%E7%B1%BB%E5%9E%8B%E7%9A%84%E5%AE%9A%E4%B9%89--definition-of-a-perl-6-type)
+    - [默认类型 / Default types](#%E9%BB%98%E8%AE%A4%E7%B1%BB%E5%9E%8B--default-types)
+    - [类型对象 / Type objects](#%E7%B1%BB%E5%9E%8B%E5%AF%B9%E8%B1%A1--type-objects)
+        - [未定义 / Undefinedness](#%E6%9C%AA%E5%AE%9A%E4%B9%89--undefinedness)
+        - [强制类型转换 / Coercion](#%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2--coercion)
+- [Type declarators](#type-declarators)
+    - [`class`](#class)
+        - [Mixins](#mixins)
+        - [Introspection](#introspection)
+            - [Metaclass](#metaclass)
+        - [Private attributes](#private-attributes)
+        - [Methods](#methods)
+            - [Inheritance and multis](#inheritance-and-multis)
+            - [Only method](#only-method)
+            - [submethod BUILD](#submethod-build)
+            - [Fallback method](#fallback-method)
+            - [Reserved method names](#reserved-method-names)
+            - [Methods in package scope](#methods-in-package-scope)
+            - [Setting attributes with namesake variables and methods](#setting-attributes-with-namesake-variables-and-methods)
+        - [trait `is nodal`](#trait-is-nodal)
+        - [trait](#trait)
+        - [trait `is`](#trait-is)
+        - [trait](#trait-1)
+        - [trait `is required`](#trait-is-required)
+        - [trait `hides`](#trait-hides)
+        - [trait `trusts`](#trait-trusts)
+        - [Augmenting a class](#augmenting-a-class)
+        - [Versioning and authorship](#versioning-and-authorship)
+    - [`role`](#role)
+        - [Auto-punning](#auto-punning)
+        - [trait `does`](#trait-does)
+        - [Parameterized](#parameterized)
+        - [As type constraints](#as-type-constraints)
+        - [Versioning and authorship](#versioning-and-authorship-1)
+    - [`enum`](#enum)
+        - [Metaclass](#metaclass-1)
+        - [Methods](#methods-1)
+            - [method enums](#method-enums)
+        - [Coercion](#coercion)
+    - [`module`](#module)
+        - [Versioning and authorship](#versioning-and-authorship-2)
+    - [`package`](#package)
+    - [`grammar`](#grammar)
+        - [Versioning and authorship](#versioning-and-authorship-3)
+    - [`subset`](#subset)
+
+<!-- /MarkdownTOC -->
+
+<a id="perl-6-%E7%B1%BB%E5%9E%8B%E7%9A%84%E5%AE%9A%E4%B9%89--definition-of-a-perl-6-type"></a>
+# Perl 6 类型的定义 / Definition of a Perl 6 type
+
+类型通过创建一个类型对象来定义一个新对象，该对象提供一个接口来创建对象的实例或检查值。任何类型的对象都是 [Any](https://docs.perl6.org/type/Any) 或 [Mu](https://docs.perl6.org/type/Mu) 的子类。自省方法是通过继承这些基类和内省后缀 [.^](https://docs.perl6.org/language/operators#postfix_.^) 提供的。以下类型的声明器在编译时或在运行时使用[元对象协议](https://docs.perl6.org/language/mop)将新类型引入当前范围。所有类型名称在其作用域中必须是唯一的。
+
+A type defines a new object by creating a type object that provides an interface to create instances of objects or to check values against. Any type object is a subclass of [Any](https://docs.perl6.org/type/Any) or [Mu](https://docs.perl6.org/type/Mu). Introspection methods are provided via inheritance from those base classes and the introspection postfix [.^](https://docs.perl6.org/language/operators#postfix_.^). A new type is introduced to the current scope by one of the following type declarators at compile time or with the [metaobject protocol](https://docs.perl6.org/language/mop) at runtime. All type names must be unique in their scope.
+
+<a id="%E9%BB%98%E8%AE%A4%E7%B1%BB%E5%9E%8B--default-types"></a>
+## 默认类型 / Default types
+
+如果用户没有提供任何类型，Perl 6 假设类型为 `Any`。这包括[容器](https://docs.perl6.org/language/containers)、基类、[参数](https://docs.perl6.org/type/Signature#Type_constraints)和返回类型。
+
+If no type is provided by the user Perl 6 assumes the type to be `Any`. This includes [containers](https://docs.perl6.org/language/containers), base-classes, [parameters](https://docs.perl6.org/type/Signature#Type_constraints) and return types.
+
+```Perl6
+my $a = 1;
+$a = Nil;
+say $a.^name;
+# OUTPUT: «Any␤»
+
+class C {};
+say C.^parents(:all);
+# OUTPUT: «((Any) (Mu))␤»
+```
+
+对于容器，默认类型是 `Any`，但默认类型约束是 `Mu`。请注意，绑定取代了容器，而不仅仅是值。在这种情况下，类型约束可能会改变。
+
+For containers the default type is `Any` but the default type constraint is `Mu`. Please note that binding replaces the container, not just the value. The type constraint may change in this case.
+
+<a id="%E7%B1%BB%E5%9E%8B%E5%AF%B9%E8%B1%A1--type-objects"></a>
+## 类型对象 / Type objects
+
+要测试对象是否为类型对象，请使用[智能匹配](https://docs.perl6.org/language/operators#index-entry-smartmatch_operator)[类型笑脸符](https://docs.perl6.org/type/Signature#Constraining_defined_and_undefined_values)约束的类型或使用 [`.DEFINITE`](https://docs.perl6.org/language/mop#index-entry-syntax_DEFINITE-DEFINITE) 方法：
+
+To test if an object is a type object, use [smartmatch](https://docs.perl6.org/language/operators#index-entry-smartmatch_operator) against a type constrained with a [type smiley](https://docs.perl6.org/type/Signature#Constraining_defined_and_undefined_values) or [`.DEFINITE`](https://docs.perl6.org/language/mop#index-entry-syntax_DEFINITE-DEFINITE) method:
+
+```Perl6
+my $a = Int;
+say $a ~~ Mu:U;
+# OUTPUT: «True␤»
+say not $a.DEFINITE;
+# OUTPUT: «True␤»
+```
+
+如果调用方是实例，`.DEFINITE` 将返回 `True`。如果它返回 `False`，那么调用方就是类型对象。
+
+`.DEFINITE` will return `True` if the invocant is an instance. If it returns `False`, then the invocant is a type object.
+
+<a id="%E6%9C%AA%E5%AE%9A%E4%B9%89--undefinedness"></a>
+### 未定义 / Undefinedness
+
+未定义对象在 Perl 6 中维护类型信息。类型对象用于表示未定义和未定义值的类型。若要提供通用的未定义值，请使用 [Any](https://docs.perl6.org/type/Any)。如果与 `Any`（容器和参数的默认类型）不同，则需要使用 [Mu](https://docs.perl6.org/type/Mu)。
+
+Undefined objects maintain type information in Perl 6. Type objects are used to represent both undefinedness and the type of the undefined value. To provide a general undefined value use [Any](https://docs.perl6.org/type/Any). If differentiation from `Any`, the default type for containers and arguments, is required use [Mu](https://docs.perl6.org/type/Mu).
+
+由 [.CREATE](https://docs.perl6.org/type/Mu#method_CREATE) 创建的对象的实例是按照约定定义的。方法 [.defined](https://docs.perl6.org/type/Mu#routine_defined) 将返回 `Bool::True` 来表示确定性。该规则的例外是 [Nil](https://docs.perl6.org/type/Nil) 和 [Failure](https://docs.perl6.org/type/Failure)。请注意，任何对象都可以重载 `.defined`，因此可以携带额外的信息。此外，Perl 6 明确区分了定义和真值。许多值是定义的，尽管它们为假或空的含义。这些值是 `0`，[Bool::False](https://docs.perl6.org/type/Bool)，[()](https://docs.perl6.org/language/operators#term_(_))（空列表）和 [NaN](https://docs.perl6.org/type/Num#NaN)。
+
+Instances of objects created by [.CREATE](https://docs.perl6.org/type/Mu#method_CREATE) are by convention defined. The method [.defined](https://docs.perl6.org/type/Mu#routine_defined) will return `Bool::True` to indicate definedness. The exceptions to that rule are [Nil](https://docs.perl6.org/type/Nil) and [Failure](https://docs.perl6.org/type/Failure). Please note that any object is able to overload `.defined` and as such can carry additional information. Also, Perl 6 makes a clear distinction between definedness and trueness. Many values are defined even though they carry the meaning of wrongness or emptiness. Such values are `0`, [Bool::False](https://docs.perl6.org/type/Bool), [()](https://docs.perl6.org/language/operators#term_(_)) (empty list) and [NaN](https://docs.perl6.org/type/Num#NaN).
+
+在运行时，值可能会通过[混合](https://docs.perl6.org/language/operators#infix_but)而变得未定义。
+
+Values can become undefined at runtime via [mixin](https://docs.perl6.org/language/operators#infix_but).
+
+```Perl6
+my Int $i = 1 but role :: { method defined { False } };
+say $i // "undefined";
+# OUTPUT: «undefined␤»
+```
+
+要测试是否定义，请调用方法 `.defined`、使用 [//](https://docs.perl6.org/language/operators#infix_//)、[with/without](https://docs.perl6.org/language/control#with,_orwith,_without) 和 [签名](https://docs.perl6.org/type/Signature#Constraining_defined_and_undefined_values)。
+
+To test for definedness call `.defined`, use [//](https://docs.perl6.org/language/operators#infix_//), [with/without](https://docs.perl6.org/language/control#with,_orwith,_without) and [signatures](https://docs.perl6.org/type/Signature#Constraining_defined_and_undefined_values).
+
+<a id="%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2--coercion"></a>
+### 强制类型转换 / Coercion
+
+将一种类型转换为另一种类型是使用与目标类型具有相同名称的强制类型转换方法完成的。这个约定是由 [Signatures](https://docs.perl6.org/type/Signature#Coercion_type) 强制执行的。源类型必须知道如何将自身转换为目标类型。为了允许内置类型将自身转换为用户定义的类型，可以使用 [augment](https://docs.perl6.org/language/variables#The_augment_declarator) 或 [MOP](https://docs.perl6.org/language/mop)。
+
+Turning one type into another is done with coercion methods that have the same name as the target type. This convention is made mandatory by [Signatures](https://docs.perl6.org/type/Signature#Coercion_type). The source type has to know how to turn itself into the target type. To allow built-in types to turn themselves into user defined types use [augment](https://docs.perl6.org/language/variables#The_augment_declarator) or the [MOP](https://docs.perl6.org/language/mop).
+
+```Perl6
+class C {
+    has $.int;
+    method this-is-c { put 'oi' x $!int ~ '‽' }
+}
+
+use MONKEY-TYPING;
+augment class Int {
+    method C { C.new(:int(self))}
+}
+
+my $i = 10;
+$i.=C;
+$i.this-is-c();
+# OUTPUT: «oioioioioioioioioioi‽␤»
+```
+
+Perl 6 provides methods defined in [Cool](https://docs.perl6.org/type/Cool) to convert to a target type before applying further operations. Most built-in types descend from `Cool` and as such may provide implicit coercion that may be undesired. It is the responsibility of the user to care about trap-free usage of those methods.
+
+```Perl6
+my $whatever = "123.6";
+say $whatever.round;
+# OUTPUT: «124␤»
+say <a b c d>.starts-with("ab");
+# OUTPUT: «False␤»
+```
+
+<a id="type-declarators"></a>
+# Type declarators
+
+Type declarators introduce a new type into the given scope. Nested scopes can be separated by `::`. New [packages](https://docs.perl6.org/language/packages) are created automatically if no such scope exists already.
+
+```Perl6
+class Foo::Bar::C {};
+put Foo::Bar::.keys;
+# OUTPUT: «C␤»
+```
+
+Forward declarations can be provided with a block containing only `...`. The compiler will check at the end of the current scope if the type is defined.
+
+```Perl6
+class C {...}
+# many lines later
+class C { has $.attr }
+```
+
+<a id="class"></a>
+## `class`
+
+The `class` declarator creates a compile time construct that is compiled into a type object. The latter is a simple Perl 6 object and provides methods to construct instances by executing initializers and sub methods to fill all attributes declared in a class, and any parent class, with values. Initializers can be provided with the declaration of attributes or in constructors. It's the responsibility of the [Metamodel::ClassHOW](https://docs.perl6.org/type/Metamodel::ClassHOW) to know how to run them. This is the only magic part of building objects in Perl 6. The default parent type is `Any`, which in turn inherits from `Mu`. The latter provides the default constructor `.new` which is named like this by convention. Aside from this, `.new` does not carry any special meaning nor is treated in any special way.
+
+For more information how to use classes see the [Classes and objects](https://docs.perl6.org/language/classtut) tutorial.
+
+<a id="mixins"></a>
+### Mixins
+
+The type introduced by `class` can be extended with [infix:](https://docs.perl6.org/language/operators#infix_but) at runtime. The original type is not modified, instead a new type object is returned and can be stored in a container that type checks successful against the original type or the role that is mixed in.
+
+```Perl6
+class A {}
+role R { method m { say 'oi‽' } }
+my R $A = A but R;
+my $a1 = $A.new;
+$a1.m;
+say [$A ~~ R, $a1 ~~ R];
+# OUTPUT: «oi‽␤[True True]␤»
+```
+
+<a id="introspection"></a>
+### Introspection
+
+<a id="metaclass"></a>
+#### Metaclass
+
+To test if a given type object is a class, test the metaobject method `.HOW` against [Metamodel::ClassHOW](https://docs.perl6.org/type/Metamodel::ClassHOW).
+
+```Perl6
+class C {};
+say C.HOW ~~ Metamodel::ClassHOW;
+# OUTPUT: «True␤»
+```
+
+<a id="private-attributes"></a>
+### Private attributes
+
+Private [attribute](https://docs.perl6.org/type/Attribute)s are addressed with any of the twigils `$!`, `@!` and `%!`. They do not have public accessor methods generated automatically. As such they can not be altered from outside the class they are defined in.
+
+```Perl6
+class C {
+    has $!priv;
+    submethod BUILD { $!priv = 42 }
+};
+
+say (.name, .package, .has_accessor) for C.new.^attributes;
+# OUTPUT: «($!priv (C) False)␤»
+```
+
+
+
+<a id="methods"></a>
+### Methods
+
+The `method` declarator defines objects of type [Method](https://docs.perl6.org/type/Method) and binds them to the provided name in the scope of a class. Methods in a class are `has` scoped by default. Methods that are `our` scoped are not added to the method cache by default and as such can not be called with the accessor sigil `$.`. Call them with their fully qualified name and the invocant as the first argument.
+
+<a id="inheritance-and-multis"></a>
+#### Inheritance and multis
+
+A normal method in a subclass does not compete with multis of a parent class.
+
+```Perl6
+class A {
+    multi method m(Int $i){ say 'Int' }
+    multi method m(int $i){ say 'int' }
+}
+
+class B is A {
+    method m(Int $i){ say 'B::Int' }
+}
+
+my int $i;
+B.new.m($i);
+# OUTPUT: «B::Int␤»
+```
+
+
+
+<a id="only-method"></a>
+#### Only method
+
+To explicitly state that a method is not a multi method use the `only` method declarator.
+
+```Perl6
+class C {
+    only method m {};
+    multi method m {};
+};
+# OUTPUT: «X::Comp::AdHoc: Cannot have a multi candidate for 'm' when an only method is also in the package 'C'␤»
+```
+
+<a id="submethod-build"></a>
+#### submethod BUILD
+
+The [submethod](https://docs.perl6.org/type/Submethod) `BUILD` is (indirectly) called by [.bless](https://docs.perl6.org/type/Mu#method_bless). It is meant to set private and public attributes of a class and receives all names attributes passed into `.bless`. The default constructor [.new](https://docs.perl6.org/type/Mu#method_new) defined in `Mu` is the method that invokes it. Given that public accessor methods are not available in `BUILD`, you must use private attribute notation instead.
+
+```Perl6
+class C {
+    has $.attr;
+    submethod BUILD (:$attr = 42) {
+        $!attr = $attr
+    };
+    multi method new($positional) {
+        self.bless(:attr($positional), |%_)
+   }
+};
+
+C.new.say; C.new('answer').say;
+# OUTPUT: «C.new(attr => 42)␤
+#          C.new(attr => "answer")␤»
+```
+
+<a id="fallback-method"></a>
+#### Fallback method 
+
+A method with the special name `FALLBACK` will be called when other means to resolve the name produce no result. The first argument holds the name and all following arguments are forwarded from the original call. Multi methods and [sub-signatures](https://docs.perl6.org/type/Signature#Destructuring_arguments) are supported.
+
+```Perl6
+class Magic {
+    method FALLBACK ($name, |c(Int, Str)) {
+    put "$name called with parameters {c.perl}"  }
+};
+Magic.new.simsalabim(42, "answer");
+
+# OUTPUT: «simsalabim called with parameters ⌈\(42, "answer")⌋␤»
+```
+
+
+
+<a id="reserved-method-names"></a>
+#### Reserved method names
+
+Some built-in introspection methods are actually special syntax provided by the compiler, namely `WHAT`, `WHO`, `HOW` and `VAR`. Declaring methods with those names will silently fail. A dynamic call will work, what allows to call methods from foreign objects.
+
+```Perl6
+class A {
+    method WHAT { "ain't gonna happen" }
+};
+
+say A.new.WHAT;    # OUTPUT: «(A)␤»
+say A.new."WHAT"() # OUTPUT: «ain't gonna happen␤»
+```
+
+<a id="methods-in-package-scope"></a>
+#### Methods in package scope
+
+Any `our` scoped method will be visible in the package scope of a class.
+
+```Perl6
+class C {
+    our method packaged {};
+    method loose {}
+};
+say C::.keys
+# OUTPUT: «(&packaged)␤»
+```
+
+<a id="setting-attributes-with-namesake-variables-and-methods"></a>
+#### Setting attributes with namesake variables and methods
+
+Instead of writing `attr => $attr `or `:attr($attr)`, you can save some typing if the variable (or method call) you're setting the attribute with shares the name with the attribute:
+
+```Perl6
+class A { has $.i = 42 };
+class B {
+    has $.i = "answer";
+    method m() { A.new(:$.i) }
+    #                  ^^^^  Instead of i => $.i or :i($.i)
+};
+my $a = B.new.m;
+say $a.i; # OUTPUT: «answer␤»
+```
+
+Since `$.i` method call is named `i` and the attribute is also named `i`, Perl 6 lets us shortcut. The same applies to `:$var`, `:$!private-attribute`, `:&attr-with-code-in-it`, and so on.
+
+<a id="trait-is-nodal"></a>
+### trait `is nodal`
+
+Marks a [List](https://docs.perl6.org/type/List) method to indicate to hyperoperator to not descend into inner [Iterables](https://docs.perl6.org/type/Iterable) to call this method. This trait generally isn't something end users would be using, unless they're subclassing or augmenting core [List](https://docs.perl6.org/type/List) type.
+
+In order to demonstrate the difference consider the following examples, the first using a method (`elems`) that `is nodal` and the second using a method (`Int`) which is not nodal.
+
+```Perl6
+say ((1.0, "2", 3e0), [^4], '5')».elems; # OUTPUT: «(3, 4, 1)␤»
+say ((1.0, "2", 3e0), [^4], '5')».Int    # OUTPUT: «((1 2 3) [0 1 2 3] 5)␤»
+```
+
+<a id="trait"></a>
+### trait 
+
+Defined as:
+
+```Perl6
+multi sub trait_mod:<handles>(Attribute:D $target, $thunk)
+```
+
+The [trait](https://docs.perl6.org/type/Sub#Traits) `handles` applied to an attribute of a class will delegate all calls to the provided method name to the method with the same name of the attribute. The object referenced by the attribute must be initialized. A type constraint for the object that the call is delegated to can be provided.
+
+```Perl6
+class A      { method m(){ 'A::m has been called.' } }
+class B is A { method m(){ 'B::m has been called.' } }
+class C {
+    has A $.delegate handles 'm';
+    method new($delegate){ self.bless(delegate => $delegate) }
+};
+say C.new(B.new).m(); # OUTPUT: «B::m has been called.␤»
+```
+
+Instead of a method name, a `Pair` (for renaming), a list of names or `Pair`s, a `Regex` or a `Whatever` can be provided. In the latter case existing methods, both in the class itself and its inheritance chain, will take precedence. If even local `FALLBACK`s should be searched, use a `HyperWhatever`.
+
+```Perl6
+class A {
+    method m1(){}
+    method m2(){}
+}
+
+class C {
+    has $.delegate handles <m1 m2> = A.new()
+}
+C.new.m2;
+
+class D {
+    has $.delegate handles /m\d/ = A.new()
+}
+D.new.m1;
+
+class E {
+    has $.delegate handles (em1 => 'm1') = A.new()
+}
+E.new.em1;
+```
+
+<a id="trait-is"></a>
+### trait `is`
+
+Defined as:
+
+```Perl6
+multi sub trait_mod:<is>(Mu:U $child, Mu:U $parent)
+```
+
+The [trait](https://docs.perl6.org/type/Sub#Traits) `is` accepts a type object to be added as a parent class of a class in its definition. To allow multiple inheritance the trait can be applied more than once. Adding parents to a class will import their methods into the target class. If the same method name occurs in multiple parents, the first added parent will win.
+
+If no `is` trait is provided the default of [`Any`](https://docs.perl6.org/type/Any) will be used as a parent class. This forces all Perl 6 objects to have the same set of basic methods to provide an interface for introspection and coercion to basic types.
+
+```Perl6
+class A {
+    multi method from-a(){ 'A::from-a' }
+}
+say A.new.^parents(:all).perl;
+# OUTPUT: «(Any, Mu)␤»
+
+class B {
+    method from-b(){ 'B::from-b ' }
+    multi method from-a(){ 'B::from-A' }
+}
+
+class C is A is B {}
+say C.new.from-a();
+# OUTPUT: «A::from-a␤»
+```
+
+<a id="trait-1"></a>
+### trait 
+
+Defined as:
+
+```Perl6
+sub trait_mod:<is>(Mu:U $type, :$rw!)
+```
+
+The [trait](https://docs.perl6.org/type/Sub#Traits) `is rw` on a class will create writable accessor methods on all public attributes of that class.
+
+```Perl6
+class C is rw {
+    has $.a;
+};
+my $c = C.new.a = 42;
+say $c; # OUTPUT: «42␤»
+```
+
+<a id="trait-is-required"></a>
+### trait `is required`
+
+Defined as:
+
+```Perl6
+multi sub trait_mod:<is>(Attribute $attr, :$required!)
+multi sub trait_mod:<is>(Parameter:D $param, :$required!)
+```
+
+Marks a class or roles attribute as required. If the attribute is not initialized at object construction time throws [X::Attribute::Required](https://docs.perl6.org/type/X::Attribute::Required).
+
+```Perl6
+class Correct {
+    has $.attr is required;
+    submethod BUILD (:$attr) { $!attr = $attr }
+}
+say Correct.new(attr => 42);
+# OUTPUT: «Correct.new(attr => 42)␤»
+
+class C {
+    has $.attr is required;
+}
+C.new;
+CATCH { default { say .^name => .Str } }
+# OUTPUT: «X::Attribute::Required => The attribute '$!attr' is required, but you did not provide a value for it.␤»
+```
+
+You can provide a reason why it's required as an argument to `is required`
+
+```Perl6
+class Correct {
+    has $.attr is required("it's so cool")
+};
+say Correct.new();
+# OUTPUT: «The attribute '$!attr' is required because it's so cool,␤but you did not provide a value for it.␤»
+```
+
+<a id="trait-hides"></a>
+### trait `hides`
+
+The trait `hides` provides inheritance without being subject to [re-dispatching](https://docs.perl6.org/language/functions#Re-dispatching).
+
+```Perl6
+class A {
+    method m { say 'i am hidden' }
+}
+class B hides A {
+    method m { nextsame }
+    method n { self.A::m }
+};
+
+B.new.m;
+B.new.n;
+# OUTPUT: «i am hidden␤»
+```
+
+The trait `is hidden` allows a class to hide itself from [re-dispatching](https://docs.perl6.org/language/functions#Re-dispatching).
+
+```Perl6
+class A is hidden {
+    method m { say 'i am hidden' }
+}
+class B is A {
+    method m { nextsame }
+    method n { self.A::m }
+}
+
+B.new.m;
+B.new.n;
+# OUTPUT: «i am hidden␤»
+```
+
+<a id="trait-trusts"></a>
+### trait `trusts`
+
+To allow one class to access the private methods of another class use the trait `trusts`. A forward declaration of the trusted class may be required.
+
+```Perl6
+class B {...};
+class A {
+    trusts B;
+    has $!foo;
+    method !foo { return-rw $!foo }
+    method perl { "A.new(foo => $!foo)" }
+};
+class B {
+    has A $.a .= new;
+    method change { $!a!A::foo = 42; self }
+};
+say B.new.change;
+# OUTPUT: «B.new(a => A.new(foo => 42))␤»
+```
+
+<a id="augmenting-a-class"></a>
+### Augmenting a class
+
+To add methods and attributes to a class at compile time use `augment` in front of a class definition fragment. The compiler will demand the pragmas `use MONKEY-TYPING` or `use MONKEY` early in the same scope. Please note that there may be performance implications, hence the pragmas.
+
+```Perl6
+use MONKEY; augment class Str {
+    method mark(Any :$set){
+        state $mark //= $set; $mark
+    }
+};
+my $s = "42";
+$s.mark(set => "answer");
+say $s.mark
+# OUTPUT: «answer␤»
+```
+
+There are few limitations of what can be done inside the class fragment. One of them is the redeclaration of a method or sub into a multi. Using added attributes is not yet implemented. Please note that adding a multi candidate that differs only in its named parameters will add that candidate behind the already defined one and as such it won't be picked by the dispatcher.
+
+<a id="versioning-and-authorship"></a>
+### Versioning and authorship
+
+Versioning and authorship can be applied via the adverbs `:ver<>` and `:auth<>`. Both take a string as argument, for `:ver` the string is converted to a [Version](https://docs.perl6.org/type/Version) object. To query a class version and author use `.^ver` and `^.auth`.
+
+```Perl6
+class C:ver<4.2.3>:auth<me@here.local> {}
+say [C.^ver, C.^auth];
+# OUTPUT: «[v4.2.3 me@here.local]␤»
+```
+
+<a id="role"></a>
+## `role`
+
+Roles are class fragments, which allow the definition of interfaces that are shared by classes. The `role` declarator also introduces a type object that can be used for type checks. Roles can be mixed into classes and objects at runtime and compile time. The `role` declarator returns the created type object thus allowing the definition of anonymous roles and in-place mixins.
+
+```Perl6
+role Serialize {
+    method to-string { self.Str }
+    method to-number { self.Num }
+}
+
+class A does Serialize {}
+class B does Serialize {}
+
+my Serialize @list;
+@list.push: A.new;
+@list.push: B.new;
+
+say @list».to-string;
+# OUTPUT: «[A<57192848> B<57192880>]␤»
+```
+
+Use `...` as the only element of a method body to declare a method to be abstract. Any class getting such a method mixed in has to overload it. If the method is not overloaded before the end of the compilation unit `X::Comp::AdHoc` will be thrown.
+
+```Perl6
+EVAL 'role R { method overload-this(){...} }; class A does R {}; ';
+CATCH { default { say .^name, ' ', .Str } }
+# OUTPUT: «X::Comp::AdHoc Method 'overload-this' must be implemented by A because it is required by roles: R.␤»
+```
+
+<a id="auto-punning"></a>
+### Auto-punning
+
+A role can be used instead of a class to create objects. Since roles can't exist at runtime, a class of the same name is created that will type check successful against the role.
+
+```Perl6
+role R { method m { say 'oi‽' } };
+R.new.^mro.say;
+# OUTPUT: «((R) (Any) (Mu))␤»
+say R.new.^mro[0].HOW.^name;
+# OUTPUT: «Perl6::Metamodel::ClassHOW␤»
+say R.new ~~ R;
+# OUTPUT: «True␤»
+```
+
+<a id="trait-does"></a>
+### trait `does`
+
+The trait `does` can be applied to roles and classes providing compile time mixins. To refer to a role that is not defined yet, use a forward declaration. The type name of the class with mixed in roles does not reflect the mixin, a type check does. If methods are provided in more than one mixed in role, the method that is defined first takes precedence. A list of roles separated by comma can be provided. In this case conflicts will be reported at compile time.
+
+```Perl6
+role R2 {...};
+role R1 does R2 {};
+role R2 {};
+class C does R1 {};
+
+say [C ~~ R1, C ~~ R2];
+# OUTPUT: «[True True]␤»
+```
+
+For runtime mixins see [but](https://docs.perl6.org/language/operators#infix_but) and [does](https://docs.perl6.org/language/operators#infix_does).
+
+<a id="parameterized"></a>
+### Parameterized
+
+Roles can be provided with parameters in-between `[]` behind a roles name. [Type captures](https://docs.perl6.org/type/Signature#Type_captures) are supported.
+
+```Perl6
+role R[$d] { has $.a = $d };
+class C does R["default"] { };
+
+my $c = C.new;
+say $c;
+# OUTPUT: «C.new(a => "default")␤»
+```
+
+Parameters can have type constraints, `where` clauses are not supported for types but can be implemented via `subset`s.
+
+```Perl6
+class A {};
+class B {};
+subset A-or-B where * ~~ A|B;
+role R[A-or-B ::T] {};
+R[A.new].new;
+```
+
+Default parameters can be provided.
+
+```Perl6
+role R[$p = fail("Please provide a parameter to role R")] {};
+my $i = 1 does R;
+CATCH { default { say .^name, ': ', .Str} }
+# OUTPUT: «X::AdHoc: Could not instantiate role 'R':␤Please provide a parameter to role R␤»
+```
+
+<a id="as-type-constraints"></a>
+### As type constraints
+
+Roles can be used as type constraints wherever a type is expected. If a role is mixed in with `does` or `but`, its type-object is added to the type-object list of the object in question. If a role is used instead of a class (using auto-punning), the auto-generated class' type-object, of the same name as the role, is added to the inheritance chain.
+
+```Perl6
+role Unitish[$unit = fail('Please provide a SI unit quantifier as a parameter to the role Unitish')] {
+    has $.SI-unit-symbol = $unit;
+    method gist {
+        given self {
+            # ...
+            when * < 1 { return self * 1000 ~ 'm' ~ $.SI-unit-symbol }
+            when * < 1000 { return self ~ $.SI-unit-symbol }
+            when * < 1_000_000 { return self / 1_000 ~ 'k' ~ $.SI-unit-symbol }
+            # ...
+        }
+    }
+}
+
+role SI-second   does Unitish[<s>] {}
+role SI-meter    does Unitish[<m>] {}
+role SI-kilogram does Unitish[<g>] {}
+
+sub postfix:<s>(Numeric $num) { ($num) does SI-second }
+sub postfix:<m>(Numeric $num) { ($num) does SI-meter }
+sub postfix:<g>(Numeric $num) { ($num) does SI-kilogram }
+sub postfix:<kg>(Numeric $num){ ($num * 1000) does SI-kilogram }
+
+constant g = 9.806_65;
+
+role SI-Newton does Unitish[<N>] {}
+
+multi sub N(SI-kilogram $kg, SI-meter $m, SI-second $s --> SI-Newton ){ ($kg * ($m / $s²)) does SI-Newton }
+multi sub N(SI-kilogram $kg --> SI-Newton)                            { ($kg * g) does SI-Newton }
+
+say [75kg, N(75kg)];
+# OUTPUT: «[75kg 735.49875kN]␤»
+say [(75kg).^name, N(75kg).^name];
+# OUTPUT: «[Int+{SI-kilogram} Rat+{SI-Newton}]␤»
+```
+
+<a id="versioning-and-authorship-1"></a>
+### Versioning and authorship
+
+Versioning and authorship can be applied via the adverbs `:ver<>` and `:auth<>`. Both take a string as argument, for `:ver` the string is converted to a [Version](https://docs.perl6.org/type/Version) object. To query a role's version and author use `.^ver` and `^.auth`.
+
+```Perl6
+role R:ver<4.2.3>:auth<me@here.local> {}
+say [R.^ver, R.^auth];
+# OUTPUT: «[v4.2.3 me@here.local]␤»
+```
+
+
+
+<a id="enum"></a>
+## `enum`
+
+Enumerations provide constant key-value-pairs with an associated type. Any key is of that type and injected as a symbol into the current scope. If the symbol is used, it is treated as a constant expression and the symbol is replaced with the value of the enum-pair. Any Enumeration inherits methods from the role [`Enumeration`](https://docs.perl6.org/type/Enumeration). Complex expressions for generating key-value pairs are not supported. In general, an `enum` is a [Map](https://docs.perl6.org/type/Map) whose elements have the `Enumeration` role mixed in; this role includes, for each element, an index which creates an order on the map.
+
+Stringification of the symbol, which is done automatically in string context and is exactly equal to its name, which is also the key of the enum-pair.
+
+```Perl6
+enum Names ( name1 => 1, name2 => 2 );
+say name1, ' ', name2; # OUTPUT: «name1 name2␤»
+say name1.value, ' ', name2.value; # OUTPUT: «1 2␤»
+```
+
+Comparing symbols will use type information and the value of the enum-pair. As value types `Num` and `Str` are supported.
+
+```Perl6
+enum Names ( name1 => 1, name2 => 2 );
+sub same(Names $a, Names $b){
+   $a eqv $b
+}
+
+say same(name1, name1); # OUTPUT: «True␤»
+say same(name1, name2); # OUTPUT: «False␤»
+my $a = name1;
+say $a ~~ Names; # OUTPUT: «True␤»
+say $a.^name;    # OUTPUT: «Names␤»
+```
+
+All keys have to be of the same type.
+
+```Perl6
+enum Mass ( mg => 1/1000, g => 1/1, kg => 1000/1 );
+
+say Mass.enums;
+# OUTPUT: «Map.new((g => 1, kg => 1000, mg => 0.001))␤»
+```
+
+And you can use any kind of symbol:
+
+```Perl6
+enum Suit <♣ ♦ ♥ ♠>;
+```
+
+As long as you refer to that symbol using the full syntax:
+
+```Perl6
+say Suit::<♣>; # OUTPUT: «♣␤»
+```
+
+Attempting to access unicode enum keys without said syntax will result in an error:
+
+```Perl6
+say ♣ ; # OUTPUT: «(exit code 1) ===SORRY!===␤Argument to "say" seems to be    malformed…
+```
+
+If no value is given `Int` will be assumed as the values type and incremented by one per key starting at zero. As enum key types `Int`, `Num`, `Rat` and `Str` are supported.
+
+```Perl6
+enum Numbers <one two three four>;
+
+say Numbers.enums;
+# OUTPUT: «Map.new((four => 3, one => 0, three => 2, two => 1))␤»
+```
+
+A different starting value can be provided.
+
+```Perl6
+enum Numbers «:one(1) two three four»;
+
+say Numbers.enums;
+# OUTPUT: «Map.new((four => 4, one => 1, three => 3, two => 2))␤»
+```
+
+You can also do this with the **()** form of the initializer, but will need to quote keys that do not have a value:
+
+```Perl6
+enum Numbers (
+  one => 1,
+  'two',
+  'three',
+  'four'
+);
+```
+
+Enums can also be anonymous, with the only difference with named `enum`s being that you cannot use it in `Signature`s or to declare variables.
+
+```Perl6
+my $e = enum <one two three>;
+say two;       # OUTPUT: «two␤»
+say one.^name; # OUTPUT: «␤»
+say $e.^name;  # OUTPUT: «Map␤»
+```
+
+There are various methods to get access to the keys and values of the symbols that have been defined. All of them turn the values into `Str`, which may not be desirable. By treating the enum as a package, we can get a list of types for the keys.
+
+```Perl6
+enum E(<one two>);
+my @keys = E::.values;
+say @keys.map: *.enums;
+# OUTPUT: «(Map.new((one => 0, two => 1)) Map.new((one => 0, two => 1)))␤»
+```
+
+With the use of **()** parentheses, an enum can be defined using any arbitrary dynamically defined list. The list should consist of Pair objects:
+
+For example, in file `config` we have:
+
+```Perl6
+a 1 b 2
+```
+
+We can create an enum using it with this code:
+
+```Perl6
+    enum ConfigValues ('config'.IO.lines.map({ my ($key, $value) = $_.words; $key => $value }));
+    say ConfigValues.enums;          # OUTPUT: «Map.new((a => 1, b => 2))␤»
+```
+
+Firstly, we read lines from `config` file, split every line using `words` method and return resulting pair for every line, thus creating a List of Pairs.
+
+<a id="metaclass-1"></a>
+### Metaclass
+
+To test if a given type object is an `enum`, test the metaobject method `.HOW` against [Metamodel::EnumHOW](https://docs.perl6.org/type/Metamodel::EnumHOW) or simply test against the `Enumeration` role.
+
+```Perl6
+enum E(<a b c>);
+say E.HOW ~~ Metamodel::EnumHOW; # OUTPUT: «True␤»
+say E ~~ Enumeration;            # OUTPUT: «True␤»
+```
+
+<a id="methods-1"></a>
+### Methods
+
+<a id="method-enums"></a>
+#### method enums
+
+Defined as:
+
+```Perl6
+method enums()
+```
+
+Returns the list of enum-pairs.
+
+```Perl6
+enum Mass ( mg => 1/1000, g => 1/1, kg => 1000/1 );
+say Mass.enums; # OUTPUT: «{g => 1, kg => 1000, mg => 0.001}␤»
+```
+
+<a id="coercion"></a>
+### Coercion
+
+If you want to coerce the value of an enum element to its proper enum object, use the coercer with the name of the enum:
+
+```Perl6
+my enum A (sun => 42, mon => 72);
+A(72).pair.say;   # OUTPUT: «mon => 72␤»
+A(1000).say; # OUTPUT: «(A)␤»
+```
+
+The last example shows what happens if there is no enum-pair that includes that as a value.
+
+<a id="module"></a>
+## `module`
+
+Modules are usually one or more source files that expose Perl 6 constructs, such as classes, roles, grammars, subroutines and variables. Modules are usually used for distributing Perl 6 code as libraries which can be used in another Perl 6 program.
+
+For a full explanation see [Modules](https://docs.perl6.org/language/modules).
+
+<a id="versioning-and-authorship-2"></a>
+### Versioning and authorship
+
+Versioning and authorship can be applied via the adverbs `:ver<>` and `:auth<>`. Both take a string as argument, for `:ver` the string is converted to a [Version](https://docs.perl6.org/type/Version) object. To query a modules version and author use `.^ver` and `^.auth`.
+
+```Perl6
+module M:ver<4.2.3>:auth<me@here.local> {}
+say [M.^ver, M.^auth];
+# OUTPUT: «[v4.2.3 me@here.local]␤»
+```
+
+<a id="package"></a>
+## `package`
+
+Packages are nested namespaces of named program elements. Modules, classes and grammars are all types of package.
+
+For a full explanation see [Packages](https://docs.perl6.org/language/packages).
+
+<a id="grammar"></a>
+## `grammar`
+
+Grammars are a specific type of class intended for parsing text. Grammars are composed of rules, tokens and regexes which are actually methods, since grammars are classes.
+
+For a full explanation see [Grammars](https://docs.perl6.org/language/grammars).
+
+<a id="versioning-and-authorship-3"></a>
+### Versioning and authorship
+
+Versioning and authorship can be applied via the adverbs `:ver<>` and `:auth<>`. Both take a string as argument, for `:ver` the string is converted to a [Version](https://docs.perl6.org/type/Version) object. To query a grammars version and author use `.^ver` and `^.auth`.
+
+```Perl6
+grammar G:ver<4.2.3>:auth<me@here.local> {}
+say [G.^ver, G.^auth];
+# OUTPUT: «[v4.2.3 me@here.local]␤»
+```
+
+<a id="subset"></a>
+## `subset`
+
+A `subset` declares a new type that will re-dispatch to its base type. If a [`where`](https://docs.perl6.org/type/Signature#where) clause is supplied any assignment will be checked against the given code object.
+
+```Perl6
+subset Positive of Int where * > -1;
+my Positive $i = 1;
+$i = -42;
+CATCH { default { put .^name,': ', .Str } }
+# OUTPUT: «X::TypeCheck::Assignment: Type check failed in assignment to $i; expected Positive but got Int (-42)␤»
+```
+
+Subsets can be used in signatures, e.g. by typing the output:
+
+```Perl6
+subset Foo of List where (Int,Str);
+sub a($a, $b, --> Foo) { $a, $b }
+# Only a List with the first element being an Int and the second a Str will pass the type check.
+a(1, "foo");  # passes
+a("foo", 1);  # fails
+```
+
+Subsets can be anonymous, allowing inline placements where a subset is required but a name is neither needed nor desirable.
+
+```Perl6
+my enum E1 <A B>;
+my enum E2 <C D>;
+sub g(@a where { .all ~~ subset :: where E1|E2 } ) {
+    say @a
+}
+g([A, C]);
+# OUTPUT: «[A C]␤»
+```
+
+Subsets can be used to check types dynamically, which can be useful in conjunction with [require](https://docs.perl6.org/language/modules#require).
+
+```Perl6
+require ::('YourModule');
+subset C where ::('YourModule::C');
+```
+

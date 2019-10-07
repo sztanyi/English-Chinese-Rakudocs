@@ -1,3 +1,5 @@
+原文：https://docs.perl6.org/language/statement-prefixes
+
 # 语句前缀 / Statement prefixes
 
 更改语句或一组语句的行为的前缀
