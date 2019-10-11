@@ -13,18 +13,18 @@ Introduction to the type system of Perl 6
     - [类型对象 / Type objects](#%E7%B1%BB%E5%9E%8B%E5%AF%B9%E8%B1%A1--type-objects)
         - [未定义 / Undefinedness](#%E6%9C%AA%E5%AE%9A%E4%B9%89--undefinedness)
         - [强制类型转换 / Coercion](#%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2--coercion)
-- [Type declarators](#type-declarators)
+- [类型声明符 / Type declarators](#%E7%B1%BB%E5%9E%8B%E5%A3%B0%E6%98%8E%E7%AC%A6--type-declarators)
     - [`class`](#class)
-        - [Mixins](#mixins)
-        - [Introspection](#introspection)
-            - [Metaclass](#metaclass)
-        - [Private attributes](#private-attributes)
-        - [Methods](#methods)
-            - [Inheritance and multis](#inheritance-and-multis)
-            - [Only method](#only-method)
-            - [submethod BUILD](#submethod-build)
-            - [Fallback method](#fallback-method)
-            - [Reserved method names](#reserved-method-names)
+        - [混合类 / Mixins](#%E6%B7%B7%E5%90%88%E7%B1%BB--mixins)
+        - [内省 / Introspection](#%E5%86%85%E7%9C%81--introspection)
+            - [元类 / Metaclass](#%E5%85%83%E7%B1%BB--metaclass)
+        - [私有属性 / Private attributes](#%E7%A7%81%E6%9C%89%E5%B1%9E%E6%80%A7--private-attributes)
+        - [方法 / Methods](#%E6%96%B9%E6%B3%95--methods)
+            - [继承与 multi 方法 / Inheritance and multis](#%E7%BB%A7%E6%89%BF%E4%B8%8E-multi-%E6%96%B9%E6%B3%95--inheritance-and-multis)
+            - [Only 方法 / Only method](#only-%E6%96%B9%E6%B3%95--only-method)
+            - [BUILD 子方法 / submethod BUILD](#build-%E5%AD%90%E6%96%B9%E6%B3%95--submethod-build)
+            - [FALLBACK 方法 / Fallback method](#fallback-%E6%96%B9%E6%B3%95--fallback-method)
+            - [保留方法名 / Reserved method names](#%E4%BF%9D%E7%95%99%E6%96%B9%E6%B3%95%E5%90%8D--reserved-method-names)
             - [Methods in package scope](#methods-in-package-scope)
             - [Setting attributes with namesake variables and methods](#setting-attributes-with-namesake-variables-and-methods)
         - [trait `is nodal`](#trait-is-nodal)
@@ -43,8 +43,8 @@ Introduction to the type system of Perl 6
         - [As type constraints](#as-type-constraints)
         - [Versioning and authorship](#versioning-and-authorship-1)
     - [`enum`](#enum)
-        - [Metaclass](#metaclass-1)
-        - [Methods](#methods-1)
+        - [Metaclass](#metaclass)
+        - [Methods](#methods)
             - [method enums](#method-enums)
         - [Coercion](#coercion)
     - [`module`](#module)
@@ -153,6 +153,8 @@ $i.this-is-c();
 # OUTPUT: «oioioioioioioioioioi‽␤»
 ```
 
+Perl 6 提供了 [Cool](https://docs.perl6.org/type/Cool) 中定义的方法在应用进一步的操作之前转换为目标类型。大多数内置类型都来自 `Cool`，因此可能提供可能不想要的隐式强制类型转换。关注这些方法的无陷阱使用是用户的责任。
+
 Perl 6 provides methods defined in [Cool](https://docs.perl6.org/type/Cool) to convert to a target type before applying further operations. Most built-in types descend from `Cool` and as such may provide implicit coercion that may be undesired. It is the responsibility of the user to care about trap-free usage of those methods.
 
 ```Perl6
@@ -163,8 +165,10 @@ say <a b c d>.starts-with("ab");
 # OUTPUT: «False␤»
 ```
 
-<a id="type-declarators"></a>
-# Type declarators
+<a id="%E7%B1%BB%E5%9E%8B%E5%A3%B0%E6%98%8E%E7%AC%A6--type-declarators"></a>
+# 类型声明符 / Type declarators
+
+类型声明器将新类型引入给定范围。嵌套作用域可以用 `::` 分隔。如果尚未存在此类范围，则会自动创建新 [package](https://docs.perl6.org/language/packages)。
 
 Type declarators introduce a new type into the given scope. Nested scopes can be separated by `::`. New [packages](https://docs.perl6.org/language/packages) are created automatically if no such scope exists already.
 
@@ -173,6 +177,8 @@ class Foo::Bar::C {};
 put Foo::Bar::.keys;
 # OUTPUT: «C␤»
 ```
+
+前向声明可以提供一个只包含 `...` 的代码块。如果定义了类型，编译器将在当前作用域的末尾进行检查。
 
 Forward declarations can be provided with a block containing only `...`. The compiler will check at the end of the current scope if the type is defined.
 
@@ -185,12 +191,18 @@ class C { has $.attr }
 <a id="class"></a>
 ## `class`
 
+`class` 声明器创建一个编译时构造，该构造被编译成一个类型对象。后者是一个简单的 Perl 6 对象，它提供了通过执行初始化器和子方法来构造实例的方法，以填充类中声明的所有属性和任何父类中的值。可以在属性声明或构造函数中提供初始化器。了解如何运行它们是 [Metamodel::ClassHOW](https://docs.perl6.org/type/Metamodel::ClassHOW) 的责任。这是在 Perl 6 中构建对象的唯一神奇部分，默认的父类型是 `Any`，它继承自 `Mu`。后者提供了默认的构造函数 `.new`（按约定命名）。除此之外，`.new` 没有任何特殊的含义，也没有任何特殊的处理方式。
+
 The `class` declarator creates a compile time construct that is compiled into a type object. The latter is a simple Perl 6 object and provides methods to construct instances by executing initializers and sub methods to fill all attributes declared in a class, and any parent class, with values. Initializers can be provided with the declaration of attributes or in constructors. It's the responsibility of the [Metamodel::ClassHOW](https://docs.perl6.org/type/Metamodel::ClassHOW) to know how to run them. This is the only magic part of building objects in Perl 6. The default parent type is `Any`, which in turn inherits from `Mu`. The latter provides the default constructor `.new` which is named like this by convention. Aside from this, `.new` does not carry any special meaning nor is treated in any special way.
+
+有关如何使用类的更多信息，请参见 [Classes and objects](https://docs.perl6.org/language/classtut) 教程。
 
 For more information how to use classes see the [Classes and objects](https://docs.perl6.org/language/classtut) tutorial.
 
-<a id="mixins"></a>
-### Mixins
+<a id="%E6%B7%B7%E5%90%88%E7%B1%BB--mixins"></a>
+### 混合类 / Mixins
+
+类引入的类型可以在运行时用 [infix:](https://docs.perl6.org/language/operators#infix_but) 进行扩展。原始类型不被修改，而是返回一个新类型对象，并且可以存储在一个容器中，该容器可以根据原始类型或混合的角色成功地检查类型。
 
 The type introduced by `class` can be extended with [infix:](https://docs.perl6.org/language/operators#infix_but) at runtime. The original type is not modified, instead a new type object is returned and can be stored in a container that type checks successful against the original type or the role that is mixed in.
 
@@ -204,11 +216,13 @@ say [$A ~~ R, $a1 ~~ R];
 # OUTPUT: «oi‽␤[True True]␤»
 ```
 
-<a id="introspection"></a>
-### Introspection
+<a id="%E5%86%85%E7%9C%81--introspection"></a>
+### 内省 / Introspection
 
-<a id="metaclass"></a>
-#### Metaclass
+<a id="%E5%85%83%E7%B1%BB--metaclass"></a>
+#### 元类 / Metaclass
+
+若要测试给定类型对象是否为类，请针对 [Metamodel::ClassHOW](https://docs.perl6.org/type/Metamodel::ClassHOW) 测试元对象方法 `.HOW`。
 
 To test if a given type object is a class, test the metaobject method `.HOW` against [Metamodel::ClassHOW](https://docs.perl6.org/type/Metamodel::ClassHOW).
 
@@ -218,8 +232,10 @@ say C.HOW ~~ Metamodel::ClassHOW;
 # OUTPUT: «True␤»
 ```
 
-<a id="private-attributes"></a>
-### Private attributes
+<a id="%E7%A7%81%E6%9C%89%E5%B1%9E%E6%80%A7--private-attributes"></a>
+### 私有属性 / Private attributes
+
+私有的[属性](https：/docs.perl6.org/type/properties)的地址是使用任意一标记 `$!`、`@!` 和 `%!`。它们没有自动生成的公共访问器方法。因此，它们不能在定义在其中的类之外被更改。
 
 Private [attribute](https://docs.perl6.org/type/Attribute)s are addressed with any of the twigils `$!`, `@!` and `%!`. They do not have public accessor methods generated automatically. As such they can not be altered from outside the class they are defined in.
 
@@ -233,15 +249,17 @@ say (.name, .package, .has_accessor) for C.new.^attributes;
 # OUTPUT: «($!priv (C) False)␤»
 ```
 
+<a id="%E6%96%B9%E6%B3%95--methods"></a>
+### 方法 / Methods
 
-
-<a id="methods"></a>
-### Methods
+`method` 声明器定义类型为 [Method](https://docs.perl6.org/type/Method) 的对象并将它们绑定到类的作用域中提供的名称。默认情况下，类中的方法是 `has` 作用域。默认情况下，不将 `our` 作用域的方法添加到方法缓存中，因此不能使用访问器 `$.` 调用。用其完全限定的名称和调用者作为第一个参数来调用它们。
 
 The `method` declarator defines objects of type [Method](https://docs.perl6.org/type/Method) and binds them to the provided name in the scope of a class. Methods in a class are `has` scoped by default. Methods that are `our` scoped are not added to the method cache by default and as such can not be called with the accessor sigil `$.`. Call them with their fully qualified name and the invocant as the first argument.
 
-<a id="inheritance-and-multis"></a>
-#### Inheritance and multis
+<a id="%E7%BB%A7%E6%89%BF%E4%B8%8E-multi-%E6%96%B9%E6%B3%95--inheritance-and-multis"></a>
+#### 继承与 multi 方法 / Inheritance and multis
+
+子类中的正常方法不与父类的 multi 方法竞争。
 
 A normal method in a subclass does not compete with multis of a parent class.
 
@@ -260,10 +278,10 @@ B.new.m($i);
 # OUTPUT: «B::Int␤»
 ```
 
+<a id="only-%E6%96%B9%E6%B3%95--only-method"></a>
+#### Only 方法 / Only method
 
-
-<a id="only-method"></a>
-#### Only method
+要显式声明一个方法不是 multi 方法，请使用 `only` 方法声明器。
 
 To explicitly state that a method is not a multi method use the `only` method declarator.
 
@@ -275,8 +293,10 @@ class C {
 # OUTPUT: «X::Comp::AdHoc: Cannot have a multi candidate for 'm' when an only method is also in the package 'C'␤»
 ```
 
-<a id="submethod-build"></a>
-#### submethod BUILD
+<a id="build-%E5%AD%90%E6%96%B9%E6%B3%95--submethod-build"></a>
+#### BUILD 子方法 / submethod BUILD
+
+[submethod](https://docs.perl6.org/type/Submethod)  `BUILD` 被 [.bless](https://docs.perl6.org/type/Mu#method_bless) 间接调用。它的目的是设置类的私有和公共属性，并接收传递给 `.bless` 的所有名称属性。在 `Mu` 中定义的默认构造函数 [.new](https://docs.perl6.org/type/Mu#method_new) 是调用它的方法。鉴于 `BUILD` 中没有公共访问器方法，您必须使用私有属性表示法。
 
 The [submethod](https://docs.perl6.org/type/Submethod) `BUILD` is (indirectly) called by [.bless](https://docs.perl6.org/type/Mu#method_bless). It is meant to set private and public attributes of a class and receives all names attributes passed into `.bless`. The default constructor [.new](https://docs.perl6.org/type/Mu#method_new) defined in `Mu` is the method that invokes it. Given that public accessor methods are not available in `BUILD`, you must use private attribute notation instead.
 
@@ -296,25 +316,28 @@ C.new.say; C.new('answer').say;
 #          C.new(attr => "answer")␤»
 ```
 
-<a id="fallback-method"></a>
-#### Fallback method 
+<a id="fallback-%E6%96%B9%E6%B3%95--fallback-method"></a>
+#### FALLBACK 方法 / Fallback method 
+
+当解析名称的其他方法不产生任何结果时，将调用具有特殊名称 `FALLBACK` 的方法。第一个参数保存名称，以下所有参数都是从原始调用中转发的。支持多方法和[子签名](https://docs.perl6.org/type/Signature#Destructuring_arguments)。
 
 A method with the special name `FALLBACK` will be called when other means to resolve the name produce no result. The first argument holds the name and all following arguments are forwarded from the original call. Multi methods and [sub-signatures](https://docs.perl6.org/type/Signature#Destructuring_arguments) are supported.
 
 ```Perl6
 class Magic {
     method FALLBACK ($name, |c(Int, Str)) {
-    put "$name called with parameters {c.perl}"  }
+        put "$name called with parameters {c.perl}"
+    }
 };
 Magic.new.simsalabim(42, "answer");
 
 # OUTPUT: «simsalabim called with parameters ⌈\(42, "answer")⌋␤»
 ```
 
+<a id="%E4%BF%9D%E7%95%99%E6%96%B9%E6%B3%95%E5%90%8D--reserved-method-names"></a>
+#### 保留方法名 / Reserved method names
 
-
-<a id="reserved-method-names"></a>
-#### Reserved method names
+一些内置的内省方法实际上是编译器提供的特殊语法，即 `WHAT`、`WHO`、`HOW` 和 `VAR`。用这些名称声明方法将无声地失败。可以动态调用，允许从外部对象调用方法。
 
 Some built-in introspection methods are actually special syntax provided by the compiler, namely `WHAT`, `WHO`, `HOW` and `VAR`. Declaring methods with those names will silently fail. A dynamic call will work, what allows to call methods from foreign objects.
 
@@ -736,8 +759,6 @@ say [R.^ver, R.^auth];
 # OUTPUT: «[v4.2.3 me@here.local]␤»
 ```
 
-
-
 <a id="enum"></a>
 ## `enum`
 
@@ -857,7 +878,7 @@ We can create an enum using it with this code:
 
 Firstly, we read lines from `config` file, split every line using `words` method and return resulting pair for every line, thus creating a List of Pairs.
 
-<a id="metaclass-1"></a>
+<a id="metaclass"></a>
 ### Metaclass
 
 To test if a given type object is an `enum`, test the metaobject method `.HOW` against [Metamodel::EnumHOW](https://docs.perl6.org/type/Metamodel::EnumHOW) or simply test against the `Enumeration` role.
@@ -868,7 +889,7 @@ say E.HOW ~~ Metamodel::EnumHOW; # OUTPUT: «True␤»
 say E ~~ Enumeration;            # OUTPUT: «True␤»
 ```
 
-<a id="methods-1"></a>
+<a id="methods"></a>
 ### Methods
 
 <a id="method-enums"></a>
@@ -984,4 +1005,3 @@ Subsets can be used to check types dynamically, which can be useful in conjuncti
 require ::('YourModule');
 subset C where ::('YourModule::C');
 ```
-
