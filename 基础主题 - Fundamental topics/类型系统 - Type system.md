@@ -25,8 +25,8 @@ Introduction to the type system of Perl 6
             - [BUILD 子方法 / submethod BUILD](#build-%E5%AD%90%E6%96%B9%E6%B3%95--submethod-build)
             - [FALLBACK 方法 / Fallback method](#fallback-%E6%96%B9%E6%B3%95--fallback-method)
             - [保留方法名 / Reserved method names](#%E4%BF%9D%E7%95%99%E6%96%B9%E6%B3%95%E5%90%8D--reserved-method-names)
-            - [Methods in package scope](#methods-in-package-scope)
-            - [Setting attributes with namesake variables and methods](#setting-attributes-with-namesake-variables-and-methods)
+            - [包作用域里的方法 / Methods in package scope](#%E5%8C%85%E4%BD%9C%E7%94%A8%E5%9F%9F%E9%87%8C%E7%9A%84%E6%96%B9%E6%B3%95--methods-in-package-scope)
+            - [使用名称变量和方法设置属性 / Setting attributes with namesake variables and methods](#%E4%BD%BF%E7%94%A8%E5%90%8D%E7%A7%B0%E5%8F%98%E9%87%8F%E5%92%8C%E6%96%B9%E6%B3%95%E8%AE%BE%E7%BD%AE%E5%B1%9E%E6%80%A7--setting-attributes-with-namesake-variables-and-methods)
         - [trait `is nodal`](#trait-is-nodal)
         - [trait](#trait)
         - [trait `is`](#trait-is)
@@ -350,8 +350,10 @@ say A.new.WHAT;    # OUTPUT: «(A)␤»
 say A.new."WHAT"() # OUTPUT: «ain't gonna happen␤»
 ```
 
-<a id="methods-in-package-scope"></a>
-#### Methods in package scope
+<a id="%E5%8C%85%E4%BD%9C%E7%94%A8%E5%9F%9F%E9%87%8C%E7%9A%84%E6%96%B9%E6%B3%95--methods-in-package-scope"></a>
+#### 包作用域里的方法 / Methods in package scope
+
+在类的包作用域内，任何 `our` 作用域方法都是可见的。
 
 Any `our` scoped method will be visible in the package scope of a class.
 
@@ -364,8 +366,8 @@ say C::.keys
 # OUTPUT: «(&packaged)␤»
 ```
 
-<a id="setting-attributes-with-namesake-variables-and-methods"></a>
-#### Setting attributes with namesake variables and methods
+<a id="%E4%BD%BF%E7%94%A8%E5%90%8D%E7%A7%B0%E5%8F%98%E9%87%8F%E5%92%8C%E6%96%B9%E6%B3%95%E8%AE%BE%E7%BD%AE%E5%B1%9E%E6%80%A7--setting-attributes-with-namesake-variables-and-methods"></a>
+#### 使用名称变量和方法设置属性 / Setting attributes with namesake variables and methods
 
 Instead of writing `attr => $attr `or `:attr($attr)`, you can save some typing if the variable (or method call) you're setting the attribute with shares the name with the attribute:
 

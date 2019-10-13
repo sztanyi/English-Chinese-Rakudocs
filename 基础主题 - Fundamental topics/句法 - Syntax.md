@@ -2,15 +2,15 @@
 
 # 句法 / Syntax
 
-Perl 6 语法的一般规则
+Perl 6 句法的一般规则
 
 General rules of Perl 6 syntax
 
-Per l6 从人类语言中借用了许多概念。这并不奇怪，因为它是由语言学家设计的。
+Perl 6 从人类语言中借用了许多概念。这并不奇怪，因为它是由语言学家设计的。
 
 Perl 6 borrows many concepts from human language. Which is not surprising, considering it was designed by a linguist.
 
-它在不同的上下文中重用公共元素，有名词（术语）和动词（运算符）的概念，是上下文敏感的（在日常意义上，不一定在计算机科学的解释中），因此一个符号可以有不同的含义，这取决于一个名词或一个动词是预期的。
+它在不同的上下文中重用公共元素，有名词（术语）和动词（运算符）的概念，是上下文敏感的（在日常意义上，不一定在计算机科学的解释中），因此一个符号可以有不同的含义，这取决于期望的是一个名词还是动词。
 
 It reuses common elements in different contexts, has the notion of nouns (terms) and verbs (operators), is context-sensitive (in the every day sense, not necessarily in the Computer Science interpretation), so a symbol can have a different meaning depending on whether a noun or a verb is expected.
 
@@ -24,7 +24,7 @@ It is also self-clocking, so that the parser can detect most of the common error
     - [自由语素 / Free form](#%E8%87%AA%E7%94%B1%E8%AF%AD%E7%B4%A0--free-form)
     - [反空格 / Unspace](#%E5%8F%8D%E7%A9%BA%E6%A0%BC--unspace)
     - [用分号分隔语句 / Separating statements with semicolons](#%E7%94%A8%E5%88%86%E5%8F%B7%E5%88%86%E9%9A%94%E8%AF%AD%E5%8F%A5--separating-statements-with-semicolons)
-    - [隐含分隔符规则（对于以代码块结尾的语句） / Implied separator rule \(for statements ending in blocks\)](#%E9%9A%90%E5%90%AB%E5%88%86%E9%9A%94%E7%AC%A6%E8%A7%84%E5%88%99%EF%BC%88%E5%AF%B9%E4%BA%8E%E4%BB%A5%E4%BB%A3%E7%A0%81%E5%9D%97%E7%BB%93%E5%B0%BE%E7%9A%84%E8%AF%AD%E5%8F%A5%EF%BC%89--implied-separator-rule-for-statements-ending-in-blocks)
+    - [隐式分隔符规则（以代码块结尾的语句） / Implied separator rule \(for statements ending in blocks\)](#%E9%9A%90%E5%BC%8F%E5%88%86%E9%9A%94%E7%AC%A6%E8%A7%84%E5%88%99%EF%BC%88%E4%BB%A5%E4%BB%A3%E7%A0%81%E5%9D%97%E7%BB%93%E5%B0%BE%E7%9A%84%E8%AF%AD%E5%8F%A5%EF%BC%89--implied-separator-rule-for-statements-ending-in-blocks)
     - [注释 / Comments](#%E6%B3%A8%E9%87%8A--comments)
         - [单行注释 / Single-line comments](#%E5%8D%95%E8%A1%8C%E6%B3%A8%E9%87%8A--single-line-comments)
         - [多行/嵌入注释 - Multi-line / embedded comments](#%E5%A4%9A%E8%A1%8C%E5%B5%8C%E5%85%A5%E6%B3%A8%E9%87%8A---multi-line--embedded-comments)
@@ -66,7 +66,6 @@ It is also self-clocking, so that the parser can detect most of the common error
 
 <!-- /MarkdownTOC -->
 
-
 <a id="%E8%AF%8D%E6%B3%95%E7%BA%A6%E5%AE%9A--lexical-conventions"></a>
 # 词法约定 / Lexical conventions
 
@@ -96,6 +95,7 @@ if True {
 ```
 
 或
+
 or
 
 ```Perl6
@@ -105,6 +105,7 @@ say "Hello"; # Bad indentation intended
 ```
 
 或
+
 or
 
 ```Perl6
@@ -112,6 +113,7 @@ if True { say "Hello" }
 ```
 
 甚至
+
 or even
 
 ```Perl6
@@ -125,7 +127,7 @@ though you can't leave out any of the remaining whitespace.
 <a id="%E5%8F%8D%E7%A9%BA%E6%A0%BC--unspace"></a>
 ## 反空格 / Unspace
 
-在编译器不允许空格的许多地方，只要用反斜杠引起来，就可以使用任意数量的空格。不支持标记中的非空格。编译器生成行号时，反空格的新行仍然算数。反空格的用例是后缀操作符和例程参数列表的分离。
+在编译器不允许空格的许多地方，只要用反斜杠引起来，就可以使用任意数量的空格。不支持 token 中的非空格。编译器生成行号时，反空格的新行仍然算数。反空格的用例是后缀操作符和例程参数列表的分离。
 
 In many places where the compiler would not allow a space you can use any amount of whitespace, as long as it is quoted with a backslash. Unspaces in tokens are not supported. Newlines that are unspaced still count when the compiler produces line numbers. Use cases for unspace are separation of postfix operators and routine argument lists.
 
@@ -166,10 +168,10 @@ if True {
 say "world"
 ```
 
-<a id="%E9%9A%90%E5%90%AB%E5%88%86%E9%9A%94%E7%AC%A6%E8%A7%84%E5%88%99%EF%BC%88%E5%AF%B9%E4%BA%8E%E4%BB%A5%E4%BB%A3%E7%A0%81%E5%9D%97%E7%BB%93%E5%B0%BE%E7%9A%84%E8%AF%AD%E5%8F%A5%EF%BC%89--implied-separator-rule-for-statements-ending-in-blocks"></a>
-## 隐含分隔符规则（对于以代码块结尾的语句） / Implied separator rule (for statements ending in blocks)
+<a id="%E9%9A%90%E5%BC%8F%E5%88%86%E9%9A%94%E7%AC%A6%E8%A7%84%E5%88%99%EF%BC%88%E4%BB%A5%E4%BB%A3%E7%A0%81%E5%9D%97%E7%BB%93%E5%B0%BE%E7%9A%84%E8%AF%AD%E5%8F%A5%EF%BC%89--implied-separator-rule-for-statements-ending-in-blocks"></a>
+## 隐式分隔符规则（以代码块结尾的语句） / Implied separator rule (for statements ending in blocks)
 
-以裸块结尾的完整语句可以省略后面的分号，如果在同一行中没有其他语句跟在块的右大括号 `}` 后面。这被称为“隐含分隔符规则”。例如，你不需要在上面和下面看到的 `if` 语句块后面写分号。
+以裸块结尾的完整语句可以省略后面的分号，如果在同一行中没有其他语句跟在块的右大括号 `}` 后面。这被称为“隐式分隔符规则”。例如，你不需要在上面和下面看到的 `if` 语句块后面写分号。
 
 Complete statements ending in bare blocks can omit the trailing semicolon, if no additional statements on the same line follow the block's closing curly brace `}`. This is called the "implied separator rule." For example, you don't need to write a semicolon after an `if` statement block as seen above, and below.
 
@@ -240,7 +242,7 @@ if $age > 250 {     # catch obvious outliers
 <a id="%E5%A4%9A%E8%A1%8C%E5%B5%8C%E5%85%A5%E6%B3%A8%E9%87%8A---multi-line--embedded-comments"></a>
 ### 多行/嵌入注释 - Multi-line / embedded comments
 
-多行和嵌入的注释以散列字符开头，后跟一个反撇号，然后是一些开始的括号字符，最后是匹配的结束括号字符。只有成对的字符（）、{}、[] 和 <> 才对限制注释块有效。（不同于匹配和替换，其中的成对如 !!、|| 或 @ 可以使用。）内容不仅可以跨多行，还可以内嵌。
+多行和嵌入的注释以井号字符开头，后跟一个反撇号，然后是一些开始的括号字符，最后是匹配的结束括号字符。只有成对的字符（）、{}、[] 和 <> 才对限制注释块有效。（不同于匹配和替换，其中的成对如 !!、|| 或 @ 可以使用。）内容不仅可以跨多行，还可以内嵌。
 
 Multi-line and embedded comments start with a hash character, followed by a backtick, and then some opening bracketing character, and end with the matching closing bracketing character. Only the paired characters (), {}, [], and <> are valid for bounding comment blocks. (Unlike matches and substitutions, where pairs such as !!, || or @ may be used.) The content can not only span multiple lines, but can also be embedded inline.
 
@@ -334,7 +336,7 @@ x²                 # superscript 2 is not alphanumeric (explained above)
 <a id="%E6%89%A9%E5%B1%95%E6%A0%87%E8%AF%86%E7%AC%A6--extended-identifiers"></a>
 ### 扩展标识符 / Extended identifiers
 
-通常，名称包含普通标识符中不允许使用的字符是很方便的。用例包括这样的情况：一组实体共享一个通用的“短”名称，但仍然需要单独标识其每个元素。例如，可以使用短名称为 `Dog` 的模块，而长名称包括其命名机构和版本：
+通常，名称包含普通标识符中不允许使用的字符是很方便的。用例包括这样的情况：一组实体共享一个通用的“短”名称，但仍然需要单独标识其每个元素。例如，可以使用短名称为 `Dog` 的模块，而长名称包括其命名者和版本：
 
 It is often convenient to have names that contain characters that are not allowed in ordinary identifiers. Use cases include situations where a set of entities shares a common "short" name, but still needs for each of its elements to be identifiable individually. For example, you might use a module whose short name is `Dog`, while its long name includes its naming authority and version:
 
@@ -363,9 +365,9 @@ infix:«<=»                # the official name of the operator in $a <= $b
 
 For all such uses, you can append one or more colon-separated strings to an ordinary identifier to create a so-called *extended identifier*. When appended to an identifier (that is, in postfix position), this colon-separated string generates unique variants of that identifier.
 
-这些字符串的格式为 `:key<value>`，其中 `key` *或* `value` 是可选的；也就是说，在将其与常规标识符分隔开的冒号之后，将有一个 `key` 和/或一个引号括住的结构，如 `< >`，`« »` 或 `[' ']`，它引用一个或多个任意字符 `value`.[[1\]](https://docs.perl6.org/language/syntax#fn-1)
+这些字符串的格式为 `:key<value>`，其中 `key` *或* `value` 是可选的；也就是说，在将其与常规标识符分隔开的冒号之后，将有一个 `key` 和/或一个引号括住的结构，如 `< >`，`« »` 或 `[' ']`，它引用一个或多个任意字符 `value`.[[1]](https://docs.perl6.org/language/syntax#fn-1)
 
-These strings have the form `:key<value>`, wherein `key` *or* `value` are optional; that is, after the colon that separates it from a regular identifier, there will be a `key` and/or a quoting bracketing construct such as `< >`, `« »` or `[' ']` which quotes one or more arbitrary characters `value`.[[1\]](https://docs.perl6.org/language/syntax#fn-1)
+These strings have the form `:key<value>`, wherein `key` *or* `value` are optional; that is, after the colon that separates it from a regular identifier, there will be a `key` and/or a quoting bracketing construct such as `< >`, `« »` or `[' ']` which quotes one or more arbitrary characters `value`.[[1]](https://docs.perl6.org/language/syntax#fn-1)
 
 ```Perl6
 # exemplary valid extended identifiers:
@@ -425,7 +427,7 @@ use ThatModule:auth<Somebody>:ver<2.7.18.28.18>
 use ThatModule:ver<2.7.18.28.18>:auth<Somebody>
 ```
 
-此外，扩展标识符支持编译时插值；这要求对插值值使用[常量](https://docs.perl6.org/language/terms#Constants)：
+此外，扩展标识符支持编译时字符串插值；这要求对插值值使用[常量](https://docs.perl6.org/language/terms#Constants)：
 
 Furthermore, extended identifiers support compile-time interpolation; this requires the use of [constants](https://docs.perl6.org/language/terms#Constants) for the interpolation values:
 
@@ -450,11 +452,11 @@ say @we:<$what>;
 <a id="%E5%A4%8D%E5%90%88%E6%A0%87%E8%AF%86%E7%AC%A6--compound-identifiers"></a>
 ### 复合标识符 / Compound identifiers
 
-复合标识符是由两个或多个普通和/或扩展标识符组成的标识符，这些标识符之间用双冒号 `::`。
+复合标识符是由两个或多个普通和/或扩展标识符组成的标识符，这些标识符之间用双冒号 `::` 分隔。
 
 A compound identifier is an identifier that is composed of two or more ordinary and/or extended identifiers that are separated from one another by a double colon `::`.
 
-双冒号 `::` 称为*名称空间分隔符*或*包分隔符*，它在名称中澄清了其语义功能：强制将名称的前一部分视为[包](https://docs.perl6.org/language/packages)/名称空间，通过该名称空间，后面的部分如果要查找名称：
+双冒号 `::` 称为*名称空间分隔符*或*包分隔符*，它在名称中澄清了其语义功能：强制将名称的前一部分视为 [package](https://docs.perl6.org/language/packages)/命名空间，通过该命名空间，查找后面部分的名称：
 
 The double colon `::` is known as the *namespace separator* or the *package delimiter*, which clarifies its semantic function in a name: to force the preceding portion of the name to be considered a [package](https://docs.perl6.org/language/packages)/namespace through which the subsequent portion of the name is to be located:
 
@@ -483,7 +485,7 @@ say OUR::foo.HOW          # OUTPUT: «Perl6::Metamodel::PackageHOW.new␤»
 
 The last lines shows how the `foo` package was created automatically, as a deposit for variables in that namespace.
 
-双冒号句法允许将字符串的运行时[插值](https://docs.perl6.org/language/packages#Interpolating_into_names)使用 `::($expr)` 将字符串插入到包或变量名中，通常将包或变量名放在那里：
+双冒号句法允许运行时字符串[插值](https://docs.perl6.org/language/packages#Interpolating_into_names)，使用 `::($expr)` 将字符串插入到包或变量名中，通常将包或变量名放在那里：
 
 The double colon syntax enables runtime [interpolation](https://docs.perl6.org/language/packages#Interpolating_into_names) of a string into a package or variable name using `::($expr)` where you'd ordinarily put a package or variable name:
 
@@ -519,7 +521,7 @@ say dice + dice;
 
 can print any number between 2 and 12.
 
-如果我们把“骰子”声明为
+如果我们把 `dice` 声明为一个常规函数
 
 If instead we had declared `dice` as a regular
 
@@ -572,7 +574,7 @@ For example, in the expression `2 * $salary`, `2` and `$salary` are two terms (a
 <a id="%E5%8F%98%E9%87%8F--variables"></a>
 ## 变量 / Variables
 
-变量通常以名为 *sigil* 的特殊字符开头，后跟标识符。必须先声明变量，然后才能使用它们。
+变量通常以名为*标记*的特殊字符开头，后跟标识符。必须先声明变量，然后才能使用它们。
 
 Variables typically start with a special character called the *sigil*, and are followed by an identifier. Variables must be declared before you can use them.
 
@@ -633,7 +635,7 @@ See the [documentation on packages](https://docs.perl6.org/language/packages) fo
 <a id="%E5%AD%97%E9%9D%A2%E9%87%8F--literals"></a>
 ## 字面量 / Literals
 
-[字面量](https://en.wikipedia.org/wiki/Literal_%28computer_programming%29)是源代码中常量值的表示。Perl 6 有几个内置类型的字面量，比如 [字符](https://docs.perl6.org/type/Str)、几个数字类型、[键值对](https://docs.perl6.org/type/Pair) 等等。
+[字面量](https://en.wikipedia.org/wiki/Literal_%28computer_programming%29)是源代码中常量值的表示。Perl 6 有几个内置类型的字面量，比如 [字符串](https://docs.perl6.org/type/Str)、一些数字类型、[键值对](https://docs.perl6.org/type/Pair) 等等。
 
 A [literal](https://en.wikipedia.org/wiki/Literal_%28computer_programming%29) is a representation of a constant value in source code. Perl 6 has literals for several built-in types, like [strings](https://docs.perl6.org/type/Str), several numeric types, [pairs](https://docs.perl6.org/type/Pair) and more.
 
@@ -649,7 +651,7 @@ say 'a string literal';
 say "a string literal\nthat interprets escape sequences";
 ```
 
-请参阅[引用](https://docs.perl6.org/language/quoting)了解更多选项，包括[转义引用 `q`](https://docs.perl6.org/language/quoting#Escaping:_q)。Perl 6 在字面量中使用标准转义符： `\a \b \t \n \f \r \e`，其含义与[设计文档](https://design.perl6.org/S02.html#Backslash_sequences)中指定的ASCII转义码相同。
+请参阅[引用](https://docs.perl6.org/language/quoting)了解更多选项，包括[转义引用 `q`](https://docs.perl6.org/language/quoting#Escaping:_q)。Perl 6 在字面量中使用标准转义符： `\a \b \t \n \f \r \e`，其含义与[设计文档](https://design.perl6.org/S02.html#Backslash_sequences)中指定的 ASCII 转义码相同。
 
 See [quoting](https://docs.perl6.org/language/quoting) for many more options, including [the escaping quoting `q`](https://docs.perl6.org/language/quoting#Escaping:_q). Perl 6 uses the standard escape characters in literals: `\a \b \t \n \f \r \e`, with the same meaning as the ASCII escape codes, specified in [the design document](https://design.perl6.org/S02.html#Backslash_sequences).
 
@@ -660,11 +662,11 @@ say "🔔\a";  # OUTPUT: «🔔␇␤»
 <a id="%E6%95%B0%E5%AD%97%E5%AD%97%E9%9D%A2%E9%87%8F--number-literals"></a>
 ### 数字字面量 / Number literals
 
-数字字面值通常以十为基数指定（如果需要，可以通过前缀 `0d` 逐字指定），除非像 `0x`（he**x**adecimal，基数 16）、`0o`（**o**ctal，基数 8）或 `0b`（**b**inary，基数 2）这样的前缀或像 `:16<A0>` 这样显式指定基数。与其他编程语言不同，前导零*不*表示基数 8；而是发出编译时警告。
+数字字面值通常以十为基数指定（如果需要，可以通过前缀 `0d` 指定），除非像 `0x`（十六进制，基数 16）、`0o`（八进制，基数 8）或 `0b`（二进制，基数 2）这样的前缀或像 `:16<A0>` 这样显式指定基数。与其他编程语言不同，前导零*不*表示基数 8；反而会发出编译时告警。
 
 Number literals are generally specified in base ten (which can be specified literally, if needed, via the prefix `0d`), unless a prefix like `0x` (he**x**adecimal, base 16), `0o` (**o**ctal, base 8) or `0b` (**b**inary, base 2) or an explicit base in adverbial notation like `:16<A0>` specifies it otherwise. Unlike other programming languages, leading zeros do *not* indicate base 8; instead a compile-time warning is issued.
 
-在所有文字格式中，可以使用下划线对数字进行分组，尽管它们不包含任何语义信息；以下文字的计算结果都相同：
+在所有字面量格式中，可以使用下划线对数字进行分组，尽管它们不包含任何语义信息；以下字面量的计算结果都相同：
 
 In all literal formats, you can use underscores to group digits, although they don't carry any semantic information; the following literals all evaluate to the same number:
 
@@ -839,7 +841,7 @@ say [@a, 3, 4].perl;  # OUTPUT: «[[1, 2], 3, 4]␤»
 say [|@a, 3, 4].perl; # OUTPUT: «[1, 2, 3, 4]␤»
 ```
 
-[列表](https://docs.perl6.org/type/List)类型可以从数组字面量声明中显式创建，无需从数组强制，在声明时使用**is** [特性](https://docs.perl6.org/language/traits)。
+[列表](https://docs.perl6.org/type/List)类型可以从数组字面量声明中显式创建，无需从数组强制，在声明时使用 **is** [特性](https://docs.perl6.org/language/traits)。
 
 [List](https://docs.perl6.org/type/List) type can be explicitly created from an array literal declaration without a coercion from Array, using **is** [trait](https://docs.perl6.org/language/traits) on declaration.
 
@@ -852,7 +854,7 @@ my List @a;
 <a id="%E5%93%88%E5%B8%8C%E5%AD%97%E9%9D%A2%E9%87%8F--hash-literals"></a>
 ### 哈希字面量 / Hash literals
 
-一个前导的关联标记和一对圆括号 `%( )`，可以包围一个键值对的列表，形成一个[哈希](https://docs.perl6.org/type/Hash)字面量；通常，里面有一个逗号分隔的键值对的列表。如果使用非对，则假定它是键，下一个元素是值。这通常与简单的箭头对一起使用。
+一个前导的关联标记和一对圆括号 `%( )`，可以包围一个键值对的列表，形成一个[哈希](https://docs.perl6.org/type/Hash)字面量；通常，里面有一个逗号分隔的键值对的列表。如果使用非键值对，则假定它是键，下一个元素是值。这通常与简单的箭头键值对一起使用。
 
 A leading associative sigil and pair of parenthesis `%( )` can surround a `List` of `Pairs` to form a [Hash](https://docs.perl6.org/type/Hash) literal; typically there is a comma-delimited `List` of `Pairs` inside. If a non-pair is used, it is assumed to be a key and the next element is the value. Most often this is used with simple arrow pairs.
 
@@ -864,7 +866,7 @@ say %(a => 73, foo => "fish").keys.join(" ");   # OUTPUT: «a foo␤»
 #   ^^^^^^^^^^^^^^^^^^^^^^^^^ Hash constructor
 ```
 
-当分配给左侧的 `%` 变量时，右侧键值对周围的标记和括号是可选的。
+当赋值给左侧的 `%` 变量时，右侧键值对周围的标记和括号是可选的。
 
 When assigning to a `%`-sigiled variable on the left-hand side, the sigil and parenthesis surrounding the right-hand side `Pairs`are optional.
 
@@ -872,7 +874,7 @@ When assigning to a `%`-sigiled variable on the left-hand side, the sigil and pa
 my %ages = fred => 23, jean => 87, ann => 4;
 ```
 
-默认情况下，`%( )` 中的键被强制为字符串。若要使用非字符串键组成哈希，请使用带冒号前缀的大括号分隔符 `:{ }`：
+默认情况下，`%( )` 中的键被强制转换为字符串。若要使用非字符串键组成哈希，请使用带冒号前缀的大括号分隔符 `:{ }`：
 
 By default, keys in `%( )` are forced to strings. To compose a hash with non-string keys, use curly brace delimiters with a colon prefix `:{ }` :
 
@@ -880,7 +882,7 @@ By default, keys in `%( )` are forced to strings. To compose a hash with non-str
 my $when = :{ (now) => "Instant", (DateTime.now) => "DateTime" };
 ```
 
-请注意，使用对象作为键时，不能将非字符串键作为字符串访问：
+请注意，使用对象作为键时，不能用字符串访问非字符串键：
 
 Note that with objects as keys, you cannot access non-string keys as strings:
 
@@ -889,7 +891,7 @@ say :{ -1 => 41, 0 => 42, 1 => 43 }<0>;  # OUTPUT: «(Any)␤»
 say :{ -1 => 41, 0 => 42, 1 => 43 }{0};  # OUTPUT: «42␤»
 ```
 
-实现了[关联](https://docs.perl6.org/type/Associative)角色的特定类型如[Map](https://docs.perl6.org/type/Map)（包括 [Hash](https://docs.perl6.org/type/Hash) 、[Stash](https://docs.perl6.org/type/Stash) 子类）和 [QuantHash](https://docs.perl6.org/type/QuantHash)（以及它的子类）可以在声明时使用 **is** [trait](https://docs.perl6.org/language/traits) 从哈希字面量显式创建，而无需强制类型转换：
+实现了 [Associative](https://docs.perl6.org/type/Associative) 角色的特定类型如 [Map](https://docs.perl6.org/type/Map)（包括 [Hash](https://docs.perl6.org/type/Hash) 、[Stash](https://docs.perl6.org/type/Stash) 子类）和 [QuantHash](https://docs.perl6.org/type/QuantHash)（以及它的子类）可以在声明时使用 **is** [trait](https://docs.perl6.org/language/traits) 从哈希字面量显式创建，而无需强制类型转换：
 
 Particular types that implement [Associative](https://docs.perl6.org/type/Associative) role, [Map](https://docs.perl6.org/type/Map) (including [Hash](https://docs.perl6.org/type/Hash) and [Stash](https://docs.perl6.org/type/Stash) subclasses) and [QuantHash](https://docs.perl6.org/type/QuantHash) (and its subclasses), can be explicitly created from a hash literal without a coercion, using **is** [trait](https://docs.perl6.org/language/traits) on declaration:
 
@@ -961,7 +963,7 @@ given "foo", 42 {
 }
 ```
 
-有关签名的详细信息，请参阅[签名](https://docs.perl6.org/type/Signature)文档。
+有关签名的详细信息，请参阅 [Signatures](https://docs.perl6.org/type/Signature) 文档。
 
 See the [Signatures](https://docs.perl6.org/type/Signature) documentation for more about signatures.
 
@@ -994,7 +996,7 @@ sub foo { say "Hello!" }
 sub say-hello($to-whom) { say "Hello $to-whom!" }
 ```
 
-也可以将子例程分配给变量。
+也可以将子例程赋值给变量。
 
 You can also assign subroutines to variables.
 
@@ -1073,7 +1075,7 @@ my @functions = ({say 1}, {say 2}, {say 3});
 @functions>>.(); # hyper method call operator
 ```
 
-在类内声明时，子例程被命名为 "method"：方法是针对对象（即类实例）调用的子例程。在方法中，特殊变量 `self` 包含对象实例（请参见[方法](https://docs.perl6.org/language/classtut#Methods)）。
+在类内声明时，子例程被称为 "method"：方法是针对对象（即类实例）调用的子例程。在方法中，特殊变量 `self` 包含对象实例（请参见[方法](https://docs.perl6.org/language/classtut#Methods)）。
 
 When declared within a class, a subroutine is named "method": methods are subroutines invoked against an object (i.e., a class instance). Within a method the special variable `self` contains the object instance (see [Methods](https://docs.perl6.org/language/classtut#Methods)).
 
@@ -1132,7 +1134,7 @@ $x++           # postfix, operator is after single input
 <a id="%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6--metaoperators"></a>
 ## 元运算符 / Metaoperators
 
-可以组合运算符。一个常见的例子是将中缀（二进制）运算符与赋值结合起来。可以将赋值与任何二进制运算符组合。
+可以组合运算符。一个常见的例子是将中缀（二元）运算符与赋值结合起来。可以将赋值与任何二元运算符组合。
 
 Operators can be composed. A common example of this is combining an infix (binary) operator with assignment. You can combine assignment with any binary operator.
 
@@ -1159,7 +1161,7 @@ Wrap an infix operator in `« »` (or the ASCII equivalent) to create a new hype
 say <1 2 3> «+» <4 5 6> # OUTPUT: «(5 7 9)␤»
 ```
 
-箭头的方向指示当列表大小不同时要执行的操作。
+箭头的方向指示当列表大小不同时如何操作。
 
 The direction of the arrows indicates what to do when the lists are not the same size.
 
@@ -1178,6 +1180,6 @@ You can also wrap a unary operator with a hyper operator.
 say -« <1 2 3> # OUTPUT: «(-1 -2 -3)␤»
 ```
 
-[[↑\]](https://docs.perl6.org/language/syntax#fn-ref-1) 从 Perl 6 语言版本 6.d 开始，保留了以 `sym` 作为 `key`（例如 `:sym<foo>` ）的冒号对，以备将来使用。
+[[↑]](https://docs.perl6.org/language/syntax#fn-ref-1) 从 Perl 6 语言版本 6.d 开始，保留了以 `sym` 作为 `key`（例如 `:sym<foo>` ）的冒号对，以备将来使用。
 
-[[↑\]](https://docs.perl6.org/language/syntax#fn-ref-1) Starting with Perl 6 language version 6.d, colon pairs with `sym` as the `key` (e.g. `:sym<foo>`) are reserved for possible future use.
+[[↑]](https://docs.perl6.org/language/syntax#fn-ref-1) Starting with Perl 6 language version 6.d, colon pairs with `sym` as the `key` (e.g. `:sym<foo>`) are reserved for possible future use.

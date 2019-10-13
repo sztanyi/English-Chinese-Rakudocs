@@ -6,7 +6,7 @@ Perl 6 中的面向对象
 
 Object orientation in Perl 6
 
-Perl 6 为[面向对象的编程（OOP）](https://en.wikipedia.org/wiki/Object-oriented_programming)提供了强有力的支持。尽管 Perl 6 允许程序员在多个范例中编程，但面向对象的编程是该语言的核心。
+Perl 6 为[面向对象的编程（OOP）](https://en.wikipedia.org/wiki/Object-oriented_programming)提供了强有力的支持。尽管 Perl 6 允许程序员多范例编程，但面向对象的编程是该语言的核心。
 
 Perl 6 provides strong support for [Object Oriented Programming (OOP)](https://en.wikipedia.org/wiki/Object-oriented_programming). Although Perl 6 allows programmers to program in multiple paradigms, Object Oriented Programming is at the heart of the language.
 
@@ -14,7 +14,7 @@ Perl 6 有很多预定义的类型，可以分为两类：常规类型和[*原�
 
 Perl 6 comes with a wealth of predefined types, which can be classified in two categories: regular and [*native* types](https://docs.perl6.org/language/nativetypes). Everything that you can store in a variable is either a *native value* or an *object*. That includes literals, types (type objects), code and containers.
 
-原生类型用于低级类型(如 `uint64`)。即使*原生*类型不具有与对象相同的功能，如果在它们上调用方法，它们也会自动*装箱*到普通对象中。
+原生类型用于低级类型（如 `uint64`）。即使*原生*类型不具有与对象相同的功能，如果在它们上调用方法，它们也会自动*装箱*到普通对象中。
 
 Native types are used for low-level types (like `uint64`). Even if *native* types do not have the same capabilities as objects, if you call methods on them, they are automatically *boxed* into normal objects.
 
@@ -95,7 +95,7 @@ say @words.join('--').subst: 'years', 'DAYS';
 # OUTPUT: «Abe--Lincoln--said--Fourscore and seven DAYS ago␤» 
 ```
 
-由于你必须在方法后面放置一个 `:` 如果你想传递没有括号的参数，没有冒号或括号的方法调用是一个没有参数列表的方法调用：
+如果你想不使用括号传递参数，则必须在方法后面放置一个 `:`，没有冒号或括号的方法调用是一个没有参数列表的方法调用：
 
 Since you have to put a `:` after the method if you want to pass arguments without parentheses, a method call without a colon or parentheses is unambiguously a method call without an argument list:
 
@@ -105,11 +105,11 @@ say 4.log: +2; # OUTPUT: «2␤» ( base-2 logarithm of 4 )
 say 4.log  +2; # OUTPUT: «3.38629436111989␤» ( natural logarithm of 4, plus 2 )
 ```
 
-许多看起来不像方法调用的操作(例如，智能匹配或将对象插入到字符串中)可能会导致隐藏下的方法调用。
+许多看起来不像方法调用的操作(例如，智能匹配或将对象插入到字符串中)可能会导致隐性方法调用。
 
 Many operations that don't look like method calls (for example, smartmatching or interpolating an object into a string) might result in method calls under the hood.
 
-方法可以返回可变容器，在这种情况下，可以将其分配给方法调用的返回值。这就是如何使用对象的可读写属性：
+方法可以返回可变容器，在这种情况下，可以给方法调用的返回值赋值。这就是如何使用对象的可读写属性：
 
 Methods can return mutable containers, in which case you can assign to the return value of a method call. This is how read-writable attributes to objects are used:
 
@@ -117,7 +117,7 @@ Methods can return mutable containers, in which case you can assign to the retur
 $*IN.nl-in = "\r\n";
 ```
 
-在这里，我们在 `$*IN` 对象上调用方法 `nl-in`，没有参数，并将其赋值给它用 [`=`](https://docs.perl6.org/routine/=) 返回的容器。
+在这里，我们在 `$*IN` 对象上调用方法 `nl-in`，不带参数，并将其赋值为用 [`=`](https://docs.perl6.org/routine/=) 返回的容器。
 
 Here, we call method `nl-in` on the `$*IN` object, without arguments, and assign to the container it returned with the [`=`](https://docs.perl6.org/routine/=) operator.
 
@@ -128,7 +128,7 @@ All objects support methods from class [Mu](https://docs.perl6.org/type/Mu), whi
 <a id="%E7%B1%BB%E5%9E%8B%E5%AF%B9%E8%B1%A1--type-objects"></a>
 ## 类型对象 / Type objects
 
-类型本身就是对象，你可以通过写入它的名称来获得*类型对象*：
+类型本身就是对象，你可以通过直接输入它的名称来获得*类型对象*：
 
 Types themselves are objects and you can get the *type object* by writing its name:
 
@@ -136,7 +136,7 @@ Types themselves are objects and you can get the *type object* by writing its na
 my $int-type-obj = Int;
 ```
 
-你可以通过调用 `WHAT` 方法来请求任何类型的对象，该方法实际上是一个方法形式的宏：
+你可以通过调用 `WHAT` 方法来获得任何东西的类型对象，该方法实际上是一个方法形式的宏：
 
 You can request the type object of anything by calling the `WHAT` method, which is actually a macro in method form:
 
@@ -144,7 +144,7 @@ You can request the type object of anything by calling the `WHAT` method, which 
 my $int-type-obj = 1.WHAT;
 ```
 
-类型对象（不包括 [Mu](https://docs.perl6.org/type/Mu)）可用 [`===`](https://docs.perl6.org/routine/===) 标识运算符比较：
+类型对象（不包括 [Mu](https://docs.perl6.org/type/Mu)）可用 [`===`](https://docs.perl6.org/routine/===) 运算符比较标识：
 
 Type objects (other than [Mu](https://docs.perl6.org/type/Mu)) can be compared for equality with the [`===`](https://docs.perl6.org/routine/===) identity operator:
 
@@ -172,7 +172,7 @@ sub f($x) {
 }
 ```
 
-子类型检查由[智能匹配](https://docs.perl6.org/language/operators#infix_~~)完成：
+子类型检查可以使用[智能匹配](https://docs.perl6.org/language/operators#infix_~~)完成：
 
 Subtype checking is done by [smartmatching](https://docs.perl6.org/language/operators#infix_~~):
 
@@ -193,7 +193,7 @@ Classes are declared using the `class` keyword, typically followed by a name.
 class Journey { }
 ```
 
-此声明将导致在当前包和当前词法作用域中创建并安装一个类型对象，名为 `Journey`。还可以声明词法类：
+此声明将导致在当前包和当前词法作用域中创建一个类型对象，名为 `Journey`。你还可以在词法作用域上声明类：
 
 This declaration results in a type object being created and installed in the current package and current lexical scope under the name `Journey`. You can also declare classes lexically:
 
@@ -208,7 +208,7 @@ This restricts their visibility to the current lexical scope, which can be usefu
 <a id="%E5%B1%9E%E6%80%A7--attributes"></a>
 ## 属性 / Attributes 
 
-属性是存在类的每个实例中的变量；当实例化时，变量与其值之间的关联称为属性。它们是存储对象状态的地方。在 Perl 6 中，所有属性都是*私有*，这意味着它们只能由类实例本身直接访问。它们通常使用 `has` 声明符和 `!` 符号声明。
+属性是存在类实例中的变量；当实例化时，变量与其值之间的关联称为属性。它们是存储对象状态的地方。在 Perl 6 中，所有属性都是*私有*，这意味着它们只能由类实例本身直接访问。它们通常使用 `has` 声明符和 `!` 符号声明。
 
 Attributes are variables that exist per instance of a class; when instantiated to a value, the association between the variable and its value is called a property. They are where the state of an object is stored. In Perl 6, all attributes are *private*, which means they can be accessed directly only by the class instance itself. They are typically declared using the `has` declarator and the `!` twigil.
 
@@ -234,7 +234,7 @@ class Journey {
 }
 ```
 
-这默认为提供只读访问器。为了允许对属性进行更改，添加 [is rw](https://docs.perl6.org/routine/is%20rw) 特性：
+默认提供只读访问器。为了允许对属性进行更改，添加 [is rw](https://docs.perl6.org/routine/is%20rw) 特性：
 
 This defaults to providing a read-only accessor. In order to allow changes to the attribute, add the [is rw](https://docs.perl6.org/routine/is%20rw) trait:
 
@@ -247,11 +247,11 @@ class Journey {
 }
 ```
 
-现在，在创建了一个 `Journey` 对象之后，它的 `.origin`、`.destination` 和 `.notes` 都可以从类之外访问，但只能修改 `.notes`。
+现在，在创建了 `Journey` 对象之后，它的 `.origin`、`.destination` 和 `.notes` 都可以从类之外访问，但只有 `.notes` 能被修改。
 
 Now, after a `Journey` object is created, its `.origin`, `.destination`, and `.notes` will all be accessible from outside the class, but only `.notes` can be modified.
 
-如果一个对象实例化时没有特定的属性，例如 origin 或 destination，我们可能无法得到所需的结果。为了防止出现这种情况，请提供默认值，或通过使用 [is required](https://docs.perl6.org/routine/is%20required) 特性标记属性，确保在创建对象时设置属性。
+如果一个对象实例化时没有指定特定的属性，例如 origin 或 destination，我们可能无法得到想要的结果。为了防止出现这种情况，请提供默认值，或通过使用 [is required](https://docs.perl6.org/routine/is%20required) 特性标记属性，确保在创建对象时设置属性。
 
 If an object is instantiated without certain attributes, such as origin or destination, we may not get the desired result. To prevent this, provide default values or make sure that an attribute is set on object creation by marking an attribute with an [is required](https://docs.perl6.org/routine/is%20required) trait.
 
@@ -292,7 +292,7 @@ Note that, although the default constructor can initialize read-only attributes,
 <a id="%E6%96%B9%E6%B3%95--methods"></a>
 ## 方法 / Methods
 
-方法在类体中使用 `method` 关键字声明。
+方法在类中使用 `method` 关键字声明。
 
 Methods are declared with the `method` keyword inside a class body.
 
@@ -318,7 +318,7 @@ class Journey {
 }
 ```
 
-方法可以有签名，就像子例程一样。属性可以在方法中使用，什么时候都可以与 `!` 号一起使用，即使它们是用 `.` 号声明的。这是因为 `.` 号声明了一个 `!` 号的属性，并生成了一个访问器方法。
+方法可以有签名，就像子例程一样。属性可以在方法中使用，任何时候都可以与 `!` 号一起使用，即使它们是用 `.` 号声明的。这是因为 `.` 号声明了一个 `!` 号的属性，并生成了一个访问器方法。
 
 A method can have a signature, just like a subroutine. Attributes can be used in methods and can always be used with the `!` twigil, even if they are declared with the `.` twigil. This is because the `.` twigil declares a `!` twigil and generates an accessor method.
 
@@ -326,11 +326,11 @@ A method can have a signature, just like a subroutine. Attributes can be used in
 
 Looking at the code above, there is a subtle but important difference between using `$!origin` and `$.origin` in the method `describe`. `$!origin` is an inexpensive and obvious lookup of the attribute. `$.origin` is a method call and thus may be overridden in a subclass. Only use `$.origin` if you want to allow overriding.
 
-与子例程不同，其他命名参数不会产生编译时间或运行时错误。这允许通过 [Re-dispatching](https://docs.perl6.org/language/functions#Re-dispatching) 链式调用方法。
+与子例程不同，额外的命名参数不会产生编译时间或运行时错误。这允许通过 [Re-dispatching](https://docs.perl6.org/language/functions#Re-dispatching) 链式调用方法。
 
 Unlike subroutines, additional named arguments will not produce compile time or runtime errors. That allows chaining of methods via [Re-dispatching](https://docs.perl6.org/language/functions#Re-dispatching).
 
-你可以编写自己的访问器来覆盖任何或所有自动生成的访问器。
+你可以编写自己的访问器来覆盖自动生成的访问器。
 
 You may write your own accessors to override any or all of the autogenerated ones.
 
@@ -363,7 +363,7 @@ print $trip;
 #There ⤶ 
 ```
 
-声明的 multi 方法 `notes` 覆盖声明 `$.notes` 中隐含的自动生成的方法，使用不同的签名进行读写。
+multi 方法 `notes` 覆盖 `$.notes` 中隐含的自动生成的方法，用不同的签名区分读写。
 
 The declared multi method `notes` overrides the auto-generated methods implicit in the declaration of `$.notes`, using a different signature for reading and writing.
 
@@ -382,7 +382,7 @@ A.new."$name"().say;
 # OUTPUT: «(Any)␤» 
 ```
 
-用于更新 `$.notes` 的语法在本节中与前面的 [Attributes](https://docs.perl6.org/language/objects#Attributes) 部分相关。而不是赋值：
+用于更新 `$.notes` 的语法在本节中与前面的 [Attributes](https://docs.perl6.org/language/objects#Attributes) 部分相关。作为赋值的替代：
 
 The syntax used to update `$.notes` changed in this section with respect to the previous [Attributes](https://docs.perl6.org/language/objects#Attributes) section. Instead of an assignment:
 
@@ -398,14 +398,14 @@ we now do a method call:
 $trip.notes("First steps");
 ```
 
-覆盖默认的自动生成访问器意味着，在赋值返回时不再可以提供可变容器。方法调用是将计算和逻辑添加到属性更新中的首选方法。许多现代语言可以通过使用 “setter” 方法重载赋值来更新属性。虽然 Perl 6 可以通过一个 [`Proxy`](https://github.com/perl6/roast/blob/master/S12-attributes/mutators.t) 对象重载赋值操作符，但重载赋值设置复杂逻辑属性是不可取的，因为[较弱的面向对象设计](https://6guts.wordpress.com/2016/11/25/perl-6-is-biased-towards-mutators-being-really-simple-thats-a-good-thing/)。
+覆盖默认的自动生成访问器意味着，不可以对返回值赋值可变容器。方法调用是将计算和逻辑添加到属性更新中的首选方法。许多现代语言可以通过使用 “setter” 方法重载赋值来更新属性。虽然 Perl 6 可以通过一个 [`Proxy`](https://github.com/perl6/roast/blob/master/S12-attributes/mutators.t) 对象重载赋值操作符，但重载赋值设置复杂逻辑属性是不可取的，因为[较弱的面向对象设计](https://6guts.wordpress.com/2016/11/25/perl-6-is-biased-towards-mutators-being-really-simple-thats-a-good-thing/)。
 
 Overriding the default auto-generated accessor means it is no longer available to provide a mutable container on return for an assignment. A method call is the preferred approach to adding computation and logic to the update of an attribute. Many modern languages can update an attribute by overloading assignment with a “setter” method. While Perl 6 can overload the assignment operator for this purpose with a [`Proxy`](https://github.com/perl6/roast/blob/master/S12-attributes/mutators.t) object, overloading assignment to set attributes with complex logic is currently discouraged as [weaker object oriented design](https://6guts.wordpress.com/2016/11/25/perl-6-is-biased-towards-mutators-being-really-simple-thats-a-good-thing/).
 
 <a id="%E7%B1%BB%E5%92%8C%E5%AE%9E%E4%BE%8B%E6%96%B9%E6%B3%95--class-and-instance-methods"></a>
 ## 类和实例方法 / Class and instance methods
 
-一个方法的签名可以有一个*显式调用者*作为它的第一个参数，后面跟着一个冒号，这允许方法引用它被调用的对象。
+方法的签名可以有一个*显式调用者*作为它的第一个参数，后面跟一个冒号，这允许方法使用调用方法的对象。
 
 A method's signature can have an *explicit invocant* as its first parameter followed by a colon, which allows for the method to refer to the object it was called on.
 
@@ -447,7 +447,7 @@ CATCH { default { put .^name ~ ":\n" ~ .Str } };
 #          Did you forget a '.new'?» 
 ```
 
-方法既可以是类，也可以是对象方法，方法可以使用 [multi](https://docs.perl6.org/syntax/multi) 声明符：
+一个方法既可以是类方法，也可以是对象方法，方法可以使用 [multi](https://docs.perl6.org/syntax/multi) 声明符：
 
 A method can be both a class and object method by using the [multi](https://docs.perl6.org/syntax/multi) declarator:
 
@@ -463,7 +463,7 @@ C.new.f;   # OUTPUT: «object method␤»
 <a id="self"></a>
 ## `self`
 
-在方法中，`self` 一词是可用的，并绑定到调用对象。`self` 可用于调用调用者的深层次方法，包括构造函数：
+在方法中，`self` 一词是可用的，并绑定到调用者对象。`self` 可用于调用调用者的深层次方法，包括构造函数：
 
 Inside a method, the term `self` is available and bound to the invocant object. `self` can be used to call further methods on the invocant, including constructors:
 
@@ -550,7 +550,7 @@ CATCH { default { put .^name ~ ":\n" ~ .Str } }
 # 'FunMath'. Did you mean '!do-subtraction'?␤» 
 ```
 
-私有方法不是由子类继承的。
+私有方法不能由子类继承的。
 
 Private methods are not inherited by subclasses.
 
@@ -565,7 +565,7 @@ Submethods are public methods that will not be inherited by subclasses. The name
 
 Submethods are useful for object construction and destruction tasks, as well as for tasks that are so specific to a certain type that subtypes would certainly have to override them.
 
-例如，[默认方法 new](https://docs.perl6.org/type/Mu#method_new) 对[继承](https://docs.perl6.org/language/objects#Inheritance)中的每个类调用子方法 `BUILD`：
+例如，[默认方法 new](https://docs.perl6.org/type/Mu#method_new) 对[继承](https://docs.perl6.org/language/objects#Inheritance)链中的每个类调用子方法 `BUILD`：
 
 For example, the [default method new](https://docs.perl6.org/type/Mu#method_new) calls submethod `BUILD` on each class in an [inheritance](https://docs.perl6.org/language/objects#Inheritance) chain:
 
@@ -609,7 +609,7 @@ Classes can have *parent classes*.
 class Child is Parent1 is Parent2 { }
 ```
 
-如果在子类上调用方法，而子类不提供该方法，则将调用父类中某个父类中的该名称的方法(如果该方法存在)。查询父类的顺序称为*方法解析顺序*(MRO)。Perl 6 使用 [C3 方法解析顺序](https://en.wikipedia.org/wiki/C3_linearization)。你可以通过调用其元类来请求类型的 MRO：
+如果在子类上调用方法，而子类不提供该方法，则将调用父类中某个父类中的该名称的方法(如果该方法存在)。查询父类的顺序称为*方法解析顺序*(MRO)。Perl 6 使用 [C3 方法解析顺序](https://en.wikipedia.org/wiki/C3_linearization)。你可以通过调用其元类来请求某个类型的 MRO：
 
 If a method is called on the child class, and the child class does not provide that method, the method of that name in one of the parent classes is invoked instead, if it exists. The order in which parent classes are consulted is called the *method resolution order* (MRO). Perl 6 uses the [C3 method resolution order](https://en.wikipedia.org/wiki/C3_linearization). You can ask a type for its MRO through a call to its metaclass:
 
@@ -617,7 +617,7 @@ If a method is called on the child class, and the child class does not provide t
 say List.^mro;      # ((List) (Cool) (Any) (Mu)) 
 ```
 
-如果类没有指定父类，则 [Any](https://docs.perl6.org/type/Any) 默认为父类。所有类直接或间接地派生自 [Mu](https://docs.perl6.org/type/Mu)，类型层次结构的根。
+如果类没有指定父类，则 [Any](https://docs.perl6.org/type/Any) 默认为父类。所有类直接或间接地派生自 [Mu](https://docs.perl6.org/type/Mu)，它是类型层次结构的根。
 
 If a class does not specify a parent class, [Any](https://docs.perl6.org/type/Any) is assumed by default. All classes directly or indirectly derive from [Mu](https://docs.perl6.org/type/Mu), the root of the type hierarchy.
 
@@ -651,7 +651,7 @@ $test.frob;          # calls the frob method of Child rather than Parent
 
 Objects are generally created through method calls, either on the type object or on another object of the same type.
 
-类 [Mu](https://docs.perl6.org/type/Mu) 提供了一个名为 [new](https://docs.perl6.org/routine/new) 的构造方法，它采用命名[参数](https://docs.perl6.org/language/functions#Arguments)并使用它们初始化公共属性。
+类 [Mu](https://docs.perl6.org/type/Mu) 提供了一个名为 [new](https://docs.perl6.org/routine/new) 的构造方法，它采用命名[参数](https://docs.perl6.org/language/functions#Arguments)的方式并使用它们初始化公共属性。
 
 Class [Mu](https://docs.perl6.org/type/Mu) provides a constructor method called [new](https://docs.perl6.org/routine/new), which takes named [arguments](https://docs.perl6.org/language/functions#Arguments) and uses them to initialize public attributes.
 
@@ -680,7 +680,7 @@ After the `BUILD` methods have been called, methods named `TWEAK` are called, if
 
 Due to the default behavior of `BUILD` and `TWEAK` submethods, named arguments to the constructor `new` derived from `Mu` can correspond directly to public attributes of any of the classes in the method resolution order, or to any named parameter of any `BUILD` or `TWEAK` submethod.
 
-该对象构造方案对自定义构造函数具有一定的指导意义。首先，自定义的 `BUILD` 方法应该始终是子方法，否则它们会中断子类中的属性初始化。第二，可以使用 `BUILD` 子方法在对象构造时运行自定义代码。它们还可用于为属性初始化创建别名：
+该对象构造方案对自定义构造函数具有一定的影响。首先，自定义的 `BUILD` 方法应该始终是子方法，否则它们会中断子类中的属性初始化。第二，可以使用 `BUILD` 子方法在对象构造时运行自定义代码。它们还可用于为属性初始化创建别名：
 
 This object construction scheme has several implications for customized constructors. First, custom `BUILD` methods should always be submethods, otherwise they break attribute initialization in subclasses. Second, `BUILD` submethods can be used to run custom code at object construction time. They can also be used for creating aliases for attribute initialization:
 
@@ -732,7 +732,7 @@ class Point {
 
 However this is considered poor practice, because it makes correct initialization of objects from subclasses harder.
 
-另一件要注意的是，在perl 6中，`new` 这个名字并不特殊。它只是一个常见的约定，在[大多数 perl 6 类](https://docs.perl6.org/routine/new)中都是完全遵循的。你可以从任何方法中调用 `bless` ，也可以使用 `CREATE` 来摆弄低层次的工作。
+另一件要注意的是，在 Perl 6 中，`new` 这个名字并不特殊。它只是一个常见的约定，在[大多数 Perl 6 类](https://docs.perl6.org/routine/new)中都是完全遵循的。你可以从任何方法中调用 `bless` ，也可以使用 `CREATE` 来摆弄低层次的工作。
 
 Another thing to note is that the name `new` is not special in Perl 6. It is merely a common convention, one that is followed quite thoroughly in [most Perl 6 classes](https://docs.perl6.org/routine/new). You can call `bless` from any method at all, or use `CREATE` to fiddle around with low-level workings.
 
@@ -756,7 +756,7 @@ say RectangleWithCachedArea.new( x2 => 5, x1 => 1, y2 => 1, y1 => 0).area;
 <a id="%E5%AF%B9%E8%B1%A1%E5%85%8B%E9%9A%86--object-cloning"></a>
 ## 对象克隆 / Object cloning
 
-克隆是使用 [clone](https://docs.perl6.org/routine/clone) 方法完成的，这些对象都是浅层克隆的公共属性和私有属性。*公共*属性的新值可以作为命名参数提供。
+克隆是使用 [clone](https://docs.perl6.org/routine/clone) 方法完成的，所有对象都有这个方法，它会浅层克隆公共属性和私有属性。*公共*属性的新值可以作为命名参数提供。
 
 The cloning is done using the [clone](https://docs.perl6.org/routine/clone) method available on all objects, which shallow-clones both public and private attributes. New values for *public* attributes can be supplied as named arguments.
 
@@ -788,12 +788,12 @@ Roles are a collection of attributes and methods; however, unlike classes, roles
 Roles use the keyword `role` preceding the name of the role that is declared. Roles are mixed in using the `does` keyword preceding the name of the role that is mixed in.
 
 ```Perl6
-constant ⲧ = " " xx 4; #Just a ⲧab 
+constant t = " " xx 4; #Just a ⲧab 
 role Notable {
     has Str $.notes is rw;
  
     multi method notes() { "$!notes\n" };
-    multi method notes( Str $note ) { $!notes ~= "$note\n" ~ ⲧ };
+    multi method notes( Str $note ) { $!notes ~= "$note\n" ~ t };
  
 }
  
@@ -802,7 +802,7 @@ class Journey does Notable {
     has $.destination;
     has @.travelers;
  
-    method Str { "⤷ $!origin\n" ~ ⲧ ~ self.notes() ~ "$!destination ⤶\n" };
+    method Str { "⤷ $!origin\n" ~ t ~ self.notes() ~ "$!destination ⤶\n" };
 }
  
 my $trip = Journey.new( :origin<Here>, :destination<There>,
@@ -830,7 +830,7 @@ Roles are immutable as soon as the compiler parses the closing curly brace of th
 
 Role application differs significantly from class inheritance. When a role is applied to a class, the methods of that role are copied into the class. If multiple roles are applied to the same class, conflicts (e.g. attributes or non-multi methods of the same name) cause a compile-time error, which can be solved by providing a method of the same name in the class.
 
-这比多继承安全得多，因为编译器不检测冲突，而是将冲突解析到前面出现的方法解析顺序中的超类，这可能不是程序员所希望的。
+这比多继承安全得多，因为在继承中编译器不检测冲突，而是解析到在方法解析顺序中更早出现的超类中的方法，这可能不是程序员所希望的。
 
 This is much safer than multiple inheritance, where conflicts are never detected by the compiler, but are instead resolved to the superclass that appears earlier in the method resolution order, which might not be what the programmer wanted.
 
@@ -858,7 +858,7 @@ say $t.steer;
 # OUTPUT: «Taurus.new(castrated => Bool::True, direction => Any)␤» 
 ```
 
-通过这种设置，你的可怜的客户将发现自己无法改变他们的金牛座，你将无法制造更多的你的产品！在这种情况下，最好使用角色：
+通过这种设置，你的可怜的客户将发现自己无法改变他们的 Taurus，你将无法制造更多的你的产品！在这种情况下，最好使用角色：
 
 With this setup, your poor customers will find themselves unable to turn their Taurus and you won't be able to make more of your product! In this case, it may have been better to use roles:
 
@@ -880,7 +880,7 @@ role Steerable {
 class Taurus does Bull-Like does Steerable { }
 ```
 
-这段代码会报错：
+这段代码会终止并报编译时错误：
 
 This code will die with something like:
 
@@ -902,7 +902,7 @@ class Taurus does Bull-Like does Steerable {
 }
 ```
 
-当一个角色被应用到第二个角色时，实际的应用程序会被延迟，直到第二个角色被应用到一个类，此时这两个角色都被应用到这个类。因此
+当一个角色被应用到第二个角色时，实际的应用会被延迟，直到第二个角色被应用到一个类，此时这两个角色都被应用到这个类。因此
 
 When a role is applied to a second role, the actual application is delayed until the second role is applied to a class, at which point both roles are applied to the class. Thus
 
@@ -933,7 +933,7 @@ class C does R1 does R2 { }
 <a id="%E5%8D%A0%E4%BD%8D--stubs"></a>
 ## 占位 / Stubs
 
-当角色包含[占位](https://docs.perl6.org/routine/...)时方法时，必须在角色应用于类时提供同名方法的非存根版本。这允许你创建充当抽象接口的角色。
+当角色包含[占位](https://docs.perl6.org/routine/...)方法时，必须在角色应用于类时提供同名方法的非占位版本。这允许你创建充当抽象接口的角色。
 
 When a role contains a [stubbed](https://docs.perl6.org/routine/...) method, a non-stubbed version of a method of the same name must be supplied at the time the role is applied to a class. This allows you to create roles that act as abstract interfaces.
 
@@ -977,11 +977,11 @@ class X::Ouch does A { }
 X::Ouch.^parents.say # OUTPUT: «((Exception))␤» 
 ```
 
-然后 `X::Ouch` 将直接从异常继承，正如我们在上面通过列出它的父类所看到的那样。
+然后 `X::Ouch` 将直接继承异常，正如我们在上面通过列出它的父类所看到的那样。
 
 then `X::Ouch` will inherit directly from Exception, as we can see above by listing its parents.
 
-由于它们没有使用可以正确称为继承的内容，所以角色不是类层次结构的一部分。角色列在 `.^roles` 元方法中，该方法使用 `transitive` 作为标志，用于包含所有级别或仅仅包含第一个级别。尽管如此，类或实例仍然可以使用智能匹配或类型约束进行测试，以查看它是否起作用。
+由于它们没有使用可以正确称为继承的内容，所以角色不是类层次结构的一部分。角色列在 `.^roles` 元方法中，该方法使用 `transitive` 作为标志，用于包含所有级别或仅仅包含第一个级别。尽管如此，类或实例仍然可以使用智能匹配或类型约束进行测试，以查看它是否实施了角色。
 
 As they do not use what can properly be called inheritance, roles are not part of the class hierarchy. Roles are listed with the `.^roles` metamethod instead, which uses `transitive` as flag for including all levels or just the first one. Despite this, a class or instance may still be tested with smartmatches or type constraints to see if it does a role.
 
@@ -1024,7 +1024,7 @@ B.new.f; # OUTPUT «I am in class B␤»
 C.new.f; # OUTPUT «I am in role M␤» 
 ```
 
-注意，multi 方法的每个候选方法都是它自己的方法。在这种情况下，上述情况只适用于两个这样的候选人有相同的签名。否则，就不存在冲突，而候选人只是被添加到多个方法中。
+注意，multi 方法的每个候选方法都是它自己的方法。在这种情况下，上述情况只适用于两个这样的候选方法有相同的签名。否则，就不存在冲突，而候选人只是被添加到 multi 方法中。
 
 Note that each candidate for a multi-method is its own method. In this case, the above only applies if two such candidates have the same signature. Otherwise, there is no conflict, and the candidate is just added to the multi-method.
 
@@ -1050,7 +1050,7 @@ say Point.dimensions;              # OUTPUT «2␤»
 
 We call this automatic creation of classes *punning*, and the generated class a *pun*.
 
-然而，双关不是由大多数[元编程](https://docs.perl6.org/language/mop)构造引起的，因为这些结构有时用于直接处理角色。
+然而，双关语不是由大多数[元编程](https://docs.perl6.org/language/mop)构造引起的，因为这些结构有时用于直接处理角色。
 
 Punning is not caused by most [metaprogramming](https://docs.perl6.org/language/mop) constructs, however, as those are sometimes used to work directly with roles.
 
@@ -1113,14 +1113,14 @@ role Logging[$filehandle = $*ERR] {
 Logging[$*OUT].log(debug, 'here we go'); # OUTPUT: «[DEBUG] here we go␤» 
 ```
 
-你可以具有相同名称的多个角色，但签名不同；通常的多分派规则适用于选择多个候选人。
+你可以有同名但不同签名的多个角色；通常的多分派规则适用于选择多个候选者。
 
 You can have multiple roles of the same name, but with different signatures; the normal rules of multi dispatch apply for choosing multi candidates.
 
 <a id="%E6%B7%B7%E5%90%88%E8%A7%92%E8%89%B2--mixins-of-roles"></a>
 ## 混合角色 / Mixins of roles
 
-角色可以混合到对象中。角色的给定属性和方法将被添加到对象已经拥有的方法和属性中。支持多个混合器和匿名角色。
+角色可以混合到对象中。角色的给定属性和方法将被添加到对象已经拥有的方法和属性中。多个混合器和匿名角色是支持的。
 
 Roles can be mixed into objects. A role's given attributes and methods will be added to the methods and attributes the object already has. Multiple mixins and anonymous roles are supported.
 
@@ -1133,7 +1133,7 @@ my @positional := <a b> but R;
 say @positional.^name; # OUTPUT: «List+{R}␤» 
 ```
 
-注意，对象得到的是混进的角色，而不是对象的类或容器。因此，@ 容器将需要绑定才能使角色保持不变，如示例中所示的 `@positional`。一些操作符将返回一个新的值，这将有效地从结果中剥离混合。这就是为什么在使用 `does` 声明变量时混合角色在一起的作用可能会更加清楚：
+注意，对象使角色混入，而不是对象的类或容器。因此，@ 标记的容器将需要绑定才能使角色保持不变，如示例中所示的 `@positional`。一些操作符将返回一个新的值，这将有效地从结果中剥离混合。这就是为什么在声明变量时使用 `does` 混入角色的可能会更加清楚：
 
 Note that the object got the role mixed in, not the object's class or the container. Thus, @-sigiled containers will require binding to make the role stick as is shown in the example with `@positional`. Some operators will return a new value, which effectively strips the mixin from the result. That is why it might be more clear to mix in the role in the declaration of the variable using `does`:
 
@@ -1157,7 +1157,7 @@ my $all-roles = 1 but (R1,R2);
 say $all-roles.^name; # OUTPUT: «Int+{R1,R2}␤» 
 ```
 
-混合可以在对象生命的任意时刻使用。
+角色混入可以在对象生命周期的任意时刻使用。
 
 Mixins can be used at any point in your object's life.
 
@@ -1199,7 +1199,7 @@ Perl 6 有一个元对象系统，这意味着对象、类、角色、语法、�
 
 Perl 6 has a metaobject system, which means that the behavior of objects, classes, roles, grammars, enums, etc. are themselves controlled by other objects; those objects are called *metaobjects*. Metaobjects are, like ordinary objects, instances of classes, in this case we call them *metaclasses*.
 
-对于每个对象或类，你可以通过在其上调用 `.HOW` 来获取元对象。注意，虽然这看起来像一个方法调用，但它工作机制更像一个宏。
+对于每个对象或类，你可以通过调用它的 `.HOW` 来获取元对象。注意，虽然这看起来像一个方法调用，但它的工作机制更像一个宏。
 
 For each object or class you can get the metaobject by calling `.HOW` on it. Note that although this looks like a method call, it works more like a macro.
 
@@ -1217,7 +1217,7 @@ Perl 6 使用 *HOW*（Higher Order Workings）一词来指代元对象系统。�
 
 Perl 6 uses the word *HOW* (Higher Order Workings) to refer to the metaobject system. Thus it should be no surprise that in Rakudo, the class name of the metaclass that controls class behavior is called `Perl6::Metamodel::ClassHOW`. For each class there is one instance of `Perl6::Metamodel::ClassHOW`.
 
-当然，元模型为你做了更多的事情。例如，它允许你内省对象和类。元对象方法的调用约定是调用元对象上的方法，并将感兴趣的对象作为对象的第一个参数传递给对象。因此，要获取对象的类的名称，可以编写：
+当然，元模型为你做了更多的事情。例如，它允许你内省对象和类。元对象方法的调用约定是调用元对象上的方法，并将感兴趣的对象作为对象的第一个参数传递给对象。因此，要获取对象的类的名称，可以写成：
 
 But of course the metamodel does much more for you. For example, it allows you to introspect objects and classes. The calling convention for methods on metaobjects is to call the method on the metaobject and pass in the object of interest as first argument to the object. So to get the name of the class of an object, you could write:
 
@@ -1244,6 +1244,6 @@ say 1.^name;                        # OUTPUT: «Int␤»
 say 1.HOW.name(1);                  # OUTPUT: «Int␤» 
 ```
 
-见 [Metamodel::ClassHOW](https://docs.perl6.org/type/Metamodel::ClassHOW)  关于 `class` 的元类的文档以及[元对象协议的一般文档](https://docs.perl6.org/language/mop)。
+见 [Metamodel::ClassHOW](https://docs.perl6.org/type/Metamodel::ClassHOW) 关于 `class` 的元类的文档以及[元对象协议的一般文档](https://docs.perl6.org/language/mop)。
 
 See [Metamodel::ClassHOW](https://docs.perl6.org/type/Metamodel::ClassHOW) for documentation on the metaclass of `class` and also the [general documentation on the metaobject protocol](https://docs.perl6.org/language/mop).
