@@ -26,32 +26,32 @@ Introduction to the type system of Perl 6
             - [FALLBACK 方法 / Fallback method](#fallback-%E6%96%B9%E6%B3%95--fallback-method)
             - [保留方法名 / Reserved method names](#%E4%BF%9D%E7%95%99%E6%96%B9%E6%B3%95%E5%90%8D--reserved-method-names)
             - [包作用域里的方法 / Methods in package scope](#%E5%8C%85%E4%BD%9C%E7%94%A8%E5%9F%9F%E9%87%8C%E7%9A%84%E6%96%B9%E6%B3%95--methods-in-package-scope)
-            - [使用名称变量和方法设置属性 / Setting attributes with namesake variables and methods](#%E4%BD%BF%E7%94%A8%E5%90%8D%E7%A7%B0%E5%8F%98%E9%87%8F%E5%92%8C%E6%96%B9%E6%B3%95%E8%AE%BE%E7%BD%AE%E5%B1%9E%E6%80%A7--setting-attributes-with-namesake-variables-and-methods)
-        - [trait `is nodal`](#trait-is-nodal)
-        - [trait](#trait)
-        - [trait `is`](#trait-is)
-        - [trait](#trait-1)
-        - [trait `is required`](#trait-is-required)
-        - [trait `hides`](#trait-hides)
-        - [trait `trusts`](#trait-trusts)
-        - [Augmenting a class](#augmenting-a-class)
-        - [Versioning and authorship](#versioning-and-authorship)
+            - [使用同名变量和方法设置属性 / Setting attributes with namesake variables and methods](#%E4%BD%BF%E7%94%A8%E5%90%8C%E5%90%8D%E5%8F%98%E9%87%8F%E5%92%8C%E6%96%B9%E6%B3%95%E8%AE%BE%E7%BD%AE%E5%B1%9E%E6%80%A7--setting-attributes-with-namesake-variables-and-methods)
+        - [`is nodal` 特性 / trait `is nodal`](#is-nodal-%E7%89%B9%E6%80%A7--trait-is-nodal)
+        - [`handles` 特性 / trait `handles`](#handles-%E7%89%B9%E6%80%A7--trait-handles)
+        - [`is` 特性 / trait `is`](#is-%E7%89%B9%E6%80%A7--trait-is)
+        - [`is rw` 特性 / trait `is rw`](#is-rw-%E7%89%B9%E6%80%A7--trait-is-rw)
+        - [`is required` 特性 / trait `is required`](#is-required-%E7%89%B9%E6%80%A7--trait-is-required)
+        - [`hides` 特性 / trait `hides`](#hides-%E7%89%B9%E6%80%A7--trait-hides)
+        - [`trusts` 特性 / trait `trusts`](#trusts-%E7%89%B9%E6%80%A7--trait-trusts)
+        - [扩充类 / Augmenting a class](#%E6%89%A9%E5%85%85%E7%B1%BB--augmenting-a-class)
+        - [版本控制和作者 / Versioning and authorship](#%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%E5%92%8C%E4%BD%9C%E8%80%85--versioning-and-authorship)
     - [`role`](#role)
-        - [Auto-punning](#auto-punning)
-        - [trait `does`](#trait-does)
-        - [Parameterized](#parameterized)
-        - [As type constraints](#as-type-constraints)
-        - [Versioning and authorship](#versioning-and-authorship-1)
+        - [自动双关 / Auto-punning](#%E8%87%AA%E5%8A%A8%E5%8F%8C%E5%85%B3--auto-punning)
+        - [`does` 特性 / trait `does`](#does-%E7%89%B9%E6%80%A7--trait-does)
+        - [参数化 / Parameterized](#%E5%8F%82%E6%95%B0%E5%8C%96--parameterized)
+        - [作为类型约束 / As type constraints](#%E4%BD%9C%E4%B8%BA%E7%B1%BB%E5%9E%8B%E7%BA%A6%E6%9D%9F--as-type-constraints)
+        - [版本控制和作者 / Versioning and authorship](#%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%E5%92%8C%E4%BD%9C%E8%80%85--versioning-and-authorship-1)
     - [`enum`](#enum)
         - [Metaclass](#metaclass)
         - [Methods](#methods)
             - [method enums](#method-enums)
         - [Coercion](#coercion)
     - [`module`](#module)
-        - [Versioning and authorship](#versioning-and-authorship-2)
+        - [Versioning and authorship](#versioning-and-authorship)
     - [`package`](#package)
     - [`grammar`](#grammar)
-        - [Versioning and authorship](#versioning-and-authorship-3)
+        - [Versioning and authorship](#versioning-and-authorship-1)
     - [`subset`](#subset)
 
 <!-- /MarkdownTOC -->
@@ -366,10 +366,12 @@ say C::.keys
 # OUTPUT: «(&packaged)␤»
 ```
 
-<a id="%E4%BD%BF%E7%94%A8%E5%90%8D%E7%A7%B0%E5%8F%98%E9%87%8F%E5%92%8C%E6%96%B9%E6%B3%95%E8%AE%BE%E7%BD%AE%E5%B1%9E%E6%80%A7--setting-attributes-with-namesake-variables-and-methods"></a>
-#### 使用名称变量和方法设置属性 / Setting attributes with namesake variables and methods
+<a id="%E4%BD%BF%E7%94%A8%E5%90%8C%E5%90%8D%E5%8F%98%E9%87%8F%E5%92%8C%E6%96%B9%E6%B3%95%E8%AE%BE%E7%BD%AE%E5%B1%9E%E6%80%A7--setting-attributes-with-namesake-variables-and-methods"></a>
+#### 使用同名变量和方法设置属性 / Setting attributes with namesake variables and methods
 
-Instead of writing `attr => $attr `or `:attr($attr)`, you can save some typing if the variable (or method call) you're setting the attribute with shares the name with the attribute:
+要设置属性时用的变量（或者方法调用）与要设置的属性同名时，除了用 `attr => $attr` 或者 `:attr($attr)` 之外，可以这样简写：
+
+Instead of writing `attr => $attr` or `:attr($attr)`, you can save some typing if the variable (or method call) you're setting the attribute with shares the name with the attribute:
 
 ```Perl6
 class A { has $.i = 42 };
@@ -382,12 +384,18 @@ my $a = B.new.m;
 say $a.i; # OUTPUT: «answer␤»
 ```
 
+`$.i` 方法调用名为 `i` 并且属性名也叫 `i`，因此 Perl 6 允许我们用快捷方式。这同样适用于 `:$var`、`:$!private-attribute`、`:&attr-with-code-in-it` 等等。
+
 Since `$.i` method call is named `i` and the attribute is also named `i`, Perl 6 lets us shortcut. The same applies to `:$var`, `:$!private-attribute`, `:&attr-with-code-in-it`, and so on.
 
-<a id="trait-is-nodal"></a>
-### trait `is nodal`
+<a id="is-nodal-%E7%89%B9%E6%80%A7--trait-is-nodal"></a>
+### `is nodal` 特性 / trait `is nodal`
+
+标记一个 [List](https://docs.perl6.org/type/List) 方法，以指示超级运算符不要下降到内部 [Iterables](https://docs.perl6.org/type/Iterable) 来调用此方法。这种特性通常不是最终用户会使用的特性，除非他们正在子类化或增强核心[List](https://docs.perl6.org/type/List)类型。
 
 Marks a [List](https://docs.perl6.org/type/List) method to indicate to hyperoperator to not descend into inner [Iterables](https://docs.perl6.org/type/Iterable) to call this method. This trait generally isn't something end users would be using, unless they're subclassing or augmenting core [List](https://docs.perl6.org/type/List) type.
+
+为了证明这一区别，请考虑以下例子：第一种方法 (`elems`) 使用 `is nodal` 的方法，第二种方法使用不是节点的方法 (`Int`)。
 
 In order to demonstrate the difference consider the following examples, the first using a method (`elems`) that `is nodal` and the second using a method (`Int`) which is not nodal.
 
@@ -396,14 +404,18 @@ say ((1.0, "2", 3e0), [^4], '5')».elems; # OUTPUT: «(3, 4, 1)␤»
 say ((1.0, "2", 3e0), [^4], '5')».Int    # OUTPUT: «((1 2 3) [0 1 2 3] 5)␤»
 ```
 
-<a id="trait"></a>
-### trait 
+<a id="handles-%E7%89%B9%E6%80%A7--trait-handles"></a>
+### `handles` 特性 / trait `handles`
+
+定义为：
 
 Defined as:
 
 ```Perl6
 multi sub trait_mod:<handles>(Attribute:D $target, $thunk)
 ```
+
+`handles` 特性应用于类的属性，对提供的方法名的所有调用委托给具有相同属性名称的方法。被属性引用的对象必须初始化。可以为委托调用的对象提供类型约束。
 
 The [trait](https://docs.perl6.org/type/Sub#Traits) `handles` applied to an attribute of a class will delegate all calls to the provided method name to the method with the same name of the attribute. The object referenced by the attribute must be initialized. A type constraint for the object that the call is delegated to can be provided.
 
@@ -416,6 +428,8 @@ class C {
 };
 say C.new(B.new).m(); # OUTPUT: «B::m has been called.␤»
 ```
+
+除了方法名外，还可以作用于 `Pair`（用于重命名）、名字数组、`Pair` 数组、 `Regex` 或者 `Whatever` 。在后一种情况下，类本身及其继承链中的现有方法都将优先。如果需要搜索本地 `FALLBACK`，请使用 `HyperWhatever`。
 
 Instead of a method name, a `Pair` (for renaming), a list of names or `Pair`s, a `Regex` or a `Whatever` can be provided. In the latter case existing methods, both in the class itself and its inheritance chain, will take precedence. If even local `FALLBACK`s should be searched, use a `HyperWhatever`.
 
@@ -441,8 +455,10 @@ class E {
 E.new.em1;
 ```
 
-<a id="trait-is"></a>
-### trait `is`
+<a id="is-%E7%89%B9%E6%80%A7--trait-is"></a>
+### `is` 特性 / trait `is`
+
+定义为：
 
 Defined as:
 
@@ -450,7 +466,11 @@ Defined as:
 multi sub trait_mod:<is>(Mu:U $child, Mu:U $parent)
 ```
 
+[特性](https://docs.perl6.org/type/Sub#Traits) `is` 接受添加一个类型对象作为定义中的类的父类。要允许多重继承，可以多次应用该特性。将父类添加到类中会将他们的方法导入目标类。如果在多个父类中出现相同的方法名，则第一个添加的父类将获胜。
+
 The [trait](https://docs.perl6.org/type/Sub#Traits) `is` accepts a type object to be added as a parent class of a class in its definition. To allow multiple inheritance the trait can be applied more than once. Adding parents to a class will import their methods into the target class. If the same method name occurs in multiple parents, the first added parent will win.
+
+如果没有 `is` 特性，默认的 [`Any`](https://docs.perl6.org/type/Any) 将会作为父类。这迫使所有 Perl 6 对象都具有相同的基本方法集，以提供一个接口，用于对基本类型进行内省和强制类型转换。
 
 If no `is` trait is provided the default of [`Any`](https://docs.perl6.org/type/Any) will be used as a parent class. This forces all Perl 6 objects to have the same set of basic methods to provide an interface for introspection and coercion to basic types.
 
@@ -471,14 +491,18 @@ say C.new.from-a();
 # OUTPUT: «A::from-a␤»
 ```
 
-<a id="trait-1"></a>
-### trait 
+<a id="is-rw-%E7%89%B9%E6%80%A7--trait-is-rw"></a>
+### `is rw` 特性 / trait `is rw`
+
+定义为：
 
 Defined as:
 
 ```Perl6
 sub trait_mod:<is>(Mu:U $type, :$rw!)
 ```
+
+在类上的 `is rw` 特性将对所有公共属性创建可写的访问器方法。
 
 The [trait](https://docs.perl6.org/type/Sub#Traits) `is rw` on a class will create writable accessor methods on all public attributes of that class.
 
@@ -490,8 +514,10 @@ my $c = C.new.a = 42;
 say $c; # OUTPUT: «42␤»
 ```
 
-<a id="trait-is-required"></a>
-### trait `is required`
+<a id="is-required-%E7%89%B9%E6%80%A7--trait-is-required"></a>
+### `is required` 特性 / trait `is required`
+
+定义为：
 
 Defined as:
 
@@ -499,6 +525,8 @@ Defined as:
 multi sub trait_mod:<is>(Attribute $attr, :$required!)
 multi sub trait_mod:<is>(Parameter:D $param, :$required!)
 ```
+
+标记一个类或者角色的属性必须的。如果在对象构建时属性没有被初始化则抛出 [X::Attribute::Required](https://docs.perl6.org/type/X::Attribute::Required) 异常。
 
 Marks a class or roles attribute as required. If the attribute is not initialized at object construction time throws [X::Attribute::Required](https://docs.perl6.org/type/X::Attribute::Required).
 
@@ -518,6 +546,8 @@ CATCH { default { say .^name => .Str } }
 # OUTPUT: «X::Attribute::Required => The attribute '$!attr' is required, but you did not provide a value for it.␤»
 ```
 
+你可以提供一个理由作为 `is required` 的参数，说明为什么是必须的。
+
 You can provide a reason why it's required as an argument to `is required`
 
 ```Perl6
@@ -528,8 +558,10 @@ say Correct.new();
 # OUTPUT: «The attribute '$!attr' is required because it's so cool,␤but you did not provide a value for it.␤»
 ```
 
-<a id="trait-hides"></a>
-### trait `hides`
+<a id="hides-%E7%89%B9%E6%80%A7--trait-hides"></a>
+### `hides` 特性 / trait `hides`
+
+`hides` 特性提供继承，而不受[重新调度](https://docs.perl6.org/language/functions#Re-dispatching) 的约束。
 
 The trait `hides` provides inheritance without being subject to [re-dispatching](https://docs.perl6.org/language/functions#Re-dispatching).
 
@@ -547,6 +579,8 @@ B.new.n;
 # OUTPUT: «i am hidden␤»
 ```
 
+`is hidden` 特性允许类隐藏自己不受[重新调度](https://docs.perl6.org/language/functions#Re-dispatching)的影响。
+
 The trait `is hidden` allows a class to hide itself from [re-dispatching](https://docs.perl6.org/language/functions#Re-dispatching).
 
 ```Perl6
@@ -563,8 +597,10 @@ B.new.n;
 # OUTPUT: «i am hidden␤»
 ```
 
-<a id="trait-trusts"></a>
-### trait `trusts`
+<a id="trusts-%E7%89%B9%E6%80%A7--trait-trusts"></a>
+### `trusts` 特性 / trait `trusts`
+
+要允许一个类访问另一个类的私有方法，请使用 `trusts` 这一特性。可能需要可信类的前向声明。
 
 To allow one class to access the private methods of another class use the trait `trusts`. A forward declaration of the trusted class may be required.
 
@@ -584,8 +620,10 @@ say B.new.change;
 # OUTPUT: «B.new(a => A.new(foo => 42))␤»
 ```
 
-<a id="augmenting-a-class"></a>
-### Augmenting a class
+<a id="%E6%89%A9%E5%85%85%E7%B1%BB--augmenting-a-class"></a>
+### 扩充类 / Augmenting a class
+
+要在编译时将方法和属性添加到类中，请在类定义片段前面使用 `augment`。编译器将在同一范围的早期要求使用指令 `use MONKEY-TYPING` 或 `use MONKEY`。请注意，这可能会对性能产生影响。
 
 To add methods and attributes to a class at compile time use `augment` in front of a class definition fragment. The compiler will demand the pragmas `use MONKEY-TYPING` or `use MONKEY` early in the same scope. Please note that there may be performance implications, hence the pragmas.
 
@@ -601,10 +639,14 @@ say $s.mark
 # OUTPUT: «answer␤»
 ```
 
+在类片段中所能做的事情几乎没有限制。其中之一是将方法或子例程声明为 multi。使用添加的属性尚未实现。请注意，添加一个仅在其命名参数不同的多个候选项将在已经定义的参数后面添加该候选项，因此它不会被调度程序选中。
+
 There are few limitations of what can be done inside the class fragment. One of them is the redeclaration of a method or sub into a multi. Using added attributes is not yet implemented. Please note that adding a multi candidate that differs only in its named parameters will add that candidate behind the already defined one and as such it won't be picked by the dispatcher.
 
-<a id="versioning-and-authorship"></a>
-### Versioning and authorship
+<a id="%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%E5%92%8C%E4%BD%9C%E8%80%85--versioning-and-authorship"></a>
+### 版本控制和作者 / Versioning and authorship
+
+版本控制和作者可以通过副词 `:ver<>` 和 `:auth<>` 指定。两者都使用一个字符串作为参数，因为 `:ver` 字符串被转换为一个 [Version](https://docs.perl6.org/type/Version) 对象。若要查询类的版本和作者使用 `.^ver` 和 `^.auth`。
 
 Versioning and authorship can be applied via the adverbs `:ver<>` and `:auth<>`. Both take a string as argument, for `:ver` the string is converted to a [Version](https://docs.perl6.org/type/Version) object. To query a class version and author use `.^ver` and `^.auth`.
 
@@ -616,6 +658,8 @@ say [C.^ver, C.^auth];
 
 <a id="role"></a>
 ## `role`
+
+角色是类片段，它允许定义被类共享的接口。`role` 声明符还引入了一个可用于类型检查的类型对象。角色可以在运行时和编译时混合到类和对象中。`role` 声明符返回创建的类型对象，从而允许定义匿名角色和就地混合。
 
 Roles are class fragments, which allow the definition of interfaces that are shared by classes. The `role` declarator also introduces a type object that can be used for type checks. Roles can be mixed into classes and objects at runtime and compile time. The `role` declarator returns the created type object thus allowing the definition of anonymous roles and in-place mixins.
 
@@ -636,6 +680,8 @@ say @list».to-string;
 # OUTPUT: «[A<57192848> B<57192880>]␤»
 ```
 
+使用 `...` 作为方法主体的唯一元素来声明方法是抽象的。任何得到这样一个方法的类都必须重载它。如果在编译单元结束前未重载该方法，则将抛出 `X::Comp::AdHoc` 异常。
+
 Use `...` as the only element of a method body to declare a method to be abstract. Any class getting such a method mixed in has to overload it. If the method is not overloaded before the end of the compilation unit `X::Comp::AdHoc` will be thrown.
 
 ```Perl6
@@ -644,8 +690,10 @@ CATCH { default { say .^name, ' ', .Str } }
 # OUTPUT: «X::Comp::AdHoc Method 'overload-this' must be implemented by A because it is required by roles: R.␤»
 ```
 
-<a id="auto-punning"></a>
-### Auto-punning
+<a id="%E8%87%AA%E5%8A%A8%E5%8F%8C%E5%85%B3--auto-punning"></a>
+### 自动双关 / Auto-punning
+
+可以使用角色而不是类来创建对象。由于角色不能存在于运行时，因此创建了一个名称相同的类，该类对角色的类型智能匹配返回真。
 
 A role can be used instead of a class to create objects. Since roles can't exist at runtime, a class of the same name is created that will type check successful against the role.
 
@@ -659,8 +707,10 @@ say R.new ~~ R;
 # OUTPUT: «True␤»
 ```
 
-<a id="trait-does"></a>
-### trait `does`
+<a id="does-%E7%89%B9%E6%80%A7--trait-does"></a>
+### `does` 特性 / trait `does`
+
+`does` 特性可应用于提供编译时混合的角色和类。若要引用尚未定义的角色，请使用前向声明。具有混合角色的类的类型名称不反映混入，但是类型检查反映。如果方法在多个混合角色中提供，则首先定义的方法优先。可以提供用逗号分隔的角色列表。在这种情况下，冲突将在编译时报告。
 
 The trait `does` can be applied to roles and classes providing compile time mixins. To refer to a role that is not defined yet, use a forward declaration. The type name of the class with mixed in roles does not reflect the mixin, a type check does. If methods are provided in more than one mixed in role, the method that is defined first takes precedence. A list of roles separated by comma can be provided. In this case conflicts will be reported at compile time.
 
@@ -674,10 +724,14 @@ say [C ~~ R1, C ~~ R2];
 # OUTPUT: «[True True]␤»
 ```
 
+运行时混入，见 [but](https://docs.perl6.org/language/operators#infix_but) 和 [does](https://docs.perl6.org/language/operators#infix_does)。
+
 For runtime mixins see [but](https://docs.perl6.org/language/operators#infix_but) and [does](https://docs.perl6.org/language/operators#infix_does).
 
-<a id="parameterized"></a>
-### Parameterized
+<a id="%E5%8F%82%E6%95%B0%E5%8C%96--parameterized"></a>
+### 参数化 / Parameterized
+
+角色的参数可以在角色名称后面 `[]` 之间提供。支持[类型捕获](https://docs.perl6.org/type/Signature#Type_captures)。
 
 Roles can be provided with parameters in-between `[]` behind a roles name. [Type captures](https://docs.perl6.org/type/Signature#Type_captures) are supported.
 
@@ -690,6 +744,8 @@ say $c;
 # OUTPUT: «C.new(a => "default")␤»
 ```
 
+参数可以具有类型约束，`where` 子句不支持类型，但可以通过 `subset` 实现。
+
 Parameters can have type constraints, `where` clauses are not supported for types but can be implemented via `subset`s.
 
 ```Perl6
@@ -700,6 +756,8 @@ role R[A-or-B ::T] {};
 R[A.new].new;
 ```
 
+可以提供默认参数。
+
 Default parameters can be provided.
 
 ```Perl6
@@ -709,8 +767,10 @@ CATCH { default { say .^name, ': ', .Str} }
 # OUTPUT: «X::AdHoc: Could not instantiate role 'R':␤Please provide a parameter to role R␤»
 ```
 
-<a id="as-type-constraints"></a>
-### As type constraints
+<a id="%E4%BD%9C%E4%B8%BA%E7%B1%BB%E5%9E%8B%E7%BA%A6%E6%9D%9F--as-type-constraints"></a>
+### 作为类型约束 / As type constraints
+
+角色可以用作类型约束，只要需要的是类型。如果一个角色与 `does` 或 `but` 混合，则将其类型对象添加到所述对象的类型对象列表中。如果使用角色代替类(使用自动双关)，则自动生成的类的类型对象(与角色同名)将被添加到继承链中。
 
 Roles can be used as type constraints wherever a type is expected. If a role is mixed in with `does` or `but`, its type-object is added to the type-object list of the object in question. If a role is used instead of a class (using auto-punning), the auto-generated class' type-object, of the same name as the role, is added to the inheritance chain.
 
@@ -750,8 +810,10 @@ say [(75kg).^name, N(75kg).^name];
 # OUTPUT: «[Int+{SI-kilogram} Rat+{SI-Newton}]␤»
 ```
 
-<a id="versioning-and-authorship-1"></a>
-### Versioning and authorship
+<a id="%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%E5%92%8C%E4%BD%9C%E8%80%85--versioning-and-authorship-1"></a>
+### 版本控制和作者 / Versioning and authorship
+
+版本控制和作者可以通过副词 `:ver<>` 和 `:auth<>` 指定。两者都使用一个字符串作为参数，因为 `:ver` 字符串被转换为一个 [Version](https://docs.perl6.org/type/Version) 对象。若要查询类的版本和作者使用 `.^ver` 和 `^.auth`。
 
 Versioning and authorship can be applied via the adverbs `:ver<>` and `:auth<>`. Both take a string as argument, for `:ver` the string is converted to a [Version](https://docs.perl6.org/type/Version) object. To query a role's version and author use `.^ver` and `^.auth`.
 
@@ -764,7 +826,11 @@ say [R.^ver, R.^auth];
 <a id="enum"></a>
 ## `enum`
 
+枚举提供具有关联类型的常量键值对。任何键都是该类型的，并作为符号注入到当前范围中。如果使用符号，则将其视为常量表达式，并将符号替换为枚举键值对的值。任何枚举都从角色 [`Enumeration`](https://docs.perl6.org/type/Enumeration) 继承方法。不支持用于生成键值对的复杂表达式。一般来说，`enum` 是一个元素中混入了 `Enumeration` 角色的 [Map](https://docs.perl6.org/type/Map)；这个角色对于每个元素包括一个索引，它在 map 上创建了一个顺序。
+
 Enumerations provide constant key-value-pairs with an associated type. Any key is of that type and injected as a symbol into the current scope. If the symbol is used, it is treated as a constant expression and the symbol is replaced with the value of the enum-pair. Any Enumeration inherits methods from the role [`Enumeration`](https://docs.perl6.org/type/Enumeration). Complex expressions for generating key-value pairs are not supported. In general, an `enum` is a [Map](https://docs.perl6.org/type/Map) whose elements have the `Enumeration` role mixed in; this role includes, for each element, an index which creates an order on the map.
+
+符号的字符串化，它是在字符串上下文中自动完成的，与其名称完全相等，这也是枚举对的关键。
 
 Stringification of the symbol, which is done automatically in string context and is exactly equal to its name, which is also the key of the enum-pair.
 
@@ -773,6 +839,8 @@ enum Names ( name1 => 1, name2 => 2 );
 say name1, ' ', name2; # OUTPUT: «name1 name2␤»
 say name1.value, ' ', name2.value; # OUTPUT: «1 2␤»
 ```
+
+比较符号将使用类型信息和枚举对的值。因为值类型支持 `Num` 和 `Str`。
 
 Comparing symbols will use type information and the value of the enum-pair. As value types `Num` and `Str` are supported.
 
@@ -789,6 +857,8 @@ say $a ~~ Names; # OUTPUT: «True␤»
 say $a.^name;    # OUTPUT: «Names␤»
 ```
 
+所有的键都必须是同类型的。
+
 All keys have to be of the same type.
 
 ```Perl6
@@ -798,11 +868,15 @@ say Mass.enums;
 # OUTPUT: «Map.new((g => 1, kg => 1000, mg => 0.001))␤»
 ```
 
+你可以使用任何一种符号：
+
 And you can use any kind of symbol:
 
 ```Perl6
 enum Suit <♣ ♦ ♥ ♠>;
 ```
+
+只要您使用完整的语法引用该符号：
 
 As long as you refer to that symbol using the full syntax:
 
@@ -810,11 +884,15 @@ As long as you refer to that symbol using the full syntax:
 say Suit::<♣>; # OUTPUT: «♣␤»
 ```
 
+试图不使用上述语法访问 Unicode 枚举键将导致错误：
+
 Attempting to access unicode enum keys without said syntax will result in an error:
 
 ```Perl6
 say ♣ ; # OUTPUT: «(exit code 1) ===SORRY!===␤Argument to "say" seems to be    malformed…
 ```
+
+如果没有给定值，`Int` 将被假定为值类型，并从零开始每键递增 1。作为 enum 键类型支持 `Int`、`Num`、`Rat` 和 `Str`。
 
 If no value is given `Int` will be assumed as the values type and incremented by one per key starting at zero. As enum key types `Int`, `Num`, `Rat` and `Str` are supported.
 
@@ -825,6 +903,8 @@ say Numbers.enums;
 # OUTPUT: «Map.new((four => 3, one => 0, three => 2, two => 1))␤»
 ```
 
+可以提供不同的起始值。
+
 A different starting value can be provided.
 
 ```Perl6
@@ -833,6 +913,8 @@ enum Numbers «:one(1) two three four»;
 say Numbers.enums;
 # OUTPUT: «Map.new((four => 4, one => 1, three => 3, two => 2))␤»
 ```
+
+你也可以使用 **()** 形式来初始化，但是需要引号括起来没有值的键：
 
 You can also do this with the **()** form of the initializer, but will need to quote keys that do not have a value:
 
@@ -844,6 +926,8 @@ enum Numbers (
   'four'
 );
 ```
+
+Enum 也可以是匿名的，唯一的区别是你不能在 `Signature` 中使用它，也不能声明变量。
 
 Enums can also be anonymous, with the only difference with named `enum`s being that you cannot use it in `Signature`s or to declare variables.
 
@@ -930,7 +1014,7 @@ Modules are usually one or more source files that expose Perl 6 constructs, such
 
 For a full explanation see [Modules](https://docs.perl6.org/language/modules).
 
-<a id="versioning-and-authorship-2"></a>
+<a id="versioning-and-authorship"></a>
 ### Versioning and authorship
 
 Versioning and authorship can be applied via the adverbs `:ver<>` and `:auth<>`. Both take a string as argument, for `:ver` the string is converted to a [Version](https://docs.perl6.org/type/Version) object. To query a modules version and author use `.^ver` and `^.auth`.
@@ -955,7 +1039,7 @@ Grammars are a specific type of class intended for parsing text. Grammars are co
 
 For a full explanation see [Grammars](https://docs.perl6.org/language/grammars).
 
-<a id="versioning-and-authorship-3"></a>
+<a id="versioning-and-authorship-1"></a>
 ### Versioning and authorship
 
 Versioning and authorship can be applied via the adverbs `:ver<>` and `:auth<>`. Both take a string as argument, for `:ver` the string is converted to a [Version](https://docs.perl6.org/type/Version) object. To query a grammars version and author use `.^ver` and `^.auth`.
