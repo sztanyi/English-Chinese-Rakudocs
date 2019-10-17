@@ -1,4 +1,4 @@
-原文：https://docs.perl6.org/language/statement-prefixes
+原文：https://rakudocs.github.io/language/statement-prefixes
 
 # 语句前缀 / Statement prefixes
 
@@ -34,7 +34,7 @@ Statement prefixes are written in front of a statement, and change their meaning
 
 As a statement prefix, `lazy` acts in front of any statement, including `for` loops, saving the execution for when the variable they are assigned to is actually needed.
 
-```Perl6
+```Raku
 my $incremented = 0;
 my $var = lazy for <1 2 3 4> -> $d {
     $incremented++
@@ -48,15 +48,15 @@ say $incremented; # OUTPUT: «4␤»
 
 The `$incremented` variable is only incremented, that is, the internal part of the loop is only run when we eagerly evaluate the variable `$var` that contains the lazy loop. Eagerness can be applied on a variable in other ways, such as calling the `.eager` method on it.
 
-```Perl6
+```Raku
 my @array = lazy { (^3).map( *² )  };
 say @array;       # OUTPUT: «[...]» 
 say @array.eager; # OUTPUT: «[0 1 4]␤» 
 ```
 
-这个前缀也可以被使用[在 `gather` 前面](https://docs.perl6.org/language/control#gather/take)来使内部语句惰性求值；通常，任何返回值的语句都会使用这个前缀来延迟操作。
+这个前缀也可以被使用[在 `gather` 前面](https://rakudocs.github.io/language/control#gather/take)来使内部语句惰性求值；通常，任何返回值的语句都会使用这个前缀来延迟操作。
 
-This prefix can also be used [in front of `gather`](https://docs.perl6.org/language/control#gather/take) to make the inner statements behave lazily; in general, any set of statements that returns a value will be made lazy using this.
+This prefix can also be used [in front of `gather`](https://rakudocs.github.io/language/control#gather/take) to make the inner statements behave lazily; in general, any set of statements that returns a value will be made lazy using this.
 
 <a id="eager"></a>
 ## `eager`
@@ -65,14 +65,14 @@ This prefix can also be used [in front of `gather`](https://docs.perl6.org/langu
 
 The `eager` statement prefix will eagerly return the result of the statements behind, throwing away laziness and returning the result.
 
-```Perl6
+```Raku
 my $result := eager gather { for 1..3 { say "Hey"; take $_² } };
 say $result[0]; # OUTPUT: «Hey␤Hey␤Hey␤1␤» 
 ```
 
-`gather` 是[绑定到标量时隐含的懒惰](https://docs.perl6.org/syntax/gather%20take)。但是，如果使用 `eager` 作为语句前缀，它将运行循环中的所有三个迭代，如打印的 "Hey" 所示，即使我们只是连续请求第一个迭代。
+`gather` 是[绑定到标量时隐含的懒惰](https://rakudocs.github.io/syntax/gather%20take)。但是，如果使用 `eager` 作为语句前缀，它将运行循环中的所有三个迭代，如打印的 "Hey" 所示，即使我们只是连续请求第一个迭代。
 
-`gather` is [implicitly lazy when bound to a scalar](https://docs.perl6.org/syntax/gather%20take). However, with `eager` as a statement prefix it will run all three iterations in the loop, as shown by the printed "Hey", even if we are just requesting the first one in a row.
+`gather` is [implicitly lazy when bound to a scalar](https://rakudocs.github.io/syntax/gather%20take). However, with `eager` as a statement prefix it will run all three iterations in the loop, as shown by the printed "Hey", even if we are just requesting the first one in a row.
 
 <a id="hyper-race"></a>
 ## `hyper`, `race`
@@ -81,7 +81,7 @@ say $result[0]; # OUTPUT: «Hey␤Hey␤Hey␤1␤»
 
 `hyper` and `race` use (maybe simultaneous) threads to run different iterations in a loop:
 
-```Perl6
+```Raku
 my @a = hyper for ^100_000 { .is-prime }
 ```
 
@@ -108,23 +108,23 @@ Main difference between `hyper` and `race` is the ordering of results. Use `hype
 
 As a statement prefix, `quietly` suppresses all warnings produced by the statement it precedes.
 
-```Perl6
+```Raku
 sub marine() {};
 quietly say ~&marine; # OUTPUT: «marine␤» 
 ```
 
-对 [`code` 调用 `.Str` 产生告警](https://docs.perl6.org/type/Code#method_Str)。在语句之前使用 `quietly` 没有告警只产生输出，即例程的名字。
+对 [`code` 调用 `.Str` 产生告警](https://rakudocs.github.io/type/Code#method_Str)。在语句之前使用 `quietly` 没有告警只产生输出，即例程的名字。
 
-Calling [`.Str` on `code` produces a warning](https://docs.perl6.org/type/Code#method_Str). Preceding the statement with `quietly` will just produce the output, the name of the routine.
+Calling [`.Str` on `code` produces a warning](https://rakudocs.github.io/type/Code#method_Str). Preceding the statement with `quietly` will just produce the output, the name of the routine.
 
 <a id="try"></a>
 ## `try`
 
-如果在语句前面使用 `try`，它将包含其中产生的异常，并将其存储在 `$!` 变量中，就像[在块前面使用它](https://docs.perl6.org/language/language/exceptions#try_blocks)一样。
+如果在语句前面使用 `try`，它将包含其中产生的异常，并将其存储在 `$!` 变量中，就像[在块前面使用它](https://rakudocs.github.io/language/language/exceptions#try_blocks)一样。
 
-If you use `try` in front of a statement, it will contain the exception produced in it and store it in the `$!` variable, just like when [it's used in front of a block](https://docs.perl6.org/language/language/exceptions#try_blocks).
+If you use `try` in front of a statement, it will contain the exception produced in it and store it in the `$!` variable, just like when [it's used in front of a block](https://rakudocs.github.io/language/language/exceptions#try_blocks).
 
-```Perl6
+```Raku
 try [].pop;
 say $!; # OUTPUT: «Cannot pop from an empty Array␤..» 
 ```
@@ -136,7 +136,7 @@ say $!; # OUTPUT: «Cannot pop from an empty Array␤..»
 
 `do` can be used as an statement prefix to disambiguate the statement they precede; this is needed, for instance, if you want to assign the result of a `for` statement. A bare `for` will fail, but this will work:
 
-```Perl6
+```Raku
 my $counter = 0;
 my $result = do for ^5 { $counter++ };
 say $counter; # OUTPUT: «5␤» 
@@ -150,11 +150,11 @@ say $result;  # OUTPUT: «(0 1 2 3 4)␤»
 <a id="sink"></a>
 ## `sink`
 
-与[例程的情况](https://docs.perl6.org/routine/sink)一样，`sink` 将语句的运行结果扔掉。当你想要的是语句的副作用，使用它。
+与[例程的情况](https://rakudocs.github.io/routine/sink)一样，`sink` 将语句的运行结果扔掉。当你想要的是语句的副作用，使用它。
 
-As in the [case of the routine](https://docs.perl6.org/routine/sink), `sink` will run the statement throwing away the result. Use it in case you want to run some statement for the side effects it produces.
+As in the [case of the routine](https://rakudocs.github.io/routine/sink), `sink` will run the statement throwing away the result. Use it in case you want to run some statement for the side effects it produces.
 
-```Perl6
+```Raku
 my $counter = 0;
 my $result = sink for ^5 { $counter++ };
 say $counter; #  OUTPUT: «5␤» 
@@ -168,7 +168,7 @@ say $result;  #  OUTPUT: «(Any)␤»
 
 Within a loop, runs the prefixed statement only once.
 
-```Perl6
+```Raku
 my $counter;
 my $result = do for ^5 { once $counter = 0; $counter++ };
 say $result; # OUTPUT: «(0 1 2 3 4)␤» 
@@ -181,7 +181,7 @@ say $result; # OUTPUT: «(0 1 2 3 4)␤»
 
 `gather` can be used in front of a statement, receiving and gathering in a list all data structures emitted from a `take` run anywhere from that statement:
 
-```Perl6
+```Raku
 proto sub fact( Int ) {*}
 multi sub fact( 1 --> 1 ) {}
 multi sub fact( $x ) { take $x * fact( $x-1 ) }
@@ -198,11 +198,11 @@ In this example, `gather` precedes `say`, which prints the first result of the f
 <a id="start"></a>
 ## `start`
 
-作为语句前缀，`start` 以与[在块前面](https://docs.perl6.org/language/control#flow%29_start)相同的方式运行，也就是说，它以异步方式运行语句，并返回一个 promise。
+作为语句前缀，`start` 以与[在块前面](https://rakudocs.github.io/language/control#flow%29_start)相同的方式运行，也就是说，它以异步方式运行语句，并返回一个 promise。
 
-As a statement prefix, `start` behaves in the same way as [in front of a block](https://docs.perl6.org/language/control#flow%29_start), that is, it runs the statement asynchronously, and returns a promise.
+As a statement prefix, `start` behaves in the same way as [in front of a block](https://rakudocs.github.io/language/control#flow%29_start), that is, it runs the statement asynchronously, and returns a promise.
 
-```Perl6
+```Raku
 proto sub fact( Int ) {*}
 multi sub fact( 1 --> 1 ) {}
 multi sub fact( $x ) {  $x * fact( $x-1 ) }
@@ -216,18 +216,18 @@ my @promises = gather {
 say await @promises;
 ```
 
-start 创建的 [`Promise`](https://docs.perl6.org/type/Promise) 被收集到一个数组中，该数组在 promise 完成后返回操作的结果。
+start 创建的 [`Promise`](https://rakudocs.github.io/type/Promise) 被收集到一个数组中，该数组在 promise 完成后返回操作的结果。
 
-The [`Promise`s](https://docs.perl6.org/type/Promise) created by start are gathered in an array, which returns the result of the operation once the promises have been fulfilled.
+The [`Promise`s](https://rakudocs.github.io/type/Promise) created by start are gathered in an array, which returns the result of the operation once the promises have been fulfilled.
 
 <a id="react"></a>
 ## `react`
 
-`react` 可以在并发程序中使用，用来创建代码块，以便在发生某些事件时运行。它[与块一起工作](https://docs.perl6.org/syntax/react)，同时也用作语句前缀。
+`react` 可以在并发程序中使用，用来创建代码块，以便在发生某些事件时运行。它[与块一起工作](https://rakudocs.github.io/syntax/react)，同时也用作语句前缀。
 
-`react` can be used in concurrent programs to create blocks of code that run whenever some event occurs. It [works with blocks](https://docs.perl6.org/syntax/react), and also as a statement prefix.
+`react` can be used in concurrent programs to create blocks of code that run whenever some event occurs. It [works with blocks](https://rakudocs.github.io/syntax/react), and also as a statement prefix.
 
-```Perl6
+```Raku
 my Channel $KXGA .= new;
 for ^100 {
     $KXGA.send( (100000..200000).pick );
@@ -250,11 +250,11 @@ In this case `react` prefixes `whenever`, which makes a long sum with every numb
 <a id="supply"></a>
 ## `supply`
 
-关键字 `supply` 可以创建[按需 supply](https://docs.perl6.org/language/concurrency#index-entry-supply_(on-demand))。它与 `emit` 成对工作，它可以在 `supply` 前缀语句中的任何地方使用。
+关键字 `supply` 可以创建[按需 supply](https://rakudocs.github.io/language/concurrency#index-entry-supply_(on-demand))。它与 `emit` 成对工作，它可以在 `supply` 前缀语句中的任何地方使用。
 
-The keyword `supply` creates [on-demand supplies](https://docs.perl6.org/language/concurrency#index-entry-supply_(on-demand)) that you can tap. It pairs with `emit`, which can be used anywhere from within a `supply` prefixed statement.
+The keyword `supply` creates [on-demand supplies](https://rakudocs.github.io/language/concurrency#index-entry-supply_(on-demand)) that you can tap. It pairs with `emit`, which can be used anywhere from within a `supply` prefixed statement.
 
-```Perl6
+```Raku
 my &cards = ->  {
     my @cards = 1..10 X~ <♠ ♥ ♦ ♣>;
     emit($_) for @cards.pick(@cards.elems);

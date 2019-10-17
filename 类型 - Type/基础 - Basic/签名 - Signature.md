@@ -1,4 +1,4 @@
-原文：https://docs.perl6.org/type/Signature
+原文：https://rakudocs.github.io/type/Signature
 
 # Signature 类 / class Signature
 
@@ -10,13 +10,13 @@ Parameter list pattern
 class Signature { }
 ```
 
-签名是对代码对象的[参数](https://docs.perl6.org/type/parameter)列表的静态描述。也就是说，它描述了要调用代码或函数，需要传递什么和多少参数。
+签名是对代码对象的[参数](https://rakudocs.github.io/type/parameter)列表的静态描述。也就是说，它描述了要调用代码或函数，需要传递什么和多少参数。
 
-A signature is a static description of the [parameter](https://docs.perl6.org/type/Parameter) list of a code object. That is, it describes what and how many arguments you need to pass to the code or function in order to call it.
+A signature is a static description of the [parameter](https://rakudocs.github.io/type/Parameter) list of a code object. That is, it describes what and how many arguments you need to pass to the code or function in order to call it.
 
-向签名传递参数将包含在 [Capture](https://docs.perl6.org/type/capture) 中的参数*绑定*到签名。
+向签名传递参数将包含在 [Capture](https://rakudocs.github.io/type/capture) 中的参数*绑定*到签名。
 
-Passing arguments to a signature *binds* the arguments, contained in a [Capture](https://docs.perl6.org/type/Capture), to the signature.
+Passing arguments to a signature *binds* the arguments, contained in a [Capture](https://rakudocs.github.io/type/Capture), to the signature.
 
 # 目录 / Table Of Contents
 
@@ -67,9 +67,9 @@ Passing arguments to a signature *binds* the arguments, contained in a [Capture]
 <a id="%E7%AD%BE%E5%90%8D%E5%AD%97%E9%9D%A2%E9%87%8F--signature-literals"></a>
 # 签名字面量 / Signature literals
 
-签名出现在[函数](https://docs.perl6.org/type/Sub)和[方法](https://docs.perl6.org/type/Method)名之后的括号里，在代码块中箭头 `->` 或者 `<->` 之后, 作为[变量声明符](https://docs.perl6.org/language/variables#Variable_declarators_and_scope)如 [`my`](https://docs.perl6.org/syntax/my) 的输入，或者以冒号开头的独立术语。
+签名出现在[函数](https://rakudocs.github.io/type/Sub)和[方法](https://rakudocs.github.io/type/Method)名之后的括号里，在代码块中箭头 `->` 或者 `<->` 之后, 作为[变量声明符](https://rakudocs.github.io/language/variables#Variable_declarators_and_scope)如 [`my`](https://rakudocs.github.io/syntax/my) 的输入，或者以冒号开头的独立术语。
 
-Signatures appear inside parentheses after [subroutine](https://docs.perl6.org/type/Sub) and [method](https://docs.perl6.org/type/Method) names, on blocks after a `-> `or `<-> `arrow, as the input to [variable declarators](https://docs.perl6.org/language/variables#Variable_declarators_and_scope) like [`my`](https://docs.perl6.org/syntax/my), or as a separate term starting with a colon.
+Signatures appear inside parentheses after [subroutine](https://rakudocs.github.io/type/Sub) and [method](https://rakudocs.github.io/type/Method) names, on blocks after a `-> `or `<-> `arrow, as the input to [variable declarators](https://rakudocs.github.io/language/variables#Variable_declarators_and_scope) like [`my`](https://rakudocs.github.io/syntax/my), or as a separate term starting with a colon.
 
 ```Perl6
 sub f($x) { }
@@ -151,9 +151,9 @@ my $sig = :($a, @b, %c);
 sub add($a, $b) { $a + $b };
 ```
 
-有一个例外，第一个参数后面可能跟一个分号而非逗号标记一个方法的调用。调用通常绑定到 [`self`](https://docs.perl6.org/routine/self)，是用来调用方法的对象。
+有一个例外，第一个参数后面可能跟一个分号而非逗号标记一个方法的调用。调用通常绑定到 [`self`](https://rakudocs.github.io/routine/self)，是用来调用方法的对象。
 
-As an exception the first parameter may be followed by a colon instead of a comma to mark the invocant of a method. The invocant is the object that was used to call the method, which is usually bound to [`self`](https://docs.perl6.org/routine/self). By specifying it in the signature, you can change the variable name it is bound to.
+As an exception the first parameter may be followed by a colon instead of a comma to mark the invocant of a method. The invocant is the object that was used to call the method, which is usually bound to [`self`](https://rakudocs.github.io/routine/self). By specifying it in the signature, you can change the variable name it is bound to.
 
 ```Perl6
 method ($a: @b, %c) {};       # first argument is the invocant 
@@ -169,9 +169,9 @@ say Foo.whoami; # OUTPUT: «Well I'm class Foo, of course!␤»
 <a id="%E7%B1%BB%E5%9E%8B%E7%BA%A6%E6%9D%9F--type-constraints"></a>
 ## 类型约束 / Type constraints
 
-参数可以选择具有类型约束（默认为 [`Any`](https://docs.perl6.org/type/Any)）。这些可用于限制函数输入。
+参数可以选择具有类型约束（默认为 [`Any`](https://rakudocs.github.io/type/Any)）。这些可用于限制函数输入。
 
-Parameters can optionally have a type constraint (the default is [`Any`](https://docs.perl6.org/type/Any)). These can be used to restrict the allowed input to a function.
+Parameters can optionally have a type constraint (the default is [`Any`](https://rakudocs.github.io/type/Any)). These can be used to restrict the allowed input to a function.
 
 ```Perl6
 my $sig = :(Int $a, Str $b);
@@ -196,9 +196,9 @@ divisors -3;
 
 Please note that in the code above type constraints are enforced at two different levels: the first level checks if it belongs to the type in which the subset is based, in this case `Int`. If it fails, a `Type check` error is produced. Once that filter is cleared, the constraint that defined the subset is checked, producing a `Constraint type check` error if it fails.
 
-使用匿名参数也可以，如果你实际上不需要按名称引用参数，例如区分 [multi](https://docs.perl6.org/language/functions#index- entry-declarator_multi-Multi-dispatch) 中的不同签名或检查 [Callable](https://docs.perl6.org/type/Callable) 的签名。
+使用匿名参数也可以，如果你实际上不需要按名称引用参数，例如区分 [multi](https://rakudocs.github.io/language/functions#index- entry-declarator_multi-Multi-dispatch) 中的不同签名或检查 [Callable](https://rakudocs.github.io/type/Callable) 的签名。
 
-Anonymous arguments are fine too, if you don't actually need to refer to a parameter by name, for instance to distinguish between different signatures in a [multi](https://docs.perl6.org/language/functions#index-entry-declarator_multi-Multi-dispatch) or to check the signature of a [Callable](https://docs.perl6.org/type/Callable).
+Anonymous arguments are fine too, if you don't actually need to refer to a parameter by name, for instance to distinguish between different signatures in a [multi](https://rakudocs.github.io/language/functions#index-entry-declarator_multi-Multi-dispatch) or to check the signature of a [Callable](https://rakudocs.github.io/type/Callable).
 
 ```Perl6
 my $sig = :($, @, %a);          # two anonymous and a "normal" parameter 
@@ -206,9 +206,9 @@ $sig = :(Int, Positional);      # just a type is also fine (two parameters)
 sub baz(Str) { "Got passed a Str" }
 ```
 
-类型约束也可以是[类型捕获](https://docs.perl6.org/type/Signature#Type_captures)。
+类型约束也可以是[类型捕获](https://rakudocs.github.io/type/Signature#Type_captures)。
 
-Type constraints may also be [type captures](https://docs.perl6.org/type/Signature#Type_captures).
+Type constraints may also be [type captures](https://rakudocs.github.io/type/Signature#Type_captures).
 
 除了那些*名义上*的类型之外，还可以以代码块的形式对参数进行附加约束，这些代码块必须返回真值才能通过类型检查
 
@@ -222,9 +222,9 @@ sub f(Real $x where { $x > 0 }, Real $y where { $y >= $x }) { }
 
 The code in `where` clauses has some limitations: anything that produces side-effects (e.g. printing output, pulling from an iterator, or increasing a state variable) is not supported and may produce surprising results if used. Also, the code of the `where` clause may run more than once for a single typecheck in some implementations.
 
-`where` 子句不限于代码块，`where` 子句右边的任何东西都会被参数做[智能匹配](https://docs.perl6.org/language/operators#infix_~~)。因此你也可以这样写：
+`where` 子句不限于代码块，`where` 子句右边的任何东西都会被参数做[智能匹配](https://rakudocs.github.io/language/operators#infix_~~)。因此你也可以这样写：
 
-The `where` clause doesn't need to be a code block, anything on the right of the `where`-clause will be used to [smartmatch](https://docs.perl6.org/language/operators#infix_~~) the argument against it. So you can also write:
+The `where` clause doesn't need to be a code block, anything on the right of the `where`-clause will be used to [smartmatch](https://rakudocs.github.io/language/operators#infix_~~) the argument against it. So you can also write:
 
 ```Perl6
 multi factorial(Int $ where 0) { 1 }
@@ -252,9 +252,9 @@ i.e., you can use a literal directly as a type and value constraint on an anonym
 -> $y where { .so && .name }  {}( sub two   {} ); # OK! 
 -> $y where   .so &  .name.so {}( sub three {} ); # Also good 
 ```
-第一个版本是错误的，运行的话会抛出函数对象强制转化为为字符串的警告。原因是表达式相当于 `($y ~~ ($y.so && $y.name))`; 它会先调用方法 `.so` ，如果执行结果为`真`，则接着调用方法 `.name`，如果执行结果仍为`真`，使用它的值做智能匹配。。。。`(.so && .name)` 的运算结果被智能匹配了，但是我们想要检查 `.so` 和 `.name` 是否都为真值。这就是为什么明确的代码块或者 [Junction](https://docs.perl6.org/type/Junction) 是正确的版本。
+第一个版本是错误的，运行的话会抛出函数对象强制转化为为字符串的警告。原因是表达式相当于 `($y ~~ ($y.so && $y.name))`; 它会先调用方法 `.so` ，如果执行结果为`真`，则接着调用方法 `.name`，如果执行结果仍为`真`，使用它的值做智能匹配。。。。`(.so && .name)` 的运算结果被智能匹配了，但是我们想要检查 `.so` 和 `.name` 是否都为真值。这就是为什么明确的代码块或者 [Junction](https://rakudocs.github.io/type/Junction) 是正确的版本。
 
-The first version is wrong and will issue a warning about sub object coerced to string. The reason is the expression is equivalent to `($y ~~ ($y.so && $y.name))`; that is "call `.so`, and if that is `True`, call `.name`; if that is also `True` use its value for smartmatching…". It's the **result** of `(.so && .name)` is will be smartmatched against, but we want to check that both `.so` and `.name` are truthy values. That is why an explicit Block or a [Junction](https://docs.perl6.org/type/Junction) is the right version.
+The first version is wrong and will issue a warning about sub object coerced to string. The reason is the expression is equivalent to `($y ~~ ($y.so && $y.name))`; that is "call `.so`, and if that is `True`, call `.name`; if that is also `True` use its value for smartmatching…". It's the **result** of `(.so && .name)` is will be smartmatched against, but we want to check that both `.so` and `.name` are truthy values. That is why an explicit Block or a [Junction](https://rakudocs.github.io/type/Junction) is the right version.
 
 所有以前不属于`签名`中的子签名的参数都可以在参数后面的 `where` 子句中被访问。因此，最后一个参数的 `where` 子句可以访问不属于子签名的签名的所有参数。对于子签名，在子签名内放置 `where` 子句。
 
@@ -270,11 +270,11 @@ foo 2, 4; # OUTPUT: «4 is a square of 2␤»»
 <a id="%E7%BA%A6%E6%9D%9F%E5%8F%AF%E9%80%89%E5%8F%82%E6%95%B0--constraining-optional-arguments"></a>
 ### 约束可选参数 / Constraining optional arguments
 
-[可选参数](https://docs.perl6.org/type/Signature#Optional_and_mandatory_arguments)也可以有约束。任何参数的任一 `where` 子句都将会被执行，即使它是可选的并且不由调用者提供。那种情况下你需要防止 `where` 子句中未定义的值。
+[可选参数](https://rakudocs.github.io/type/Signature#Optional_and_mandatory_arguments)也可以有约束。任何参数的任一 `where` 子句都将会被执行，即使它是可选的并且不由调用者提供。那种情况下你需要防止 `where` 子句中未定义的值。
 
 can have constraints, too. Any `where` clause on any parameter will be executed, even if it's optional and not provided by the caller. In that case you may have to guard against undefined values within the `where` clause.
 
-[Optional arguments](https://docs.perl6.org/type/Signature#Optional_and_mandatory_arguments) can have constraints, too. Any `where` clause on any parameter will be executed, even if it's optional and not provided by the caller. In that case you may have to guard against undefined values within the `where` clause.
+[Optional arguments](https://rakudocs.github.io/type/Signature#Optional_and_mandatory_arguments) can have constraints, too. Any `where` clause on any parameter will be executed, even if it's optional and not provided by the caller. In that case you may have to guard against undefined values within the `where` clause.
 
 ```Perl6
 sub f(Int $a, UInt $i? where { !$i.defined or $i > 5 }) { ... }
@@ -283,9 +283,9 @@ sub f(Int $a, UInt $i? where { !$i.defined or $i > 5 }) { ... }
 <a id="%E7%BA%A6%E6%9D%9F-slurpy-%E5%8F%82%E6%95%B0--constraining-slurpy-arguments"></a>
 ### 约束 slurpy 参数 / Constraining slurpy arguments
 
-[Slurpy 参数](https://docs.perl6.org/type/Signature#Slurpy_%28A.K.A._variadic%29_parameters)不能有类型约束。可以使用 `where` 子句和 [Junction](https://docs.perl6.org/type/Junction) 来实现该效果。
+[Slurpy 参数](https://rakudocs.github.io/type/Signature#Slurpy_%28A.K.A._variadic%29_parameters)不能有类型约束。可以使用 `where` 子句和 [Junction](https://rakudocs.github.io/type/Junction) 来实现该效果。
 
-[Slurpy arguments](https://docs.perl6.org/type/Signature#Slurpy_%28A.K.A._variadic%29_parameters) can not have type constraints. A `where`-clause in conjunction with a [Junction](https://docs.perl6.org/type/Junction) can be used to that effect.
+[Slurpy arguments](https://rakudocs.github.io/type/Signature#Slurpy_%28A.K.A._variadic%29_parameters) can not have type constraints. A `where`-clause in conjunction with a [Junction](https://rakudocs.github.io/type/Junction) can be used to that effect.
 
 ```Perl6
 sub f(*@a where {$_.all ~~ Int}) { say @a };
@@ -298,9 +298,9 @@ CATCH { default { say .^name, ' ==> ', .Str }  }
 <a id="%E7%BA%A6%E6%9D%9F%E5%91%BD%E5%90%8D%E5%8F%82%E6%95%B0--constraining-named-arguments"></a>
 ### 约束命名参数 / Constraining named arguments
 
-对[命名参数](https://docs.perl6.org/type/Signature#Positional_vs._named_arguments)的约束适用于[冒号对](https://docs.perl6.org/type/Pair)的值部分。
+对[命名参数](https://rakudocs.github.io/type/Signature#Positional_vs._named_arguments)的约束适用于[冒号对](https://rakudocs.github.io/type/Pair)的值部分。
 
-Constraints against [Named arguments](https://docs.perl6.org/type/Signature#Positional_vs._named_arguments) apply to the value part of the [colon-pair](https://docs.perl6.org/type/Pair).
+Constraints against [Named arguments](https://rakudocs.github.io/type/Signature#Positional_vs._named_arguments) apply to the value part of the [colon-pair](https://rakudocs.github.io/type/Pair).
 
 ```Perl6
 sub f(Int :$i){};
@@ -347,9 +347,9 @@ CATCH { default { put .^name, ': ', .Str } };
 say limit-lines "a \n b", Int; # Always returns the max number of lines 
 ```
 
-在这里，我们其实只想处理字符串实例，而不是类型对象。为此，我们可以使用 `:D` 类型约束。此约束以与调用其 [DEFINITE](https://docs.perl6.org/language/mop#DEFINITE) 元方法类似的方式检查传递的值是否为*对象实例*。
+在这里，我们其实只想处理字符串实例，而不是类型对象。为此，我们可以使用 `:D` 类型约束。此约束以与调用其 [DEFINITE](https://rakudocs.github.io/language/mop#DEFINITE) 元方法类似的方式检查传递的值是否为*对象实例*。
 
-Here we really only want to deal with string instances, not type objects. To do this, we can use the `:D` type constraint. This constraint checks that the value passed is an *object instance*, in a similar fashion to calling its [DEFINITE](https://docs.perl6.org/language/mop#DEFINITE) (meta)method.
+Here we really only want to deal with string instances, not type objects. To do this, we can use the `:D` type constraint. This constraint checks that the value passed is an *object instance*, in a similar fashion to calling its [DEFINITE](https://rakudocs.github.io/language/mop#DEFINITE) (meta)method.
 
 热个身，让我们将 `:D` 应用到我们简陋的 `Int` 示例的右侧：
 
@@ -449,13 +449,13 @@ say $f  ~~ Any:U;    # OUTPUT: «False␤»
 say $f  ~~ Any:_;    # OUTPUT: «True␤» 
 ```
 
-[类和对象](https://docs.perl6.org/language/classtut#Starting_with_class)文档进一步阐述了实例和类型对象的概念，并使用 `.DEFINITE` 方法发现它们。
+[类和对象](https://rakudocs.github.io/language/classtut#Starting_with_class)文档进一步阐述了实例和类型对象的概念，并使用 `.DEFINITE` 方法发现它们。
 
-The [Classes and Objects](https://docs.perl6.org/language/classtut#Starting_with_class) document further elaborates on the concepts of instances and type objects and discovering them with the `.DEFINITE` method.
+The [Classes and Objects](https://rakudocs.github.io/language/classtut#Starting_with_class) document further elaborates on the concepts of instances and type objects and discovering them with the `.DEFINITE` method.
 
-请记住所有参数都有值;即使是可选参数也有默认默认值，他们是显式类型约束的约束类型的类型对象。如果不存在显式类型约束，则默认默认值为方法，子方法和子例程的 [Any](https://docs.perl6.org/type/Any) 类型对象，以及 [Mu](https://docs.perl6.org/type/Mu) 为块输入对象。这意味着如果使用 `:D` 类型表情符号，则需要提供默认值或使参数成为必需参数。否则，默认默认值为类型对象，这将使定义约束失败。
+请记住所有参数都有值;即使是可选参数也有默认默认值，他们是显式类型约束的约束类型的类型对象。如果不存在显式类型约束，则默认默认值为方法，子方法和子例程的 [Any](https://rakudocs.github.io/type/Any) 类型对象，以及 [Mu](https://rakudocs.github.io/type/Mu) 为块输入对象。这意味着如果使用 `:D` 类型表情符号，则需要提供默认值或使参数成为必需参数。否则，默认默认值为类型对象，这将使定义约束失败。
 
-Keep in mind all parameters have values; even optional ones have default defaults that are the type object of the constrained type for explicit type constraints. If no explicit type constraint exists, the default default is an [Any](https://docs.perl6.org/type/Any) type object for methods, submethods, and subroutines, and a [Mu](https://docs.perl6.org/type/Mu) type object for blocks. This means that if you use the `:D` type smiley, you'd need to provide a default value or make the parameter required. Otherwise, the default default would be a type object, which would fail the definiteness constraint.
+Keep in mind all parameters have values; even optional ones have default defaults that are the type object of the constrained type for explicit type constraints. If no explicit type constraint exists, the default default is an [Any](https://rakudocs.github.io/type/Any) type object for methods, submethods, and subroutines, and a [Mu](https://rakudocs.github.io/type/Mu) type object for blocks. This means that if you use the `:D` type smiley, you'd need to provide a default value or make the parameter required. Otherwise, the default default would be a type object, which would fail the definiteness constraint.
 
 ```Perl6
 sub divide (Int:D :$a = 2, Int:D :$b!) { say $a/$b }
@@ -505,13 +505,13 @@ my Int:D $x .= new: 42; # OUTPUT: «42␤»
 
 A closing remark on terminology: this section is about the use of the type smileys `:D` and `:U` to constrain the definiteness of arguments. Occasionally *definedness* is used as a synonym for *definiteness*; this may be confusing, since the terms have subtly different meanings.
 
-如上所述，*明确性*涉及类型对象和对象实例之间的区别。类型对象总是不确定的，而对象实例总是明确的。可以使用 [DEFINITE](https://docs.perl6.org/language/mop#DEFINITE)（元）方法验证对象是类型对象还是对象实例。
+如上所述，*明确性*涉及类型对象和对象实例之间的区别。类型对象总是不确定的，而对象实例总是明确的。可以使用 [DEFINITE](https://rakudocs.github.io/language/mop#DEFINITE)（元）方法验证对象是类型对象还是对象实例。
 
-As explained above, *definiteness* is concerned with the distinction between type objects and object instances. A type object is always indefinite, while an object instance is always definite. Whether an object is a type object/indefinite or an object instance/definite can be verified using the [DEFINITE](https://docs.perl6.org/language/mop#DEFINITE) (meta)method.
+As explained above, *definiteness* is concerned with the distinction between type objects and object instances. A type object is always indefinite, while an object instance is always definite. Whether an object is a type object/indefinite or an object instance/definite can be verified using the [DEFINITE](https://rakudocs.github.io/language/mop#DEFINITE) (meta)method.
 
-*确定性*应与*定义性*区分开来，*定义性*与定义和未定义对象之间的区别有关。可以使用 `defined` 方法验证对象是定义的还是未定义的，该方法在类 [Mu](https://docs.perl6.org/type/Mu) 中实现。默认情况下，类型对象被视为未定义，而对象实例被视为已定义;即：`.defined` 在类型对象上返回`假值`，否则返回 `真值`。但是这个默认行为可能会被子类覆盖。覆盖默认 `.defined` 行为的子类的示例是 [Failure](https://docs.perl6.org/type/Failure)，因此即使实例化的 `Failure` 也可以作为未定义的值：
+*确定性*应与*定义性*区分开来，*定义性*与定义和未定义对象之间的区别有关。可以使用 `defined` 方法验证对象是定义的还是未定义的，该方法在类 [Mu](https://rakudocs.github.io/type/Mu) 中实现。默认情况下，类型对象被视为未定义，而对象实例被视为已定义;即：`.defined` 在类型对象上返回`假值`，否则返回 `真值`。但是这个默认行为可能会被子类覆盖。覆盖默认 `.defined` 行为的子类的示例是 [Failure](https://rakudocs.github.io/type/Failure)，因此即使实例化的 `Failure` 也可以作为未定义的值：
 
-*Definiteness* should be distinguished from *definedness*, which is concerned with the difference between defined and undefined objects. Whether an object is defined or undefined can be verified using the `defined`-method, which is implemented in class [Mu](https://docs.perl6.org/type/Mu). By default a type object is considered undefined, while an object instance is considered defined; that is: `.defined` returns `False` on a type object, and `True` otherwise. But this default behavior may be overridden by subclasses. An example of a subclass that overrides the default `.defined` behavior is [Failure](https://docs.perl6.org/type/Failure), so that even an instantiated `Failure` acts as an undefined value:
+*Definiteness* should be distinguished from *definedness*, which is concerned with the difference between defined and undefined objects. Whether an object is defined or undefined can be verified using the `defined`-method, which is implemented in class [Mu](https://rakudocs.github.io/type/Mu). By default a type object is considered undefined, while an object instance is considered defined; that is: `.defined` returns `False` on a type object, and `True` otherwise. But this default behavior may be overridden by subclasses. An example of a subclass that overrides the default `.defined` behavior is [Failure](https://rakudocs.github.io/type/Failure), so that even an instantiated `Failure` acts as an undefined value:
 
 ```Perl6
 my $a = Failure;                # Initialize with type object 
@@ -525,9 +525,9 @@ say $b.defined;                 # Output: «False␤» : .defined override
 <a id="%E7%BA%A6%E6%9D%9F%E5%8F%AF%E8%B0%83%E7%94%A8%E7%AD%BE%E5%90%8D--constraining-signatures-of-callables"></a>
 ### 约束`可调用`签名 / Constraining signatures of `Callable`s
 
-可以在参数之后紧跟[签名](https://docs.perl6.org/type/Signature)（不允许空格）来约束 [Callable](https://docs.perl6.org/type/Callable) 参数：
+可以在参数之后紧跟[签名](https://rakudocs.github.io/type/Signature)（不允许空格）来约束 [Callable](https://rakudocs.github.io/type/Callable) 参数：
 
-The signature of a [Callable](https://docs.perl6.org/type/Callable) parameter can be constrained by specifying a [Signature](https://docs.perl6.org/type/Signature) literal right after the parameter (no whitespace allowed):
+The signature of a [Callable](https://rakudocs.github.io/type/Callable) parameter can be constrained by specifying a [Signature](https://rakudocs.github.io/type/Signature) literal right after the parameter (no whitespace allowed):
 
 ```Perl6
 sub f(&c:(Int, Str))  { say c(10, 'ten') };
@@ -551,13 +551,13 @@ f(&h);   # OUTPUT: «ten10␤»
 <a id="%E7%BA%A6%E6%9D%9F%E8%BF%94%E5%9B%9E%E5%80%BC%E7%B1%BB%E5%9E%8B--constraining-return-types"></a>
 ### 约束返回值类型 / Constraining return types
 
-有多种方式限制一个[例程](https://docs.perl6.org/type/Routine)的返回值类型。下面所有的版本都是合法的并且会强制类型检查，当例程成功执行的时候。
+有多种方式限制一个[例程](https://rakudocs.github.io/type/Routine)的返回值类型。下面所有的版本都是合法的并且会强制类型检查，当例程成功执行的时候。
 
-There are multiple ways to constrain return types on a [Routine](https://docs.perl6.org/type/Routine). All versions below are currently valid and will force a type check on successful execution of a routine.
+There are multiple ways to constrain return types on a [Routine](https://rakudocs.github.io/type/Routine). All versions below are currently valid and will force a type check on successful execution of a routine.
 
-[`Nil`](https://docs.perl6.org/type/Nil) 和 [`Failure`](https://docs.perl6.org/type/Failure) 作为返回值类型总是允许的，不受任何类型约束限制。这允许返回 [Failure](https://docs.perl6.org/type/Failure) 并在调用链中传递。
+[`Nil`](https://rakudocs.github.io/type/Nil) 和 [`Failure`](https://rakudocs.github.io/type/Failure) 作为返回值类型总是允许的，不受任何类型约束限制。这允许返回 [Failure](https://rakudocs.github.io/type/Failure) 并在调用链中传递。
 
-[`Nil`](https://docs.perl6.org/type/Nil) and [`Failure`](https://docs.perl6.org/type/Failure) are always allowed as return types, regardless of any type constraint. This allows [Failure](https://docs.perl6.org/type/Failure) to be returned and passed on down the call chain.
+[`Nil`](https://rakudocs.github.io/type/Nil) and [`Failure`](https://rakudocs.github.io/type/Failure) are always allowed as return types, regardless of any type constraint. This allows [Failure](https://rakudocs.github.io/type/Failure) to be returned and passed on down the call chain.
 
 ```Perl6
 sub foo(--> Int) { Nil };
@@ -741,13 +741,13 @@ Note that positional parameters aren't allowed after slurpy parameters:
 # Cannot put required parameter $last after variadic parameters 
 ```
 
-通常，一个 slurpy 参数将创建一个[数组](https://docs.perl6.org/type/Array)，为每个参数创建一个新的 [标量](https://docs.perl6.org/type/Scalar)容器参数，并将每个参数的值分配给这些标量。如果原始参数也有一个中间标量，则在此过程中被绕过，并且在被调用函数内不可用。
+通常，一个 slurpy 参数将创建一个[数组](https://rakudocs.github.io/type/Array)，为每个参数创建一个新的 [标量](https://rakudocs.github.io/type/Scalar)容器参数，并将每个参数的值分配给这些标量。如果原始参数也有一个中间标量，则在此过程中被绕过，并且在被调用函数内不可用。
 
-Normally a slurpy parameter will create an [Array](https://docs.perl6.org/type/Array), create a new [Scalar](https://docs.perl6.org/type/Scalar) container for each argument, and assign the value from each argument to those Scalars. If the original argument also had an intermediary Scalar it is bypassed during this process, and is not available inside the called function.
+Normally a slurpy parameter will create an [Array](https://rakudocs.github.io/type/Array), create a new [Scalar](https://rakudocs.github.io/type/Scalar) container for each argument, and assign the value from each argument to those Scalars. If the original argument also had an intermediary Scalar it is bypassed during this process, and is not available inside the called function.
 
-当与某些[特征和修饰符](https://docs.perl6.org/type/Signature#Parameter_Traits_and_Modifiers)结合使用时，slurpy 参数具有特殊行为，如[slurpy 数组参数章节](https://docs.perl6.org/type/Signature#Types_of_slurpy_array_parameters)所述。
+当与某些[特征和修饰符](https://rakudocs.github.io/type/Signature#Parameter_Traits_and_Modifiers)结合使用时，slurpy 参数具有特殊行为，如[slurpy 数组参数章节](https://rakudocs.github.io/type/Signature#Types_of_slurpy_array_parameters)所述。
 
-Slurpy parameters have special behaviors when combined with some [traits and modifiers](https://docs.perl6.org/type/Signature#Parameter_Traits_and_Modifiers), as described in [the section on slurpy array parameters](https://docs.perl6.org/type/Signature#Types_of_slurpy_array_parameters).
+Slurpy parameters have special behaviors when combined with some [traits and modifiers](https://rakudocs.github.io/type/Signature#Parameter_Traits_and_Modifiers), as described in [the section on slurpy array parameters](https://rakudocs.github.io/type/Signature#Types_of_slurpy_array_parameters).
 
 <a id="slurpy-%E6%95%B0%E7%BB%84%E5%8F%82%E6%95%B0%E7%9A%84%E7%B1%BB%E5%9E%8B--types-of-slurpy-array-parameters"></a>
 ## slurpy 数组参数的类型 / Types of slurpy array parameters
@@ -771,9 +771,9 @@ Each will be described in detail in the next few sections. As the difference bet
 <a id="%E5%B1%95%E5%B9%B3%E7%9A%84-slurpy-%E5%8F%82%E6%95%B0--flattened-slurpy"></a>
 ### 展平的 slurpy 参数 / Flattened slurpy
 
-用一个星号声明的 slurpy 参数将通过溶解一个或多个裸[可迭代](https://docs.perl6.org/type/Iterable)层来展平参数。
+用一个星号声明的 slurpy 参数将通过溶解一个或多个裸[可迭代](https://rakudocs.github.io/type/Iterable)层来展平参数。
 
-Slurpy parameters declared with one asterisk will flatten arguments by dissolving one or more layers of bare [Iterable](https://docs.perl6.org/type/Iterable)s.
+Slurpy parameters declared with one asterisk will flatten arguments by dissolving one or more layers of bare [Iterable](https://rakudocs.github.io/type/Iterable)s.
 
 ```Perl6
 my @array = <a b c>;
@@ -793,9 +793,9 @@ A single asterisk slurpy flattens all given iterables, effectively hoisting any 
 <a id="%E4%B8%8D%E5%B1%95%E5%B9%B3%E7%9A%84-slurpy-%E5%8F%82%E6%95%B0--unflattened-slurpy"></a>
 ### 不展平的 slurpy 参数 / Unflattened slurpy
 
-用两颗星声明的 slurpy 参数不会压缩列表中的任何[可迭代](https://docs.perl6.org/type/Iterable)参数，但保持参数或多或少的原样：
+用两颗星声明的 slurpy 参数不会压缩列表中的任何[可迭代](https://rakudocs.github.io/type/Iterable)参数，但保持参数或多或少的原样：
 
-Slurpy parameters declared with two stars do not flatten any [Iterable](https://docs.perl6.org/type/Iterable) arguments within the list, but keep the arguments more or less as-is:
+Slurpy parameters declared with two stars do not flatten any [Iterable](https://rakudocs.github.io/type/Iterable) arguments within the list, but keep the arguments more or less as-is:
 
 ```Perl6
 my @array = <a b c>;
@@ -815,9 +815,9 @@ The double asterisk slurpy hides the nested comma objects and leaves them as-is 
 <a id="%E5%8D%95%E4%B8%80-slurpy-%E5%8F%82%E6%95%B0%E8%A7%84%E5%88%99--single-argument-rule-slurpy"></a>
 ### 单一 slurpy 参数规则 / Single argument rule slurpy
 
-使用 `+` 创建的 slurpy 参数使用*“单个参数规则”*，它决定如何根据上下文处理 slurpy 参数。基本上，如果只传递一个参数并且该参数是[可迭代](https://docs.perl6.org/type/Iterable)，则该参数用于填充 slurpy 参数数组。在任何其他情况下，`+@` 的作用类似于 `**@`。
+使用 `+` 创建的 slurpy 参数使用*“单个参数规则”*，它决定如何根据上下文处理 slurpy 参数。基本上，如果只传递一个参数并且该参数是[可迭代](https://rakudocs.github.io/type/Iterable)，则该参数用于填充 slurpy 参数数组。在任何其他情况下，`+@` 的作用类似于 `**@`。
 
-A slurpy parameter created using a plus engages the *"single argument rule"*, which decides how to handle the slurpy argument based upon context. Basically, if only a single argument is passed and that argument is [Iterable](https://docs.perl6.org/type/Iterable), that argument is used to fill the slurpy parameter array. In any other case, `+@` works like `**@`.
+A slurpy parameter created using a plus engages the *"single argument rule"*, which decides how to handle the slurpy argument based upon context. Basically, if only a single argument is passed and that argument is [Iterable](https://rakudocs.github.io/type/Iterable), that argument is used to fill the slurpy parameter array. In any other case, `+@` works like `**@`.
 
 ```Perl6
 my @array = <a b c>;
@@ -830,9 +830,9 @@ c(1, [1, 2], ([3, 4], 5)); # OUTPUT: «[1, [1, 2], ([3, 4], 5)]␤»
 c(($_ for 1, 2, 3));       # OUTPUT: «[1, 2, 3]␤» 
 ```
 
-有关其他讨论和示例，请参阅[函数的slurpy参数约定](https://docs.perl6.org/language/functions#Slurpy_conventions)。
+有关其他讨论和示例，请参阅[函数的slurpy参数约定](https://rakudocs.github.io/language/functions#Slurpy_conventions)。
 
-For additional discussion and examples, see [Slurpy Conventions for Functions](https://docs.perl6.org/language/functions#Slurpy_conventions).
+For additional discussion and examples, see [Slurpy Conventions for Functions](https://rakudocs.github.io/language/functions#Slurpy_conventions).
 
 <a id="%E7%B1%BB%E5%9E%8B%E6%8D%95%E8%8E%B7--type-captures"></a>
 ## 类型捕获 / Type captures
@@ -860,9 +860,9 @@ say s(2); # 10 / 2 * 2 == 10
 <a id="%E4%BD%8D%E7%BD%AE%E4%B8%8E%E5%91%BD%E5%90%8D%E5%8F%82%E6%95%B0--positional-vs-named-arguments"></a>
 ## 位置与命名参数 / Positional vs. named arguments
 
-参数可以是*位置的*或*命名的*。默认情况下，参数是位置的，除了 slurpy 哈希和标有前导冒号 `:` 的参数。后者称为[冒号对](https://docs.perl6.org/type/Pair)。检查以下签名及其表示的内容：
+参数可以是*位置的*或*命名的*。默认情况下，参数是位置的，除了 slurpy 哈希和标有前导冒号 `:` 的参数。后者称为[冒号对](https://rakudocs.github.io/type/Pair)。检查以下签名及其表示的内容：
 
-An argument can be *positional* or *named*. By default, arguments are positional, except slurpy hash and arguments marked with a leading colon `:`. The latter is called a [colon-pair](https://docs.perl6.org/type/Pair). Check the following signatures and what they denote:
+An argument can be *positional* or *named*. By default, arguments are positional, except slurpy hash and arguments marked with a leading colon `:`. The latter is called a [colon-pair](https://rakudocs.github.io/type/Pair). Check the following signatures and what they denote:
 
 ```Perl6
 $ = :($a);               # a positional argument 
@@ -880,9 +880,9 @@ sub pos($x, $y) { "x=$x y=$y" }
 pos(4, 5);                          # OUTPUT: «x=4 y=5» 
 ```
 
-对于命名参数和参数，只有名称用于将参数映射到参数。如果使用胖箭头来构造 [Pair](https://docs.perl6.org/type/Pair)，则只有那些具有有效标识符作为键的箭头才会被识别为命名参数。
+对于命名参数和参数，只有名称用于将参数映射到参数。如果使用胖箭头来构造 [Pair](https://rakudocs.github.io/type/Pair)，则只有那些具有有效标识符作为键的箭头才会被识别为命名参数。
 
-In the case of named arguments and parameters, only the name is used for mapping arguments to parameters. If a fat arrow is used to construct a [Pair](https://docs.perl6.org/type/Pair) only those with valid identifiers as keys are recognized as named arguments.
+In the case of named arguments and parameters, only the name is used for mapping arguments to parameters. If a fat arrow is used to construct a [Pair](https://rakudocs.github.io/type/Pair) only those with valid identifiers as keys are recognized as named arguments.
 
 ```Perl6
 sub named(:$x, :$y) { "x=$x y=$y" }
@@ -914,9 +914,9 @@ named :official;
 <a id="%E5%8F%82%E6%95%B0%E5%88%AB%E5%90%8D--argument-aliases"></a>
 ## 参数别名 / Argument aliases
 
-[冒号对](https://docs.perl6.org/type/Pair)语法可用于为参数提供别名：
+[冒号对](https://rakudocs.github.io/type/Pair)语法可用于为参数提供别名：
 
-The [colon-pair](https://docs.perl6.org/type/Pair) syntax can be used to provide aliases for arguments:
+The [colon-pair](https://rakudocs.github.io/type/Pair) syntax can be used to provide aliases for arguments:
 
 ```Perl6
 sub alias-named(:color(:$colour), :type(:class($kind))) {
@@ -927,13 +927,13 @@ alias-named(colour => "green", type => "B"); # more than two names are ok
 alias-named(color => "white", class => "C"); # every alias is independent 
 ```
 
-冒号 `:` 的存在将决定我们是否正在创建一个新的命名参数。 `:$colour` 不仅是别名变量的名称，还是一个新的命名参数（在第二次调用中使用）。但是，`$kind` 只是别名变量的名称，不会创建新的命名参数。别名的更多用法可以在 [sub MAIN](https://docs.perl6.org/language/functions#sub_MAIN) 中找到。
+冒号 `:` 的存在将决定我们是否正在创建一个新的命名参数。 `:$colour` 不仅是别名变量的名称，还是一个新的命名参数（在第二次调用中使用）。但是，`$kind` 只是别名变量的名称，不会创建新的命名参数。别名的更多用法可以在 [sub MAIN](https://rakudocs.github.io/language/functions#sub_MAIN) 中找到。
 
-The presence of the colon `:` will decide whether we are creating a new named argument or not. `:$colour` will not only be the name of the aliased variable, but also a new named argument (used in the second invocation). However, `$kind` will just be the name of the aliased variable, that does not create a new named argument. More uses of aliases can be found in [sub MAIN](https://docs.perl6.org/language/functions#sub_MAIN)
+The presence of the colon `:` will decide whether we are creating a new named argument or not. `:$colour` will not only be the name of the aliased variable, but also a new named argument (used in the second invocation). However, `$kind` will just be the name of the aliased variable, that does not create a new named argument. More uses of aliases can be found in [sub MAIN](https://rakudocs.github.io/language/functions#sub_MAIN)
 
-具有命名参数的函数可以被动态调用，使用 `|` 解引用 [Pair](https://docs.perl6.org/type/Pair) 将其转换为命名参数。
+具有命名参数的函数可以被动态调用，使用 `|` 解引用 [Pair](https://rakudocs.github.io/type/Pair) 将其转换为命名参数。
 
-A function with named arguments can be called dynamically, dereferencing a [Pair](https://docs.perl6.org/type/Pair) with `|` to turn it into a named argument.
+A function with named arguments can be called dynamically, dereferencing a [Pair](https://rakudocs.github.io/type/Pair) with `|` to turn it into a named argument.
 
 ```Perl6
 multi f(:$named) { note &?ROUTINE.signature };
@@ -956,9 +956,9 @@ my %pairs = also-named => 4;
 f |%pairs;                              # OUTPUT: «(:$also-named)␤» 
 ```
 
-包含列表的 `Hash` 转换为命名参数时会出现问题。避免额外的容器层级，将其转化为 [Map](https://docs.perl6.org/type/Map)。
+包含列表的 `Hash` 转换为命名参数时会出现问题。避免额外的容器层级，将其转化为 [Map](https://rakudocs.github.io/type/Map)。
 
-A `Hash` that contains a list may prove problematic when slipped into named arguments. To avoid the extra layer of containers coerce to [Map](https://docs.perl6.org/type/Map) before slipping.
+A `Hash` that contains a list may prove problematic when slipped into named arguments. To avoid the extra layer of containers coerce to [Map](https://rakudocs.github.io/type/Map) before slipping.
 
 ```Perl6
 class C { has $.x; has $.y; has @.z };
@@ -1002,9 +1002,9 @@ $ = :(:$excludes = ['.', '..']);        # a new Array for every call
 <a id="%E5%8A%A8%E6%80%81%E5%8F%98%E9%87%8F--dynamic-variables"></a>
 ## 动态变量 / Dynamic variables
 
-签名中允许[动态变量](https://docs.perl6.org/language/variables#The_%2A_twigil)，尽管它们不提供特殊行为，因为参数绑定无论如何都会连接两个作用域。
+签名中允许[动态变量](https://rakudocs.github.io/language/variables#The_%2A_twigil)，尽管它们不提供特殊行为，因为参数绑定无论如何都会连接两个作用域。
 
-[Dynamic variables](https://docs.perl6.org/language/variables#The_%2A_twigil) are allowed in signatures although they don't provide special behavior because argument binding does connect two scopes anyway.
+[Dynamic variables](https://rakudocs.github.io/language/variables#The_%2A_twigil) are allowed in signatures although they don't provide special behavior because argument binding does connect two scopes anyway.
 
 
 <a id="%E8%A7%A3%E6%9E%84%E5%8F%82%E6%95%B0--destructuring-arguments"></a>
@@ -1048,17 +1048,17 @@ for %hhgttu -> (:$key, :$value) {
 # OUTPUT: «universe → 41␤life → 40␤everything → 42␤» 
 ```
 
-通常，对象是基于其属性进行解构。一个常见的习惯用法是在 for 循环中解包 [`Pair`](https://docs.perl6.org/type/Pair) 的键和值：
+通常，对象是基于其属性进行解构。一个常见的习惯用法是在 for 循环中解包 [`Pair`](https://rakudocs.github.io/type/Pair) 的键和值：
 
-In general, an object is destructured based on its attributes. A common idiom is to unpack a [`Pair`](https://docs.perl6.org/type/Pair)'s key and value in a for loop:
+In general, an object is destructured based on its attributes. A common idiom is to unpack a [`Pair`](https://rakudocs.github.io/type/Pair)'s key and value in a for loop:
 
 ```Perl6
 for <Peter Paul Merry>.pairs -> (:key($index), :value($guest)) { }
 ```
 
-但是，将对象解包为其属性只是默认行为。要使对象以不同方式进行解构，请更改其 [`Capture`](https://docs.perl6.org/routine/Capture) 方法。
+但是，将对象解包为其属性只是默认行为。要使对象以不同方式进行解构，请更改其 [`Capture`](https://rakudocs.github.io/routine/Capture) 方法。
 
-However, this unpacking of objects as their attributes is only the default behavior. To make an object get destructured differently, change its [`Capture`](https://docs.perl6.org/routine/Capture) method.
+However, this unpacking of objects as their attributes is only the default behavior. To make an object get destructured differently, change its [`Capture`](https://rakudocs.github.io/routine/Capture) method.
 
 <a id="%E5%AD%90%E7%AD%BE%E5%90%8D--sub-signatures"></a>
 ## 子签名 / Sub-signatures
@@ -1091,13 +1091,13 @@ f(10, 'answer');
 <a id="%E6%8D%95%E8%8E%B7%E5%8F%82%E6%95%B0--capture-parameters"></a>
 ## 捕获参数 / Capture parameters
 
-使用竖线 `|` 前缀参数使参数成为 [`Capture`](https://docs.perl6.org/type/Capture)，它会消耗完所有剩余的位置和命名参数。
+使用竖线 `|` 前缀参数使参数成为 [`Capture`](https://rakudocs.github.io/type/Capture)，它会消耗完所有剩余的位置和命名参数。
 
-Prefixing a parameter with a vertical bar `|` makes the parameter a [`Capture`](https://docs.perl6.org/type/Capture), using up all the remaining positional and named arguments.
+Prefixing a parameter with a vertical bar `|` makes the parameter a [`Capture`](https://rakudocs.github.io/type/Capture), using up all the remaining positional and named arguments.
 
-这通常用于 `proto` 定义（如 `proto foo (|) {*}`）来表示例程的 [`multi` 定义](https://docs.perl6.org/routine/multi)可以有任意[类型约束](https://docs.perl6.org/type/Signature#Type_constraints)。有关示例，请参阅 [proto](https://docs.perl6.org/language/functions#proto)。
+这通常用于 `proto` 定义（如 `proto foo (|) {*}`）来表示例程的 [`multi` 定义](https://rakudocs.github.io/routine/multi)可以有任意[类型约束](https://rakudocs.github.io/type/Signature#Type_constraints)。有关示例，请参阅 [proto](https://rakudocs.github.io/language/functions#proto)。
 
-This is often used in `proto` definitions (like `proto foo (|) {*}`) to indicate that the routine's [`multi` definitions](https://docs.perl6.org/routine/multi) can have any [type constraints](https://docs.perl6.org/type/Signature#Type_constraints). See [proto](https://docs.perl6.org/language/functions#proto) for an example.
+This is often used in `proto` definitions (like `proto foo (|) {*}`) to indicate that the routine's [`multi` definitions](https://rakudocs.github.io/routine/multi) can have any [type constraints](https://rakudocs.github.io/type/Signature#Type_constraints). See [proto](https://rakudocs.github.io/language/functions#proto) for an example.
 
 如果绑定到变量, 参数可以使用 slip 运算符 `|` 作为一个整体转发。
 
@@ -1142,9 +1142,9 @@ sub swap($x is rw, $y is rw) {
 
 On slurpy parameters, `is rw` is reserved for future use by language designers.
 
-[`is raw` 特征](https://docs.perl6.org/type/Parameter#method_raw)会自动应用于使用[反斜杠](https://docs.perl6.org/language/variables#Sigilless_variables)声明的参数作为“标记”，也可用于产生`带标记参数`的行为。在 slurpies 的特殊情况下，通常会产生一个充满`标量`的`数组`，如上所述，`is raw` 将导致参数产生一个`列表`。该列表的每个元素将直接绑定为原始参数。
+[`is raw` 特征](https://rakudocs.github.io/type/Parameter#method_raw)会自动应用于使用[反斜杠](https://rakudocs.github.io/language/variables#Sigilless_variables)声明的参数作为“标记”，也可用于产生`带标记参数`的行为。在 slurpies 的特殊情况下，通常会产生一个充满`标量`的`数组`，如上所述，`is raw` 将导致参数产生一个`列表`。该列表的每个元素将直接绑定为原始参数。
 
-The [`is raw` trait](https://docs.perl6.org/type/Parameter#method_raw) is automatically applied to parameters declared with a [backslash](https://docs.perl6.org/language/variables#Sigilless_variables) as a "sigil", and may also be used to make normally sigiled parameters behave like these do. In the special case of slurpies, which normally produce an `Array` full of `Scalar`s as described above, `is raw` will instead cause the parameter to produce a `List`. Each element of that list will be bound directly as raw parameter.
+The [`is raw` trait](https://rakudocs.github.io/type/Parameter#method_raw) is automatically applied to parameters declared with a [backslash](https://rakudocs.github.io/language/variables#Sigilless_variables) as a "sigil", and may also be used to make normally sigiled parameters behave like these do. In the special case of slurpies, which normally produce an `Array` full of `Scalar`s as described above, `is raw` will instead cause the parameter to produce a `List`. Each element of that list will be bound directly as raw parameter.
 
 要显式请求只读参数，请使用 `is readonly` 特征。请注意，这仅适用于容器。里面的对象很可能有 mutator 方法，而 Perl 6 不会对对象的属性强制不可变。
 
@@ -1168,9 +1168,9 @@ sub ip-expand-ipv6($ip is copy where m:i/^<[a..f\d\:]>**3..39$/) { }
 method params(Signature:D: --> Positional)
 ```
 
-返回组成签名的 [`Parameter`](https://docs.perl6.org/type/Parameter) 对象列表。
+返回组成签名的 [`Parameter`](https://rakudocs.github.io/type/Parameter) 对象列表。
 
-Returns the list of [`Parameter`](https://docs.perl6.org/type/Parameter) objects that make up the signature.
+Returns the list of [`Parameter`](https://rakudocs.github.io/type/Parameter) objects that make up the signature.
 
 <a id="%E6%96%B9%E6%B3%95-arity--method-arity"></a>
 ## 方法 arity / method arity
@@ -1214,27 +1214,27 @@ multi method ACCEPTS(Signature:D: Capture $topic)
 multi method ACCEPTS(Signature:D: Mu \topic)
 ```
 
-如果 `$topic` 是一个返回 `True` 的 [Signature](https://docs.perl6.org/type/Signature) 时，`$topic` 接受的任何内容也会被调用者接受，否则返回 `False`：
+如果 `$topic` 是一个返回 `True` 的 [Signature](https://rakudocs.github.io/type/Signature) 时，`$topic` 接受的任何内容也会被调用者接受，否则返回 `False`：
 
-If `$topic` is a [Signature](https://docs.perl6.org/type/Signature) returns `True` if anything accepted by `$topic` would also be accepted by the invocant, otherwise returns `False`:
+If `$topic` is a [Signature](https://rakudocs.github.io/type/Signature) returns `True` if anything accepted by `$topic` would also be accepted by the invocant, otherwise returns `False`:
 
 ```Perl6
 :($a, $b) ~~ :($foo, $bar, $baz?);   # OUTPUT: «True» 
 :(Int $n) ~~ :(Str);                 # OUTPUT: «False» 
 ```
 
-`$topic` 是 [Capture](https://docs.perl6.org/type/Capture)，如果它可以绑定到调用者，则返回`True`，即，如果具有调用者的 `Signature` 的函数将可以使用 `$topic` 调用：
+`$topic` 是 [Capture](https://rakudocs.github.io/type/Capture)，如果它可以绑定到调用者，则返回`True`，即，如果具有调用者的 `Signature` 的函数将可以使用 `$topic` 调用：
 
-The `$topic` is a [Capture](https://docs.perl6.org/type/Capture), returns `True` if it can be bound to the invocant, i.e., if a function with invocant's `Signature` would be able to be called with the `$topic`:
+The `$topic` is a [Capture](https://rakudocs.github.io/type/Capture), returns `True` if it can be bound to the invocant, i.e., if a function with invocant's `Signature` would be able to be called with the `$topic`:
 
 ```Perl6
 \(1, 2, :foo) ~~ :($a, $b, :foo($bar)); # OUTPUT: «True» 
 \(1, :bar)    ~~ :($a);                 # OUTPUT: «False» 
 ```
 
-最后，具有 `Mu \topic` 的候选者将 `topic` 转换为 [Capture](https://docs.perl6.org/type/Capture)，并遵循与 [Capture](https://docs.perl6.org/type/Capture) `$topic` 相同的语义 ：
+最后，具有 `Mu \topic` 的候选者将 `topic` 转换为 [Capture](https://rakudocs.github.io/type/Capture)，并遵循与 [Capture](https://rakudocs.github.io/type/Capture) `$topic` 相同的语义 ：
 
-Lastly, the candidate with `Mu \topic` converts `topic` to [Capture](https://docs.perl6.org/type/Capture) and follows the same semantics as [Capture](https://docs.perl6.org/type/Capture) `$topic`:
+Lastly, the candidate with `Mu \topic` converts `topic` to [Capture](https://rakudocs.github.io/type/Capture) and follows the same semantics as [Capture](https://rakudocs.github.io/type/Capture) `$topic`:
 
 ```Perl6
 <a b c d>  ~~ :(Int $a);      # OUTPUT: «False» 
@@ -1242,9 +1242,9 @@ Lastly, the candidate with `Mu \topic` converts `topic` to [Capture](https://doc
 set(<a b>) ~~ :(:$a, :$b);    # OUTPUT: «True» 
 ```
 
-由于 [`where` 子句](https://docs.perl6.org/type/Signature#index-entry-where_clause_%28Signature%29)不能内省，因此该方法无法确定是否有两个签名 [ACCEPTS](https://docs.perl6.org/type/Signature#method_ACCEPTS) 同样的 `where` 约束的参数。这种比较将返回 `False`。这包括字面量的签名，这些只是 `where`约束的语法糖：
+由于 [`where` 子句](https://rakudocs.github.io/type/Signature#index-entry-where_clause_%28Signature%29)不能内省，因此该方法无法确定是否有两个签名 [ACCEPTS](https://rakudocs.github.io/type/Signature#method_ACCEPTS) 同样的 `where` 约束的参数。这种比较将返回 `False`。这包括字面量的签名，这些只是 `where`约束的语法糖：
 
-Since [`where` clauses](https://docs.perl6.org/type/Signature#index-entry-where_clause_%28Signature%29) are not introspectable, the method cannot determine whether two signatures [ACCEPTS](https://docs.perl6.org/type/Signature#method_ACCEPTS) the same sort of `where`-constrained parameters. Such comparisons will return `False`. This includes signatures with literals, which are just sugar for the `where`-constraints:
+Since [`where` clauses](https://rakudocs.github.io/type/Signature#index-entry-where_clause_%28Signature%29) are not introspectable, the method cannot determine whether two signatures [ACCEPTS](https://rakudocs.github.io/type/Signature#method_ACCEPTS) the same sort of `where`-constrained parameters. Such comparisons will return `False`. This includes signatures with literals, which are just sugar for the `where`-constraints:
 
 ```Perl6
 say :(42) ~~ :($ where 42)    # OUTPUT: «False␤» 
@@ -1278,9 +1278,9 @@ In some situations, specifically when working with the MetaObject Protocol, it m
 
 - params
 
-签名的 [Parameter](https://docs.perl6.org/type/Parameter) 对象列表。
+签名的 [Parameter](https://rakudocs.github.io/type/Parameter) 对象列表。
 
-A list of [Parameter](https://docs.perl6.org/type/Parameter) objects for this signature.
+A list of [Parameter](https://rakudocs.github.io/type/Parameter) objects for this signature.
 
 - returns
 

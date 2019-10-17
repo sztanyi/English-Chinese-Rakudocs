@@ -1,4 +1,4 @@
-原文：https://docs.perl6.org/language/control
+原文：https://rakudocs.github.io/language/control
 
 # 控制流（Control Flow）
 
@@ -43,11 +43,11 @@ Statements used to control the flow of execution
 <a id="%E8%AF%AD%E5%8F%A5-statements"></a>
 # 语句/ statements
 
-Perl 6 成语由一个或多个语句组成。简单语句由分号分隔。下面的这个程序会打印 ”Hello“ 然后再下一行打印 ”World“。
+Raku 成语由一个或多个语句组成。简单语句由分号分隔。下面的这个程序会打印 ”Hello“ 然后再下一行打印 ”World“。
 
-Perl 6 programs consists of one or more statements. Simple statements are separated by semicolons. The following program will say "Hello" and then say "World" on the next line.
+Raku programs consists of one or more statements. Simple statements are separated by semicolons. The following program will say "Hello" and then say "World" on the next line.
 
-```Perl6
+```Raku
 say "Hello";
 say "World";
 ```
@@ -56,7 +56,7 @@ say "World";
 
 In most places where spaces appear in a statement, and before the semicolon, it may be split up over many lines. Also, multiple statements may appear on the same line. It would be awkward, but the above could also be written as:
 
-```Perl6
+```Raku
 say
 "Hello"; say "World";
 ```
@@ -64,11 +64,11 @@ say
 <a id="%E4%BB%A3%E7%A0%81%E5%9D%97--blocks"></a>
 # 代码块 / blocks
 
-像许多语言一样，Perl 6 使用用 `{` 和 `}` 包含的代码块讲多个语句转变为单个语句。 代码块最后一个语句的分号可以省略。
+像许多语言一样，Raku 使用用 `{` 和 `}` 包含的代码块讲多个语句转变为单个语句。 代码块最后一个语句的分号可以省略。
 
-Like many languages, Perl 6 uses `blocks` enclosed by `{` and `}` to turn multiple statements into a single statement. It is ok to skip the semicolon between the last statement in a block and the closing `}`.
+Like many languages, Raku uses `blocks` enclosed by `{` and `}` to turn multiple statements into a single statement. It is ok to skip the semicolon between the last statement in a block and the closing `}`.
 
-```Perl6
+```Raku
 { say "Hello"; say "World" }
 ```
 
@@ -76,7 +76,7 @@ Like many languages, Perl 6 uses `blocks` enclosed by `{` and `}` to turn multip
 
 When a block stands alone as a statement, it will be entered immediately after the previous statement finishes, and the statements inside it will be executed.
 
-```Perl6
+```Raku
 say 1;                    # OUTPUT: «1
 » 
 { say 2; say 3 };         # OUTPUT: «2
@@ -86,11 +86,11 @@ say 4;                    # OUTPUT: «4
 » 
 ```
 
-除非代码块仅作为语句，不然会产一个闭包。代码块里面的语句将不会马上执行。闭包时另外一个话题，它的使用将会在[其他地方](https://docs.perl6.org/language/functions#Blocks_and_Lambdas)说明。现在最重要的是要知道代码块什么时候执行以及什么时候不执行。
+除非代码块仅作为语句，不然会产一个闭包。代码块里面的语句将不会马上执行。闭包时另外一个话题，它的使用将会在[其他地方](https://rakudocs.github.io/language/functions#Blocks_and_Lambdas)说明。现在最重要的是要知道代码块什么时候执行以及什么时候不执行。
 
-Unless it stands alone as a statement, a block simply creates a closure. The statements inside are not executed immediately. Closures are another topic and how they are used is explained [elsewhere](https://docs.perl6.org/language/functions#Blocks_and_Lambdas). For now it is just important to understand when blocks run and when they do not:
+Unless it stands alone as a statement, a block simply creates a closure. The statements inside are not executed immediately. Closures are another topic and how they are used is explained [elsewhere](https://rakudocs.github.io/language/functions#Blocks_and_Lambdas). For now it is just important to understand when blocks run and when they do not:
 
-```Perl6
+```Raku
 say "We get here"; { say "then here." }; { say "not here"; 0; } or die;
 ```
 
@@ -98,7 +98,7 @@ say "We get here"; { say "then here." }; { say "not here"; 0; } or die;
 
 In the above example, after running the first statement, the first block stands alone as a second statement, so we run the statement inside it. The second block does not stand alone as a statement, so instead, it makes an object of type `Block` but does not run it. Object instances are usually considered to be true, so the code does not die, even though that block would evaluate to 0, were it to be executed. The example does not say what to do with the `Block` object, so it just gets thrown away.
 
-大多数下面提到的控制流讲述了 Perl 6 什么时候，以什么方式以及几次进入像上面提到的第二段代码块。
+大多数下面提到的控制流讲述了 Raku 什么时候，以什么方式以及几次进入像上面提到的第二段代码块。
 
 Most of the flow control constructs covered below are just ways to tell Perl6 when, how, and how many times, to enter blocks like that second block.
 
@@ -106,7 +106,7 @@ Most of the flow control constructs covered below are just ways to tell Perl6 wh
 
 Before we go into those, an important side-note on syntax: If there is nothing (or nothing but comments) on a line after a closing curly brace where you would normally put semicolon, then you do not need the semicolon:
 
-```Perl6
+```Raku
 # All three of these lines can appear as a group, as is, in a program 
 { 42.say }                # OUTPUT: «42
 » 
@@ -121,7 +121,7 @@ Before we go into those, an important side-note on syntax: If there is nothing (
 
 。。。然而：
 
-```Perl6
+```Raku
 { 42.say }  { 43.say }    # Syntax error 
 { 42.say; } { 43.say }    # Also a syntax error, of course 
 ```
@@ -130,7 +130,7 @@ Before we go into those, an important side-note on syntax: If there is nothing (
 
 So, be careful when you backspace in a line-wrapping editor:
 
-```Perl6
+```Raku
 { "Without semicolons line-wrapping can be a bit treacherous.".say } \
 { 43.say } # Syntax error 
 ```
@@ -146,7 +146,7 @@ You have to watch out for this in most languages anyway to prevent things from g
 
 The simplest way to run a block where it cannot be a stand-alone statement is by writing `do` before it:
 
-```Perl6
+```Raku
 # This dies half of the time 
 do { say "Heads I win, tails I die."; Bool.pick } or die; say "I win.";
 ```
@@ -159,7 +159,7 @@ Note that you need a space between the do and the block.
 
 The whole `do {...}` evaluates to the final value of the block. The block will be run when that value is needed in order to evaluate the rest of the expression. So:
 
-```Perl6
+```Raku
 False and do { 42.say };
 ```
 
@@ -167,7 +167,7 @@ False and do { 42.say };
 
 ...will not say 42. However, the block is only evaluated once each time the expression it is contained in is evaluated:
 
-```Perl6
+```Raku
 # This says "(..1 ..2 ..3)" not "(..1 ...2 ....3)" 
 my $f = "."; say do { $f ~= "." } X~ 1, 2, 3;
 ```
@@ -184,14 +184,14 @@ Technically, `do` is a loop which runs exactly one iteration.
 
 A `do` may also be used on a bare statement (without curly braces) but this is mainly just useful for avoiding the syntactical need to parenthesize a statement if it is the last thing in an expression:
 
-```Perl6
+```Raku
 3, do if 1 { 2 }  ; # OUTPUT: «(3, 2)
 » 
 3,   (if 1 { 2 }) ; # OUTPUT: «(3, 2)
 » 
 ```
 
-```Perl6
+```Raku
 3,    if 1 { 2 }  ; # Syntax error 
 ```
 
@@ -206,19 +206,19 @@ A `do` may also be used on a bare statement (without curly braces) but this is m
 
 To conditionally run a block of code, use an `if` followed by a condition. The condition, an expression, will be evaluated immediately after the statement before the `if` finishes. The block attached to the condition will only be evaluated if the condition means True when coerced to `Bool`. Unlike some languages the condition does not have to be parenthesized, instead the `{` and `}` around the block are mandatory:
 
-```Perl6
+```Raku
 if 1 { "1 is true".say }  ; # says "1 is true" 
 ```
 
-```Perl6
+```Raku
 if 1   "1 is true".say    ; # syntax error, missing block 
 ```
 
-```Perl6
+```Raku
 if 0 { "0 is true".say }  ; # does not say anything, because 0 is false 
 ```
 
-```Perl6
+```Raku
 if 42.say and 0 { 43.say }; # says "42" but does not say "43" 
 ```
 
@@ -226,7 +226,7 @@ if 42.say and 0 { 43.say }; # says "42" but does not say "43"
 
 There is also a form of `if` called a "statement modifier" form. In this case, the if and then the condition come after the code you want to run conditionally. Do note that the condition is still always evaluated first:
 
-```Perl6
+```Raku
 43.say if 42.say and 0;     # says "42" but does not say "43" 
 43.say if 42.say and 1;     # says "42" and then says "43" 
 say "It is easier to read code when 'if's are kept on left of screen"
@@ -238,11 +238,11 @@ say "It is easier to read code when 'if's are kept on left of screen"
 
 The statement modifier form is probably best used sparingly.
 
-如果代码块没有被执行，`if` 语句本身要么 [slip](https://docs.perl6.org/type/Slip) 给我们一个空列表，要么返回代码块产生的值。
+如果代码块没有被执行，`if` 语句本身要么 [slip](https://rakudocs.github.io/type/Slip) 给我们一个空列表，要么返回代码块产生的值。
 
-The `if` statement itself will either [slip](https://docs.perl6.org/type/Slip) us an empty list, if it does not run the block, or it will return the value which the block produces:
+The `if` statement itself will either [slip](https://rakudocs.github.io/type/Slip) us an empty list, if it does not run the block, or it will return the value which the block produces:
 
-```Perl6
+```Raku
 my $d = 0; say (1, (if 0 { $d += 42; 2; }), 3, $d); # says "(1 3 0)" 
 my $c = 0; say (1, (if 1 { $c += 42; 2; }), 3, $c); # says "(1 2 3 42)" 
 say (1, (if 1 { 2, 2 }), 3);         # does not slip, says "(1 (2 2) 3)" 
@@ -252,7 +252,7 @@ say (1, (if 1 { 2, 2 }), 3);         # does not slip, says "(1 (2 2) 3)"
 
 For the statement modifier it is the same, except you have the value of the statement instead of a block:
 
-```Perl6
+```Raku
 say (1, (42 if True) , 2); # says "(1 42 2)" 
 say (1, (42 if False), 2); # says "(1 2)" 
 say (1,  42 if False , 2); # says "(1 42)" because "if False, 2" is true 
@@ -262,7 +262,7 @@ say (1,  42 if False , 2); # says "(1 42)" because "if False, 2" is true
 
 The `if` does not change the topic (`$_`) by default. In order to access the value which the conditional expression produced, you have to ask for it more strongly:
 
-```Perl6
+```Raku
 $_ = 1; if 42 { $_.say }                ; # says "1" 
 $_ = 1; if 42 -> $_ { $_.say }          ; # says "42" 
 $_ = 1; if 42 -> $a { $_.say;  $a.say } ; # says "1" then says "42" 
@@ -276,7 +276,7 @@ $_ = 1; if 42       { $_.say; $^a.say } ; # says "1" then says "42"
 
 A compound conditional may be produced by following an `if` conditional with `else` to provide an alternative block to run when the conditional expression is false:
 
-```Perl6
+```Raku
 if 0 { say "no" } else { say "yes" }   ; # says "yes" 
 if 0 { say "no" } else{ say "yes" }    ; # says "yes", space is not required 
 ```
@@ -285,11 +285,11 @@ if 0 { say "no" } else{ say "yes" }    ; # says "yes", space is not required
 
 The `else` cannot be separated from the conditional statement by a semicolon, but as a special case, it is OK to have a newline.
 
-```Perl6
+```Raku
 if 0 { say "no" }; else { say "yes" }  ; # syntax error 
 ```
 
-```Perl6
+```Raku
 if 0 { say "no" }
 else { say "yes" }                     ; # says "yes" 
 ```
@@ -298,7 +298,7 @@ else { say "yes" }                     ; # says "yes"
 
 Additional conditions may be sandwiched between the `if` and the `else` using `elsif`. An extra condition will only be evaluated if all the conditions before it were false, and only the block next to the first true condition will be run. You can end with an `elsif` instead of an `else` if you want.
 
-```Perl6
+```Raku
 if 0 { say "no" } elsif False { say "NO" } else { say "yes" } # says "yes" 
 if 0 { say "no" } elsif True { say "YES" } else { say "yes" } # says "YES" 
  
@@ -314,7 +314,7 @@ if wrong() { say "no" } elsif right() { say "yes" } else { say "maybe" }
 
 You cannot use the statement modifier form with `else` or `elsif`:
 
-```Perl6
+```Raku
 42.say if 0 else { 43.say }            # syntax error 
 ```
 
@@ -322,13 +322,13 @@ You cannot use the statement modifier form with `else` or `elsif`:
 
 All the same rules for semicolons and newlines apply, consistently
 
-```Perl6
+```Raku
 if 0 { say 0 }; elsif 1 { say 1 }  else { say "how?" } ; # syntax error 
 if 0 { say 0 }  elsif 1 { say 1 }; else { say "how?" } ; # syntax error 
 if 0 { say 0 }  elsif 1 { say 1 }  else { say "how?" } ; # says "1" 
 ```
 
-```Perl6
+```Raku
 if 0 { say 0 } elsif 1 { say 1 }
 else { say "how?" }                                    ; # says "1" 
  
@@ -340,11 +340,11 @@ elsif False { say "NO" }
 else        { say "yes" }                              ; # says "yes" 
 ```
 
-整个代码要么 [slips](https://docs.perl6.org/type/Slip) 给我们一个空列表（如果没有代码块被运行）或者返回执行了的代码块产生的值。
+整个代码要么 [slips](https://rakudocs.github.io/type/Slip) 给我们一个空列表（如果没有代码块被运行）或者返回执行了的代码块产生的值。
 
-The whole thing either [slips](https://docs.perl6.org/type/Slip) us an empty list (if no blocks were run) or returns the value produced by the block that did run:
+The whole thing either [slips](https://rakudocs.github.io/type/Slip) us an empty list (if no blocks were run) or returns the value produced by the block that did run:
 
-```Perl6
+```Raku
 my $d = 0; say (1,
                 (if 0 { $d += 42; "two"; } elsif False { $d += 43; 2; }),
                 3, $d); # says "(1 3 0)" 
@@ -357,7 +357,7 @@ my $c = 0; say (1,
 
 It's possible to obtain the value of the previous expression inside an `else`, which could be from `if` or the last `elsif` if any are present:
 
-```Perl6
+```Raku
 $_ = 1; if 0     { } else -> $a { "$_ $a".say } ; # says "1 0" 
 $_ = 1; if False { } else -> $a { "$_ $a".say } ; # says "1 False" 
  
@@ -367,23 +367,23 @@ if False { } elsif 0 { } else -> $a { $a.say }  ; # says "0"
 <a id="unless"></a>
 ## unless
 
-如果你厌烦敲代码 “if not (x)“ 你可以使用 `unless` 来反转条件语句。`unless` 不能同时使用 `else` 或者 `elsif` ，因为这会引发困惑。除了这两个区别之外，`unless` 和 [if](https://docs.perl6.org/language/control#if) 效果一样。
+如果你厌烦敲代码 “if not (x)“ 你可以使用 `unless` 来反转条件语句。`unless` 不能同时使用 `else` 或者 `elsif` ，因为这会引发困惑。除了这两个区别之外，`unless` 和 [if](https://rakudocs.github.io/language/control#if) 效果一样。
 
-When you get sick of typing "if not (X)" you may use `unless` to invert the sense of a conditional statement. You cannot use `else` or `elsif` with `unless` because that ends up getting confusing. Other than those two differences `unless` works the same as [if](https://docs.perl6.org/language/control#if):
+When you get sick of typing "if not (X)" you may use `unless` to invert the sense of a conditional statement. You cannot use `else` or `elsif` with `unless` because that ends up getting confusing. Other than those two differences `unless` works the same as [if](https://rakudocs.github.io/language/control#if):
 
-```Perl6
+```Raku
 unless 1 { "1 is false".say }  ; # does not say anything, since 1 is true 
 ```
 
-```Perl6
+```Raku
 unless 1   "1 is false".say    ; # syntax error, missing block 
 ```
 
-```Perl6
+```Raku
 unless 0 { "0 is false".say }  ; # says "0 is false" 
 ```
 
-```Perl6
+```Raku
 unless 42.say and 1 { 43.say } ; # says "42" but does not say "43" 
 43.say unless 42.say and 0;      # says "42" and then says "43" 
 43.say unless 42.say and 1;      # says "42" but does not say "43" 
@@ -403,7 +403,7 @@ my $d = 0; say (1, (unless 1 { $d += 42; 2; }), 3, $d); # says "(1 3 0)"
 
 The `with` statement is like `if` but tests for definedness rather than truth. In addition, it topicalizes on the condition, much like `given`:
 
-```Perl6
+```Raku
 with "abc".index("a") { .say }      # prints 0 
 ```
 
@@ -411,7 +411,7 @@ with "abc".index("a") { .say }      # prints 0
 
 Instead of `elsif`, `orwith` may be used to chain definedness tests:
 
-```Perl6
+```Raku
 # The below code says "Found a at 0" 
 my $s = "abc";
 with   $s.index("a") { say "Found a at $_" }
@@ -424,7 +424,7 @@ else                 { say "Didn't find a, b or c" }
 
 You may intermix `if`-based and `with`-based clauses.
 
-```Perl6
+```Raku
 # This says "Yes" 
 if 0 { say "No" } orwith Nil { say "No" } orwith 0 { say "Yes" };
 ```
@@ -433,7 +433,7 @@ if 0 { say "No" } orwith Nil { say "No" } orwith 0 { say "Yes" };
 
 As with `unless`, you may use `without` to check for undefinedness, but you may not add an `else` clause:
 
-```Perl6
+```Raku
 my $answer = Any;
 without $answer { warn "Got: $_" }
 ```
@@ -442,7 +442,7 @@ without $answer { warn "Got: $_" }
 
 There are also `with` and `without` statement modifiers:
 
-```Perl6
+```Raku
 my $answer = (Any, True).roll;
 say 42 with $answer;
 warn "undefined answer" without $answer;
@@ -455,7 +455,7 @@ warn "undefined answer" without $answer;
 
 The `when` block is similar to an `if` block and either or both can be used in an outer block, they also both have a "statement modifier" form. But there is a difference in how following code in the same, outer block is handled: When the `when` block is executed, control is passed to the enclosing block and following statements are ignored; but when the `if`block is executed, following statements are executed. (Note there are other ways to modify the default behavior of each which are discussed in other sections.) The following examples should illustrate the `if` or `when` block's default behavior assuming no special exit or other side effect statements are included in the `if` or `when` blocks:
 
-```Perl6
+```Raku
 {
     if X {...} # if X is true in boolean context, block is executed 
     # following statements are executed regardless 
@@ -475,7 +475,7 @@ Should the `if` and `when` blocks above appear at file scope, following statemen
 
 There is one other feature a `when` has that `if` doesn't: the `when`'s boolean context test defaults to `$_ ~~` while the `if`'s does not. That has an effect on how one uses the X in the `when` block without a value for `$_` (it's `Any` in that case and `Any` smart matches on `True`: `Any ~~ True` yields `True`). Consider the following:
 
-```Perl6
+```Raku
 {
     my $a = 1;
     my $b = True;
@@ -490,7 +490,7 @@ There is one other feature a `when` has that `if` doesn't: the `when`'s boolean 
 
 Finally, `when`'s statement modifier form does not effect execution of following statements either inside or outside of another block:
 
-```Perl6
+```Raku
 say "foo" when X; # if X is true statement is executed 
                   # following statements are not affected 
 ```
@@ -498,22 +498,22 @@ say "foo" when X; # if X is true statement is executed
 <a id="for"></a>
 # for
 
-`for` 循环遍历数组，每次循环执行一次 [block](https://docs.perl6.org/type/Block) 中的语句。如果代码块接收参数，数组中的元素将作为参数。
+`for` 循环遍历数组，每次循环执行一次 [block](https://rakudocs.github.io/type/Block) 中的语句。如果代码块接收参数，数组中的元素将作为参数。
 
-The `for` loop iterates over a list, running the statements inside a [block](https://docs.perl6.org/type/Block) once on each iteration. If the block takes parameters, the elements of the list are provided as arguments.
+The `for` loop iterates over a list, running the statements inside a [block](https://rakudocs.github.io/type/Block) once on each iteration. If the block takes parameters, the elements of the list are provided as arguments.
 
-```Perl6
+```Raku
 my @foo = 1..3;
 for @foo { $_.print } # prints each value contained in @foo 
 for @foo { .print }   # same thing, because .print implies a $_ argument 
 for @foo { 42.print } # prints 42 as many times as @foo has elements 
 ```
 
-带箭头的代码块语法或者 [placeholder](https://docs.perl6.org/language/variables#The_%5E_Twigil) 当然也可以用来命名参数。
+带箭头的代码块语法或者 [placeholder](https://rakudocs.github.io/language/variables#The_%5E_Twigil) 当然也可以用来命名参数。
 
-Pointy block syntax or a [placeholder](https://docs.perl6.org/language/variables#The_%5E_Twigil) may be used to name the parameter, of course.
+Pointy block syntax or a [placeholder](https://rakudocs.github.io/language/variables#The_%5E_Twigil) may be used to name the parameter, of course.
 
-```Perl6
+```Raku
 my @foo = 1..3;
 for @foo -> $item { print $item }
 for @foo { print $^item }            # same thing 
@@ -523,7 +523,7 @@ for @foo { print $^item }            # same thing
 
 Multiple parameters can be declared, in which case the iterator takes as many elements from the list as needed before running the block.
 
-```Perl6
+```Raku
 my @foo = 1..3;
 for @foo.kv -> $idx, $val { say "$idx: $val" }
 my %hash = <a b c> Z=> 1,2,3;
@@ -535,7 +535,7 @@ for 1, 1.1, 2, 2.1 { say "$^x < $^y" }  # says "1 < 1.1" then says "2 < 2.1"
 
 Parameters of a pointy block can have default values, allowing to handle lists with missing elements.
 
-```Perl6
+```Raku
 my @list = 1,2,3,4;
 for @list -> $a, $b = 'N/A', $c = 'N/A' {
     say "$a $b $c"
@@ -549,7 +549,7 @@ for @list -> $a, $b = 'N/A', $c = 'N/A' {
 
 If the postfix form of `for` is used a block is not required and the topic is set for the statement list.
 
-```Perl6
+```Raku
 say „I $_ butterflies!“ for <♥ ♥ ♥>;
 # OUTPUT«I ♥ butterflies!
 I ♥ butterflies!
@@ -561,7 +561,7 @@ I ♥ butterflies!
 
 A `for` may be used on lazy lists – it will only take elements from the list when they are needed, so to read a file line by line, you could use:
 
-```Perl6
+```Raku
 for $*IN.lines -> $line { .say }
 ```
 
@@ -569,7 +569,7 @@ for $*IN.lines -> $line { .say }
 
 Iteration variables are always lexical, so you don't need to use `my` to give them the appropriate scope. Also, they are read-only aliases. If you need them to be read-write, use `<->` instead of `->`. If you need to make `$_` read-write in a for loop, do so explicitly.
 
-```Perl6
+```Raku
 my @foo = 1..3;
 for @foo <-> $_ { $_++ }
 ```
@@ -578,7 +578,7 @@ for @foo <-> $_ { $_++ }
 
 A for loop can produce a `List` of the values produced by each run of the attached block. To capture these values, put the for loop in parenthesis or assign them to an array:
 
-```Perl6
+```Raku
 (for 1, 2, 3 { $_ * 2 }).say;              # says "(2 4 6)" 
 my @a = do for 1, 2, 3 { $_ * 2 }; @a.say; # says "[2 4 6]" 
 my @b = (for 1, 2, 3 { $_ * 2 }); @a.say;  # same thing 
@@ -589,9 +589,9 @@ my @b = (for 1, 2, 3 { $_ * 2 }); @a.say;  # same thing
 
 gather 是一个返回值序列的语句或块前缀。这些值由 `gather` 代码块动态作用域中 `take` 返回。
 
-`gather` is a statement or block prefix that returns a [sequence](https://docs.perl6.org/type/Seq) of values. The values come from calls to [take](https://docs.perl6.org/type/Mu#routine_take) in the dynamic scope of the `gather` block.
+`gather` is a statement or block prefix that returns a [sequence](https://rakudocs.github.io/type/Seq) of values. The values come from calls to [take](https://rakudocs.github.io/type/Mu#routine_take) in the dynamic scope of the `gather` block.
 
-```Perl6
+```Raku
 my @a = gather {
     take 1;
     take 5;
@@ -603,13 +603,13 @@ say join ', ', @a;          # OUTPUT: «1, 5, 42
 
 `gather/take` 根据上下文惰性求值。如果你想强制惰性求值，使用 `lazy` 子程序或方法。绑定到一个标量或无符号的容器也会迫使惰性求值。
 
-`gather/take` can generate values lazily, depending on context. If you want to force lazy evaluation use the [lazy](https://docs.perl6.org/type/Iterable#method_lazy) subroutine or method. Binding to a scalar or sigilless container will also force laziness.
+`gather/take` can generate values lazily, depending on context. If you want to force lazy evaluation use the [lazy](https://rakudocs.github.io/type/Iterable#method_lazy) subroutine or method. Binding to a scalar or sigilless container will also force laziness.
 
 例如
 
 For example
 
-```Perl6
+```Raku
 my @vals = lazy gather {
     take 1;
     say "Produced a value";
@@ -630,7 +630,7 @@ say @vals[1];
 
 `gather/take` is scoped dynamically, so you can call `take` from subs or methods that are called from within `gather`:
 
-```Perl6
+```Raku
 sub weird(@elems, :$direction = 'forward') {
     my %direction = (
         forward  => sub { take $_ for @elems },
@@ -644,18 +644,18 @@ say weird(<a b c>, :direction<backward> );          # OUTPUT: «(c b a)
 » 
 ```
 
-如果值需要在调用方可改变，使用 [take-rw](https://docs.perl6.org/type/Mu#routine_take-rw)。
+如果值需要在调用方可改变，使用 [take-rw](https://rakudocs.github.io/type/Mu#routine_take-rw)。
 
-If values need to be mutable on the caller side, use [take-rw](https://docs.perl6.org/type/Mu#routine_take-rw).
+If values need to be mutable on the caller side, use [take-rw](https://rakudocs.github.io/type/Mu#routine_take-rw).
 
 <a id="given"></a>
 # given
 
-`given` 语句是 Perl 6 的主题化关键字，类似于 C 语言中 `switch` 的主题化功能。换句话说，`given` 设置了紧随其后代码块中 `$_` 的值。单个条件的关键词是 `when` 和 `default`。通常的习语看起来像这样：
+`given` 语句是 Raku 的主题化关键字，类似于 C 语言中 `switch` 的主题化功能。换句话说，`given` 设置了紧随其后代码块中 `$_` 的值。单个条件的关键词是 `when` 和 `default`。通常的习语看起来像这样：
 
-The `given` statement is Perl 6's topicalizing keyword in a similar way that `switch` topicalizes in languages such as C. In other words, `given` sets `$_` inside the following block. The keywords for individual cases are `when` and `default`. The usual idiom looks like this:
+The `given` statement is Raku's topicalizing keyword in a similar way that `switch` topicalizes in languages such as C. In other words, `given` sets `$_` inside the following block. The keywords for individual cases are `when` and `default`. The usual idiom looks like this:
 
-```Perl6
+```Raku
 my $var = (Any, 21, any <answer lie>).pick;
 given $var {
     when 21 { say $_ * 2 }
@@ -668,7 +668,7 @@ given $var {
 
 The `given` statement is often used alone:
 
-```Perl6
+```Raku
 given 42 { .say; .Numeric; }
 ```
 
@@ -676,7 +676,7 @@ given 42 { .say; .Numeric; }
 
 This is a lot more understandable than:
 
-```Perl6
+```Raku
 { .say; .Numeric; }(42)
 ```
 
@@ -687,7 +687,7 @@ This is a lot more understandable than:
 
 A block containing a `default` statement will be left immediately when the sub-block after the `default` statement is left. It is as though the rest of the statements in the block are skipped.
 
-```Perl6
+```Raku
 given 42 {
     "This says".say;
     $_ == 42 and ( default { "This says, too".say; 43; } );
@@ -704,7 +704,7 @@ A `when` statement will also do this (but a `when` statement modifier will *not*
 
 In addition, `when` statements `smartmatch` the topic (`$_`) against a supplied expression such that it is possible to check against values, regular expressions, and types when specifying a match.
 
-```Perl6
+```Raku
 for 42, 43, "foo", 44, "bar" {
     when Int { .say }
     when /:i ^Bar/ { .say }
@@ -722,7 +722,7 @@ Bar
 
 In this form, the `given`/`when` construct acts much like a set of `if`/`elsif`/`else` statements. Be careful with the order of the `when` statements. The following code says `"Int"` not `42`.
 
-```Perl6
+```Raku
 given 42 {
     when Int { say "Int" }
     when 42  { say 42 }
@@ -736,7 +736,7 @@ given 42 {
 
 When a `when` statement or `default` statement causes the outer block to return, nesting `when` or `default` blocks do not count as the outer block, so you can nest these statements and still be in the same "switch" just so long as you do not open a new block:
 
-```Perl6
+```Raku
 given 42 {
     when Int {
       when 42  { say 42 }
@@ -747,7 +747,7 @@ given 42 {
 # OUTPUT: «42» 
 ```
 
-`when` statements can smart match against [Signatures](https://docs.perl6.org/language/syntax#Signature_literals).
+`when` statements can smart match against [Signatures](https://rakudocs.github.io/language/syntax#Signature_literals).
 
 <a id="proceed"></a>
 ## proceed
@@ -763,7 +763,7 @@ Both `proceed` and `succeed` are meant to be used only from inside `when` or `de
 
 The `proceed` statement will immediately leave the `when` or `default` block, skipping the rest of the statements, and resuming after the block. This prevents the `when` or `default` from exiting the outer block.
 
-```Perl6
+```Raku
 given * {
     default {
         proceed;
@@ -777,7 +777,7 @@ given * {
 
 This is most often used to enter multiple `when` blocks. `proceed` will resume matching after a successful match, like so:
 
-```Perl6
+```Raku
 given 42 {
     when Int   { say "Int"; proceed }
     when 42    { say 42 }
@@ -798,7 +798,7 @@ Note that the `when 40..*` match didn't occur. For this to match such cases as w
 
 This is not like a `C` `switch` statement, because the `proceed` does not merely enter the directly following block, it attempts to match the `given` value once more, consider this code:
 
-```Perl6
+```Raku
 given 42 {
     when Int { "Int".say; proceed }
     when 43  { 43.say }
@@ -819,7 +819,7 @@ given 42 {
 
 By contrast, the `succeed` keyword short-circuits execution and exits the entire `given` block at that point. It may also take an argument to specify a final value for the block.
 
-```Perl6
+```Raku
 given 42 {
     when Int {
         say "Int";
@@ -837,7 +837,7 @@ given 42 {
 
 If you are not inside a when or default block, it is an error to try to use `proceed` or `succeed`. Also remember, the `when` statement modifier form does not cause any blocks to be left, and any `succeed` or `proceed` in such a statement applies to the surrounding clause, if there is one:
 
-```Perl6
+```Raku
 given 42 {
     { say "This says" } when Int;
     "This says too".say;
@@ -856,7 +856,7 @@ given 42 {
 
 `given` can follow a statement to set the topic in the statement it follows.
 
-```Perl6
+```Raku
 .say given "foo";
 # OUTPUT: «foo
 » 
@@ -877,7 +877,7 @@ printf "%s %02i.%02i.%i",
 
 The `loop` statement takes three statements in parentheses separated by `;` that take the role of initializer, conditional and incrementer. The initializer is executed once and any variable declaration will spill into the surrounding block. The conditional is executed once per iteration and coerced to `Bool`, if `False` the loop is stopped. The incrementer is executed once per iteration.
 
-```Perl6
+```Raku
 loop (my $i = 0; $i < 10; $i++) {
     say $i;
 }
@@ -887,7 +887,7 @@ loop (my $i = 0; $i < 10; $i++) {
 
 The infinite loop does not require parentheses.
 
-```Perl6
+```Raku
 loop { say 'forever' }
 ```
 
@@ -895,7 +895,7 @@ loop { say 'forever' }
 
 The `loop` statement may be used to produce values from the result of each run of the attached block if it appears in lists:
 
-```Perl6
+```Raku
 (loop ( my $i = 0; $i++ < 3;) { $i * 2 }).say;               # OUTPUT: «(2 4 6)
 » 
 my @a = (loop ( my $j = 0; $j++ < 3;) { $j * 2 }); @a.say;   # OUTPUT: «[2 4 6]
@@ -907,7 +907,7 @@ my @b = do loop ( my $k = 0; $k++ < 3;) { $k * 2 }; @b.say;  # same thing
 
 Unlike a `for` loop, one should not rely on whether returned values are produced lazily, for now. It would probably be best to use `eager` to guarantee that a loop whose return value may be used actually runs:
 
-```Perl6
+```Raku
 sub heads-in-a-row {
     (eager loop (; 2.rand < 1;) { "heads".say })
 }
@@ -920,7 +920,7 @@ sub heads-in-a-row {
 
 The `while` statement executes the block as long as its condition is true. So
 
-```Perl6
+```Raku
 my $x = 1;
 while $x < 4 {
     print $x++;
@@ -935,7 +935,7 @@ print "\n";
 
 Similarly, the `until` statement executes the block as long as the expression is false.
 
-```Perl6
+```Raku
 my $x = 1;
 until $x > 3 {
     print $x++;
@@ -954,7 +954,7 @@ The condition for `while` or `until` can be parenthesized, but there must be a s
 
 Both `while` and `until` can be used as statement modifiers. E. g.
 
-```Perl6
+```Raku
 my $x = 42;
 $x-- while $x > 12
 ```
@@ -974,7 +974,7 @@ All these forms may produce a return value the same way `loop` does.
 
 Executes the block *at least once* and, if the condition allows, repeats that execution. This differs from `while`/`until` in that the condition is evaluated at the end of the loop, even if it appears at the front.
 
-```Perl6
+```Raku
 my $x = -42;
 repeat {
     $x++;
@@ -1032,9 +1032,9 @@ All these forms may produce a return value the same way `loop` does.
 <a id="return"></a>
 # return
 
-`return` 将停止执行子程序或方法，运行所有相关的[阶段](https://docs.perl6.org/language/phasers#Block_Phasers) 并向调用者提供给定的返回值。默认返回值为 `Nil`。如果提供了返回[类型约束](https://docs.perl6.org/type/Signature#Constraining_Return_Types) ，则将检查它，除非返回值为 `Nil`。如果类型检查失败，则抛出异常 [X::TypeCheck::Return](https://docs.perl6.org/type/X::TypeCheck::Return)。如果它通过了类型检查，则引发`控制`异常并可以使用 [CONTROL](https://docs.perl6.org/language/phasers#CONTROL) 捕获。
+`return` 将停止执行子程序或方法，运行所有相关的[阶段](https://rakudocs.github.io/language/phasers#Block_Phasers) 并向调用者提供给定的返回值。默认返回值为 `Nil`。如果提供了返回[类型约束](https://rakudocs.github.io/type/Signature#Constraining_Return_Types) ，则将检查它，除非返回值为 `Nil`。如果类型检查失败，则抛出异常 [X::TypeCheck::Return](https://rakudocs.github.io/type/X::TypeCheck::Return)。如果它通过了类型检查，则引发`控制`异常并可以使用 [CONTROL](https://rakudocs.github.io/language/phasers#CONTROL) 捕获。
 
-The sub `return` will stop execution of a subroutine or method, run all relevant [phasers](https://docs.perl6.org/language/phasers#Block_Phasers) and provide the given return value to the caller. The default return value is `Nil`. If a return [type constraint](https://docs.perl6.org/type/Signature#Constraining_Return_Types) is provided it will be checked unless the return value is `Nil`. If the type check fails the exception [X::TypeCheck::Return](https://docs.perl6.org/type/X::TypeCheck::Return) is thrown. If it passes a control exception is raised and can be caught with [CONTROL](https://docs.perl6.org/language/phasers#CONTROL).
+The sub `return` will stop execution of a subroutine or method, run all relevant [phasers](https://rakudocs.github.io/language/phasers#Block_Phasers) and provide the given return value to the caller. The default return value is `Nil`. If a return [type constraint](https://rakudocs.github.io/type/Signature#Constraining_Return_Types) is provided it will be checked unless the return value is `Nil`. If the type check fails the exception [X::TypeCheck::Return](https://rakudocs.github.io/type/X::TypeCheck::Return) is thrown. If it passes a control exception is raised and can be caught with [CONTROL](https://rakudocs.github.io/language/phasers#CONTROL).
 
 块中的任何 `return` 都与该块的外部词法范围中的第一个`例程`相关联，无论嵌套有多深。请注意，根包中的 `return` 将在运行时失败。在惰性代码块中的 `return`（例如在 `map` 内部）可能发现在执行块时外部词法例程已经消失。几乎在任何情况下， `last` 都是更好的选择。
 
@@ -1047,7 +1047,7 @@ Any `return` in a block is tied to the first `Routine` in the outer lexical scop
 
 The sub `return` will return values, not containers. Those are immutable and will lead to runtime errors when attempted to be mutated.
 
-```Perl6
+```Raku
 sub s(){ my $a = 41; return $a };
 say ++s();
 CATCH { default { say .^name, ': ', .Str } };
@@ -1058,7 +1058,7 @@ CATCH { default { say .^name, ': ', .Str } };
 
 To return a mutable container, use `return-rw`.
 
-```Perl6
+```Raku
 sub s(){ my $a = 41; return-rw $a };
 say ++s();
 # OUTPUT: «42
@@ -1070,11 +1070,11 @@ The same rules as for `return` regarding phasers and control exceptions apply.
 <a id="fail"></a>
 # fail
 
-离开当前例程并返回提供的 [Exception](https://docs.perl6.org/type/Exception) 或包含在 [Failure](https://docs.perl6.org/type/Failure) 中的 `Str`，执行所有相关的[阶段](https://docs.perl6.org/language/phasers#Block_Phasers)之后。如果调用者通过编译指示 `use fatal;` 激活了致命异常，则抛出异常而不是作为 `Failure` 返回。
+离开当前例程并返回提供的 [Exception](https://rakudocs.github.io/type/Exception) 或包含在 [Failure](https://rakudocs.github.io/type/Failure) 中的 `Str`，执行所有相关的[阶段](https://rakudocs.github.io/language/phasers#Block_Phasers)之后。如果调用者通过编译指示 `use fatal;` 激活了致命异常，则抛出异常而不是作为 `Failure` 返回。
 
-Leaves the current routine and returns the provided [Exception](https://docs.perl6.org/type/Exception) or `Str` wrapped inside a [Failure](https://docs.perl6.org/type/Failure), after all relevant [phasers](https://docs.perl6.org/language/phasers#Block_Phasers)are executed. If the caller activated fatal exceptions via the pragma `use fatal;`, the exception is thrown instead of being returned as a `Failure`.
+Leaves the current routine and returns the provided [Exception](https://rakudocs.github.io/type/Exception) or `Str` wrapped inside a [Failure](https://rakudocs.github.io/type/Failure), after all relevant [phasers](https://rakudocs.github.io/language/phasers#Block_Phasers)are executed. If the caller activated fatal exceptions via the pragma `use fatal;`, the exception is thrown instead of being returned as a `Failure`.
 
-```Perl6
+```Raku
 sub f { fail "WELP!" };
 say f;
 CATCH { default { say .^name, ': ', .Str } }
@@ -1089,7 +1089,7 @@ CATCH { default { say .^name, ': ', .Str } }
 
 A block prefix with `once` will be executed exactly once, even if placed inside a loop or a recursive routine.
 
-```Perl6
+```Raku
 my $guard = 3;
 loop {
     last if $guard-- <= 0;
@@ -1103,7 +1103,7 @@ manymanymany»
 
 This works per "clone" of the containing code object, so:
 
-```Perl6
+```Raku
 ({ once 42.say } xx 3).map: {$_(), $_()}; # says 42 thrice 
 ```
 
@@ -1118,7 +1118,7 @@ Note that this is **not** a thread-safe construct when the same clone of the sam
 
 A `quietly` block will suppress warnings.
 
-```Perl6
+```Raku
 quietly { warn 'kaput!' };
 warn 'still kaput!';
 # OUTPUT: «still kaput! [...]
@@ -1130,7 +1130,7 @@ warn 'still kaput!';
 
 `while`, `until`, `loop` and `for` loops can all take a label, which can be used to identify them for `next`, `last`, and `redo`. Nested loops are supported, for instance:
 
-```Perl6
+```Raku
 OUTAHERE: while True  {
     for 1,2,3 -> $n {
         last OUTAHERE if $n == 2;
@@ -1142,7 +1142,7 @@ OUTAHERE: while True  {
 
 Labels can be used also within nested loops to name each loop, for instance:
 
-```Perl6
+```Raku
 OUTAHERE:
 loop ( my $i = 1; True; $i++ ) {
   OUTFOR:
@@ -1163,7 +1163,7 @@ loop ( my $i = 1; True; $i++ ) {
 
 The `next` command starts the next iteration of the loop. So the code
 
-```Perl6
+```Raku
 my @x = 1, 2, 3, 4, 5;
 for @x -> $x {
     next if $x == 3;
@@ -1182,7 +1182,7 @@ prints "1245".
 
 The `last` command immediately exits the loop in question.
 
-```Perl6
+```Raku
 my @x = 1, 2, 3, 4, 5;
 for @x -> $x {
     last if $x == 3;
@@ -1201,7 +1201,7 @@ prints "12".
 
 The `redo` command restarts the loop block without evaluating the conditional again.
 
-```Perl6
+```Raku
 loop {
     my $x = prompt("Enter a number");
     redo unless $x ~~ /\d+/;

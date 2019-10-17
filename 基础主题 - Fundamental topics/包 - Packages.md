@@ -1,4 +1,4 @@
-原文：https://docs.perl6.org/language/packages
+原文：https://rakudocs.github.io/language/packages
 
 # 包 - Packages
 
@@ -6,9 +6,9 @@
 
 Organizing and referencing namespaced program elements
 
-包是命名程序元素的嵌套命名空间。[模块](https://docs.perl6.org/language/module-packages)、类、语法等都是包的类型。与目录中的文件一样，如果命名元素是本地的，则通常可以使用它们的短名引用它们，也可以引用包含名称空间的较长名称，只要它们的范围允许，就可以消除歧义。
+包是命名程序元素的嵌套命名空间。[模块](https://rakudocs.github.io/language/module-packages)、类、语法等都是包的类型。与目录中的文件一样，如果命名元素是本地的，则通常可以使用它们的短名引用它们，也可以引用包含名称空间的较长名称，只要它们的范围允许，就可以消除歧义。
 
-Packages are nested namespaces of named program elements. [Modules](https://docs.perl6.org/language/module-packages), classes, grammars, and others are types of packages. Like files in a directory, you can generally refer to named elements with their short-name if they are local, or with the longer name that includes the namespace to disambiguate as long as their scope allows that.
+Packages are nested namespaces of named program elements. [Modules](https://rakudocs.github.io/language/module-packages), classes, grammars, and others are types of packages. Like files in a directory, you can generally refer to named elements with their short-name if they are local, or with the longer name that includes the namespace to disambiguate as long as their scope allows that.
 
 <!-- MarkdownTOC -->
 
@@ -32,7 +32,7 @@ Packages are nested namespaces of named program elements. [Modules](https://docs
 
 A package *name* is anything that is a legal part of a variable name (not counting the sigil). This includes:
 
-```Perl6
+```Raku
 class Foo {
     sub zape () { say "zipi" }
     class Bar {
@@ -59,7 +59,7 @@ $!;                     # certain punctuation variables
 
 Packages do not really have an identity; they can be simply part of a module or class name, for instance. They are more similar to namespaces than to modules; with a module of the same name *capturing* the identity of a package if it exists.
 
-```Perl6
+```Raku
 package Foo:ver<0> {};
 module Foo:ver<1> {};
 say Foo.^ver; # OUTPUT: «1␤»
@@ -80,7 +80,7 @@ Ordinary package-qualified names look like this: `$Foo::Bar::quux`, which would 
 
 Sometimes it's clearer to keep the sigil with the variable name, so an alternate way to write this is:
 
-```Perl6
+```Raku
 Foo::Bar::<$quux>
 ```
 
@@ -123,9 +123,9 @@ The following relative names are also reserved but may be used anywhere in a nam
 | PARENT  | Symbols in this package's parent package (or lexical scope) |
 | CLIENT  | The nearest CALLER that comes from a different package      |
 
-该文件的作用域称为 `UNIT`，但在与语言设置相对应的范围之外有一个或多个词法作用域（在其他文化中通常称为前奏）。因此，`SETTING` 范围相当于 `UNIT::OUTERS`。对于标准 Perl 6 程序，`SETTING` 与 `CORE` 相同，但各种启动选项（例如 `-n` 或 `-p`）可以将您放入特定于域的语言中，在这种情况下，`CORE` 仍然是标准语言的作用域，而 `SETTING` 则表示定义 DSL 的作用域，作为当前文件的设置  。当用作名称中间的搜索词时，`SETTING` 包括它的所有外部作用域，直至 `CORE`。要获取*仅*设置的最外层作用域，请使用 `UNIT::OUTER`。
+该文件的作用域称为 `UNIT`，但在与语言设置相对应的范围之外有一个或多个词法作用域（在其他文化中通常称为前奏）。因此，`SETTING` 范围相当于 `UNIT::OUTERS`。对于标准 Raku 程序，`SETTING` 与 `CORE` 相同，但各种启动选项（例如 `-n` 或 `-p`）可以将您放入特定于域的语言中，在这种情况下，`CORE` 仍然是标准语言的作用域，而 `SETTING` 则表示定义 DSL 的作用域，作为当前文件的设置  。当用作名称中间的搜索词时，`SETTING` 包括它的所有外部作用域，直至 `CORE`。要获取*仅*设置的最外层作用域，请使用 `UNIT::OUTER`。
 
-The file's scope is known as `UNIT`, but there are one or more lexical scopes outside of that corresponding to the linguistic setting (often known as the prelude in other cultures). Hence, the `SETTING` scope is equivalent to `UNIT::OUTERS`. For a standard Perl 6 program `SETTING` is the same as `CORE`, but various startup options (such as `-n` or `-p`) can put you into a domain specific language, in which case `CORE` remains the scope of the standard language, while `SETTING` represents the scope defining the DSL that functions as the setting of the current file. When used as a search term in the middle of a name, `SETTING` includes all its outer scopes up to `CORE`. To get *only* the setting's outermost scope, use `UNIT::OUTER` instead.
+The file's scope is known as `UNIT`, but there are one or more lexical scopes outside of that corresponding to the linguistic setting (often known as the prelude in other cultures). Hence, the `SETTING` scope is equivalent to `UNIT::OUTERS`. For a standard Raku program `SETTING` is the same as `CORE`, but various startup options (such as `-n` or `-p`) can put you into a domain specific language, in which case `CORE` remains the scope of the standard language, while `SETTING` represents the scope defining the DSL that functions as the setting of the current file. When used as a search term in the middle of a name, `SETTING` includes all its outer scopes up to `CORE`. To get *only* the setting's outermost scope, use `UNIT::OUTER` instead.
 
 <a id="%E6%9F%A5%E5%90%8D%E5%AD%97--looking-up-names"></a>
 # 查名字 / Looking up names
@@ -133,11 +133,11 @@ The file's scope is known as `UNIT`, but there are one or more lexical scopes ou
 <a id="%E6%8F%92%E5%85%A5%E5%A7%93%E5%90%8D--interpolating-into-names"></a>
 ## 插入姓名 / Interpolating into names
 
-您可以使用 `::($expr)` 将字符串[插入](https://docs.perl6.org/language/packages#Interpolating)到包或变量名中，在这里通常放置包或变量名。字符串允许包含 `::` 的其他实例，这将被解释为包嵌套。您只能内插全名，因为构造以 `::` 开头，或者直接结束，或者在括号外用另一个 `::` 继续。大多数符号引用都是用这个符号来完成的：
+您可以使用 `::($expr)` 将字符串[插入](https://rakudocs.github.io/language/packages#Interpolating)到包或变量名中，在这里通常放置包或变量名。字符串允许包含 `::` 的其他实例，这将被解释为包嵌套。您只能内插全名，因为构造以 `::` 开头，或者直接结束，或者在括号外用另一个 `::` 继续。大多数符号引用都是用这个符号来完成的：
 
-You may [interpolate](https://docs.perl6.org/language/packages#Interpolating) a string into a package or variable name using `::($expr)` where you'd ordinarily put a package or variable name. The string is allowed to contain additional instances of `::`, which will be interpreted as package nesting. You may only interpolate entire names, since the construct starts with `::`, and either ends immediately or is continued with another `::` outside the parentheses. Most symbolic references are done with this notation:
+You may [interpolate](https://rakudocs.github.io/language/packages#Interpolating) a string into a package or variable name using `::($expr)` where you'd ordinarily put a package or variable name. The string is allowed to contain additional instances of `::`, which will be interpreted as package nesting. You may only interpolate entire names, since the construct starts with `::`, and either ends immediately or is continued with another `::` outside the parentheses. Most symbolic references are done with this notation:
 
-```Perl6
+```Raku
 my $foo = "Foo";
 my $bar = "Bar";
 my $foobar = "Foo::Bar";
@@ -166,7 +166,7 @@ Use the `MY` pseudopackage to limit the lookup to the current lexical scope, and
 
 In the same vein, class and method names can be interpolated too:
 
-```Perl6
+```Raku
 role with-method {
     method a-method { return 'in-a-method of ' ~ $?CLASS.^name  };
 }
@@ -196,7 +196,7 @@ say a-class."$what-method"(); # OUTPUT: «in-another-method␤»
 
 To do direct lookup in a package's symbol table without scanning, treat the package name as a hash:
 
-```Perl6
+```Raku
 Foo::Bar::{'&baz'}  # same as &Foo::Bar::baz
 PROCESS::<$IN>      # same as $*IN
 Foo::<::Bar><::Baz> # same as Foo::Bar::Baz
@@ -210,7 +210,7 @@ null 伪包与普通名称搜索是相同的搜索列表。也就是说，以下
 
 The null pseudo-package is the same search list as an ordinary name search. That is, the following are all identical in meaning:
 
-```Perl6
+```Raku
 $foo
 ::{'$foo'}
 ::<$foo>
@@ -227,18 +227,18 @@ Each of them scans the lexical scopes outward, and then the current package scop
 
 Subscript the package object itself as a hash object, the key of which is the variable name, including any sigil. The package object can be derived from a type name by use of the `::` postfix:
 
-```Perl6
+```Raku
 MyType::<$foo>
 ```
 
 <a id="%E7%B1%BB%E6%88%90%E5%91%98%E6%9F%A5%E6%89%BE--class-member-lookup"></a>
 ## 类成员查找 / Class member lookup
 
-方法-包括自动生成的方法，例如公共属性的访问器-存储在类元对象中，并可以通过 [lookup](https://docs.perl6.org/routine/lookup) 方法进行查找。
+方法-包括自动生成的方法，例如公共属性的访问器-存储在类元对象中，并可以通过 [lookup](https://rakudocs.github.io/routine/lookup) 方法进行查找。
 
-Methods—including auto-generated methods, such as public attributes' accessors—are stored in the class metaobject and can be looked up through by the [lookup](https://docs.perl6.org/routine/lookup) method.
+Methods—including auto-generated methods, such as public attributes' accessors—are stored in the class metaobject and can be looked up through by the [lookup](https://rakudocs.github.io/routine/lookup) method.
 
-```Perl6
+```Raku
 Str.^lookup('chars')
 ```
 

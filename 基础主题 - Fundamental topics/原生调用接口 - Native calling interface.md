@@ -1,4 +1,4 @@
-原文：https://docs.perl6.org/language/nativecall
+原文：https://rakudocs.github.io/language/nativecall
 
 # 原生调用协议 / Native calling interface
 
@@ -20,7 +20,7 @@ Call into dynamic libraries that follow the C calling convention
     - [CUnions](#cunions)
     - [嵌入 CStruct 和 CUnion / Embedding CStructs and CUnions](#%E5%B5%8C%E5%85%A5-cstruct-%E5%92%8C-cunion--embedding-cstructs-and-cunions)
     - [内存管理注意事项 / Notes on memory management](#%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9--notes-on-memory-management)
-        - [在你的 Perl 6 代码中 / In your Perl 6 code...](#%E5%9C%A8%E4%BD%A0%E7%9A%84-perl-6-%E4%BB%A3%E7%A0%81%E4%B8%AD--in-your-perl-6-code)
+        - [在你的 Raku 代码中 / In your Raku code...](#%E5%9C%A8%E4%BD%A0%E7%9A%84-raku-%E4%BB%A3%E7%A0%81%E4%B8%AD--in-your-raku-code)
         - [在你的 C 代码中 / In your C code...](#%E5%9C%A8%E4%BD%A0%E7%9A%84-c-%E4%BB%A3%E7%A0%81%E4%B8%AD--in-your-c-code)
 - [类型化指针 / Typed pointers](#%E7%B1%BB%E5%9E%8B%E5%8C%96%E6%8C%87%E9%92%88--typed-pointers)
 - [字符串 / Strings](#%E5%AD%97%E7%AC%A6%E4%B8%B2--strings)
@@ -53,40 +53,40 @@ Call into dynamic libraries that follow the C calling convention
 
 The simplest imaginable use of `NativeCall` would look something like this:
 
-```Perl6
+```Raku
 use NativeCall;
 sub some_argless_function() is native('something') { * }
 some_argless_function();
 ```
 
-第一行导入各种特性和类型。下一行看起来像是一个有点扭曲的相对普通的 Perl 6 子声明。我们使用 "native" 特性来指定函数实际上是在原生库中定义的。将为你添加特定于平台的扩展名（例如，`.so` 或 `.dll`），以及任何常用前缀（例如，'lib'）。
+第一行导入各种特性和类型。下一行看起来像是一个有点扭曲的相对普通的 Raku 子声明。我们使用 "native" 特性来指定函数实际上是在原生库中定义的。将为你添加特定于平台的扩展名（例如，`.so` 或 `.dll`），以及任何常用前缀（例如，'lib'）。
 
-The first line imports various traits and types. The next line looks like a relatively ordinary Perl 6 sub declaration—with a twist. We use the "native" trait in order to specify that the sub is actually defined in a native library. The platform-specific extension (e.g., `.so` or `.dll`), as well as any customary prefixes (e.g., 'lib') will be added for you.
+The first line imports various traits and types. The next line looks like a relatively ordinary Raku sub declaration—with a twist. We use the "native" trait in order to specify that the sub is actually defined in a native library. The platform-specific extension (e.g., `.so` or `.dll`), as well as any customary prefixes (e.g., 'lib') will be added for you.
 
 第一次调用“某些无参数函数”时，将加载 "libsomething"，并在其中找到 "some_argless_function"。然后再调用这个找到的函数。由于保留了符号句柄，因此后续调用将更快。
 
 The first time you call "some_argless_function", the "libsomething" will be loaded and the "some_argless_function" will be located in it. A call will then be made. Subsequent calls will be faster, since the symbol handle is retained.
 
-当然，大多数函数都接受参数或返回值，但是你所能做的其他一切只是添加到这个简单的模式中，声明一个 Perl 6 函数，用你想要调用的符号命名它，并用 "native" 特性标记它。
+当然，大多数函数都接受参数或返回值，但是你所能做的其他一切只是添加到这个简单的模式中，声明一个 Raku 函数，用你想要调用的符号命名它，并用 "native" 特性标记它。
 
-Of course, most functions take arguments or return values—but everything else that you can do is just adding to this simple pattern of declaring a Perl 6 sub, naming it after the symbol you want to call and marking it with the "native" trait.
+Of course, most functions take arguments or return values—but everything else that you can do is just adding to this simple pattern of declaring a Raku sub, naming it after the symbol you want to call and marking it with the "native" trait.
 
-你还需要声明和使用原生类型。有关详细信息，请查看[原生类型页面](https://docs.perl6.org/language/nativetypes)。
+你还需要声明和使用原生类型。有关详细信息，请查看[原生类型页面](https://rakudocs.github.io/language/nativetypes)。
 
-You will also need to declare and use native types. Please check [the native types page](https://docs.perl6.org/language/nativetypes) for more information.
+You will also need to declare and use native types. Please check [the native types page](https://rakudocs.github.io/language/nativetypes) for more information.
 
 <a id="%E6%9B%B4%E5%90%8D--changing-names"></a>
 # 更名 / Changing names
 
-有时，你希望 Perl 子例程的名称与你正在加载的库中使用的名称不同。可能名称很长，或者大小写不同，或者在你试图创建的模块上下文中很麻烦。
+有时，你希望 Raku 子例程的名称与你正在加载的库中使用的名称不同。可能名称很长，或者大小写不同，或者在你试图创建的模块上下文中很麻烦。
 
-Sometimes you want the name of your Perl subroutine to be different from the name used in the library you're loading. Maybe the name is long or has different casing or is otherwise cumbersome within the context of the module you are trying to create.
+Sometimes you want the name of your Raku subroutine to be different from the name used in the library you're loading. Maybe the name is long or has different casing or is otherwise cumbersome within the context of the module you are trying to create.
 
-NativeCall 提供了一个 `symbol` 特性，用于指定库中原生例程的名称，该名称可能与 Perl 子例程的名称不同。
+NativeCall 提供了一个 `symbol` 特性，用于指定库中原生例程的名称，该名称可能与 Raku 子例程的名称不同。
 
-NativeCall provides a `symbol` trait for you to specify the name of the native routine in your library that may be different from your Perl subroutine name.
+NativeCall provides a `symbol` trait for you to specify the name of the native routine in your library that may be different from your Raku subroutine name.
 
-```Perl6
+```Raku
 unit module Foo;
 use NativeCall;
 our sub init() is native('foo') is symbol('FOO_INIT') { * }
@@ -99,24 +99,24 @@ Inside of `libfoo` there is a routine called `FOO_INIT` but, since we're creatin
 <a id="%E4%BC%A0%E9%80%92%E5%92%8C%E8%BF%94%E5%9B%9E%E5%80%BC--passing-and-returning-values"></a>
 # 传递和返回值 / Passing and returning values
 
-普通的 Perl 6 签名和 'returns' 特性用于传递原生函数期望的参数类型及其返回的内容。下面是一个例子。
+普通的 Raku 签名和 'returns' 特性用于传递原生函数期望的参数类型及其返回的内容。下面是一个例子。
 
-Normal Perl 6 signatures and the `returns` trait are used in order to convey the type of arguments a native function expects and what it returns. Here is an example.
+Normal Raku signatures and the `returns` trait are used in order to convey the type of arguments a native function expects and what it returns. Here is an example.
 
-```Perl6
+```Raku
 use NativeCall;
 sub add(int32, int32) returns int32 is native("calculator") { * }
 ```
 
-这里，我们声明了函数接受两个 32 位整数并返回一个 32 位整数。你可以在[原生类型](https://docs.perl6.org/language/nativetypes)页面中找到可以传递的其他类型。请注意，缺少 `returns` 特性用于指示 `void` 返回类型。*不要*在指针参数化之外的任何地方使用 `void` 类型。
+这里，我们声明了函数接受两个 32 位整数并返回一个 32 位整数。你可以在[原生类型](https://rakudocs.github.io/language/nativetypes)页面中找到可以传递的其他类型。请注意，缺少 `returns` 特性用于指示 `void` 返回类型。*不要*在指针参数化之外的任何地方使用 `void` 类型。
 
-Here, we have declared that the function takes two 32-bit integers and returns a 32-bit integer. You can find the other types that you may pass in the [native types](https://docs.perl6.org/language/nativetypes) page. Note that the lack of a `returns` trait is used to indicate `void` return type. Do *not*use the `void` type anywhere except in the Pointer parameterization.
+Here, we have declared that the function takes two 32-bit integers and returns a 32-bit integer. You can find the other types that you may pass in the [native types](https://rakudocs.github.io/language/nativetypes) page. Note that the lack of a `returns` trait is used to indicate `void` return type. Do *not*use the `void` type anywhere except in the Pointer parameterization.
 
 对于字符串，还有一个附加的 `encoded` 特性来提供一些关于如何进行封送处理的额外提示。
 
 For strings, there is an additional `encoded` trait to give some extra hints on how to do the marshaling.
 
-```Perl6
+```Raku
 use NativeCall;
 sub message_box(Str is encoded('utf8')) is native('gui') { * }
 ```
@@ -125,7 +125,7 @@ sub message_box(Str is encoded('utf8')) is native('gui') { * }
 
 To specify how to marshal string return types, just apply this trait to the routine itself.
 
-```Perl6
+```Raku
 use NativeCall;
 sub input_box() returns Str is encoded('utf8') is native('gui') { * }
 ```
@@ -138,7 +138,7 @@ Note that a `NULL` string pointer can be passed by passing the Str type object; 
 
 If the C function requires the lifetime of a string to exceed the function call, the argument must be manually encoded and passed as `CArray[uint8]`:
 
-```Perl6
+```Raku
 use NativeCall;
 
 # C prototype is void set_foo(const char *) 
@@ -166,7 +166,7 @@ use_foo();
 
 When working with native functions, sometimes you need to specify what kind of native data structure is going to be used. `is repr` is the term employed for that.
 
-```Perl6
+```Raku
 use NativeCall;
  
 class timespec is repr('CStruct') {
@@ -183,9 +183,9 @@ my $result = clock_gettime( 0, $this-time);
 say "$result, $this-time"; # OUTPUT: «0, timespec<65385480>␤» 
 ```
 
-我们调用的原始函数 [clock_gettime](https://linux.die.net/man/3/clock_gettime) 使用指向 `timespec` 结构的指针作为第二个参数。我们在这里将其声明为 [class](https://docs.perl6.org/syntax/class)，但将其表示形式指定为 `is repr('CStruct')`，以指示它对应于 C 数据结构。当我们创建该类的对象时，我们创建的正是 `clock_gettime` 所期望的指针类型。这样，可以无缝地将数据传输到原生接口或从原生接口传输数据。
+我们调用的原始函数 [clock_gettime](https://linux.die.net/man/3/clock_gettime) 使用指向 `timespec` 结构的指针作为第二个参数。我们在这里将其声明为 [class](https://rakudocs.github.io/syntax/class)，但将其表示形式指定为 `is repr('CStruct')`，以指示它对应于 C 数据结构。当我们创建该类的对象时，我们创建的正是 `clock_gettime` 所期望的指针类型。这样，可以无缝地将数据传输到原生接口或从原生接口传输数据。
 
-The original function we are calling, [clock_gettime](https://linux.die.net/man/3/clock_gettime), uses a pointer to the `timespec` struct as second argument. We declare it as a [class](https://docs.perl6.org/syntax/class) here, but specify its representation as `is repr('CStruct')`, to indicate it corresponds to a C data structure. When we create an object of that class, we are creating exactly the kind of pointer `clock_gettime` expects. This way, data can be transferred seamlessly to and from the native interface.
+The original function we are calling, [clock_gettime](https://linux.die.net/man/3/clock_gettime), uses a pointer to the `timespec` struct as second argument. We declare it as a [class](https://rakudocs.github.io/syntax/class) here, but specify its representation as `is repr('CStruct')`, to indicate it corresponds to a C data structure. When we create an object of that class, we are creating exactly the kind of pointer `clock_gettime` expects. This way, data can be transferred seamlessly to and from the native interface.
 
 <a id="%E6%8C%87%E9%92%88%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8--basic-use-of-pointers"></a>
 # 指针的基本使用 / Basic use of pointers
@@ -194,7 +194,7 @@ The original function we are calling, [clock_gettime](https://linux.die.net/man/
 
 When the signature of your native function needs a pointer to some native type (`int32`, `uint32`, etc.) all you need to do is declare the argument `is rw` :
 
-```Perl6
+```Raku
 use NativeCall;
 # C prototype is void my_version(int *major, int *minor) 
 sub my_version(int32 is rw, int32 is rw) is native('foo') { * }
@@ -205,7 +205,7 @@ my_version(my int32 $major, my int32 $minor); # Pass a pointer to
 
 Sometimes you need to get a pointer (for example, a library handle) back from a C library. You don't care about what it points to - you just need to keep hold of it. The Pointer type provides for this.
 
-```Perl6
+```Raku
 use NativeCall;
 sub Foo_init() returns Pointer is native("foo") { * }
 sub Foo_free(Pointer) is native("foo") { * }
@@ -215,7 +215,7 @@ sub Foo_free(Pointer) is native("foo") { * }
 
 This works out OK, but you may fancy working with a type named something better than Pointer. It turns out that any class with the representation "CPointer" can serve this role. This means you can expose libraries that work on handles by writing a class like this:
 
-```Perl6
+```Raku
 use NativeCall;
  
 class FooHandle is repr('CPointer') {
@@ -253,7 +253,7 @@ Note that the CPointer representation can do nothing more than hold a C pointer.
 
 Of course, you can always have an empty class:
 
-```Perl6
+```Raku
 class DoorHandle is repr('CPointer') { }
 ```
 
@@ -276,7 +276,7 @@ C libraries can expose pointers to C functions as return values of functions and
 
 Example of invoking a function pointer "$fptr" returned by a function "f", using a signature defining the desired function parameters and return value:
 
-```Perl6
+```Raku
 sub f() returns Pointer is native('mylib') { * }
  
 my $fptr    = f();
@@ -292,15 +292,15 @@ NativeCall 对数组有一些支持。它被限制使用机器大小的整数、
 
 NativeCall has some support for arrays. It is constrained to work with machine-size integers, doubles and strings, sized numeric types, arrays of pointers, arrays of structs, and arrays of arrays.
 
-Perl 6 数组除了支持惰性之外，在内存中的布局与C数组截然不同。因此，NativeCall 库提供了一种更为原始的 CArray 类型，在使用 C 数组时必须使用它。
+Raku 数组除了支持惰性之外，在内存中的布局与C数组截然不同。因此，NativeCall 库提供了一种更为原始的 CArray 类型，在使用 C 数组时必须使用它。
 
-Perl 6 arrays, which support amongst other things laziness, are laid out in memory in a radically different way to C arrays. Therefore, the NativeCall library offers a much more primitive CArray type, which you must use if working with C arrays.
+Raku arrays, which support amongst other things laziness, are laid out in memory in a radically different way to C arrays. Therefore, the NativeCall library offers a much more primitive CArray type, which you must use if working with C arrays.
 
 下面是传递 C 数组的示例。
 
 Here is an example of passing a C array.
 
-```Perl6
+```Raku
 sub RenderBarChart(Str, int32, CArray[Str], CArray[num64]) is native("chart") { * }
 my @titles := CArray[Str].new;
 @titles[0]  = 'Me';
@@ -313,11 +313,11 @@ my @values := CArray[num64].new;
 RenderBarChart('Weights (kg)', 3, @titles, @values);
 ```
 
-请注意，绑定用于 `@titles`，*而不是*赋值！如果你赋值，你将把这些值放入一个 Perl 6 数组中，它将不起作用。如果这一切都让你抓狂了，那就忘了你对 `@` 符号有任何了解，在使用 NativeCall 时只需一直使用 `$`。
+请注意，绑定用于 `@titles`，*而不是*赋值！如果你赋值，你将把这些值放入一个 Raku 数组中，它将不起作用。如果这一切都让你抓狂了，那就忘了你对 `@` 符号有任何了解，在使用 NativeCall 时只需一直使用 `$`。
 
-Note that binding was used to `@titles`, *not* assignment! If you assign, you are putting the values into a Perl 6 array, and it will not work out. If this all freaks you out, forget you ever knew anything about the `@` sigil and just use `$` all the way when using NativeCall.
+Note that binding was used to `@titles`, *not* assignment! If you assign, you are putting the values into a Raku array, and it will not work out. If this all freaks you out, forget you ever knew anything about the `@` sigil and just use `$` all the way when using NativeCall.
 
-```Perl6
+```Raku
 use NativeCall;
 my $titles = CArray[Str].new;
 $titles[0] = 'Me';
@@ -333,16 +333,16 @@ Getting return values for arrays works out just the same.
 
 Some library APIs may take an array as a buffer that will be populated by the C function and, for instance, return the actual number of items populated:
 
-```Perl6
+```Raku
 use NativeCall;
 sub get_n_ints(CArray[int32], int32) returns int32 is native('ints') { * }
 ```
 
-在这些情况下，在将 CArray 传递给原生子程序之前，填充元素的数量是很重要的，否则 C 函数可能会在 Perl 的内存中堆积，从而导致可能无法预测的行为：
+在这些情况下，在将 CArray 传递给原生子程序之前，填充元素的数量是很重要的，否则 C 函数可能会在 Raku 的内存中堆积，从而导致可能无法预测的行为：
 
-In these cases it is important that the CArray has at least the number of elements that are going to be populated before passing it to the native subroutine, otherwise the C function may stomp all over Perl's memory leading to possibly unpredictable behavior:
+In these cases it is important that the CArray has at least the number of elements that are going to be populated before passing it to the native subroutine, otherwise the C function may stomp all over Raku's memory leading to possibly unpredictable behavior:
 
-```Perl6
+```Raku
 my $number_of_ints = 10;
 my $ints = CArray[int32].allocate($number_of_ints); # instantiates an array with 10 elements 
 my $n = get_n_ints($ints, $number_of_ints);
@@ -352,7 +352,7 @@ my $n = get_n_ints($ints, $number_of_ints);
 
 *Note*: `allocate` was introduced in Rakudo 2018.05. Before that, you had to use this mechanism to extend an array to a number of elements:
 
-```Perl6
+```Raku
 my $ints = CArray[int32].new;
 my $number_of_ints = 10;
 $ints[$number_of_ints - 1] = 0; # extend the array to 10 items 
@@ -369,23 +369,23 @@ By contrast, when a C library returns an array to you, then the memory can not b
 <a id="carray-%E6%96%B9%E6%B3%95--carray-methods"></a>
 ## CArray 方法 / CArray methods
 
-除了每个 Perl 6 实例上可用的常规方法之外，`CArray` 还提供了以下方法，从 Perl 6 的角度来看，这些方法可以用来和它进行交互：
+除了每个 Raku 实例上可用的常规方法之外，`CArray` 还提供了以下方法，从 Raku 的角度来看，这些方法可以用来和它进行交互：
 
-Besides the usual methods available on every Perl 6 instance, `CArray` provides the following methods that can be used to interact with the it from the Perl 6 point of view:
+Besides the usual methods available on every Raku instance, `CArray` provides the following methods that can be used to interact with the it from the Raku point of view:
 
 - `elems` 提供了数组中的元素数；
 - `at-pos` 在给定位置提供特定元素（从零开始）；
-- `list` 提供从原生数组迭代器生成数组中元素的[列表](https://docs.perl6.org/type/List)。
+- `list` 提供从原生数组迭代器生成数组中元素的[列表](https://rakudocs.github.io/type/List)。
 
 - `elems` provides the number of elements within the array;
 - `AT-POS` provides a specific element at the given position (starting from zero);
-- `list` provides the [List](https://docs.perl6.org/type/List) of elements within the array building it from the native array iterator.
+- `list` provides the [List](https://rakudocs.github.io/type/List) of elements within the array building it from the native array iterator.
 
 例如，考虑以下简单的代码：
 
 As an example, consider the following simple piece of code:
 
-```Perl6
+```Raku
 use NativeCall;
  
 my $native-array = CArray[int32].new( 1, 2, 3, 4, 5 );
@@ -408,7 +408,7 @@ for 0..$native-array.elems - 1 -> $position {
 
 that produces the following output
 
-```Perl6
+```Raku
 Number of elements: 5
 Current element is: 1
 Current element is: 2
@@ -425,11 +425,11 @@ Element at position 4 is 5
 <a id="%E7%BB%93%E6%9E%84%E4%BD%93--structs"></a>
 # 结构体 / Structs
 
-由于表示多态性，可以声明一个外观正常的 Perl 6 类，该类在底层以 C 编译器将它们放在类似结构定义中的方式存储其属性。只需使用 "repr" 特性：
+由于表示多态性，可以声明一个外观正常的 Raku 类，该类在底层以 C 编译器将它们放在类似结构定义中的方式存储其属性。只需使用 "repr" 特性：
 
-Thanks to representation polymorphism, it's possible to declare a normal looking Perl 6 class that, under the hood, stores its attributes in the same way a C compiler would lay them out in a similar struct definition. All it takes is a quick use of the "repr" trait:
+Thanks to representation polymorphism, it's possible to declare a normal looking Raku class that, under the hood, stores its attributes in the same way a C compiler would lay them out in a similar struct definition. All it takes is a quick use of the "repr" trait:
 
-```Perl6
+```Raku
 class Point is repr('CStruct') {
     has num64 $.x;
     has num64 $.y;
@@ -448,7 +448,7 @@ NativeCall 当前不将对象成员放入容器中，因此为其分配新值（
 
 NativeCall currently doesn't put object members in containers, so assigning new values to them (with =) doesn't work. Instead, you have to bind new values to the private members:
 
-```Perl6
+```Raku
 class MyStruct is repr('CStruct') {
     has CArray[num64] $!arr;
     has Str $!str;
@@ -459,7 +459,7 @@ class MyStruct is repr('CStruct') {
         $arr[0] = 0.9e0;
         $arr[1] = 0.2e0;
         $!arr := $arr;
-        $!str := 'Perl 6 is fun';
+        $!str := 'Raku is fun';
         $!point := Point.new;
     }
 }
@@ -472,11 +472,11 @@ As you may have predicted by now, a NULL pointer is represented by the type obje
 <a id="cunions"></a>
 ## CUnions
 
-同样，可以声明一个 Perl 6 类，它以 C 编译器在类似的 `union` 定义中对其属性进行布局的方式存储其属性；使用 `CUnion` 表示：
+同样，可以声明一个 Raku 类，它以 C 编译器在类似的 `union` 定义中对其属性进行布局的方式存储其属性；使用 `CUnion` 表示：
 
-Likewise, it is possible to declare a Perl 6 class that stores its attributes the same way a C compiler would lay them out in a similar `union` definition; using the `CUnion` representation:
+Likewise, it is possible to declare a Raku class that stores its attributes the same way a C compiler would lay them out in a similar `union` definition; using the `CUnion` representation:
 
-```Perl6
+```Raku
 use NativeCall;
  
 class MyUnion is repr('CUnion') {
@@ -495,7 +495,7 @@ CStruct 和 CUnion 可以依次被周围的 CStruct 和 CUnion 所引用或嵌�
 
 CStructs and CUnions can be in turn referenced by—or embedded into—a surrounding CStruct and CUnion. To say the former we use `has` as usual, and to do the latter we use the `HAS` declarator instead:
 
-```Perl6
+```Raku
 class MyStruct is repr('CStruct') {
     has Point $.point;  # referenced 
     has int32 $.flags;
@@ -520,10 +520,10 @@ say nativesizeof(MyStruct2.new);  # OUTPUT: «24␤»
 
 When allocating a struct for use as a struct, make sure that you allocate your own memory in your C functions. If you're passing a struct into a C function which needs a `Str`/`char*` allocated ahead of time, be sure to assign a container for a variable of type `Str` prior to passing your struct into the function.
 
-<a id="%E5%9C%A8%E4%BD%A0%E7%9A%84-perl-6-%E4%BB%A3%E7%A0%81%E4%B8%AD--in-your-perl-6-code"></a>
-### 在你的 Perl 6 代码中 / In your Perl 6 code...
+<a id="%E5%9C%A8%E4%BD%A0%E7%9A%84-raku-%E4%BB%A3%E7%A0%81%E4%B8%AD--in-your-raku-code"></a>
+### 在你的 Raku 代码中 / In your Raku code...
 
-```Perl6
+```Raku
 class AStringAndAnInt is repr("CStruct") {
   has Str $.a_string;
   has int32 $.an_int32;
@@ -570,7 +570,7 @@ void init_struct(a_string_and_an_int32_t *target, char *str, int32_t int32) {
 
 In this function we initialize the C structure by assigning an integer by value, and passing the string by reference. The function allocates memory that it points <char *a_string> to within the structure as it copies the string. (Note you will also have to manage deallocation of the memory as well to avoid memory leaks.)
 
-```Perl6
+```Raku
 # A long time ago in a galaxy far, far away... 
 my $foo = AStringAndAnInt.new(a_string => "str", an_int => 123);
 say "foo is {$foo.a_string} and {$foo.an_int32}";
@@ -584,7 +584,7 @@ say "foo is {$foo.a_string} and {$foo.an_int32}";
 
 You can type your `Pointer` by passing the type as a parameter. It works with the native type but also with `CArray` and `CStruct` defined types. NativeCall will not implicitly allocate the memory for it even when calling `new` on them. It's mostly useful in the case of a C routine returning a pointer, or if it's a pointer embedded in a `CStruct`.
 
-```Perl6
+```Raku
 use NativeCall;
 sub strdup(Str $s --> Pointer[Str]) is native {*}
 my Pointer[Str] $p = strdup("Success!");
@@ -595,7 +595,7 @@ say $p.deref;
 
 You have to call `.deref` on `Pointer`s to access the embedded type. In the example above, declaring the type of the pointer avoids typecasting error when dereferenced. Please note that the original [`strdup`](https://en.cppreference.com/w/c/experimental/dynamic/strdup) returns a pointer to `char`; we are using `Pointer<Str>`.
 
-```Perl6
+```Raku
 my Pointer[int32] $p; #For a pointer on int32; 
 my Pointer[MyCstruct] $p2 = some_c_routine();
 my MyCstruct $mc = $p2.deref;
@@ -606,7 +606,7 @@ say $mc.field1;
 
 It's quite common for a native function to return a pointer to an array of elements. Typed pointers can be dereferenced as an array to obtain individual elements.
 
-```Perl6
+```Raku
 my $n = 5;
 # returns a pointer to an array of length $n 
 my Pointer[Point] $plot = some_other_c_routine($n);
@@ -622,7 +622,7 @@ for 1 .. $n -> $i {
 
 Pointers can also be updated to reference successive elements in the array:
 
-```Perl6
+```Raku
 my Pointer[Point] $elem = $plot;
 # show differences between successive points 
 for 1 ..^ $n {
@@ -635,9 +635,9 @@ for 1 ..^ $n {
 }
 ```
 
-void 指针也可以通过声明它们 `Pointer[void]` 来使用。有关主题的详细信息，请参阅[原生类型文档](https://docs.perl6.org/language/nativetypes#The_void_type)。
+void 指针也可以通过声明它们 `Pointer[void]` 来使用。有关主题的详细信息，请参阅[原生类型文档](https://rakudocs.github.io/language/nativetypes#The_void_type)。
 
-Void pointers can also be used by declaring them `Pointer[void]`. Please consult [the native types documentation](https://docs.perl6.org/language/nativetypes#The_void_type) for more information on the subject.
+Void pointers can also be used by declaring them `Pointer[void]`. Please consult [the native types documentation](https://rakudocs.github.io/language/nativetypes#The_void_type) for more information on the subject.
 
 <a id="%E5%AD%97%E7%AC%A6%E4%B8%B2--strings"></a>
 # 字符串 / Strings
@@ -673,7 +673,7 @@ set_version(char *version)
 
 If you were to write bindings for `get_version` and `set_version`, they would initially look like this, but will not work as intended:
 
-```Perl6
+```Raku
 sub get_version(--> Str)     is native('./version') { * }
 sub set_version(Str --> Str) is native('./version') { * }
  
@@ -686,7 +686,7 @@ say set_version('1.0.1'); # Double free; segfaults
 
 This code segfaults on the second `set_version` call because it tries to free the string passed on the first call after the garbage collector had already done so. If the garbage collector shouldn't free a string passed to a native function, use `explicitly-manage` with it:
 
-```Perl6
+```Raku
 say set_version(explicitly-manage('1.0.0')); # 1.0.0 
 say get_version;                             # 1.0.0 
 say set_version(explicitly-manage('1.0.1')); # 1.0.1 
@@ -700,11 +700,11 @@ Bear in mind all memory management for explicitly managed strings must be handle
 <a id="%E7%BC%93%E5%86%B2%E5%8C%BA%E5%92%8C%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%A4%A7%E5%AF%B9%E8%B1%A1--buffers-and-blobs"></a>
 ## 缓冲区和二进制大对象 / Buffers and blobs
 
-[Blob](https://docs.perl6.org/type/Blob) 和 [Buf](https://docs.perl6.org/type/Buf) 是 Perl 6 存储二进制数据的方法。我们可以使用它们与原生函数和数据结构交换数据，尽管不是直接的。我们必须使用 [`nativecast`](https://docs.perl6.org/routine/nativecast)。
+[Blob](https://rakudocs.github.io/type/Blob) 和 [Buf](https://rakudocs.github.io/type/Buf) 是 Raku 存储二进制数据的方法。我们可以使用它们与原生函数和数据结构交换数据，尽管不是直接的。我们必须使用 [`nativecast`](https://rakudocs.github.io/routine/nativecast)。
 
-[Blob](https://docs.perl6.org/type/Blob)s and [Buf](https://docs.perl6.org/type/Buf)s are the Perl 6 way of storing binary data. We can use them for interchange of data with native functions and data structures, although not directly. We will have to use [`nativecast`](https://docs.perl6.org/routine/nativecast).
+[Blob](https://rakudocs.github.io/type/Blob)s and [Buf](https://rakudocs.github.io/type/Buf)s are the Raku way of storing binary data. We can use them for interchange of data with native functions and data structures, although not directly. We will have to use [`nativecast`](https://rakudocs.github.io/routine/nativecast).
 
-```Perl6
+```Raku
 my $blob = Blob.new(0x22, 0x33);
 my $src = nativecast(Pointer, $blob);
 ```
@@ -713,7 +713,7 @@ my $src = nativecast(Pointer, $blob);
 
 This `$src` can then be used as an argument for any native function that takes a Pointer. The opposite, putting values pointed to by a `Pointer` into a `Buf` or using it to initialize a `Blob` is not directly supported. You might want to use [`NativeHelpers::Blob`](https://github.com/salortiz/NativeHelpers-Blob) to do this kind of operations.
 
-```Perl6
+```Raku
 my $esponja = blob-from-pointer( $inter, :2elems, :type(Blob[int8]));
 say $esponja;
 ```
@@ -721,19 +721,19 @@ say $esponja;
 <a id="%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0--function-arguments"></a>
 # 函数参数 / Function arguments
 
-NativeCall 还支持将函数作为参数的本机函数。其中一个例子是在事件驱动系统中使用函数指针作为回调。通过nativeCall绑定这些函数时，只需提供与[代码参数约束]相同的签名（https://docs.perl6.org/type/signature constraining_signatures_of_callables）。但是，对于 nativeCall，从 rakudo 2019.07 开始，函数参数和签名之间的空格以及普通签名文本的冒号被省略，如下所示：
+NativeCall 还支持将函数作为参数的本机函数。其中一个例子是在事件驱动系统中使用函数指针作为回调。通过nativeCall绑定这些函数时，只需提供与[代码参数约束]相同的签名（https://rakudocs.github.io/type/signature constraining_signatures_of_callables）。但是，对于 nativeCall，从 rakudo 2019.07 开始，函数参数和签名之间的空格以及普通签名文本的冒号被省略，如下所示：
 
-NativeCall also supports native functions that take functions as arguments. One example of this is using function pointers as callbacks in an event-driven system. When binding these functions via NativeCall, one needs only provide the equivalent signature as [a constraint on the code parameter](https://docs.perl6.org/type/Signature#Constraining_signatures_of_Callables). In the case of NativeCall, however, as of Rakudo 2019.07, a space between the function argument and the signature, and the colon of a normal Signature literal is omitted, as in:
+NativeCall also supports native functions that take functions as arguments. One example of this is using function pointers as callbacks in an event-driven system. When binding these functions via NativeCall, one needs only provide the equivalent signature as [a constraint on the code parameter](https://rakudocs.github.io/type/Signature#Constraining_signatures_of_Callables). In the case of NativeCall, however, as of Rakudo 2019.07, a space between the function argument and the signature, and the colon of a normal Signature literal is omitted, as in:
 
-```Perl6
+```Raku
 use NativeCall;
 # void SetCallback(int (*callback)(const char *)) 
 my sub SetCallback(&callback (Str --> int32)) is native('mylib') { * }
 ```
 
-注意：原生代码负责以这种方式传递给 Perl 6 回调的值的内存管理。换句话说，NativeCall 不会释放传递给回调的字符串。
+注意：原生代码负责以这种方式传递给 Raku 回调的值的内存管理。换句话说，NativeCall 不会释放传递给回调的字符串。
 
-Note: the native code is responsible for memory management of values passed to Perl 6 callbacks this way. In other words, NativeCall will not free() strings passed to callbacks.
+Note: the native code is responsible for memory management of values passed to Raku callbacks this way. In other words, NativeCall will not free() strings passed to callbacks.
 
 <a id="%E5%BA%93%E8%B7%AF%E5%BE%84%E5%92%8C%E5%90%8D%E7%A7%B0--library-paths-and-names"></a>
 # 库路径和名称 / Library paths and names
@@ -742,7 +742,7 @@ Note: the native code is responsible for memory management of values passed to P
 
 The `native` trait accepts the library name, the full path, or a subroutine returning either of the two. When using the library name, the name is assumed to be prepended with "lib" and appended with ".so" (or just appended with ".dll" on Windows), and will be searched for in the paths in the LD_LIBRARY_PATH (PATH on Windows) environment variable.
 
-```Perl6
+```Raku
 use NativeCall;
 constant LIBMYSQL = 'mysqlclient';
 constant LIBFOO = '/usr/lib/libfoo.so.1';
@@ -762,7 +762,7 @@ sub baz is native(LIBBAR) {*}
 
 You can also put an incomplete path like './foo' and NativeCall will automatically put the right extension according to the platform specification. If you wish to suppress this expansion, simply pass the string as the body of a block.
 
-```Perl6
+```Raku
 sub bar is native({ './lib/Non Standard Naming Scheme' }) {*}
 ```
 
@@ -770,7 +770,7 @@ sub bar is native({ './lib/Non Standard Naming Scheme' }) {*}
 
 BE CAREFUL: the `native` trait and `constant` are evaluated at compile time. Don't write a constant that depends on a dynamic variable like:
 
-```Perl6
+```Raku
 # WRONG: 
 constant LIBMYSQL = %*ENV<P6LIB_MYSQLCLIENT> || 'mysqlclient';
 ```
@@ -790,7 +790,7 @@ If you write `native('foo')` NativeCall will search libfoo.so under Unix like sy
 
 To avoid that, the `native` trait allows you to specify the API/ABI version. It can be a full version or just a part of it. (Try to stick to Major version, some BSD code does not care for Minor.)
 
-```Perl6
+```Raku
 use NativeCall;
 sub foo1 is native('foo', v1) {*} # Will try to load libfoo.so.1 
 sub foo2 is native('foo', v1.2.3) {*} # Will try to load libfoo.so.1.2.3 
@@ -806,7 +806,7 @@ sub foo3 is native($lib) {*}
 
 The `native` trait also accepts a `Callable` as argument, allowing you to provide your own way to handle the way it will find the library file to load.
 
-```Perl6
+```Raku
 use NativeCall;
 sub foo is native(sub {'libfoo.so.42'}) {*}
 ```
@@ -826,7 +826,7 @@ If you want to call a C function that's already loaded, either from the standard
 
 For example on a UNIX-like operating system, you could use the following code to print the home directory of the current user:
 
-```Perl6
+```Raku
 use NativeCall;
 my class PwStruct is repr('CStruct') {
     has Str $.pw_name;
@@ -854,13 +854,13 @@ Though of course `$*HOME` is a much easier way :-)
 
 Variables exported by a library – also named "global" or "extern" variables – can be accessed using `cglobal`. For example:
 
-```Perl6
+```Raku
 my $var := cglobal('libc.so.6', 'errno', int32)
 ```
 
-此代码绑定到 `$var` 一个新的 [Proxy](https://docs.perl6.org/type/Proxy) 对象，该对象将其所有访问重定向到由 "libc.so.6" 库导出的名为 "errno" 的整数变量。
+此代码绑定到 `$var` 一个新的 [Proxy](https://rakudocs.github.io/type/Proxy) 对象，该对象将其所有访问重定向到由 "libc.so.6" 库导出的名为 "errno" 的整数变量。
 
-This code binds to `$var` a new [Proxy](https://docs.perl6.org/type/Proxy) object that redirects all its accesses to the integer variable named "errno" as exported by the "libc.so.6" library.
+This code binds to `$var` a new [Proxy](https://rakudocs.github.io/type/Proxy) object that redirects all its accesses to the integer variable named "errno" as exported by the "libc.so.6" library.
 
 <a id="c-%E6%94%AF%E6%8C%81--c-support"></a>
 # C++ 支持 / C++ support
@@ -879,7 +879,7 @@ The `NativeCall` library exports several subroutines to help you work with data 
 <a id="nativecast-%E5%AD%90%E4%BE%8B%E7%A8%8B--sub-nativecast"></a>
 ## nativecast 子例程 / sub nativecast
 
-```Perl6
+```Raku
 sub nativecast($target-type, $source) is export(:DEFAULT)
 ```
 
@@ -887,25 +887,25 @@ sub nativecast($target-type, $source) is export(:DEFAULT)
 
 This will *cast* the Pointer `$source` to an object of `$target-type`. The source pointer will typically have been obtained from a call to a native subroutine that returns a pointer or as a member of a `struct`, this may be specified as `void *` in the `C` library definition for instance, but you may also cast from a pointer to a less specific type to a more specific one.
 
-在特殊情况下，如果将[签名](https://docs.perl6.org/type/Signature)作为 `$target-type` 提供，则将返回一个 `subroutine`，它将调用由 `$source` 指向的原生函数，方法与用 `native` 特性声明的子例程相同。这在[函数指针](https://docs.perl6.org/language/nativecall#Function_pointers)中描述。
+在特殊情况下，如果将[签名](https://rakudocs.github.io/type/Signature)作为 `$target-type` 提供，则将返回一个 `subroutine`，它将调用由 `$source` 指向的原生函数，方法与用 `native` 特性声明的子例程相同。这在[函数指针](https://rakudocs.github.io/language/nativecall#Function_pointers)中描述。
 
-As a special case, if a [Signature](https://docs.perl6.org/type/Signature) is supplied as `$target-type` then a `subroutine` will be returned which will call the native function pointed to by `$source` in the same way as a subroutine declared with the `native` trait. This is described in [Function Pointers](https://docs.perl6.org/language/nativecall#Function_pointers).
+As a special case, if a [Signature](https://rakudocs.github.io/type/Signature) is supplied as `$target-type` then a `subroutine` will be returned which will call the native function pointed to by `$source` in the same way as a subroutine declared with the `native` trait. This is described in [Function Pointers](https://rakudocs.github.io/language/nativecall#Function_pointers).
 
 <a id="cglobal-%E5%AD%90%E4%BE%8B%E7%A8%8B--sub-cglobal"></a>
 ## cglobal 子例程 / sub cglobal
 
-```Perl6
+```Raku
 sub cglobal($libname, $symbol, $target-type) is export is rw
 ```
 
-这将返回一个 [Proxy](https://docs.perl6.org/type/Proxy) 对象，该对象提供对指定库公开的名为 `$symbol` 的 `extern` 的访问。库的指定方式与 `native` 特性相同。
+这将返回一个 [Proxy](https://rakudocs.github.io/type/Proxy) 对象，该对象提供对指定库公开的名为 `$symbol` 的 `extern` 的访问。库的指定方式与 `native` 特性相同。
 
-This returns a [Proxy](https://docs.perl6.org/type/Proxy) object that provides access to the `extern` named `$symbol` that is exposed by the specified library. The library can be specified in the same ways that they can be to the `native` trait.
+This returns a [Proxy](https://rakudocs.github.io/type/Proxy) object that provides access to the `extern` named `$symbol` that is exposed by the specified library. The library can be specified in the same ways that they can be to the `native` trait.
 
 <a id="nativesizeof-%E5%AD%90%E4%BE%8B%E7%A8%8B--sub-nativesizeof"></a>
 ## nativesizeof 子例程 / sub nativesizeof
 
-```Perl6
+```Raku
 sub nativesizeof($obj) is export(:DEFAULT)
 ```
 
@@ -916,7 +916,7 @@ This returns the size in bytes of the supplied object, it can be thought of as b
 <a id="explicitly-manage-%E5%AD%90%E4%BE%8B%E7%A8%8B--sub-explicitly-manage"></a>
 ## explicitly-manage 子例程 / sub explicitly-manage
 
-```Perl6
+```Raku
 sub explicitly-manage($str) is export(:DEFAULT)
 ```
 
@@ -975,7 +975,7 @@ CREATE DATABASE test;
 
 Here is an example of a Windows API call:
 
-```Perl6
+```Raku
 use NativeCall;
  
 sub MessageBoxA(int32, Str, Str, int32)
@@ -989,9 +989,9 @@ MessageBoxA(0, "We have NativeCall", "ohai", 64);
 <a id="%E8%B0%83%E7%94%A8-c-%E5%87%BD%E6%95%B0%E7%9A%84%E7%AE%80%E7%9F%AD%E6%95%99%E7%A8%8B--short-tutorial-on-calling-a-c-function"></a>
 ## 调用 C 函数的简短教程 / Short tutorial on calling a C function
 
-这是一个调用标准函数并在 Perl 6 程序中使用返回信息的示例。
+这是一个调用标准函数并在 Raku 程序中使用返回信息的示例。
 
-This is an example for calling a standard function and using the returned information in a Perl 6 program.
+This is an example for calling a standard function and using the returned information in a Raku program.
 
 `getaddrinfo` 是一个 POSIX 标准函数，用于获取有关网络节点的网络信息，例如 `google.com`。它是一个有趣的函数，因为它演示了 NativeCall 的许多元素。
 
@@ -1051,11 +1051,11 @@ The `int, char*` parts are straightforward. Some research indicates that `sockle
 
 The complication is `sockaddr` which differs depending on whether `ai_socktype` is undefined, INET, or INET6 (a standard v4 IP address or a v6 address).
 
-因此，我们创建了一个 Perl 6 `class` 来映射到 C `struct addrinfo`；在这里，我们还为 `SockAddr` 创建了另一个类，这是它所需要的。
+因此，我们创建了一个 Raku `class` 来映射到 C `struct addrinfo`；在这里，我们还为 `SockAddr` 创建了另一个类，这是它所需要的。
 
-So we create a Perl 6 `class` to map to the C `struct addrinfo`; while we're at it, we also create another class for `SockAddr` which is needed for it.
+So we create a Raku `class` to map to the C `struct addrinfo`; while we're at it, we also create another class for `SockAddr` which is needed for it.
 
-```Perl6
+```Raku
 class SockAddr is repr('CStruct') {
     has int32    $.sa_family;
     has Str      $.sa_data;
@@ -1082,7 +1082,7 @@ The `is rw` on the last three attributes reflects that these were defined in C t
 
 The important thing here for mapping to a C `Struct` is the structure of the state part of the class, that is the attributes. However, a class can have methods and `NativeCall` does not 'touch' them for mapping to C. This means that we can add extra methods to the class to unpack the attributes in a more readable manner, e.g.,
 
-```Perl6
+```Raku
 method flags {
     do for AddrInfo-Flags.enums { .key if $!ai_flags +& .value }
 }
@@ -1092,9 +1092,9 @@ method flags {
 
 By defining an appropriate `enum`, `flags` will return a string of keys rather than a bit packed integer.
 
-`sockaddr` 结构中最有用的信息是节点的地址，这取决于套接字的家族。因此，我们可以将方法 `address` 添加到 Perl 6 类中，该类根据家族解释地址。
+`sockaddr` 结构中最有用的信息是节点的地址，这取决于套接字的家族。因此，我们可以将方法 `address` 添加到 Raku 类中，该类根据家族解释地址。
 
-The most useful information in the `sockaddr` structure is the address of node, which depends on the family of the Socket. So we can add method `address` to the Perl 6 class that interprets the address depending on the family.
+The most useful information in the `sockaddr` structure is the address of node, which depends on the family of the Socket. So we can add method `address` to the Raku class that interprets the address depending on the family.
 
 为了获得一个人类可读的 IP 地址，有一个 C 函数 `inet_ntop`，它返回一个 `char *` 给定一个缓冲区，并带有 `addrinfo`。
 
@@ -1104,7 +1104,7 @@ In order to get a human readable IP address, there is the C function `inet_ntop`
 
 Putting all these together, leads to the following program:
 
-```Perl6
+```Raku
 #!/usr/bin/env perl6 
  
 use v6;
@@ -1242,7 +1242,7 @@ sub MAIN() {
 
 This produces the following output:
 
-```Perl6
+```Raku
 return val: 0
 Name: google.com
 AF_INET SOCK_STREAM

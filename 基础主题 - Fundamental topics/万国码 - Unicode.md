@@ -1,14 +1,14 @@
-原文：https://docs.perl6.org/language/unicode
+原文：https://rakudocs.github.io/language/unicode
 
 # 万国码 / Unicode
 
-Perl 6 中的 Unicode 支持
+Raku 中的 Unicode 支持
 
-Unicode support in Perl 6
+Unicode support in Raku
 
-Perl 6 高度支持 Unicode。本文档旨在对不属于例程和方法的文档中的 Unicode 特性进行概述和描述。
+Raku 高度支持 Unicode。本文档旨在对不属于例程和方法的文档中的 Unicode 特性进行概述和描述。
 
-Perl 6 has a high level of support of Unicode. This document aims to be both an overview as well as description of Unicode features which don't belong in the documentation for routines and methods.
+Raku has a high level of support of Unicode. This document aims to be both an overview as well as description of Unicode features which don't belong in the documentation for routines and methods.
 
 有关 MoarVM 内部字符串表示的概述，请参阅 [MoarVM 字符串文档](https://github.com/MoarVM/MoarVM/blob/master/docs/strings.asciidoc)。
 
@@ -32,11 +32,11 @@ For an overview on MoarVM's internal representation of strings, see the [MoarVM 
 <a id="%E8%A7%84%E8%8C%83%E5%8C%96--normalization"></a>
 ## 规范化 / Normalization
 
-Perl 6 默认情况下对所有输入和输出应用规范化，但文件名除外，这些文件名被读和写为 [`UTF8-C8`](https://docs.perl6.org/language/unicode#UTF8-C8)；作为用户可见的字符形式的图形符号将使用规范化表示形式。例如，可以用两种方式表示字形素 `á`，要么使用一个代码点：
+Raku 默认情况下对所有输入和输出应用规范化，但文件名除外，这些文件名被读和写为 [`UTF8-C8`](https://rakudocs.github.io/language/unicode#UTF8-C8)；作为用户可见的字符形式的图形符号将使用规范化表示形式。例如，可以用两种方式表示字形素 `á`，要么使用一个代码点：
 
-Perl 6 applies normalization by default to all input and output except for file names, which are read and written as [`UTF8-C8`](https://docs.perl6.org/language/unicode#UTF8-C8); graphemes, which are user-visible forms of the characters, will use a normalized representation. For example, the grapheme `á` can be represented in two ways, either using one codepoint:
+Raku applies normalization by default to all input and output except for file names, which are read and written as [`UTF8-C8`](https://rakudocs.github.io/language/unicode#UTF8-C8); graphemes, which are user-visible forms of the characters, will use a normalized representation. For example, the grapheme `á` can be represented in two ways, either using one codepoint:
 
-```Perl6
+```Raku
 á (U+E1 "LATIN SMALL LETTER A WITH ACUTE")
 ```
 
@@ -44,28 +44,28 @@ Perl 6 applies normalization by default to all input and output except for file 
 
 Or two codepoints:
 
-```Perl6
+```Raku
 a +  ́ (U+61 "LATIN SMALL LETTER A" + U+301 "COMBINING ACUTE ACCENT")
 ```
 
-Perl 6 将这两个输入转换为一个代码点，这是为规范化形式 C（*NFC*）指定的。在大多数情况下，这是有用的，这意味着两个等价的输入都是相同的。Unicode 有一个规范等价的概念，它允许我们确定字符串的规范形式，允许我们正确地比较和操作字符串，而不必担心文本会丢失这些属性。默认情况下，你从 Perl 6 处理或输出的任何文本都将以“规范”形式出现，即使在对字符串进行修改或连接时也是如此(有关如何避免这种情况，请参阅下面的内容)。有关规范化表单 C 和规范等价的更详细信息，请参见 Unicode 基金会关于[规范化和规范等价](https://unicode.org/reports/tr15/#Canon_Compat_Equivalence)的页面。
+Raku 将这两个输入转换为一个代码点，这是为规范化形式 C（*NFC*）指定的。在大多数情况下，这是有用的，这意味着两个等价的输入都是相同的。Unicode 有一个规范等价的概念，它允许我们确定字符串的规范形式，允许我们正确地比较和操作字符串，而不必担心文本会丢失这些属性。默认情况下，你从 Raku 处理或输出的任何文本都将以“规范”形式出现，即使在对字符串进行修改或连接时也是如此(有关如何避免这种情况，请参阅下面的内容)。有关规范化表单 C 和规范等价的更详细信息，请参见 Unicode 基金会关于[规范化和规范等价](https://unicode.org/reports/tr15/#Canon_Compat_Equivalence)的页面。
 
-Perl 6 will turn both these inputs into one codepoint, as is specified for Normalization Form C (**NFC**). In most cases this is useful and means that two inputs that are equivalent are both treated the same. Unicode has a concept of canonical equivalence which allows us to determine the canonical form of a string, allowing us to properly compare strings and manipulate them, without having to worry about the text losing these properties. By default, any text you process or output from Perl 6 will be in this “canonical” form, even when making modifications or concatenations to the string (see below for how to avoid this). For more detailed information about Normalization Form C and canonical equivalence, see the Unicode Foundation's page on [Normalization and Canonical Equivalence](https://unicode.org/reports/tr15/#Canon_Compat_Equivalence).
+Raku will turn both these inputs into one codepoint, as is specified for Normalization Form C (**NFC**). In most cases this is useful and means that two inputs that are equivalent are both treated the same. Unicode has a concept of canonical equivalence which allows us to determine the canonical form of a string, allowing us to properly compare strings and manipulate them, without having to worry about the text losing these properties. By default, any text you process or output from Raku will be in this “canonical” form, even when making modifications or concatenations to the string (see below for how to avoid this). For more detailed information about Normalization Form C and canonical equivalence, see the Unicode Foundation's page on [Normalization and Canonical Equivalence](https://unicode.org/reports/tr15/#Canon_Compat_Equivalence).
 
 有一种情况是，我们不默认这样做，那就是文件的名称。这是因为文件的名称必须与写入磁盘的字节完全相同。
 
 One case where we don't default to this, is for the names of files. This is because the names of files must be accessed exactly as the bytes are written on the disk.
 
-为了避免规范化，你可以使用名为 [UTF8-C8](https://docs.perl6.org/language/unicode#UTF8-C8) 的特殊编码格式。将这种编码与任何文件句柄一起使用，将允许你读取磁盘上的确切字节，而无需规范化。如果你用 UTF8 打印出来，它们在打印出来时可能看起来很滑稽。如果你将它打印到输出编码为 UTF8-C8 的句柄上，那么它将按照你通常所期望的那样呈现，并且是字节精确复制的字节。关于 MoarVM 的 [UTF8-C8](https://docs.perl6.org/language/unicode#UTF8-C8) 的更多技术细节如下所述。
+为了避免规范化，你可以使用名为 [UTF8-C8](https://rakudocs.github.io/language/unicode#UTF8-C8) 的特殊编码格式。将这种编码与任何文件句柄一起使用，将允许你读取磁盘上的确切字节，而无需规范化。如果你用 UTF8 打印出来，它们在打印出来时可能看起来很滑稽。如果你将它打印到输出编码为 UTF8-C8 的句柄上，那么它将按照你通常所期望的那样呈现，并且是字节精确复制的字节。关于 MoarVM 的 [UTF8-C8](https://rakudocs.github.io/language/unicode#UTF8-C8) 的更多技术细节如下所述。
 
-To avoid normalization you can use a special encoding format called [UTF8-C8](https://docs.perl6.org/language/unicode#UTF8-C8). Using this encoding with any filehandle will allow you to read the exact bytes as they are on disk, without normalization. They may look funny when printed out, if you print it out using a UTF8 handle. If you print it out to a handle where the output encoding is UTF8-C8, then it will render as you would normally expect, and be a byte for byte exact copy. More technical details on [UTF8-C8](https://docs.perl6.org/language/unicode#UTF8-C8) on MoarVM are described below.
+To avoid normalization you can use a special encoding format called [UTF8-C8](https://rakudocs.github.io/language/unicode#UTF8-C8). Using this encoding with any filehandle will allow you to read the exact bytes as they are on disk, without normalization. They may look funny when printed out, if you print it out using a UTF8 handle. If you print it out to a handle where the output encoding is UTF8-C8, then it will render as you would normally expect, and be a byte for byte exact copy. More technical details on [UTF8-C8](https://rakudocs.github.io/language/unicode#UTF8-C8) on MoarVM are described below.
 
 <a id="utf8-c8"></a>
 ## UTF8-C8
 
-UTF-8 Clean-8 是一个编码器/解码器，主要对 UTF-8 工作。但是，当遇到一个字节序列时，它将使用 [NFG 合成](https://docs.perl6.org/language/glossary#NFG)来跟踪所涉及的原始字节。这意味着编码返回到 UTF-8 Clean-8 将能够重新创建字节，因为他们原来存在。合成体包含 4 个代码点：
+UTF-8 Clean-8 是一个编码器/解码器，主要对 UTF-8 工作。但是，当遇到一个字节序列时，它将使用 [NFG 合成](https://rakudocs.github.io/language/glossary#NFG)来跟踪所涉及的原始字节。这意味着编码返回到 UTF-8 Clean-8 将能够重新创建字节，因为他们原来存在。合成体包含 4 个代码点：
 
-UTF-8 Clean-8 is an encoder/decoder that primarily works as the UTF-8 one. However, upon encountering a byte sequence that will either not decode as valid UTF-8, or that would not round-trip due to normalization, it will use [NFG synthetics](https://docs.perl6.org/language/glossary#NFG) to keep track of the original bytes involved. This means that encoding back to UTF-8 Clean-8 will be able to recreate the bytes as they originally existed. The synthetics contain 4 codepoints:
+UTF-8 Clean-8 is an encoder/decoder that primarily works as the UTF-8 one. However, upon encountering a byte sequence that will either not decode as valid UTF-8, or that would not round-trip due to normalization, it will use [NFG synthetics](https://rakudocs.github.io/language/glossary#NFG) to keep track of the original bytes involved. This means that encoding back to UTF-8 Clean-8 will be able to recreate the bytes as they originally existed. The synthetics contain 4 codepoints:
 
 - 代码点 0x10FFFD（它是一个专用代码点）
 - 代码点 'x'
@@ -85,7 +85,7 @@ Under normal UTF-8 encoding, this means the unrepresentable characters will come
 
 UTF-8 Clean-8 is used in places where MoarVM receives strings from the environment, command line arguments, and filesystem queries, for instance when decoding buffers:
 
-```Perl6
+```Raku
 say Buf.new(ord('A'), 0xFE, ord('Z')).decode('utf8-c8');
 #  OUTPUT: «A􏿽xFEZ␤»
 ```
@@ -94,7 +94,7 @@ say Buf.new(ord('A'), 0xFE, ord('Z')).decode('utf8-c8');
 
 You can see how the two initial codepoints used by UTF8-C8 show up here, right before the "FE". You can use this type of encoding to read files with unknown encoding:
 
-```Perl6
+```Raku
 my $test-file = "/tmp/test";
 given open($test-file, :w, :bin) {
   .write: Buf.new(ord('A'), 0xFA, ord('B'), 0xFB, 0xFC, ord('C'), 0xFD);
@@ -120,16 +120,16 @@ Please note that this encoding so far is not supported in the JVM implementation
 
 You can enter Unicode codepoints by number (decimal as well as hexadecimal). For example, the character named "latin capital letter ae with macron" has decimal codepoint 482 and hexadecimal codepoint 0x1E2:
 
-```Perl6
+```Raku
 say "\c[482]"; # OUTPUT: «Ǣ␤» 
 say "\x1E2";   # OUTPUT: «Ǣ␤»
 ```
 
-你还可以按名称访问 Unicode 代码点：Perl 6 支持所有 Unicode 名称。
+你还可以按名称访问 Unicode 代码点：Raku 支持所有 Unicode 名称。
 
-You can also access Unicode codepoints by name: Perl 6 supports all Unicode names.
+You can also access Unicode codepoints by name: Raku supports all Unicode names.
 
-```Perl6
+```Raku
 say "\c[PENGUIN]"; # OUTPUT: «🐧␤» 
 say "\c[BELL]";    # OUTPUT: «🔔␤» (U+1F514 BELL)
 ```
@@ -138,7 +138,7 @@ say "\c[BELL]";    # OUTPUT: «🔔␤» (U+1F514 BELL)
 
 All Unicode codepoint names/named seq/emoji sequences are now case-insensitive: [Starting in Rakudo 2017.02]
 
-```Perl6
+```Raku
 say "\c[latin capital letter ae with macron]"; # OUTPUT: «Ǣ␤» 
 say "\c[latin capital letter E]";              # OUTPUT: «E␤» (U+0045)
 ```
@@ -147,15 +147,15 @@ say "\c[latin capital letter E]";              # OUTPUT: «E␤» (U+0045)
 
 You can specify multiple characters by using a comma separated list with `\c[]`. You can combine numeric and named styles as well:
 
-```Perl6
+```Raku
 say "\c[482,PENGUIN]"; # OUTPUT: «Ǣ🐧␤»
 ```
 
-除了在内插字符串中使用 `\c[]` 之外，还可以使用 [uniparse](https://docs.perl6.org/routine/uniparse)：
+除了在内插字符串中使用 `\c[]` 之外，还可以使用 [uniparse](https://rakudocs.github.io/routine/uniparse)：
 
-In addition to using `\c[]` inside interpolated strings, you can also use the [uniparse](https://docs.perl6.org/routine/uniparse):
+In addition to using `\c[]` inside interpolated strings, you can also use the [uniparse](https://rakudocs.github.io/routine/uniparse):
 
-```Perl6
+```Raku
 say "DIGIT ONE".uniparse;  # OUTPUT: «1␤» 
 say uniparse("DIGIT ONE"); # OUTPUT: «1␤»
 ```
@@ -171,7 +171,7 @@ Name Aliases are used mainly for codepoints without an official name, for abbrev
 
 Control codes without any official name:
 
-```Perl6
+```Raku
 say "\c[ALERT]";     # Not visible (U+0007 control code (also accessible as \a)) 
 say "\c[LINE FEED]"; # Not visible (U+000A same as "\n")
 ```
@@ -180,7 +180,7 @@ say "\c[LINE FEED]"; # Not visible (U+000A same as "\n")
 
 Corrections:
 
-```Perl6
+```Raku
 say "\c[LATIN CAPITAL LETTER GHA]"; # OUTPUT: «Ƣ␤» 
 say "Ƣ".uniname; # OUTPUT: «LATIN CAPITAL LETTER OI␤» 
 # This one is a spelling mistake that was corrected in a Name Alias: 
@@ -192,7 +192,7 @@ say "\c[PRESENTATION FORM FOR VERTICAL RIGHT WHITE LENTICULAR BRACKET]".uniname;
 
 Abbreviations:
 
-```Perl6
+```Raku
 say "\c[ZWJ]".uniname;  # OUTPUT: «ZERO WIDTH JOINER␤» 
 say "\c[NBSP]".uniname; # OUTPUT: «NO-BREAK SPACE␤»
 ```
@@ -204,7 +204,7 @@ say "\c[NBSP]".uniname; # OUTPUT: «NO-BREAK SPACE␤»
 
 You can also use any of the [Named Sequences](https://www.unicode.org/Public/UCD/latest/ucd/NamedSequences.txt), these are not single codepoints, but sequences of them. [Starting in Rakudo 2017.02]
 
-```Perl6
+```Raku
 say "\c[LATIN CAPITAL LETTER E WITH VERTICAL LINE BELOW AND ACUTE]";      # OUTPUT: «É̩␤» 
 say "\c[LATIN CAPITAL LETTER E WITH VERTICAL LINE BELOW AND ACUTE]".ords; # OUTPUT: «(201 809)␤»
 ```
@@ -212,11 +212,11 @@ say "\c[LATIN CAPITAL LETTER E WITH VERTICAL LINE BELOW AND ACUTE]".ords; # OUTP
 <a id="%E8%A1%A8%E6%83%85%E5%BA%8F%E5%88%97--emoji-sequences"></a>
 ### 表情序列 / Emoji sequences
 
-Perl 6 支持表情序列。所有这些文件见：[Emoji ZWJ 序列](https://www.unicode.org/Public/emoji/4.0/emoji-zwj-sequences.txt) 和 [Emoji 序列](https://www.unicode.org/Public/emoji/4.0/emoji-sequences.txt)。请注意，任何带有逗号的名称都应该删除它们的逗号，因为 Perl 6 使用逗号来分隔相同 `\c` 序列中的不同代码点/序列。
+Raku 支持表情序列。所有这些文件见：[Emoji ZWJ 序列](https://www.unicode.org/Public/emoji/4.0/emoji-zwj-sequences.txt) 和 [Emoji 序列](https://www.unicode.org/Public/emoji/4.0/emoji-sequences.txt)。请注意，任何带有逗号的名称都应该删除它们的逗号，因为 Raku 使用逗号来分隔相同 `\c` 序列中的不同代码点/序列。
 
-Perl 6 supports Emoji sequences. For all of them see: [Emoji ZWJ Sequences](https://www.unicode.org/Public/emoji/4.0/emoji-zwj-sequences.txt) and [Emoji Sequences](https://www.unicode.org/Public/emoji/4.0/emoji-sequences.txt). Note that any names with commas should have their commas removed, since Perl 6 uses commas to separate different codepoints/sequences inside the same `\c` sequence.
+Raku supports Emoji sequences. For all of them see: [Emoji ZWJ Sequences](https://www.unicode.org/Public/emoji/4.0/emoji-zwj-sequences.txt) and [Emoji Sequences](https://www.unicode.org/Public/emoji/4.0/emoji-sequences.txt). Note that any names with commas should have their commas removed, since Raku uses commas to separate different codepoints/sequences inside the same `\c` sequence.
 
-```Perl6
+```Raku
 say "\c[woman gesturing OK]";         # OUTPUT: «🙆‍♀️␤» 
 say "\c[family: man woman girl boy]"; # OUTPUT: «👨‍👩‍👧‍👦␤»
 ```

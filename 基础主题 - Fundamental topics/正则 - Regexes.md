@@ -1,4 +1,4 @@
-原文：https://docs.perl6.org/language/regexes
+原文：https://rakudocs.github.io/language/regexes
 
 # 正则 / Regexes
 
@@ -90,11 +90,11 @@ Regular expressions, *regexes* for short, are a sequence of characters that desc
 <a id="%E8%AF%8D%E6%B3%95%E7%BA%A6%E5%AE%9A--lexical-conventions"></a>
 # 词法约定 / Lexical conventions
 
-Perl 6 编写正则有特殊的语法：
+Raku 编写正则有特殊的语法：
 
-Perl 6 has special syntax for writing regexes:
+Raku has special syntax for writing regexes:
 
-```Perl6
+```Raku
 m/abc/;         # 对变量 $_ 进行匹配的正则 / a regex that is immediately matched against $_ 
 rx/abc/;        # 一个正则对象，允许在正则前面使用副词 / a Regex object; allow adverbs to be used before regex 
 /abc/;          # 一个正则对象，'rx/ /' 操作符的简写 / a Regex object; shorthand version of 'rx/ /' operator 
@@ -104,7 +104,7 @@ rx/abc/;        # 一个正则对象，允许在正则前面使用副词 / a Reg
 
 For the first two examples, delimiters other than the slash can be used:
 
-```Perl6
+```Raku
 m{abc};
 rx{abc};
 ```
@@ -117,7 +117,7 @@ Note that neither the colon nor round parentheses can be delimiters; the colon i
 
 Example of difference between `m/ /` and `/ /` operators:
 
-```Perl6
+```Raku
 my $match;
 $_ = "abc";
 $match = m/.+/; say $match; say $match.^name; # OUTPUT: «｢abc｣␤Match␤» 
@@ -132,7 +132,7 @@ Whitespace in regexes is generally ignored (except with the `:s` or, completely,
 
 Comments work within a regular expression:
 
-```Perl6
+```Raku
 / word #`(match lexical "word") / 
 ```
 
@@ -143,7 +143,7 @@ Comments work within a regular expression:
 
 The simplest case for a regex is a match against a string literal:
 
-```Perl6
+```Raku
 if 'properly' ~~ / perl / {
     say "'properly' contains 'perl'";
 }
@@ -153,7 +153,7 @@ if 'properly' ~~ / perl / {
 
 Alphanumeric characters and the underscore `_` are matched literally. All other characters must either be escaped with a backslash (for example, `\:` to match a colon), or be within quotes:
 
-```Perl6
+```Raku
 / 'two words' /;     # 匹配包括空格的 'two words' / matches 'two words' including the blank 
 / "a:b"       /;     # 匹配包括冒号的 'a:b' / matches 'a:b' including the colon 
 / '#' /;             # 匹配一个井号 / matches a hash character 
@@ -163,7 +163,7 @@ Alphanumeric characters and the underscore `_` are matched literally. All other 
 
 Strings are searched left to right, so it is enough if only part of the string matches the regex:
 
-```Perl6
+```Raku
 if 'Life, the Universe and Everything' ~~ / and / {
     say ~$/;            # OUTPUT: «and␤» 
     say $/.prematch;    # OUTPUT: «Life, the Universe ␤» 
@@ -173,9 +173,9 @@ if 'Life, the Universe and Everything' ~~ / and / {
 };
 ```
 
-匹配结果存储在 `$/` 变量中并且也从匹配中返回。如果匹配成功, 那么返回结果是 [Match](https://docs.perl6.org/type/Match) 类型, 否则它就是 [Nil](https://docs.perl6.org/type/Nil)。
+匹配结果存储在 `$/` 变量中并且也从匹配中返回。如果匹配成功, 那么返回结果是 [Match](https://rakudocs.github.io/type/Match) 类型, 否则它就是 [Nil](https://rakudocs.github.io/type/Nil)。
 
-Match results are stored in the `$/` variable and are also returned from the match. The result is of type [Match](https://docs.perl6.org/type/Match) if the match was successful; otherwise it is [Nil](https://docs.perl6.org/type/Nil).
+Match results are stored in the `$/` variable and are also returned from the match. The result is of type [Match](https://rakudocs.github.io/type/Match) if the match was successful; otherwise it is [Nil](https://rakudocs.github.io/type/Nil).
 
 <a id="%E9%80%9A%E9%85%8D%E7%AC%A6--wildcards"></a>
 # 通配符 / Wildcards
@@ -188,7 +188,7 @@ An unescaped dot `.` in a regex matches any single character.
 
 So, these all match:
 
-```Perl6
+```Raku
 'perl' ~~ /per./;       # matches the whole string 
 'perl' ~~ / per . /;    # the same; whitespace is ignored 
 'perl' ~~ / pe.l /;     # the . matches the r 
@@ -199,7 +199,7 @@ So, these all match:
 
 This doesn't match:
 
-```Perl6
+```Raku
 'perl' ~~ /. per /;
 ```
 
@@ -211,7 +211,7 @@ because there's no character to match before `per` in the target string.
 
 Note that `.` now does match **any** single character, that is, it matches `\n`. So the text below match:
 
-```Perl6
+```Raku
 my $text = qq:to/END/ 
   Although I am a
   multi-line text,
@@ -239,7 +239,7 @@ There are predefined character classes of the form `\w`. Its negation is written
 
 `\n` matches a single, logical newline character. `\N` matches a single character that's not a logical newline.
 
-What is considered as a single newline character is defined via the compile time variable [`$?NL`](https://docs.perl6.org/language/variables#index-entry-%24%3FNL), and the [newline pragma](https://docs.perl6.org/language/pragmas); therefore, `\n` is supposed to be able to match either a Unix-like newline `"\n"`, a Microsoft Windows style one `"\r\n"`, or one in the Mac style `"\r"`.
+What is considered as a single newline character is defined via the compile time variable [`$?NL`](https://rakudocs.github.io/language/variables#index-entry-%24%3FNL), and the [newline pragma](https://rakudocs.github.io/language/pragmas); therefore, `\n` is supposed to be able to match either a Unix-like newline `"\n"`, a Microsoft Windows style one `"\r\n"`, or one in the Mac style `"\r"`.
 
 <a id="t-%E5%92%8C-t"></a>
 ### `\t` 和 `\T`
@@ -263,7 +263,7 @@ Note that exotic tabs like the `U+000B VERTICAL TABULATION` character are not in
 
 Examples for horizontal whitespace characters are
 
-```Perl6
+```Raku
 U+0020 SPACE
 U+00A0 NO-BREAK SPACE
 U+0009 CHARACTER TABULATION
@@ -285,7 +285,7 @@ Vertical whitespace such as newline characters are explicitly excluded; those ca
 
 Examples for vertical whitespace characters:
 
-```Perl6
+```Raku
 U+000A LINE FEED
 U+000B VERTICAL TABULATION
 U+000C FORM FEED
@@ -304,7 +304,7 @@ Use `\s` to match any kind of whitespace, not just vertical whitespace.
 
 `\s` matches a single whitespace character. `\S` matches a single character that is not whitespace.
 
-```Perl6
+```Raku
 say $/.prematch if 'Match the first word.' ~~ / \s+ /;
 # OUTPUT: «Match␤» 
 ```
@@ -316,7 +316,7 @@ say $/.prematch if 'Match the first word.' ~~ / \s+ /;
 
 `\d` matches a single digit (Unicode property `N`) and `\D` matches a single character that is not a digit.
 
-```Perl6
+```Raku
 'ab42' ~~ /\d/ and say ~$/;     # OUTPUT: «4␤» 
 'ab42' ~~ /\D/ and say ~$/;     # OUTPUT: «a␤» 
 ```
@@ -329,7 +329,7 @@ Note that not only the Arabic digits (commonly used in the Latin alphabet) match
 
 Examples for digits are:
 
-```Perl6
+```Raku
 U+0035 5 DIGIT FIVE
 U+0BEB ௫ TAMIL DIGIT FIVE
 U+0E53 ๓ THAI DIGIT THREE
@@ -347,7 +347,7 @@ U+17E5 ៥ KHMER DIGIT FIVE
 
 Examples of word characters:
 
-```Perl6
+```Raku
 0041 A LATIN CAPITAL LETTER A
 0031 1 DIGIT ONE
 03B4 δ GREEK SMALL LETTER DELTA
@@ -389,11 +389,11 @@ Note that the character classes `<same>`, `<wb>` and `<ww>` are so called zero-w
 
 The character classes mentioned so far are mostly for convenience; another approach is to use Unicode character properties. These come in the form `<:property>`, where `property` can be a short or long Unicode General Category name. These use pair syntax.
 
-要匹配 Unicode 属性可以使用智能匹配或者 [`uniprop`](https://docs.perl6.org/routine/uniprop)：
+要匹配 Unicode 属性可以使用智能匹配或者 [`uniprop`](https://rakudocs.github.io/routine/uniprop)：
 
-To match against a Unicode property you can use either smartmatch or [`uniprop`](https://docs.perl6.org/routine/uniprop):
+To match against a Unicode property you can use either smartmatch or [`uniprop`](https://rakudocs.github.io/routine/uniprop):
 
-```Perl6
+```Raku
 "a".uniprop('Script');                 # OUTPUT: «Latin␤» 
 "a" ~~ / <:Script<Latin>> /;           # OUTPUT: «｢a｣␤» 
 "a".uniprop('Block');                  # OUTPUT: «Basic Latin␤» 
@@ -470,7 +470,7 @@ To match either a lower-case letter or a number, write `<:Ll+:N>` or `<:Ll+:Numb
 
 It's also possible to group categories and sets of categories with parentheses; for example:
 
-```Perl6
+```Raku
 say $0 if 'perl6' ~~ /\w+(<:Ll+:N>)/ # OUTPUT: «｢6｣␤» 
 ```
 
@@ -481,7 +481,7 @@ say $0 if 'perl6' ~~ /\w+(<:Ll+:N>)/ # OUTPUT: «｢6｣␤»
 
 Sometimes the pre-existing wildcards and character classes are not enough. Fortunately, defining your own is fairly simple. Within `<[ ]>`, you can put any number of single characters and ranges of characters (expressed with two dots between the end points), with or without whitespace.
 
-```Perl6
+```Raku
 "abacabadabacaba" ~~ / <[ a .. c 1 2 3 ]>* /;
 # Unicode hex codepoint range 
 "ÀÁÂÃÄÅÆ" ~~ / <[ \x[00C0] .. \x[00C6] ]>* /;
@@ -493,7 +493,7 @@ Sometimes the pre-existing wildcards and character classes are not enough. Fortu
 
 Within the `< >` you can use `+` and `-` to add or remove multiple range definitions and even mix in some of the Unicode categories above. You can also write the backslashed forms for character classes between the `[ ]`.
 
-```Perl6
+```Raku
 / <[\d] - [13579]> /;
 # starts with \d and removes odd ASCII digits, but not quite the same as 
 / <[02468]> /;
@@ -504,7 +504,7 @@ Within the `< >` you can use `+` and `-` to add or remove multiple range definit
 
 You can include Unicode properties in the list as well:
 
-```Perl6
+```Raku
 /<:Zs + [\x9] - [\xA0]>/
 # Any character with "Zs" property, or a tab, but not a newline 
 ```
@@ -513,7 +513,7 @@ You can include Unicode properties in the list as well:
 
 You can use `\` to escape characters that would have some meaning in the regular expression:
 
-```Perl6
+```Raku
 say "[ hey ]" ~~ /<-[ \] \[ \s ]>+/; # OUTPUT: «｢hey｣␤» 
 ```
 
@@ -521,7 +521,7 @@ say "[ hey ]" ~~ /<-[ \] \[ \s ]>+/; # OUTPUT: «｢hey｣␤»
 
 To negate a character class, put a `-` after the opening angle bracket:
 
-```Perl6
+```Raku
 say 'no quotes' ~~ /  <-[ " ]> + /;  # matches characters except " 
 ```
 
@@ -529,7 +529,7 @@ say 'no quotes' ~~ /  <-[ " ]> + /;  # matches characters except "
 
 A common pattern for parsing quote-delimited strings involves negated character classes:
 
-```Perl6
+```Raku
 say '"in quotes"' ~~ / '"' <-[ " ]> * '"'/;
 ```
 
@@ -541,7 +541,7 @@ This regex first matches a quote, then any characters that aren't quotes, and th
 
 Just as you can use the `-` for both set difference and negation of a single value, you can also explicitly put a `+` in front:
 
-```Perl6
+```Raku
 / <+[123]> /  # same as <[123]> 
 ```
 
@@ -567,7 +567,7 @@ The `+` quantifier makes the preceding atom match one or more times, with no upp
 
 For example, to match strings of the form `key=value`, you can write a regex like this:
 
-```Perl6
+```Raku
 / \w+ '=' \w+ /
 ```
 
@@ -582,7 +582,7 @@ The `*` quantifier makes the preceding atom match zero or more times, with no up
 
 For example, to allow optional whitespace between `a` and `b` you can write:
 
-```Perl6
+```Raku
 / a \s* b /
 ```
 
@@ -597,18 +597,18 @@ The `?` quantifier makes the preceding atom match zero or once.
 
 For example, to match `dog` or `dogs`, you can write:
 
-```Perl6
+```Raku
 / dogs? /
 ```
 
 <a id="%E9%80%9A%E7%94%A8%E9%87%8F%E8%AF%8D--minmax--general-quantifier--minmax"></a>
 ## 通用量词: `** min..max` / General quantifier: `** min..max`
 
-要对一个元素进行任意次数的量化，请使用 `**` 量词，该量词在其右侧接受一个 [Int](https://docs.perl6.org/type/Int) 或 [Range](https://docs.perl6.org/type/Range)。如果指定了 [Range](https://docs.perl6.org/type/Range)，则两个端点指定要匹配的最小和最大次数。
+要对一个元素进行任意次数的量化，请使用 `**` 量词，该量词在其右侧接受一个 [Int](https://rakudocs.github.io/type/Int) 或 [Range](https://rakudocs.github.io/type/Range)。如果指定了 [Range](https://rakudocs.github.io/type/Range)，则两个端点指定要匹配的最小和最大次数。
 
-To quantify an atom an arbitrary number of times, use the `**` quantifier, which takes a single [Int](https://docs.perl6.org/type/Int) or a [Range](https://docs.perl6.org/type/Range) on the right-hand side that specifies the number of times to match. If [Range](https://docs.perl6.org/type/Range) is specified, the end-points specify the minimum and maximum number of times to match.
+To quantify an atom an arbitrary number of times, use the `**` quantifier, which takes a single [Int](https://rakudocs.github.io/type/Int) or a [Range](https://rakudocs.github.io/type/Range) on the right-hand side that specifies the number of times to match. If [Range](https://rakudocs.github.io/type/Range) is specified, the end-points specify the minimum and maximum number of times to match.
 
-```Perl6
+```Raku
 say 'abcdefg' ~~ /\w ** 4/;      # OUTPUT: «｢abcd｣␤» 
 say 'a'       ~~ /\w **  2..5/;  # OUTPUT: «Nil␤» 
 say 'abc'     ~~ /\w **  2..5/;  # OUTPUT: «｢abc｣␤» 
@@ -618,11 +618,11 @@ say 'abcdefg' ~~ /\w ** ^3/;     # OUTPUT: «｢ab｣␤»
 say 'abcdefg' ~~ /\w ** 1..*/;   # OUTPUT: «｢abcdefg｣␤» 
 ```
 
-只支持量词右侧的基本字面量语法，以避免与其他正则构造混淆。如果需要使用更复杂的表达式，例如由变量构成的 [Range](https://docs.perl6.org/type/Range)，请将 [Range](https://docs.perl6.org/type/Range) 括在大括号中：
+只支持量词右侧的基本字面量语法，以避免与其他正则构造混淆。如果需要使用更复杂的表达式，例如由变量构成的 [Range](https://rakudocs.github.io/type/Range)，请将 [Range](https://rakudocs.github.io/type/Range) 括在大括号中：
 
-Only basic literal syntax for the right-hand side of the quantifier is supported, to avoid ambiguities with other regex constructs. If you need to use a more complex expression, for example, a [Range](https://docs.perl6.org/type/Range) made from variables, enclose the [Range](https://docs.perl6.org/type/Range) into curly braces:
+Only basic literal syntax for the right-hand side of the quantifier is supported, to avoid ambiguities with other regex constructs. If you need to use a more complex expression, for example, a [Range](https://rakudocs.github.io/type/Range) made from variables, enclose the [Range](https://rakudocs.github.io/type/Range) into curly braces:
 
-```Perl6
+```Raku
 my $start = 3;
 say 'abcdefg' ~~ /\w ** {$start .. $start+2}/; # OUTPUT: «｢abcde｣␤» 
 say 'abcdefg' ~~ /\w ** {π.Int}/;              # OUTPUT: «｢abc｣␤» 
@@ -632,18 +632,18 @@ say 'abcdefg' ~~ /\w ** {π.Int}/;              # OUTPUT: «｢abc｣␤»
 
 Negative values are treated like zero:
 
-```Perl6
+```Raku
 say 'abcdefg' ~~ /\w ** {-Inf}/;     # OUTPUT: «｢｣␤» 
 say 'abcdefg' ~~ /\w ** {-42}/;      # OUTPUT: «｢｣␤» 
 say 'abcdefg' ~~ /\w ** {-10..-42}/; # OUTPUT: «｢｣␤» 
 say 'abcdefg' ~~ /\w ** {-42..-10}/; # OUTPUT: «｢｣␤» 
 ```
 
-如果结果值为 `Inf` 或 `NaN`，或结果 [Range](https://docs.perl6.org/type/Range)为空、非数字、包含 `NaN` 终结点或最小有效终结点为 `Inf`，则将引发 `X::Syntax::Regex::QuantifierValue` 异常：
+如果结果值为 `Inf` 或 `NaN`，或结果 [Range](https://rakudocs.github.io/type/Range)为空、非数字、包含 `NaN` 终结点或最小有效终结点为 `Inf`，则将引发 `X::Syntax::Regex::QuantifierValue` 异常：
 
-If then, the resultant value is `Inf` or `NaN` or the resultant [Range](https://docs.perl6.org/type/Range) is empty, non-Numeric, contains `NaN` end-points, or has minimum effective end-point as `Inf`, the `X::Syntax::Regex::QuantifierValue` exception will be thrown:
+If then, the resultant value is `Inf` or `NaN` or the resultant [Range](https://rakudocs.github.io/type/Range) is empty, non-Numeric, contains `NaN` end-points, or has minimum effective end-point as `Inf`, the `X::Syntax::Regex::QuantifierValue` exception will be thrown:
 
-```Perl6
+```Raku
 (try say 'abcdefg' ~~ /\w ** {42..10}/  )
     orelse say ($!.^name, $!.empty-range);
     # OUTPUT: «(X::Syntax::Regex::QuantifierValue True)␤» 
@@ -675,7 +675,7 @@ To more easily match things like comma separated values, you can tack on a `%` m
 
 The quantifier interacts with `%` and controls the number of overall repetitions that can match successfully, so `a* % ','` also matches the empty string. If you want match words delimited by commas, you might need to nest an ordinary and a modified quantifier:
 
-```Perl6
+```Raku
 say so 'abc,def' ~~ / ^ [\w+] ** 1 % ',' $ /;  # Output: «False» 
 say so 'abc,def' ~~ / ^ [\w+] ** 2 % ',' $ /;  # Output: «True» 
 ```
@@ -687,7 +687,7 @@ say so 'abc,def' ~~ / ^ [\w+] ** 2 % ',' $ /;  # Output: «True»
 
 You can prevent backtracking in regexes by attaching a `:` modifier to the quantifier:
 
-```Perl6
+```Raku
 my $str = "ACG GCT ACT An interesting chain";
 say $str ~~ /<[ACGT\s]>+ \s+ (<[A..Z a..z \s]>+)/;
 # OUTPUT: «｢ACG GCT ACT An interesting chain｣␤ 0 => ｢An interesting chain｣␤» 
@@ -703,7 +703,7 @@ In the second case, the `A` in `An` had already been "absorbed" by the pattern, 
 
 In most cases, you will want to prevent backtracking for efficiency reasons, for instance here:
 
-```Perl6
+```Raku
 say $str ~~ m:g/[(<[ACGT]> **: 3) \s*]+ \s+ (<[A..Z a..z \s]>+)/;
 # OUTPUT: 
 # (｢ACG GCT ACT An interesting chain｣ 
@@ -717,7 +717,7 @@ say $str ~~ m:g/[(<[ACGT]> **: 3) \s*]+ \s+ (<[A..Z a..z \s]>+)/;
 
 Although in this case, eliminating the `:` from behind `**` would make it behave exactly in the same way. The best use is to create *tokens* that will not be backtracked:
 
-```Perl6
+```Raku
 $_ = "ACG GCT ACT IDAQT";
 say  m:g/[(\w+:) \s*]+ (\w+) $$/;
 # OUTPUT: 
@@ -739,7 +739,7 @@ Without the `:` following `\w+`, the *ID* part captured would have been simply `
 
 By default, quantifiers request a greedy match:
 
-```Perl6
+```Raku
 'abababa' ~~ /a .* a/ && say ~$/;   # OUTPUT: «abababa␤» 
 ```
 
@@ -747,7 +747,7 @@ By default, quantifiers request a greedy match:
 
 You can attach a `?` modifier to the quantifier to enable frugal matching:
 
-```Perl6
+```Raku
 'abababa' ~~ /a .*? a/ && say ~$/;   # OUTPUT: «aba␤» 
 ```
 
@@ -755,7 +755,7 @@ You can attach a `?` modifier to the quantifier to enable frugal matching:
 
 You can also enable frugal matching for general quantifiers:
 
-```Perl6
+```Raku
 say '/foo/o/bar/' ~~ /\/.**?{1..10}\//;  # OUTPUT: «｢/foo/｣␤» 
 say '/foo/o/bar/' ~~ /\/.**!{1..10}\//;  # OUTPUT: «｢/foo/o/bar/｣␤» 
 ```
@@ -775,7 +775,7 @@ To match one of several possible alternatives, separate them by `||`; the first 
 
 For example, `ini` files have the following form:
 
-```Perl6
+```Raku
 [section]
 key = value
 ```
@@ -784,7 +784,7 @@ key = value
 
 Hence, if you parse a single line of an `ini` file, it can be either a section or a key-value pair and the regex would be (to a first approximation):
 
-```Perl6
+```Raku
 / '[' \w+ ']' || \S+ \s* '=' \s* \S* /
 ```
 
@@ -796,7 +796,7 @@ That is, either a word surrounded by square brackets, or a string of non-whitesp
 
 An empty string as the first branch is ignored, to allow you to format branches consistently. You could have written the previous example as
 
-```Perl6
+```Raku
 /
 || '[' \w+ ']'
 || \S+ \s* '=' \s* \S*
@@ -822,7 +822,7 @@ Briefly, what `|` does is this:
 
 - First, select the branch which has the longest declarative prefix.
 
-```Perl6
+```Raku
 say "abc" ~~ /ab | a.* /;                 # Output: ⌜abc⌟ 
 say "abc" ~~ /ab | a {} .* /;             # Output: ⌜ab⌟ 
 say "if else" ~~ / if | if <.ws> else /;  # Output: ｢if｣ 
@@ -837,7 +837,7 @@ As is shown above, `a.*` is a declarative prefix, while `a {} .*` terminates at 
 
 - If it's a tie, select the match with the highest specificity.
 
-```Perl6
+```Raku
 say "abc" ~~ /a. | ab { print "win" } /;  # Output: win｢ab｣ 
 ```
 
@@ -849,7 +849,7 @@ When two alternatives match at the same length, the tie is broken by specificity
 
 - If it's still a tie, use additional tie-breakers.
 
-```Perl6
+```Raku
 say "abc" ~~ /a\w| a. { print "lose" } /; # Output: ⌜ab⌟ 
 ```
 
@@ -868,7 +868,7 @@ For more details, see [the LTM strategy](https://design.perl6.org/S05.html#Longe
 
 Using a quoted list in a regex is equivalent to specifying the longest-match alternation of the list's elements. So, the following match:
 
-```Perl6
+```Raku
 say 'food' ~~ /< f fo foo food >/;      # OUTPUT: «｢food｣␤» 
 ```
 
@@ -876,7 +876,7 @@ say 'food' ~~ /< f fo foo food >/;      # OUTPUT: «｢food｣␤»
 
 is equivalent to:
 
-```Perl6
+```Raku
 say 'food' ~~ / f | fo | foo | food /;  # OUTPUT: «｢food｣␤» 
 ```
 
@@ -888,7 +888,7 @@ Note that the space after the first `<` is significant here: `<food>` calls the 
 
 If the first branch is an empty string, it is ignored. This allows you to format your regexes consistently:
 
-```Perl6
+```Raku
 /
 | f
 | fo
@@ -901,14 +901,14 @@ If the first branch is an empty string, it is ignored. This allows you to format
 
 Arrays can also be interpolated into a regex to achieve the same effect:
 
-```Perl6
+```Raku
 my @increasingly-edible = <f fo foo food>;
 say 'food' ~~ /@increasingly-edible/;   # OUTPUT: «｢food｣␤» 
 ```
 
-这在下面的[正则插值](https://docs.perl6.org/language/regexes#Regex_interpolation)中有进一步的记录。
+这在下面的[正则插值](https://rakudocs.github.io/language/regexes#Regex_interpolation)中有进一步的记录。
 
-This is documented further under [Regex Interpolation](https://docs.perl6.org/language/regexes#Regex_interpolation), below.
+This is documented further under [Regex Interpolation](https://rakudocs.github.io/language/regexes#Regex_interpolation), below.
 
 <a id="%E5%90%88%E5%8F%96%EF%BC%9A---conjunction-"></a>
 # 合取： `&&` / Conjunction: `&&`
@@ -925,7 +925,7 @@ This can be useful for augmenting an existing regex. For example if you have a r
 
 Note that you cannot easily obtain the same behavior with a lookahead, that is, a regex doesn't consume characters, because a lookahead doesn't stop looking when the quoted string stops matching.
 
-```Perl6
+```Raku
 say 'abc' ~~ / <?before a> && . /;    # OUTPUT: «Nil␤» 
 say 'abc' ~~ / <?before a> . && . /;  # OUTPUT: «｢a｣␤» 
 say 'abc' ~~ / <?before a> . /;       # OUTPUT: «｢a｣␤» 
@@ -965,7 +965,7 @@ Regexes search an entire string for matches. Sometimes this is not what you want
 
 The `^` anchor only matches at the start of the string:
 
-```Perl6
+```Raku
 say so 'properly' ~~ /  perl/;    # OUTPUT: «True␤» 
 say so 'properly' ~~ /^ perl/;    # OUTPUT: «False␤» 
 say so 'perly'    ~~ /^ perl/;    # OUTPUT: «True␤» 
@@ -976,7 +976,7 @@ say so 'perl'     ~~ /^ perl/;    # OUTPUT: «True␤»
 
 The `$` anchor only matches at the end of the string:
 
-```Perl6
+```Raku
 say so 'use perl' ~~ /  perl  /;   # OUTPUT: «True␤» 
 say so 'use perl' ~~ /  perl $/;   # OUTPUT: «True␤» 
 say so 'perly'    ~~ /  perl $/;   # OUTPUT: «False␤» 
@@ -986,7 +986,7 @@ say so 'perly'    ~~ /  perl $/;   # OUTPUT: «False␤»
 
 You can combine both anchors:
 
-```Perl6
+```Raku
 say so 'use perl' ~~ /^ perl $/;   # OUTPUT: «False␤» 
 say so 'perl'     ~~ /^ perl $/;   # OUTPUT: «True␤» 
 ```
@@ -999,7 +999,7 @@ Keep in mind that `^` matches the start of a **string**, not the start of a **li
 
 The following is a multi-line string:
 
-```Perl6
+```Raku
 my $str = chomp q:to/EOS/; 
    Keep it secret
    and keep it safe
@@ -1029,11 +1029,11 @@ The `^^` anchor matches at the start of a logical line. That is, either at the s
 
 The `$$` anchor matches at the end of a logical line. That is, before a newline character, or at the end of the string when the last character is not a newline character.
 
-要理解下面的示例，重要的是要知道 `q:to/EOS/...EOS` [heredoc](https://docs.perl6.org/language/quoting#Heredocs%3A_%3Ato) 语法将前导缩进删除到与 `EOS` 标记相同的级别，以便第一行、第二行和最后一行没有前导空格，并且第三行和第四行各有两个前导空格。
+要理解下面的示例，重要的是要知道 `q:to/EOS/...EOS` [heredoc](https://rakudocs.github.io/language/quoting#Heredocs%3A_%3Ato) 语法将前导缩进删除到与 `EOS` 标记相同的级别，以便第一行、第二行和最后一行没有前导空格，并且第三行和第四行各有两个前导空格。
 
-To understand the following example, it's important to know that the `q:to/EOS/...EOS` [heredoc](https://docs.perl6.org/language/quoting#Heredocs%3A_%3Ato) syntax removes leading indention to the same level as the `EOS` marker, so that the first, second and last lines have no leading space and the third and fourth lines have two leading spaces each.
+To understand the following example, it's important to know that the `q:to/EOS/...EOS` [heredoc](https://rakudocs.github.io/language/quoting#Heredocs%3A_%3Ato) syntax removes leading indention to the same level as the `EOS` marker, so that the first, second and last lines have no leading space and the third and fourth lines have two leading spaces each.
 
-```Perl6
+```Raku
 my $str = q:to/EOS/; 
     There was a young man of Japan
     Whose limericks never would scan.
@@ -1075,7 +1075,7 @@ To match any word boundary, use `<|w>` or `<?wb>`. This is similar to `\b` in ot
 
 These are both zero-width regex elements.
 
-```Perl6
+```Raku
 say "two-words" ~~ / two<|w>\-<|w>words /;    # OUTPUT: «｢two-words｣␤» 
 say "twowords" ~~ / two<!|w><!|w>words /;     # OUTPUT: «｢twowords｣» 
 ```
@@ -1095,7 +1095,7 @@ say "twowords" ~~ / two<!|w><!|w>words /;     # OUTPUT: «｢twowords｣»
 
 These are both zero-width regex elements.
 
-```Perl6
+```Raku
 my $str = 'The quick brown fox';
 say so ' ' ~~ /\W/;               # OUTPUT: «True␤» 
 say so $str ~~ /br/;              # OUTPUT: «True␤» 
@@ -1112,7 +1112,7 @@ say so $str ~~ /fox >>/;          # OUTPUT: «True␤»
 
 You can also use the variants `«` and `»` :
 
-```Perl6
+```Raku
 my $str = 'The quick brown fox';
 say so $str ~~ /« own/;          # OUTPUT: «False␤» 
 say so $str ~~ /own »/;          # OUTPUT: «True␤» 
@@ -1122,7 +1122,7 @@ say so $str ~~ /own »/;          # OUTPUT: «True␤»
 
 To see the difference between `<|w>` and `«`, `»`:
 
-```Perl6
+```Raku
 say "stuff here!!!".subst(:g, />>/, '|');   # OUTPUT: «stuff| here|!!!␤» 
 say "stuff here!!!".subst(:g, /<</, '|');   # OUTPUT: «|stuff |here!!!␤» 
 say "stuff here!!!".subst(:g, /<|w>/, '|'); # OUTPUT: «|stuff| |here|!!!␤» 
@@ -1170,7 +1170,7 @@ Technically, anchors are also zero-width assertions, and they can look both ahea
 
 To check that a pattern appears before another pattern, use a lookahead assertion via the `before` assertion. This has the form:
 
-```Perl6
+```Raku
 <?before pattern>
 ```
 
@@ -1178,7 +1178,7 @@ To check that a pattern appears before another pattern, use a lookahead assertio
 
 Thus, to search for the string `foo` which is immediately followed by the string `bar`, use the following regexp:
 
-```Perl6
+```Raku
 / foo <?before bar> /
 ```
 
@@ -1186,7 +1186,7 @@ Thus, to search for the string `foo` which is immediately followed by the string
 
 For example:
 
-```Perl6
+```Raku
 say "foobar" ~~ / foo <?before bar> /;  # OUTPUT: «foo␤» 
 ```
 
@@ -1194,7 +1194,7 @@ say "foobar" ~~ / foo <?before bar> /;  # OUTPUT: «foo␤»
 
 However, if you want to search for a pattern which is **not** immediately followed by some pattern, then you need to use a negative lookahead assertion, this has the form:
 
-```Perl6
+```Raku
 <!before pattern>
 ```
 
@@ -1202,7 +1202,7 @@ However, if you want to search for a pattern which is **not** immediately follow
 
 In the following example, all occurrences of `foo` which is not before `bar` would match with
 
-```Perl6
+```Raku
 say "foobaz" ~~ / foo <!before bar> /;  # OUTPUT: «foo␤» 
 ```
 
@@ -1210,7 +1210,7 @@ say "foobaz" ~~ / foo <!before bar> /;  # OUTPUT: «foo␤»
 
 Lookahead assertions can be used also with other patterns, like characters ranges, interpolated variables, subscripts and so on. In such cases it does suffice to use a `?`, or a `!` for the negate form. For instance, the following lines all produce the very same result:
 
-```Perl6
+```Raku
 say 'abcdefg' ~~ rx{ abc <?before def> };        # OUTPUT: ｢abc｣ 
 say 'abcdefg' ~~ rx{ abc <?[ d..f ]> };          # OUTPUT: ｢abc｣ 
 my @ending_letters = <d e f>;
@@ -1221,7 +1221,7 @@ say 'abcdefg' ~~ rx{ abc <?@ending_letters> };   # OUTPUT: ｢abc｣
 
 A practical use of lookahead assertions is in substitutions, where you only want to substitute regex matches that are in a certain context. For example, you might want to substitute only numbers that are followed by a unit (like *kg*), but not other numbers:
 
-```Perl6
+```Raku
 my @units = <kg m km mm s h>;
 $_ = "Please buy 2 packs of sugar, 1 kg each";
 s:g[\d+ <?before \s* @units>] = 5 * $/;
@@ -1239,7 +1239,7 @@ Since the lookahead is not part of the match object, the unit is not substituted
 
 To check that a pattern appears after another pattern, use a lookbehind assertion via the `after` assertion. This has the form:
 
-```Perl6
+```Raku
 <?after pattern>
 ```
 
@@ -1247,7 +1247,7 @@ To check that a pattern appears after another pattern, use a lookbehind assertio
 
 Therefore, to search for the string `bar` immediately preceded by the string `foo`, use the following regexp:
 
-```Perl6
+```Raku
 / <?after foo> bar /
 ```
 
@@ -1255,7 +1255,7 @@ Therefore, to search for the string `bar` immediately preceded by the string `fo
 
 For example:
 
-```Perl6
+```Raku
 say "foobar" ~~ / <?after foo> bar /;   # OUTPUT: «bar␤» 
 ```
 
@@ -1263,7 +1263,7 @@ say "foobar" ~~ / <?after foo> bar /;   # OUTPUT: «bar␤»
 
 However, if you want to search for a pattern which is **not** immediately preceded by some pattern, then you need to use a negative lookbehind assertion, this has the form:
 
-```Perl6
+```Raku
 <!after pattern>
 ```
 
@@ -1271,7 +1271,7 @@ However, if you want to search for a pattern which is **not** immediately preced
 
 Hence all occurrences of `bar` which do not have `foo` before them would be matched by
 
-```Perl6
+```Raku
 say "fotbar" ~~ / <!after foo> bar /;    # OUTPUT: «bar␤» 
 ```
 
@@ -1279,7 +1279,7 @@ say "fotbar" ~~ / <!after foo> bar /;    # OUTPUT: «bar␤»
 
 These are, as in the case of lookahead, zero-width assertions which do not *consume* characters, like here:
 
-```Perl6
+```Raku
 say "atfoobar" ~~ / (.**3) .**2 <?after foo> bar /;
 # OUTPUT: «｢atfoobar｣␤ 0 => ｢atf｣␤» 
 ```
@@ -1291,11 +1291,11 @@ where we capture the first 3 of the 5 characters before bar, but only if `bar` i
 <a id="%E5%88%86%E7%BB%84%E4%B8%8E%E6%8D%95%E8%8E%B7--grouping-and-capturing"></a>
 # 分组与捕获 / Grouping and capturing
 
-在常规（非正则）Perl 6 中，可以使用括号将事物分组在一起，通常是为了覆盖运算符优先级：
+在常规（非正则）Raku 中，可以使用括号将事物分组在一起，通常是为了覆盖运算符优先级：
 
-In regular (non-regex) Perl 6, you can use parentheses to group things together, usually to override operator precedence:
+In regular (non-regex) Raku, you can use parentheses to group things together, usually to override operator precedence:
 
-```Perl6
+```Raku
 say 1 + 4 * 2;     # OUTPUT: «9␤», parsed as 1 + (4 * 2) 
 say (1 + 4) * 2;   # OUTPUT: «10␤» 
 ```
@@ -1304,7 +1304,7 @@ say (1 + 4) * 2;   # OUTPUT: «10␤»
 
 The same grouping facility is available in regexes:
 
-```Perl6
+```Raku
 / a || b c /;      # matches 'a' or 'bc' 
 / ( a || b ) c /;  # matches 'ac' or 'bc' 
 ```
@@ -1313,24 +1313,24 @@ The same grouping facility is available in regexes:
 
 The same grouping applies to quantifiers:
 
-```Perl6
+```Raku
 / a b+ /;          # matches an 'a' followed by one or more 'b's 
 / (a b)+ /;        # matches one or more sequences of 'ab' 
 / (a || b)+ /;     # matches a string of 'a's and 'b's, except empty string 
 ```
 
-未量化的捕获生成一个 [Match](https://docs.perl6.org/type/Match) 对象。当捕获被量化时（除了用 `？` 量词）捕获变为 [Match](https://docs.perl6.org/type/Match) 对象的列表。
+未量化的捕获生成一个 [Match](https://rakudocs.github.io/type/Match) 对象。当捕获被量化时（除了用 `？` 量词）捕获变为 [Match](https://rakudocs.github.io/type/Match) 对象的列表。
 
-An unquantified capture produces a [Match](https://docs.perl6.org/type/Match) object. When a capture is quantified (except with the `?` quantifier) the capture becomes a list of [Match](https://docs.perl6.org/type/Match) objects instead.
+An unquantified capture produces a [Match](https://rakudocs.github.io/type/Match) object. When a capture is quantified (except with the `?` quantifier) the capture becomes a list of [Match](https://rakudocs.github.io/type/Match) objects instead.
 
 <a id="%E6%8D%95%E8%8E%B7--capturing"></a>
 ## 捕获 / Capturing
 
-圆括号不只是分组，它们还*捕获*；也就是说，它们使组内匹配的字符串可用作变量，也可用作结果 [Match](https://docs.perl6.org/type/Match) 对象的元素：
+圆括号不只是分组，它们还*捕获*；也就是说，它们使组内匹配的字符串可用作变量，也可用作结果 [Match](https://rakudocs.github.io/type/Match) 对象的元素：
 
-The round parentheses don't just group, they also *capture*; that is, they make the string matched within the group available as a variable, and also as an element of the resulting [Match](https://docs.perl6.org/type/Match) object:
+The round parentheses don't just group, they also *capture*; that is, they make the string matched within the group available as a variable, and also as an element of the resulting [Match](https://rakudocs.github.io/type/Match) object:
 
-```Perl6
+```Raku
 my $str =  'number 42';
 if $str ~~ /'number ' (\d+) / {
     say "The number is $0";         # OUTPUT: The number is 42 
@@ -1343,7 +1343,7 @@ if $str ~~ /'number ' (\d+) / {
 
 Pairs of parentheses are numbered left to right, starting from zero.
 
-```Perl6
+```Raku
 if 'abc' ~~ /(a) b (c)/ {
     say "0: $0; 1: $1";             # OUTPUT: «0: a; 1: c␤» 
 }
@@ -1357,7 +1357,7 @@ The `$0` and `$1` etc. syntax is shorthand. These captures are canonically avail
 
 Coercing the match object to a list gives an easy way to programmatically access all elements:
 
-```Perl6
+```Raku
 if 'abc' ~~ /(a) b (c)/ {
     say $/.list.join: ', '  # OUTPUT: «a, c␤» 
 }
@@ -1374,7 +1374,7 @@ The parentheses in regexes perform a double role: they group the regex elements 
 
 To get only the grouping behavior, you can use square brackets `[ ... ]` which, by default, don't capture.
 
-```Perl6
+```Raku
 if 'abc' ~~ / [a||b] (c) / {
     say ~$0;                # OUTPUT: «c␤» 
 }
@@ -1407,7 +1407,7 @@ The following rules are listed for the sake of completeness. When you find yours
 
 Alternations reset the capture count:
 
-```Perl6
+```Raku
 / (x) (y)  || (a) (.) (.) /
 # $0  $1      $0  $1  $2 
 ```
@@ -1416,7 +1416,7 @@ Alternations reset the capture count:
 
 Example:
 
-```Perl6
+```Raku
 if 'abc' ~~ /(x)(y) || (a)(.)(.)/ {
     say ~$1;        # OUTPUT: «b␤» 
 }
@@ -1426,7 +1426,7 @@ if 'abc' ~~ /(x)(y) || (a)(.)(.)/ {
 
 If two (or more) alternations have a different number of captures, the one with the most captures determines the index of the next capture:
 
-```Perl6
+```Raku
 if 'abcd' ~~ / a [ b (.) || (x) (y) ] (.) / {
     #                 $0     $0  $1    $2 
     say ~$2;            # OUTPUT: «d␤» 
@@ -1437,7 +1437,7 @@ if 'abcd' ~~ / a [ b (.) || (x) (y) ] (.) / {
 
 Captures can be nested, in which case they are numbered per level; level 0 gets to use the capture variables, but it will become a list with the rest of the levels behaving as elements of that list
 
-```Perl6
+```Raku
 if 'abc' ~~ / ( a (.) (.) ) / {
     say "Outer: $0";                # OUTPUT: Outer: abc 
     say "Inner: $0[0] and $0[1]";   # OUTPUT: Inner: b and c 
@@ -1452,7 +1452,7 @@ If you need to refer to a capture from within another capture, store it in a var
 
 These capture variables are only available outside the regex.
 
-```Perl6
+```Raku
 # ！！错误！！ $0 指的是第二个捕获*里面*的捕获
 # !!WRONG!! The $0 refers to a capture *inside* the second capture 
 say "11" ~~ /(\d) ($0)/; # OUTPUT: «Nil␤» 
@@ -1462,7 +1462,7 @@ say "11" ~~ /(\d) ($0)/; # OUTPUT: «Nil␤»
 
 In order to make them available inside the regex, you need to insert a code block behind the match; this code block may be empty if there's nothing meaningful to do:
 
-```Perl6
+```Raku
 # 正确： $0 存入了第二个捕获之外的变量中，在它被使用在第二个捕获里面之前
 # CORRECT: $0 is saved into a variable outside the second capture 
 # before it is used inside
@@ -1474,7 +1474,7 @@ say "Matched $c"; # OUTPUT: «␤Matched 1␤»
 
 This code block publishes the capture inside the regex, so that it can be assigned to other variables or used for subsequent matches
 
-```Perl6
+```Raku
 say "11" ~~ /(\d) {} $0/; # OUTPUT: «｢11｣␤ 0 => ｢1｣␤» 
 ```
 
@@ -1482,7 +1482,7 @@ say "11" ~~ /(\d) {} $0/; # OUTPUT: «｢11｣␤ 0 => ｢1｣␤»
 
 `:my` helps scoping the `$c` variable within the regex and beyond; in this case we can use it in the next sentence to show what has been matched inside the regex. This can be used for debugging inside regular expressions, for instance:
 
-```Perl6
+```Raku
 my $paragraph="line\nline2\nline3";
 $paragraph ~~ rx| :my $counter = 0; ( \V* { ++$counter } ) *%% \n |;
 say "Matched $counter lines"; # OUTPUT: «Matched 3 lines␤» 
@@ -1492,7 +1492,7 @@ say "Matched $counter lines"; # OUTPUT: «Matched 3 lines␤»
 
 Since `:my` blocks are simply declarations, the match variable `$/` or numbered matches such as `$0` will not be available in them unless they are previously published by inserting the empty block (or any block):
 
-```Perl6
+```Raku
 "aba" ~~ / (a) b {} :my $c = $/; /;
 say $c; # OUTPUT: «｢ab｣␤ 0 => ｢a｣␤» 
 ```
@@ -1501,17 +1501,17 @@ say $c; # OUTPUT: «｢ab｣␤ 0 => ｢a｣␤»
 
 Any other code block will also reveal the variables and make them available in declarations:
 
-```Perl6
+```Raku
 "aba" ~~ / (a) {say "Check so far ", ~$/} b :my $c = ~$0; /;
 # OUTPUT: «Check so far a␤» 
 say "Capture $c"; # OUTPUT: «Capture a␤» 
 ```
 
-与类中的 [`our`](https://docs.perl6.org/syntax/our) 类似，`:our` 可用于 [Grammar](https://docs.perl6.org/type/Grammar) 中声明可通过其完全限定名从 grammar 外部访问的变量：
+与类中的 [`our`](https://rakudocs.github.io/syntax/our) 类似，`:our` 可用于 [Grammar](https://rakudocs.github.io/type/Grammar) 中声明可通过其完全限定名从 grammar 外部访问的变量：
 
-The `:our`, similarly to [`our`](https://docs.perl6.org/syntax/our) in classes, can be used in [Grammar](https://docs.perl6.org/type/Grammar)s to declare variables that can be accessed, via its fully qualified name, from outside the grammar:
+The `:our`, similarly to [`our`](https://rakudocs.github.io/syntax/our) in classes, can be used in [Grammar](https://rakudocs.github.io/type/Grammar)s to declare variables that can be accessed, via its fully qualified name, from outside the grammar:
 
-```Perl6
+```Raku
 grammar HasOur {
     token TOP {
         :our $our = 'Þor';
@@ -1534,7 +1534,7 @@ Once the parsing has been done successfully, we use the FQN name of the `$our` v
 
 Instead of numbering captures, you can also give them names. The generic, and slightly verbose, way of naming captures is like this:
 
-```Perl6
+```Raku
 if 'abc' ~~ / $<myname> = [ \w+ ] / {
     say ~$<myname>      # OUTPUT: «abc␤» 
 }
@@ -1556,7 +1556,7 @@ We can also use parentheses in the above example, but they will work exactly the
 
 Named captures can also be nested using regular capture group syntax:
 
-```Perl6
+```Raku
 if 'abc-abc-abc' ~~ / $<string>=( [ $<part>=[abc] ]* % '-' ) / {
     say ~$<string>;          # OUTPUT: «abc-abc-abc␤» 
     say ~$<string><part>;    # OUTPUT: «abc abc abc␤» 
@@ -1568,7 +1568,7 @@ if 'abc-abc-abc' ~~ / $<string>=( [ $<part>=[abc] ]* % '-' ) / {
 
 Coercing the match object to a hash gives you easy programmatic access to all named captures:
 
-```Perl6
+```Raku
 if 'count=23' ~~ / $<variable>=\w+ '=' $<value>=\w+ / {
     my %h = $/.hash;
     say %h.keys.sort.join: ', ';        # OUTPUT: «value, variable␤» 
@@ -1582,9 +1582,9 @@ if 'count=23' ~~ / $<variable>=\w+ '=' $<value>=\w+ / {
 }
 ```
 
-获取命名捕获的一个更方便的方法是使用命名正则，如 [子规则](https://docs.perl6.org/language/regexes#Subrules) 部分所述。
+获取命名捕获的一个更方便的方法是使用命名正则，如 [子规则](https://rakudocs.github.io/language/regexes#Subrules) 部分所述。
 
-A more convenient way to get named captures is by using named regex as discussed in the [Subrules](https://docs.perl6.org/language/regexes#Subrules) section.
+A more convenient way to get named captures is by using named regex as discussed in the [Subrules](https://rakudocs.github.io/language/regexes#Subrules) section.
 
 <a id="%E6%8D%95%E8%8E%B7%E6%A0%87%E8%AF%86%E7%AC%A6%EF%BC%9A--capture-markers-"></a>
 ## 捕获标识符： `<( )>` / Capture markers: `<( )>`
@@ -1593,7 +1593,7 @@ A more convenient way to get named captures is by using named regex as discussed
 
 A `<(` token indicates the start of the match's overall capture, while the corresponding `)>` token indicates its endpoint. The `<(`is similar to other languages \K to discard any matches found before the `\K`.
 
-```Perl6
+```Raku
 say 'abc' ~~ / a <( b )> c/;            # OUTPUT: «｢b｣␤» 
 say 'abc' ~~ / <(a <( b )> c)>/;        # OUTPUT: «｢bc｣␤» 
 ```
@@ -1620,7 +1620,7 @@ Just like the search-and-replace editor's dialog box, the `s/ / /` operator has 
 
 Substitutions are written similarly to matching, but the substitution operator has both an area for the regex to match, and the text to substitute:
 
-```Perl6
+```Raku
 s/replace/with/;           # a substitution that is applied to $_ 
 $str ~~ s/replace/with/;   # a substitution applied to a scalar 
 ```
@@ -1629,7 +1629,7 @@ $str ~~ s/replace/with/;   # a substitution applied to a scalar
 
 The substitution operator allows delimiters other than the slash:
 
-```Perl6
+```Raku
 s|replace|with|;
 s!replace!with!;
 s,replace,with,;
@@ -1643,15 +1643,15 @@ Note that neither the colon `:` nor balancing delimiters such as `{}` or `()` ca
 
 If you use balancing curly braces, square brackets, or parentheses, the substitution works like this instead:
 
-```Perl6
+```Raku
 s[replace] = 'with';
 ```
 
-右侧现在是一个（未引用）Perl 6 表达式，其中 `$/` 作为当前匹配项可用：
+右侧现在是一个（未引用）Raku 表达式，其中 `$/` 作为当前匹配项可用：
 
-The right-hand side is now a (not quoted) Perl 6 expression, in which `$/` is available as the current match:
+The right-hand side is now a (not quoted) Raku expression, in which `$/` is available as the current match:
 
-```Perl6
+```Raku
 $_ = 'some 11 words 21';
 s:g[ \d+ ] =  2 * $/;
 .say;                    # OUTPUT: «some 22 words 42␤» 
@@ -1659,7 +1659,7 @@ s:g[ \d+ ] =  2 * $/;
 
 与 `m//` 运算符类似，替换的正则部分忽略空白。注释，就像在Perl6中一般一样，从散列字符开始，转到当前行的末尾。
 
-Like the `m//` operator, whitespace is ignored in the regex part of a substitution. Comments, as in Perl 6 in general, start with the hash character `#` and go to the end of the current line.
+Like the `m//` operator, whitespace is ignored in the regex part of a substitution. Comments, as in Raku in general, start with the hash character `#` and go to the end of the current line.
 
 <a id="%E6%9B%BF%E6%8D%A2%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%96%87%E5%AD%97--replacing-string-literals"></a>
 ## 替换字符串文字 / Replacing string literals
@@ -1668,7 +1668,7 @@ Like the `m//` operator, whitespace is ignored in the regex part of a substituti
 
 The simplest thing to replace is a string literal. The string you want to replace goes on the left-hand side of the substitution operator, and the string you want to replace it with goes on the right-hand side; for example:
 
-```Perl6
+```Raku
 $_ = 'The Replacements';
 s/Replace/Entrap/;
 .say;                    # OUTPUT: «The Entrapments␤» 
@@ -1678,7 +1678,7 @@ s/Replace/Entrap/;
 
 Alphanumeric characters and the underscore are literal matches, just as in its cousin the `m//` operator. All other characters must be escaped with a backslash `\` or included in quotes:
 
-```Perl6
+```Raku
 $_ = 'Space: 1999';
 s/Space\:/Party like it's/;
 .say                        # OUTPUT: «Party like it's 1999␤» 
@@ -1692,7 +1692,7 @@ Note that the matching restrictions only apply to the left-hand side of the subs
 
 By default, substitutions are only done on the first match:
 
-```Perl6
+```Raku
 $_ = 'There can be twly two';
 s/tw/on/;                     # replace 'tw' with 'on' once 
 .say;                         # OUTPUT: «There can be only two␤» 
@@ -1705,7 +1705,7 @@ s/tw/on/;                     # replace 'tw' with 'on' once
 
 Anything that can go into the `m//` operator can go into the left-hand side of the substitution operator, including wildcards and character classes. This is handy when the text you're matching isn't static, such as trying to match a number in the middle of a string:
 
-```Perl6
+```Raku
 $_ = "Blake's 9";
 s/\d+/7/;         # replace any sequence of digits with '7' 
 .say;             # OUTPUT: «Blake's 7␤» 
@@ -1720,7 +1720,7 @@ Of course, you can use any of the `+`, `*` and `?` modifiers, and they'll behave
 
 Just as in the match operator, capturing groups are allowed on the left-hand side, and the matched contents populate the `$0`..`$n` variables and the `$/` object:
 
-```Perl6
+```Raku
 $_ = '2016-01-23 18:09:00';
 s/ (\d+)\-(\d+)\-(\d+) /today/;   # replace YYYY-MM-DD with 'today' 
 .say;                             # OUTPUT: «today 18:09:00␤» 
@@ -1732,7 +1732,7 @@ s/ (\d+)\-(\d+)\-(\d+) /today/;   # replace YYYY-MM-DD with 'today'
 
 Any of these variables `$0`, `$1`, `$/` can be used on the right-hand side of the operator as well, so you can manipulate what you've just matched. This way you can separate out the `YYYY`, `MM` and `DD` parts of a date and reformat them into `MM-DD-YYYY`order:
 
-```Perl6
+```Raku
 $_ = '2016-01-23 18:09:00';
 s/ (\d+)\-(\d+)\-(\d+) /$1-$2-$0/;    # transform YYYY-MM-DD to MM-DD-YYYY 
 .say;                                 # OUTPUT: «01-23-2016 18:09:00␤» 
@@ -1742,17 +1742,17 @@ s/ (\d+)\-(\d+)\-(\d+) /$1-$2-$0/;    # transform YYYY-MM-DD to MM-DD-YYYY
 
 Named capture can be used too:
 
-```Perl6
+```Raku
 $_ = '2016-01-23 18:09:00';
 s/ $<y>=(\d+)\-$<m>=(\d+)\-$<d>=(\d+) /$<m>-$<d>-$<y>/;
 .say;                                 # OUTPUT: «01-23-2016 18:09:00␤» 
 ```
 
-由于右侧实际上是一个常规的 Perl 6 内插字符串，因此可以将时间从 `HH:MM` 重新格式化为 `h:MM {AM,PM}`。像这样：
+由于右侧实际上是一个常规的 Raku 内插字符串，因此可以将时间从 `HH:MM` 重新格式化为 `h:MM {AM,PM}`。像这样：
 
-Since the right-hand side is effectively a regular Perl 6 interpolated string, you can reformat the time from `HH:MM` to `h:MM {AM,PM}` like so:
+Since the right-hand side is effectively a regular Raku interpolated string, you can reformat the time from `HH:MM` to `h:MM {AM,PM}` like so:
 
-```Perl6
+```Raku
 $_ = '18:38';
 s/(\d+)\:(\d+)/{$0 % 12}\:$1 {$0 < 12 ?? 'AM' !! 'PM'}/;
 .say;                                 # OUTPUT: «6:38 PM␤» 
@@ -1765,9 +1765,9 @@ Using the modulo `%` operator above keeps the sample code under 80 characters, b
 <a id="%E5%B8%B8%E7%94%A8%E5%89%AF%E8%AF%8D--common-adverbs"></a>
 ## 常用副词 / Common adverbs
 
-可以应用于正则表达式的副词的完整列表可以在本文档的其他地方可以找到（[节副词](https://docs.perl6.org/language/regexes#Adverbs)），但最常见的可能是 `:g` 和 `:i`。
+可以应用于正则表达式的副词的完整列表可以在本文档的其他地方可以找到（[节副词](https://rakudocs.github.io/language/regexes#Adverbs)），但最常见的可能是 `:g` 和 `:i`。
 
-The full list of adverbs that you can apply to regular expressions can be found elsewhere in this document ([section Adverbs](https://docs.perl6.org/language/regexes#Adverbs)), but the most common are probably `:g` and `:i`.
+The full list of adverbs that you can apply to regular expressions can be found elsewhere in this document ([section Adverbs](https://rakudocs.github.io/language/regexes#Adverbs)), but the most common are probably `:g` and `:i`.
 
 - 全局副词 `:g`
 
@@ -1777,7 +1777,7 @@ The full list of adverbs that you can apply to regular expressions can be found 
 
 Ordinarily, matches are only made once in a given string, but adding the `:g` modifier overrides that behavior, so that substitutions are made everywhere possible. Substitutions are non-recursive; for example:
 
-```Perl6
+```Raku
 $_ = q{I can say "banana" but I don't know when to stop};
 s:g/na/nana,/;    # substitute 'nana,' for 'na' 
 .say;             # OUTPUT: «I can say "banana,nana," but I don't ...␤» 
@@ -1795,7 +1795,7 @@ Here, `na` was found twice in the original string and each time there was a subs
 
 Ordinarily, matches are case-sensitive. `s/foo/bar/` will only match `'foo'` and not `'Foo'`. If the adverb `:i` is used, though, matches become case-insensitive.
 
-```Perl6
+```Raku
 $_ = 'Fruit';
 s/fruit/vegetable/;
 .say;                          # OUTPUT: «Fruit␤» 
@@ -1804,9 +1804,9 @@ s:i/fruit/vegetable/;
 .say;                          # OUTPUT: «vegetable␤» 
 ```
 
-有关这些副词实际操作的更多信息，请参阅本文档的[副词部分](https://docs.perl6.org/language/regexes#Adverbs)部分。
+有关这些副词实际操作的更多信息，请参阅本文档的[副词部分](https://rakudocs.github.io/language/regexes#Adverbs)部分。
 
-For more information on what these adverbs are actually doing, refer to the [section Adverbs](https://docs.perl6.org/language/regexes#Adverbs) section of this document.
+For more information on what these adverbs are actually doing, refer to the [section Adverbs](https://rakudocs.github.io/language/regexes#Adverbs) section of this document.
 
 这些只是可以用替换操作符应用的一些转换。现实世界中的一些简单用法包括从日志文件中删除个人数据、将 MySQL 时间戳编辑为 PostgreSQL 格式、更改 HTML 文件中的版权信息以及清理 Web 应用程序中的表单字段。
 
@@ -1823,7 +1823,7 @@ As an aside, novices to regular expressions often get overwhelmed and think that
 
 The `~` operator is a helper for matching nested subrules with a specific terminator as the goal. It is designed to be placed between an opening and closing delimiter pair, like so:
 
-```Perl6
+```Raku
 / '(' ~ ')' <expression> /
 ```
 
@@ -1831,7 +1831,7 @@ The `~` operator is a helper for matching nested subrules with a specific termin
 
 However, it mostly ignores the left argument, and operates on the next two atoms (which may be quantified). Its operation on those next two atoms is to "twiddle" them so that they are actually matched in reverse order. Hence the expression above, at first blush, is merely shorthand for:
 
-```Perl6
+```Raku
 / '(' <expression> ')' /
 ```
 
@@ -1839,7 +1839,7 @@ However, it mostly ignores the left argument, and operates on the next two atoms
 
 But beyond that, when it rewrites the atoms it also inserts the apparatus that will set up the inner expression to recognize the terminator, and to produce an appropriate error message if the inner expression does not terminate on the required closing atom. So it really does pay attention to the left delimiter as well, and it actually rewrites our example to something more like:
 
-```Perl6
+```Raku
 $<OPEN> = '(' <SETGOAL: ')'> <expression> [ $GOAL || <FAILGOAL> ]
 ```
 
@@ -1847,7 +1847,7 @@ FAILGOAL 是一种特殊的方法，可以由用户定义，在解析失败时�
 
 FAILGOAL is a special method that can be defined by the user and it will be called on parse failure:
 
-```Perl6
+```Raku
 grammar A {
     token TOP { '[' ~ ']' \w+  };
     method FAILGOAL($goal) {
@@ -1865,7 +1865,7 @@ CATCH { default { put .^name, ': ', .Str } };
 
 Note that you can use this construct to set up expectations for a closing construct even when there's no opening delimiter:
 
-```Perl6
+```Raku
 "3)"  ~~ / <?> ~ ')' \d+ /;  # RESULT: «｢3)｣» 
 "(3)" ~~ / <?> ~ ')' \d+ /;  # RESULT: «｢3)｣» 
 ```
@@ -1878,7 +1878,7 @@ Here `<?>` successfully matches the null string.
 
 The order of the regex capture is original:
 
-```Perl6
+```Raku
 "abc" ~~ /a ~ (c) (b)/;
 say $0; # OUTPUT: «｢c｣␤» 
 say $1; # OUTPUT: «｢b｣␤» 
@@ -1891,7 +1891,7 @@ say $1; # OUTPUT: «｢b｣␤»
 
 Just like you can put pieces of code into subroutines, you can also put pieces of regex into named rules.
 
-```Perl6
+```Raku
 my regex line { \N*\n }
 if "abc\ndef" ~~ /<line> def/ {
     say "First line: ", $<line>.chomp;      # OUTPUT: «First line: abc␤» 
@@ -1910,7 +1910,7 @@ To give the capture a different name from the regex, use the syntax `<capture-na
 
 Here's more complete code for parsing `ini` files:
 
-```Perl6
+```Raku
 my regex header { \s* '[' (\w+) ']' \h* \n+ }
 my regex identifier  { \w+ }
 my regex kvpair { \s* <key=identifier> '=' <value=identifier> \n+ }
@@ -1944,9 +1944,9 @@ say %config.perl;
 #           :quotas(${:jack("123"), :joy("42")})}» 
 ```
 
-命名正则可以并且应该在 [grammars](https://docs.perl6.org/language/grammars) 中分组。预先定义的子规则列表列在设计文档 [S05-regex](https://design.perl6.org/S05.html#Predefined_Subrules) 中。
+命名正则可以并且应该在 [grammars](https://rakudocs.github.io/language/grammars) 中分组。预先定义的子规则列表列在设计文档 [S05-regex](https://design.perl6.org/S05.html#Predefined_Subrules) 中。
 
-Named regexes can and should be grouped in [grammars](https://docs.perl6.org/language/grammars). A list of predefined subrules is listed in [S05-regex](https://design.perl6.org/S05.html#Predefined_Subrules) of design documents.
+Named regexes can and should be grouped in [grammars](https://rakudocs.github.io/language/grammars). A list of predefined subrules is listed in [S05-regex](https://design.perl6.org/S05.html#Predefined_Subrules) of design documents.
 
 <a id="%E6%AD%A3%E5%88%99%E6%8F%92%E5%80%BC--regex-interpolation"></a>
 # 正则插值 / Regex interpolation
@@ -1959,7 +1959,7 @@ Instead of using a literal pattern for a regex match you can use a variable that
 
 This variable can then be 'interpolated' which means it is used as though it is the pattern that it holds.
 
-```Perl6
+```Raku
 my Str $pattern = 'camelia';
 say 'camelia' ~~ / $pattern /;             # OUTPUT: «｢camelia｣␤» 
 ```
@@ -1972,7 +1972,7 @@ If the variable to be interpolated is statically typed as a `Str` or `str` and o
 
 Sometimes you may want to match a generated string in a regex. This can be done in the following way:
 
-```Perl6
+```Raku
 my Str $pattern = 'ailemac';
 say 'camelia' ~~ / $($pattern.flip) /;     # OUTPUT: «｢camelia｣␤» 
 ```
@@ -1981,15 +1981,15 @@ say 'camelia' ~~ / $($pattern.flip) /;     # OUTPUT: «｢camelia｣␤»
 
 There are four ways you can interpolate a string into regex as a pattern. That is using `$pattern`, `$($pattern)`, `<$pattern>` or `<{$pattern.method}>`.
 
-请注意，上面的两个示例以词法插入字符串，而 `<$pattern>` 和 `<$pattern.method>` 会导致[隐式 EVAL](https://docs.perl6.org/language/traps#%3C%7B%24x%7D%3E_vs_%24%28%24x%29%3A_Implicit_EVAL)，这是一个已知的陷阱。
+请注意，上面的两个示例以词法插入字符串，而 `<$pattern>` 和 `<$pattern.method>` 会导致[隐式 EVAL](https://rakudocs.github.io/language/traps#%3C%7B%24x%7D%3E_vs_%24%28%24x%29%3A_Implicit_EVAL)，这是一个已知的陷阱。
 
-Note that the two examples above interpolate the string lexically, while `<$pattern>` and `<{$pattern.method}>` causes [implicit EVAL](https://docs.perl6.org/language/traps#%3C%7B%24x%7D%3E_vs_%24%28%24x%29%3A_Implicit_EVAL), which is a known trap.
+Note that the two examples above interpolate the string lexically, while `<$pattern>` and `<{$pattern.method}>` causes [implicit EVAL](https://rakudocs.github.io/language/traps#%3C%7B%24x%7D%3E_vs_%24%28%24x%29%3A_Implicit_EVAL), which is a known trap.
 
 以下是显示所有四种方法的示例：
 
 Here are examples showing all four ways:
 
-```Perl6
+```Raku
 my Str $text = 'camelia';
 my Str $pattern0 = 'camelia';
 my     $pattern1 = 'ailemac';
@@ -2008,11 +2008,11 @@ say $text ~~ / <$pattern2> /;              # OUTPUT: «｢camelia｣␤»
 say $text ~~ / <{$pattern2}> /;            # OUTPUT: «｢camelia｣␤» 
 ```
 
-当一个数组变量被插入到一个正则中时，正则引擎会像处理正则元素的一个 `|` 备选项一样处理它（请参阅上面[嵌入列表](https://docs.perl6.org/language/regexes#Quoted_lists_are_LTM_matches)上的文档，如上图所示）。单个元素的插值规则与标量相同，因此字符串和数字按字面量匹配，而 [/type/regex](https://docs.perl6.org/type/Regex) 对象与正则匹配。正如普通的 `|` 插值一样，最长的匹配也会成功：
+当一个数组变量被插入到一个正则中时，正则引擎会像处理正则元素的一个 `|` 备选项一样处理它（请参阅上面[嵌入列表](https://rakudocs.github.io/language/regexes#Quoted_lists_are_LTM_matches)上的文档，如上图所示）。单个元素的插值规则与标量相同，因此字符串和数字按字面量匹配，而 [/type/regex](https://rakudocs.github.io/type/Regex) 对象与正则匹配。正如普通的 `|` 插值一样，最长的匹配也会成功：
 
-When an array variable is interpolated into a regex, the regex engine handles it like a `|` alternative of the regex elements (see the documentation on [embedded lists](https://docs.perl6.org/language/regexes#Quoted_lists_are_LTM_matches), above). The interpolation rules for individual elements are the same as for scalars, so strings and numbers match literally, and [/type/Regex](https://docs.perl6.org/type/Regex) objects match as regexes. Just as with ordinary `|` interpolation, the longest match succeeds:
+When an array variable is interpolated into a regex, the regex engine handles it like a `|` alternative of the regex elements (see the documentation on [embedded lists](https://rakudocs.github.io/language/regexes#Quoted_lists_are_LTM_matches), above). The interpolation rules for individual elements are the same as for scalars, so strings and numbers match literally, and [/type/Regex](https://rakudocs.github.io/type/Regex) objects match as regexes. Just as with ordinary `|` interpolation, the longest match succeeds:
 
-```Perl6
+```Raku
 my @a = '2', 23, rx/a.+/;
 say ('b235' ~~ /  b @a /).Str;      # OUTPUT: «b23» 
 ```
@@ -2036,7 +2036,7 @@ In particular the `<?{}>` operator requires a `True` value in order to allow the
 
 In order to demonstrate the above operator, please consider the following example that involves a simple IPv4 address matching:
 
-```Perl6
+```Raku
 my $localhost = '127.0.0.1';
 my regex ipv4-octet { \d ** 1..3 <?{ True }> }
 $localhost ~~ / ^ <ipv4-octet> ** 4 % "." $ /;
@@ -2047,7 +2047,7 @@ say $/<ipv4-octet>;   # OUTPUT: [｢127｣ ｢0｣ ｢0｣ ｢1｣]
 
 The `octet` regular expression matches against a number made by one up to three digits. Each match is driven by the result of the `<?{}>`, that being the fixed value of `True` means that the regular expression match has to be always considered as good. As a counter-example, using the special constant value `False` will invalidate the match even if the regular expression matches from a syntactic point of view:
 
-```Perl6
+```Raku
 my $localhost = '127.0.0.1';
 my regex ipv4-octet { \d ** 1..3 <?{ False }> }
 $localhost ~~ / ^ <ipv4-octet> ** 4 % "." $ /;
@@ -2058,7 +2058,7 @@ say $/<ipv4-octet>;   # OUTPUT: Nil
 
 From the above examples, it should be clear that it is possible to improve the semantic check, for instance ensuring that each *octet* is really a valid IPv4 octet:
 
-```Perl6
+```Raku
 my $localhost = '127.0.0.1';
 my regex ipv4-octet { \d ** 1..3 <?{ $/.Int <= 255 && $/.Int >= 0 }> }
 $localhost ~~ / ^ <ipv4-octet> ** 4 % "." $ /;
@@ -2069,7 +2069,7 @@ say $/<ipv4-octet>;   # OUTPUT: [｢127｣ ｢0｣ ｢0｣ ｢1｣]
 
 Please note that it is not required to evaluate the regular expression in-line, but also a regular method can be called to get the boolean value:
 
-```Perl6
+```Raku
 my $localhost = '127.0.0.1';
 sub check-octet ( Int $o ){ $o <= 255 && $o >= 0 }
 my regex ipv4-octet { \d ** 1..3 <?{ &check-octet( $/.Int ) }> }
@@ -2081,7 +2081,7 @@ say $/<ipv4-octet>;   # OUTPUT: [｢127｣ ｢0｣ ｢0｣ ｢1｣]
 
 Of course, being `<!{}>` the negation form of `<?{}>` the same boolean evaluation can be rewritten in a negated form:
 
-```Perl6
+```Raku
 my $localhost = '127.0.0.1';
 sub invalid-octet( Int $o ){ $o < 0 || $o > 255 }
 my regex ipv4-octet { \d ** 1..3 <!{ &invalid-octet( $/.Int ) }> }
@@ -2104,7 +2104,7 @@ The so-called *regex* adverbs apply at the point where a regex is defined; addit
 
 This distinction often blurs, because matching and declaration are often textually close but using the method form of matching, that is, `.match`, makes the distinction clear.
 
-```Perl6
+```Raku
 say "Abra abra CADABRA" ~~ m:exhaustive/:i a \w+ a/;
 # OUTPUT: «(｢Abra｣ ｢abra｣ ｢ADABRA｣ ｢ADA｣ ｢ABRA｣)␤» 
 my $regex = /:i a \w+ a /;
@@ -2116,7 +2116,7 @@ say "Abra abra CADABRA".match($regex,:ex);
 
 In the first example, the matching adverb (`:exhaustive`) is contiguous to the regex adverb (`:i`), and as a matter of fact, the "definition" and the "matching" go together; however, by using `match` it becomes clear than `:i` is only used when defining the `$regex` variable, and `:ex` (short for `:exhaustive`) as an argument when matching. As a matter of fact, matching adverbs cannot even be used in the definition of a regex:
 
-```Perl6
+```Raku
 my $regex = rx:ex/:i a \w+ a /;
 # ===SORRY!=== Error while compiling (...)␤Adverb ex not allowed on rx 
 ```
@@ -2125,7 +2125,7 @@ my $regex = rx:ex/:i a \w+ a /;
 
 Regex adverbs like `:i` go into the definition line and matching adverbs like `:overlap` (which can be abbreviated to `:ov`) are appended to the match call:
 
-```Perl6
+```Raku
 my $regex = /:i . a/;
 for 'baA'.match($regex, :overlap) -> $m {
     say ~$m;
@@ -2136,9 +2136,9 @@ for 'baA'.match($regex, :overlap) -> $m {
 <a id="%E6%AD%A3%E5%88%99%E5%89%AF%E8%AF%8D--regex-adverbs"></a>
 ## 正则副词 / Regex adverbs
 
-在正则声明时出现的副词是实际正则的一部分，并影响 Perl 6 编译器如何将正则转换为二进制代码。
+在正则声明时出现的副词是实际正则的一部分，并影响 Raku 编译器如何将正则转换为二进制代码。
 
-The adverbs that appear at the time of a regex declaration are part of the actual regex and influence how the Perl 6 compiler translates the regex into binary code.
+The adverbs that appear at the time of a regex declaration are part of the actual regex and influence how the Raku compiler translates the regex into binary code.
 
 例如，`:ignorecase` （`:i`）副词告诉编译器忽略大写字母、小写字母和标题字母之间的区别。
 
@@ -2152,7 +2152,7 @@ So `'a' ~~ /A/` is false, but `'a' ~~ /:i A/` is a successful match.
 
 Regex adverbs can come before or inside a regex declaration and only affect the part of the regex that comes afterwards, lexically. Note that regex adverbs appearing before the regex must appear after something that introduces the regex to the parser, like 'rx' or 'm' or a bare '/'. This is NOT valid:
 
-```Perl6
+```Raku
 my $rx1 = :i/a/;      # adverb is before the regex is recognized => exception 
 ```
 
@@ -2160,7 +2160,7 @@ my $rx1 = :i/a/;      # adverb is before the regex is recognized => exception
 
 but these are valid:
 
-```Perl6
+```Raku
 my $rx1 = rx:i/a/;     # before 
 my $rx2 = m:i/a/;      # before 
 my $rx3 = /:i a/;      # inside 
@@ -2170,7 +2170,7 @@ my $rx3 = /:i a/;      # inside
 
 These two regexes are equivalent:
 
-```Perl6
+```Raku
 my $rx1 = rx:i/a/;      # before 
 my $rx2 = rx/:i a/;     # inside 
 ```
@@ -2179,7 +2179,7 @@ my $rx2 = rx/:i a/;     # inside
 
 Whereas these two are not:
 
-```Perl6
+```Raku
 my $rx3 = rx/a :i b/;   # matches only the b case insensitively 
 my $rx4 = rx/:i a b/;   # matches completely case insensitively 
 ```
@@ -2188,7 +2188,7 @@ my $rx4 = rx/:i a b/;   # matches completely case insensitively
 
 Square brackets and parentheses limit the scope of an adverb:
 
-```Perl6
+```Raku
 / (:i a b) c /;         # matches 'ABc' but not 'ABC' 
 / [:i a b] c /;         # matches 'ABc' but not 'ABC' 
 ```
@@ -2197,7 +2197,7 @@ Square brackets and parentheses limit the scope of an adverb:
 
 When two adverbs are used together, they keep their colon at the front
 
-```Perl6
+```Raku
 "þor is Þor" ~~ m:g:i/þ/;  # OUTPUT: «(｢þ｣ ｢Þ｣)␤» 
 ```
 
@@ -2212,7 +2212,7 @@ That implies that when there are two vowels together after a `:`, they correspon
 
 The `:ignoremark` or `:m` adverb instructs the regex engine to only compare base characters, and ignore additional marks such as combining accents:
 
-```Perl6
+```Raku
 say so 'a' ~~ rx/ä/;                # OUTPUT: «False» 
 say so 'a' ~~ rx:ignoremark /ä/;    # OUTPUT: «True» 
 say so 'ỡ' ~~ rx:ignoremark /o/;    # OUTPUT: «True> 
@@ -2221,15 +2221,15 @@ say so 'ỡ' ~~ rx:ignoremark /o/;    # OUTPUT: «True>
 <a id="%E6%A3%98%E8%BD%AE--ratchet"></a>
 ### 棘轮 / Ratchet
 
-`:ratchet` 或 `:r` 副词导致正则引擎无法回溯（请参阅[回溯](https://docs.perl6.org/language/regexes#Backtracking)）。助记符：一个[棘轮]（https://en.wikipedia.org/wiki/ratchet device%29）只能朝一个方向移动，不能后退。
+`:ratchet` 或 `:r` 副词导致正则引擎无法回溯（请参阅[回溯](https://rakudocs.github.io/language/regexes#Backtracking)）。助记符：一个[棘轮]（https://en.wikipedia.org/wiki/ratchet device%29）只能朝一个方向移动，不能后退。
 
-The `:ratchet` or `:r` adverb causes the regex engine to not backtrack (see [backtracking](https://docs.perl6.org/language/regexes#Backtracking)). Mnemonic: a [ratchet](https://en.wikipedia.org/wiki/Ratchet_%28device%29) only moves in one direction and can't backtrack.
+The `:ratchet` or `:r` adverb causes the regex engine to not backtrack (see [backtracking](https://rakudocs.github.io/language/regexes#Backtracking)). Mnemonic: a [ratchet](https://en.wikipedia.org/wiki/Ratchet_%28device%29) only moves in one direction and can't backtrack.
 
 如果没有这个副词，正则表达式的某些部分将尝试不同的方法来匹配字符串，以便使正则表达式的其他部分能够匹配。例如，在 `'abc' ~~ /\w+ ./`，首先 `\w+` 会吃掉整个字符串 `abc`，然后 `.` 会失败。因此，`\w+` 放弃了一个字符，只匹配 `ab`，`.` 可以成功匹配字符串 `c`。放弃字符的过程（或者在交替的情况下，尝试不同的分支）称为回溯。
 
 Without this adverb, parts of a regex will try different ways to match a string in order to make it possible for other parts of the regex to match. For example, in `'abc' ~~ /\w+ ./`, the `\w+` first eats up the whole string, `abc` but then the `.` fails. Thus `\w+`gives up a character, matching only `ab`, and the `.` can successfully match the string `c`. This process of giving up characters (or in the case of alternations, trying a different branch) is known as backtracking.
 
-```Perl6
+```Raku
 say so 'abc' ~~ / \w+ . /;        # OUTPUT: «True␤» 
 say so 'abc' ~~ / :r \w+ . /;     # OUTPUT: «False␤» 
 ```
@@ -2246,7 +2246,7 @@ For example, you don't expect the word `motif` to be parsed as the identifier `m
 
 Since ratcheting behavior is often desirable in parsers, there's a shortcut to declaring a ratcheting regex:
 
-```Perl6
+```Raku
 my token thing { ... };
 # short for 
 my regex thing { :r ... };
@@ -2259,7 +2259,7 @@ my regex thing { :r ... };
 
 The **:sigspace** or **:s** adverb makes whitespace significant in a regex.
 
-```Perl6
+```Raku
 say so "I used Photoshop®"   ~~ m:i/   photo shop /;      # OUTPUT: «True␤»
 say so "I used a photo shop" ~~ m:i:s/ photo shop /;   # OUTPUT: «True␤»
 say so "I used Photoshop®"   ~~ m:i:s/ photo shop /;   # OUTPUT: «False␤»
@@ -2281,7 +2281,7 @@ In addition, if whitespace comes after a term but *before* a quantifier (`+`, `*
 
 In all, this code:
 
-```Perl6
+```Raku
 rx :s {
     ^^
     {
@@ -2303,7 +2303,7 @@ rx :s {
 
 Becomes:
 
-```Perl6
+```Raku
 rx {
     ^^ <.ws>
     {
@@ -2329,7 +2329,7 @@ Grammar 提供了一种简单的方法来覆盖匹配的内容：
 
 Grammars provide an easy way to override what `<.ws>` matches:
 
-```Perl6
+```Raku
 grammar Demo {
     token ws {
         <!ww>       # 仅当不在词中时匹配 / only match when not within a word 
@@ -2366,9 +2366,9 @@ so 'hello world' ~~ m/^hello (world)/;         # OUTPUT: «False␤»
 so 'hello world' ~~ m/^ 'hello ' ('world')/;   # OUTPUT: «True␤» 
 ```
 
-当然，在 Perl 6 中建议使用常规的行为，并且更为惯用，但是当需要与 Perl 5 兼容时，**:Perl5** 副词非常有用。
+当然，在 Raku 中建议使用常规的行为，并且更为惯用，但是当需要与 Perl 5 兼容时，**:Perl5** 副词非常有用。
 
-The regular behavior is recommended and more idiomatic in Perl 6 of course, but the **:Perl5** adverb can be useful when compatibility with Perl5 is required.
+The regular behavior is recommended and more idiomatic in Raku of course, but the **:Perl5** adverb can be useful when compatibility with Perl5 is required.
 
 <a id="%E5%8C%B9%E9%85%8D%E5%89%AF%E8%AF%8D--matching-adverbs"></a>
 ## 匹配副词 / Matching adverbs
@@ -2388,7 +2388,7 @@ They can never appear inside a regex, only on the outside – either as part of 
 
 Positional adverbs make the expression match only the string in the indicated position:
 
-```Perl6
+```Raku
 my $data = "f fo foo fooo foooo fooooo foooooo";
 say $data ~~ m:nth(4)/fo+/;   # OUTPUT: «｢foooo｣␤» 
 say $data ~~ m:1st/fo+/;      # OUTPUT: «｢fo｣␤» 
@@ -2400,7 +2400,7 @@ say $data ~~ m:nth(1,3)/fo+/; # OUTPUT: «(｢fo｣ ｢fooo｣)␤»
 
 As you can see, the adverb argument can also be a list. There's actually no difference between the `:nth` adverb and the rest. You choose them only based on legibility. From 6.d, you can also use `Junction`s as arguments.
 
-```Perl6
+```Raku
 my $data = "f fo foo fooo foooo fooooo foooooo";
 say $data ~~ m:st(1|8)/fo+/;  # OUTPUT: «True␤» 
 ```
@@ -2416,7 +2416,7 @@ In this case, one of them exists (1), so it returns True. Observe that we have u
 
 The `:continue` or short `:c` adverb takes an argument. The argument is the position where the regex should start to search. By default, it searches from the start of the string, but `:c` overrides that. If no position is specified for `:c`, it will default to `0` unless `$/` is set, in which case, it defaults to `$/.to`.
 
-```Perl6
+```Raku
 given 'a1xa2' {
     say ~m/a./;         # OUTPUT: «a1␤» 
     say ~m:c(2)/a./;    # OUTPUT: «a2␤» 
@@ -2427,7 +2427,7 @@ given 'a1xa2' {
 
 *Note:* unlike `:pos`, a match with :continue() will attempt to match further in the string, instead of failing:
 
-```Perl6
+```Raku
 say "abcdefg" ~~ m:c(3)/e.+/; # OUTPUT: «｢efg｣␤» 
 say "abcdefg" ~~ m:p(3)/e.+/; # OUTPUT: «False␤» 
 ```
@@ -2439,7 +2439,7 @@ say "abcdefg" ~~ m:p(3)/e.+/; # OUTPUT: «False␤»
 
 To find all possible matches of a regex – including overlapping ones – and several ones that start at the same position, use the `:exhaustive` (short `:ex`) adverb.
 
-```Perl6
+```Raku
 given 'abracadabra' {
     for m:exhaustive/ a .* a / -> $match {
         say ' ' x $match.from, ~$match;
@@ -2451,7 +2451,7 @@ given 'abracadabra' {
 
 The above code produces this output:
 
-```Perl6
+```Raku
     abracadabra
     abracada
     abraca
@@ -2467,11 +2467,11 @@ The above code produces this output:
 <a id="%E5%85%A8%E5%B1%80%E6%90%9C%E7%B4%A2--global"></a>
 ### 全局搜索 / Global
 
-不是搜索一个匹配并返回一个[匹配对象](https://docs.perl6.org/type/Match)，而是搜索每个不重叠的匹配并返回到[列表](https://docs.perl6.org/type/List)。为此，请使用 `:global` 副词：
+不是搜索一个匹配并返回一个[匹配对象](https://rakudocs.github.io/type/Match)，而是搜索每个不重叠的匹配并返回到[列表](https://rakudocs.github.io/type/List)。为此，请使用 `:global` 副词：
 
-Instead of searching for just one match and returning a [Match object](https://docs.perl6.org/type/Match), search for every non-overlapping match and return them in a [List](https://docs.perl6.org/type/List). In order to do this, use the `:global` adverb:
+Instead of searching for just one match and returning a [Match object](https://rakudocs.github.io/type/Match), search for every non-overlapping match and return them in a [List](https://rakudocs.github.io/type/List). In order to do this, use the `:global` adverb:
 
-```Perl6
+```Raku
 given 'several words here' {
     my @matches = m:global/\w+/;
     say @matches.elems;         # OUTPUT: «3␤» 
@@ -2490,7 +2490,7 @@ given 'several words here' {
 
 Anchor the match at a specific position in the string:
 
-```Perl6
+```Raku
 given 'abcdef' {
     my $match = m:pos(2)/.*/;
     say $match.from;        # OUTPUT: «2␤» 
@@ -2506,7 +2506,7 @@ given 'abcdef' {
 
 *Note:* unlike `:continue`, a match anchored with :pos() will fail, instead of attempting to match further down the string:
 
-```Perl6
+```Raku
 say "abcdefg" ~~ m:c(3)/e.+/; # OUTPUT: «｢efg｣␤» 
 say "abcdefg" ~~ m:p(3)/e.+/; # OUTPUT: «False␤» 
 ```
@@ -2518,7 +2518,7 @@ say "abcdefg" ~~ m:p(3)/e.+/; # OUTPUT: «False␤»
 
 To get several matches, including overlapping matches, but only one (the longest) from each starting position, specify the `:overlap` (short `:ov`) adverb:
 
-```Perl6
+```Raku
 given 'abracadabra' {
     for m:overlap/ a .* a / -> $match {
         say ' ' x $match.from, ~$match;
@@ -2530,7 +2530,7 @@ given 'abracadabra' {
 
 produces
 
-```Perl6
+```Raku
     abracadabra
        acadabra
          adabra
@@ -2551,7 +2551,7 @@ You can apply matching adverbs (such as `:global`, `:pos` etc.) to substitutions
 
 The `:samecase` or `:ii` substitution adverb implies the `:ignorecase` adverb for the regex part of the substitution, and in addition carries the case information to the replacement string:
 
-```Perl6
+```Raku
 $_ = 'The cat chases the dog';
 s:global:samecase[the] = 'a';
 say $_;                 # OUTPUT: «A cat chases a dog» 
@@ -2568,7 +2568,7 @@ Here you can see that the first replacement string `a` got capitalized, because 
 
 The `:samemark` or `:mm` adverb implies `:ignoremark` for the regex, and in addition, copies the markings from the matched characters to the replacement string:
 
-```Perl6
+```Raku
 given 'äộñ' {
     say S:mm/ a .+ /uia/;           # OUTPUT: «üị̂ã» 
 }
@@ -2581,7 +2581,7 @@ given 'äộñ' {
 
 The `:samespace` or `:ss` substitution modifier implies the `:sigspace` modifier for the regex, and in addition, copies the whitespace from the matched string to the replacement string:
 
-```Perl6
+```Raku
 say S:samespace/a ./c d/.perl given "a b";      # OUTPUT: «"c d"» 
 say S:samespace/a ./c d/.perl given "a\tb";     # OUTPUT: «"c\td"» 
 say S:samespace/a ./c d/.perl given "a\nb";     # OUTPUT: «"c\nd"» 
@@ -2594,15 +2594,15 @@ The `ss/.../.../` syntactic form is a shorthand for `s:samespace/.../.../`.
 <a id="%E5%9B%9E%E6%BA%AF--backtracking"></a>
 # 回溯 / Backtracking
 
-在计算正则表达式时，Perl 6 默认为*回溯*的。回溯是一种允许引擎尝试不同的匹配以使正则表达式的每个部分都成功的技术。这是昂贵的，因为它要求引擎在第一次匹配时尽可能地消耗掉字符，然后向后调整，以确保所有正则表达式部分都有机会匹配。
+在计算正则表达式时，Raku 默认为*回溯*的。回溯是一种允许引擎尝试不同的匹配以使正则表达式的每个部分都成功的技术。这是昂贵的，因为它要求引擎在第一次匹配时尽可能地消耗掉字符，然后向后调整，以确保所有正则表达式部分都有机会匹配。
 
-Perl 6 defaults to *backtracking* when evaluating regular expressions. Backtracking is a technique that allows the engine to try different matching in order to allow every part of a regular expression to succeed. This is costly, because it requires the engine to usually eat up as much as possible in the first match and then adjust going backwards in order to ensure all regular expression parts have a chance to match.
+Raku defaults to *backtracking* when evaluating regular expressions. Backtracking is a technique that allows the engine to try different matching in order to allow every part of a regular expression to succeed. This is costly, because it requires the engine to usually eat up as much as possible in the first match and then adjust going backwards in order to ensure all regular expression parts have a chance to match.
 
 为了更好地理解回溯，请考虑以下示例：
 
 In order to better understand backtracking, consider the following example:
 
-```Perl6
+```Raku
 my $string = 'PostgreSQL is an SQL database!';
 say $string ~~ /(.+)(SQL) (.+) $1/; # OUTPUT: ｢PostgreSQL is an SQL｣ 
 ```
@@ -2611,11 +2611,11 @@ say $string ~~ /(.+)(SQL) (.+) $1/; # OUTPUT: ｢PostgreSQL is an SQL｣
 
 What happens in the above example is that the string has to be matched against the second occurrence of the word *SQL*, eating all characters before and leaving out the rest.
 
-由于可以在正则表达式中执行一段代码，因此也可以检查正则表达式本身中的 [Match](https://docs.perl6.org/type/Match) 对象：
+由于可以在正则表达式中执行一段代码，因此也可以检查正则表达式本身中的 [Match](https://rakudocs.github.io/type/Match) 对象：
 
-Since it is possible to execute a piece of code within a regular expression, it is also possible to inspect the [Match](https://docs.perl6.org/type/Match) object within the regular expression itself:
+Since it is possible to execute a piece of code within a regular expression, it is also possible to inspect the [Match](https://rakudocs.github.io/type/Match) object within the regular expression itself:
 
-```Perl6
+```Raku
 my $iteration = 0;
 sub show-captures( Match $m ){
     my Str $result_split;
@@ -2635,7 +2635,7 @@ $string ~~ /(.+)(SQL) (.+) $1 (.+) { show-captures( $/ );  }/;
 
 The `show-captures` method will dump all the elements of `$/` producing the following output:
 
-```Perl6
+```Raku
 === Iteration 1 ===
 Capture 0 = Postgre
 Capture 1 = SQL
@@ -2651,7 +2651,7 @@ showing that the string has been split around the second occurrence of *SQL*, th
 
 With that in place, it is now possible to see how the engine backtracks to find the above match: it does suffice to move the `show-captures` in the middle of the regular expression, in particular before the repetition of the first capture `$1` to see it in action:
 
-```Perl6
+```Raku
 my $iteration = 0;
 sub show-captures( Match $m ){
     my Str $result-split;
@@ -2671,7 +2671,7 @@ $string ~~ / (.+)(SQL) (.+) { show-captures( $/ );  } $1 /;
 
 The output will be much more verbose and will show several iterations, with the last one being the *winning*. The following is an excerpt of the output:
 
-```Perl6
+```Raku
 === Iteration 1 ===
 Capture 0 = PostgreSQL is an
 Capture 1 = SQL
@@ -2701,7 +2701,7 @@ In the first iteration the *SQL* part of *PostgreSQL* is kept within the word: t
 
 It is worth noting that the final iteration is number *24*, and that such number is exactly the distance, in number of chars, from the end of the string to the first *SQL* occurrence:
 
-```Perl6
+```Raku
 say $string.chars - $string.index: 'SQL'; # OUTPUT: 23 
 ```
 
@@ -2717,7 +2717,7 @@ Backtracking is a costly machinery, therefore it is possible to disable it in th
 
 With regards to the above example, disabling backtracking means the regular expression will not have any chance to match:
 
-```Perl6
+```Raku
 say $string ~~ /(.+)(SQL) (.+) $1/;      # OUTPUT: ｢PostgreSQL is an SQL｣ 
 say $string ~~ / :r (.+)(SQL) (.+) $1/;  # OUTPUT: Nil 
 ```
@@ -2730,7 +2730,7 @@ The fact is that, as shown in the *iteration 1* output, the first match of the r
 
 It is worth noting that disabling backtracking will not prevent the engine to try several ways to match the regular expression. Consider the following slightly changed example:
 
-```Perl6
+```Raku
 my $string = 'PostgreSQL is an SQL database!';
 say $string ~~ / (SQL) (.+) $1 /; # OUTPUT: Nil 
 ```
@@ -2739,7 +2739,7 @@ say $string ~~ / (SQL) (.+) $1 /; # OUTPUT: Nil
 
 Since there is no specification for a character before the word *SQL*, the engine will match against the rightmost word *SQL*and go forward from there. Since there is no repetition of *SQL* remaining, the match fails. It is possible, again, to inspect what the engine performs introducing a dumping piece of code within the regular expression:
 
-```Perl6
+```Raku
 my $iteration = 0;
 sub show-captures( Match $m ){
     my Str $result-split;
@@ -2759,7 +2759,7 @@ $string ~~ / (SQL) (.+) { show-captures( $/ ); } $1 /;
 
 that produces a rather simple output:
 
-```Perl6
+```Raku
 === Iteration 1 ===
 Capture 0 = SQL
 Capture 1 =  is an SQL database!
@@ -2771,11 +2771,11 @@ Capture 1 =  database!
 [SQL][ database!]
 ```
 
-即使使用 [:r](https://docs.perl6.org/language/regexes#Ratchet) 副词来防止回溯也不会改变：
+即使使用 [:r](https://rakudocs.github.io/language/regexes#Ratchet) 副词来防止回溯也不会改变：
 
-Even using the [:r](https://docs.perl6.org/language/regexes#Ratchet) adverb to prevent backtracking will not change things:
+Even using the [:r](https://rakudocs.github.io/language/regexes#Ratchet) adverb to prevent backtracking will not change things:
 
-```Perl6
+```Raku
 my $iteration = 0;
 sub show-captures( Match $m ){
     my Str $result-split;
@@ -2795,7 +2795,7 @@ $string ~~ / :r (SQL) (.+) { show-captures( $/ ); } $1 /;
 
 and the output will remain the same:
 
-```Perl6
+```Raku
 === Iteration 1 ===
 Capture 0 = SQL
 Capture 1 =  is an SQL database!
@@ -2814,11 +2814,11 @@ This demonstrate that disabling backtracking does not mean disabling possible mu
 <a id="%24%E5%9C%A8%E6%AF%8F%E6%AC%A1%E5%8C%B9%E9%85%8D%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%97%B6%E6%9B%B4%E6%94%B9--%24-changes-each-time-a-regular-expression-is-matched"></a>
 # `$/`在每次匹配正则表达式时更改 / `$/` changes each time a regular expression is matched
 
-值得注意的是，每次使用正则表达式时，都会重置返回的[匹配对象](https://docs.perl6.org/type/Match)（即 `$/`）。换句话说，`$/` 总是指最后一个匹配的正则表达式：
+值得注意的是，每次使用正则表达式时，都会重置返回的[匹配对象](https://rakudocs.github.io/type/Match)（即 `$/`）。换句话说，`$/` 总是指最后一个匹配的正则表达式：
 
-It is worth noting that each time a regular expression is used, the [Match object](https://docs.perl6.org/type/Match) returned (i.e., `$/`) is reset. In other words, `$/`always refers to the very last regular expression matched:
+It is worth noting that each time a regular expression is used, the [Match object](https://rakudocs.github.io/type/Match) returned (i.e., `$/`) is reset. In other words, `$/`always refers to the very last regular expression matched:
 
-```Perl6
+```Raku
 my $answer = 'a lot of Stuff';
 say 'Hit a capital letter!' if $answer ~~ / <[A..Z>]> /;
 say $/;  # OUTPUT: ｢S｣ 
@@ -2830,7 +2830,7 @@ say $/;  # OUTPUT: Nil
 
 The reset of `$/` applies independently from the scope where the regular expression is matched:
 
-```Perl6
+```Raku
 my $answer = 'a lot of Stuff';
 if $answer ~~ / <[A..Z>]> / {
    say 'Hit a capital letter';
@@ -2850,7 +2850,7 @@ say $/;  # OUTPUT: Nil
 
 The very same concept applies to named captures:
 
-```Perl6
+```Raku
 my $answer = 'a lot of Stuff';
 if $answer ~~ / $<capital>=<[A..Z>]> / {
    say 'Hit a capital letter';
@@ -2866,6 +2866,6 @@ say $/<capital>;    # OUTPUT: Nil
 <a id="%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E5%92%8C%E6%88%90%E5%8A%9F%E6%A1%88%E4%BE%8B--best-practices-and-gotchas"></a>
 # 最佳实践和成功案例 / Best practices and gotchas
 
-[最佳实践和成功案例](https://docs.perl6.org/language/regexes-best-practices) 提供有关如何在编写正则表达式和语法时避免常见陷阱的有用信息。
+[最佳实践和成功案例](https://rakudocs.github.io/language/regexes-best-practices) 提供有关如何在编写正则表达式和语法时避免常见陷阱的有用信息。
 
-The [Regexes: Best practices and gotchas](https://docs.perl6.org/language/regexes-best-practices) provides useful information on how to avoid common pitfalls when writing regexes and grammars.
+The [Regexes: Best practices and gotchas](https://rakudocs.github.io/language/regexes-best-practices) provides useful information on how to avoid common pitfalls when writing regexes and grammars.

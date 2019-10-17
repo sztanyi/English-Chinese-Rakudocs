@@ -1,4 +1,4 @@
-原文：https://docs.perl6.org/language/hashmap
+原文：https://rakudocs.github.io/language/hashmap
 
 # 哈希和映射 / Hashes and maps
 
@@ -23,23 +23,23 @@ Working with associative arrays/dictionaries/hashes
 <a id="%E5%85%B3%E8%81%94%E8%A7%92%E8%89%B2%E5%92%8C%E5%85%B3%E8%81%94%E7%B1%BB--the-associative-role-and-associative-classes"></a>
 # 关联角色和关联类 / The associative role and associative classes
 
-[Associative](https://docs.perl6.org/type/Associative) 角色是哈希和映射以及其他类（如 [MixHash](https://docs.perl6.org/type/MixHash)）的基础。它定义了将在关联类中使用的两种类型；默认情况下，你可以使用任何类型（只要是 [Any](https://docs.perl6.org/type/Any) 的子类都可以）[作为键](https://docs.perl6.org/language/hashmap#Non-string_keys_%28object_hash%29)（尽管它的键将会被强制转为字符串）和任何对象作为值。可以使用 `of` 和 `keyof` 方法访问这些类型。
+[Associative](https://rakudocs.github.io/type/Associative) 角色是哈希和映射以及其他类（如 [MixHash](https://rakudocs.github.io/type/MixHash)）的基础。它定义了将在关联类中使用的两种类型；默认情况下，你可以使用任何类型（只要是 [Any](https://rakudocs.github.io/type/Any) 的子类都可以）[作为键](https://rakudocs.github.io/language/hashmap#Non-string_keys_%28object_hash%29)（尽管它的键将会被强制转为字符串）和任何对象作为值。可以使用 `of` 和 `keyof` 方法访问这些类型。
 
-The [Associative](https://docs.perl6.org/type/Associative) role underlies hashes and maps, as well as other classes such as [MixHash](https://docs.perl6.org/type/MixHash). It defines the two types that will be used in associative classes; by default, you can use anything (literally, since any class that subclasses [Any](https://docs.perl6.org/type/Any) can be used) [as a key](https://docs.perl6.org/language/hashmap#Non-string_keys_%28object_hash%29), although it will be coerced to a string, and any object as value. You can access these types using the `of` and `keyof` methods.
+The [Associative](https://rakudocs.github.io/type/Associative) role underlies hashes and maps, as well as other classes such as [MixHash](https://rakudocs.github.io/type/MixHash). It defines the two types that will be used in associative classes; by default, you can use anything (literally, since any class that subclasses [Any](https://rakudocs.github.io/type/Any) can be used) [as a key](https://rakudocs.github.io/language/hashmap#Non-string_keys_%28object_hash%29), although it will be coerced to a string, and any object as value. You can access these types using the `of` and `keyof` methods.
 
 默认情况下，使用 `%` 标记声明的任何对象都将获得 Associative 角色，并且在默认情况下行为类似于哈希，但此角色将仅提供上述两种方法以及默认哈希行为。
 
 By default, any object declared with the `%` sigil will get the Associative role, and will by default behave like a hash, but this role will only provide the two methods above, as well as the default Hash behavior.
 
-```Perl6
+```Raku
 say (%).^name ; # OUTPUT: «Hash␤»
 ```
 
-相反，如果没有 `Associative` 角色，则不能使用 `%` 标记，但由于此角色没有任何关联属性，因此必须重新定义[哈希下标运算符](https://docs.perl6.org/language/operators#postcircumfix_%7B_%7D)的行为。要做到这一点，你需要覆盖以下几个功能：
+相反，如果没有 `Associative` 角色，则不能使用 `%` 标记，但由于此角色没有任何关联属性，因此必须重新定义[哈希下标运算符](https://rakudocs.github.io/language/operators#postcircumfix_%7B_%7D)的行为。要做到这一点，你需要覆盖以下几个功能：
 
-Inversely, you cannot use the `%` sigil if the `Associative` role is not mixed in, but since this role does not have any associated properties, you will have to redefine the behavior of the [hash subscript operator](https://docs.perl6.org/language/operators#postcircumfix_%7B_%7D). In order to do that, there are several functions you will have to override:
+Inversely, you cannot use the `%` sigil if the `Associative` role is not mixed in, but since this role does not have any associated properties, you will have to redefine the behavior of the [hash subscript operator](https://rakudocs.github.io/language/operators#postcircumfix_%7B_%7D). In order to do that, there are several functions you will have to override:
 
-```Perl6
+```Raku
 class Logger does Associative[Cool,DateTime] {
     has %.store;
  
@@ -98,9 +98,9 @@ Making classes associative provides a very convenient way of using and working w
 <a id="%E5%8F%AF%E5%8F%98%E5%93%88%E5%B8%8C%E5%92%8C%E4%B8%8D%E5%8F%98%E6%98%A0%E5%B0%84--mutable-hashes-and-immutable-maps"></a>
 # 可变哈希和不变映射 / Mutable hashes and immutable maps
 
-`Hash` 是从键到值的可变映射（在其他编程语言中称为 *dictionary*、 *hash table* 或 *map*）。这些值都是标量容器，这意味着你可以分配给它们。[Map](https://docs.perl6.org/type/Map) 是不可变的。一旦一个键与一个值配对，就不能更改此配对。
+`Hash` 是从键到值的可变映射（在其他编程语言中称为 *dictionary*、 *hash table* 或 *map*）。这些值都是标量容器，这意味着你可以分配给它们。[Map](https://rakudocs.github.io/type/Map) 是不可变的。一旦一个键与一个值配对，就不能更改此配对。
 
-A `Hash` is a mutable mapping from keys to values (called *dictionary*, *hash table* or *map* in other programming languages). The values are all scalar containers, which means you can assign to them. [Map](https://docs.perl6.org/type/Map)s are, on the other hand, immutable. Once a key has been paired with a value, this pairing cannot be changed.
+A `Hash` is a mutable mapping from keys to values (called *dictionary*, *hash table* or *map* in other programming languages). The values are all scalar containers, which means you can assign to them. [Map](https://rakudocs.github.io/type/Map)s are, on the other hand, immutable. Once a key has been paired with a value, this pairing cannot be changed.
 
 映射和散列通常存储在带有 `%` 标记的变量中，用于表示它们是关联的。
 
@@ -110,16 +110,16 @@ Maps and hashes are usually stored in variables with the percent `%` sigil, whic
 
 Hash and map elements are accessed by key via the `{ }` postcircumfix operator:
 
-```Perl6
+```Raku
 say %*ENV{'HOME', 'PATH'}.perl;
 # OUTPUT: «("/home/camelia", "/usr/bin:/sbin:/bin")␤»
 ```
 
-一般的[下标](https://docs.perl6.org/language/subscripts)规则应用于为文本字符串列表提供快捷方式，包括字符串插值和不插值。
+一般的[下标](https://rakudocs.github.io/language/subscripts)规则应用于为文本字符串列表提供快捷方式，包括字符串插值和不插值。
 
-The general [Subscript](https://docs.perl6.org/language/subscripts) rules apply providing shortcuts for lists of literal strings, with and without interpolation.
+The general [Subscript](https://rakudocs.github.io/language/subscripts) rules apply providing shortcuts for lists of literal strings, with and without interpolation.
 
-```Perl6
+```Raku
 my %h = oranges => 'round', bananas => 'bendy';
 say %h<oranges bananas>;
 # OUTPUT: «(round bendy)␤» 
@@ -133,7 +133,7 @@ say %h«oranges "$fruit"»;
 
 You can add new pairs simply by assigning to an unused key:
 
-```Perl6
+```Raku
 my %h;
 %h{'new key'} = 'new value';
 ```
@@ -141,11 +141,11 @@ my %h;
 <a id="%E5%93%88%E5%B8%8C%E8%B5%8B%E5%80%BC--hash-assignment"></a>
 # 哈希赋值 / Hash assignment
 
-将元素列表赋给散列变量首先清空该变量，然后迭代右侧的元素。如果一个元素是一个 [Pair](https://docs.perl6.org/type/Pair)，那么它的键将作为一个新的哈希键，其值将作为该键的新哈希值。否则，该值被强制转换为 [Str](https://docs.perl6.org/type/Str)并用作哈希键，而列表的下一个元素则作为相应的值。
+将元素列表赋给散列变量首先清空该变量，然后迭代右侧的元素。如果一个元素是一个 [Pair](https://rakudocs.github.io/type/Pair)，那么它的键将作为一个新的哈希键，其值将作为该键的新哈希值。否则，该值被强制转换为 [Str](https://rakudocs.github.io/type/Str)并用作哈希键，而列表的下一个元素则作为相应的值。
 
-Assigning a list of elements to a hash variable first empties the variable, and then iterates the elements of the right-hand side. If an element is a [Pair](https://docs.perl6.org/type/Pair), its key is taken as a new hash key, and its value as the new hash value for that key. Otherwise the value is coerced to [Str](https://docs.perl6.org/type/Str) and used as a hash key, while the next element of the list is taken as the corresponding value.
+Assigning a list of elements to a hash variable first empties the variable, and then iterates the elements of the right-hand side. If an element is a [Pair](https://rakudocs.github.io/type/Pair), its key is taken as a new hash key, and its value as the new hash value for that key. Otherwise the value is coerced to [Str](https://rakudocs.github.io/type/Str) and used as a hash key, while the next element of the list is taken as the corresponding value.
 
-```Perl6
+```Raku
 my %h = 'a', 'b', c => 'd', 'e', 'f';
 ```
 
@@ -153,7 +153,7 @@ my %h = 'a', 'b', c => 'd', 'e', 'f';
 
 Same as
 
-```Perl6
+```Raku
 my %h = a => 'b', c => 'd', e => 'f';
 ```
 
@@ -161,7 +161,7 @@ my %h = a => 'b', c => 'd', e => 'f';
 
 or
 
-```Perl6
+```Raku
 my %h = <a b c d e f>;
 ```
 
@@ -169,7 +169,7 @@ my %h = <a b c d e f>;
 
 or even
 
-```Perl6
+```Raku
 my %h = %( a => 'b', c => 'd', e => 'f' );
 ```
 
@@ -177,7 +177,7 @@ my %h = %( a => 'b', c => 'd', e => 'f' );
 
 or
 
-```Perl6
+```Raku
 my %h = [ a => 'b', c => 'd', e => 'f' ]; # This format is NOT recommended. 
                                           # It cannot be a constant and there 
                                           # will be problems with nested hashes
@@ -187,7 +187,7 @@ my %h = [ a => 'b', c => 'd', e => 'f' ]; # This format is NOT recommended.
 
 or
 
-```Perl6
+```Raku
 my $h = { a => 'b', c => 'd', e => 'f'};
 ```
 
@@ -195,7 +195,7 @@ my $h = { a => 'b', c => 'd', e => 'f'};
 
 Please note that curly braces are used only in the case that we are not assigning it to a `%`-sigiled variable; in case we use it for a `%`-sigiled variable we will get an `Potential difficulties:␤ Useless use of hash composer on right side of hash assignment; did you mean := instead?` error. As this error indicates, however, we can use curly braces as long as we use also binding:
 
-```Perl6
+```Raku
 my %h := { a => 'b', c => 'd', e => 'f'};
 say %h; # OUTPUT: «{a => b, c => d, e => f}␤»
 ```
@@ -204,16 +204,16 @@ say %h; # OUTPUT: «{a => b, c => d, e => f}␤»
 
 Nested hashes can also be defined using the same syntax:
 
-```Perl6
+```Raku
 my %h =  e => f => 'g';
 say %h<e><f>; # OUTPUT: «g␤»
 ```
 
-但是，你在这里定义的是一个指向 [Pair](https://docs.perl6.org/type/Pair) 的键，如果这是你想要的，并且你的嵌套哈希只有一个键，那么就可以了。但是 `%h<e>` 指向一个 `Pair` 时，将产生以下后果：
+但是，你在这里定义的是一个指向 [Pair](https://rakudocs.github.io/type/Pair) 的键，如果这是你想要的，并且你的嵌套哈希只有一个键，那么就可以了。但是 `%h<e>` 指向一个 `Pair` 时，将产生以下后果：
 
-However, what you are defining here is a key pointing to a [Pair](https://docs.perl6.org/type/Pair), which is fine if that is what you want and your nested hash has a single key. But `%h<e>` will point to a `Pair` which will have these consequences:
+However, what you are defining here is a key pointing to a [Pair](https://rakudocs.github.io/type/Pair), which is fine if that is what you want and your nested hash has a single key. But `%h<e>` will point to a `Pair` which will have these consequences:
 
-```Perl6
+```Raku
 my %h =  e => f => 'g';
 %h<e><q> = 'k';
 # OUTPUT: «Pair␤Cannot modify an immutable Str (Nil)␤  in block <unit>» 
@@ -223,17 +223,17 @@ my %h =  e => f => 'g';
 
 This, however, will effectively define a nested hash:
 
-```Perl6
+```Raku
 my %h =  e => { f => 'g' };
 say %h<e>.^name;  # OUTPUT: «Hash␤» 
 say %h<e><f>;     # OUTPUT: «g␤»
 ```
 
-如果在需要值的地方遇到 [Pair](https://docs.perl6.org/type/Pair)，则将其用作哈希值：
+如果在需要值的地方遇到 [Pair](https://rakudocs.github.io/type/Pair)，则将其用作哈希值：
 
-If a [Pair](https://docs.perl6.org/type/Pair) is encountered where a value is expected, it is used as a hash value:
+If a [Pair](https://rakudocs.github.io/type/Pair) is encountered where a value is expected, it is used as a hash value:
 
-```Perl6
+```Raku
 my %h = 'a', 'b' => 'c';
 say %h<a>.^name;            # OUTPUT: «Pair␤» 
 say %h<a>.key;              # OUTPUT: «b␤»
@@ -243,7 +243,7 @@ say %h<a>.key;              # OUTPUT: «b␤»
 
 If the same key appears more than once, the value associated with its last occurrence is stored in the hash:
 
-```Perl6
+```Raku
 my %h = a => 1, a => 2;
 say %h<a>;                  # OUTPUT: «2␤»
 ```
@@ -252,17 +252,17 @@ say %h<a>;                  # OUTPUT: «2␤»
 
 To assign a hash to a variable which does not have the `%` sigil, you may use the `%()` hash constructor:
 
-```Perl6
+```Raku
 my $h = %( a => 1, b => 2 );
 say $h.^name;               # OUTPUT: «Hash␤» 
 say $h<a>;                  # OUTPUT: «1␤»
 ```
 
-如果一个或多个值引用主题变量 `$_`，则分配的右侧将被解释为 [Block](https://docs.perl6.org/type/Block)，而不是哈希：
+如果一个或多个值引用主题变量 `$_`，则分配的右侧将被解释为 [Block](https://rakudocs.github.io/type/Block)，而不是哈希：
 
-If one or more values reference the topic variable, `$_`, the right-hand side of the assignment will be interpreted as a [Block](https://docs.perl6.org/type/Block), not a Hash:
+If one or more values reference the topic variable, `$_`, the right-hand side of the assignment will be interpreted as a [Block](https://rakudocs.github.io/type/Block), not a Hash:
 
-```Perl6
+```Raku
 my @people = [
     %( id => "1A", firstName => "Andy", lastName => "Adams" ),
     %( id => "2B", firstName => "Beth", lastName => "Burke" ),
@@ -299,7 +299,7 @@ This would have been avoided if you had used the `%()` hash constructor. Only us
 
 You can assign to multiple keys at the same time with a slice.
 
-```Perl6
+```Raku
 my %h; %h<a b c> = 2 xx *; %h.perl.say;  # OUTPUT: «{:a(2), :b(2), :c(2)}␤» 
 my %h; %h<a b c> = ^3;     %h.perl.say;  # OUTPUT: «{:a(0), :b(1), :c(2)}␤»
 ```
@@ -311,15 +311,15 @@ my %h; %h<a b c> = ^3;     %h.perl.say;  # OUTPUT: «{:a(0), :b(1), :c(2)}␤»
 
 By default keys in `{ }` are forced to strings. To compose a hash with non-string keys, use a colon prefix:
 
-```Perl6
+```Raku
 my $when = :{ (now) => "Instant", (DateTime.now) => "DateTime" };
 ```
 
-注意，当对象作为键时，你通常不能使用 `<...>` 构造进行键查找，因为它只创建字符串和 [allomorphs](https://docs.perl6.org/language/glossary#index-entry-Allomorph)。使用 `{...}` 代替：
+注意，当对象作为键时，你通常不能使用 `<...>` 构造进行键查找，因为它只创建字符串和 [allomorphs](https://rakudocs.github.io/language/glossary#index-entry-Allomorph)。使用 `{...}` 代替：
 
-Note that with objects as keys, you often cannot use the `<...>` construct for key lookup, as it creates only strings and [allomorphs](https://docs.perl6.org/language/glossary#index-entry-Allomorph). Use the `{...}` instead:
+Note that with objects as keys, you often cannot use the `<...>` construct for key lookup, as it creates only strings and [allomorphs](https://rakudocs.github.io/language/glossary#index-entry-Allomorph). Use the `{...}` instead:
 
-```Perl6
+```Raku
 :{  0  => 42 }<0>.say;   # Int    as key, IntStr in lookup; OUTPUT: «(Any)␤» 
 :{  0  => 42 }{0}.say;   # Int    as key, Int    in lookup; OUTPUT: «42␤» 
 :{ '0' => 42 }<0>.say;   # Str    as key, IntStr in lookup; OUTPUT: «(Any)␤» 
@@ -327,11 +327,11 @@ Note that with objects as keys, you often cannot use the `<...>` construct for k
 :{ <0> => 42 }<0>.say;   # IntStr as key, IntStr in lookup; OUTPUT: «42␤»
 ```
 
-*小心*：Rakudo 的实现目前错误地将[相同的规则](https://docs.perl6.org/routine/%7B%20%7D#%28Operators%29_term_%7B_%7D) 应用于 `:{ }` 和它在 `{ }` 中的应用一样，并且可以在某些情况下构造 [Block](https://docs.perl6.org/type/Block)。为了避免这种情况，可以直接实例化参数化哈希。还支持 `%` 标记变量的参数化：
+*小心*：Rakudo 的实现目前错误地将[相同的规则](https://rakudocs.github.io/routine/%7B%20%7D#%28Operators%29_term_%7B_%7D) 应用于 `:{ }` 和它在 `{ }` 中的应用一样，并且可以在某些情况下构造 [Block](https://rakudocs.github.io/type/Block)。为了避免这种情况，可以直接实例化参数化哈希。还支持 `%` 标记变量的参数化：
 
-*Note*: Rakudo implementation currently erroneously applies [the same rules](https://docs.perl6.org/routine/%7B%20%7D#%28Operators%29_term_%7B_%7D) for `:{ }` as it does for `{ }` and can construct a [Block](https://docs.perl6.org/type/Block) in certain circumstances. To avoid that, you can instantiate a parameterized Hash directly. Parameterization of `%`-sigiled variables is also supported:
+*Note*: Rakudo implementation currently erroneously applies [the same rules](https://rakudocs.github.io/routine/%7B%20%7D#%28Operators%29_term_%7B_%7D) for `:{ }` as it does for `{ }` and can construct a [Block](https://rakudocs.github.io/type/Block) in certain circumstances. To avoid that, you can instantiate a parameterized Hash directly. Parameterization of `%`-sigiled variables is also supported:
 
-```Perl6
+```Raku
 my Num %foo1      = "0" => 0e0; # Str keys and Num values 
 my     %foo2{Int} =  0  => "x"; # Int keys and Any values 
 my Num %foo3{Int} =  0  => 0e0; # Int keys and Num values 
@@ -342,7 +342,7 @@ Hash[Num,Int].new: 0, 0e0;      # Int keys and Num values
 
 Now if you want to define a hash to preserve the objects you are using as keys *as the **exact** objects you are providing to the hash to use as keys*, then object hashes are what you are looking for.
 
-```Perl6
+```Raku
 my %intervals{Instant};
 my $first-instant = now;
 %intervals{ $first-instant } = "Our first milestone.";
@@ -356,15 +356,15 @@ for %intervals.sort -> (:$key, :$value) {
 }
 ```
 
-此示例使用只接受类型为 [Instant](https://docs.perl6.org/type/Instant) 的键的对象哈希来实现基本的、但类型安全的日志记录机制。我们使用一个命名的 [state](https://docs.perl6.org/language/variables#The_state_declarator) 变量来跟踪前面的 `Instant`，以便提供一个间隔。
+此示例使用只接受类型为 [Instant](https://rakudocs.github.io/type/Instant) 的键的对象哈希来实现基本的、但类型安全的日志记录机制。我们使用一个命名的 [state](https://rakudocs.github.io/language/variables#The_state_declarator) 变量来跟踪前面的 `Instant`，以便提供一个间隔。
 
-This example uses an object hash that only accepts keys of type [Instant](https://docs.perl6.org/type/Instant) to implement a rudimentary, yet type-safe, logging mechanism. We utilize a named [state](https://docs.perl6.org/language/variables#The_state_declarator) variable for keeping track of the previous `Instant` so that we can provide an interval.
+This example uses an object hash that only accepts keys of type [Instant](https://rakudocs.github.io/type/Instant) to implement a rudimentary, yet type-safe, logging mechanism. We utilize a named [state](https://rakudocs.github.io/language/variables#The_state_declarator) variable for keeping track of the previous `Instant` so that we can provide an interval.
 
-对象散列的全部要点是将键作为对象保存在它们自身中。当前对象散列使用对象的 [WHICH](https://docs.perl6.org/routine/WHICH) 方法，该方法为每个可变对象返回唯一标识符。这是对象标识操作符（[===](https://docs.perl6.org/routine/===)）的基础。这里的顺序和容器真的很重要，因为 `.keys` 的顺序未定义，并且一个匿名列表与另一个列表使用 [===](https://docs.perl6.org/routine/===) 比较时不会有相等的时候。
+对象散列的全部要点是将键作为对象保存在它们自身中。当前对象散列使用对象的 [WHICH](https://rakudocs.github.io/routine/WHICH) 方法，该方法为每个可变对象返回唯一标识符。这是对象标识操作符（[===](https://rakudocs.github.io/routine/===)）的基础。这里的顺序和容器真的很重要，因为 `.keys` 的顺序未定义，并且一个匿名列表与另一个列表使用 [===](https://rakudocs.github.io/routine/===) 比较时不会有相等的时候。
 
-The whole point of object hashes is to keep keys as objects-in-themselves. Currently object hashes utilize the [WHICH](https://docs.perl6.org/routine/WHICH) method of an object, which returns a unique identifier for every mutable object. This is the keystone upon which the object identity operator ([===](https://docs.perl6.org/routine/===)) rests. Order and containers really matter here as the order of `.keys` is undefined and one anonymous list is never [===](https://docs.perl6.org/routine/===) to another.
+The whole point of object hashes is to keep keys as objects-in-themselves. Currently object hashes utilize the [WHICH](https://rakudocs.github.io/routine/WHICH) method of an object, which returns a unique identifier for every mutable object. This is the keystone upon which the object identity operator ([===](https://rakudocs.github.io/routine/===)) rests. Order and containers really matter here as the order of `.keys` is undefined and one anonymous list is never [===](https://rakudocs.github.io/routine/===) to another.
 
-```Perl6
+```Raku
 my %intervals{Instant};
 my $first-instant = now;
 %intervals{ $first-instant } = "Our first milestone.";
@@ -377,15 +377,15 @@ say ($first-instant, $second-instant) === %intervals.keys.sort; # OUTPUT: «Fals
 say $first-instant === %intervals.keys.sort[0];                 # OUTPUT: «True␤» 
 ```
 
-由于 `Instant` 定义了自己的比较方法，因此在我们的示例中，根据 [cmp](https://docs.perl6.org/routine/cmp) 进行的排序将始终提供最早的即时对象作为它返回的 [List](https://docs.perl6.org/type/List) 中的第一个元素。
+由于 `Instant` 定义了自己的比较方法，因此在我们的示例中，根据 [cmp](https://rakudocs.github.io/routine/cmp) 进行的排序将始终提供最早的即时对象作为它返回的 [List](https://rakudocs.github.io/type/List) 中的第一个元素。
 
-Since `Instant` defines its own comparison methods, in our example a sort according to [cmp](https://docs.perl6.org/routine/cmp) will always provide the earliest instant object as the first element in the [List](https://docs.perl6.org/type/List) it returns.
+Since `Instant` defines its own comparison methods, in our example a sort according to [cmp](https://rakudocs.github.io/routine/cmp) will always provide the earliest instant object as the first element in the [List](https://rakudocs.github.io/type/List) it returns.
 
-如果你想接受哈希中的任何对象，可以使用 [Any](https://docs.perl6.org/type/Any)！
+如果你想接受哈希中的任何对象，可以使用 [Any](https://rakudocs.github.io/type/Any)！
 
-If you would like to accept any object whatsoever in your hash, you can use [Any](https://docs.perl6.org/type/Any)!
+If you would like to accept any object whatsoever in your hash, you can use [Any](https://rakudocs.github.io/type/Any)!
 
-```Perl6
+```Raku
 my %h{Any};
 %h{(now)} = "This is an Instant";
 %h{(DateTime.now)} = "This is a DateTime, which is not an Instant";
@@ -396,7 +396,7 @@ my %h{Any};
 
 There is a more concise syntax which uses binding.
 
-```Perl6
+```Raku
 my %h := :{ (now) => "Instant", (DateTime.now) => "DateTime" };
 ```
 
@@ -404,11 +404,11 @@ my %h := :{ (now) => "Instant", (DateTime.now) => "DateTime" };
 
 The binding is necessary because an object hash is about very solid, specific objects, which is something that binding is great at keeping track of but about which assignment doesn't concern itself much.
 
-自从 6.d 发布以来，[`Junction`s](https://docs.perl6.org/type/Junction) 也可以用作哈希键。结果也将是与键同一类型的 `Junction`。
+自从 6.d 发布以来，[`Junction`s](https://rakudocs.github.io/type/Junction) 也可以用作哈希键。结果也将是与键同一类型的 `Junction`。
 
-Since 6.d was released, [`Junction`s](https://docs.perl6.org/type/Junction) can also be used as hash keys. The result will also be a `Junction` of the same type used as key.
+Since 6.d was released, [`Junction`s](https://rakudocs.github.io/type/Junction) can also be used as hash keys. The result will also be a `Junction` of the same type used as key.
 
-```Perl6
+```Raku
 my %hash = %( a => 1, b => 2, c=> 3);
 say %hash{"a"|"c"};   # OUTPUT: «any(1, 3)␤» 
 say %hash{"b"^"c"};   # OUTPUT: «one(2, 3)␤» 
@@ -419,7 +419,7 @@ say %hash{"a" & "c"}; # OUTPUT: «all(1, 3)␤»
 
 If a Junction of any kind is used to define a key, it will have the same effect of defining elements of the `Junction` as separate keys:
 
-```Perl6
+```Raku
 my %hash = %( "a"|"b" => 1, c => 2 );
 say %hash{"b"|"c"};       # OUTPUT: «any(1, 2)␤» 
 ```
@@ -431,7 +431,7 @@ say %hash{"b"|"c"};       # OUTPUT: «any(1, 2)␤»
 
 Place a type object in-between the declarator and the name to constrain the type of all values of a `Hash`.
 
-```Perl6
+```Raku
 my Int %h;
 put %h<Goku>   = 900;
  
@@ -449,7 +449,7 @@ try {
 
 You can do the same by a more readable syntax.
 
-```Perl6
+```Raku
 my %h of Int; # the same as my Int %h
 ```
 
@@ -457,7 +457,7 @@ my %h of Int; # the same as my Int %h
 
 If you want to constraint the type of all keys of a `Hash`, add `{Type}` following the name of variable.
 
-```Perl6
+```Raku
 my %h{Int};
 ```
 
@@ -465,7 +465,7 @@ my %h{Int};
 
 Even put these two constraints together.
 
-```Perl6
+```Raku
 my %h{Int} of Int;
 put %h{21} = 42;
  
@@ -498,7 +498,7 @@ try {
 
 A common idiom for processing the elements in a hash is to loop over the keys and values, for instance,
 
-```Perl6
+```Raku
 my %vowels = 'a' => 1, 'e' => 2, 'i' => 3, 'o' => 4, 'u' => 5;
 for %vowels.kv -> $vowel, $index {
   "$vowel: $index".say;
@@ -509,7 +509,7 @@ for %vowels.kv -> $vowel, $index {
 
 gives output similar to this:
 
-```Perl6
+```Raku
 a: 1
 e: 2
 o: 4
@@ -525,7 +525,7 @@ where we have used the `kv` method to extract the keys and their respective valu
 
 Note that the order of the keys and values printed cannot be relied upon; the elements of a hash are not always stored the same way in memory for different runs of the same program. In fact, since version 2018.05, the order is guaranteed to be different in every invocation. Sometimes one wishes to process the elements sorted on, e.g., the keys of the hash. If one wishes to print the list of vowels in alphabetical order then one would write
 
-```Perl6
+```Raku
 my %vowels = 'a' => 1, 'e' => 2, 'i' => 3, 'o' => 4, 'u' => 5;
 for %vowels.sort(*.key)>>.kv -> ($vowel, $index) {
   "$vowel: $index".say;
@@ -536,7 +536,7 @@ for %vowels.sort(*.key)>>.kv -> ($vowel, $index) {
 
 which prints
 
-```Perl6
+```Raku
 a: 1
 e: 2
 i: 3
@@ -544,22 +544,22 @@ o: 4
 u: 5
 ```
 
-按字母顺序排列。为了达到这个结果，我们按键对元音散列进行排序（`%vowels.sort(*.key)`），然后通过一元超级运算符 `>>` 向每个元素应用 `.kv` 方法来请求其键和值，从而生成键/值列表的[列表](https://docs.perl6.org/type/List)。要提取键/值，需要将变量括在括号中。
+按字母顺序排列。为了达到这个结果，我们按键对元音散列进行排序（`%vowels.sort(*.key)`），然后通过一元超级运算符 `>>` 向每个元素应用 `.kv` 方法来请求其键和值，从而生成键/值列表的[列表](https://rakudocs.github.io/type/List)。要提取键/值，需要将变量括在括号中。
 
-in alphabetical order as desired. To achieve this result, we sorted the hash of vowels by key (`%vowels.sort(*.key)`) which we then ask for its keys and values by applying the `.kv` method to each element via the unary `>>` hyperoperator resulting in a [List](https://docs.perl6.org/type/List) of key/value lists. To extract the key/value the variables thus need to be wrapped in parentheses.
+in alphabetical order as desired. To achieve this result, we sorted the hash of vowels by key (`%vowels.sort(*.key)`) which we then ask for its keys and values by applying the `.kv` method to each element via the unary `>>` hyperoperator resulting in a [List](https://rakudocs.github.io/type/List) of key/value lists. To extract the key/value the variables thus need to be wrapped in parentheses.
 
 An alternative solution is to flatten the resulting list. Then the key/value pairs can be accessed in the same way as with plain `.kv`:
 
-```Perl6
+```Raku
 my %vowels = 'a' => 1, 'e' => 2, 'i' => 3, 'o' => 4, 'u' => 5;
 for %vowels.sort(*.key)>>.kv.flat -> $vowel, $index {
   "$vowel: $index".say;
 }
 ```
 
-你还可以使用 [destructuring](https://docs.perl6.org/type/Signature#Destructuring_arguments) 遍历 `Hash`。
+你还可以使用 [destructuring](https://rakudocs.github.io/type/Signature#Destructuring_arguments) 遍历 `Hash`。
 
-You can also loop over a `Hash` using [destructuring](https://docs.perl6.org/type/Signature#Destructuring_arguments).
+You can also loop over a `Hash` using [destructuring](https://rakudocs.github.io/type/Signature#Destructuring_arguments).
 
 <a id="%E5%B0%B1%E5%9C%B0%E7%BC%96%E8%BE%91%E5%80%BC--in-place-editing-of-values"></a>
 ## 就地编辑值 / In place editing of values
@@ -568,7 +568,7 @@ You can also loop over a `Hash` using [destructuring](https://docs.perl6.org/typ
 
 There may be times when you would like to modify the values of a hash while iterating over them.
 
-```Perl6
+```Raku
 my %answers = illuminatus => 23, hitchhikers => 42;
 # OUTPUT: «hitchhikers => 42, illuminatus => 23» 
 for %answers.values -> $v { $v += 10 }; # Fails 
@@ -580,7 +580,7 @@ CATCH { default { put .^name, ': ', .Str } };
 
 This is traditionally accomplished by sending both the key and the value as follows.
 
-```Perl6
+```Raku
 my %answers = illuminatus => 23, hitchhikers => 42;
 for %answers.kv -> $k,$v { %answers{$k} = $v + 10 };
 ```
@@ -589,7 +589,7 @@ for %answers.kv -> $k,$v { %answers{$k} = $v + 10 };
 
 However, it is possible to leverage the signature of the block in order to specify that you would like read-write access to the values.
 
-```Perl6
+```Raku
 my %answers = illuminatus => 23, hitchhikers => 42;
 for %answers.values -> $v is rw { $v += 10 };
 ```
@@ -598,7 +598,7 @@ for %answers.values -> $v is rw { $v += 10 };
 
 It is not possible directly to do in-place editing of hash keys, even in the case of object hashes; however, a key can be deleted and a new key/value pair added to achieve the same results. For example, given this hash:
 
-```Perl6
+```Raku
 my %h = a => 1, b => 2;
 for %h.keys.sort -> $k {
     # use sort to ease output comparisons 
@@ -611,7 +611,7 @@ say ''; # OUTPUT: «a => 1; b => 2;»␤
 
 replace key 'b' with 'bb' but retain 'b's value as the new key's value:
 
-```Perl6
+```Raku
 for %h.keys -> $k {
     if $k eq 'b' {
         my $v = %h{$k};

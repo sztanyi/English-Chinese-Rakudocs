@@ -1,4 +1,4 @@
-原文：https://docs.perl6.org/language/101-basics
+原文：https://rakudocs.github.io/language/101-basics
 
 # Perl 6 by example P6-101
 
@@ -104,7 +104,7 @@ my @names = $file.get.words;
 
 The right-hand side calls a *method* --a named group of behavior-- named `get` on the filehandle stored in `$file`. The `get`method reads and returns one line from the file, removing the line ending. If you print the contents of `$file` after calling `get`, you will see that the first line is no longer in there. `words` is also a method, called on the string returned from `get`. `words`decomposes its *invocant*--the string on which it operates--into a list of words, which here means strings separated by whitespace. It turns the single string `'Beth Ana Charlie Dave'` into the list of strings `'Beth', 'Ana', 'Charlie', 'Dave'`.
 
-Finally, this list gets stored in the [Array](https://docs.perl6.org/type/Array) `@names`. The `@` sigil marks the declared variable as an `Array`. Arrays store ordered lists.
+Finally, this list gets stored in the [Array](https://rakudocs.github.io/type/Array) `@names`. The `@` sigil marks the declared variable as an `Array`. Arrays store ordered lists.
 
 ```Perl6
 my %matches;
@@ -250,7 +250,7 @@ Arrays within curly braces are interpolated with a single space character betwee
 
 Let's see an example of this now.
 
-In this example, you will see some special syntax that makes it easier to make a list of strings. This is the `<...> `[quote-words](https://docs.perl6.org/language/operators#index-entry-qw-quote-words-quote-words)construct. When you put words in between the < and > they are all assumed to be strings, so you do not need to wrap them each in double quotes `"..." `.
+In this example, you will see some special syntax that makes it easier to make a list of strings. This is the `<...> `[quote-words](https://rakudocs.github.io/language/operators#index-entry-qw-quote-words-quote-words)construct. When you put words in between the < and > they are all assumed to be strings, so you do not need to wrap them each in double quotes `"..." `.
 
 ```Perl6
 say "Math: { 1 + 2 }";                  # OUTPUT: «Math: 3␤» 
@@ -285,7 +285,7 @@ say "we have @flavors.sort.join(', ')";
                                 # OUTPUT: «we have peach, vanilla␤» 
 ```
 
-# [Exercises](https://docs.perl6.org/language/101-basics#___top)
+# [Exercises](https://rakudocs.github.io/language/101-basics#___top)
 
 **1.** The input format of the example program is redundant: the first line containing the name of all players is not necessary, because you can find out which players participated in the tournament by looking at their names in the subsequent rows.
 
@@ -305,7 +305,7 @@ my @sorted = %sets.keys.sort({ %sets{$_} }).sort({ %matches{$_} }).reverse;
 
 **2.** Instead of deleting the redundant `@names` variable, you can also use it to warn if a player appears that wasn't mentioned in the first line, for example due to a typo. How would you modify your program to achieve that?
 
-Hint: Try using [membership operators](https://docs.perl6.org/routine/(elem)).
+Hint: Try using [membership operators](https://rakudocs.github.io/routine/(elem)).
 
 **Answer:** Change `@names` to `@valid-players`. When looping through the lines of the file, check to see that `$p1` and `$p2` are in `@valid-players`. Note that for membership operators you can also use `(elem)` and `!(elem)`.
 

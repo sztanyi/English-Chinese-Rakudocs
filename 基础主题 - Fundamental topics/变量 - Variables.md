@@ -1,14 +1,14 @@
-原文：https://docs.perl6.org/language/variables
+原文：https://rakudocs.github.io/language/variables
 
 # 变量 / Variables
 
-Perl 6 中的变量
+Raku 中的变量
 
-Variables in Perl 6
+Variables in Raku
 
-变量名字以一种叫做标记的特殊字符开头，后面跟着叫 twigil 的特殊字符最后才是[识别符](https://docs.perl6.org/language/syntax#Identifiers)，前面两个特殊符号都是可选的。变量是值或者[容器](https://docs.perl6.org/language/containers)符号名称。定义变量或者给变量赋值会直接生成容器。
+变量名字以一种叫做标记的特殊字符开头，后面跟着叫 twigil 的特殊字符最后才是[识别符](https://rakudocs.github.io/language/syntax#Identifiers)，前面两个特殊符号都是可选的。变量是值或者[容器](https://rakudocs.github.io/language/containers)符号名称。定义变量或者给变量赋值会直接生成容器。
 
-Variable names can start with or without a special character called a *sigil*, followed optionally by a second special character named *twigil* and then an [identifier](https://docs.perl6.org/language/syntax#Identifiers). Variables are symbolic names for values or [containers](https://docs.perl6.org/language/containers). Variable declarations or assignment of values may create a container on the fly.
+Variable names can start with or without a special character called a *sigil*, followed optionally by a second special character named *twigil* and then an [identifier](https://rakudocs.github.io/language/syntax#Identifiers). Variables are symbolic names for values or [containers](https://rakudocs.github.io/language/containers). Variable declarations or assignment of values may create a container on the fly.
 
 # 目录 / Table of Contents
 
@@ -19,12 +19,12 @@ Variable names can start with or without a special character called a *sigil*, 
     - [无标记变量 / Sigilless variables](#%E6%97%A0%E6%A0%87%E8%AE%B0%E5%8F%98%E9%87%8F--sigilless-variables)
 - [符号 / Twigils](#%E7%AC%A6%E5%8F%B7--twigils)
     - [`*` 号](#-%E5%8F%B7)
-    - [`?` 号](#wenhao)
-    - [`!` 号](#gantanhao)
-    - [`.` 号](#juhao)
-    - [`^` 号](#yihuo)
-    - [`:` 号](#fenhao)
-    - [`=` 号](#denghao)
+    - [`?` 号](#-%E5%8F%B7-1)
+    - [`!` 号](#-%E5%8F%B7-2)
+    - [`.` 号](#-%E5%8F%B7-3)
+    - [`^` 号](#%5E-%E5%8F%B7)
+    - [`:` 号](#-%E5%8F%B7-4)
+    - [`=` 号](#-%E5%8F%B7-5)
     - [`~` 号](#%7E-%E5%8F%B7)
 - [变量声明符和作用域 / Variable declarators and scope](#%E5%8F%98%E9%87%8F%E5%A3%B0%E6%98%8E%E7%AC%A6%E5%92%8C%E4%BD%9C%E7%94%A8%E5%9F%9F--variable-declarators-and-scope)
     - [`my` 声明符](#my-%E5%A3%B0%E6%98%8E%E7%AC%A6)
@@ -99,9 +99,9 @@ Variable names can start with or without a special character called a *sigil*, 
 
 There are four sigils. The scalar-sigil `$`, the positional-sigil `@`, the associative-sigil `%` and the callable-sigil `&`.
 
-标记链接了语法，类型系统和[容器](https://docs.perl6.org/language/containers)。这些标记为最常见的类型约束提供快捷方式，当声明变量以及为[字符串插值](https://docs.perl6.org/language/quoting#Interpolation%3A_qq)充当标记时。[位置标记](https://docs.perl6.org/language/containers#Flattening%2C_items_and_containers)和[关联标记](https://docs.perl6.org/language/containers#Flattening%2C_items_and_containers)起到了类型约束的作用，使基础类型[下标](https://docs.perl6.org/language/subscripts#Custom_types)需要知道分派给哪些方法。可调用标记对函数调用起到了同样的作用。可调用标记还会告诉编译器哪些括号可以省略。位置和关联签名也可以通过默认情况下展平来简化赋值。
+标记链接了语法，类型系统和[容器](https://rakudocs.github.io/language/containers)。这些标记为最常见的类型约束提供快捷方式，当声明变量以及为[字符串插值](https://rakudocs.github.io/language/quoting#Interpolation%3A_qq)充当标记时。[位置标记](https://rakudocs.github.io/language/containers#Flattening%2C_items_and_containers)和[关联标记](https://rakudocs.github.io/language/containers#Flattening%2C_items_and_containers)起到了类型约束的作用，使基础类型[下标](https://rakudocs.github.io/language/subscripts#Custom_types)需要知道分派给哪些方法。可调用标记对函数调用起到了同样的作用。可调用标记还会告诉编译器哪些括号可以省略。位置和关联签名也可以通过默认情况下展平来简化赋值。
 
-Sigils provide a link between syntax, the type system and [containers](https://docs.perl6.org/language/containers). They provide a shortcut for the most common type constraints when declaring variables and serve as markers for [string interpolation](https://docs.perl6.org/language/quoting#Interpolation%3A_qq). The [positional-sigil](https://docs.perl6.org/language/containers#Flattening%2C_items_and_containers) and the [associative-sigil](https://docs.perl6.org/language/containers#Flattening%2C_items_and_containers) provide type constraint that enforce a base type [subscripts](https://docs.perl6.org/language/subscripts#Custom_types) require to know what methods to dispatch to. The [callable-sigil](https://docs.perl6.org/language/containers#Callable_containers) does the same for function calls. The latter also tells the compiler where parentheses for calls can be omitted. The positional and associative-sigil also simplify assignment by flattening by default.
+Sigils provide a link between syntax, the type system and [containers](https://rakudocs.github.io/language/containers). They provide a shortcut for the most common type constraints when declaring variables and serve as markers for [string interpolation](https://rakudocs.github.io/language/quoting#Interpolation%3A_qq). The [positional-sigil](https://rakudocs.github.io/language/containers#Flattening%2C_items_and_containers) and the [associative-sigil](https://rakudocs.github.io/language/containers#Flattening%2C_items_and_containers) provide type constraint that enforce a base type [subscripts](https://rakudocs.github.io/language/subscripts#Custom_types) require to know what methods to dispatch to. The [callable-sigil](https://rakudocs.github.io/language/containers#Callable_containers) does the same for function calls. The latter also tells the compiler where parentheses for calls can be omitted. The positional and associative-sigil also simplify assignment by flattening by default.
 
 | 标记 | 类型约束                | 默认类型 | 赋值 | 例子                        |
 | ---- | ----------------------- | -------- | ---- | --------------------------- |
@@ -112,7 +112,7 @@ Sigils provide a link between syntax, the type system and [containers](https://
 
 Examples:
 
-```Perl6
+```Raku
 my $square = 9 ** 2;
 my @array  = 1, 2, 3;   # Array variable with three elements 
 my %hash   = London => 'UK', Berlin => 'Germany';
@@ -122,7 +122,7 @@ my %hash   = London => 'UK', Berlin => 'Germany';
 
 The container type can be set with `is` in a declaration.
 
-```Perl6
+```Raku
 class FailHash is Hash {
     has Bool $!final = False;
     multi method AT-KEY ( ::?CLASS:D: Str:D \key ){
@@ -144,9 +144,9 @@ CATCH { default { put .^name, ': ', .Str } }
 # OUTPUT: «X::OutOfRange: Hash key out of range. Is: cherry, should be in (oranges bananas)» 
 ```
 
-无标记的变量信息见 [sigilless variables](https://docs.perl6.org/language/variables#Sigilless_variables).
+无标记的变量信息见 [sigilless variables](https://rakudocs.github.io/language/variables#Sigilless_variables).
 
-For information on variables without sigils, see [sigilless variables](https://docs.perl6.org/language/variables#Sigilless_variables).
+For information on variables without sigils, see [sigilless variables](https://rakudocs.github.io/language/variables#Sigilless_variables).
 
 <a id="%E5%8D%95%E6%9D%A1%E7%9B%AE%E5%92%8C%E5%88%97%E8%A1%A8%E8%B5%8B%E5%80%BC--item-and-list-assignment"></a>
 ## 单条目和列表赋值 / Item and List Assignment
@@ -163,15 +163,15 @@ Item assignment places the value from the right-hand side into the variable (con
 
 List assignment leaves the choice of what to do to the variable on the left.
 
-例如，[列表](https://docs.perl6.org/type/Array)变量（`@` 标记）在列表赋值时首先将自己清空然后接受右边所有的值。
+例如，[列表](https://rakudocs.github.io/type/Array)变量（`@` 标记）在列表赋值时首先将自己清空然后接受右边所有的值。
 
-For example, [Array](https://docs.perl6.org/type/Array) variables (`@` sigil) empty themselves on list assignment and then put all the values from the right-hand side into themselves.
+For example, [Array](https://rakudocs.github.io/type/Array) variables (`@` sigil) empty themselves on list assignment and then put all the values from the right-hand side into themselves.
 
 赋值的类型（单条目或者列表）由当前表达式或声明语句的第一个上下文决定。
 
 The type of assignment (item or list) is decided by the first context seen in the current expression or declarator:
 
-```Perl6
+```Raku
 my $foo = 5;            # item assignment 
 say $foo.perl;          # OUTPUT: «5» 
  
@@ -192,7 +192,7 @@ Thus, the behavior of an assignment contained within a list assignment depends o
 
 For instance, if the internal assignment is a declarator, item assignment is used, which has tighter precedence than both the comma and the list assignment:
 
-```Perl6
+```Raku
 my @array;
 @array = my $num = 42, "str";   # item assignment: uses declarator 
 say @array.perl;                # OUTPUT: «[42, "str"]» (an Array) 
@@ -203,7 +203,7 @@ say $num.perl;                  # OUTPUT: «42» (a Num)�
 
 Similarly, if the internal assignment is an expression that is being used as an initializer for a declarator, the context of the internal expression determines the assignment type:
 
-```Perl6
+```Raku
 my $num;
 my @array = $num = 42, "str";    # item assignment: uses expression 
 say @array.perl;                 # OUTPUT: «[42, "str"]» (an Array) 
@@ -219,7 +219,7 @@ say $bar.perl;                   # OUTPUT: «$(42, "str")
 
 However, if the internal assignment is neither a declarator nor an expression, but is part of a larger expression, the context of the larger expression determines the assignment type:
 
-```Perl6
+```Raku
 my ( @array, $num );
 @array = $num = 42, "str";    # list assignment 
 say @array.perl;              # OUTPUT: «[42, "str"]» 
@@ -230,9 +230,9 @@ say $num.perl;                # OUTPUT: «42» 
 
 The assignment expression is parsed as `@array = (($num = 42), "str")`, because item assignment has tighter precedence than the comma.
 
-更多关于优先级的细节见[操作符](https://docs.perl6.org/language/operators) 。
+更多关于优先级的细节见[操作符](https://rakudocs.github.io/language/operators) 。
 
-See [operators](https://docs.perl6.org/language/operators) for more details on precedence.
+See [operators](https://rakudocs.github.io/language/operators) for more details on precedence.
 
 <a id="%E6%97%A0%E6%A0%87%E8%AE%B0%E5%8F%98%E9%87%8F--sigilless-variables"></a>
 ## 无标记变量 / Sigilless variables
@@ -241,16 +241,16 @@ See [operators](https://docs.perl6.org/language/operators) for more details on
 
 Using the `\` prefix, it's possible to create variables that do not have a sigil:
 
-```Perl6
+```Raku
 my \degrees = pi / 180;
 my \θ       = 15 * degrees;
 ```
 
-注意，无标记变量没有关联的[容器](https://docs.perl6.org/language/containers)。这意味着上面例子中的 `degrees` 和  `θ` 实际上表示的是 Num。尝试在定义变量后赋值可以详细说明这一点：
+注意，无标记变量没有关联的[容器](https://rakudocs.github.io/language/containers)。这意味着上面例子中的 `degrees` 和  `θ` 实际上表示的是 Num。尝试在定义变量后赋值可以详细说明这一点：
 
-Note that sigilless variable do not have associated [containers](https://docs.perl6.org/language/containers). This means `degrees` and `θ`, above, actually directly represent `Num`s. To illustrate, try assigning to one after you've defined it:
+Note that sigilless variable do not have associated [containers](https://rakudocs.github.io/language/containers). This means `degrees` and `θ`, above, actually directly represent `Num`s. To illustrate, try assigning to one after you've defined it:
 
-```Perl6
+```Raku
 θ = 3; # Dies with the error "Cannot modify an immutable Num" 
 ```
 
@@ -258,7 +258,7 @@ Note that sigilless variable do not have associated [containers](https://docs.p
 
 Sigilless variables do not enforce context, so they can be used to pass something on as-is:
 
-```Perl6
+```Raku
 sub logged(&f, |args) {
     say('Calling ' ~ &f.name ~ ' with arguments ' ~ args.perl);
     my \result = f(|args);
@@ -268,9 +268,9 @@ sub logged(&f, |args) {
 }
 ```
 
-无标记变量也能用作绑定。更多信息见 [绑定](https://docs.perl6.org/language/containers#Binding) 。
+无标记变量也能用作绑定。更多信息见 [绑定](https://rakudocs.github.io/language/containers#Binding) 。
 
-Sigilless variables can also be used for binding. See [Binding](https://docs.perl6.org/language/containers#Binding) for more information.
+Sigilless variables can also be used for binding. See [Binding](https://rakudocs.github.io/language/containers#Binding) for more information.
 
 <a id="%E7%AC%A6%E5%8F%B7--twigils"></a>
 # 符号 / Twigils
@@ -316,7 +316,7 @@ This twigil is used for dynamic variables which are looked up through the caller
 
 *Note:* So far, if you use rakudo perl6, the example below cannot run correctly in the REPL. Please test it by copy-pasting it into a file, then run the file.
 
-```Perl6
+```Raku
 my $lexical   = 1;
 my $*dynamic1 = 10;
 my $*dynamic2 = 100;
@@ -342,11 +342,11 @@ say-all();  # OUTPUT: 1, 10, 101 
 
 The first time `&say-all` is called, it prints "`1, 10, 100`" just as one would expect. The second time though, it prints "`1, 11, 101`". This is because `$lexical` isn't looked up in the caller's scope but in the scope `&say-all` was defined in. The two dynamic variables are looked up in the caller's scope and therefore have the values `11` and `101`. The third time `&say-all` is called `$*dynamic1` isn't `11`anymore, but `$*dynamic2` is still `101`. This stems from the fact that we declared a new dynamic variable `$*dynamic1` in the block and did not assign to the old variable as we did with `$*dynamic2`.
 
-动态变量与其他变量不同之处在于，引用一个没有声明的动态变量不是一个编译时错误而是一个运行时[错误](https://docs.perl6.org/type/Failure)。因此动态变量可以不用声明便使用，只要在使用前检查了是否定义或者在布尔上下文中被用到：
+动态变量与其他变量不同之处在于，引用一个没有声明的动态变量不是一个编译时错误而是一个运行时[错误](https://rakudocs.github.io/type/Failure)。因此动态变量可以不用声明便使用，只要在使用前检查了是否定义或者在布尔上下文中被用到：
 
-The dynamic variables differ from other variable types in that referring to an undeclared dynamic variable is not a compile time error but a runtime [failure](https://docs.perl6.org/type/Failure), so a dynamic variable can be used undeclared as long as it's checked for definedness or used in a boolean context before using it for anything else:
+The dynamic variables differ from other variable types in that referring to an undeclared dynamic variable is not a compile time error but a runtime [failure](https://rakudocs.github.io/type/Failure), so a dynamic variable can be used undeclared as long as it's checked for definedness or used in a boolean context before using it for anything else:
 
-```Perl6
+```Raku
 sub foo() {
     $*FOO // 'foo';
 }
@@ -362,31 +362,31 @@ say foo; # OUTPUT: «bar» 
 
 Dynamic variables can have lexical scope when declared with `my` or package scope when declared with `our`. Dynamic resolution and resolution through symbol tables introduced with `our` are two orthogonal issues.
 
-<a id="wenhao"></a>
+<a id="-%E5%8F%B7-1"></a>
 ## `?` 号
 
 编译时变量使用 `?` 号。这个变量就会被编译器知晓，并且在变量编译进去后不能修改。一个常见的例子是：
 
 Compile-time variables may be addressed via the `?` twigil. They are known to the compiler and may not be modified after being compiled in. A popular example for this is:
 
-```Perl6
+```Raku
 say "$?FILE: $?LINE"; # OUTPUT: "hello.pl: 23" 
                       # if this is the line 23 of a 
                       # file named "hello.pl" 
 ```
 
-如果想要这些特殊变量的列表，可以参考[编译时变量](https://docs.perl6.org/language/variables#Compile-time_variables).
+如果想要这些特殊变量的列表，可以参考[编译时变量](https://rakudocs.github.io/language/variables#Compile-time_variables).
 
-For a list of these special variables, see [compile-time variables](https://docs.perl6.org/language/variables#Compile-time_variables).
+For a list of these special variables, see [compile-time variables](https://rakudocs.github.io/language/variables#Compile-time_variables).
 
-<a id="gantanhao"></a>
+<a id="-%E5%8F%B7-2"></a>
 ## `!` 号
 
 属性是存在于类实例中的变量。他们可以在类中通过 `!` 号被直接访问：
 
-[Attributes](https://docs.perl6.org/language/objects#Attributes) are variables that exist per instance of a class. They may be directly accessed from within the class via `!`:
+[Attributes](https://rakudocs.github.io/language/objects#Attributes) are variables that exist per instance of a class. They may be directly accessed from within the class via `!`:
 
-```Perl6
+```Raku
 my class Point {
     has $.x;
     has $.y;
@@ -397,18 +397,18 @@ my class Point {
 }
 ```
 
-注意属性是如何通过 `$.x` 和 `$.y` 声明却通过 `$!x` 和 `$!y` 来访问的。这是因为 Perl 6 中所有的属性都是私有的而且可以在类中通过 `$!attribute-name` 直接访问。Perl 6 会直接为你生成访问器方法。更多关于对象，类和他们的属性的信息见 [object orientation](https://docs.perl6.org/language/objects) 。
+注意属性是如何通过 `$.x` 和 `$.y` 声明却通过 `$!x` 和 `$!y` 来访问的。这是因为 Raku 中所有的属性都是私有的而且可以在类中通过 `$!attribute-name` 直接访问。Raku 会直接为你生成访问器方法。更多关于对象，类和他们的属性的信息见 [object orientation](https://rakudocs.github.io/language/objects) 。
 
-Note how the attributes are declared as `$.x` and `$.y` but are still accessed via `$!x` and `$!y`. This is because in Perl 6 all attributes are private and can be directly accessed within the class by using `$!attribute-name`. Perl 6 may automatically generate accessor methods for you though. For more details on objects, classes and their attributes see [object orientation](https://docs.perl6.org/language/objects).
+Note how the attributes are declared as `$.x` and `$.y` but are still accessed via `$!x` and `$!y`. This is because in Raku all attributes are private and can be directly accessed within the class by using `$!attribute-name`. Raku may automatically generate accessor methods for you though. For more details on objects, classes and their attributes see [object orientation](https://rakudocs.github.io/language/objects).
 
-<a id="juhao"></a>
+<a id="-%E5%8F%B7-3"></a>
 ## `.` 号
 
 `.` 号事实上不是给变量用的，下面代码
 
 The `.` twigil isn't really for variables at all. In fact, something along the lines of
 
-```Perl6
+```Raku
 my class Point {
     has $.x;
     has $.y;
@@ -427,7 +427,7 @@ just calls the methods `x` and `y` on `self`, which are automatically gener
 
 The fact that the `.` twigil does a method call implies that the following is also possible:
 
-```Perl6
+```Raku
 class SaySomething {
     method a() { say "a"; }
     method b() { $.a; }
@@ -436,18 +436,18 @@ class SaySomething {
 SaySomething.b; # OUTPUT: «a» 
 ```
 
-更多关于对象，类和他们的属性的信息见 [面向对象](https://docs.perl6.org/language/objects) 。
+更多关于对象，类和他们的属性的信息见 [面向对象](https://rakudocs.github.io/language/objects) 。
 
-For more details on objects, classes and their attributes and methods see [object orientation](https://docs.perl6.org/language/objects).
+For more details on objects, classes and their attributes and methods see [object orientation](https://rakudocs.github.io/language/objects).
 
-<a id="yihuo"></a>
+<a id="%5E-%E5%8F%B7"></a>
 ## `^` 号
 
 ^ 号为代码块或者函数声明正式的位置参数。`$^variable` 形式的变量是占位符变量。他们可以用在裸代码块中来声明代码块的正式参数。因此下面代码中的代码块
 
 The `^` twigil declares a formal positional parameter to blocks or subroutines. Variables of the form `$^variable` are a type of placeholder variable. They may be used in bare blocks to declare formal parameters to that block. So the block in the code
 
-```Perl6
+```Raku
 my @powers-of-three = 1,3,9…100;
 say reduce { $^b - $^a }, 0, |@powers-of-three;
 # OUTPUT: «61» 
@@ -465,7 +465,7 @@ Although it is possible to use nearly any valid identifier as a placeholder vari
 
 Normal blocks and subroutines may also make use of placeholder variables but only if they do not have an explicit parameter list.
 
-```Perl6
+```Raku
 sub say-it    { say $^a; } # valid 
 sub say-it()  { say $^a; } # invalid 
               { say $^a; } # valid 
@@ -476,7 +476,7 @@ sub say-it()  { say $^a; } # invalid 
 
 Placeholder variables cannot have type constraints or a variable name with a single upper-case letter (this is disallowed to enable catching some Perl5-isms).
 
-<a id="fenhao"></a>
+<a id="-%E5%8F%B7-4"></a>
 ## `:` 号
 
 `:` 号为块或子例程声明一个正式的命名参数。以这种形式声明的变量也是一种占位符变量。
@@ -485,23 +485,23 @@ Placeholder variables cannot have type constraints or a variable name with a sin
 
 The `:` twigil declares a formal named parameter to a block or subroutine. Variables declared using this form are a type of placeholder variable too. Therefore the same things that apply to variables declared using the `^` twigil also apply here (with the exception that they are not positional and therefore not ordered using Unicode order, of course). So this:
 
-```Perl6
+```Raku
 say { $:add ?? $^a + $^b !! $^a - $^b }( 4, 5 ) :!add
 # OUTPUT: «-1» 
 ```
 
-更多占位符变量细节见 [^](https://docs.perl6.org/routine/$CIRCUMFLEX_ACCENT) 。
+更多占位符变量细节见 [^](https://rakudocs.github.io/routine/$CIRCUMFLEX_ACCENT) 。
 
-See [^](https://docs.perl6.org/routine/$CIRCUMFLEX_ACCENT) for more details about placeholder variables.
+See [^](https://rakudocs.github.io/routine/$CIRCUMFLEX_ACCENT) for more details about placeholder variables.
 
-<a id="denghao"></a>
+<a id="-%E5%8F%B7-5"></a>
 ## `=` 号
 
 = 号用于访问 Pod 变量。当前文件中的每个 Pod 块可以通过 Pod 对象访问，例如 `$=data`，`$=SYNOPSIS` 或 `=UserBlock`。即变量有着跟 Pod 块相同的名字以及一个 `=` 号。
 
 The `=` twigil is used to access Pod variables. Every Pod block in the current file can be accessed via a Pod object, such as `$=data`, `$=SYNOPSIS` or `=UserBlock`. That is: a variable with the same name of the desired block and a `=` twigil.
 
-```Perl6
+```Raku
   =begin code
   =begin Foo
   ...
@@ -537,7 +537,7 @@ The `~` twigil is for referring to sublanguages (called slangs). The following
 
 You `augment` these languages in your current lexical scope.
 
-```Perl6
+```Raku
 use MONKEY-TYPING;
 augment slang Regex {  # derive from $~Regex and then modify $~Regex 
     token backslash:std<\Y> { YY };
@@ -551,14 +551,14 @@ augment slang Regex {  # derive from $~Regex and then modify $~Regex
 
 Most of the time it's enough to create a new variable using the `my` keyword:
 
-```Perl6
+```Raku
 my $amazing-variable = "World";
 say "Hello $amazing-variable!"; # OUTPUT: «Hello World!» 
 ```
 
-但是，有许多声明符可以改变作用域的一些细节，这超越了[符号](https://docs.perl6.org/language/variables#Twigils)所能做的。
+但是，有许多声明符可以改变作用域的一些细节，这超越了[符号](https://rakudocs.github.io/language/variables#Twigils)所能做的。
 
-However, there are many declarators that change the details of scoping beyond what [Twigils](https://docs.perl6.org/language/variables#Twigils) can do.
+However, there are many declarators that change the details of scoping beyond what [Twigils](https://rakudocs.github.io/language/variables#Twigils) can do.
 
 | 声明符    | 作用                             |
 | --------- | -------------------------------- |
@@ -596,7 +596,7 @@ There are also two prefixes that resemble declarators but act on predefined vari
 
 Declaring a variable with `my` gives it lexical scope. This means it only exists within the current block. For example:
 
-```Perl6
+```Raku
 {
     my $foo = "bar";
     say $foo; # OUTPUT: «"bar"» 
@@ -612,7 +612,7 @@ This dies because `$foo` is only defined as long as we are in the same scope.
 
 Additionally, lexical scoping means that variables can be temporarily redefined in a new scope:
 
-```Perl6
+```Raku
 my $location = "outside";
  
 sub outer-location {
@@ -636,7 +636,7 @@ outer-location; # OUTPUT: «outside» 
 
 If a variable has been redefined, any code that referenced the outer variable will continue to reference the outer variable. So here, `&outer-location` still prints the outer `$location`:
 
-```Perl6
+```Raku
 sub new-location {
     my $location = "nowhere";
     outer-location;
@@ -645,9 +645,9 @@ sub new-location {
 new-location; # OUTPUT: «outside» 
 ```
 
-要使 `new-location()` 打印出 `nowhere`，使用 [* 号](https://docs.perl6.org/language/variables#The_%2A_Twigil) 使 `$location` 成为一个动态变量。这个符号让编译器在调用者的作用域查找变量符号，而不是查完本地作用域没找到后查外部作用域。
+要使 `new-location()` 打印出 `nowhere`，使用 [* 号](https://rakudocs.github.io/language/variables#The_%2A_Twigil) 使 `$location` 成为一个动态变量。这个符号让编译器在调用者的作用域查找变量符号，而不是查完本地作用域没找到后查外部作用域。
 
-To make `new-location()` print `nowhere`, make `$location` a dynamic variable using [the * twigil](https://docs.perl6.org/language/variables#The_%2A_Twigil). This twigil makes the compiler look up the symbol in the calling scope instead of the outer scope after trying the local scope.
+To make `new-location()` print `nowhere`, make `$location` a dynamic variable using [the * twigil](https://rakudocs.github.io/language/variables#The_%2A_Twigil). This twigil makes the compiler look up the symbol in the calling scope instead of the outer scope after trying the local scope.
 
 `my` 是子例程的默认作用域，因此 `my sub x() {}` 和 `sub x() {}` 是完全一样的。
 
@@ -660,7 +660,7 @@ To make `new-location()` print `nowhere`, make `$location` a dynamic variab
 
 `our` variables work just like `my` variables, except that they also introduce an alias into the symbol table.
 
-```Perl6
+```Raku
 module M {
     our $Var;
     # $Var available here 
@@ -673,7 +673,7 @@ module M {
 
 In order to create more than one variable with package scope, at the same time, surround the variables with parentheses:
 
-```Perl6
+```Raku
 our ( $foo, $bar );
 ```
 
@@ -684,7 +684,7 @@ our ( $foo, $bar );
 
 It is possible to scope more than one variable at a time, but both my and our require variables to be placed into parentheses:
 
-```Perl6
+```Raku
 my  (@a,  $s,  %h);   # same as my @a; my $s; my %h;
 our (@aa, $ss, %hh);  # same as our @aa; our $ss; our %hh; 
 ```
@@ -693,7 +693,7 @@ our (@aa, $ss, %hh);  # same as our @aa; our $ss; our %hh;
 
 This can be used in conjunction with destructuring assignment. Any assignment to such a list will take the number of elements provided in the left list and assign corresponding values from the right list to them. Any missing elements are left will result in undefined values according to the type of the variables.
 
-```Perl6
+```Raku
 my (Str $a, Str $b, Int $c) = <a b>;
 say [$a, $b, $c].perl;
 # OUTPUT: «["a", "b", Int]» 
@@ -703,7 +703,7 @@ say [$a, $b, $c].perl;
 
 To destructure a list into a single value, create a list literal with one element by using `($var,)`. When used with a variable declarator, providing parentheses around a single variable is sufficient.
 
-```Perl6
+```Raku
 sub f { 1,2,3 };
 my ($a) = f;
 say $a.perl;
@@ -714,7 +714,7 @@ say $a.perl;
 
 To skip elements in the list use the anonymous state variable `$`.
 
-```Perl6
+```Raku
 my ($,$a,$,%h) = ('a', 'b', [1,2,3], {:1th});
 say [$a, %h].perl;
 # OUTPUT: «["b", {:th(1)}]» 
@@ -727,9 +727,9 @@ say [$a, %h].perl;
 
 `has` scopes attributes to instances of a class or role, and methods to classes or roles. `has` is implied for methods, so `has method x() {}` and `method x() {}` do the same thing.
 
-更多文档和例子，见[面向对象](https://docs.perl6.org/language/objects)。
+更多文档和例子，见[面向对象](https://rakudocs.github.io/language/objects)。
 
-See [object orientation](https://docs.perl6.org/language/objects) for more documentation and some examples.
+See [object orientation](https://rakudocs.github.io/language/objects) for more documentation and some examples.
 
 <a id="anon-%E5%A3%B0%E6%98%8E%E7%AC%A6"></a>
 ## `anon` 声明符
@@ -742,7 +742,7 @@ The `anon` declarator prevents a symbol from getting installed in the lexical 
 
 For example, you can use it to declare subroutines which know their own name, but still aren't installed in a scope:
 
-```Perl6
+```Raku
 my %operations =
     half   => anon sub half($x) { $x / 2 },
     square => anon sub square($x) { $x * $x },
@@ -762,7 +762,7 @@ say %operations<square>(8);         # 64 
 
 Therefore, the subroutine
 
-```Perl6
+```Raku
 sub a {
     state @x;
     state $l = 'A';
@@ -776,7 +776,7 @@ say a for 1..6;
 
 will continue to increment `$l` and append it to `@x` each time it is called. So it will output:
 
-```Perl6
+```Raku
 [A]
 [A B]
 [A B C]
@@ -790,7 +790,7 @@ will continue to increment `$l` and append it to `@x` each time it is called
 
 This works per "clone" of the containing code object, as in this example:
 
-```Perl6
+```Raku
 ({ state $i = 1; $i++.say; } xx 3).map: {$_(), $_()}; # says 1 then 2 thrice 
 ```
 
@@ -810,7 +810,7 @@ Many operators come with implicit binding which can lead to actions at a distanc
 
 Use `.clone` or coercion to create a new container that can be bound to.
 
-```Perl6
+```Raku
 my @a;
 my @a-cloned;
 sub f() {
@@ -829,7 +829,7 @@ State 变量在所有线程中共享。结果可能出乎意料。
 
 State variables are shared between all threads. The result can be unexpected.
 
-```Perl6
+```Raku
 sub code(){ state $i = 0; say ++$i; $i };
 await
     start { loop { last if code() >= 5 } },
@@ -858,7 +858,7 @@ await
 
 In addition to explicitly declared named state variables, `$` can be used as an anonymous state variable without an explicit `state` declaration.
 
-```Perl6
+```Raku
 say "1-a 2-b 3-c".subst(:g, /\d/, {<one two three>[$++]});
 # OUTPUT: «one-a two-b three-c» 
 ```
@@ -867,7 +867,7 @@ say "1-a 2-b 3-c".subst(:g, /\d/, {<one two three>[$++]});
 
 Furthermore, state variables can be used outside of subroutines. You could, for example, use `$` in a one-liner to number the lines in a file.
 
-```Perl6
+```Raku
 perl6 -ne 'say ++$ ~ " $_"' example.txt
 ```
 
@@ -875,7 +875,7 @@ perl6 -ne 'say ++$ ~ " $_"' example.txt
 
 Each reference to `$` within a lexical scope is in effect a separate variable.
 
-```Perl6
+```Raku
 perl6 -e '{ say ++$; say $++  } for ^5'
 # OUTPUT: «1
 0
@@ -893,7 +893,7 @@ perl6 -e '{ say ++$; say $++  } for ^5'
 
 If you need to use the value of $ more than once in a scope, it should be copied to a new variable.
 
-```Perl6
+```Raku
 sub foo() {
     given ++$ {
         when 1 {
@@ -921,7 +921,7 @@ three» 
 
 Note that the implicit state declarator is only applied to the variable itself, not the expression that may contain an initializer. If the initializer has to be called exactly once, the `state` declarator has to be provided.
 
-```Perl6
+```Raku
 subset DynInt where $ = ::('Int'); # 每次类型检查，初始化代码都会被调用 / the initializer will be called for each type check 
 subset DynInt where state $ = ::('Int'); # 初始化只会被调用一次，这才是合适的缓存 / the initializer is called once, this is a proper cache 
 ```
@@ -929,11 +929,11 @@ subset DynInt where state $ = ::('Int'); # 初始化只会被调用一�
 <a id="-%E5%8F%98%E9%87%8F"></a>
 ### `@` 变量
 
-类似于 `$` 变量，还有一个匿名[位置](https://docs.perl6.org/type/Positional) `state` 变量 `@` 。
+类似于 `$` 变量，还有一个匿名[位置](https://rakudocs.github.io/type/Positional) `state` 变量 `@` 。
 
-Similar to the `$` variable, there is also a [Positional](https://docs.perl6.org/type/Positional) anonymous state variable `@`.
+Similar to the `$` variable, there is also a [Positional](https://rakudocs.github.io/type/Positional) anonymous state variable `@`.
 
-```Perl6
+```Raku
 sub foo($x) {
     say (@).push($x);
 }
@@ -949,7 +949,7 @@ foo($_) for ^3;
 
 The `@` here is parenthesized in order to disambiguate the expression from a class member variable named `@.push`. Indexed access doesn't require this disambiguation but you will need to copy the value in order to do anything useful with it.
 
-```Perl6
+```Raku
 sub foo($x) {
     my $v = @;
     $v[$x] = $x;
@@ -971,11 +971,11 @@ As with `$`, each mention of `@` in a scope introduces a new anonymous array.
 <a id="%25-%E5%8F%98%E9%87%8F"></a>
 ### `%` 变量
 
-另外，还有一个[关联](https://docs.perl6.org/type/Associative)匿名关联变量 `%`。
+另外，还有一个[关联](https://rakudocs.github.io/type/Associative)匿名关联变量 `%`。
 
-In addition, there's an [Associative](https://docs.perl6.org/type/Associative) anonymous state variable `%`.
+In addition, there's an [Associative](https://rakudocs.github.io/type/Associative) anonymous state variable `%`.
 
-```Perl6
+```Raku
 sub foo($x) {
     say (%).push($x => $x);
 }
@@ -991,7 +991,7 @@ foo($_) for ^3;
 
 The same caveat about disambiguation applies. As you may expect, indexed access is also possible (with copying to make it useful).
 
-```Perl6
+```Raku
 sub foo($x) {
     my $v = %;
     $v{$x} = $x;
@@ -1020,7 +1020,7 @@ With `augment`, you can add attributes and methods to existing classes and gram
 
 Since classes are usually `our` scoped, and thus global, this means modifying global state, which is strongly discouraged. For almost all situations, there are better solutions.
 
-```Perl6
+```Raku
 # 不要这样做 / don't do this 
 use MONKEY-TYPING;
 augment class Int {
@@ -1029,9 +1029,9 @@ augment class Int {
 say 42.is-answer;       # OUTPUT: «True» 
 ```
 
-在这个情况下，更好的解决方案是使用 [函数](https://docs.perl6.org/language/functions)。
+在这个情况下，更好的解决方案是使用 [函数](https://rakudocs.github.io/language/functions)。
 
-(In this case, the better solution would be to use a [function](https://docs.perl6.org/language/functions)).
+(In this case, the better solution would be to use a [function](https://rakudocs.github.io/language/functions)).
 
 <a id="temp-%E5%89%8D%E7%BC%80"></a>
 ## `temp` 前缀
@@ -1040,7 +1040,7 @@ say 42.is-answer;       # OUTPUT: «True» 
 
 Like `my`, `temp` restores the old value of a variable at the end of its scope. However, `temp` does not create a new variable.
 
-```Perl6
+```Raku
 my $in = 0; # temp will "entangle" the global variable with the call stack 
             # that keeps the calls at the bottom in order. 
 sub f(*@c) {
@@ -1080,7 +1080,7 @@ print g(g(f(g()), g(), f()));
 
 Restores the previous value if the block exits unsuccessfully. A successful exit means the block returned a defined value or a list.
 
-```Perl6
+```Raku
 my $answer = 42;
  
 {
@@ -1102,11 +1102,11 @@ In the above case, if the `Bool.pick` returns true, the answer will stay as 84
 <a id="%E7%B1%BB%E5%9E%8B%E7%BA%A6%E6%9D%9F%E5%8F%8A%E5%88%9D%E5%A7%8B%E5%8C%96--type-constraints-and-initialization"></a>
 # 类型约束及初始化 / Type Constraints and Initialization
 
-变量通过所绑定的[容器](https://docs.perl6.org/language/containers)有类型约束，容器在声明符与变量名之间。默认的类型约束是 [Mu](https://docs.perl6.org/type/Mu)。也可以使用 [of](https://docs.perl6.org/type/Variable#trait_of)特性来设置类型约束。
+变量通过所绑定的[容器](https://rakudocs.github.io/language/containers)有类型约束，容器在声明符与变量名之间。默认的类型约束是 [Mu](https://rakudocs.github.io/type/Mu)。也可以使用 [of](https://rakudocs.github.io/type/Variable#trait_of)特性来设置类型约束。
 
-Variables have a type constraint via the [container](https://docs.perl6.org/language/containers) they are bound to, which goes between the declarator and the variable name. The default type constraint is [Mu](https://docs.perl6.org/type/Mu). You can also use the trait [of](https://docs.perl6.org/type/Variable#trait_of) to set a type constraint.
+Variables have a type constraint via the [container](https://rakudocs.github.io/language/containers) they are bound to, which goes between the declarator and the variable name. The default type constraint is [Mu](https://rakudocs.github.io/type/Mu). You can also use the trait [of](https://rakudocs.github.io/type/Variable#trait_of) to set a type constraint.
 
-```Perl6
+```Raku
 my Int $x = 42;
 $x = 'a string';
 CATCH { default { put .^name, ': ', .Str } }
@@ -1117,25 +1117,25 @@ CATCH { default { put .^name, ': ', .Str } }
 
 If a scalar variable has a type constraint but no initial value, it's initialized with the type object of the default value of the container it's bound to.
 
-```Perl6
+```Raku
 my Int $x;
 say $x.^name;       # OUTPUT: «Int» 
 say $x.defined;     # OUTPUT: «False» 
 ```
 
-没有显示类型约束的标量变量写作 [Mu](https://docs.perl6.org/type/Mu) 但是默认是 [Any](https://docs.perl6.org/type/Any)类型对象。
+没有显示类型约束的标量变量写作 [Mu](https://rakudocs.github.io/type/Mu) 但是默认是 [Any](https://rakudocs.github.io/type/Any)类型对象。
 
-Scalar variables without an explicit type constraint are typed as [Mu](https://docs.perl6.org/type/Mu) but default to the [Any](https://docs.perl6.org/type/Any) type object.
+Scalar variables without an explicit type constraint are typed as [Mu](https://rakudocs.github.io/type/Mu) but default to the [Any](https://rakudocs.github.io/type/Any) type object.
 
-带 `@` 标记的变量初始化时生成一个空[数组](https://docs.perl6.org/type/Array); 带 `%` 标记带变量初始化时生成一个空[哈希](https://docs.perl6.org/type/Hash)。
+带 `@` 标记的变量初始化时生成一个空[数组](https://rakudocs.github.io/type/Array); 带 `%` 标记带变量初始化时生成一个空[哈希](https://rakudocs.github.io/type/Hash)。
 
-Variables with the `@` sigil are initialized with an empty [Array](https://docs.perl6.org/type/Array); variables with the `%` sigil are initialized with an empty [Hash](https://docs.perl6.org/type/Hash).
+Variables with the `@` sigil are initialized with an empty [Array](https://rakudocs.github.io/type/Array); variables with the `%` sigil are initialized with an empty [Hash](https://rakudocs.github.io/type/Hash).
 
 变量默认值可以通过 `is default` 特性来设置，赋值 `Nil` 给变量恢复默认值。
 
 The default value of a variable can be set with the `is default` trait, and re-applied by assigning `Nil` to it:
 
-```Perl6
+```Raku
 my Real $product is default(1);
 say $product;                       # OUTPUT: «1» 
 $product *= 5;
@@ -1151,7 +1151,7 @@ say $product;                       # OUTPUT: «1» 
 
 To force all variables to have a definedness constraint, use the pragma `use variables :D`. The pragma is lexically scoped and can be switched off with `use variables :_`.
 
-```Perl6
+```Raku
 use variables :D;
 my Int $i;
 # OUTPUT: «===SORRY!=== Error while compiling <tmp>
@@ -1160,16 +1160,16 @@ my Int $i = 1; # that works 
 { use variables :_; my Int $i; } # switch it off in this block 
 ```
 
-注意赋值 [Nil](https://docs.perl6.org/type/Nil) 会使变量恢复默认值。有已定义约束的类型的默认值就是后面跟 `:D` 的类型 (e.g. `Int:D`)。那意味着已定义约束不保证变量的已定义。这个只对变量初始化生效，不适用于[签名](https://docs.perl6.org/type/Signature)或者其后的变量赋值。
+注意赋值 [Nil](https://rakudocs.github.io/type/Nil) 会使变量恢复默认值。有已定义约束的类型的默认值就是后面跟 `:D` 的类型 (e.g. `Int:D`)。那意味着已定义约束不保证变量的已定义。这个只对变量初始化生效，不适用于[签名](https://rakudocs.github.io/type/Signature)或者其后的变量赋值。
 
-Note that assigning [Nil](https://docs.perl6.org/type/Nil) will revert the variable to its default value. The default value of a defined constraint type is the type appended with `:D` (e.g. `Int:D`). That means a definedness constraint is no guarantee of definedness. This only applies to variable initializers, not to [Signature](https://docs.perl6.org/type/Signature)s. or subsequent assignments to a variable.
+Note that assigning [Nil](https://rakudocs.github.io/type/Nil) will revert the variable to its default value. The default value of a defined constraint type is the type appended with `:D` (e.g. `Int:D`). That means a definedness constraint is no guarantee of definedness. This only applies to variable initializers, not to [Signature](https://rakudocs.github.io/type/Signature)s. or subsequent assignments to a variable.
 
 <a id="%E7%89%B9%E6%AE%8A%E5%8F%98%E9%87%8F--special-variables"></a>
 # 特殊变量 / Special Variables
 
-Perl 6 试图对特殊变量使用可描述的长名。只有三个特殊变量很简短。
+Raku 试图对特殊变量使用可描述的长名。只有三个特殊变量很简短。
 
-Perl 6 attempts to use long, descriptive names for special variables. There are only three special variables that are extra short.
+Raku attempts to use long, descriptive names for special variables. There are only three special variables that are extra short.
 
 <a id="%E9%A2%84%E5%AE%9A%E4%B9%89%E8%AF%8D%E6%B3%95%E5%8F%98%E9%87%8F--pre-defined-lexical-variables"></a>
 ## 预定义词法变量 / Pre-defined lexical variables
@@ -1191,7 +1191,7 @@ There are three special variables that are available in every block:
 
 `$_` is the topic variable. It's the default parameter for blocks that do not have an explicit signature, so constructs like `for @array { ... }` and `given $var { ... }` bind to `$_` by invoking the block.
 
-```Perl6
+```Raku
 for <a b c> { say $_ }  # sets $_ to 'a', 'b' and 'c' in turn 
 say $_ for <a b c>;     # same, even though it's not a block 
 given 'a'   { say $_ }  # sets $_ to 'a' 
@@ -1206,7 +1206,7 @@ say $_ given 'a';       # same, even though it's not a block 
 
 Calling a method on `$_` can be shortened by leaving off the variable name:
 
-```Perl6
+```Raku
 .say;                   # same as $_.say 
 ```
 
@@ -1214,7 +1214,7 @@ Calling a method on `$_` can be shortened by leaving off the variable name:
 
 `m/regex/` and `/regex/` regex matches and `s/regex/subst/` substitutions work on `$_`:
 
-```Perl6
+```Raku
 say "Looking for strings with non-alphabetic characters...";
 for <ab:c d$e fgh ij*> {
     .say if m/<-alpha>/;
@@ -1229,20 +1229,20 @@ for <ab:c d$e fgh ij*> {
 <a id="%24-%E5%8F%98%E9%87%8F--the-%24-variable"></a>
 ### `$/` 变量 / The `$/` Variable
 
-`$/` 是匹配变量。它存储了上一次[正则](https://docs.perl6.org/language/regexes)匹配的结果，因此通常包含[匹配](https://docs.perl6.org/type/Match)类型的对象。
+`$/` 是匹配变量。它存储了上一次[正则](https://rakudocs.github.io/language/regexes)匹配的结果，因此通常包含[匹配](https://rakudocs.github.io/type/Match)类型的对象。
 
-`$/` is the match variable. It stores the result of the last [Regex](https://docs.perl6.org/language/regexes) match and so usually contains objects of type [Match](https://docs.perl6.org/type/Match).
+`$/` is the match variable. It stores the result of the last [Regex](https://rakudocs.github.io/language/regexes) match and so usually contains objects of type [Match](https://rakudocs.github.io/type/Match).
 
-```Perl6
+```Raku
 'abc 12' ~~ /\w+/;  # sets $/ to a Match object 
 say $/.Str;         # OUTPUT: «abc» 
 ```
 
-`Grammar.parse` 方法也会将调用者的 `$/` 变量设置为结果中的[匹配](https://docs.perl6.org/type/Match)对象。下列代码：
+`Grammar.parse` 方法也会将调用者的 `$/` 变量设置为结果中的[匹配](https://rakudocs.github.io/type/Match)对象。下列代码：
 
-The `Grammar.parse` method also sets the caller's `$/` to the resulting [Match](https://docs.perl6.org/type/Match) object. For the following code:
+The `Grammar.parse` method also sets the caller's `$/` to the resulting [Match](https://rakudocs.github.io/type/Match) object. For the following code:
 
-```Perl6
+```Raku
 use XML::Grammar; # zef install XML 
 XML::Grammar.parse("<p>some text</p>");
 say $/;
@@ -1260,11 +1260,11 @@ say $/;
 #             textnode => ｢some text｣» 
 ```
 
-在 6.c 版本中，你可以使用 `$()` 从 `$/` 中[匹配](https://docs.perl6.org/type/Match)得到[ast](https://docs.perl6.org/routine/ast)的值, 如果那个值为真的话。也可以从[匹配](https://docs.perl6.org/type/Match)对象的字符串形式中获得。
+在 6.c 版本中，你可以使用 `$()` 从 `$/` 中[匹配](https://rakudocs.github.io/type/Match)得到[ast](https://rakudocs.github.io/routine/ast)的值, 如果那个值为真的话。也可以从[匹配](https://rakudocs.github.io/type/Match)对象的字符串形式中获得。
 
-In the 6.c version, you can use `$()` shortcut (no spaces inside the parentheses) to get the [ast](https://docs.perl6.org/routine/ast) value from `$/` [Match](https://docs.perl6.org/type/Match) if that value is truthy, or the stringification of the [Match](https://docs.perl6.org/type/Match) object otherwise.
+In the 6.c version, you can use `$()` shortcut (no spaces inside the parentheses) to get the [ast](https://rakudocs.github.io/routine/ast) value from `$/` [Match](https://rakudocs.github.io/type/Match) if that value is truthy, or the stringification of the [Match](https://rakudocs.github.io/type/Match) object otherwise.
 
-```Perl6
+```Raku
 'test' ~~ /.../;
 # 6.c language only: 
 say $(); # OUTPUT: «tes»; 
@@ -1275,11 +1275,11 @@ say $(); # OUTPUT: «McTesty»;
 <a id="%E4%BD%8D%E7%BD%AE%E5%B1%9E%E6%80%A7--positional-attributes"></a>
 #### 位置属性 / Positional Attributes
 
-`$/` 有位置属性，如果[正则]中(https://docs.perl6.org/language/regexes)有匹配组的话，就是那些括号组成的匹配组。
+`$/` 有位置属性，如果[正则]中(https://rakudocs.github.io/language/regexes)有匹配组的话，就是那些括号组成的匹配组。
 
-`$/` can have positional attributes if the [Regex](https://docs.perl6.org/language/regexes) had capture-groups in it, which are just formed with parentheses.
+`$/` can have positional attributes if the [Regex](https://rakudocs.github.io/language/regexes) had capture-groups in it, which are just formed with parentheses.
 
-```Perl6
+```Raku
 'abbbbbcdddddeffg' ~~ / a (b+) c (d+ef+) g /;
 say $/[0]; # OUTPUT: «｢bbbbb｣» 
 say $/[1]; # OUTPUT: «｢dddddeff｣» 
@@ -1289,7 +1289,7 @@ say $/[1]; # OUTPUT: «｢dddddeff｣» 
 
 These can also be accessed by the shortcuts `$0`, `$1`, `$2`, etc.
 
-```Perl6
+```Raku
 'abbbbbcdddddeffg' ~~ / a (b+) c (d+ef+) g /;
 say $0; # OUTPUT: «｢bbbbb｣» 
 say $1; # OUTPUT: «｢dddddeff｣» 
@@ -1299,7 +1299,7 @@ say $1; # OUTPUT: «｢dddddeff｣» 
 
 To get all of the positional attributes, you can use `$/.list` or `@$/`. In the 6.c language, you can also use the `@()` shortcut (no spaces inside the parentheses).
 
-```Perl6
+```Raku
 say @$/.join; # OUTPUT: «bbbbbdddddeff
 
 # 6.c language only:
@@ -1310,11 +1310,11 @@ say @().join; # OUTPUT: «bbbbbdddddeff» 
 <a id="%E5%91%BD%E5%90%8D%E5%B1%9E%E6%80%A7--named-attributes"></a>
 #### 命名属性 / Named Attributes
 
-`$/` 有命名属性当[正则](https://docs.perl6.org/language/regexes)中有命名群组捕获或者正则中有调用另外一个正则。
+`$/` 有命名属性当[正则](https://rakudocs.github.io/language/regexes)中有命名群组捕获或者正则中有调用另外一个正则。
 
-`$/` can have named attributes if the [Regex](https://docs.perl6.org/language/regexes) had named capture-groups in it, or if the Regex called out to another Regex.
+`$/` can have named attributes if the [Regex](https://rakudocs.github.io/language/regexes) had named capture-groups in it, or if the Regex called out to another Regex.
 
-```Perl6
+```Raku
 'I.... see?' ~~ / \w+ $<punctuation>=[ <-[\w\s]>+ ] \s* $<final-word> = [ \w+ . ] /;
 say $/<punctuation>; # OUTPUT: «｢....｣» 
 say $/<final-word>;  # OUTPUT: «｢see?｣» 
@@ -1323,7 +1323,7 @@ say $/<final-word>;  # OUTPUT: «｢see?｣» 
 这些也可以通过 `$` 更快捷地访问。
 These can also be accessed by the shortcut `$`.
 
-```Perl6
+```Raku
 say $<punctuation>; # OUTPUT: «｢....｣» 
 say $<final-word>;  # OUTPUT: «｢see?｣» 
 ```
@@ -1331,7 +1331,7 @@ say $<final-word>;  # OUTPUT: «｢see?｣» 
 
 To get all of the named attributes, you can use `$/.hash` or `%$/`. In the 6.c language, you can also use the `%()` shortcut (no spaces inside the parentheses). 
 
-```Perl6
+```Raku
 say %$/.join;       # OUTPUT: «"punctuation     ....final-word  see?"
 
 # 6.c language only 
@@ -1380,9 +1380,9 @@ The following compile time variables allow for a deeper introspection:
 | $?NL           | What a vertical newline "\n" means: LF, CR or CRLF       | 换行符的意思是：LF， CR 还是 CRLF               |
 | $?DISTRIBUTION | The Distribution of the current compilation unit.        | 当前编译单元的发行版                            |
 
-特别是关于 `$?NL`，见[换行指令](https://docs.perl6.org/language/pragmas)
+特别是关于 `$?NL`，见[换行指令](https://rakudocs.github.io/language/pragmas)
 
-With particular regard to the `$?NL`, see the [newline pragma](https://docs.perl6.org/language/pragmas).
+With particular regard to the `$?NL`, see the [newline pragma](https://rakudocs.github.io/language/pragmas).
 
 这些变量是Rakudo特有的，具有所有相应的注意事项：
 
@@ -1393,11 +1393,11 @@ These variables are Rakudo specific, with all the corresponding caveats:
 <a id="routine"></a>
 ### &?ROUTINE
 
-程序实际在哪个函数，编译时变量 `&ROUTINE` 为此提供了内省功能。它会返回当前函数的一个 [Sub](https://docs.perl6.org/type/Sub) 实例。它支持使用方法 `.name` 或者 `.signature` 以及其他跟 `Sub` 相关的方法来获取调用函数名。
+程序实际在哪个函数，编译时变量 `&ROUTINE` 为此提供了内省功能。它会返回当前函数的一个 [Sub](https://rakudocs.github.io/type/Sub) 实例。它支持使用方法 `.name` 或者 `.signature` 以及其他跟 `Sub` 相关的方法来获取调用函数名。
 
-The compile time variable `&?ROUTINE` provides introspection about which routine the program is actually within. It returns an instance of [Sub](https://docs.perl6.org/type/Sub) attached to the current routine. It does support the method `.name` to obtain the name of the called routine, as well as `.signature`and others method related to `Sub`:
+The compile time variable `&?ROUTINE` provides introspection about which routine the program is actually within. It returns an instance of [Sub](https://rakudocs.github.io/type/Sub) attached to the current routine. It does support the method `.name` to obtain the name of the called routine, as well as `.signature`and others method related to `Sub`:
 
-```Perl6
+```Raku
 sub awesome-sub { say &?ROUTINE.name }
 awesome-sub # OUTPUT: awesome-sub 
 ```
@@ -1406,7 +1406,7 @@ awesome-sub # OUTPUT: awesome-sub 
 
 The special variable `&?ROUTINE` allows also for recursion:
 
-```Perl6
+```Raku
 my $counter = 10;
 sub do-work {
     say 'Calling myself other ' ~ $counter-- ~ ' times';
@@ -1418,11 +1418,11 @@ do-work;
 <a id="block"></a>
 ### &?BLOCK
 
-`&?BLOCK` 行为与 `&?ROUTINE` 类似，但是它允许内省单一代码块。其持有一个 [Sub](https://docs.perl6.org/type/Sub) 并且允许在相同代码块中迭代。
+`&?BLOCK` 行为与 `&?ROUTINE` 类似，但是它允许内省单一代码块。其持有一个 [Sub](https://rakudocs.github.io/type/Sub) 并且允许在相同代码块中迭代。
 
-The special compile variable `&?BLOCK` behaves similarly to `&?ROUTINE` but it allows to introspect a single block of code. It holds a [Sub](https://docs.perl6.org/type/Sub)and allows for recursion within the same block:
+The special compile variable `&?BLOCK` behaves similarly to `&?ROUTINE` but it allows to introspect a single block of code. It holds a [Sub](https://rakudocs.github.io/type/Sub)and allows for recursion within the same block:
 
-```Perl6
+```Raku
 for '.' {
     .Str.say when !.IO.d;
     .IO.dir()».&?BLOCK when .IO.d # lets recurse a little! 
@@ -1432,11 +1432,11 @@ for '.' {
 <a id="%24distribution"></a>
 ### $?DISTRIBUTION
 
-`$？DISTRIBUTION` 提供对当前编译单元的 [Distribution](https://docs.perl6.org/type/distribution) 的访问。这使模块作者可以通过原始相对路径名引用分发中的其他文件，或查看元数据（通过 `.meta` 方法），而无需知道底层文件结构（例如 `Compunit::Repository::Installation` 如何在安装时更改文件布局）。
+`$？DISTRIBUTION` 提供对当前编译单元的 [Distribution](https://rakudocs.github.io/type/distribution) 的访问。这使模块作者可以通过原始相对路径名引用分发中的其他文件，或查看元数据（通过 `.meta` 方法），而无需知道底层文件结构（例如 `Compunit::Repository::Installation` 如何在安装时更改文件布局）。
 
-`$?DISTRIBUTION` provides access to the [Distribution](https://docs.perl6.org/type/Distribution) of the current compilation unit. This gives module authors a way to reference other files in the distribution by their original relative path names, or to view the metadata (via the `.meta` method), without needing to know the underlying file structure (such as how `CompUnit::Repository::Installation` changes the file layout on installation).
+`$?DISTRIBUTION` provides access to the [Distribution](https://rakudocs.github.io/type/Distribution) of the current compilation unit. This gives module authors a way to reference other files in the distribution by their original relative path names, or to view the metadata (via the `.meta` method), without needing to know the underlying file structure (such as how `CompUnit::Repository::Installation` changes the file layout on installation).
 
-```Perl6
+```Raku
 unit module MyFoo;
  
 sub module-version {
@@ -1467,10 +1467,10 @@ These variables are related to the arguments passed to a script.
 <a id="%24argfiles"></a>
 #### `$*ARGFILES`
 
-[IO::ArgFiles](https://docs.perl6.org/type/IO::ArgFiles) （一个 [IO::CatHandle](https://docs.perl6.org/type/IO::CatHandle) 的空子类），如果 `@*ARGS` 中包含文件话，使用 `@*ARGS` 作为源文件，否则用 `$*IN`。 当使用 `$*IN` 时， 它的 `:chomp`，`:encoding` 以及 `:bin` 将会被给到
-[IO::ArgFiles](https://docs.perl6.org/type/IO::ArgFiles) 对象。
+[IO::ArgFiles](https://rakudocs.github.io/type/IO::ArgFiles) （一个 [IO::CatHandle](https://rakudocs.github.io/type/IO::CatHandle) 的空子类），如果 `@*ARGS` 中包含文件话，使用 `@*ARGS` 作为源文件，否则用 `$*IN`。 当使用 `$*IN` 时， 它的 `:chomp`，`:encoding` 以及 `:bin` 将会被给到
+[IO::ArgFiles](https://rakudocs.github.io/type/IO::ArgFiles) 对象。
 
-As of the 6.d version, `$*ARGFILES` *inside* [`sub MAIN`](https://docs.perl6.org/language/functions#sub_MAIN) is always set to `$*IN`, even when `@*ARGS` is not empty. See [the class documentation](https://docs.perl6.org/type/IO::ArgFiles#%24%2AARGFILES) for examples and more context.
+As of the 6.d version, `$*ARGFILES` *inside* [`sub MAIN`](https://rakudocs.github.io/language/functions#sub_MAIN) is always set to `$*IN`, even when `@*ARGS` is not empty. See [the class documentation](https://rakudocs.github.io/type/IO::ArgFiles#%24%2AARGFILES) for examples and more context.
 
 <a id="args"></a>
 #### `@*ARGS`
@@ -1482,23 +1482,23 @@ As of the 6.d version, `$*ARGFILES` *inside* [`sub MAIN`](https://docs.perl6.org
 <a id="args-to-capture"></a>
 #### `&*ARGS-TO-CAPTURE`
 
-在任意用来分析默认参数的自定义 [`ARGS-TO-CAPTURE`](https://docs.perl6.org/language/create-cli#sub_ARGS-TO-CAPTURE) 函数中的动态作用域变量。其与自定义 `ARGS-TO-CAPTURE` 函数一样接受同样的参数。
+在任意用来分析默认参数的自定义 [`ARGS-TO-CAPTURE`](https://rakudocs.github.io/language/create-cli#sub_ARGS-TO-CAPTURE) 函数中的动态作用域变量。其与自定义 `ARGS-TO-CAPTURE` 函数一样接受同样的参数。
 
-A dynamic variable available inside any custom [`ARGS-TO-CAPTURE`](https://docs.perl6.org/language/create-cli#sub_ARGS-TO-CAPTURE) subroutine that can be used to perform the default argument parsing. Takes the same parameters as are expected of the custom `ARGS-TO-CAPTURE` subroutine.
+A dynamic variable available inside any custom [`ARGS-TO-CAPTURE`](https://rakudocs.github.io/language/create-cli#sub_ARGS-TO-CAPTURE) subroutine that can be used to perform the default argument parsing. Takes the same parameters as are expected of the custom `ARGS-TO-CAPTURE` subroutine.
 
 <a id="generate-usage"></a>
 #### `&*GENERATE-USAGE`
 
-在任意用来生成默认使用说明信息的自定义 [`GENERATE-USAGE`](https://docs.perl6.org/language/create-cli#sub_GENERATE-USAGE) 函数中的动态作用域变量。其与自定义 `GENERATE-USAGE` 函数一样接受同样的参数。
+在任意用来生成默认使用说明信息的自定义 [`GENERATE-USAGE`](https://rakudocs.github.io/language/create-cli#sub_GENERATE-USAGE) 函数中的动态作用域变量。其与自定义 `GENERATE-USAGE` 函数一样接受同样的参数。
 
-A dynamic variable available inside any custom [`GENERATE-USAGE`](https://docs.perl6.org/language/create-cli#sub_GENERATE-USAGE) subroutine that can be used to perform the default usage message creation. Takes the same parameters as are expected of the custom `GENERATE-USAGE` subroutine.
+A dynamic variable available inside any custom [`GENERATE-USAGE`](https://rakudocs.github.io/language/create-cli#sub_GENERATE-USAGE) subroutine that can be used to perform the default usage message creation. Takes the same parameters as are expected of the custom `GENERATE-USAGE` subroutine.
 
 <a id="%E7%89%B9%E6%AE%8A%E6%96%87%E4%BB%B6%E5%8F%A5%E6%9F%84%EF%BC%9A-stdin%EF%BC%8Cstdout-%E4%BB%A5%E5%8F%8A-stderr--special-filehandles-stdin-stdout-and-stderr"></a>
 ### 特殊文件句柄： `STDIN`，`STDOUT` 以及 `STDERR` / Special filehandles: `STDIN`, `STDOUT` and `STDERR`
 
-更多关于特殊文件句柄的信息请参考 [Input and Output](https://docs.perl6.org/language/io) 以及[IO::Special](https://docs.perl6.org/type/IO::Special) 类。[IO::Handle](https://docs.perl6.org/type/IO::Handle) 包含使用 `$*IN` 读取标准输入的几个例子。
+更多关于特殊文件句柄的信息请参考 [Input and Output](https://rakudocs.github.io/language/io) 以及[IO::Special](https://rakudocs.github.io/type/IO::Special) 类。[IO::Handle](https://rakudocs.github.io/type/IO::Handle) 包含使用 `$*IN` 读取标准输入的几个例子。
 
-For more information about special filehandles please see also the [Input and Output](https://docs.perl6.org/language/io) page and the [IO::Special](https://docs.perl6.org/type/IO::Special) class. [IO::Handle](https://docs.perl6.org/type/IO::Handle)contains several examples of using `$*IN` for reading standard input.
+For more information about special filehandles please see also the [Input and Output](https://rakudocs.github.io/language/io) page and the [IO::Special](https://rakudocs.github.io/type/IO::Special) class. [IO::Handle](https://rakudocs.github.io/type/IO::Handle)contains several examples of using `$*IN` for reading standard input.
 
 - `$*IN` 标准输入文件句柄, 即 *STDIN*.
 - `$*OUT` 标准输出文件句柄, 即 *STDOUT*.
@@ -1518,9 +1518,9 @@ These dynamic variables contain information related to the environment the scrip
 <a id="%25env"></a>
 #### `%*ENV`
 
-操作系统环境变量。数值由 [allomorphs](https://docs.perl6.org/language/glossary#index-entry-Allomorph)提供。
+操作系统环境变量。数值由 [allomorphs](https://rakudocs.github.io/language/glossary#index-entry-Allomorph)提供。
 
-Operating system environment variables. Numeric values are provided as [allomorphs](https://docs.perl6.org/language/glossary#index-entry-Allomorph)
+Operating system environment variables. Numeric values are provided as [allomorphs](https://rakudocs.github.io/language/glossary#index-entry-Allomorph)
 
 <a id="%24repo"></a>
 #### `$*REPO`
@@ -1532,9 +1532,9 @@ This variable holds information about modules installed/loaded.
 <a id="%24init-instant"></a>
 #### `$*INIT-INSTANT`
 
-`$*INIT-INSTANT` 是一个 [Instant](https://docs.perl6.org/type/Instant) 对象，表示程序的启动时间。这个表示的是核心代码启动时的时间，因此它的值可能比你程序中的 `INIT now` 或者 `BEGIN now` 要早几毫秒。
+`$*INIT-INSTANT` 是一个 [Instant](https://rakudocs.github.io/type/Instant) 对象，表示程序的启动时间。这个表示的是核心代码启动时的时间，因此它的值可能比你程序中的 `INIT now` 或者 `BEGIN now` 要早几毫秒。
 
-`$*INIT-INSTANT` is an [Instant](https://docs.perl6.org/type/Instant) object representing program startup time. In particular, this is when the core code starts up, so the value of `$*INIT-INSTANT` may be a few milliseconds earlier than `INIT now` or even `BEGIN now` executed in your program.
+`$*INIT-INSTANT` is an [Instant](https://rakudocs.github.io/type/Instant) object representing program startup time. In particular, this is when the core code starts up, so the value of `$*INIT-INSTANT` may be a few milliseconds earlier than `INIT now` or even `BEGIN now` executed in your program.
 
 <a id="%24tz"></a>
 #### `$*TZ`
@@ -1553,11 +1553,11 @@ It contains the `C`urrent `W`orking `D`irectory.
 <a id="%24kernel"></a>
 #### `$*KERNEL`
 
-`$*KERNEL` 包含一个 [`Kernel` 实例](https://docs.perl6.org/type/Kernel)，它调用 `.gist` 方法的输出即为当前生效内核。
+`$*KERNEL` 包含一个 [`Kernel` 实例](https://rakudocs.github.io/type/Kernel)，它调用 `.gist` 方法的输出即为当前生效内核。
 
-`$*KERNEL` contains a [`Kernel` instance](https://docs.perl6.org/type/Kernel), the `.gist` of it being the current running kernel.
+`$*KERNEL` contains a [`Kernel` instance](https://rakudocs.github.io/type/Kernel), the `.gist` of it being the current running kernel.
 
-```Perl6
+```Raku
 say $*KERNEL; # OUTPUT: «linux (4.4.92.31.default)» 
 ```
 
@@ -1568,7 +1568,7 @@ say $*KERNEL; # OUTPUT: «linux (4.4.92.31.default)»
 
 This object (of type `Distro`) contains information about the current operating system distribution. For instance:
 
-```Perl6
+```Raku
 say "Some sort of Windows" if $*DISTRO.is-win;
 ```
 
@@ -1580,7 +1580,7 @@ say "Some sort of Windows" if $*DISTRO.is-win;
 
 The `$*DISTRO` gist is displayed by using `say`:
 
-```Perl6
+```Raku
 say $*DISTRO; # OUTPUT: «debian (9.stretch)» 
 ```
 
@@ -1588,7 +1588,7 @@ say $*DISTRO; # OUTPUT: «debian (9.stretch)»
 
 This shows additional information on the operating system and version it's using, but as a matter of fact, this variable contains information which is useful to create portable programs, such as the path separator:
 
-```Perl6
+```Raku
 say $*DISTRO.perl;
 # OUTPUT: «Distro.new(release => "42.3", is-win => Bool::False, 
 #          path-sep => ":", name => "opensuse", 
@@ -1604,7 +1604,7 @@ say $*DISTRO.perl;
 
 This variable contains the current virtual machine running the code, as well as additional information on the inner workings of aforementioned VM.
 
-```Perl6
+```Raku
 say $*VM.precomp-ext, " ", $*VM.precomp-target; # OUTPUT: «moarvm mbc» 
 ```
 
@@ -1612,23 +1612,23 @@ say $*VM.precomp-ext, " ", $*VM.precomp-target; # OUTPUT: «moarvm mbc»
 
 These two methods, for instance, will show the extension used in the precompiled bytecode scripts and the target used. This is what is found in the Moar Virtual Machine, but it could also vary with version and implementation. Other VM, such as Java, will show different values for them. `$*VM.config` includes all configuration values used to create the virtual machine, e.g.
 
-```Perl6
+```Raku
 say $*VM.config<versionmajor>, ".", $*VM.config<versionminor>;
 # OUTPUT: «2018.11» 
 ```
 
-这是虚拟机的版本，通常与解释器和整个 Perl 6 环境中使用的版本相同。
+这是虚拟机的版本，通常与解释器和整个 Raku 环境中使用的版本相同。
 
-which are the version of the virtual machine, generally the same one as the one used in the interpreter and the overall Perl 6 environment.
+which are the version of the virtual machine, generally the same one as the one used in the interpreter and the overall Raku environment.
 
 <a id="%24perl"></a>
 #### `$*PERL`
 
 此对象包含有关当前Perl6语言实现的信息：
 
-This object contains information on the current implementation of the Perl 6 language:
+This object contains information on the current implementation of the Raku language:
 
-```Perl6
+```Raku
 say $*PERL.compiler.version; # OUTPUT: «v2018.11.52.g.06156.a.7.ca» 
 ```
 
@@ -1636,15 +1636,15 @@ say $*PERL.compiler.version; # OUTPUT: «v2018.11.52.g.06156.a.7.ca»
 
 but its gist includes the name of the language, followed by the major version of the compiler:
 
-```Perl6
+```Raku
 say $*PERL; # OUTPUT: «Perl 6 (6.d)» 
 ```
 
-它将字符串化为 `Perl 6` ：
+它将字符串化为 `Raku` ：
 
-It stringifies to `Perl 6`:
+It stringifies to `Raku`:
 
-```Perl6
+```Raku
 $*PERL.put; # OUTPUT: «Perl 6» 
 ```
 
@@ -1665,30 +1665,30 @@ This contains the path to the current executable as it was entered on the comman
 <a id="%24program"></a>
 #### `$*PROGRAM`
 
-包含正在执行的 Perl 6 程序的位置（以 `IO::Path` 对象的形式）。
+包含正在执行的 Raku 程序的位置（以 `IO::Path` 对象的形式）。
 
-Contains the location (in the form of an `IO::Path` object) of the Perl 6 program being executed.
+Contains the location (in the form of an `IO::Path` object) of the Raku program being executed.
 
 <a id="exit"></a>
 #### `&*EXIT`
 
-这是一个[可调用](https://docs.perl6.org/type/callable)，其中包含执行 `exit()` 调用时将执行的代码。用于将 Perl 6 嵌入到另一个语言运行时（如 Perl5 中的 Inline::Perl6）的情况。
+这是一个[可调用](https://rakudocs.github.io/type/callable)，其中包含执行 `exit()` 调用时将执行的代码。用于将 Raku 嵌入到另一个语言运行时（如 Perl5 中的 Inline::Perl6）的情况。
 
-This is a [Callable](https://docs.perl6.org/type/Callable) that contains the code that will be executed when doing an `exit()` call. Intended to be used in situations where Perl 6 is embedded in another language runtime (such as Inline::Perl6 in Perl 5).
+This is a [Callable](https://rakudocs.github.io/type/Callable) that contains the code that will be executed when doing an `exit()` call. Intended to be used in situations where Raku is embedded in another language runtime (such as Inline::Perl6 in Perl 5).
 
 <a id="%24executable"></a>
 #### `$*EXECUTABLE`
 
-包含当前正在运行的Perl可执行文件的 `IO::Path` 绝对路径。
+包含当前正在运行的 Raku 可执行文件的 `IO::Path` 绝对路径。
 
-Contains an `IO::Path` absolute path of the perl executable that is currently running.
+Contains an `IO::Path` absolute path of the Raku executable that is currently running.
 
 <a id="%24executable-name"></a>
 #### `$*EXECUTABLE-NAME`
 
-包含当前运行的 Perl 可执行文件的名称。（例如 perl6-p、perl6-m）。优先选择 `$*EXECUTABLE`，因为不能保证 perl 可执行文件在 `PATH` 中。
+包含当前运行的 Raku 可执行文件的名称。（例如 raku-p、raku-m）。优先选择 `$*EXECUTABLE`，因为不能保证 Raku 可执行文件在 `PATH` 中。
 
-Contains the name of the Perl executable that is currently running. (e.g. perl6-p, perl6-m). Favor `$*EXECUTABLE` over this one, since it's not guaranteed that the perl executable is in `PATH`.
+Contains the name of the Raku executable that is currently running. (e.g. raku-p, raku-m). Favor `$*EXECUTABLE` over this one, since it's not guaranteed that the perl executable is in `PATH`.
 
 <a id="%24usage"></a>
 #### `$*USAGE`
@@ -1728,54 +1728,54 @@ Contains information about the path to the user directory that is running the pr
 <a id="%24home"></a>
 #### `$*HOME`
 
-包含一个 [IO::Path](https://docs.perl6.org/type/IO::Path) 对象，表示运行程序的用户的“家目录”。如果设置，则使用 `%*ENV<HOME>`。
+包含一个 [IO::Path](https://rakudocs.github.io/type/IO::Path) 对象，表示运行程序的用户的“家目录”。如果设置，则使用 `%*ENV<HOME>`。
 
-Contains an [IO::Path](https://docs.perl6.org/type/IO::Path) object representing the "home directory" of the user that is running the program. Uses `%*ENV<HOME>` if set.
+Contains an [IO::Path](https://rakudocs.github.io/type/IO::Path) object representing the "home directory" of the user that is running the program. Uses `%*ENV<HOME>` if set.
 
-在 Windows 上，使用 `%*ENV<HOMEDRIVE> ~ %*ENV<HOMEPATH>`。如果无法确定家目录，它将是 [Any]（https://docs.perl6.org/type/any）。
+在 Windows 上，使用 `%*ENV<HOMEDRIVE> ~ %*ENV<HOMEPATH>`。如果无法确定家目录，它将是 [Any]（https://rakudocs.github.io/type/any）。
 
-On Windows, uses `%*ENV<HOMEDRIVE> ~ %*ENV<HOMEPATH>`. If the home directory cannot be determined, it will be [Any](https://docs.perl6.org/type/Any).
+On Windows, uses `%*ENV<HOMEDRIVE> ~ %*ENV<HOMEPATH>`. If the home directory cannot be determined, it will be [Any](https://rakudocs.github.io/type/Any).
 
 <a id="%24spec"></a>
 #### `$*SPEC`
 
-包含程序所运行平台的适当 [IO::Spec](https://docs.perl6.org/type/IO::Spec) 子类。这是操作系统的一个更高级别的类；例如，对于Linux，它将返回 `Unix`（以 `IO::Spec` 类的形式，用于当前实现）。
+包含程序所运行平台的适当 [IO::Spec](https://rakudocs.github.io/type/IO::Spec) 子类。这是操作系统的一个更高级别的类；例如，对于Linux，它将返回 `Unix`（以 `IO::Spec` 类的形式，用于当前实现）。
 
-Contains the appropriate [IO::Spec](https://docs.perl6.org/type/IO::Spec) sub-class for the platform that the program is running on. This is a higher-level class for the operating system; it will return `Unix`, for instance, in the case of Linux (in the form of the `IO::Spec` class used for the current implementation).
+Contains the appropriate [IO::Spec](https://rakudocs.github.io/type/IO::Spec) sub-class for the platform that the program is running on. This is a higher-level class for the operating system; it will return `Unix`, for instance, in the case of Linux (in the form of the `IO::Spec` class used for the current implementation).
 
 <a id="%24tmpdir"></a>
 #### `$*TMPDIR`
 
-这是一个 [IO::Path](https://docs.perl6.org/type/IO::Path) 对象，表示由 [`.tmpdir IO::Spec::* method`](https://docs.perl6.org/routine/tmpdir)确定的“系统临时目录”。
+这是一个 [IO::Path](https://rakudocs.github.io/type/IO::Path) 对象，表示由 [`.tmpdir IO::Spec::* method`](https://rakudocs.github.io/routine/tmpdir)确定的“系统临时目录”。
 
-This is an [IO::Path](https://docs.perl6.org/type/IO::Path) object representing the "system temporary directory" as determined by [`.tmpdir IO::Spec::* method`](https://docs.perl6.org/routine/tmpdir).
+This is an [IO::Path](https://rakudocs.github.io/type/IO::Path) object representing the "system temporary directory" as determined by [`.tmpdir IO::Spec::* method`](https://rakudocs.github.io/routine/tmpdir).
 
 <a id="%24tolerance"></a>
 #### `$*TOLERANCE`
 
-由 [`=~=`](https://docs.perl6.org/routine/=~=) 运算符和依赖它的任何操作使用的变量，以确定两个值是否近似相等。默认为 `1e-15`。
+由 [`=~=`](https://rakudocs.github.io/routine/=~=) 运算符和依赖它的任何操作使用的变量，以确定两个值是否近似相等。默认为 `1e-15`。
 
-Variable used by the [`=~=`](https://docs.perl6.org/routine/=~=) operator, and any operations that depend on it, to decide if two values are approximately equal. Defaults to `1e-15`.
+Variable used by the [`=~=`](https://rakudocs.github.io/routine/=~=) operator, and any operations that depend on it, to decide if two values are approximately equal. Defaults to `1e-15`.
 
 <a id="%24thread"></a>
 #### `$*THREAD`
 
-包含表示当前执行线程的 [Thread](https://docs.perl6.org/type/thread) 对象。
+包含表示当前执行线程的 [Thread](https://rakudocs.github.io/type/thread) 对象。
 
-Contains a [Thread](https://docs.perl6.org/type/Thread) object representing the currently executing thread.
+Contains a [Thread](https://rakudocs.github.io/type/Thread) object representing the currently executing thread.
 
 <a id="%24scheduler"></a>
 #### `$*SCHEDULER`
 
-这是表示当前默认计划程序的 [ThreadPoolScheduler](https://docs.perl6.org/type/threadpoolscheduler) 对象。
+这是表示当前默认计划程序的 [ThreadPoolScheduler](https://rakudocs.github.io/type/threadpoolscheduler) 对象。
 
-This is a [ThreadPoolScheduler](https://docs.perl6.org/type/ThreadPoolScheduler) object representing the current default scheduler.
+This is a [ThreadPoolScheduler](https://rakudocs.github.io/type/ThreadPoolScheduler) object representing the current default scheduler.
 
-默认情况下，在方法 `.hyper`、`.race` 和使用该调度程序的其他线程池类（如 `Promise` 或 `Supply`）上，这最多可施加 64 个线程。但是，这取决于实现，可能会发生更改。要更改线程的最大数目，可以在运行 Perl 6 之前设置环境变量 `RAKUDO_MAX_THREADS`，或者在使用它们之前创建一个范围复制，并更改默认值：
+默认情况下，在方法 `.hyper`、`.race` 和使用该调度程序的其他线程池类（如 `Promise` 或 `Supply`）上，这最多可施加 64 个线程。但是，这取决于实现，可能会发生更改。要更改线程的最大数目，可以在运行 Raku 之前设置环境变量 `RAKUDO_MAX_THREADS`，或者在使用它们之前创建一个范围复制，并更改默认值：
 
-By default this imposes a maximum of 64 threads on the methods `.hyper`, `.race` and other thread-pool classes that use that scheduler such as `Promise`s or `Supply`s. This is, however, implementation, dependent and might be subject to change. To change the maximum number of threads, you can either set the environment variable `RAKUDO_MAX_THREADS` before running perl6 or create a scoped copy with the default changed before using them:
+By default this imposes a maximum of 64 threads on the methods `.hyper`, `.race` and other thread-pool classes that use that scheduler such as `Promise`s or `Supply`s. This is, however, implementation, dependent and might be subject to change. To change the maximum number of threads, you can either set the environment variable `RAKUDO_MAX_THREADS` before running Raku or create a scoped copy with the default changed before using them:
 
-```Perl6
+```Raku
 my $*SCHEDULER = ThreadPoolScheduler.new( max_threads => 128 );
 ```
 
@@ -1786,9 +1786,9 @@ This behavior is not tested in the spec tests and is subject to change.
 <a id="%24sampler"></a>
 #### `$*SAMPLER`
 
-当前用于生成系统状态快照的 [Telemetry::Sampler](https://docs.perl6.org/type/Telemetry::Sampler)。仅当已加载 [Telemetry]（https://docs.perl6.org/type/teletry）时可用。
+当前用于生成系统状态快照的 [Telemetry::Sampler](https://rakudocs.github.io/type/Telemetry::Sampler)。仅当已加载 [Telemetry]（https://rakudocs.github.io/type/teletry）时可用。
 
-The current [Telemetry::Sampler](https://docs.perl6.org/type/Telemetry::Sampler) used for making snapshots of system state. Only available if [Telemetry](https://docs.perl6.org/type/Telemetry) has been loaded.
+The current [Telemetry::Sampler](https://rakudocs.github.io/type/Telemetry::Sampler) used for making snapshots of system state. Only available if [Telemetry](https://rakudocs.github.io/type/Telemetry) has been loaded.
 
 <a id="%E5%91%BD%E5%90%8D%E7%BA%A6%E5%AE%9A--naming-conventions"></a>
 # 命名约定 / Naming conventions

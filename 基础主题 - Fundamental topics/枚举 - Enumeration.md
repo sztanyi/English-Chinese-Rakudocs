@@ -1,4 +1,4 @@
-原文：https://docs.perl6.org/language/enumeration
+原文：https://rakudocs.github.io/language/enumeration
 
 # 枚举 / Enumeration
 
@@ -6,9 +6,9 @@
 
 An example using the enum type
 
-`enum` 类型在 Perl 6 中比其他语言复杂得多，细节见 [enum 的类型说明](https://docs.perl6.org/language/typesystem#enum)。
+`enum` 类型在 Raku 中比其他语言复杂得多，细节见 [enum 的类型说明](https://rakudocs.github.io/language/typesystem#enum)。
 
-The `enum` type is much more complex in Perl 6 than in some other languages, and the details are found in [its type description](https://docs.perl6.org/language/typesystem#enum).
+The `enum` type is much more complex in Raku than in some other languages, and the details are found in [its type description](https://rakudocs.github.io/language/typesystem#enum).
 
 这个简短的文档将给出一个简单的例子，说明它的用法，就像类 C 语言中通常的做法一样。
 

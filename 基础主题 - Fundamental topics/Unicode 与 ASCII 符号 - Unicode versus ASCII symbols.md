@@ -1,4 +1,4 @@
-原文：https://docs.perl6.org/language/unicode_ascii
+原文：https://rakudocs.github.io/language/unicode_ascii
 
 # Unicode 与 ASCII 符号 / Unicode versus ASCII symbols
 
@@ -6,9 +6,9 @@ Unicode 符号及其 ASCII 等价物
 
 Unicode symbols and their ASCII equivalents
 
-以下 Unicode 符号可以在 Perl 6 中使用，而无需加载任何其他模块。其中一些具有对应的类型，可以只输入 ASCII 字符。
+以下 Unicode 符号可以在 Raku 中使用，而无需加载任何其他模块。其中一些具有对应的类型，可以只输入 ASCII 字符。
 
-The following Unicode symbols can be used in Perl 6 without needing to load any additional modules. Some of them have equivalents which can be typed with ASCII-only characters.
+The following Unicode symbols can be used in Raku without needing to load any additional modules. Some of them have equivalents which can be typed with ASCII-only characters.
 
 下面引用 Unicode 码点的各种属性。最终列表可以在这里找到：<https://www.unicode.org/Public/UCD/latest/ucd/PropList.txt>。
 
@@ -34,7 +34,7 @@ Reference is made below to various properties of unicode codepoints. The definit
 
 Any codepoint that has the `Ll` (Letter, lowercase), `Lu` (Letter, uppercase), `Lt` (Letter, titlecase), `Lm` (Letter, modifier), or the `Lo` (Letter, other) property can be used just like any other alphabetic character from the ASCII range.
 
-```Perl6
+```Raku
 my $Δ = 1;
 $Δ++;
 say $Δ;
@@ -47,7 +47,7 @@ say $Δ;
 
 Any codepoint that has the `Nd` (Number, decimal digit) property, can be used as a digit in any number. For example:
 
-```Perl6
+```Raku
 my $var = １９; # U+FF11 U+FF19 
 say $var + 2;  # OUTPUT: «21␤»
 ```
@@ -59,7 +59,7 @@ say $var + 2;  # OUTPUT: «21␤»
 
 Any codepoint that has the `No` (Number, other) or `Nl` (Number, letter) property can be used standalone as a numeric value, such as ½ and ⅓. (These aren't decimal digit characters, so can't be combined.) For example:
 
-```Perl6
+```Raku
 my $var = ⅒ + 2 + Ⅻ; # here ⅒ is No and Rat and Ⅻ is Nl and Int 
 say $var;            # OUTPUT: «14.1␤»
 ```
@@ -74,9 +74,9 @@ Besides spaces and tabs you can use any other unicode whitespace character that 
 <a id="%E5%85%B6%E4%BB%96%E5%8F%AF%E6%8E%A5%E5%8F%97%E7%9A%84%E5%8D%95%E7%A0%81%E7%82%B9--other-acceptable-single-codepoints"></a>
 # 其他可接受的单码点 / Other acceptable single codepoints
 
-此列表包含在 Perl 6 中具有特殊意义的单个代码点[及其 ASCII 等效项]。
+此列表包含在 Raku 中具有特殊意义的单个代码点[及其 ASCII 等效项]。
 
-This list contains the single codepoints [and their ASCII equivalents] that have a special meaning in Perl 6.
+This list contains the single codepoints [and their ASCII equivalents] that have a special meaning in Raku.
 
 | Symbol | Codepoint | ASCII   | Remarks                                                      |
 | ------ | --------- | ------- | ------------------------------------------------------------ |
@@ -143,7 +143,7 @@ This list contains the single codepoints [and their ASCII equivalents] that have
 
 The atomic operators have `U+269B ⚛ ATOM SYMBOL` incorporated into them. Their ASCII equivalents are ordinary subroutines, not operators:
 
-```Perl6
+```Raku
 my atomicint $x = 42;
 $x⚛++;                # Unicode version 
 atomic-fetch-inc($x); # ASCII version

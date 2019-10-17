@@ -1,4 +1,4 @@
-原文：https://docs.perl6.org/language/io
+原文：https://rakudocs.github.io/language/io
 
 # 输入/输出 / Input/Output
 
@@ -6,9 +6,9 @@
 
 File-related operations
 
-这里我们简要介绍了与文件相关的输入/输出操作。有关 [IO](https://docs.perl6.org/type/IO) 角色以及 [IO::Handle](https://docs.perl6.org/type/IO::Handle) 和 [IO::Path](https://docs.perl6.org/type/IO::Path) 类型的详细信息，请参阅文档。
+这里我们简要介绍了与文件相关的输入/输出操作。有关 [IO](https://rakudocs.github.io/type/IO) 角色以及 [IO::Handle](https://rakudocs.github.io/type/IO::Handle) 和 [IO::Path](https://rakudocs.github.io/type/IO::Path) 类型的详细信息，请参阅文档。
 
-Here we present a quick overview of the file-related input/output operations. Details can be found in the documentation for the [IO](https://docs.perl6.org/type/IO) role, as well as the [IO::Handle](https://docs.perl6.org/type/IO::Handle) and [IO::Path](https://docs.perl6.org/type/IO::Path) types.
+Here we present a quick overview of the file-related input/output operations. Details can be found in the documentation for the [IO](https://rakudocs.github.io/type/IO) role, as well as the [IO::Handle](https://rakudocs.github.io/type/IO::Handle) and [IO::Path](https://rakudocs.github.io/type/IO::Path) types.
 
 <!-- MarkdownTOC -->
 
@@ -104,9 +104,9 @@ By default all (text) files are written as UTF-8, however if necessary, an expli
 spurt "testfile", "latin1 text: äöüß", enc => "latin1";
 ```
 
-要将格式化字符串写入文件，请使用 [IO::Handle](https://docs.perl6.org/type/IO::Handle) 的 [printf](https://docs.perl6.org/routine/printf) 函数。
+要将格式化字符串写入文件，请使用 [IO::Handle](https://rakudocs.github.io/type/IO::Handle) 的 [printf](https://rakudocs.github.io/routine/printf) 函数。
 
-To write formatted strings to a file, use the [printf](https://docs.perl6.org/routine/printf) function of [IO::Handle](https://docs.perl6.org/type/IO::Handle).
+To write formatted strings to a file, use the [printf](https://rakudocs.github.io/routine/printf) function of [IO::Handle](https://rakudocs.github.io/type/IO::Handle).
 
 ```Perl6
 my $fh = open "testfile", :w;
@@ -149,9 +149,9 @@ To explicitly write binary data to a file, open it with the `:bin` option. The i
 <a id="%E5%A4%8D%E5%88%B6%E5%92%8C%E9%87%8D%E5%91%BD%E5%90%8D%E6%96%87%E4%BB%B6--copying-and-renaming-files"></a>
 # 复制和重命名文件 / Copying and renaming files
 
-例程 `copy`、`rename` 和 `move` 可用于避免低级系统命令。详情请参见[复制](https://docs.perl6.org/routine/copy)、[重命名](https://docs.perl6.org/routine/rename)和[移动](https://docs.perl6.org/routine/move)。一些例子：
+例程 `copy`、`rename` 和 `move` 可用于避免低级系统命令。详情请参见[复制](https://rakudocs.github.io/routine/copy)、[重命名](https://rakudocs.github.io/routine/rename)和[移动](https://rakudocs.github.io/routine/move)。一些例子：
 
-Routines `copy`, `rename`, and `move` are available to avoid low-level system commands. See details at [copy](https://docs.perl6.org/routine/copy), [rename](https://docs.perl6.org/routine/rename), and [move](https://docs.perl6.org/routine/move). Some examples:
+Routines `copy`, `rename`, and `move` are available to avoid low-level system commands. See details at [copy](https://rakudocs.github.io/routine/copy), [rename](https://rakudocs.github.io/routine/rename), and [move](https://rakudocs.github.io/routine/move). Some examples:
 
 ```Perl6
 my $filea = 'foo';
@@ -239,16 +239,16 @@ say $f.IO.accessed; # return last time file (or directory) was read
 say $f.IO.s;        # return size of file (or directory inode) in bytes 
 ```
 
-请参阅 [IO::Path](https://docs.perl6.org/type/IO::Path) 上的更多方法和详细信息。
+请参阅 [IO::Path](https://rakudocs.github.io/type/IO::Path) 上的更多方法和详细信息。
 
-See more methods and details at [IO::Path](https://docs.perl6.org/type/IO::Path).
+See more methods and details at [IO::Path](https://rakudocs.github.io/type/IO::Path).
 
 <a id="%E8%8E%B7%E5%8F%96%E7%9B%AE%E5%BD%95%E5%88%97%E8%A1%A8--getting-a-directory-listing"></a>
 # 获取目录列表 / Getting a directory listing
 
-要列出当前目录的内容，使用 `dir` 函数。它返回 [IO::Path](https://docs.perl6.org/type/IO::Path) 对象的列表。
+要列出当前目录的内容，使用 `dir` 函数。它返回 [IO::Path](https://rakudocs.github.io/type/IO::Path) 对象的列表。
 
-To list the contents of the current directory, use the `dir` function. It returns a list of [IO::Path](https://docs.perl6.org/type/IO::Path) objects.
+To list the contents of the current directory, use the `dir` function. It returns a list of [IO::Path](https://rakudocs.github.io/type/IO::Path) objects.
 
 ```Perl6
 say dir;          # OUTPUT: «"/path/to/testfile".IO "/path/to/lib".IO␤» 

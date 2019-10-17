@@ -1,4 +1,4 @@
-原文：https://docs.perl6.org/language/phasers
+原文：https://rakudocs.github.io/language/phasers
 
 # 相位器 / Phasers
 
@@ -56,7 +56,7 @@ A phaser block is just a trait of the closure containing it, and is automaticall
 
 Here is a summary:
 
-```Perl6
+```Raku
   BEGIN {...} #  * at compile time, as soon as possible, only ever runs once 
   CHECK {...} #  * at compile time, as late as possible, only ever runs once 
    INIT {...} #  * at runtime, as soon as possible, only ever runs once 
@@ -89,7 +89,7 @@ COMPOSE {...} #  when a role is composed into a class (Not yet implemented)
 
 Phasers marked with a `*` have a runtime value, and if evaluated earlier than their surrounding expression, they simply save their result for use in the expression later when the rest of the expression is evaluated:
 
-```Perl6
+```Raku
 my $compiletime = BEGIN { now };
 our $random = ENTER { rand };
 ```
@@ -98,7 +98,7 @@ our $random = ENTER { rand };
 
 As with other statement prefixes, these value-producing constructs may be placed in front of either a block or a statement:
 
-```Perl6
+```Raku
 my $compiletime = BEGIN now;
 our $random = ENTER rand;
 ```
@@ -111,7 +111,7 @@ Most of these phasers will take either a block or a function reference. The stat
 
 These declare the same variables with the same scope as the preceding example, but run the statements as a whole at the indicated time:
 
-```Perl6
+```Raku
 BEGIN my $compiletime = now;
 ENTER our $random = rand;
 ```
@@ -124,7 +124,7 @@ ENTER our $random = rand;
 
 Most of the non-value-producing phasers may also be so used:
 
-```Perl6
+```Raku
 END say my $accumulator;
 ```
 
@@ -132,7 +132,7 @@ END say my $accumulator;
 
 Note, however, that
 
-```Perl6
+```Raku
 END say my $accumulator = 0;
 ```
 
@@ -144,7 +144,7 @@ sets the variable to 0 at `END` time, since that is when the "my" declaration is
 
 Some of these phasers also have corresponding traits that can be set on variables; they use `will` followed by the name of the phaser in lowercase. These have the advantage of passing the variable in question into the closure as its topic:
 
-```Perl6
+```Raku
 our $h will enter { .rememberit() } will undo { .forgetit() };
 ```
 
@@ -171,7 +171,7 @@ When multiple phasers are scheduled to run at the same moment, the general tiebr
 
 Compilation begins
 
-```Perl6
+```Raku
       BEGIN {...} #  at compile time, As soon as possible, only ever runs once 
       CHECK {...} #  at compile time, As late as possible, only ever runs once 
     COMPOSE {...} #  when a role is composed into a class (Not yet implemented) 
@@ -181,7 +181,7 @@ Compilation begins
 
 Execution begins
 
-```Perl6
+```Raku
        INIT {...} #  at runtime, as soon as possible, only ever runs once 
 ```
 
@@ -189,7 +189,7 @@ Execution begins
 
 Before block execution begins
 
-```Perl6
+```Raku
         PRE {...} #  assert precondition at every block entry, before ENTER 
 ```
 
@@ -197,7 +197,7 @@ Before block execution begins
 
 Loop execution begins
 
-```Perl6
+```Raku
       FIRST {...} #  at loop initialization time, before any ENTER 
 ```
 
@@ -205,7 +205,7 @@ Loop execution begins
 
 Block execution begins
 
-```Perl6
+```Raku
       ENTER {...} #  at every block entry time, repeats on loop blocks. 
 ```
 
@@ -213,7 +213,7 @@ Block execution begins
 
 Exception maybe happens
 
-```Perl6
+```Raku
       CATCH {...} #  catch exceptions, before LEAVE 
     CONTROL {...} #  catch control exceptions, before LEAVE 
 ```
@@ -222,7 +222,7 @@ Exception maybe happens
 
 End of loop, either continuing or finished
 
-```Perl6
+```Raku
        NEXT {...} #  at loop continuation time, before any LEAVE 
        LAST {...} #  at loop termination time, after any LEAVE 
 ```
@@ -231,7 +231,7 @@ End of loop, either continuing or finished
 
 End of block
 
-```Perl6
+```Raku
       LEAVE {...} #  when blocks exits, even stack unwinds from exceptions 
        KEEP {...} #  at every successful block exit, part of LEAVE queue 
        UNDO {...} #  at every unsuccessful block exit, part of LEAVE queue 
@@ -241,7 +241,7 @@ End of block
 
 Postcondition for block
 
-```Perl6
+```Raku
        POST {...} #  assert postcondition at every block exit, after LEAVE 
 ```
 
@@ -249,7 +249,7 @@ Postcondition for block
 
 Async whenever-block is complete
 
-```Perl6
+```Raku
        LAST {...} #  if ended normally with done, runs once after block 
        QUIT {...} #  catch async exceptions 
 ```
@@ -258,7 +258,7 @@ Async whenever-block is complete
 
 Program terminating
 
-```Perl6
+```Raku
         END {...} #  at runtime, ALAP, only ever runs once 
 ```
 
@@ -276,7 +276,7 @@ Runs at compile time, as soon as the code in the phaser has compiled, only runs 
 
 The return value is available for use in later phases:
 
-```Perl6
+```Raku
 say "About to print 3 things";
 for ^3 {
     say ^10 .pick ~ '-' ~ BEGIN { say  "Generating BEGIN value"; ^10 .pick }
@@ -289,9 +289,9 @@ for ^3 {
 # 6-3
 ```
 
-相位器中的 `^10 .pick` 只生成一次，然后在运行时由循环重新使用。注意在 `BEGIN` 代码块中的 [say](https://docs.perl6.org/routine/say) 是如何在循环上方的 [say](https://docs.perl6.org/routine/say) 之前执行的。
+相位器中的 `^10 .pick` 只生成一次，然后在运行时由循环重新使用。注意在 `BEGIN` 代码块中的 [say](https://rakudocs.github.io/routine/say) 是如何在循环上方的 [say](https://rakudocs.github.io/routine/say) 之前执行的。
 
-The `^10 .pick` in the phaser is generated only once and is then re-used by the loop during runtime. Note how the [say](https://docs.perl6.org/routine/say) in the `BEGIN` block is executed before the [say](https://docs.perl6.org/routine/say) that is above the loop.
+The `^10 .pick` in the phaser is generated only once and is then re-used by the loop during runtime. Note how the [say](https://rakudocs.github.io/routine/say) in the `BEGIN` block is executed before the [say](https://rakudocs.github.io/routine/say) that is above the loop.
 
 <a id="check"></a>
 ## CHECK
@@ -375,9 +375,9 @@ An exception thrown from an `ENTER` phaser will abort the `ENTER` queue, but one
 <a id="leave"></a>
 ## LEAVE
 
-在每个块退出时运行（甚至堆栈从异常中展开），除非程序突然退出（例如使用 [`exit`](https://docs.perl6.org/routine/exit)）。
+在每个块退出时运行（甚至堆栈从异常中展开），除非程序突然退出（例如使用 [`exit`](https://rakudocs.github.io/routine/exit)）。
 
-Runs at every block exit time (even stack unwinds from exceptions), except when the program exits abruptly (e.g. with [`exit`](https://docs.perl6.org/routine/exit)).
+Runs at every block exit time (even stack unwinds from exceptions), except when the program exits abruptly (e.g. with [`exit`](https://rakudocs.github.io/routine/exit)).
 
 一定要在任何 `CATCH` 和 `CONTROL` 相位器之后对某一区块的 `LEAVE` 相位器进行评估。这包括`LEAVE` 变体、`KEEP`  和 `UNDO`。`POST` 相位器评估发生在其他所有事情之后，以保证即使是 `LEAVE` 相位器也不会违反后条件。
 
@@ -391,7 +391,7 @@ An exception thrown from an `ENTER` phaser will abort the `ENTER` queue, but one
 
 If a `POST` fails or any kind of `LEAVE` block throws an exception while the stack is unwinding, the unwinding continues and collects exceptions to be handled. When the unwinding is completed all new exceptions are thrown from that point.
 
-```Perl6
+```Raku
 sub answer() {
     LEAVE say „I say after the return value.“;
  
@@ -403,7 +403,7 @@ sub answer() {
 
 **Note:** be mindful of `LEAVE` phasers directly in blocks of routines, as they will get executed even when an attempt to call the routine with wrong arguments is made:
 
-```Perl6
+```Raku
 sub foo (Int) {
     say "Hello!";
     LEAVE say "oh noes!"
@@ -411,9 +411,9 @@ sub foo (Int) {
 try foo rand; # OUTPUT: «oh noes!␤»
 ```
 
-尽管子例程的主体没有运行，因为子例程期望有一个 [Int](https://docs.perl6.org/type/Int) 和 [`rand`](https://docs.perl6.org/routine/rand) 并返回一个 [Num](https://docs.perl6.org/type/Num)，进入代码块后就离开了(当参数绑定失败时)，所以 `LEAVE` 相位器被运行了。
+尽管子例程的主体没有运行，因为子例程期望有一个 [Int](https://rakudocs.github.io/type/Int) 和 [`rand`](https://rakudocs.github.io/routine/rand) 并返回一个 [Num](https://rakudocs.github.io/type/Num)，进入代码块后就离开了(当参数绑定失败时)，所以 `LEAVE` 相位器被运行了。
 
-Although the subroutine's body did not get run, because the sub expects an [Int](https://docs.perl6.org/type/Int) and [`rand`](https://docs.perl6.org/routine/rand) returned a [Num](https://docs.perl6.org/type/Num), its block was entered and left (when param binding failed), and so the `LEAVE` phaser *was* run.
+Although the subroutine's body did not get run, because the sub expects an [Int](https://rakudocs.github.io/type/Int) and [`rand`](https://rakudocs.github.io/routine/rand) returned a [Num](https://rakudocs.github.io/type/Num), its block was entered and left (when param binding failed), and so the `LEAVE` phaser *was* run.
 
 <a id="keep"></a>
 ## KEEP
@@ -514,7 +514,7 @@ Runs when an exception is raised by the current block, before the LEAVE phase.
 
 Runs when a control exception is raised by the current block, before the LEAVE phase. It is raised by `return`, `fail`, `redo`, `next`, `last`, `done`, `emit`, `take`, `warn`, `proceed` and `succeed`.
 
-```Perl6
+```Raku
 say elems gather {
     CONTROL {
         when CX::Warn { say "WARNING!!! $_"; .resume }
@@ -548,9 +548,9 @@ Runs when a role is composed into a class.
 <a id="last-1"></a>
 ## LAST
 
-当一个 [Supply](https://docs.perl6.org/type/Supply) 以调用 `done` 结束，或者当一个 `supply` 代码块正常退出时运行。`whenever` 代码块后运行，它被放置在完成前。
+当一个 [Supply](https://rakudocs.github.io/type/Supply) 以调用 `done` 结束，或者当一个 `supply` 代码块正常退出时运行。`whenever` 代码块后运行，它被放置在完成前。
 
-Runs when a [Supply](https://docs.perl6.org/type/Supply) finishes with a call to `done` or when a `supply` block exits normally. It runs completely after the `whenever` block it is placed within finishes.
+Runs when a [Supply](https://rakudocs.github.io/type/Supply) finishes with a call to `done` or when a `supply` block exits normally. It runs completely after the `whenever` block it is placed within finishes.
 
 此相位器重复使用名称 `LAST`，但其工作方式与 `LAST` 循环相位器不同。此相位器类似于设置 `done` 例程，同时使用 `tap` 消费 supply。
 
@@ -559,9 +559,9 @@ This phaser reuses the name `LAST`, but works differently from the `LAST` loop p
 <a id="quit"></a>
 ## QUIT
 
-当 [Supply](https://docs.perl6.org/type/Supply) 在异常情况下提前终止时运行。它运行在 `whenever` 代码块之后，它被放置在完成之前。
+当 [Supply](https://rakudocs.github.io/type/Supply) 在异常情况下提前终止时运行。它运行在 `whenever` 代码块之后，它被放置在完成之前。
 
-Runs when a [Supply](https://docs.perl6.org/type/Supply) terminates early with an exception. It runs after the `whenever` block it is placed within finishes.
+Runs when a [Supply](https://rakudocs.github.io/type/Supply) terminates early with an exception. It runs after the `whenever` block it is placed within finishes.
 
 这个相位类似于设置 `quit` 例程，同时使用 `tap` 消费 supply。
 
@@ -584,6 +584,6 @@ Appears in a supply block. Called when the supply is closed.
 
 The phasers `BEGIN`, `CHECK` and `INIT` are run only in documentation mode when prefixed with the `DOC` keyword. The compiler is in documentation when run with `--doc`.
 
-```Perl6
+```Raku
 DOC INIT { say 'init'  }  # prints 'init' at initialization time when in documentation mode.
 ```

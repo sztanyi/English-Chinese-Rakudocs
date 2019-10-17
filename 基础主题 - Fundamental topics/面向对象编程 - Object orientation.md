@@ -1,18 +1,18 @@
-原文：https://docs.perl6.org/language/objects
+原文：https://rakudocs.github.io/language/objects
 
 # 面向对象（物件） / Object orientation
 
-Perl 6 中的面向对象
+Raku 中的面向对象
 
-Object orientation in Perl 6
+Object orientation in Raku
 
-Perl 6 为[面向对象的编程（OOP）](https://en.wikipedia.org/wiki/Object-oriented_programming)提供了强有力的支持。尽管 Perl 6 允许程序员多范例编程，但面向对象的编程是该语言的核心。
+Raku 为[面向对象的编程（OOP）](https://en.wikipedia.org/wiki/Object-oriented_programming)提供了强有力的支持。尽管 Raku 允许程序员多范例编程，但面向对象的编程是该语言的核心。
 
-Perl 6 provides strong support for [Object Oriented Programming (OOP)](https://en.wikipedia.org/wiki/Object-oriented_programming). Although Perl 6 allows programmers to program in multiple paradigms, Object Oriented Programming is at the heart of the language.
+Raku provides strong support for [Object Oriented Programming (OOP)](https://en.wikipedia.org/wiki/Object-oriented_programming). Although Raku allows programmers to program in multiple paradigms, Object Oriented Programming is at the heart of the language.
 
-Perl 6 有很多预定义的类型，可以分为两类：常规类型和[*原生*类型](https://docs.perl6.org/language/nativetypes)。你可以存储在变量中的所有内容都是*原生值*或*对象*。它包括文字、类型（类型对象）、代码和容器。
+Raku 有很多预定义的类型，可以分为两类：常规类型和[*原生*类型](https://rakudocs.github.io/language/nativetypes)。你可以存储在变量中的所有内容都是*原生值*或*对象*。它包括文字、类型（类型对象）、代码和容器。
 
-Perl 6 comes with a wealth of predefined types, which can be classified in two categories: regular and [*native* types](https://docs.perl6.org/language/nativetypes). Everything that you can store in a variable is either a *native value* or an *object*. That includes literals, types (type objects), code and containers.
+Raku comes with a wealth of predefined types, which can be classified in two categories: regular and [*native* types](https://rakudocs.github.io/language/nativetypes). Everything that you can store in a variable is either a *native value* or an *object*. That includes literals, types (type objects), code and containers.
 
 原生类型用于低级类型（如 `uint64`）。即使*原生*类型不具有与对象相同的功能，如果在它们上调用方法，它们也会自动*装箱*到普通对象中。
 
@@ -56,7 +56,7 @@ Everything that is not a *native* value is an *object*. Objects do allow for bot
 
 To call a method on an object, add a dot, followed by the method name:
 
-```Perl6
+```Raku
 say "abc".uc;
 # OUTPUT: «ABC␤» 
 ```
@@ -65,7 +65,7 @@ say "abc".uc;
 
 This calls the `uc` method on `"abc"`, which is an object of type `Str`. To supply arguments to the method, add arguments inside parentheses after the method.
 
-```Perl6
+```Raku
 my $formatted-text = "Fourscore and seven years ago...".indent(8);
 say $formatted-text;
 # OUTPUT: «        Fourscore and seven years ago...␤» 
@@ -79,7 +79,7 @@ say $formatted-text;
 
 Multiple arguments are separated by commas:
 
-```Perl6
+```Raku
 my @words = "Abe", "Lincoln";
 @words.push("said", $formatted-text.comb(/\w+/));
 say @words;
@@ -90,7 +90,7 @@ say @words;
 
 Similarly, multiple arguments can be specified by placing a colon after the method and separating the argument list with a comma:
 
-```Perl6
+```Raku
 say @words.join('--').subst: 'years', 'DAYS';
 # OUTPUT: «Abe--Lincoln--said--Fourscore and seven DAYS ago␤» 
 ```
@@ -99,7 +99,7 @@ say @words.join('--').subst: 'years', 'DAYS';
 
 Since you have to put a `:` after the method if you want to pass arguments without parentheses, a method call without a colon or parentheses is unambiguously a method call without an argument list:
 
-```Perl6
+```Raku
 say 4.log:   ; # OUTPUT: «1.38629436111989␤» ( natural logarithm of 4 ) 
 say 4.log: +2; # OUTPUT: «2␤» ( base-2 logarithm of 4 ) 
 say 4.log  +2; # OUTPUT: «3.38629436111989␤» ( natural logarithm of 4, plus 2 )
@@ -113,17 +113,17 @@ Many operations that don't look like method calls (for example, smartmatching or
 
 Methods can return mutable containers, in which case you can assign to the return value of a method call. This is how read-writable attributes to objects are used:
 
-```Perl6
+```Raku
 $*IN.nl-in = "\r\n";
 ```
 
-在这里，我们在 `$*IN` 对象上调用方法 `nl-in`，不带参数，并将其赋值为用 [`=`](https://docs.perl6.org/routine/=) 返回的容器。
+在这里，我们在 `$*IN` 对象上调用方法 `nl-in`，不带参数，并将其赋值为用 [`=`](https://rakudocs.github.io/routine/=) 返回的容器。
 
-Here, we call method `nl-in` on the `$*IN` object, without arguments, and assign to the container it returned with the [`=`](https://docs.perl6.org/routine/=) operator.
+Here, we call method `nl-in` on the `$*IN` object, without arguments, and assign to the container it returned with the [`=`](https://rakudocs.github.io/routine/=) operator.
 
-所有对象都支持类 [Mu](https://docs.perl6.org/type/Mu) 中的方法。所有对象都是从 `Mu` 派生出来的。
+所有对象都支持类 [Mu](https://rakudocs.github.io/type/Mu) 中的方法。所有对象都是从 `Mu` 派生出来的。
 
-All objects support methods from class [Mu](https://docs.perl6.org/type/Mu), which is the type hierarchy root. All objects derive from `Mu`.
+All objects support methods from class [Mu](https://rakudocs.github.io/type/Mu), which is the type hierarchy root. All objects derive from `Mu`.
 
 <a id="%E7%B1%BB%E5%9E%8B%E5%AF%B9%E8%B1%A1--type-objects"></a>
 ## 类型对象 / Type objects
@@ -132,7 +132,7 @@ All objects support methods from class [Mu](https://docs.perl6.org/type/Mu), whi
 
 Types themselves are objects and you can get the *type object* by writing its name:
 
-```Perl6
+```Raku
 my $int-type-obj = Int;
 ```
 
@@ -140,15 +140,15 @@ my $int-type-obj = Int;
 
 You can request the type object of anything by calling the `WHAT` method, which is actually a macro in method form:
 
-```Perl6
+```Raku
 my $int-type-obj = 1.WHAT;
 ```
 
-类型对象（不包括 [Mu](https://docs.perl6.org/type/Mu)）可用 [`===`](https://docs.perl6.org/routine/===) 运算符比较标识：
+类型对象（不包括 [Mu](https://rakudocs.github.io/type/Mu)）可用 [`===`](https://rakudocs.github.io/routine/===) 运算符比较标识：
 
-Type objects (other than [Mu](https://docs.perl6.org/type/Mu)) can be compared for equality with the [`===`](https://docs.perl6.org/routine/===) identity operator:
+Type objects (other than [Mu](https://rakudocs.github.io/type/Mu)) can be compared for equality with the [`===`](https://rakudocs.github.io/routine/===) identity operator:
 
-```Perl6
+```Raku
 sub f(Int $x) {
     if $x.WHAT === Int {
         say 'you passed an Int';
@@ -159,11 +159,11 @@ sub f(Int $x) {
 }
 ```
 
-尽管在大多数情况下，[`.isa`](https://docs.perl6.org/routine/isa) 方法已经足够：
+尽管在大多数情况下，[`.isa`](https://rakudocs.github.io/routine/isa) 方法已经足够：
 
-Although, in most cases, the [`.isa`](https://docs.perl6.org/routine/isa) method will suffice:
+Although, in most cases, the [`.isa`](https://rakudocs.github.io/routine/isa) method will suffice:
 
-```Perl6
+```Raku
 sub f($x) {
     if $x.isa(Int) {
         ...
@@ -172,11 +172,11 @@ sub f($x) {
 }
 ```
 
-子类型检查可以使用[智能匹配](https://docs.perl6.org/language/operators#infix_~~)完成：
+子类型检查可以使用[智能匹配](https://rakudocs.github.io/language/operators#infix_~~)完成：
 
-Subtype checking is done by [smartmatching](https://docs.perl6.org/language/operators#infix_~~):
+Subtype checking is done by [smartmatching](https://rakudocs.github.io/language/operators#infix_~~):
 
-```Perl6
+```Raku
 if $type ~~ Real {
     say '$type contains Real or a subtype thereof';
 }
@@ -189,7 +189,7 @@ if $type ~~ Real {
 
 Classes are declared using the `class` keyword, typically followed by a name.
 
-```Perl6
+```Raku
 class Journey { }
 ```
 
@@ -197,7 +197,7 @@ class Journey { }
 
 This declaration results in a type object being created and installed in the current package and current lexical scope under the name `Journey`. You can also declare classes lexically:
 
-```Perl6
+```Raku
 my class Journey { }
 ```
 
@@ -208,11 +208,11 @@ This restricts their visibility to the current lexical scope, which can be usefu
 <a id="%E5%B1%9E%E6%80%A7--attributes"></a>
 ## 属性 / Attributes 
 
-属性是存在类实例中的变量；当实例化时，变量与其值之间的关联称为属性。它们是存储对象状态的地方。在 Perl 6 中，所有属性都是*私有*，这意味着它们只能由类实例本身直接访问。它们通常使用 `has` 声明符和 `!` 符号声明。
+属性是存在类实例中的变量；当实例化时，变量与其值之间的关联称为属性。它们是存储对象状态的地方。在 Raku 中，所有属性都是*私有*，这意味着它们只能由类实例本身直接访问。它们通常使用 `has` 声明符和 `!` 符号声明。
 
-Attributes are variables that exist per instance of a class; when instantiated to a value, the association between the variable and its value is called a property. They are where the state of an object is stored. In Perl 6, all attributes are *private*, which means they can be accessed directly only by the class instance itself. They are typically declared using the `has` declarator and the `!` twigil.
+Attributes are variables that exist per instance of a class; when instantiated to a value, the association between the variable and its value is called a property. They are where the state of an object is stored. In Raku, all attributes are *private*, which means they can be accessed directly only by the class instance itself. They are typically declared using the `has` declarator and the `!` twigil.
 
-```Perl6
+```Raku
 class Journey {
     has $!origin;
     has $!destination;
@@ -225,7 +225,7 @@ class Journey {
 
 While there is no such thing as a public (or even protected) attribute, there is a way to have accessor methods generated automatically: replace the `!` twigil with the `.` twigil (the `.` should remind you of a method call).
 
-```Perl6
+```Raku
 class Journey {
     has $.origin;
     has $.destination;
@@ -234,11 +234,11 @@ class Journey {
 }
 ```
 
-默认提供只读访问器。为了允许对属性进行更改，添加 [is rw](https://docs.perl6.org/routine/is%20rw) 特性：
+默认提供只读访问器。为了允许对属性进行更改，添加 [is rw](https://rakudocs.github.io/routine/is%20rw) 特性：
 
-This defaults to providing a read-only accessor. In order to allow changes to the attribute, add the [is rw](https://docs.perl6.org/routine/is%20rw) trait:
+This defaults to providing a read-only accessor. In order to allow changes to the attribute, add the [is rw](https://rakudocs.github.io/routine/is%20rw) trait:
 
-```Perl6
+```Raku
 class Journey {
     has $.origin;
     has $.destination;
@@ -251,11 +251,11 @@ class Journey {
 
 Now, after a `Journey` object is created, its `.origin`, `.destination`, and `.notes` will all be accessible from outside the class, but only `.notes` can be modified.
 
-如果一个对象实例化时没有指定特定的属性，例如 origin 或 destination，我们可能无法得到想要的结果。为了防止出现这种情况，请提供默认值，或通过使用 [is required](https://docs.perl6.org/routine/is%20required) 特性标记属性，确保在创建对象时设置属性。
+如果一个对象实例化时没有指定特定的属性，例如 origin 或 destination，我们可能无法得到想要的结果。为了防止出现这种情况，请提供默认值，或通过使用 [is required](https://rakudocs.github.io/routine/is%20required) 特性标记属性，确保在创建对象时设置属性。
 
-If an object is instantiated without certain attributes, such as origin or destination, we may not get the desired result. To prevent this, provide default values or make sure that an attribute is set on object creation by marking an attribute with an [is required](https://docs.perl6.org/routine/is%20required) trait.
+If an object is instantiated without certain attributes, such as origin or destination, we may not get the desired result. To prevent this, provide default values or make sure that an attribute is set on object creation by marking an attribute with an [is required](https://rakudocs.github.io/routine/is%20required) trait.
 
-```Perl6
+```Raku
 class Journey {
     # error if origin is not provided 
     has $.origin is required;
@@ -270,7 +270,7 @@ class Journey {
 
 Since classes inherit a default constructor from `Mu` and we have requested that some accessor methods are generated for us, our class is already somewhat functional.
 
-```Perl6
+```Raku
 # Create a new instance of the class. 
 my $vacation = Journey.new(
     origin      => 'Sweden',
@@ -296,7 +296,7 @@ Note that, although the default constructor can initialize read-only attributes,
 
 Methods are declared with the `method` keyword inside a class body.
 
-```Perl6
+```Raku
 class Journey {
     has $.origin;
     has $.destination;
@@ -326,15 +326,15 @@ A method can have a signature, just like a subroutine. Attributes can be used in
 
 Looking at the code above, there is a subtle but important difference between using `$!origin` and `$.origin` in the method `describe`. `$!origin` is an inexpensive and obvious lookup of the attribute. `$.origin` is a method call and thus may be overridden in a subclass. Only use `$.origin` if you want to allow overriding.
 
-与子例程不同，额外的命名参数不会产生编译时间或运行时错误。这允许通过 [Re-dispatching](https://docs.perl6.org/language/functions#Re-dispatching) 链式调用方法。
+与子例程不同，额外的命名参数不会产生编译时间或运行时错误。这允许通过 [Re-dispatching](https://rakudocs.github.io/language/functions#Re-dispatching) 链式调用方法。
 
-Unlike subroutines, additional named arguments will not produce compile time or runtime errors. That allows chaining of methods via [Re-dispatching](https://docs.perl6.org/language/functions#Re-dispatching).
+Unlike subroutines, additional named arguments will not produce compile time or runtime errors. That allows chaining of methods via [Re-dispatching](https://rakudocs.github.io/language/functions#Re-dispatching).
 
 你可以编写自己的访问器来覆盖自动生成的访问器。
 
 You may write your own accessors to override any or all of the autogenerated ones.
 
-```Perl6
+```Raku
 my $ⲧ = " " xx 4; # A tab-like thing 
 class Journey {
     has $.origin;
@@ -375,18 +375,18 @@ Please note that in `notes $trip: "Almost there"` we are using indirect invocant
 
 Method names can be resolved at runtime with the `.""` operator.
 
-```Perl6
+```Raku
 class A { has $.b };
 my $name = 'b';
 A.new."$name"().say;
 # OUTPUT: «(Any)␤» 
 ```
 
-用于更新 `$.notes` 的语法在本节中与前面的 [Attributes](https://docs.perl6.org/language/objects#Attributes) 部分相关。作为赋值的替代：
+用于更新 `$.notes` 的语法在本节中与前面的 [Attributes](https://rakudocs.github.io/language/objects#Attributes) 部分相关。作为赋值的替代：
 
-The syntax used to update `$.notes` changed in this section with respect to the previous [Attributes](https://docs.perl6.org/language/objects#Attributes) section. Instead of an assignment:
+The syntax used to update `$.notes` changed in this section with respect to the previous [Attributes](https://rakudocs.github.io/language/objects#Attributes) section. Instead of an assignment:
 
-```Perl6
+```Raku
 $vacation.notes = 'Pack hiking gear and sunglasses!';
 ```
 
@@ -394,13 +394,13 @@ $vacation.notes = 'Pack hiking gear and sunglasses!';
 
 we now do a method call:
 
-```Perl6
+```Raku
 $trip.notes("First steps");
 ```
 
-覆盖默认的自动生成访问器意味着，不可以对返回值赋值可变容器。方法调用是将计算和逻辑添加到属性更新中的首选方法。许多现代语言可以通过使用 “setter” 方法重载赋值来更新属性。虽然 Perl 6 可以通过一个 [`Proxy`](https://github.com/perl6/roast/blob/master/S12-attributes/mutators.t) 对象重载赋值操作符，但重载赋值设置复杂逻辑属性是不可取的，因为[较弱的面向对象设计](https://6guts.wordpress.com/2016/11/25/perl-6-is-biased-towards-mutators-being-really-simple-thats-a-good-thing/)。
+覆盖默认的自动生成访问器意味着，不可以对返回值赋值可变容器。方法调用是将计算和逻辑添加到属性更新中的首选方法。许多现代语言可以通过使用 “setter” 方法重载赋值来更新属性。虽然 Raku 可以通过一个 [`Proxy`](https://github.com/perl6/roast/blob/master/S12-attributes/mutators.t) 对象重载赋值操作符，但重载赋值设置复杂逻辑属性是不可取的，因为[较弱的面向对象设计](https://6guts.wordpress.com/2016/11/25/perl-6-is-biased-towards-mutators-being-really-simple-thats-a-good-thing/)。
 
-Overriding the default auto-generated accessor means it is no longer available to provide a mutable container on return for an assignment. A method call is the preferred approach to adding computation and logic to the update of an attribute. Many modern languages can update an attribute by overloading assignment with a “setter” method. While Perl 6 can overload the assignment operator for this purpose with a [`Proxy`](https://github.com/perl6/roast/blob/master/S12-attributes/mutators.t) object, overloading assignment to set attributes with complex logic is currently discouraged as [weaker object oriented design](https://6guts.wordpress.com/2016/11/25/perl-6-is-biased-towards-mutators-being-really-simple-thats-a-good-thing/).
+Overriding the default auto-generated accessor means it is no longer available to provide a mutable container on return for an assignment. A method call is the preferred approach to adding computation and logic to the update of an attribute. Many modern languages can update an attribute by overloading assignment with a “setter” method. While Raku can overload the assignment operator for this purpose with a [`Proxy`](https://github.com/perl6/roast/blob/master/S12-attributes/mutators.t) object, overloading assignment to set attributes with complex logic is currently discouraged as [weaker object oriented design](https://6guts.wordpress.com/2016/11/25/perl-6-is-biased-towards-mutators-being-really-simple-thats-a-good-thing/).
 
 <a id="%E7%B1%BB%E5%92%8C%E5%AE%9E%E4%BE%8B%E6%96%B9%E6%B3%95--class-and-instance-methods"></a>
 ## 类和实例方法 / Class and instance methods
@@ -409,7 +409,7 @@ Overriding the default auto-generated accessor means it is no longer available t
 
 A method's signature can have an *explicit invocant* as its first parameter followed by a colon, which allows for the method to refer to the object it was called on.
 
-```Perl6
+```Raku
 class Foo {
     method greet($me: $person) {
         say "Hi, I am $me.^name(), nice to meet you, $person";
@@ -418,11 +418,11 @@ class Foo {
 Foo.new.greet("Bob");    # OUTPUT: «Hi, I am Foo, nice to meet you, Bob␤» 
 ```
 
-在方法签名中提供一个调用方，还允许通过使用[类型约束](https://docs.perl6.org/type/Signature#Type_constraints)将方法定义为类方法或对象方法。`::?CLASS` 变量可用于在编译时提供类名，并与 `:U`（用于类方法）或 `:D`（用于实例方法）组合使用。
+在方法签名中提供一个调用方，还允许通过使用[类型约束](https://rakudocs.github.io/type/Signature#Type_constraints)将方法定义为类方法或对象方法。`::?CLASS` 变量可用于在编译时提供类名，并与 `:U`（用于类方法）或 `:D`（用于实例方法）组合使用。
 
-Providing an invocant in the method signature also allows for defining the method as either as a class method, or as an object method, through the use of [type constraints](https://docs.perl6.org/type/Signature#Type_constraints). The `::?CLASS` variable can be used to provide the class name at compile time, combined with either `:U` (for class methods) or `:D` (for instance methods).
+Providing an invocant in the method signature also allows for defining the method as either as a class method, or as an object method, through the use of [type constraints](https://rakudocs.github.io/type/Signature#Type_constraints). The `::?CLASS` variable can be used to provide the class name at compile time, combined with either `:U` (for class methods) or `:D` (for instance methods).
 
-```Perl6
+```Raku
 class Pizza {
     has $!radius = 42;
     has @.ingredients;
@@ -447,11 +447,11 @@ CATCH { default { put .^name ~ ":\n" ~ .Str } };
 #          Did you forget a '.new'?» 
 ```
 
-一个方法既可以是类方法，也可以是对象方法，方法可以使用 [multi](https://docs.perl6.org/syntax/multi) 声明符：
+一个方法既可以是类方法，也可以是对象方法，方法可以使用 [multi](https://rakudocs.github.io/syntax/multi) 声明符：
 
-A method can be both a class and object method by using the [multi](https://docs.perl6.org/syntax/multi) declarator:
+A method can be both a class and object method by using the [multi](https://rakudocs.github.io/syntax/multi) declarator:
 
-```Perl6
+```Raku
 class C {
     multi method f(::?CLASS:U:) { say "class method"  }
     multi method f(::?CLASS:D:) { say "object method" }
@@ -467,7 +467,7 @@ C.new.f;   # OUTPUT: «object method␤»
 
 Inside a method, the term `self` is available and bound to the invocant object. `self` can be used to call further methods on the invocant, including constructors:
 
-```Perl6
+```Raku
 class Box {
   has $.data;
  
@@ -481,7 +481,7 @@ class Box {
 
 `self` can be used in class or instance methods as well, though beware of trying to invoke one type of method from the other:
 
-```Perl6
+```Raku
 class C {
     method g()            { 42     }
     method f(::?CLASS:U:) { self.g }
@@ -499,7 +499,7 @@ CATCH { default { put .^name ~ ":\n" ~ .Str } };
 
 `self` can also be used with attributes, as long as they have an accessor. `self.a` will call the accessor for an attribute declared as `has $.a`. However, there is a difference between `self.a` and `$.a`, since the latter will itemize; `$.a` will be equivalent to `self.a.item` or `$(self.a)`.
 
-```Perl6
+```Raku
 class A {
     has $.x = (1, 2, 3);
     method b() { .say for self.x; .say for $.x }
@@ -511,9 +511,9 @@ A.new.b; # OUTPUT: «1␤2␤3␤(1 2 3)␤»
 
 The colon-syntax for method arguments is only supported for method calls using `self`, not the shortcut.
 
-请注意，如果 [Mu](https://docs.perl6.org/type/Mu) 的相关方法 `bless`、`CREATE` 没有重载，`self` 将指向这些方法中的类型对象。
+请注意，如果 [Mu](https://rakudocs.github.io/type/Mu) 的相关方法 `bless`、`CREATE` 没有重载，`self` 将指向这些方法中的类型对象。
 
-Note that if the relevant methods `bless`, `CREATE` of [Mu](https://docs.perl6.org/type/Mu) are not overloaded, `self` will point to the type object in those methods.
+Note that if the relevant methods `bless`, `CREATE` of [Mu](https://rakudocs.github.io/type/Mu) are not overloaded, `self` will point to the type object in those methods.
 
 另一方面，在初始化的不同阶段调用了 `BUILD` 和 `TWEAK` 等子方法。子类中同名的子方法尚未运行，因此不应依赖这些方法中潜在的虚拟方法调用。
 
@@ -526,7 +526,7 @@ On the other hand, the submethods `BUILD` and `TWEAK` are called on instances, i
 
 Methods with an exclamation mark `!` before the method name are not callable from anywhere outside the defining class; such methods are private in the sense that they are not visible from outside the class that declares them. Private methods are invoked with an exclamation mark instead of a dot:
 
-```Perl6
+```Raku
 class FunMath {
     has $.value is required;
     method !do-subtraction( $num ) {
@@ -565,11 +565,11 @@ Submethods are public methods that will not be inherited by subclasses. The name
 
 Submethods are useful for object construction and destruction tasks, as well as for tasks that are so specific to a certain type that subtypes would certainly have to override them.
 
-例如，[默认方法 new](https://docs.perl6.org/type/Mu#method_new) 对[继承](https://docs.perl6.org/language/objects#Inheritance)链中的每个类调用子方法 `BUILD`：
+例如，[默认方法 new](https://rakudocs.github.io/type/Mu#method_new) 对[继承](https://rakudocs.github.io/language/objects#Inheritance)链中的每个类调用子方法 `BUILD`：
 
-For example, the [default method new](https://docs.perl6.org/type/Mu#method_new) calls submethod `BUILD` on each class in an [inheritance](https://docs.perl6.org/language/objects#Inheritance) chain:
+For example, the [default method new](https://rakudocs.github.io/type/Mu#method_new) calls submethod `BUILD` on each class in an [inheritance](https://rakudocs.github.io/language/objects#Inheritance) chain:
 
-```Perl6
+```Raku
 class Point2D {
     has $.x;
     has $.y;
@@ -594,9 +594,9 @@ say InvertiblePoint2D.new(x => 1, y => 2);
 # OUTPUT: «InvertiblePoint2D.new(x => 1, y => 2)␤» 
 ```
 
-还请参见：[对象构造](https://docs.perl6.org/language/objects#Object_construction)。
+还请参见：[对象构造](https://rakudocs.github.io/language/objects#Object_construction)。
 
-See also: [Object construction](https://docs.perl6.org/language/objects#Object_construction).
+See also: [Object construction](https://rakudocs.github.io/language/objects#Object_construction).
 
 <a id="%E7%BB%A7%E6%89%BF--inheritance"></a>
 ## 继承 / Inheritance
@@ -605,27 +605,27 @@ See also: [Object construction](https://docs.perl6.org/language/objects#Object_c
 
 Classes can have *parent classes*.
 
-```Perl6
+```Raku
 class Child is Parent1 is Parent2 { }
 ```
 
-如果在子类上调用方法，而子类不提供该方法，则将调用父类中某个父类中的该名称的方法(如果该方法存在)。查询父类的顺序称为*方法解析顺序*(MRO)。Perl 6 使用 [C3 方法解析顺序](https://en.wikipedia.org/wiki/C3_linearization)。你可以通过调用其元类来请求某个类型的 MRO：
+如果在子类上调用方法，而子类不提供该方法，则将调用父类中某个父类中的该名称的方法(如果该方法存在)。查询父类的顺序称为*方法解析顺序*(MRO)。Raku 使用 [C3 方法解析顺序](https://en.wikipedia.org/wiki/C3_linearization)。你可以通过调用其元类来请求某个类型的 MRO：
 
-If a method is called on the child class, and the child class does not provide that method, the method of that name in one of the parent classes is invoked instead, if it exists. The order in which parent classes are consulted is called the *method resolution order* (MRO). Perl 6 uses the [C3 method resolution order](https://en.wikipedia.org/wiki/C3_linearization). You can ask a type for its MRO through a call to its metaclass:
+If a method is called on the child class, and the child class does not provide that method, the method of that name in one of the parent classes is invoked instead, if it exists. The order in which parent classes are consulted is called the *method resolution order* (MRO). Raku uses the [C3 method resolution order](https://en.wikipedia.org/wiki/C3_linearization). You can ask a type for its MRO through a call to its metaclass:
 
-```Perl6
+```Raku
 say List.^mro;      # ((List) (Cool) (Any) (Mu)) 
 ```
 
-如果类没有指定父类，则 [Any](https://docs.perl6.org/type/Any) 默认为父类。所有类直接或间接地派生自 [Mu](https://docs.perl6.org/type/Mu)，它是类型层次结构的根。
+如果类没有指定父类，则 [Any](https://rakudocs.github.io/type/Any) 默认为父类。所有类直接或间接地派生自 [Mu](https://rakudocs.github.io/type/Mu)，它是类型层次结构的根。
 
-If a class does not specify a parent class, [Any](https://docs.perl6.org/type/Any) is assumed by default. All classes directly or indirectly derive from [Mu](https://docs.perl6.org/type/Mu), the root of the type hierarchy.
+If a class does not specify a parent class, [Any](https://rakudocs.github.io/type/Any) is assumed by default. All classes directly or indirectly derive from [Mu](https://rakudocs.github.io/type/Mu), the root of the type hierarchy.
 
 对公共方法的所有调用都是“虚拟的”，与 C++ 很像。这意味着对象的实际类型决定要调用的方法，而不是声明的类型：
 
 All calls to public methods are "virtual" in the C++ sense, which means that the actual type of an object determines which method to call, not the declared type:
 
-```Perl6
+```Raku
 class Parent {
     method frob {
         say "the parent class frobs"
@@ -651,11 +651,11 @@ $test.frob;          # calls the frob method of Child rather than Parent
 
 Objects are generally created through method calls, either on the type object or on another object of the same type.
 
-类 [Mu](https://docs.perl6.org/type/Mu) 提供了一个名为 [new](https://docs.perl6.org/routine/new) 的构造方法，它采用命名[参数](https://docs.perl6.org/language/functions#Arguments)的方式并使用它们初始化公共属性。
+类 [Mu](https://rakudocs.github.io/type/Mu) 提供了一个名为 [new](https://rakudocs.github.io/routine/new) 的构造方法，它采用命名[参数](https://rakudocs.github.io/language/functions#Arguments)的方式并使用它们初始化公共属性。
 
-Class [Mu](https://docs.perl6.org/type/Mu) provides a constructor method called [new](https://docs.perl6.org/routine/new), which takes named [arguments](https://docs.perl6.org/language/functions#Arguments) and uses them to initialize public attributes.
+Class [Mu](https://rakudocs.github.io/type/Mu) provides a constructor method called [new](https://rakudocs.github.io/routine/new), which takes named [arguments](https://rakudocs.github.io/language/functions#Arguments) and uses them to initialize public attributes.
 
-```Perl6
+```Raku
 class Point {
     has $.x;
     has $.y;
@@ -668,9 +668,9 @@ say "y: ", $p.y;
 # OUTPUT: «y: 2␤» 
 ```
 
-`Mu.new` 对自己的调用者调用方法 [bless](https://docs.perl6.org/routine/bless)，将所有的命名[参数](https://docs.perl6.org/language/functions#Arguments)传递给这个方法。`bless` 创建新对象，然后以反向方法解析顺序遍历所有子类(即从 [Mu](https://docs.perl6.org/type/Mu) 到大多数派生类)，并在每个类中检查是否存在一个名为 `BUILD` 的方法。如果存在该方法，则使用 `new` 方法中的所有命名参数调用该方法。如果没有，则从同名命名参数初始化该类的公共属性。在这两种情况下，如果 `BUILD` 或默认机制都没有初始化属性，则应用默认值。这意味着 `BUILD` 可以更改一个属性，但它不能访问声明为其默认值的属性的内容；这些内容只有在 `TWEAK`（见下文）期间才可用，可以“查看”类声明中初始化的属性的内容。
+`Mu.new` 对自己的调用者调用方法 [bless](https://rakudocs.github.io/routine/bless)，将所有的命名[参数](https://rakudocs.github.io/language/functions#Arguments)传递给这个方法。`bless` 创建新对象，然后以反向方法解析顺序遍历所有子类(即从 [Mu](https://rakudocs.github.io/type/Mu) 到大多数派生类)，并在每个类中检查是否存在一个名为 `BUILD` 的方法。如果存在该方法，则使用 `new` 方法中的所有命名参数调用该方法。如果没有，则从同名命名参数初始化该类的公共属性。在这两种情况下，如果 `BUILD` 或默认机制都没有初始化属性，则应用默认值。这意味着 `BUILD` 可以更改一个属性，但它不能访问声明为其默认值的属性的内容；这些内容只有在 `TWEAK`（见下文）期间才可用，可以“查看”类声明中初始化的属性的内容。
 
-`Mu.new` calls method [bless](https://docs.perl6.org/routine/bless) on its invocant, passing all the named [arguments](https://docs.perl6.org/language/functions#Arguments). `bless` creates the new object, and then walks all subclasses in reverse method resolution order (i.e. from [Mu](https://docs.perl6.org/type/Mu) to most derived classes) and in each class checks for the existence of a method named `BUILD`. If the method exists, the method is called with all the named arguments from the `new` method. If not, the public attributes from this class are initialized from named arguments of the same name. In either case, if neither `BUILD` nor the default mechanism has initialized the attribute, default values are applied. This means that `BUILD` may change an attribute, but it does not have access to the contents of the attribute declared as its default; these are available only during `TWEAK` (see below), which can 'see' the contents of an attribute initialized in the declaration of the class.
+`Mu.new` calls method [bless](https://rakudocs.github.io/routine/bless) on its invocant, passing all the named [arguments](https://rakudocs.github.io/language/functions#Arguments). `bless` creates the new object, and then walks all subclasses in reverse method resolution order (i.e. from [Mu](https://rakudocs.github.io/type/Mu) to most derived classes) and in each class checks for the existence of a method named `BUILD`. If the method exists, the method is called with all the named arguments from the `new` method. If not, the public attributes from this class are initialized from named arguments of the same name. In either case, if neither `BUILD` nor the default mechanism has initialized the attribute, default values are applied. This means that `BUILD` may change an attribute, but it does not have access to the contents of the attribute declared as its default; these are available only during `TWEAK` (see below), which can 'see' the contents of an attribute initialized in the declaration of the class.
 
 在调用 `BUILD` 方法之后，如果存在命名为 `TWEAK` 的方法，则再次调用它们，并使用传递给 `new` 的所有命名参数。参见下面使用它的示例。
 
@@ -684,7 +684,7 @@ Due to the default behavior of `BUILD` and `TWEAK` submethods, named arguments t
 
 This object construction scheme has several implications for customized constructors. First, custom `BUILD` methods should always be submethods, otherwise they break attribute initialization in subclasses. Second, `BUILD` submethods can be used to run custom code at object construction time. They can also be used for creating aliases for attribute initialization:
 
-```Perl6
+```Raku
 class EncodedBuffer {
     has $.enc;
     has $.data;
@@ -703,7 +703,7 @@ my $b2 = EncodedBuffer.new( enc      => 'UTF-8', data => [64, 65] );
 
 Since passing arguments to a routine binds the arguments to the parameters, a separate binding step is unnecessary if the attribute is used as a parameter. Hence the example above could also have been written as:
 
-```Perl611 
+```Raku11 
 submethod BUILD(:encoding(:$!enc), :$!data) {
     # nothing to do here anymore, the signature binding 
     # does all the work for us. 
@@ -718,7 +718,7 @@ However, be careful when using this auto-binding of attributes when the attribut
 
 The third implication is that if you want a constructor that accepts positional arguments, you must write your own `new` method:
 
-```Perl6
+```Raku
 class Point {
     has $.x;
     has $.y;
@@ -732,15 +732,15 @@ class Point {
 
 However this is considered poor practice, because it makes correct initialization of objects from subclasses harder.
 
-另一件要注意的是，在 Perl 6 中，`new` 这个名字并不特殊。它只是一个常见的约定，在[大多数 Perl 6 类](https://docs.perl6.org/routine/new)中都是完全遵循的。你可以从任何方法中调用 `bless` ，也可以使用 `CREATE` 来摆弄低层次的工作。
+另一件要注意的是，在 Raku 中，`new` 这个名字并不特殊。它只是一个常见的约定，在[大多数 Raku 类](https://rakudocs.github.io/routine/new)中都是完全遵循的。你可以从任何方法中调用 `bless` ，也可以使用 `CREATE` 来摆弄低层次的工作。
 
-Another thing to note is that the name `new` is not special in Perl 6. It is merely a common convention, one that is followed quite thoroughly in [most Perl 6 classes](https://docs.perl6.org/routine/new). You can call `bless` from any method at all, or use `CREATE` to fiddle around with low-level workings.
+Another thing to note is that the name `new` is not special in Raku. It is merely a common convention, one that is followed quite thoroughly in [most Raku classes](https://rakudocs.github.io/routine/new). You can call `bless` from any method at all, or use `CREATE` to fiddle around with low-level workings.
 
 `TWEAK` 子方法允许你在对象构造之后检查事物或修改属性：
 
 The `TWEAK` submethod allows you to check things or modify attributes after object construction:
 
-```Perl6
+```Raku
 class RectangleWithCachedArea {
     has ($.x1, $.x2, $.y1, $.y2);
     has $.area;
@@ -756,11 +756,11 @@ say RectangleWithCachedArea.new( x2 => 5, x1 => 1, y2 => 1, y1 => 0).area;
 <a id="%E5%AF%B9%E8%B1%A1%E5%85%8B%E9%9A%86--object-cloning"></a>
 ## 对象克隆 / Object cloning
 
-克隆是使用 [clone](https://docs.perl6.org/routine/clone) 方法完成的，所有对象都有这个方法，它会浅层克隆公共属性和私有属性。*公共*属性的新值可以作为命名参数提供。
+克隆是使用 [clone](https://rakudocs.github.io/routine/clone) 方法完成的，所有对象都有这个方法，它会浅层克隆公共属性和私有属性。*公共*属性的新值可以作为命名参数提供。
 
-The cloning is done using the [clone](https://docs.perl6.org/routine/clone) method available on all objects, which shallow-clones both public and private attributes. New values for *public* attributes can be supplied as named arguments.
+The cloning is done using the [clone](https://rakudocs.github.io/routine/clone) method available on all objects, which shallow-clones both public and private attributes. New values for *public* attributes can be supplied as named arguments.
 
-```Perl6
+```Raku
 class Foo {
     has $.foo = 42;
     has $.bar = 100;
@@ -772,9 +772,9 @@ say $o1; # Foo.new(foo => 42, bar => 100)
 say $o2; # Foo.new(foo => 42, bar => 5000) 
 ```
 
-有关如何克隆非标量属性的详细信息，以及实现你自己的自定义克隆方法的示例，请参阅 [clone](https://docs.perl6.org/routine/clone) 文档。
+有关如何克隆非标量属性的详细信息，以及实现你自己的自定义克隆方法的示例，请参阅 [clone](https://rakudocs.github.io/routine/clone) 文档。
 
-See document for [clone](https://docs.perl6.org/routine/clone) for details on how non-scalar attributes get cloned, as well as examples of implementing your own custom clone methods.
+See document for [clone](https://rakudocs.github.io/routine/clone) for details on how non-scalar attributes get cloned, as well as examples of implementing your own custom clone methods.
 
 <a id="%E8%A7%92%E8%89%B2--roles"></a>
 # 角色 / Roles
@@ -787,7 +787,7 @@ Roles are a collection of attributes and methods; however, unlike classes, roles
 
 Roles use the keyword `role` preceding the name of the role that is declared. Roles are mixed in using the `does` keyword preceding the name of the role that is mixed in.
 
-```Perl6
+```Raku
 constant t = " " xx 4; #Just a ⲧab 
 role Notable {
     has Str $.notes is rw;
@@ -838,7 +838,7 @@ This is much safer than multiple inheritance, where conflicts are never detected
 
 For example, if you've discovered an efficient method to ride cows, and are trying to market it as a new form of popular transportation, you might have a class `Bull`, for all the bulls you keep around the house, and a class `Automobile`, for things that you can drive.
 
-```Perl6
+```Raku
 class Bull {
     has Bool $.castrated = False;
     method steer {
@@ -862,7 +862,7 @@ say $t.steer;
 
 With this setup, your poor customers will find themselves unable to turn their Taurus and you won't be able to make more of your product! In this case, it may have been better to use roles:
 
-```Perl6
+```Raku
 role Bull-Like {
     has Bool $.castrated = False;
     method steer {
@@ -884,7 +884,7 @@ class Taurus does Bull-Like does Steerable { }
 
 This code will die with something like:
 
-```Perl6
+```Raku
 ===SORRY!===
 Method 'steer' must be resolved by class Taurus because it exists in
 multiple roles (Steerable, Bull-Like)
@@ -894,7 +894,7 @@ multiple roles (Steerable, Bull-Like)
 
 This check will save you a lot of headaches:
 
-```Perl6
+```Raku
 class Taurus does Bull-Like does Steerable {
     method steer($direction?) {
         self.Steerable::steer($direction)
@@ -906,7 +906,7 @@ class Taurus does Bull-Like does Steerable {
 
 When a role is applied to a second role, the actual application is delayed until the second role is applied to a class, at which point both roles are applied to the class. Thus
 
-```Perl6
+```Raku
 role R1 {
     # methods here 
 }
@@ -920,7 +920,7 @@ class C does R2 { }
 
 produces the same class `C` as
 
-```Perl6
+```Raku
 role R1 {
     # methods here 
 }
@@ -933,11 +933,11 @@ class C does R1 does R2 { }
 <a id="%E5%8D%A0%E4%BD%8D--stubs"></a>
 ## 占位 / Stubs
 
-当角色包含[占位](https://docs.perl6.org/routine/...)方法时，必须在角色应用于类时提供同名方法的非占位版本。这允许你创建充当抽象接口的角色。
+当角色包含[占位](https://rakudocs.github.io/routine/...)方法时，必须在角色应用于类时提供同名方法的非占位版本。这允许你创建充当抽象接口的角色。
 
-When a role contains a [stubbed](https://docs.perl6.org/routine/...) method, a non-stubbed version of a method of the same name must be supplied at the time the role is applied to a class. This allows you to create roles that act as abstract interfaces.
+When a role contains a [stubbed](https://rakudocs.github.io/routine/...) method, a non-stubbed version of a method of the same name must be supplied at the time the role is applied to a class. This allows you to create roles that act as abstract interfaces.
 
-```Perl6
+```Raku
 role AbstractSerializable {
     method serialize() { ... }        # literal ... here marks the 
                                       # method as a stub 
@@ -971,7 +971,7 @@ The implementation of the stubbed method may also be provided by another role.
 
 Roles cannot inherit from classes, but they may *carry* classes, causing any class which does that role to inherit from the carried classes. So if you write:
 
-```Perl6
+```Raku
 role A is Exception { }
 class X::Ouch does A { }
 X::Ouch.^parents.say # OUTPUT: «((Exception))␤» 
@@ -985,7 +985,7 @@ then `X::Ouch` will inherit directly from Exception, as we can see above by list
 
 As they do not use what can properly be called inheritance, roles are not part of the class hierarchy. Roles are listed with the `.^roles` metamethod instead, which uses `transitive` as flag for including all levels or just the first one. Despite this, a class or instance may still be tested with smartmatches or type constraints to see if it does a role.
 
-```Perl6
+```Raku
 role F { }
 class G does F { }
 G.^roles.say;                    # OUTPUT: «((F))␤» 
@@ -1005,7 +1005,7 @@ a(G);                            # OUTPUT: «F␤»
 
 A method defined directly in a class will always override definitions from applied roles or from inherited classes. If no such definition exists, methods from roles override methods inherited from classes. This happens both when said class was brought in by a role, and also when said class was inherited directly.
 
-```Perl6
+```Raku
 role M {
   method f { say "I am in role M" }
 }
@@ -1035,7 +1035,7 @@ Note that each candidate for a multi-method is its own method. In this case, the
 
 Any attempt to directly instantiate a role or use it as a type object will automatically create a class with the same name as the role, making it possible to transparently use a role as if it were a class.
 
-```Perl6
+```Raku
 role Point {
     has $.x;
     has $.y;
@@ -1050,9 +1050,9 @@ say Point.dimensions;              # OUTPUT «2␤»
 
 We call this automatic creation of classes *punning*, and the generated class a *pun*.
 
-然而，双关语不是由大多数[元编程](https://docs.perl6.org/language/mop)构造引起的，因为这些结构有时用于直接处理角色。
+然而，双关语不是由大多数[元编程](https://rakudocs.github.io/language/mop)构造引起的，因为这些结构有时用于直接处理角色。
 
-Punning is not caused by most [metaprogramming](https://docs.perl6.org/language/mop) constructs, however, as those are sometimes used to work directly with roles.
+Punning is not caused by most [metaprogramming](https://rakudocs.github.io/language/mop) constructs, however, as those are sometimes used to work directly with roles.
 
 <a id="%E5%8F%82%E6%95%B0%E5%8C%96%E8%A7%92%E8%89%B2--parameterized-roles"></a>
 ## 参数化角色 / Parameterized roles
@@ -1061,7 +1061,7 @@ Punning is not caused by most [metaprogramming](https://docs.perl6.org/language/
 
 Roles can be parameterized, by giving them a signature in square brackets:
 
-```Perl6
+```Raku
 role BinaryTree[::Type] {
     has BinaryTree[Type] $.left;
     has BinaryTree[Type] $.right;
@@ -1101,7 +1101,7 @@ $t.visit-postorder(&say);   # OUTPUT: «4␤6␤5␤»
 
 Here the signature consists only of a type capture, but any signature will do:
 
-```Perl6
+```Raku
 enum Severity <debug info warn error critical>;
  
 role Logging[$filehandle = $*ERR] {
@@ -1124,7 +1124,7 @@ You can have multiple roles of the same name, but with different signatures; the
 
 Roles can be mixed into objects. A role's given attributes and methods will be added to the methods and attributes the object already has. Multiple mixins and anonymous roles are supported.
 
-```Perl6
+```Raku
 role R { method Str() {'hidden!'} };
 my $i = 2 but R;
 sub f(\bound){ put bound };
@@ -1137,7 +1137,7 @@ say @positional.^name; # OUTPUT: «List+{R}␤»
 
 Note that the object got the role mixed in, not the object's class or the container. Thus, @-sigiled containers will require binding to make the role stick as is shown in the example with `@positional`. Some operators will return a new value, which effectively strips the mixin from the result. That is why it might be more clear to mix in the role in the declaration of the variable using `does`:
 
-```Perl6
+```Raku
 role R {};
 my @positional does R = <a b>;
 say @positional.^name; # OUTPUT: «Array+{R}␤» 
@@ -1147,7 +1147,7 @@ say @positional.^name; # OUTPUT: «Array+{R}␤»
 
 The operator `infix:<but>` is narrower than the list constructor. When providing a list of roles to mix in, always use parentheses.
 
-```Perl6
+```Raku
 role R1 { method m {} }
 role R2 { method n {} }
 my $a = 1 but R1,R2; # R2 is in sink context, issues a WARNING 
@@ -1161,7 +1161,7 @@ say $all-roles.^name; # OUTPUT: «Int+{R1,R2}␤»
 
 Mixins can be used at any point in your object's life.
 
-```Perl6
+```Raku
 # A counter for Table of Contents 
 role TOC-Counter {
     has Int @!counters is default(0);
@@ -1185,7 +1185,7 @@ put $toc-counter;              # OUTPUT: «2.2.2␤» (put will call TOC-Counter
 
 Roles can be anonymous.
 
-```Perl6
+```Raku
 my %seen of Int is default(0 but role :: { method Str() {'NULL'} });
 say %seen<not-there>;          # OUTPUT: «NULL␤» 
 say %seen<not-there>.defined;  # OUTPUT: «True␤» (0 may be False but is well defined) 
@@ -1195,9 +1195,9 @@ say Int.new(%seen<not-there>); # OUTPUT: «0␤»
 <a id="%E5%85%83%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B%E4%B8%8E%E8%87%AA%E7%9C%81--metaobject-programming-and-introspection"></a>
 # 元对象编程与自省 / Metaobject programming and introspection
 
-Perl 6 有一个元对象系统，这意味着对象、类、角色、语法、枚举等的行为本身由其他对象控制；这些对象被称为*元对象*。元对象和普通对象一样，是类的实例，在本例中我们称之为*元类*。
+Raku 有一个元对象系统，这意味着对象、类、角色、语法、枚举等的行为本身由其他对象控制；这些对象被称为*元对象*。元对象和普通对象一样，是类的实例，在本例中我们称之为*元类*。
 
-Perl 6 has a metaobject system, which means that the behavior of objects, classes, roles, grammars, enums, etc. are themselves controlled by other objects; those objects are called *metaobjects*. Metaobjects are, like ordinary objects, instances of classes, in this case we call them *metaclasses*.
+Raku has a metaobject system, which means that the behavior of objects, classes, roles, grammars, enums, etc. are themselves controlled by other objects; those objects are called *metaobjects*. Metaobjects are, like ordinary objects, instances of classes, in this case we call them *metaclasses*.
 
 对于每个对象或类，你可以通过调用它的 `.HOW` 来获取元对象。注意，虽然这看起来像一个方法调用，但它的工作机制更像一个宏。
 
@@ -1207,21 +1207,21 @@ For each object or class you can get the metaobject by calling `.HOW` on it. Not
 
 So, what can you do with the metaobject? For one you can check if two objects have the same metaclass by comparing them for equality:
 
-```Perl6
+```Raku
 say 1.HOW ===   2.HOW;      # OUTPUT: «True␤» 
 say 1.HOW === Int.HOW;      # OUTPUT: «True␤» 
 say 1.HOW === Num.HOW;      # OUTPUT: «False␤» 
 ```
 
-Perl 6 使用 *HOW*（Higher Order Workings）一词来指代元对象系统。因此，毫不奇怪，在 Rakudo 中，控制类行为的元类的类名称为 `Perl6::Metamodel::ClassHOW`。对于每个类，都有一个 `Perl6::Metamodel::ClassHOW` 实例。
+Raku 使用 *HOW*（Higher Order Workings）一词来指代元对象系统。因此，毫不奇怪，在 Rakudo 中，控制类行为的元类的类名称为 `Perl6::Metamodel::ClassHOW`。对于每个类，都有一个 `Perl6::Metamodel::ClassHOW` 实例。
 
-Perl 6 uses the word *HOW* (Higher Order Workings) to refer to the metaobject system. Thus it should be no surprise that in Rakudo, the class name of the metaclass that controls class behavior is called `Perl6::Metamodel::ClassHOW`. For each class there is one instance of `Perl6::Metamodel::ClassHOW`.
+Raku uses the word *HOW* (Higher Order Workings) to refer to the metaobject system. Thus it should be no surprise that in Rakudo, the class name of the metaclass that controls class behavior is called `Perl6::Metamodel::ClassHOW`. For each class there is one instance of `Perl6::Metamodel::ClassHOW`.
 
 当然，元模型为你做了更多的事情。例如，它允许你内省对象和类。元对象方法的调用约定是调用元对象上的方法，并将感兴趣的对象作为对象的第一个参数传递给对象。因此，要获取对象的类的名称，可以写成：
 
 But of course the metamodel does much more for you. For example, it allows you to introspect objects and classes. The calling convention for methods on metaobjects is to call the method on the metaobject and pass in the object of interest as first argument to the object. So to get the name of the class of an object, you could write:
 
-```Perl6
+```Raku
 my $object = 1;
 my $metaobject = 1.HOW;
 say $metaobject.name($object);      # OUTPUT: «Int␤» 
@@ -1230,20 +1230,20 @@ say $metaobject.name($object);      # OUTPUT: «Int␤»
 say 1.HOW.name(1);                  # OUTPUT: «Int␤» 
 ```
 
-(其动机是 Perl 6 还希望允许一个更基于原型的对象系统，而不必为每种类型创建一个新的元对象)。
+(其动机是 Raku 还希望允许一个更基于原型的对象系统，而不必为每种类型创建一个新的元对象)。
 
-(The motivation is that Perl 6 also wants to allow a more prototype-based object system, where it's not necessary to create a new metaobject for every type).
+(The motivation is that Raku also wants to allow a more prototype-based object system, where it's not necessary to create a new metaobject for every type).
 
 有一个快捷方式可以避免两次使用同一个对象：
 
 There's a shortcut to keep from using the same object twice:
 
-```Perl6
+```Raku
 say 1.^name;                        # OUTPUT: «Int␤» 
 # same as 
 say 1.HOW.name(1);                  # OUTPUT: «Int␤» 
 ```
 
-见 [Metamodel::ClassHOW](https://docs.perl6.org/type/Metamodel::ClassHOW) 关于 `class` 的元类的文档以及[元对象协议的一般文档](https://docs.perl6.org/language/mop)。
+见 [Metamodel::ClassHOW](https://rakudocs.github.io/type/Metamodel::ClassHOW) 关于 `class` 的元类的文档以及[元对象协议的一般文档](https://rakudocs.github.io/language/mop)。
 
-See [Metamodel::ClassHOW](https://docs.perl6.org/type/Metamodel::ClassHOW) for documentation on the metaclass of `class` and also the [general documentation on the metaobject protocol](https://docs.perl6.org/language/mop).
+See [Metamodel::ClassHOW](https://rakudocs.github.io/type/Metamodel::ClassHOW) for documentation on the metaclass of `class` and also the [general documentation on the metaobject protocol](https://rakudocs.github.io/language/mop).

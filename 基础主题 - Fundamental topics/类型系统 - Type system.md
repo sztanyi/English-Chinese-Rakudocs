@@ -1,14 +1,14 @@
-原文：https://docs.perl6.org/language/typesystem
+原文：https://rakudocs.github.io/language/typesystem
 
 # 类型系统 / Type system
 
-Perl 6 类型系统简介
+Raku 类型系统简介
 
-Introduction to the type system of Perl 6
+Introduction to the type system of Raku
 
 <!-- MarkdownTOC -->
 
-- [Perl 6 类型的定义 / Definition of a Perl 6 type](#perl-6-%E7%B1%BB%E5%9E%8B%E7%9A%84%E5%AE%9A%E4%B9%89--definition-of-a-perl-6-type)
+- [Raku 类型的定义 / Definition of a Raku type](#raku-%E7%B1%BB%E5%9E%8B%E7%9A%84%E5%AE%9A%E4%B9%89--definition-of-a-raku-type)
     - [默认类型 / Default types](#%E9%BB%98%E8%AE%A4%E7%B1%BB%E5%9E%8B--default-types)
     - [类型对象 / Type objects](#%E7%B1%BB%E5%9E%8B%E5%AF%B9%E8%B1%A1--type-objects)
         - [未定义 / Undefinedness](#%E6%9C%AA%E5%AE%9A%E4%B9%89--undefinedness)
@@ -56,21 +56,21 @@ Introduction to the type system of Perl 6
 
 <!-- /MarkdownTOC -->
 
-<a id="perl-6-%E7%B1%BB%E5%9E%8B%E7%9A%84%E5%AE%9A%E4%B9%89--definition-of-a-perl-6-type"></a>
-# Perl 6 类型的定义 / Definition of a Perl 6 type
+<a id="raku-%E7%B1%BB%E5%9E%8B%E7%9A%84%E5%AE%9A%E4%B9%89--definition-of-a-raku-type"></a>
+# Raku 类型的定义 / Definition of a Raku type
 
-类型通过创建一个类型对象来定义一个新对象，该对象提供一个接口来创建对象的实例或检查值。任何类型的对象都是 [Any](https://docs.perl6.org/type/Any) 或 [Mu](https://docs.perl6.org/type/Mu) 的子类。自省方法是通过继承这些基类和内省后缀 [.^](https://docs.perl6.org/language/operators#postfix_.^) 提供的。以下类型的声明器在编译时或在运行时使用[元对象协议](https://docs.perl6.org/language/mop)将新类型引入当前范围。所有类型名称在其作用域中必须是唯一的。
+类型通过创建一个类型对象来定义一个新对象，该对象提供一个接口来创建对象的实例或检查值。任何类型的对象都是 [Any](https://rakudocs.github.io/type/Any) 或 [Mu](https://rakudocs.github.io/type/Mu) 的子类。自省方法是通过继承这些基类和内省后缀 [.^](https://rakudocs.github.io/language/operators#postfix_.^) 提供的。以下类型的声明器在编译时或在运行时使用[元对象协议](https://rakudocs.github.io/language/mop)将新类型引入当前范围。所有类型名称在其作用域中必须是唯一的。
 
-A type defines a new object by creating a type object that provides an interface to create instances of objects or to check values against. Any type object is a subclass of [Any](https://docs.perl6.org/type/Any) or [Mu](https://docs.perl6.org/type/Mu). Introspection methods are provided via inheritance from those base classes and the introspection postfix [.^](https://docs.perl6.org/language/operators#postfix_.^). A new type is introduced to the current scope by one of the following type declarators at compile time or with the [metaobject protocol](https://docs.perl6.org/language/mop) at runtime. All type names must be unique in their scope.
+A type defines a new object by creating a type object that provides an interface to create instances of objects or to check values against. Any type object is a subclass of [Any](https://rakudocs.github.io/type/Any) or [Mu](https://rakudocs.github.io/type/Mu). Introspection methods are provided via inheritance from those base classes and the introspection postfix [.^](https://rakudocs.github.io/language/operators#postfix_.^). A new type is introduced to the current scope by one of the following type declarators at compile time or with the [metaobject protocol](https://rakudocs.github.io/language/mop) at runtime. All type names must be unique in their scope.
 
 <a id="%E9%BB%98%E8%AE%A4%E7%B1%BB%E5%9E%8B--default-types"></a>
 ## 默认类型 / Default types
 
-如果用户没有提供任何类型，Perl 6 假设类型为 `Any`。这包括[容器](https://docs.perl6.org/language/containers)、基类、[参数](https://docs.perl6.org/type/Signature#Type_constraints)和返回类型。
+如果用户没有提供任何类型，Raku 假设类型为 `Any`。这包括[容器](https://rakudocs.github.io/language/containers)、基类、[参数](https://rakudocs.github.io/type/Signature#Type_constraints)和返回类型。
 
-If no type is provided by the user Perl 6 assumes the type to be `Any`. This includes [containers](https://docs.perl6.org/language/containers), base-classes, [parameters](https://docs.perl6.org/type/Signature#Type_constraints) and return types.
+If no type is provided by the user Raku assumes the type to be `Any`. This includes [containers](https://rakudocs.github.io/language/containers), base-classes, [parameters](https://rakudocs.github.io/type/Signature#Type_constraints) and return types.
 
-```Perl6
+```Raku
 my $a = 1;
 $a = Nil;
 say $a.^name;
@@ -88,11 +88,11 @@ For containers the default type is `Any` but the default type constraint is `Mu`
 <a id="%E7%B1%BB%E5%9E%8B%E5%AF%B9%E8%B1%A1--type-objects"></a>
 ## 类型对象 / Type objects
 
-要测试对象是否为类型对象，请使用[智能匹配](https://docs.perl6.org/language/operators#index-entry-smartmatch_operator)[类型笑脸符](https://docs.perl6.org/type/Signature#Constraining_defined_and_undefined_values)约束的类型或使用 [`.DEFINITE`](https://docs.perl6.org/language/mop#index-entry-syntax_DEFINITE-DEFINITE) 方法：
+要测试对象是否为类型对象，请使用[智能匹配](https://rakudocs.github.io/language/operators#index-entry-smartmatch_operator)[类型笑脸符](https://rakudocs.github.io/type/Signature#Constraining_defined_and_undefined_values)约束的类型或使用 [`.DEFINITE`](https://rakudocs.github.io/language/mop#index-entry-syntax_DEFINITE-DEFINITE) 方法：
 
-To test if an object is a type object, use [smartmatch](https://docs.perl6.org/language/operators#index-entry-smartmatch_operator) against a type constrained with a [type smiley](https://docs.perl6.org/type/Signature#Constraining_defined_and_undefined_values) or [`.DEFINITE`](https://docs.perl6.org/language/mop#index-entry-syntax_DEFINITE-DEFINITE) method:
+To test if an object is a type object, use [smartmatch](https://rakudocs.github.io/language/operators#index-entry-smartmatch_operator) against a type constrained with a [type smiley](https://rakudocs.github.io/type/Signature#Constraining_defined_and_undefined_values) or [`.DEFINITE`](https://rakudocs.github.io/language/mop#index-entry-syntax_DEFINITE-DEFINITE) method:
 
-```Perl6
+```Raku
 my $a = Int;
 say $a ~~ Mu:U;
 # OUTPUT: «True␤»
@@ -107,36 +107,36 @@ say not $a.DEFINITE;
 <a id="%E6%9C%AA%E5%AE%9A%E4%B9%89--undefinedness"></a>
 ### 未定义 / Undefinedness
 
-未定义对象在 Perl 6 中维护类型信息。类型对象用于表示未定义和未定义值的类型。若要提供通用的未定义值，请使用 [Any](https://docs.perl6.org/type/Any)。如果与 `Any`（容器和参数的默认类型）不同，则需要使用 [Mu](https://docs.perl6.org/type/Mu)。
+未定义对象在 Raku 中维护类型信息。类型对象用于表示未定义和未定义值的类型。若要提供通用的未定义值，请使用 [Any](https://rakudocs.github.io/type/Any)。如果与 `Any`（容器和参数的默认类型）不同，则需要使用 [Mu](https://rakudocs.github.io/type/Mu)。
 
-Undefined objects maintain type information in Perl 6. Type objects are used to represent both undefinedness and the type of the undefined value. To provide a general undefined value use [Any](https://docs.perl6.org/type/Any). If differentiation from `Any`, the default type for containers and arguments, is required use [Mu](https://docs.perl6.org/type/Mu).
+Undefined objects maintain type information in Raku. Type objects are used to represent both undefinedness and the type of the undefined value. To provide a general undefined value use [Any](https://rakudocs.github.io/type/Any). If differentiation from `Any`, the default type for containers and arguments, is required use [Mu](https://rakudocs.github.io/type/Mu).
 
-由 [.CREATE](https://docs.perl6.org/type/Mu#method_CREATE) 创建的对象的实例是按照约定定义的。方法 [.defined](https://docs.perl6.org/type/Mu#routine_defined) 将返回 `Bool::True` 来表示确定性。该规则的例外是 [Nil](https://docs.perl6.org/type/Nil) 和 [Failure](https://docs.perl6.org/type/Failure)。请注意，任何对象都可以重载 `.defined`，因此可以携带额外的信息。此外，Perl 6 明确区分了定义和真值。许多值是定义的，尽管它们为假或空的含义。这些值是 `0`，[Bool::False](https://docs.perl6.org/type/Bool)，[()](https://docs.perl6.org/language/operators#term_(_))（空列表）和 [NaN](https://docs.perl6.org/type/Num#NaN)。
+由 [.CREATE](https://rakudocs.github.io/type/Mu#method_CREATE) 创建的对象的实例是按照约定定义的。方法 [.defined](https://rakudocs.github.io/type/Mu#routine_defined) 将返回 `Bool::True` 来表示确定性。该规则的例外是 [Nil](https://rakudocs.github.io/type/Nil) 和 [Failure](https://rakudocs.github.io/type/Failure)。请注意，任何对象都可以重载 `.defined`，因此可以携带额外的信息。此外，Raku 明确区分了定义和真值。许多值是定义的，尽管它们为假或空的含义。这些值是 `0`，[Bool::False](https://rakudocs.github.io/type/Bool)，[()](https://rakudocs.github.io/language/operators#term_(_))（空列表）和 [NaN](https://rakudocs.github.io/type/Num#NaN)。
 
-Instances of objects created by [.CREATE](https://docs.perl6.org/type/Mu#method_CREATE) are by convention defined. The method [.defined](https://docs.perl6.org/type/Mu#routine_defined) will return `Bool::True` to indicate definedness. The exceptions to that rule are [Nil](https://docs.perl6.org/type/Nil) and [Failure](https://docs.perl6.org/type/Failure). Please note that any object is able to overload `.defined` and as such can carry additional information. Also, Perl 6 makes a clear distinction between definedness and trueness. Many values are defined even though they carry the meaning of wrongness or emptiness. Such values are `0`, [Bool::False](https://docs.perl6.org/type/Bool), [()](https://docs.perl6.org/language/operators#term_(_)) (empty list) and [NaN](https://docs.perl6.org/type/Num#NaN).
+Instances of objects created by [.CREATE](https://rakudocs.github.io/type/Mu#method_CREATE) are by convention defined. The method [.defined](https://rakudocs.github.io/type/Mu#routine_defined) will return `Bool::True` to indicate definedness. The exceptions to that rule are [Nil](https://rakudocs.github.io/type/Nil) and [Failure](https://rakudocs.github.io/type/Failure). Please note that any object is able to overload `.defined` and as such can carry additional information. Also, Raku makes a clear distinction between definedness and trueness. Many values are defined even though they carry the meaning of wrongness or emptiness. Such values are `0`, [Bool::False](https://rakudocs.github.io/type/Bool), [()](https://rakudocs.github.io/language/operators#term_(_)) (empty list) and [NaN](https://rakudocs.github.io/type/Num#NaN).
 
-在运行时，值可能会通过[混合](https://docs.perl6.org/language/operators#infix_but)而变得未定义。
+在运行时，值可能会通过[混合](https://rakudocs.github.io/language/operators#infix_but)而变得未定义。
 
-Values can become undefined at runtime via [mixin](https://docs.perl6.org/language/operators#infix_but).
+Values can become undefined at runtime via [mixin](https://rakudocs.github.io/language/operators#infix_but).
 
-```Perl6
+```Raku
 my Int $i = 1 but role :: { method defined { False } };
 say $i // "undefined";
 # OUTPUT: «undefined␤»
 ```
 
-要测试是否定义，请调用方法 `.defined`、使用 [//](https://docs.perl6.org/language/operators#infix_//)、[with/without](https://docs.perl6.org/language/control#with,_orwith,_without) 和 [签名](https://docs.perl6.org/type/Signature#Constraining_defined_and_undefined_values)。
+要测试是否定义，请调用方法 `.defined`、使用 [//](https://rakudocs.github.io/language/operators#infix_//)、[with/without](https://rakudocs.github.io/language/control#with,_orwith,_without) 和 [签名](https://rakudocs.github.io/type/Signature#Constraining_defined_and_undefined_values)。
 
-To test for definedness call `.defined`, use [//](https://docs.perl6.org/language/operators#infix_//), [with/without](https://docs.perl6.org/language/control#with,_orwith,_without) and [signatures](https://docs.perl6.org/type/Signature#Constraining_defined_and_undefined_values).
+To test for definedness call `.defined`, use [//](https://rakudocs.github.io/language/operators#infix_//), [with/without](https://rakudocs.github.io/language/control#with,_orwith,_without) and [signatures](https://rakudocs.github.io/type/Signature#Constraining_defined_and_undefined_values).
 
 <a id="%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2--coercion"></a>
 ### 强制类型转换 / Coercion
 
-将一种类型转换为另一种类型是使用与目标类型具有相同名称的强制类型转换方法完成的。这个约定是由 [Signatures](https://docs.perl6.org/type/Signature#Coercion_type) 强制执行的。源类型必须知道如何将自身转换为目标类型。为了允许内置类型将自身转换为用户定义的类型，可以使用 [augment](https://docs.perl6.org/language/variables#The_augment_declarator) 或 [MOP](https://docs.perl6.org/language/mop)。
+将一种类型转换为另一种类型是使用与目标类型具有相同名称的强制类型转换方法完成的。这个约定是由 [Signatures](https://rakudocs.github.io/type/Signature#Coercion_type) 强制执行的。源类型必须知道如何将自身转换为目标类型。为了允许内置类型将自身转换为用户定义的类型，可以使用 [augment](https://rakudocs.github.io/language/variables#The_augment_declarator) 或 [MOP](https://rakudocs.github.io/language/mop)。
 
-Turning one type into another is done with coercion methods that have the same name as the target type. This convention is made mandatory by [Signatures](https://docs.perl6.org/type/Signature#Coercion_type). The source type has to know how to turn itself into the target type. To allow built-in types to turn themselves into user defined types use [augment](https://docs.perl6.org/language/variables#The_augment_declarator) or the [MOP](https://docs.perl6.org/language/mop).
+Turning one type into another is done with coercion methods that have the same name as the target type. This convention is made mandatory by [Signatures](https://rakudocs.github.io/type/Signature#Coercion_type). The source type has to know how to turn itself into the target type. To allow built-in types to turn themselves into user defined types use [augment](https://rakudocs.github.io/language/variables#The_augment_declarator) or the [MOP](https://rakudocs.github.io/language/mop).
 
-```Perl6
+```Raku
 class C {
     has $.int;
     method this-is-c { put 'oi' x $!int ~ '‽' }
@@ -153,11 +153,11 @@ $i.this-is-c();
 # OUTPUT: «oioioioioioioioioioi‽␤»
 ```
 
-Perl 6 提供了 [Cool](https://docs.perl6.org/type/Cool) 中定义的方法在应用进一步的操作之前转换为目标类型。大多数内置类型都来自 `Cool`，因此可能提供可能不想要的隐式强制类型转换。关注这些方法的无陷阱使用是用户的责任。
+Raku 提供了 [Cool](https://rakudocs.github.io/type/Cool) 中定义的方法在应用进一步的操作之前转换为目标类型。大多数内置类型都来自 `Cool`，因此可能提供可能不想要的隐式强制类型转换。关注这些方法的无陷阱使用是用户的责任。
 
-Perl 6 provides methods defined in [Cool](https://docs.perl6.org/type/Cool) to convert to a target type before applying further operations. Most built-in types descend from `Cool` and as such may provide implicit coercion that may be undesired. It is the responsibility of the user to care about trap-free usage of those methods.
+Raku provides methods defined in [Cool](https://rakudocs.github.io/type/Cool) to convert to a target type before applying further operations. Most built-in types descend from `Cool` and as such may provide implicit coercion that may be undesired. It is the responsibility of the user to care about trap-free usage of those methods.
 
-```Perl6
+```Raku
 my $whatever = "123.6";
 say $whatever.round;
 # OUTPUT: «124␤»
@@ -168,11 +168,11 @@ say <a b c d>.starts-with("ab");
 <a id="%E7%B1%BB%E5%9E%8B%E5%A3%B0%E6%98%8E%E7%AC%A6--type-declarators"></a>
 # 类型声明符 / Type declarators
 
-类型声明器将新类型引入给定范围。嵌套作用域可以用 `::` 分隔。如果尚未存在此类范围，则会自动创建新 [package](https://docs.perl6.org/language/packages)。
+类型声明器将新类型引入给定范围。嵌套作用域可以用 `::` 分隔。如果尚未存在此类范围，则会自动创建新 [package](https://rakudocs.github.io/language/packages)。
 
-Type declarators introduce a new type into the given scope. Nested scopes can be separated by `::`. New [packages](https://docs.perl6.org/language/packages) are created automatically if no such scope exists already.
+Type declarators introduce a new type into the given scope. Nested scopes can be separated by `::`. New [packages](https://rakudocs.github.io/language/packages) are created automatically if no such scope exists already.
 
-```Perl6
+```Raku
 class Foo::Bar::C {};
 put Foo::Bar::.keys;
 # OUTPUT: «C␤»
@@ -182,7 +182,7 @@ put Foo::Bar::.keys;
 
 Forward declarations can be provided with a block containing only `...`. The compiler will check at the end of the current scope if the type is defined.
 
-```Perl6
+```Raku
 class C {...}
 # many lines later
 class C { has $.attr }
@@ -191,22 +191,22 @@ class C { has $.attr }
 <a id="class"></a>
 ## `class`
 
-`class` 声明器创建一个编译时构造，该构造被编译成一个类型对象。后者是一个简单的 Perl 6 对象，它提供了通过执行初始化器和子方法来构造实例的方法，以填充类中声明的所有属性和任何父类中的值。可以在属性声明或构造函数中提供初始化器。了解如何运行它们是 [Metamodel::ClassHOW](https://docs.perl6.org/type/Metamodel::ClassHOW) 的责任。这是在 Perl 6 中构建对象的唯一神奇部分，默认的父类型是 `Any`，它继承自 `Mu`。后者提供了默认的构造函数 `.new`（按约定命名）。除此之外，`.new` 没有任何特殊的含义，也没有任何特殊的处理方式。
+`class` 声明器创建一个编译时构造，该构造被编译成一个类型对象。后者是一个简单的 Raku 对象，它提供了通过执行初始化器和子方法来构造实例的方法，以填充类中声明的所有属性和任何父类中的值。可以在属性声明或构造函数中提供初始化器。了解如何运行它们是 [Metamodel::ClassHOW](https://rakudocs.github.io/type/Metamodel::ClassHOW) 的责任。这是在 Raku 中构建对象的唯一神奇部分，默认的父类型是 `Any`，它继承自 `Mu`。后者提供了默认的构造函数 `.new`（按约定命名）。除此之外，`.new` 没有任何特殊的含义，也没有任何特殊的处理方式。
 
-The `class` declarator creates a compile time construct that is compiled into a type object. The latter is a simple Perl 6 object and provides methods to construct instances by executing initializers and sub methods to fill all attributes declared in a class, and any parent class, with values. Initializers can be provided with the declaration of attributes or in constructors. It's the responsibility of the [Metamodel::ClassHOW](https://docs.perl6.org/type/Metamodel::ClassHOW) to know how to run them. This is the only magic part of building objects in Perl 6. The default parent type is `Any`, which in turn inherits from `Mu`. The latter provides the default constructor `.new` which is named like this by convention. Aside from this, `.new` does not carry any special meaning nor is treated in any special way.
+The `class` declarator creates a compile time construct that is compiled into a type object. The latter is a simple Raku object and provides methods to construct instances by executing initializers and sub methods to fill all attributes declared in a class, and any parent class, with values. Initializers can be provided with the declaration of attributes or in constructors. It's the responsibility of the [Metamodel::ClassHOW](https://rakudocs.github.io/type/Metamodel::ClassHOW) to know how to run them. This is the only magic part of building objects in Raku. The default parent type is `Any`, which in turn inherits from `Mu`. The latter provides the default constructor `.new` which is named like this by convention. Aside from this, `.new` does not carry any special meaning nor is treated in any special way.
 
-有关如何使用类的更多信息，请参见 [Classes and objects](https://docs.perl6.org/language/classtut) 教程。
+有关如何使用类的更多信息，请参见 [Classes and objects](https://rakudocs.github.io/language/classtut) 教程。
 
-For more information how to use classes see the [Classes and objects](https://docs.perl6.org/language/classtut) tutorial.
+For more information how to use classes see the [Classes and objects](https://rakudocs.github.io/language/classtut) tutorial.
 
 <a id="%E6%B7%B7%E5%90%88%E7%B1%BB--mixins"></a>
 ### 混合类 / Mixins
 
-类引入的类型可以在运行时用 [infix:](https://docs.perl6.org/language/operators#infix_but) 进行扩展。原始类型不被修改，而是返回一个新类型对象，并且可以存储在一个容器中，该容器可以根据原始类型或混合的角色成功地检查类型。
+类引入的类型可以在运行时用 [infix:](https://rakudocs.github.io/language/operators#infix_but) 进行扩展。原始类型不被修改，而是返回一个新类型对象，并且可以存储在一个容器中，该容器可以根据原始类型或混合的角色成功地检查类型。
 
-The type introduced by `class` can be extended with [infix:](https://docs.perl6.org/language/operators#infix_but) at runtime. The original type is not modified, instead a new type object is returned and can be stored in a container that type checks successful against the original type or the role that is mixed in.
+The type introduced by `class` can be extended with [infix:](https://rakudocs.github.io/language/operators#infix_but) at runtime. The original type is not modified, instead a new type object is returned and can be stored in a container that type checks successful against the original type or the role that is mixed in.
 
-```Perl6
+```Raku
 class A {}
 role R { method m { say 'oi‽' } }
 my R $A = A but R;
@@ -222,11 +222,11 @@ say [$A ~~ R, $a1 ~~ R];
 <a id="%E5%85%83%E7%B1%BB--metaclass"></a>
 #### 元类 / Metaclass
 
-若要测试给定类型对象是否为类，请针对 [Metamodel::ClassHOW](https://docs.perl6.org/type/Metamodel::ClassHOW) 测试元对象方法 `.HOW`。
+若要测试给定类型对象是否为类，请针对 [Metamodel::ClassHOW](https://rakudocs.github.io/type/Metamodel::ClassHOW) 测试元对象方法 `.HOW`。
 
-To test if a given type object is a class, test the metaobject method `.HOW` against [Metamodel::ClassHOW](https://docs.perl6.org/type/Metamodel::ClassHOW).
+To test if a given type object is a class, test the metaobject method `.HOW` against [Metamodel::ClassHOW](https://rakudocs.github.io/type/Metamodel::ClassHOW).
 
-```Perl6
+```Raku
 class C {};
 say C.HOW ~~ Metamodel::ClassHOW;
 # OUTPUT: «True␤»
@@ -235,11 +235,11 @@ say C.HOW ~~ Metamodel::ClassHOW;
 <a id="%E7%A7%81%E6%9C%89%E5%B1%9E%E6%80%A7--private-attributes"></a>
 ### 私有属性 / Private attributes
 
-私有的[属性](https：/docs.perl6.org/type/properties)的地址是使用任意一标记 `$!`、`@!` 和 `%!`。它们没有自动生成的公共访问器方法。因此，它们不能在定义在其中的类之外被更改。
+私有的[属性](https：/rakudocs.github.io/type/properties)的地址是使用任意一标记 `$!`、`@!` 和 `%!`。它们没有自动生成的公共访问器方法。因此，它们不能在定义在其中的类之外被更改。
 
-Private [attribute](https://docs.perl6.org/type/Attribute)s are addressed with any of the twigils `$!`, `@!` and `%!`. They do not have public accessor methods generated automatically. As such they can not be altered from outside the class they are defined in.
+Private [attribute](https://rakudocs.github.io/type/Attribute)s are addressed with any of the twigils `$!`, `@!` and `%!`. They do not have public accessor methods generated automatically. As such they can not be altered from outside the class they are defined in.
 
-```Perl6
+```Raku
 class C {
     has $!priv;
     submethod BUILD { $!priv = 42 }
@@ -252,9 +252,9 @@ say (.name, .package, .has_accessor) for C.new.^attributes;
 <a id="%E6%96%B9%E6%B3%95--methods"></a>
 ### 方法 / Methods
 
-`method` 声明器定义类型为 [Method](https://docs.perl6.org/type/Method) 的对象并将它们绑定到类的作用域中提供的名称。默认情况下，类中的方法是 `has` 作用域。默认情况下，不将 `our` 作用域的方法添加到方法缓存中，因此不能使用访问器 `$.` 调用。用其完全限定的名称和调用者作为第一个参数来调用它们。
+`method` 声明器定义类型为 [Method](https://rakudocs.github.io/type/Method) 的对象并将它们绑定到类的作用域中提供的名称。默认情况下，类中的方法是 `has` 作用域。默认情况下，不将 `our` 作用域的方法添加到方法缓存中，因此不能使用访问器 `$.` 调用。用其完全限定的名称和调用者作为第一个参数来调用它们。
 
-The `method` declarator defines objects of type [Method](https://docs.perl6.org/type/Method) and binds them to the provided name in the scope of a class. Methods in a class are `has` scoped by default. Methods that are `our` scoped are not added to the method cache by default and as such can not be called with the accessor sigil `$.`. Call them with their fully qualified name and the invocant as the first argument.
+The `method` declarator defines objects of type [Method](https://rakudocs.github.io/type/Method) and binds them to the provided name in the scope of a class. Methods in a class are `has` scoped by default. Methods that are `our` scoped are not added to the method cache by default and as such can not be called with the accessor sigil `$.`. Call them with their fully qualified name and the invocant as the first argument.
 
 <a id="%E7%BB%A7%E6%89%BF%E4%B8%8E-multi-%E6%96%B9%E6%B3%95--inheritance-and-multis"></a>
 #### 继承与 multi 方法 / Inheritance and multis
@@ -263,7 +263,7 @@ The `method` declarator defines objects of type [Method](https://docs.perl6.org/
 
 A normal method in a subclass does not compete with multis of a parent class.
 
-```Perl6
+```Raku
 class A {
     multi method m(Int $i){ say 'Int' }
     multi method m(int $i){ say 'int' }
@@ -285,7 +285,7 @@ B.new.m($i);
 
 To explicitly state that a method is not a multi method use the `only` method declarator.
 
-```Perl6
+```Raku
 class C {
     only method m {};
     multi method m {};
@@ -296,11 +296,11 @@ class C {
 <a id="build-%E5%AD%90%E6%96%B9%E6%B3%95--submethod-build"></a>
 #### BUILD 子方法 / submethod BUILD
 
-[submethod](https://docs.perl6.org/type/Submethod)  `BUILD` 被 [.bless](https://docs.perl6.org/type/Mu#method_bless) 间接调用。它的目的是设置类的私有和公共属性，并接收传递给 `.bless` 的所有名称属性。在 `Mu` 中定义的默认构造函数 [.new](https://docs.perl6.org/type/Mu#method_new) 是调用它的方法。鉴于 `BUILD` 中没有公共访问器方法，您必须使用私有属性表示法。
+[submethod](https://rakudocs.github.io/type/Submethod)  `BUILD` 被 [.bless](https://rakudocs.github.io/type/Mu#method_bless) 间接调用。它的目的是设置类的私有和公共属性，并接收传递给 `.bless` 的所有名称属性。在 `Mu` 中定义的默认构造函数 [.new](https://rakudocs.github.io/type/Mu#method_new) 是调用它的方法。鉴于 `BUILD` 中没有公共访问器方法，您必须使用私有属性表示法。
 
-The [submethod](https://docs.perl6.org/type/Submethod) `BUILD` is (indirectly) called by [.bless](https://docs.perl6.org/type/Mu#method_bless). It is meant to set private and public attributes of a class and receives all names attributes passed into `.bless`. The default constructor [.new](https://docs.perl6.org/type/Mu#method_new) defined in `Mu` is the method that invokes it. Given that public accessor methods are not available in `BUILD`, you must use private attribute notation instead.
+The [submethod](https://rakudocs.github.io/type/Submethod) `BUILD` is (indirectly) called by [.bless](https://rakudocs.github.io/type/Mu#method_bless). It is meant to set private and public attributes of a class and receives all names attributes passed into `.bless`. The default constructor [.new](https://rakudocs.github.io/type/Mu#method_new) defined in `Mu` is the method that invokes it. Given that public accessor methods are not available in `BUILD`, you must use private attribute notation instead.
 
-```Perl6
+```Raku
 class C {
     has $.attr;
     submethod BUILD (:$attr = 42) {
@@ -319,11 +319,11 @@ C.new.say; C.new('answer').say;
 <a id="fallback-%E6%96%B9%E6%B3%95--fallback-method"></a>
 #### FALLBACK 方法 / Fallback method 
 
-当解析名称的其他方法不产生任何结果时，将调用具有特殊名称 `FALLBACK` 的方法。第一个参数保存名称，以下所有参数都是从原始调用中转发的。支持多方法和[子签名](https://docs.perl6.org/type/Signature#Destructuring_arguments)。
+当解析名称的其他方法不产生任何结果时，将调用具有特殊名称 `FALLBACK` 的方法。第一个参数保存名称，以下所有参数都是从原始调用中转发的。支持多方法和[子签名](https://rakudocs.github.io/type/Signature#Destructuring_arguments)。
 
-A method with the special name `FALLBACK` will be called when other means to resolve the name produce no result. The first argument holds the name and all following arguments are forwarded from the original call. Multi methods and [sub-signatures](https://docs.perl6.org/type/Signature#Destructuring_arguments) are supported.
+A method with the special name `FALLBACK` will be called when other means to resolve the name produce no result. The first argument holds the name and all following arguments are forwarded from the original call. Multi methods and [sub-signatures](https://rakudocs.github.io/type/Signature#Destructuring_arguments) are supported.
 
-```Perl6
+```Raku
 class Magic {
     method FALLBACK ($name, |c(Int, Str)) {
         put "$name called with parameters {c.perl}"
@@ -341,7 +341,7 @@ Magic.new.simsalabim(42, "answer");
 
 Some built-in introspection methods are actually special syntax provided by the compiler, namely `WHAT`, `WHO`, `HOW` and `VAR`. Declaring methods with those names will silently fail. A dynamic call will work, what allows to call methods from foreign objects.
 
-```Perl6
+```Raku
 class A {
     method WHAT { "ain't gonna happen" }
 };
@@ -357,7 +357,7 @@ say A.new."WHAT"() # OUTPUT: «ain't gonna happen␤»
 
 Any `our` scoped method will be visible in the package scope of a class.
 
-```Perl6
+```Raku
 class C {
     our method packaged {};
     method loose {}
@@ -373,7 +373,7 @@ say C::.keys
 
 Instead of writing `attr => $attr` or `:attr($attr)`, you can save some typing if the variable (or method call) you're setting the attribute with shares the name with the attribute:
 
-```Perl6
+```Raku
 class A { has $.i = 42 };
 class B {
     has $.i = "answer";
@@ -384,22 +384,22 @@ my $a = B.new.m;
 say $a.i; # OUTPUT: «answer␤»
 ```
 
-`$.i` 方法调用名为 `i` 并且属性名也叫 `i`，因此 Perl 6 允许我们用快捷方式。这同样适用于 `:$var`、`:$!private-attribute`、`:&attr-with-code-in-it` 等等。
+`$.i` 方法调用名为 `i` 并且属性名也叫 `i`，因此 Raku 允许我们用快捷方式。这同样适用于 `:$var`、`:$!private-attribute`、`:&attr-with-code-in-it` 等等。
 
-Since `$.i` method call is named `i` and the attribute is also named `i`, Perl 6 lets us shortcut. The same applies to `:$var`, `:$!private-attribute`, `:&attr-with-code-in-it`, and so on.
+Since `$.i` method call is named `i` and the attribute is also named `i`, Raku lets us shortcut. The same applies to `:$var`, `:$!private-attribute`, `:&attr-with-code-in-it`, and so on.
 
 <a id="is-nodal-%E7%89%B9%E6%80%A7--trait-is-nodal"></a>
 ### `is nodal` 特性 / trait `is nodal`
 
-标记一个 [List](https://docs.perl6.org/type/List) 方法，以指示超级运算符不要下降到内部 [Iterables](https://docs.perl6.org/type/Iterable) 来调用此方法。这种特性通常不是最终用户会使用的特性，除非他们正在子类化或增强核心[List](https://docs.perl6.org/type/List)类型。
+标记一个 [List](https://rakudocs.github.io/type/List) 方法，以指示超级运算符不要下降到内部 [Iterables](https://rakudocs.github.io/type/Iterable) 来调用此方法。这种特性通常不是最终用户会使用的特性，除非他们正在子类化或增强核心[List](https://rakudocs.github.io/type/List)类型。
 
-Marks a [List](https://docs.perl6.org/type/List) method to indicate to hyperoperator to not descend into inner [Iterables](https://docs.perl6.org/type/Iterable) to call this method. This trait generally isn't something end users would be using, unless they're subclassing or augmenting core [List](https://docs.perl6.org/type/List) type.
+Marks a [List](https://rakudocs.github.io/type/List) method to indicate to hyperoperator to not descend into inner [Iterables](https://rakudocs.github.io/type/Iterable) to call this method. This trait generally isn't something end users would be using, unless they're subclassing or augmenting core [List](https://rakudocs.github.io/type/List) type.
 
 为了证明这一区别，请考虑以下例子：第一种方法 (`elems`) 使用 `is nodal` 的方法，第二种方法使用不是节点的方法 (`Int`)。
 
 In order to demonstrate the difference consider the following examples, the first using a method (`elems`) that `is nodal` and the second using a method (`Int`) which is not nodal.
 
-```Perl6
+```Raku
 say ((1.0, "2", 3e0), [^4], '5')».elems; # OUTPUT: «(3, 4, 1)␤»
 say ((1.0, "2", 3e0), [^4], '5')».Int    # OUTPUT: «((1 2 3) [0 1 2 3] 5)␤»
 ```
@@ -411,15 +411,15 @@ say ((1.0, "2", 3e0), [^4], '5')».Int    # OUTPUT: «((1 2 3) [0 1 2 3] 5)␤»
 
 Defined as:
 
-```Perl6
+```Raku
 multi sub trait_mod:<handles>(Attribute:D $target, $thunk)
 ```
 
 `handles` 特性应用于类的属性，对提供的方法名的所有调用委托给具有相同属性名称的方法。被属性引用的对象必须初始化。可以为委托调用的对象提供类型约束。
 
-The [trait](https://docs.perl6.org/type/Sub#Traits) `handles` applied to an attribute of a class will delegate all calls to the provided method name to the method with the same name of the attribute. The object referenced by the attribute must be initialized. A type constraint for the object that the call is delegated to can be provided.
+The [trait](https://rakudocs.github.io/type/Sub#Traits) `handles` applied to an attribute of a class will delegate all calls to the provided method name to the method with the same name of the attribute. The object referenced by the attribute must be initialized. A type constraint for the object that the call is delegated to can be provided.
 
-```Perl6
+```Raku
 class A      { method m(){ 'A::m has been called.' } }
 class B is A { method m(){ 'B::m has been called.' } }
 class C {
@@ -433,7 +433,7 @@ say C.new(B.new).m(); # OUTPUT: «B::m has been called.␤»
 
 Instead of a method name, a `Pair` (for renaming), a list of names or `Pair`s, a `Regex` or a `Whatever` can be provided. In the latter case existing methods, both in the class itself and its inheritance chain, will take precedence. If even local `FALLBACK`s should be searched, use a `HyperWhatever`.
 
-```Perl6
+```Raku
 class A {
     method m1(){}
     method m2(){}
@@ -462,19 +462,19 @@ E.new.em1;
 
 Defined as:
 
-```Perl6
+```Raku
 multi sub trait_mod:<is>(Mu:U $child, Mu:U $parent)
 ```
 
-[特性](https://docs.perl6.org/type/Sub#Traits) `is` 接受添加一个类型对象作为定义中的类的父类。要允许多重继承，可以多次应用该特性。将父类添加到类中会将他们的方法导入目标类。如果在多个父类中出现相同的方法名，则第一个添加的父类将获胜。
+[特性](https://rakudocs.github.io/type/Sub#Traits) `is` 接受添加一个类型对象作为定义中的类的父类。要允许多重继承，可以多次应用该特性。将父类添加到类中会将他们的方法导入目标类。如果在多个父类中出现相同的方法名，则第一个添加的父类将获胜。
 
-The [trait](https://docs.perl6.org/type/Sub#Traits) `is` accepts a type object to be added as a parent class of a class in its definition. To allow multiple inheritance the trait can be applied more than once. Adding parents to a class will import their methods into the target class. If the same method name occurs in multiple parents, the first added parent will win.
+The [trait](https://rakudocs.github.io/type/Sub#Traits) `is` accepts a type object to be added as a parent class of a class in its definition. To allow multiple inheritance the trait can be applied more than once. Adding parents to a class will import their methods into the target class. If the same method name occurs in multiple parents, the first added parent will win.
 
-如果没有 `is` 特性，默认的 [`Any`](https://docs.perl6.org/type/Any) 将会作为父类。这迫使所有 Perl 6 对象都具有相同的基本方法集，以提供一个接口，用于对基本类型进行内省和强制类型转换。
+如果没有 `is` 特性，默认的 [`Any`](https://rakudocs.github.io/type/Any) 将会作为父类。这迫使所有 Raku 对象都具有相同的基本方法集，以提供一个接口，用于对基本类型进行内省和强制类型转换。
 
-If no `is` trait is provided the default of [`Any`](https://docs.perl6.org/type/Any) will be used as a parent class. This forces all Perl 6 objects to have the same set of basic methods to provide an interface for introspection and coercion to basic types.
+If no `is` trait is provided the default of [`Any`](https://rakudocs.github.io/type/Any) will be used as a parent class. This forces all Raku objects to have the same set of basic methods to provide an interface for introspection and coercion to basic types.
 
-```Perl6
+```Raku
 class A {
     multi method from-a(){ 'A::from-a' }
 }
@@ -498,15 +498,15 @@ say C.new.from-a();
 
 Defined as:
 
-```Perl6
+```Raku
 sub trait_mod:<is>(Mu:U $type, :$rw!)
 ```
 
 在类上的 `is rw` 特性将对所有公共属性创建可写的访问器方法。
 
-The [trait](https://docs.perl6.org/type/Sub#Traits) `is rw` on a class will create writable accessor methods on all public attributes of that class.
+The [trait](https://rakudocs.github.io/type/Sub#Traits) `is rw` on a class will create writable accessor methods on all public attributes of that class.
 
-```Perl6
+```Raku
 class C is rw {
     has $.a;
 };
@@ -521,16 +521,16 @@ say $c; # OUTPUT: «42␤»
 
 Defined as:
 
-```Perl6
+```Raku
 multi sub trait_mod:<is>(Attribute $attr, :$required!)
 multi sub trait_mod:<is>(Parameter:D $param, :$required!)
 ```
 
-标记一个类或者角色的属性必须的。如果在对象构建时属性没有被初始化则抛出 [X::Attribute::Required](https://docs.perl6.org/type/X::Attribute::Required) 异常。
+标记一个类或者角色的属性必须的。如果在对象构建时属性没有被初始化则抛出 [X::Attribute::Required](https://rakudocs.github.io/type/X::Attribute::Required) 异常。
 
-Marks a class or roles attribute as required. If the attribute is not initialized at object construction time throws [X::Attribute::Required](https://docs.perl6.org/type/X::Attribute::Required).
+Marks a class or roles attribute as required. If the attribute is not initialized at object construction time throws [X::Attribute::Required](https://rakudocs.github.io/type/X::Attribute::Required).
 
-```Perl6
+```Raku
 class Correct {
     has $.attr is required;
     submethod BUILD (:$attr) { $!attr = $attr }
@@ -550,7 +550,7 @@ CATCH { default { say .^name => .Str } }
 
 You can provide a reason why it's required as an argument to `is required`
 
-```Perl6
+```Raku
 class Correct {
     has $.attr is required("it's so cool")
 };
@@ -561,11 +561,11 @@ say Correct.new();
 <a id="hides-%E7%89%B9%E6%80%A7--trait-hides"></a>
 ### `hides` 特性 / trait `hides`
 
-`hides` 特性提供继承，而不受[重新调度](https://docs.perl6.org/language/functions#Re-dispatching) 的约束。
+`hides` 特性提供继承，而不受[重新调度](https://rakudocs.github.io/language/functions#Re-dispatching) 的约束。
 
-The trait `hides` provides inheritance without being subject to [re-dispatching](https://docs.perl6.org/language/functions#Re-dispatching).
+The trait `hides` provides inheritance without being subject to [re-dispatching](https://rakudocs.github.io/language/functions#Re-dispatching).
 
-```Perl6
+```Raku
 class A {
     method m { say 'i am hidden' }
 }
@@ -579,11 +579,11 @@ B.new.n;
 # OUTPUT: «i am hidden␤»
 ```
 
-`is hidden` 特性允许类隐藏自己不受[重新调度](https://docs.perl6.org/language/functions#Re-dispatching)的影响。
+`is hidden` 特性允许类隐藏自己不受[重新调度](https://rakudocs.github.io/language/functions#Re-dispatching)的影响。
 
-The trait `is hidden` allows a class to hide itself from [re-dispatching](https://docs.perl6.org/language/functions#Re-dispatching).
+The trait `is hidden` allows a class to hide itself from [re-dispatching](https://rakudocs.github.io/language/functions#Re-dispatching).
 
-```Perl6
+```Raku
 class A is hidden {
     method m { say 'i am hidden' }
 }
@@ -604,7 +604,7 @@ B.new.n;
 
 To allow one class to access the private methods of another class use the trait `trusts`. A forward declaration of the trusted class may be required.
 
-```Perl6
+```Raku
 class B {...};
 class A {
     trusts B;
@@ -627,7 +627,7 @@ say B.new.change;
 
 To add methods and attributes to a class at compile time use `augment` in front of a class definition fragment. The compiler will demand the pragmas `use MONKEY-TYPING` or `use MONKEY` early in the same scope. Please note that there may be performance implications, hence the pragmas.
 
-```Perl6
+```Raku
 use MONKEY; augment class Str {
     method mark(Any :$set){
         state $mark //= $set; $mark
@@ -646,11 +646,11 @@ There are few limitations of what can be done inside the class fragment. One of 
 <a id="%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%E5%92%8C%E4%BD%9C%E8%80%85--versioning-and-authorship"></a>
 ### 版本控制和作者 / Versioning and authorship
 
-版本控制和作者可以通过副词 `:ver<>` 和 `:auth<>` 指定。两者都使用一个字符串作为参数，因为 `:ver` 字符串被转换为一个 [Version](https://docs.perl6.org/type/Version) 对象。若要查询类的版本和作者使用 `.^ver` 和 `^.auth`。
+版本控制和作者可以通过副词 `:ver<>` 和 `:auth<>` 指定。两者都使用一个字符串作为参数，因为 `:ver` 字符串被转换为一个 [Version](https://rakudocs.github.io/type/Version) 对象。若要查询类的版本和作者使用 `.^ver` 和 `^.auth`。
 
-Versioning and authorship can be applied via the adverbs `:ver<>` and `:auth<>`. Both take a string as argument, for `:ver` the string is converted to a [Version](https://docs.perl6.org/type/Version) object. To query a class version and author use `.^ver` and `^.auth`.
+Versioning and authorship can be applied via the adverbs `:ver<>` and `:auth<>`. Both take a string as argument, for `:ver` the string is converted to a [Version](https://rakudocs.github.io/type/Version) object. To query a class version and author use `.^ver` and `^.auth`.
 
-```Perl6
+```Raku
 class C:ver<4.2.3>:auth<me@here.local> {}
 say [C.^ver, C.^auth];
 # OUTPUT: «[v4.2.3 me@here.local]␤»
@@ -663,7 +663,7 @@ say [C.^ver, C.^auth];
 
 Roles are class fragments, which allow the definition of interfaces that are shared by classes. The `role` declarator also introduces a type object that can be used for type checks. Roles can be mixed into classes and objects at runtime and compile time. The `role` declarator returns the created type object thus allowing the definition of anonymous roles and in-place mixins.
 
-```Perl6
+```Raku
 role Serialize {
     method to-string { self.Str }
     method to-number { self.Num }
@@ -684,7 +684,7 @@ say @list».to-string;
 
 Use `...` as the only element of a method body to declare a method to be abstract. Any class getting such a method mixed in has to overload it. If the method is not overloaded before the end of the compilation unit `X::Comp::AdHoc` will be thrown.
 
-```Perl6
+```Raku
 EVAL 'role R { method overload-this(){...} }; class A does R {}; ';
 CATCH { default { say .^name, ' ', .Str } }
 # OUTPUT: «X::Comp::AdHoc Method 'overload-this' must be implemented by A because it is required by roles: R.␤»
@@ -697,7 +697,7 @@ CATCH { default { say .^name, ' ', .Str } }
 
 A role can be used instead of a class to create objects. Since roles can't exist at runtime, a class of the same name is created that will type check successful against the role.
 
-```Perl6
+```Raku
 role R { method m { say 'oi‽' } };
 R.new.^mro.say;
 # OUTPUT: «((R) (Any) (Mu))␤»
@@ -714,7 +714,7 @@ say R.new ~~ R;
 
 The trait `does` can be applied to roles and classes providing compile time mixins. To refer to a role that is not defined yet, use a forward declaration. The type name of the class with mixed in roles does not reflect the mixin, a type check does. If methods are provided in more than one mixed in role, the method that is defined first takes precedence. A list of roles separated by comma can be provided. In this case conflicts will be reported at compile time.
 
-```Perl6
+```Raku
 role R2 {...};
 role R1 does R2 {};
 role R2 {};
@@ -724,18 +724,18 @@ say [C ~~ R1, C ~~ R2];
 # OUTPUT: «[True True]␤»
 ```
 
-运行时混入，见 [but](https://docs.perl6.org/language/operators#infix_but) 和 [does](https://docs.perl6.org/language/operators#infix_does)。
+运行时混入，见 [but](https://rakudocs.github.io/language/operators#infix_but) 和 [does](https://rakudocs.github.io/language/operators#infix_does)。
 
-For runtime mixins see [but](https://docs.perl6.org/language/operators#infix_but) and [does](https://docs.perl6.org/language/operators#infix_does).
+For runtime mixins see [but](https://rakudocs.github.io/language/operators#infix_but) and [does](https://rakudocs.github.io/language/operators#infix_does).
 
 <a id="%E5%8F%82%E6%95%B0%E5%8C%96--parameterized"></a>
 ### 参数化 / Parameterized
 
-角色的参数可以在角色名称后面 `[]` 之间提供。支持[类型捕获](https://docs.perl6.org/type/Signature#Type_captures)。
+角色的参数可以在角色名称后面 `[]` 之间提供。支持[类型捕获](https://rakudocs.github.io/type/Signature#Type_captures)。
 
-Roles can be provided with parameters in-between `[]` behind a roles name. [Type captures](https://docs.perl6.org/type/Signature#Type_captures) are supported.
+Roles can be provided with parameters in-between `[]` behind a roles name. [Type captures](https://rakudocs.github.io/type/Signature#Type_captures) are supported.
 
-```Perl6
+```Raku
 role R[$d] { has $.a = $d };
 class C does R["default"] { };
 
@@ -748,7 +748,7 @@ say $c;
 
 Parameters can have type constraints, `where` clauses are not supported for types but can be implemented via `subset`s.
 
-```Perl6
+```Raku
 class A {};
 class B {};
 subset A-or-B where * ~~ A|B;
@@ -760,7 +760,7 @@ R[A.new].new;
 
 Default parameters can be provided.
 
-```Perl6
+```Raku
 role R[$p = fail("Please provide a parameter to role R")] {};
 my $i = 1 does R;
 CATCH { default { say .^name, ': ', .Str} }
@@ -774,7 +774,7 @@ CATCH { default { say .^name, ': ', .Str} }
 
 Roles can be used as type constraints wherever a type is expected. If a role is mixed in with `does` or `but`, its type-object is added to the type-object list of the object in question. If a role is used instead of a class (using auto-punning), the auto-generated class' type-object, of the same name as the role, is added to the inheritance chain.
 
-```Perl6
+```Raku
 role Unitish[$unit = fail('Please provide a SI unit quantifier as a parameter to the role Unitish')] {
     has $.SI-unit-symbol = $unit;
     method gist {
@@ -813,11 +813,11 @@ say [(75kg).^name, N(75kg).^name];
 <a id="%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%E5%92%8C%E4%BD%9C%E8%80%85--versioning-and-authorship-1"></a>
 ### 版本控制和作者 / Versioning and authorship
 
-版本控制和作者可以通过副词 `:ver<>` 和 `:auth<>` 指定。两者都使用一个字符串作为参数，因为 `:ver` 字符串被转换为一个 [Version](https://docs.perl6.org/type/Version) 对象。若要查询类的版本和作者使用 `.^ver` 和 `^.auth`。
+版本控制和作者可以通过副词 `:ver<>` 和 `:auth<>` 指定。两者都使用一个字符串作为参数，因为 `:ver` 字符串被转换为一个 [Version](https://rakudocs.github.io/type/Version) 对象。若要查询类的版本和作者使用 `.^ver` 和 `^.auth`。
 
-Versioning and authorship can be applied via the adverbs `:ver<>` and `:auth<>`. Both take a string as argument, for `:ver` the string is converted to a [Version](https://docs.perl6.org/type/Version) object. To query a role's version and author use `.^ver` and `^.auth`.
+Versioning and authorship can be applied via the adverbs `:ver<>` and `:auth<>`. Both take a string as argument, for `:ver` the string is converted to a [Version](https://rakudocs.github.io/type/Version) object. To query a role's version and author use `.^ver` and `^.auth`.
 
-```Perl6
+```Raku
 role R:ver<4.2.3>:auth<me@here.local> {}
 say [R.^ver, R.^auth];
 # OUTPUT: «[v4.2.3 me@here.local]␤»
@@ -826,15 +826,15 @@ say [R.^ver, R.^auth];
 <a id="enum"></a>
 ## `enum`
 
-枚举提供具有关联类型的常量键值对。任何键都是该类型的，并作为符号注入到当前范围中。如果使用符号，则将其视为常量表达式，并将符号替换为枚举键值对的值。任何枚举都从角色 [`Enumeration`](https://docs.perl6.org/type/Enumeration) 继承方法。不支持用于生成键值对的复杂表达式。一般来说，`enum` 是一个元素中混入了 `Enumeration` 角色的 [Map](https://docs.perl6.org/type/Map)；这个角色对于每个元素包括一个索引，它在 map 上创建了一个顺序。
+枚举提供具有关联类型的常量键值对。任何键都是该类型的，并作为符号注入到当前范围中。如果使用符号，则将其视为常量表达式，并将符号替换为枚举键值对的值。任何枚举都从角色 [`Enumeration`](https://rakudocs.github.io/type/Enumeration) 继承方法。不支持用于生成键值对的复杂表达式。一般来说，`enum` 是一个元素中混入了 `Enumeration` 角色的 [Map](https://rakudocs.github.io/type/Map)；这个角色对于每个元素包括一个索引，它在 map 上创建了一个顺序。
 
-Enumerations provide constant key-value-pairs with an associated type. Any key is of that type and injected as a symbol into the current scope. If the symbol is used, it is treated as a constant expression and the symbol is replaced with the value of the enum-pair. Any Enumeration inherits methods from the role [`Enumeration`](https://docs.perl6.org/type/Enumeration). Complex expressions for generating key-value pairs are not supported. In general, an `enum` is a [Map](https://docs.perl6.org/type/Map) whose elements have the `Enumeration` role mixed in; this role includes, for each element, an index which creates an order on the map.
+Enumerations provide constant key-value-pairs with an associated type. Any key is of that type and injected as a symbol into the current scope. If the symbol is used, it is treated as a constant expression and the symbol is replaced with the value of the enum-pair. Any Enumeration inherits methods from the role [`Enumeration`](https://rakudocs.github.io/type/Enumeration). Complex expressions for generating key-value pairs are not supported. In general, an `enum` is a [Map](https://rakudocs.github.io/type/Map) whose elements have the `Enumeration` role mixed in; this role includes, for each element, an index which creates an order on the map.
 
 符号的字符串化，它是在字符串上下文中自动完成的，与其名称完全相等，这也是枚举对的关键。
 
 Stringification of the symbol, which is done automatically in string context and is exactly equal to its name, which is also the key of the enum-pair.
 
-```Perl6
+```Raku
 enum Names ( name1 => 1, name2 => 2 );
 say name1, ' ', name2; # OUTPUT: «name1 name2␤»
 say name1.value, ' ', name2.value; # OUTPUT: «1 2␤»
@@ -844,7 +844,7 @@ say name1.value, ' ', name2.value; # OUTPUT: «1 2␤»
 
 Comparing symbols will use type information and the value of the enum-pair. As value types `Num` and `Str` are supported.
 
-```Perl6
+```Raku
 enum Names ( name1 => 1, name2 => 2 );
 sub same(Names $a, Names $b){
    $a eqv $b
@@ -861,7 +861,7 @@ say $a.^name;    # OUTPUT: «Names␤»
 
 All keys have to be of the same type.
 
-```Perl6
+```Raku
 enum Mass ( mg => 1/1000, g => 1/1, kg => 1000/1 );
 
 say Mass.enums;
@@ -872,7 +872,7 @@ say Mass.enums;
 
 And you can use any kind of symbol:
 
-```Perl6
+```Raku
 enum Suit <♣ ♦ ♥ ♠>;
 ```
 
@@ -880,7 +880,7 @@ enum Suit <♣ ♦ ♥ ♠>;
 
 As long as you refer to that symbol using the full syntax:
 
-```Perl6
+```Raku
 say Suit::<♣>; # OUTPUT: «♣␤»
 ```
 
@@ -888,7 +888,7 @@ say Suit::<♣>; # OUTPUT: «♣␤»
 
 Attempting to access unicode enum keys without said syntax will result in an error:
 
-```Perl6
+```Raku
 say ♣ ; # OUTPUT: «(exit code 1) ===SORRY!===␤Argument to "say" seems to be    malformed…
 ```
 
@@ -896,7 +896,7 @@ say ♣ ; # OUTPUT: «(exit code 1) ===SORRY!===␤Argument to "say" seems to be
 
 If no value is given `Int` will be assumed as the values type and incremented by one per key starting at zero. As enum key types `Int`, `Num`, `Rat` and `Str` are supported.
 
-```Perl6
+```Raku
 enum Numbers <one two three four>;
 
 say Numbers.enums;
@@ -907,7 +907,7 @@ say Numbers.enums;
 
 A different starting value can be provided.
 
-```Perl6
+```Raku
 enum Numbers «:one(1) two three four»;
 
 say Numbers.enums;
@@ -918,7 +918,7 @@ say Numbers.enums;
 
 You can also do this with the **()** form of the initializer, but will need to quote keys that do not have a value:
 
-```Perl6
+```Raku
 enum Numbers (
   one => 1,
   'two',
@@ -931,7 +931,7 @@ Enum 也可以是匿名的，唯一的区别是你不能在 `Signature` 中使�
 
 Enums can also be anonymous, with the only difference with named `enum`s being that you cannot use it in `Signature`s or to declare variables.
 
-```Perl6
+```Raku
 my $e = enum <one two three>;
 say two;       # OUTPUT: «two␤»
 say one.^name; # OUTPUT: «␤»
@@ -940,7 +940,7 @@ say $e.^name;  # OUTPUT: «Map␤»
 
 There are various methods to get access to the keys and values of the symbols that have been defined. All of them turn the values into `Str`, which may not be desirable. By treating the enum as a package, we can get a list of types for the keys.
 
-```Perl6
+```Raku
 enum E(<one two>);
 my @keys = E::.values;
 say @keys.map: *.enums;
@@ -951,13 +951,13 @@ With the use of **()** parentheses, an enum can be defined using any arbitrary d
 
 For example, in file `config` we have:
 
-```Perl6
+```Raku
 a 1 b 2
 ```
 
 We can create an enum using it with this code:
 
-```Perl6
+```Raku
     enum ConfigValues ('config'.IO.lines.map({ my ($key, $value) = $_.words; $key => $value }));
     say ConfigValues.enums;          # OUTPUT: «Map.new((a => 1, b => 2))␤»
 ```
@@ -967,9 +967,9 @@ Firstly, we read lines from `config` file, split every line using `words` method
 <a id="metaclass"></a>
 ### Metaclass
 
-To test if a given type object is an `enum`, test the metaobject method `.HOW` against [Metamodel::EnumHOW](https://docs.perl6.org/type/Metamodel::EnumHOW) or simply test against the `Enumeration` role.
+To test if a given type object is an `enum`, test the metaobject method `.HOW` against [Metamodel::EnumHOW](https://rakudocs.github.io/type/Metamodel::EnumHOW) or simply test against the `Enumeration` role.
 
-```Perl6
+```Raku
 enum E(<a b c>);
 say E.HOW ~~ Metamodel::EnumHOW; # OUTPUT: «True␤»
 say E ~~ Enumeration;            # OUTPUT: «True␤»
@@ -983,13 +983,13 @@ say E ~~ Enumeration;            # OUTPUT: «True␤»
 
 Defined as:
 
-```Perl6
+```Raku
 method enums()
 ```
 
 Returns the list of enum-pairs.
 
-```Perl6
+```Raku
 enum Mass ( mg => 1/1000, g => 1/1, kg => 1000/1 );
 say Mass.enums; # OUTPUT: «{g => 1, kg => 1000, mg => 0.001}␤»
 ```
@@ -999,7 +999,7 @@ say Mass.enums; # OUTPUT: «{g => 1, kg => 1000, mg => 0.001}␤»
 
 If you want to coerce the value of an enum element to its proper enum object, use the coercer with the name of the enum:
 
-```Perl6
+```Raku
 my enum A (sun => 42, mon => 72);
 A(72).pair.say;   # OUTPUT: «mon => 72␤»
 A(1000).say; # OUTPUT: «(A)␤»
@@ -1010,16 +1010,16 @@ The last example shows what happens if there is no enum-pair that includes that 
 <a id="module"></a>
 ## `module`
 
-Modules are usually one or more source files that expose Perl 6 constructs, such as classes, roles, grammars, subroutines and variables. Modules are usually used for distributing Perl 6 code as libraries which can be used in another Perl 6 program.
+Modules are usually one or more source files that expose Raku constructs, such as classes, roles, grammars, subroutines and variables. Modules are usually used for distributing Raku code as libraries which can be used in another Raku program.
 
-For a full explanation see [Modules](https://docs.perl6.org/language/modules).
+For a full explanation see [Modules](https://rakudocs.github.io/language/modules).
 
 <a id="versioning-and-authorship"></a>
 ### Versioning and authorship
 
-Versioning and authorship can be applied via the adverbs `:ver<>` and `:auth<>`. Both take a string as argument, for `:ver` the string is converted to a [Version](https://docs.perl6.org/type/Version) object. To query a modules version and author use `.^ver` and `^.auth`.
+Versioning and authorship can be applied via the adverbs `:ver<>` and `:auth<>`. Both take a string as argument, for `:ver` the string is converted to a [Version](https://rakudocs.github.io/type/Version) object. To query a modules version and author use `.^ver` and `^.auth`.
 
-```Perl6
+```Raku
 module M:ver<4.2.3>:auth<me@here.local> {}
 say [M.^ver, M.^auth];
 # OUTPUT: «[v4.2.3 me@here.local]␤»
@@ -1030,21 +1030,21 @@ say [M.^ver, M.^auth];
 
 Packages are nested namespaces of named program elements. Modules, classes and grammars are all types of package.
 
-For a full explanation see [Packages](https://docs.perl6.org/language/packages).
+For a full explanation see [Packages](https://rakudocs.github.io/language/packages).
 
 <a id="grammar"></a>
 ## `grammar`
 
 Grammars are a specific type of class intended for parsing text. Grammars are composed of rules, tokens and regexes which are actually methods, since grammars are classes.
 
-For a full explanation see [Grammars](https://docs.perl6.org/language/grammars).
+For a full explanation see [Grammars](https://rakudocs.github.io/language/grammars).
 
 <a id="versioning-and-authorship-1"></a>
 ### Versioning and authorship
 
-Versioning and authorship can be applied via the adverbs `:ver<>` and `:auth<>`. Both take a string as argument, for `:ver` the string is converted to a [Version](https://docs.perl6.org/type/Version) object. To query a grammars version and author use `.^ver` and `^.auth`.
+Versioning and authorship can be applied via the adverbs `:ver<>` and `:auth<>`. Both take a string as argument, for `:ver` the string is converted to a [Version](https://rakudocs.github.io/type/Version) object. To query a grammars version and author use `.^ver` and `^.auth`.
 
-```Perl6
+```Raku
 grammar G:ver<4.2.3>:auth<me@here.local> {}
 say [G.^ver, G.^auth];
 # OUTPUT: «[v4.2.3 me@here.local]␤»
@@ -1053,9 +1053,9 @@ say [G.^ver, G.^auth];
 <a id="subset"></a>
 ## `subset`
 
-A `subset` declares a new type that will re-dispatch to its base type. If a [`where`](https://docs.perl6.org/type/Signature#where) clause is supplied any assignment will be checked against the given code object.
+A `subset` declares a new type that will re-dispatch to its base type. If a [`where`](https://rakudocs.github.io/type/Signature#where) clause is supplied any assignment will be checked against the given code object.
 
-```Perl6
+```Raku
 subset Positive of Int where * > -1;
 my Positive $i = 1;
 $i = -42;
@@ -1065,7 +1065,7 @@ CATCH { default { put .^name,': ', .Str } }
 
 Subsets can be used in signatures, e.g. by typing the output:
 
-```Perl6
+```Raku
 subset Foo of List where (Int,Str);
 sub a($a, $b, --> Foo) { $a, $b }
 # Only a List with the first element being an Int and the second a Str will pass the type check.
@@ -1075,7 +1075,7 @@ a("foo", 1);  # fails
 
 Subsets can be anonymous, allowing inline placements where a subset is required but a name is neither needed nor desirable.
 
-```Perl6
+```Raku
 my enum E1 <A B>;
 my enum E2 <C D>;
 sub g(@a where { .all ~~ subset :: where E1|E2 } ) {
@@ -1085,9 +1085,9 @@ g([A, C]);
 # OUTPUT: «[A C]␤»
 ```
 
-Subsets can be used to check types dynamically, which can be useful in conjunction with [require](https://docs.perl6.org/language/modules#require).
+Subsets can be used to check types dynamically, which can be useful in conjunction with [require](https://rakudocs.github.io/language/modules#require).
 
-```Perl6
+```Raku
 require ::('YourModule');
 subset C where ::('YourModule::C');
 ```

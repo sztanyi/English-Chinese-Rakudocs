@@ -1,4 +1,4 @@
-原文：https://docs.perl6.org/language/unicode_entry
+原文：https://rakudocs.github.io/language/unicode_entry
 
 # 输入 unicode 字符 / Entering unicode characters
 
@@ -6,9 +6,9 @@
 
 Input methods for unicode characters in editors and the shell
 
-Perl 6 允许使用 Unicode 字符作为变量名。许多操作符使用 Unicode 符号（特别是 [set/bag operators](https://docs.perl6.org/language/setbagmix#Set%252FBag_operators)）以及一些引用结构。因此，最好知道如何将这些符号输入编辑器，Perl 6 shell 和命令行，特别是如果符号不是键盘上的实际字符。
+Perl 6 允许使用 Unicode 字符作为变量名。许多操作符使用 Unicode 符号（特别是 [set/bag operators](https://rakudocs.github.io/language/setbagmix#Set%252FBag_operators)）以及一些引用结构。因此，最好知道如何将这些符号输入编辑器，Perl 6 shell 和命令行，特别是如果符号不是键盘上的实际字符。
 
-Perl 6 allows the use of unicode characters as variable names. Many operators are defined with unicode symbols (in particular the [set/bag operators](https://docs.perl6.org/language/setbagmix#Set%252FBag_operators)) as well as some quoting constructs. Hence it is good to know how to enter these symbols into editors, the Perl 6 shell and the command line, especially if the symbols aren't available as actual characters on a keyboard.
+Perl 6 allows the use of unicode characters as variable names. Many operators are defined with unicode symbols (in particular the [set/bag operators](https://rakudocs.github.io/language/setbagmix#Set%252FBag_operators)) as well as some quoting constructs. Hence it is good to know how to enter these symbols into editors, the Perl 6 shell and the command line, especially if the symbols aren't available as actual characters on a keyboard.
 
 有关在各种操作系统和环境下输入 Unicode 的一般信息，请参见 Wikipedia [Unicode 输入页面](https://en.wikipedia.org/wiki/Unicode_input)。
 
@@ -237,9 +237,9 @@ This will bind control-k to the shell command digraphs. You can use [digraphs](h
 <a id="%E6%99%BA%E8%83%BD%E5%BC%95%E5%8F%B7--smart-quoteshttpsenwikipediaorgwikiquotationmarkcurved_quotes_andunicode"></a>
 ## 智能引号 / Smart quotes](https://en.wikipedia.org/wiki/Quotation_mark#Curved_quotes_and_Unicode)
 
-这些字符在不同语言中用作引号。在 Perl 6 中，它们被用作[引用字符](https://docs.perl6.org/language/quoting)
+这些字符在不同语言中用作引号。在 Perl 6 中，它们被用作[引用字符](https://rakudocs.github.io/language/quoting)
 
-These characters are used in different languages as quotation marks. In Perl 6 they are used as [quoting characters](https://docs.perl6.org/language/quoting)
+These characters are used in different languages as quotation marks. In Perl 6 they are used as [quoting characters](https://rakudocs.github.io/language/quoting)
 
 这样的构造现在是可能的：
 
@@ -268,9 +268,9 @@ since you can just copy and paste some piece of code and not worry about quotes.
 <a id="%E4%B9%A6%E5%90%8D%E5%8F%B7--guillemetshttpsenwikipediaorgwikiguillemet"></a>
 ## 书名号 / Guillemets](https://en.wikipedia.org/wiki/Guillemet)
 
-这些字符在法语和德语中用作引号。在 Perl 6 中，它们被用作[内插词引号](https://docs.perl6.org/language/quoting#Word_quoting_with_interpolation_and_quote_protection%3A_qqww)、[hyper 运算符](https://docs.perl6.org/language/operators#Hyper_operators)，以及 POD6 中尖角括号的另一种选择。
+这些字符在法语和德语中用作引号。在 Perl 6 中，它们被用作[内插词引号](https://rakudocs.github.io/language/quoting#Word_quoting_with_interpolation_and_quote_protection%3A_qqww)、[hyper 运算符](https://rakudocs.github.io/language/operators#Hyper_operators)，以及 POD6 中尖角括号的另一种选择。
 
-These characters are used in French and German as quotation marks. In Perl 6 they are used as [interpolation word quotes](https://docs.perl6.org/language/quoting#Word_quoting_with_interpolation_and_quote_protection%3A_qqww), [hyper operators](https://docs.perl6.org/language/operators#Hyper_operators) and as an angle bracket alternative in POD6.
+These characters are used in French and German as quotation marks. In Perl 6 they are used as [interpolation word quotes](https://rakudocs.github.io/language/quoting#Word_quoting_with_interpolation_and_quote_protection%3A_qqww), [hyper operators](https://rakudocs.github.io/language/operators#Hyper_operators) and as an angle bracket alternative in POD6.
 
 | symbol | unicode code point | ascii equivalent |
 | ------ | ------------------ | ---------------- |
@@ -293,9 +293,9 @@ say «$baa $baa ber».perl;  # OUTPUT: «("foo", "bar", "foo", "bar", "ber")␤�
 <a id="setbag-%E6%93%8D%E4%BD%9C%E7%AC%A6--setbag-operators"></a>
 ## set/bag 操作符 / Set/bag operators
 
-[set/bag 操作符](https://docs.perl6.org/language/setbagmix#Set%252FBag_operators)都设置了与集合论相关的符号，下面列出了 Unicode 代码点及其 ASCII 等价物。要输入这样一个字符，只需输入组合字符（例如，Vim 中的 `Ctrl-V u`；Bash 中的 `Ctrl-Shift-u`），然后输入十六进制的 Unicode 代码点。
+[set/bag 操作符](https://rakudocs.github.io/language/setbagmix#Set%252FBag_operators)都设置了与集合论相关的符号，下面列出了 Unicode 代码点及其 ASCII 等价物。要输入这样一个字符，只需输入组合字符（例如，Vim 中的 `Ctrl-V u`；Bash 中的 `Ctrl-Shift-u`），然后输入十六进制的 Unicode 代码点。
 
-The [set/bag operators](https://docs.perl6.org/language/setbagmix#Set%252FBag_operators) all have set-theory-related symbols, the unicode code points and their ascii equivalents are listed below. To compose such a character, it is merely necessary to enter the character composition chord (e.g. `Ctrl-V u` in Vim; `Ctrl-Shift-u` in Bash) then the unicode code point hexadecimal number.
+The [set/bag operators](https://rakudocs.github.io/language/setbagmix#Set%252FBag_operators) all have set-theory-related symbols, the unicode code points and their ascii equivalents are listed below. To compose such a character, it is merely necessary to enter the character composition chord (e.g. `Ctrl-V u` in Vim; `Ctrl-Shift-u` in Bash) then the unicode code point hexadecimal number.
 
 | operator | unicode code point | ascii equivalent |
 | -------- | ------------------ | ---------------- |
