@@ -72,7 +72,7 @@ A CATCH phaser is declared in lines 11 to 15. Its main mission is to distinguish
 
 We use [Instant](https://rakudocs.github.io/type/Instant)s in lines 16-17 to represent the moment in which the files where accessed and modified. An Instant is measured in atomic seconds, and is a very low-level description of a time event; however, the [Duration](https://rakudocs.github.io/type/Duration) declared in line 18 represent the time transcurred among two different `Instant`s, and we will be using it to represent the age.
 
-对于某些变量，我们可以用 *dateish* 特征来处理它们。`$time-of-day` 是文件更改那天的时间；`changed` 方法返回一个 Instant 对象，但它被转换为日期（即 `Dateish` 而非 `Instant`），然后从中提取时间。`$time-of-day` 将有 `«Str+{Dateish}␤» ` 类型。
+对于某些变量，我们可以用 *dateish* 特性来处理它们。`$time-of-day` 是文件更改那天的时间；`changed` 方法返回一个 Instant 对象，但它被转换为日期（即 `Dateish` 而非 `Instant`），然后从中提取时间。`$time-of-day` 将有 `«Str+{Dateish}␤» ` 类型。
 
 For some variables we might be interested in dealing with them with some *dateish* traits. `$time-of-day` contains the time of the day the file was changed; `changed` will return an Instant, but it is converted into a Date (which is `Dateish` while `Instant` is not) and then the time of day is extracted from that. `$time-of-day` will have `«Str+{Dateish}␤» `type.
 

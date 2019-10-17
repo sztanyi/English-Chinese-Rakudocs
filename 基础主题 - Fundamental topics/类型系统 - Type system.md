@@ -43,15 +43,15 @@ Introduction to the type system of Raku
         - [作为类型约束 / As type constraints](#%E4%BD%9C%E4%B8%BA%E7%B1%BB%E5%9E%8B%E7%BA%A6%E6%9D%9F--as-type-constraints)
         - [版本控制和作者 / Versioning and authorship](#%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%E5%92%8C%E4%BD%9C%E8%80%85--versioning-and-authorship-1)
     - [`enum`](#enum)
-        - [Metaclass](#metaclass)
-        - [Methods](#methods)
-            - [method enums](#method-enums)
-        - [Coercion](#coercion)
+        - [元类 / Metaclass](#%E5%85%83%E7%B1%BB--metaclass-1)
+        - [方法 / Methods](#%E6%96%B9%E6%B3%95--methods-1)
+            - [enums 方法 / method enums](#enums-%E6%96%B9%E6%B3%95--method-enums)
+        - [强制类型转换 / Coercion](#%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2--coercion-1)
     - [`module`](#module)
-        - [Versioning and authorship](#versioning-and-authorship)
+        - [版本控制和作者 / Versioning and authorship](#%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%E5%92%8C%E4%BD%9C%E8%80%85--versioning-and-authorship-2)
     - [`package`](#package)
     - [`grammar`](#grammar)
-        - [Versioning and authorship](#versioning-and-authorship-1)
+        - [版本控制和作者 / Versioning and authorship](#%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%E5%92%8C%E4%BD%9C%E8%80%85--versioning-and-authorship-3)
     - [`subset`](#subset)
 
 <!-- /MarkdownTOC -->
@@ -938,6 +938,8 @@ say one.^name; # OUTPUT: «␤»
 say $e.^name;  # OUTPUT: «Map␤»
 ```
 
+有各种方法可以访问已定义的符号的键和值。所有这些都会将值转换为 `Str`，这可能不令人满意。通过将枚举看作一个包，我们可以得到键的类型列表。
+
 There are various methods to get access to the keys and values of the symbols that have been defined. All of them turn the values into `Str`, which may not be desirable. By treating the enum as a package, we can get a list of types for the keys.
 
 ```Raku
@@ -947,13 +949,19 @@ say @keys.map: *.enums;
 # OUTPUT: «(Map.new((one => 0, two => 1)) Map.new((one => 0, two => 1)))␤»
 ```
 
+使用 **()** 括号，可以使用任意动态定义的列表定义枚举。列表应该包含 Pair 对象：
+
 With the use of **()** parentheses, an enum can be defined using any arbitrary dynamically defined list. The list should consist of Pair objects:
+
+例如，`config` 文件内容为：
 
 For example, in file `config` we have:
 
 ```Raku
 a 1 b 2
 ```
+
+我们可以使用下面的代码以及配置文件创建一个枚举：
 
 We can create an enum using it with this code:
 
@@ -962,10 +970,14 @@ We can create an enum using it with this code:
     say ConfigValues.enums;          # OUTPUT: «Map.new((a => 1, b => 2))␤»
 ```
 
+首先，我们从 `config` 文件中读取行，使用 `words` 方法拆分每一行，并为每一行返回结果对，从而创建键值对列表。
+
 Firstly, we read lines from `config` file, split every line using `words` method and return resulting pair for every line, thus creating a List of Pairs.
 
-<a id="metaclass"></a>
-### Metaclass
+<a id="%E5%85%83%E7%B1%BB--metaclass-1"></a>
+### 元类 / Metaclass
+
+若要测试给定类型对象是否为 `enum`，请用元对象方法 `.HOW` 正则匹配 [Metamodel::EnumHOW](https://rakudocs.github.io/type/Metamodel::EnumHOW) 或简单地正则匹配 `Enumeration` 角色。
 
 To test if a given type object is an `enum`, test the metaobject method `.HOW` against [Metamodel::EnumHOW](https://rakudocs.github.io/type/Metamodel::EnumHOW) or simply test against the `Enumeration` role.
 
@@ -975,17 +987,21 @@ say E.HOW ~~ Metamodel::EnumHOW; # OUTPUT: «True␤»
 say E ~~ Enumeration;            # OUTPUT: «True␤»
 ```
 
-<a id="methods"></a>
-### Methods
+<a id="%E6%96%B9%E6%B3%95--methods-1"></a>
+### 方法 / Methods
 
-<a id="method-enums"></a>
-#### method enums
+<a id="enums-%E6%96%B9%E6%B3%95--method-enums"></a>
+#### enums 方法 / method enums
+
+定义为：
 
 Defined as:
 
 ```Raku
 method enums()
 ```
+
+返回枚举对的列表。
 
 Returns the list of enum-pairs.
 
@@ -994,8 +1010,10 @@ enum Mass ( mg => 1/1000, g => 1/1, kg => 1000/1 );
 say Mass.enums; # OUTPUT: «{g => 1, kg => 1000, mg => 0.001}␤»
 ```
 
-<a id="coercion"></a>
-### Coercion
+<a id="%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2--coercion-1"></a>
+### 强制类型转换 / Coercion
+
+如果要将枚举元素的值强制类型转换到其适当的枚举对象，请使用具有枚举名称的强制类型转换器：
 
 If you want to coerce the value of an enum element to its proper enum object, use the coercer with the name of the enum:
 
@@ -1005,17 +1023,25 @@ A(72).pair.say;   # OUTPUT: «mon => 72␤»
 A(1000).say; # OUTPUT: «(A)␤»
 ```
 
+最后一个例子显示了如果没有包含作为值的枚举对会发生什么情况。
+
 The last example shows what happens if there is no enum-pair that includes that as a value.
 
 <a id="module"></a>
 ## `module`
 
+模块通常是公开 Raku 构造的一个或多个源文件，例如类、角色、语法、子例程和变量。模块通常用于将 Raku 核心代码作为库分发，这些库可以在另一个 Raku 程序中使用。
+
 Modules are usually one or more source files that expose Raku constructs, such as classes, roles, grammars, subroutines and variables. Modules are usually used for distributing Raku code as libraries which can be used in another Raku program.
+
+有关详细说明，请参见 [Modules](https://rakudocs.github.io/language/modules)。
 
 For a full explanation see [Modules](https://rakudocs.github.io/language/modules).
 
-<a id="versioning-and-authorship"></a>
-### Versioning and authorship
+<a id="%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%E5%92%8C%E4%BD%9C%E8%80%85--versioning-and-authorship-2"></a>
+### 版本控制和作者 / Versioning and authorship
+
+版本控制和作者可以通过副词 `:ver<>` 和 `:auth<>` 指定。两者都使用一个字符串作为参数，因为 `:ver` 字符串被转换为一个 [Version](https://rakudocs.github.io/type/Version) 对象。若要查询类的版本和作者使用 `.^ver` 和 `^.auth`。
 
 Versioning and authorship can be applied via the adverbs `:ver<>` and `:auth<>`. Both take a string as argument, for `:ver` the string is converted to a [Version](https://rakudocs.github.io/type/Version) object. To query a modules version and author use `.^ver` and `^.auth`.
 
@@ -1028,19 +1054,29 @@ say [M.^ver, M.^auth];
 <a id="package"></a>
 ## `package`
 
+包是命名程序元素的嵌套命名空间。模块、类和语法都是包的类型。
+
 Packages are nested namespaces of named program elements. Modules, classes and grammars are all types of package.
+
+有关详细说明，请参见 [Packages](https://rakudocs.github.io/language/packages)。
 
 For a full explanation see [Packages](https://rakudocs.github.io/language/packages).
 
 <a id="grammar"></a>
 ## `grammar`
 
+grammar 是一种特定类型的类，用于解析文本。grammar 由规则、标记和正则表达式组成，它们实际上是方法，因为 grammar 是类。
+
 Grammars are a specific type of class intended for parsing text. Grammars are composed of rules, tokens and regexes which are actually methods, since grammars are classes.
+
+有关详细说明，请参见 [Grammar](https://rakudocs.github.io/language/grammars)。
 
 For a full explanation see [Grammars](https://rakudocs.github.io/language/grammars).
 
-<a id="versioning-and-authorship-1"></a>
-### Versioning and authorship
+<a id="%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%E5%92%8C%E4%BD%9C%E8%80%85--versioning-and-authorship-3"></a>
+### 版本控制和作者 / Versioning and authorship
+
+版本控制和作者可以通过副词 `:ver<>` 和 `:auth<>` 指定。两者都使用一个字符串作为参数，因为 `:ver` 字符串被转换为一个 [Version](https://rakudocs.github.io/type/Version) 对象。若要查询类的版本和作者使用 `.^ver` 和 `^.auth`。
 
 Versioning and authorship can be applied via the adverbs `:ver<>` and `:auth<>`. Both take a string as argument, for `:ver` the string is converted to a [Version](https://rakudocs.github.io/type/Version) object. To query a grammars version and author use `.^ver` and `^.auth`.
 
@@ -1053,6 +1089,8 @@ say [G.^ver, G.^auth];
 <a id="subset"></a>
 ## `subset`
 
+一个 `subset` 声明一个新类型，它将重新分派到它的基类型。如果提供了一个 [`where`](https://rakudocs.github.io/type/Signature#where) 子句，则将根据给定的代码对象检查任何赋值。
+
 A `subset` declares a new type that will re-dispatch to its base type. If a [`where`](https://rakudocs.github.io/type/Signature#where) clause is supplied any assignment will be checked against the given code object.
 
 ```Raku
@@ -1063,6 +1101,8 @@ CATCH { default { put .^name,': ', .Str } }
 # OUTPUT: «X::TypeCheck::Assignment: Type check failed in assignment to $i; expected Positive but got Int (-42)␤»
 ```
 
+subset 可用于函数签名，例如键入输出：
+
 Subsets can be used in signatures, e.g. by typing the output:
 
 ```Raku
@@ -1072,6 +1112,8 @@ sub a($a, $b, --> Foo) { $a, $b }
 a(1, "foo");  # passes
 a("foo", 1);  # fails
 ```
+
+subset 可以是匿名的，允许在需要子集但不需要或不想要名称的情况下进行内联放置。
 
 Subsets can be anonymous, allowing inline placements where a subset is required but a name is neither needed nor desirable.
 
@@ -1084,6 +1126,8 @@ sub g(@a where { .all ~~ subset :: where E1|E2 } ) {
 g([A, C]);
 # OUTPUT: «[A C]␤»
 ```
+
+subset 可以用于动态地检查类型，这可以与 [require](https://rakudocs.github.io/language/modules#require) 结合使用。
 
 Subsets can be used to check types dynamically, which can be useful in conjunction with [require](https://rakudocs.github.io/language/modules#require).
 
