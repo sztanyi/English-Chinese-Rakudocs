@@ -4364,7 +4364,7 @@ my @array = (1, 2, 3, 4, 5);
 @array.sum.say;               # OUTPUT: «15␤»
 ```
 
-优先级非常松散，因此您需要使用括号来分配结果，或者您甚至可以使用另一个 feed 运算符！如果例程/方法只接受一个参数，或者第一个参数是块，则通常需要用括号调用（尽管最后一个例程/方法不需要这样做）。
+优先级非常松散，因此你需要使用括号来分配结果，或者你甚至可以使用另一个 feed 运算符！如果例程/方法只接受一个参数，或者第一个参数是块，则通常需要用括号调用（尽管最后一个例程/方法不需要这样做）。
 
 The precedence is very loose so you will need to use parentheses to assign the result or you can even just use another feed operator! In the case of routines/methods that take a single argument or where the first argument is a block, it's often required that you call with parentheses (though this is not required for the very last routine/method).
 
@@ -4432,7 +4432,7 @@ my @result;
     ==> @result;
 ```
 
-feed 运算符允许您根据例程和不相关数据的方法的结果构造方法链模式。在方法链中，您仅限于数据上可用的方法或先前方法调用的结果。有了 feed 运算符，这个限制就没有了。所得到的代码也可以比多行中断的一系列方法调用更可读。
+feed 运算符允许你根据例程和不相关数据的方法的结果构造方法链模式。在方法链中，你仅限于数据上可用的方法或先前方法调用的结果。有了 feed 运算符，这个限制就没有了。所得到的代码也可以比多行中断的一系列方法调用更可读。
 
 The feed operator lets you construct method-chaining-like patterns out of routines and the results of methods on unrelated data. In method-chaining, you are restricted to the methods available on the data or the result of previous method call. With feed operators, that restriction is gone. The resulting code could also be seen to be more readable than a series of method calls broken over multiple lines.
 
@@ -4479,7 +4479,7 @@ my @result
     <== <people of earth>;
 ```
 
-与向右 feed 操作符不同，其结果与方法链不密切相关。但是，与上面的传统结构（每个参数用一行分隔）相比，生成的代码比逗号更具示范性。左向 feed 操作符还允许您“闯入”语句并捕获中间结果，这对于调试或获取该结果并在最终结果上创建另一个变体非常有用。
+与向右 feed 操作符不同，其结果与方法链不密切相关。但是，与上面的传统结构（每个参数用一行分隔）相比，生成的代码比逗号更具示范性。左向 feed 操作符还允许你“闯入”语句并捕获中间结果，这对于调试或获取该结果并在最终结果上创建另一个变体非常有用。
 
 Unlike the rightward feed operator, the result is not closely mappable to method-chaining. However, compared to the traditional structure above where each argument is separated by a line, the resulting code is more demonstrative than commas. The leftward feed operator also allows you to "break into" the statement and capture an intermediary result which can be extremely useful for debugging or to take that result and create another variation on the final result.
 

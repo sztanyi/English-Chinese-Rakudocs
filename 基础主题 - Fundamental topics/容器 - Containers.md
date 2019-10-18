@@ -246,7 +246,7 @@ say (1, 2, 3).^name;    # OUTPUT: «List
 » 
 ```
 
-列表是不可变的，这意味着您不能更改列表中的元素数。但是，如果其中一个元素恰好是一个标量容器，你仍然可以给它赋值：
+列表是不可变的，这意味着你不能更改列表中的元素数。但是，如果其中一个元素恰好是一个标量容器，你仍然可以给它赋值：
 
 A list is immutable, which means you cannot change the number of elements in a list. But if one of the elements happens to be a scalar container, you can still assign to it:
 
@@ -539,7 +539,7 @@ say $def;   # OUTPUT: «3
 $def = Int; # Typecheck failure 
 ```
 
-您还需要初始化声明中的变量，毕竟它不能是未定义的。
+你还需要初始化声明中的变量，毕竟它不能是未定义的。
 
 You'll also need to initialize the variable in the declaration, it can't be left undefined after all.
 

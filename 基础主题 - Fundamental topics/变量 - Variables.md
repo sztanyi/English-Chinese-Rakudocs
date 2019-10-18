@@ -511,7 +511,7 @@ The `=` twigil is used to access Pod variables. Every Pod block in the current
   =end code
 ```
 
-您可以通过 `$=pod` 访问包含所有 Pod 结构的 Pod 树作为分层数据结构
+你可以通过 `$=pod` 访问包含所有 Pod 结构的 Pod 树作为分层数据结构
 You may access the Pod tree which contains all Pod structures as a hierarchical data structure through `$=pod`.
 
 注意所有的 `$=someBlockName` 支持`位置`以及`关联`角色。
@@ -1012,7 +1012,7 @@ As with the other anonymous state variables, each mention of `%` within a give
 <a id="augment-%E5%A3%B0%E6%98%8E%E7%AC%A6"></a>
 ## `augment` 声明符
 
-使用 `augment`，你可以将属性和方法添加到现有的类和语法，只要您先激活 `MONKEY-TYPING` 指令即可。
+使用 `augment`，你可以将属性和方法添加到现有的类和语法，只要你先激活 `MONKEY-TYPING` 指令即可。
 
 With `augment`, you can add attributes and methods to existing classes and grammars, provided you activated the `MONKEY-TYPING`pragma first.
 
@@ -1800,7 +1800,7 @@ It is helpful to know our naming conventions in order to understand what codes d
 - 内置库中的函数和方法在找到一个好的单词时，会尝试使用单个单词名。如果一个名称由两个或多个单词组成，则用“-”分隔。
 - 符合词被当作一个词来处理，如 `substr`、`subbuf` 和 `deepmap`（就像我们用英语写 "starfish"，而不是 "star fish"）。
 - 在特殊时间自动为你调用的函数和方法都是大写的。这包括 `MAIN` 函数、`AT-POS` 和实现容器类型的相关方法，以及 `BUILD` 和 `DESTROY`。
-- 类型名采用驼峰法，除了本地类型（小写）。对于例外情况，您可以通过以下方式记住它：它们以更紧凑的方式存储，因此它们的名称看起来也更小。
+- 类型名采用驼峰法，除了本地类型（小写）。对于例外情况，你可以通过以下方式记住它：它们以更紧凑的方式存储，因此它们的名称看起来也更小。
 - 内置的动态作用域变量和编译时变量总是大写的，例如 `$*out`，`$?FILE`。
 - 来自 MOP(元对象协议) 和其他内部的方法使用 "_" 来分隔多个单词，例如 `add_method`。
 

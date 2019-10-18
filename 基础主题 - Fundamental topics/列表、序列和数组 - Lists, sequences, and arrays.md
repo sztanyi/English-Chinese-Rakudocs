@@ -785,7 +785,7 @@ First, be aware that because itemization in Arrays is assumed, it essentially me
 
 It was decided all those extra dollar signs and parentheses were more of an eye sore than a benefit to the user. Basically, when you see a square bracket, remember the invisible dollar signs.
 
-第二，记住这些看不见的美元符号也可以防止展平，所以您不能通过对 `flat` 或 `.flat` 的正常调用真正展平数组中的元素。
+第二，记住这些看不见的美元符号也可以防止展平，所以你不能通过对 `flat` 或 `.flat` 的正常调用真正展平数组中的元素。
 
 Second, remember that these invisible dollar signs also protect against flattening, so you cannot really flatten the elements inside of an Array with a normal call to `flat` or `.flat`.
 

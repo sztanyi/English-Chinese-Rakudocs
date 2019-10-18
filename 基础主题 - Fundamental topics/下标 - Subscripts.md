@@ -445,7 +445,7 @@ say @toomany[*;*];
 # OUTPUT: «(a b 1 2)␤»
 ```
 
-您可以根据需要使用任意多个*展平分号*；最多会有任意多个嵌套级别展平分号：
+你可以根据需要使用任意多个*展平分号*；最多会有任意多个嵌套级别展平分号：
 
 You can use as many *flattening semicolons* as you want; there will be, at most, as many nesting levels flattened as the number of semicolons:
 
@@ -458,7 +458,7 @@ say [[1,2,[3,4]],[4,5]][*;*;*;*]; # OUTPUT: «(1 2 3 4 4 5)␤»
 
 In the first example, with one `Whatever` less than the number of levels, the deepest one will not be flattened; in the second case it is, since it's greater than the number of levels.
 
-您可以使用 [Whatever](https://rakudocs.github.io/type/Whatever) 在多维下标中选择范围或“行”。
+你可以使用 [Whatever](https://rakudocs.github.io/type/Whatever) 在多维下标中选择范围或“行”。
 
 You can use [Whatever](https://rakudocs.github.io/type/Whatever) to select ranges or "rows" in multidimensional subscripts.
 
@@ -477,7 +477,7 @@ say @a.sort( { $_[1] } ); # sort by 2nd column
 <a id="%E8%87%AA%E5%8A%A8%E7%94%9F%E5%8A%A8%E5%8C%96--autovivification"></a>
 # 自动生动化 / Autovivification
 
-下标参与“自动生动化”，即数组和散列在需要时自动出现的过程，这样您就可以构建嵌套的数据结构，而不必在每个级别预先声明集合类型：
+下标参与“自动生动化”，即数组和散列在需要时自动出现的过程，这样你就可以构建嵌套的数据结构，而不必在每个级别预先声明集合类型：
 
 Subscripts participate in "autovivification", i.e. the process by which arrays and hashes automatically spring into existence when needed, so that you can build nested data structures without having to pre-declare the collection type at each level:
 
@@ -553,7 +553,7 @@ See [method BIND-POS](https://rakudocs.github.io/language/subscripts#method_BIND
 
 The return value and possible side-effect of a subscripting operation can be controlled using adverbs; these are defined on the relevant subscript [operators](https://rakudocs.github.io/language/operators#Method_postfix_precedence).
 
-注意运算符副词的相对松散的优先级，这可能要求您在复合表达式中添加括号：
+注意运算符副词的相对松散的优先级，这可能要求你在复合表达式中添加括号：
 
 Beware of the relatively loose precedence of operator adverbs, which may require you to add parentheses in compound expressions:
 
@@ -657,7 +657,7 @@ say @a[1]:exists;
 # OUTPUT: «1␤(Any)␤3␤»
 ```
 
-副词的否定形式实际上并没有删除这个成分。这意味着您可以传递标志以使其成为条件：
+副词的否定形式实际上并没有删除这个成分。这意味着你可以传递标志以使其成为条件：
 
 With the negated form of the adverb, the element is not actually deleted. This means you can pass a flag to make it conditional:
 
@@ -813,11 +813,11 @@ See also the [values](https://rakudocs.github.io/routine/values) routine.
 <a id="%E8%87%AA%E5%AE%9A%E4%B9%89%E7%B1%BB%E5%9E%8B--custom-types"></a>
 # 自定义类型 / Custom types
 
-本页描述的下标接口并不是 Raku 内置集合类型的专有接口，您可以（而且应该）将它们用于任何希望通过索引或键访问数据的自定义类型。
+本页描述的下标接口并不是 Raku 内置集合类型的专有接口，你可以（而且应该）将它们用于任何希望通过索引或键访问数据的自定义类型。
 
 The subscripting interfaces described on this page are not meant to be exclusive to Raku's built-in collection types - you can (and should) reuse them for any custom type that wants to provide access to data by index or key.
 
-您不必手动重载[后环缀运算符 `[ ]`](https://rakudocs.github.io/routine/[%20]#postcircumfix_[_]) 和[后环缀运算符 `{ }`]（https://rakudocs.github.io/routine/%7b%20%7d{postcircumfix{}）运算符并重新实现它们的所有魔力，要实现这一点，您可以依赖于它们的标准实现分派给一组定义良好的底层方法。例如：
+你不必手动重载[后环缀运算符 `[ ]`](https://rakudocs.github.io/routine/[%20]#postcircumfix_[_]) 和[后环缀运算符 `{ }`]（https://rakudocs.github.io/routine/%7b%20%7d{postcircumfix{}）运算符并重新实现它们的所有魔力，要实现这一点，你可以依赖于它们的标准实现分派给一组定义良好的底层方法。例如：
 
 You don't have to manually overload the [`postcircumfix [ ]`](https://rakudocs.github.io/routine/[%20]#postcircumfix_[_]) and [`postcircumfix { }`](https://rakudocs.github.io/routine/%7B%20%7D#postcircumfix_{_}) operators and re-implement all their magic, to achieve that - instead, you can rely on the fact that their standard implementation dispatches to a well-defined set of low-level methods behind the scenes. For example:
 
@@ -828,11 +828,11 @@ You don't have to manually overload the [`postcircumfix [ ]`](https://rakudocs.g
 | @foo[3, 4, 5]   | @foo.AT-POS(3), @foo.AT-POS(4), @foo.AT-POS(5) |
 | @foo[*-1]       | @foo.AT-POS(@foo.elems - 1)                    |
 
-因此，为了使下标正常工作，您只需要实现或委托自定义类型的那些低级方法[下面详细介绍](https://rakudocs.github.io/language/subscripts#Methods_to_implement_for_positional_subscripting)。
+因此，为了使下标正常工作，你只需要实现或委托自定义类型的那些低级方法[下面详细介绍](https://rakudocs.github.io/language/subscripts#Methods_to_implement_for_positional_subscripting)。
 
 So in order to make subscripting work, you only have to implement or delegate those low-level methods ([detailed below](https://rakudocs.github.io/language/subscripts#Methods_to_implement_for_positional_subscripting)) for your custom type.
 
-如果这样做了，还应该让您的类型分别组成 [`Positional`](https://rakudocs.github.io/type/Positional) 或 [`Associative`](https://rakudocs.github.io/type/Associative) 角色。这本身并没有添加任何功能，但是声明（并且可以用于检查）类型实现了相应的订阅接口。
+如果这样做了，还应该让你的类型分别组成 [`Positional`](https://rakudocs.github.io/type/Positional) 或 [`Associative`](https://rakudocs.github.io/type/Associative) 角色。这本身并没有添加任何功能，但是声明（并且可以用于检查）类型实现了相应的订阅接口。
 
 If you do, you should also let your type compose the [`Positional`](https://rakudocs.github.io/type/Positional) or [`Associative`](https://rakudocs.github.io/type/Associative) role, respectively. This doesn't add any functionality per se, but announces (and may be used to check) that the type implements the corresponding subscripting interface.
 
@@ -917,7 +917,7 @@ Note that declaring the method as `multi` and restricting it to `:D` (defined in
 <a id="%E5%AE%9E%E7%8E%B0%E4%BD%8D%E7%BD%AE%E4%B8%8B%E6%A0%87%E7%9A%84%E6%96%B9%E6%B3%95--methods-to-implement-for-positional-subscripting"></a>
 ## 实现位置下标的方法 / Methods to implement for positional subscripting
 
-为了使通过[后环缀运算符 `[ ]`](https://rakudocs.github.io/routine/[%20]#postcircumfix_[_]) 进行的基于索引的下标能够适用于您的自定义类型，您应该至少实现 `elems`、`AT-POS` 和 `EXISTS-POS`-以及下面详细描述的可选的其他类型。
+为了使通过[后环缀运算符 `[ ]`](https://rakudocs.github.io/routine/[%20]#postcircumfix_[_]) 进行的基于索引的下标能够适用于你的自定义类型，你应该至少实现 `elems`、`AT-POS` 和 `EXISTS-POS`-以及下面详细描述的可选的其他类型。
 
 In order to make index-based subscripting via [`postcircumfix [ ]`](https://rakudocs.github.io/routine/[%20]#postcircumfix_[_]) work for your custom type, you should implement at least `elems`, `AT-POS` and `EXISTS-POS` - and optionally others as detailed below.
 
@@ -932,7 +932,7 @@ multi method elems(::?CLASS:D:)
 
 Expected to return a number indicating how many subscriptable elements there are in the object. May be called by users directly, and is also called by [`postcircumfix [ \]`](https://rakudocs.github.io/routine/[%20]#postcircumfix_[_]) when indexing elements from the end, as in `@foo[*-1]`.
 
-如果未实现，则您的类型将从 `Any` 继承默认实现，该 `Any` 始终为已定义的调用者返回 `1`，这很可能不是您想要的。因此，如果不能根据位置类型知道元素的数量，则添加一个 [fail](https://rakudocs.github.io/routine/fail) 或者 [die](https://rakudocs.github.io/routine/die) 实现，以避免默默地做错误的事情。
+如果未实现，则你的类型将从 `Any` 继承默认实现，该 `Any` 始终为已定义的调用者返回 `1`，这很可能不是你想要的。因此，如果不能根据位置类型知道元素的数量，则添加一个 [fail](https://rakudocs.github.io/routine/fail) 或者 [die](https://rakudocs.github.io/routine/die) 实现，以避免默默地做错误的事情。
 
 If not implemented, your type will inherit the default implementation from `Any` that always returns `1` for defined invocants - which is most likely not what you want. So if the number of elements cannot be known for your positional type, add an implementation that [fail](https://rakudocs.github.io/routine/fail)s or [die](https://rakudocs.github.io/routine/die)s, to avoid silently doing the wrong thing.
 
@@ -947,7 +947,7 @@ multi method AT-POS (::?CLASS:D: $index)
 
 Expected to return the element at position `$index`. This is what [`postcircumfix [ ]`](https://rakudocs.github.io/routine/[%20]#postcircumfix_[_]) normally calls.
 
-如果您希望元素是可变的（就像它们是内置的 [Array](https://rakudocs.github.io/type/Array) 类型，那么您必须确保以读取时计算为元素值的项容器的形式返回它，并在赋值时更新它。（请记住使用 `return-rw` 或 `is rw` 例程特性来实现此功能；请参见[示例](https://rakudocs.github.io/language/subscripts#Custom_type_example)。）
+如果你希望元素是可变的（就像它们是内置的 [Array](https://rakudocs.github.io/type/Array) 类型，那么你必须确保以读取时计算为元素值的项容器的形式返回它，并在赋值时更新它。（请记住使用 `return-rw` 或 `is rw` 例程特性来实现此功能；请参见[示例](https://rakudocs.github.io/language/subscripts#Custom_type_example)。）
 
 If you want an element to be mutable (like they are for the built-in [Array](https://rakudocs.github.io/type/Array) type), you'll have to make sure to return it in the form of an item container that evaluates to the element's value when read, and updates it when assigned to. (Remember to use `return-rw` or the `is rw` routine trait to make that work; see the [example](https://rakudocs.github.io/language/subscripts#Custom_type_example).)
 
@@ -962,11 +962,11 @@ multi method EXISTS-POS (::?CLASS:D: $index)
 
 Expected to return a Bool indicating whether or not there is an element at position `$index`. This is what [`postcircumfix [ ]`](https://rakudocs.github.io/routine/[%20]#postcircumfix_[_]) calls when invoked like `@foo[42]:exists`.
 
-元素的“存在”意味着什么，取决于您的类型。
+元素的“存在”意味着什么，取决于你的类型。
 
 What "existence" of an element means, is up to your type.
 
-如果您不实现这一点，您的类型将继承 `Any` 中的默认实现，它将返回索引 0 返回 True，并为任何其他索引返回 False - 这可能不是您想要的。因此，如果不能对您的类型进行元素存在性检查，那么添加一个会 [fail](https://rakudocs.github.io/routine/fail) 或 [die](https://rakudocs.github.io/routine/die) 的实现，以避免默默地做错误的事情。
+如果你不实现这一点，你的类型将继承 `Any` 中的默认实现，它将返回索引 0 返回 True，并为任何其他索引返回 False - 这可能不是你想要的。因此，如果不能对你的类型进行元素存在性检查，那么添加一个会 [fail](https://rakudocs.github.io/routine/fail) 或 [die](https://rakudocs.github.io/routine/die) 的实现，以避免默默地做错误的事情。
 
 If you don't implement this, your type will inherit the default implementation from `Any`, which returns True for 0 and False for any other index - which is probably not what you want. So if checking for element existence cannot be done for your type, add an implementation that [fail](https://rakudocs.github.io/routine/fail)s or [die](https://rakudocs.github.io/routine/die)s, to avoid silently doing the wrong thing.
 
@@ -981,7 +981,7 @@ multi method DELETE-POS (::?CLASS:D: $index)
 
 Expected to delete the element at position `$index`, and return the value it had. This is what [`postcircumfix [ ]`](https://rakudocs.github.io/routine/[%20]#postcircumfix_[_]) calls when invoked like `@foo[42]:delete`.
 
-元素的“删除”意味着什么，取决于您的类型。
+元素的“删除”意味着什么，取决于你的类型。
 
 What "deleting" an element means, is up to your type.
 
@@ -1015,7 +1015,7 @@ Note that implementing `ASSIGN-POS` does *not* relieve you from making `AT-POS` 
 multi method BIND-POS (::?CLASS:D: $index, \new)
 ```
 
-预期将值或容器 `new` 绑定到位置 `$index` 处的槽上，以替换任何自然在该位置找到的容器。这就是当您写这代码所调用的：
+预期将值或容器 `new` 绑定到位置 `$index` 处的槽上，以替换任何自然在该位置找到的容器。这就是当你写这代码所调用的：
 
 Expected to bind the value or container `new` to the slot at position `$index`, replacing any container that would be naturally found there. This is what is called when you write:
 
@@ -1035,7 +1035,7 @@ The generic [Array](https://rakudocs.github.io/type/Array) class supports this i
 method STORE (::?CLASS:D: \values, :$initialize)
 ```
 
-只有当您希望支持此语法时，才应提供此方法：
+只有当你希望支持此语法时，才应提供此方法：
 
 This method should only be supplied if you want to support this syntax:
 
@@ -1043,7 +1043,7 @@ This method should only be supplied if you want to support this syntax:
 my @a is Foo = 1,2,3;
 ```
 
-它用于绑定您的 `Positional` 角色的实现。
+它用于绑定你的 `Positional` 角色的实现。
 
 Which is used for binding your implementation of the `Positional` role.
 
@@ -1083,7 +1083,7 @@ This code takes into account the value of `$initialize`, which is set to `True` 
 <a id="%E5%AE%9E%E7%8E%B0%E5%85%B3%E8%81%94%E4%B8%8B%E6%A0%87%E7%9A%84%E6%96%B9%E6%B3%95--methods-to-implement-for-associative-subscripting"></a>
 ## 实现关联下标的方法 / Methods to implement for associative subscripting
 
-为了使基于键的下标通过[后环缀运算符 `{ }`](https://rakudocs.github.io/routine/%7B%20%7D#postcircumfix_{_}) 为您的自定义类型工作，您应该至少实现 `AT-KEY` 和 `EXISTS-KEY` - 和其他选项，详见下文。
+为了使基于键的下标通过[后环缀运算符 `{ }`](https://rakudocs.github.io/routine/%7B%20%7D#postcircumfix_{_}) 为你的自定义类型工作，你应该至少实现 `AT-KEY` 和 `EXISTS-KEY` - 和其他选项，详见下文。
 
 In order to make key-based subscripting via [`postcircumfix { }`](https://rakudocs.github.io/routine/%7B%20%7D#postcircumfix_{_}) work for your custom type, you should implement at least `AT-KEY` and `EXISTS-KEY` - and optionally others as detailed below.
 
@@ -1098,11 +1098,11 @@ multi method AT-KEY (::?CLASS:D: $key)
 
 Expected to return the element associated with `$key`. This is what [`postcircumfix { }`](https://rakudocs.github.io/routine/%7B%20%7D#postcircumfix_{_}) normally calls.
 
-如果您希望一个元素是可变的（就像内置的 [Hash](https://rakudocs.github.io/type/Hash) 类型)那样），您必须确保以条目容器的形式返回它，该容器在读取时计算元素的值，并在给它赋值时更新它。(请记住使用 `return-rw` 或 `is rw` 常规特征来实现该功能；请参见[示例](https://rakudocs.github.io/language/subscripts#Custom_type_example)。
+如果你希望一个元素是可变的（就像内置的 [Hash](https://rakudocs.github.io/type/Hash) 类型)那样），你必须确保以条目容器的形式返回它，该容器在读取时计算元素的值，并在给它赋值时更新它。(请记住使用 `return-rw` 或 `is rw` 常规特征来实现该功能；请参见[示例](https://rakudocs.github.io/language/subscripts#Custom_type_example)。
 
 If you want an element to be mutable (like they are for the built-in [Hash](https://rakudocs.github.io/type/Hash) type), you'll have to make sure to return it in the form of an item container that evaluates to the element's value when read, and updates it when assigned to. (Remember to use `return-rw` or the `is rw` routine trait to make that work; see the [example](https://rakudocs.github.io/language/subscripts#Custom_type_example).)
 
-另一方面，如果您希望您的集合是只读的，请直接返回非容器值。
+另一方面，如果你希望你的集合是只读的，请直接返回非容器值。
 
 On the other hand if you want your collection to be read-only, feel free to return non-container values directly.
 
@@ -1117,11 +1117,11 @@ multi method EXISTS-KEY (::?CLASS:D: $key)
 
 Expected to return a Bool indicating whether or not there is an element associated with `$key`. This is what [`postcircumfix { }`](https://rakudocs.github.io/routine/%7B%20%7D#postcircumfix_{_}) calls when invoked like `%foo<aa>:exists`.
 
-元素的“存在”意味着什么，取决于您的类型。
+元素的“存在”意味着什么，取决于你的类型。
 
 What "existence" of an element means, is up to your type.
 
-如果不实现这一点，类型将继承 `Any` 的默认实现，`Any` 总是返回 False - 这可能不是您想要的结果。因此，如果不能对您的类型进行元素存在性检查，那么添加一个会 [fail](https://rakudocs.github.io/routine/fail) 或 [die](https://rakudocs.github.io/routine/die) 的实现，以避免默默地做错误的事情。
+如果不实现这一点，类型将继承 `Any` 的默认实现，`Any` 总是返回 False - 这可能不是你想要的结果。因此，如果不能对你的类型进行元素存在性检查，那么添加一个会 [fail](https://rakudocs.github.io/routine/fail) 或 [die](https://rakudocs.github.io/routine/die) 的实现，以避免默默地做错误的事情。
 
 If you don't implement this, your type will inherit the default implementation from `Any`, which always returns False - which is probably not what you want. So if checking for element existence cannot be done for your type, add an implementation that [fail](https://rakudocs.github.io/routine/fail)s or [die](https://rakudocs.github.io/routine/die)s, to avoid silently doing the wrong thing.
 
@@ -1136,7 +1136,7 @@ multi method DELETE-KEY (::?CLASS:D: $key)
 
 Expected to delete the element associated with `$key`, and return the value it had. This is what [`postcircumfix { }`](https://rakudocs.github.io/routine/%7B%20%7D#postcircumfix_{_}) calls when invoked like `%foo<aa>:delete`.
 
-一个元素的“删除”意味着什么，取决于您的类型 - 尽管它通常应该导致 `EXISTS-KEY` 方法对那个键的返回值为 `False`。
+一个元素的“删除”意味着什么，取决于你的类型 - 尽管它通常应该导致 `EXISTS-KEY` 方法对那个键的返回值为 `False`。
 
 What "deleting" an element means, is up to your type - though it should usually cause `EXISTS-KEY` to become `False` for that key.
 
@@ -1170,7 +1170,7 @@ Note that implementing `ASSIGN-KEY` does *not* relieve you from making `AT-KEY` 
 multi method BIND-KEY (::?CLASS:D: $key, \new)
 ```
 
-预期将值或容器 `new` 绑定到与 `$key` 相关的槽上，以替换任何自然在该位置找到的容器。这就是当您写这代码所调用的：
+预期将值或容器 `new` 绑定到与 `$key` 相关的槽上，以替换任何自然在该位置找到的容器。这就是当你写这代码所调用的：
 
 Expected to bind the value or container `new` to the slot associated with `$key`, replacing any container that would be naturally found there. This is what is called when you write:
 
@@ -1190,7 +1190,7 @@ The generic [Hash](https://rakudocs.github.io/type/Hash) class supports this in 
 method STORE (::?CLASS:D: \values, :$initialize)
 ```
 
-只有当您希望支持以下内容时，才应提供此方法：
+只有当你希望支持以下内容时，才应提供此方法：
 
 This method should only be supplied if you want to support the:
 
@@ -1198,7 +1198,7 @@ This method should only be supplied if you want to support the:
 my %h is Foo = a => 42, b => 666;
 ```
 
-绑定您的 `Associative` 角色的实现的语法。
+绑定你的 `Associative` 角色的实现的语法。
 
 syntax for binding your implementation of the `Associative` role.
 

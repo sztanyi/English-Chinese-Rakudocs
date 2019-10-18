@@ -123,7 +123,7 @@ The following relative names are also reserved but may be used anywhere in a nam
 | PARENT  | Symbols in this package's parent package (or lexical scope) |
 | CLIENT  | The nearest CALLER that comes from a different package      |
 
-该文件的作用域称为 `UNIT`，但在与语言设置相对应的范围之外有一个或多个词法作用域（在其他文化中通常称为前奏）。因此，`SETTING` 范围相当于 `UNIT::OUTERS`。对于标准 Raku 程序，`SETTING` 与 `CORE` 相同，但各种启动选项（例如 `-n` 或 `-p`）可以将您放入特定于域的语言中，在这种情况下，`CORE` 仍然是标准语言的作用域，而 `SETTING` 则表示定义 DSL 的作用域，作为当前文件的设置  。当用作名称中间的搜索词时，`SETTING` 包括它的所有外部作用域，直至 `CORE`。要获取*仅*设置的最外层作用域，请使用 `UNIT::OUTER`。
+该文件的作用域称为 `UNIT`，但在与语言设置相对应的范围之外有一个或多个词法作用域（在其他文化中通常称为前奏）。因此，`SETTING` 范围相当于 `UNIT::OUTERS`。对于标准 Raku 程序，`SETTING` 与 `CORE` 相同，但各种启动选项（例如 `-n` 或 `-p`）可以将你放入特定于域的语言中，在这种情况下，`CORE` 仍然是标准语言的作用域，而 `SETTING` 则表示定义 DSL 的作用域，作为当前文件的设置  。当用作名称中间的搜索词时，`SETTING` 包括它的所有外部作用域，直至 `CORE`。要获取*仅*设置的最外层作用域，请使用 `UNIT::OUTER`。
 
 The file's scope is known as `UNIT`, but there are one or more lexical scopes outside of that corresponding to the linguistic setting (often known as the prelude in other cultures). Hence, the `SETTING` scope is equivalent to `UNIT::OUTERS`. For a standard Raku program `SETTING` is the same as `CORE`, but various startup options (such as `-n` or `-p`) can put you into a domain specific language, in which case `CORE` remains the scope of the standard language, while `SETTING` represents the scope defining the DSL that functions as the setting of the current file. When used as a search term in the middle of a name, `SETTING` includes all its outer scopes up to `CORE`. To get *only* the setting's outermost scope, use `UNIT::OUTER` instead.
 
@@ -133,7 +133,7 @@ The file's scope is known as `UNIT`, but there are one or more lexical scopes ou
 <a id="%E6%8F%92%E5%85%A5%E5%A7%93%E5%90%8D--interpolating-into-names"></a>
 ## 插入姓名 / Interpolating into names
 
-您可以使用 `::($expr)` 将字符串[插入](https://rakudocs.github.io/language/packages#Interpolating)到包或变量名中，在这里通常放置包或变量名。字符串允许包含 `::` 的其他实例，这将被解释为包嵌套。您只能内插全名，因为构造以 `::` 开头，或者直接结束，或者在括号外用另一个 `::` 继续。大多数符号引用都是用这个符号来完成的：
+你可以使用 `::($expr)` 将字符串[插入](https://rakudocs.github.io/language/packages#Interpolating)到包或变量名中，在这里通常放置包或变量名。字符串允许包含 `::` 的其他实例，这将被解释为包嵌套。你只能内插全名，因为构造以 `::` 开头，或者直接结束，或者在括号外用另一个 `::` 继续。大多数符号引用都是用这个符号来完成的：
 
 You may [interpolate](https://rakudocs.github.io/language/packages#Interpolating) a string into a package or variable name using `::($expr)` where you'd ordinarily put a package or variable name. The string is allowed to contain additional instances of `::`, which will be interpreted as package nesting. You may only interpolate entire names, since the construct starts with `::`, and either ends immediately or is continued with another `::` outside the parentheses. Most symbolic references are done with this notation:
 

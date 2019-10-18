@@ -97,7 +97,7 @@ This code is around 3x faster than the bare for. But there are a couple of cavea
 - There should be no read or write access to the same data structure inside the loop. Let the loop produce a result, and assign it.
 - If there's an I/O operation inside the loop, there might be some contention so please avoid it.
 
-`hyper` 和 `race` 的主要区别是结果的顺序。如果您需要按顺序生成循环结果，则使用 `hyper`，如果您不关心，则使用 `race`。
+`hyper` 和 `race` 的主要区别是结果的顺序。如果你需要按顺序生成循环结果，则使用 `hyper`，如果你不关心，则使用 `race`。
 
 Main difference between `hyper` and `race` is the ordering of results. Use `hyper` if you need the loop results to be produced in order, `race` if you don't care.
 

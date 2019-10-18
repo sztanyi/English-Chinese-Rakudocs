@@ -67,7 +67,7 @@ say $var;            # OUTPUT: «14.1␤»
 <a id="%E7%A9%BA%E7%99%BD%E5%AD%97%E7%AC%A6--whitespace-characters"></a>
 # 空白字符 / Whitespace characters
 
-除了空格和制表符外，您还可以使用任何具有 `Zs`（分隔符，空格）、`Zl`（分隔符，行）或 `Zp`（分隔符，段落）属性的 Unicode 空白字符。
+除了空格和制表符外，你还可以使用任何具有 `Zs`（分隔符，空格）、`Zl`（分隔符，行）或 `Zp`（分隔符，段落）属性的 Unicode 空白字符。
 
 Besides spaces and tabs you can use any other unicode whitespace character that has the `Zs` (Separator, space), `Zl` (Separator, line), or `Zp` (Separator, paragraph) property.
 

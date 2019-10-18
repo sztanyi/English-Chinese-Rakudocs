@@ -369,7 +369,7 @@ Above we were reifying a [Seq](https://rakudocs.github.io/type/Seq) we created w
 say sum 1 .. 9_999_999_999_999; # OUTPUT: «49999999999995000000000000␤» 
 ```
 
-为什么？因为求和可以计算而*不需要*重新定义范围；也就是说，不需要计算出它包含的所有元素。这就是这个特性存在的原因。您甚至可以使用 [`gather` 和 `take`](https://rakudocs.github.io/syntax/gather%20take) 让自己的东西按需具体化：
+为什么？因为求和可以计算而*不需要*重新定义范围；也就是说，不需要计算出它包含的所有元素。这就是这个特性存在的原因。你甚至可以使用 [`gather` 和 `take`](https://rakudocs.github.io/syntax/gather%20take) 让自己的东西按需具体化：
 
 Why? Because the sum can be calculated *without* reifying the Range; that is, without figuring out all the elements it contains. This is why this feature exists. You can even make your own things reify-on-demand, using [`gather` and `take`](https://rakudocs.github.io/syntax/gather%20take):
 

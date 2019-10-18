@@ -565,7 +565,7 @@ A `for` may be used on lazy lists – it will only take elements from the list w
 for $*IN.lines -> $line { .say }
 ```
 
-迭代变量总是词法上的，所以你不需要用 `my` 。而且，它们是只读别名。如果您需要它们是可读写的，请使用 `<->` 而不是 `->` 。如果您需要在 `for` 循环中创建可读写的 `$_` 变量，请明确指明。
+迭代变量总是词法上的，所以你不需要用 `my` 。而且，它们是只读别名。如果你需要它们是可读写的，请使用 `<->` 而不是 `->` 。如果你需要在 `for` 循环中创建可读写的 `$_` 变量，请明确指明。
 
 Iteration variables are always lexical, so you don't need to use `my` to give them the appropriate scope. Also, they are read-only aliases. If you need them to be read-write, use `<->` instead of `->`. If you need to make `$_` read-write in a for loop, do so explicitly.
 

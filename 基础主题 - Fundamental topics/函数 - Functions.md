@@ -476,7 +476,7 @@ The proto insists that all `multi congratulate` subs conform to the basic signat
 say &congratulate.signature # OUTPUT: «(Str $reason, Str $name, | is raw)␤» 
 ```
 
-您可以给 `proto` 一个函数体，并将 `{*}` 放在要完成分派的位置。
+你可以给 `proto` 一个函数体，并将 `{*}` 放在要完成分派的位置。
 
 You can give the `proto` a function body, and place the `{*}` where you want the dispatch to be done.
 
@@ -553,7 +553,7 @@ While the dispatch system described above provides a lot of flexibility, there a
 
 Perhaps the most important one of these conventions is the way slurpy list arguments are handled. Most of the time, functions will not automatically flatten slurpy lists. The rare exceptions are those functions that don't have a reasonable behavior on lists of lists (e.g., [chrs](https://rakudocs.github.io/routine/chrs)) or where there is a conflict with an established idiom (e.g., [pop](https://rakudocs.github.io/routine/pop) being the inverse of [push](https://rakudocs.github.io/routine/push)).
 
-如果您希望匹配这种外观和感觉，任何 [Iterable](https://rakudocs.github.io/type/Iterable) 参数都必须使用 `**@` 逐元素分解，这有两个细微差别：
+如果你希望匹配这种外观和感觉，任何 [Iterable](https://rakudocs.github.io/type/Iterable) 参数都必须使用 `**@` 逐元素分解，这有两个细微差别：
 
 If you wish to match this look and feel, any [Iterable](https://rakudocs.github.io/type/Iterable) argument must be broken out element-by-element using a `**@` slurpy, with two nuances:
 

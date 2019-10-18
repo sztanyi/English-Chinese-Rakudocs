@@ -14,7 +14,7 @@ Different operating systems use different characters, or combinations of them, t
 - 通过 say 附加到字符串的默认 [nl-out](https://rakudocs.github.io/routine/nl-out) 也是 `\n`。
 - 在输出时，在 Windows 上，编码器将默认地在文件、进程或终端（但在套接字上不会这样做）将 `\n` 转换为 `\r\n'。
 - 在输入端，在任何平台上，解码器默认将文件、进程或终端的 `\r\n` 输入规范化为 `\n`（同样，不适用于 socket）。
-- 以上两点合在一起意味着您可以-将编程套接字放在一边-期望永远不会看到程序内部的 `\r\n`（这也是许多其他语言中的工作方式）。
+- 以上两点合在一起意味着你可以-将编程套接字放在一边-期望永远不会看到程序内部的 `\r\n`（这也是许多其他语言中的工作方式）。
 - [`:$translate-nl`](https://rakudocs.github.io/type/Encoding#method_decoder) 命名参数存在于不同的地方，用于控制此转换，例如，在 [`Proc::Async.new`](https://rakudocs.github.io/type/Proc::Async#method_new) 和 [`Proc::Async.Supply`](https://rakudocs.github.io/type/Proc::Async#method_Supply) 中。
 - [regex](https://rakudocs.github.io/language/regexes) 语言中的 `\n` 是逻辑上的，将与 `\r\n` 匹配。
 

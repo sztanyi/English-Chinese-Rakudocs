@@ -296,7 +296,7 @@ class C {
 <a id="build-%E5%AD%90%E6%96%B9%E6%B3%95--submethod-build"></a>
 #### BUILD 子方法 / submethod BUILD
 
-[submethod](https://rakudocs.github.io/type/Submethod)  `BUILD` 被 [.bless](https://rakudocs.github.io/type/Mu#method_bless) 间接调用。它的目的是设置类的私有和公共属性，并接收传递给 `.bless` 的所有名称属性。在 `Mu` 中定义的默认构造函数 [.new](https://rakudocs.github.io/type/Mu#method_new) 是调用它的方法。鉴于 `BUILD` 中没有公共访问器方法，您必须使用私有属性表示法。
+[submethod](https://rakudocs.github.io/type/Submethod)  `BUILD` 被 [.bless](https://rakudocs.github.io/type/Mu#method_bless) 间接调用。它的目的是设置类的私有和公共属性，并接收传递给 `.bless` 的所有名称属性。在 `Mu` 中定义的默认构造函数 [.new](https://rakudocs.github.io/type/Mu#method_new) 是调用它的方法。鉴于 `BUILD` 中没有公共访问器方法，你必须使用私有属性表示法。
 
 The [submethod](https://rakudocs.github.io/type/Submethod) `BUILD` is (indirectly) called by [.bless](https://rakudocs.github.io/type/Mu#method_bless). It is meant to set private and public attributes of a class and receives all names attributes passed into `.bless`. The default constructor [.new](https://rakudocs.github.io/type/Mu#method_new) defined in `Mu` is the method that invokes it. Given that public accessor methods are not available in `BUILD`, you must use private attribute notation instead.
 
@@ -876,7 +876,7 @@ And you can use any kind of symbol:
 enum Suit <♣ ♦ ♥ ♠>;
 ```
 
-只要您使用完整的语法引用该符号：
+只要你使用完整的语法引用该符号：
 
 As long as you refer to that symbol using the full syntax:
 
