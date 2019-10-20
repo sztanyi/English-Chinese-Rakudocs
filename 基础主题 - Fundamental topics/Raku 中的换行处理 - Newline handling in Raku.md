@@ -12,11 +12,11 @@ Different operating systems use different characters, or combinations of them, t
 
 - `\n` 在字符串文字中表示 Unicode 码位 10。
 - 通过 say 附加到字符串的默认 [nl-out](https://rakudocs.github.io/routine/nl-out) 也是 `\n`。
-- 在输出时，在 Windows 上，编码器将默认地在文件、进程或终端（但在套接字上不会这样做）将 `\n` 转换为 `\r\n'。
-- 在输入端，在任何平台上，解码器默认将文件、进程或终端的 `\r\n` 输入规范化为 `\n`（同样，不适用于 socket）。
-- 以上两点合在一起意味着你可以-将编程套接字放在一边-期望永远不会看到程序内部的 `\r\n`（这也是许多其他语言中的工作方式）。
-- [`:$translate-nl`](https://rakudocs.github.io/type/Encoding#method_decoder) 命名参数存在于不同的地方，用于控制此转换，例如，在 [`Proc::Async.new`](https://rakudocs.github.io/type/Proc::Async#method_new) 和 [`Proc::Async.Supply`](https://rakudocs.github.io/type/Proc::Async#method_Supply) 中。
-- [regex](https://rakudocs.github.io/language/regexes) 语言中的 `\n` 是逻辑上的，将与 `\r\n` 匹配。
+- 在 Windows 上输出时，编码器将默认地在文件、进程或终端（但在套接字上不会这样做）将 `\n` 转换为 `\r\n`。
+- 在输入时，在任何平台上，解码器默认将文件、进程或终端的 `\r\n` 输入规范化为 `\n`（同样，不适用于 socket）。
+- 以上两点合在一起意味着你可以 - 套接字编程除外 - 期望永远不会看到程序内部的 `\r\n`（这也是许多其他语言中的工作方式）。
+- [`:$translate-nl`](https://rakudocs.github.io/type/Encoding#method_decoder) 命名参数存在于不同的地方用来控制此转换，例如，在 [`Proc::Async.new`](https://rakudocs.github.io/type/Proc::Async#method_new) 和 [`Proc::Async.Supply`](https://rakudocs.github.io/type/Proc::Async#method_Supply) 中。
+- [正则](https://rakudocs.github.io/language/regexes)语言中的 `\n` 是逻辑上的，将与 `\r\n` 匹配。
 
 - `\n` in a string literal means Unicode codepoint 10.
 - The default [nl-out](https://rakudocs.github.io/routine/nl-out) that is appended to a string by say is also `\n`.
@@ -36,7 +36,7 @@ $*OUT.say: 1;     #OUTPUT: «1␤»
 $crlf-out.say: 1; #OUTPUT: «1\␤␍»
 ```
 
-在本例中，我们使用 [IO::Special](https://rakudocs.github.io/type/IO::Special) 将标准输出复制到一个新句柄，我们将在字符串的末尾附加一个 `\'，后跟一个换行 `␤` 和一个回车 `␍`；我们打印到该句柄的所有内容都将得到这些字符如图所示，行尾的字符数。
+在本例中，我们使用 [IO::Special](https://rakudocs.github.io/type/IO::Special) 将标准输出复制到一个新句柄，我们将在字符串的末尾附加一个 `\`，后跟一个换行 `␤` 和一个回车 `␍`；我们打印到该句柄的所有内容都将在行末增加这些字符。
 
 In this example, where we are replicating standard output to a new handle by using [IO::Special](https://rakudocs.github.io/type/IO::Special), we are appending a `\` to the end of the string, followed by a newline `␤`and a carriage return `␍`; everything we print to that handle will get those characters at the end of the line, as shown.
 

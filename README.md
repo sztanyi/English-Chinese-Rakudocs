@@ -40,6 +40,7 @@ IT 类翻译文章往往中文太生硬，英文太难懂。何不对照看。
     - [换行处理 - Newline handling in Raku](https://github.com/sztanyi/English-Chinese-Rakudocs/blob/master/%E5%9F%BA%E7%A1%80%E4%B8%BB%E9%A2%98%20-%20Fundamental%20topics/Perl%206%20%E4%B8%AD%E7%9A%84%E6%8D%A2%E8%A1%8C%E5%A4%84%E7%90%86%20-%20Newline%20handling%20in%20Perl%206.md)
     - [函数 - Functions](https://github.com/sztanyi/English-Chinese-Rakudocs/blob/master/%E5%9F%BA%E7%A1%80%E4%B8%BB%E9%A2%98%20-%20Fundamental%20topics/%E5%87%BD%E6%95%B0%20-%20Functions.md)
     - [容器 - Containers](https://github.com/sztanyi/English-Chinese-Rakudocs/blob/master/%E5%9F%BA%E7%A1%80%E4%B8%BB%E9%A2%98%20-%20Fundamental%20topics/%E5%AE%B9%E5%99%A8%20-%20Containers.md)
+    - [性能 - Performance](https://github.com/sztanyi/English-Chinese-Rakudocs/blob/master/%E5%9F%BA%E7%A1%80%E4%B8%BB%E9%A2%98%20-%20Fundamental%20topics/%E6%80%A7%E8%83%BD%20-%20Performance.md)
     - [变量 - Variables](https://github.com/sztanyi/English-Chinese-Rakudocs/blob/master/%E5%9F%BA%E7%A1%80%E4%B8%BB%E9%A2%98%20-%20Fundamental%20topics/%E5%8F%98%E9%87%8F%20-%20Variables.md)
 - [起步 - At the beginning](https://github.com/sztanyi/English-Chinese-Rakudocs/tree/master/%E8%B5%B7%E6%AD%A5%20-%20At%20the%20beginning)
     - [Raku 的例子 - Raku by example](https://github.com/sztanyi/English-Chinese-Rakudocs/blob/master/%E8%B5%B7%E6%AD%A5%20-%20At%20the%20beginning/Perl%206%20%E7%9A%84%E4%BE%8B%E5%AD%90%20-%20Perl%206%20by%20example%20P6-101.md)

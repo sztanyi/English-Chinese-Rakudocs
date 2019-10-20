@@ -29,11 +29,11 @@ Some simple types in Raku have a *native* representation, indicating that they w
 | num  | Equivalent to Num                                            |
 | str  | Equivalent to Str                                            |
 
-但是，这些类型不一定具有 [NativeCall](https://rakudocs.github.io/language/nativecall) 接口所需的大小(例如，Raku 的 `int` 可以是 8 个字节，而 C 的 `int` 只有 4 个字节)；必须使用以下类型而不是上面列出的类型 `int` 或 `num`。
+但是，这些类型不一定具有 [NativeCall](https://rakudocs.github.io/language/nativecall) 接口所需的大小(例如，Raku 的 `int` 可以是 8 个字节，而 C 的 `int` 只有 4 个字节)；必须使用以下类型而不是上面列出的 `int` 或 `num` 类型。
 
 However, these types do not necessarily have the size that is required by the [NativeCall](https://rakudocs.github.io/language/nativecall) interface (e.g., Raku's `int` can be 8 bytes but C's `int` is only 4 bytes); the types below will have to be used instead of the types `int` or `num` listed above.
 
-通常，这些变量将以与常规标量变量相同的方式运行，在称为[*自动装箱*](https://rakudocs.github.io/language/numerics#Auto-boxing)的行为中；但是，存在一些差异，因为你实际上声明的是它们的表示方式，而不是它们的实际类型。第一个问题是，它们的类型实际上是它们的等效类型，而不是它们的原生类型。
+通常，这些变量将以与常规标量变量相同的方式运行，在称为[*自动装箱*](https://rakudocs.github.io/language/numerics#Auto-boxing)的行为中；但是，仍存在一些差异，因为你实际上声明的是它们的表示方式，而不是它们的实际类型。第一个问题是，它们的类型实际上是它们的等效类型，而不是它们的原生类型。
 
 In general, these variables will behave in the same way as regular scalar variables, in a behavior that is called [*auto-boxing*](https://rakudocs.github.io/language/numerics#Auto-boxing); however, there are some differences, since what you are actually declaring is how they will be represented, not their actual type. The first one is that their type will be actually their equivalent type, not their native type.
 
@@ -42,7 +42,7 @@ my int $intillo = 3;
 say $intillo.^name; # OUTPUT: «Int␤»
 ```
 
-这显然意味着它们将匹配它们的等效（自动装箱）类型，而不是它们的原生类型：
+这显然意味着它们将智能匹配它们的等效（自动装箱）类型，而不是它们的原生类型：
 
 This obviously means that they will smartmatch their equivalent (auto-boxed) type, not their native type:
 
@@ -66,7 +66,7 @@ say (my num $); # OUTPUT: «0␤»
 
 **Note**: In v6.c, the default value for `num` would have been a NaN.
 
-这是因为原生数据不知道他们的类型，因为他们只是值，没有任何元数据。在[多分派](https://rakudocs.github.io/language/glossary#Multi-Dispatch)中，你可以有一个原生候选人，但你不能区分相同本机类型的不同大小。也就是说，你可以有一个 [Int](https://rakudocs.github.io/type/Int) 和 [int](https://rakudocs.github.io/type/int) 候选人，但在 [int](https://rakudocs.github.io/type/int)、[atomicint](https://rakudocs.github.io/type/atomicint) 或 [int64](https://rakudocs.github.io/language/nativetypes#index-entry-int64) 之间可能存在歧义。
+这是因为原生数据不知道他们的类型，因为他们只是值，没有任何元数据。在[多分派](https://rakudocs.github.io/language/glossary#Multi-Dispatch)中，你可以有一个原生候选人，但你不能区分相同原生类型的不同大小。也就是说，你可以有一个 [Int](https://rakudocs.github.io/type/Int) 和 [int](https://rakudocs.github.io/type/int) 候选人，但在 [int](https://rakudocs.github.io/type/int)、[atomicint](https://rakudocs.github.io/type/atomicint) 或 [int64](https://rakudocs.github.io/language/nativetypes#index-entry-int64) 之间可能存在歧义。
 
 This is due to the fact that Natives don't know their types because they're just values, without any metadata. In [multi-dispatch](https://rakudocs.github.io/language/glossary#Multi-Dispatch), you can have a native candidate, but you cannot differentiate different sizes of the same native type. That is, you can have an [Int](https://rakudocs.github.io/type/Int) and [int](https://rakudocs.github.io/type/int) candidates, but there would be an ambiguity between, for instance [int](https://rakudocs.github.io/type/int), [atomicint](https://rakudocs.github.io/type/atomicint) or [int64](https://rakudocs.github.io/language/nativetypes#index-entry-int64) candidates.
 
@@ -91,7 +91,7 @@ In this case, *native*ness extends to the composite type, which will be `array`
 my num @many-pi  = ^8 »*» π ; say @many-pi.^name;  # OUTPUT: «array[num]␤»
 ```
 
-原生的 `array` 是 [Iterable](https://rakudocs.github.io/type/Iterable)，但它们不是 List 的子类。但是，它们的行为类似于[Array](https://rakudocs.github.io/type/Array)；例如，它们可以被塑造：
+原生的 `array` 为 [Iterable](https://rakudocs.github.io/type/Iterable)，但它们不是 List 的子类。但是，它们的行为类似于[Array](https://rakudocs.github.io/type/Array)；例如，它们可以被塑造：
 
 Native `array`s are [Iterable](https://rakudocs.github.io/type/Iterable), but they are not a subclass of List. However, they behave similarly to [Array](https://rakudocs.github.io/type/Array)s; for instance, they can be shaped:
 
@@ -129,7 +129,7 @@ my byte $intillo = 257;
 say $intillo; # OUTPUT: «1␤»
 ```
 
-由于 `byte` 只能容纳 8 位，所以它将*封装*并分配原始值模 256 的结果，这就是所示。
+由于 `byte` 只能容纳 8 位，所以它将*封装*并分配原始值模 256 的结果，如上所示。
 
 Since `byte` is able to hold only 8 bits, it will *wrap over* and assign the result of the original value modulo 256, which is what is shown.
 
@@ -158,7 +158,7 @@ my void $nothing;
 say $nothing.perl; # OUTPUT: «NativeCall::Types::void␤»
 ```
 
-实际上，这是一种本身很少能使用的 `Uninstantiable` 类型，事实上，它[在 `return` 类型中明确禁止](https://rakudocs.github.io/language/nativecall#Passing_and_returning_values)。但是，它通常在类型化指针中找到，表示相当于 C 中的 `void *` 指针。
+实际上，这是一种本身很少能使用的无法实例化的类型，事实上，它[在返回类型中明确禁止](https://rakudocs.github.io/language/nativecall#Passing_and_returning_values)。但是，它通常在类型化指针中找到，表示相当于 C 中的 `void *` 指针。
 
 In practice, it is an `Uninstantiable` type that can rarely be used by itself, and in fact it is [explicitly forbidden in `return` types](https://rakudocs.github.io/language/nativecall#Passing_and_returning_values). However, it is generally found in typed pointers representing the equivalent to the `void *` pointer in C.
 
@@ -168,7 +168,7 @@ my Pointer[void] $for-malloc = malloc( 32 );
 say $for-malloc.perl;
 ```
 
-你还可以 [nativecast](https://rakudocs.github.io/routine/nativecast) [Blob](https://rakudocs.github.io/type/Blob)指向这类指针，以防你需要在使用该类型的本地函数中使用它们。
+你还可以 [nativecast](https://rakudocs.github.io/routine/nativecast) [Blob](https://rakudocs.github.io/type/Blob) 类型为指向这种类型的指针，以防你需要在使用该类型的本地函数中使用它们。
 
 You can also [nativecast](https://rakudocs.github.io/routine/nativecast) [Blob](https://rakudocs.github.io/type/Blob)s to this kind of pointer in case you need to work with them in native functions that use the type
 
@@ -177,7 +177,7 @@ use NativeCall;
 my Pointer[void] $native = nativecast(Pointer[void], Blob.new(0x22, 0x33));
 ```
 
-但是，在此之外，它提供的功能非常有限，因为指向 void 的指针不能取消引用：
+但是，在此之外，它提供的功能非常有限，因为指向 void 的指针不能解引用：
 
 However, outside that, the functionality it offers is quite limited, since pointers to void cannot be dereferenced:
 
