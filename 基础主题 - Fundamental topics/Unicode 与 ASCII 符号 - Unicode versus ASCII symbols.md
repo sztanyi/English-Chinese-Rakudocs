@@ -6,7 +6,7 @@ Unicode 符号及其 ASCII 等价物
 
 Unicode symbols and their ASCII equivalents
 
-以下 Unicode 符号可以在 Raku 中使用，而无需加载任何其他模块。其中一些具有对应的类型，可以只输入 ASCII 字符。
+以下 Unicode 符号可以在 Raku 中使用，而无需加载任何其他模块。其中一些具有只用输入 ASCII 字符的等效符号。
 
 The following Unicode symbols can be used in Raku without needing to load any additional modules. Some of them have equivalents which can be typed with ASCII-only characters.
 
@@ -18,14 +18,13 @@ Reference is made below to various properties of unicode codepoints. The definit
 
 - [字母数字符 / Alphabetic characters](#%E5%AD%97%E6%AF%8D%E6%95%B0%E5%AD%97%E7%AC%A6--alphabetic-characters)
 - [数字字符 / Numeric characters](#%E6%95%B0%E5%AD%97%E5%AD%97%E7%AC%A6--numeric-characters)
-- [数值值 / Numeric values](#%E6%95%B0%E5%80%BC%E5%80%BC--numeric-values)
+- [数值 / Numeric values](#%E6%95%B0%E5%80%BC--numeric-values)
 - [空白字符 / Whitespace characters](#%E7%A9%BA%E7%99%BD%E5%AD%97%E7%AC%A6--whitespace-characters)
 - [其他可接受的单码点 / Other acceptable single codepoints](#%E5%85%B6%E4%BB%96%E5%8F%AF%E6%8E%A5%E5%8F%97%E7%9A%84%E5%8D%95%E7%A0%81%E7%82%B9--other-acceptable-single-codepoints)
     - [原子运算符 / Atomic operators](#%E5%8E%9F%E5%AD%90%E8%BF%90%E7%AE%97%E7%AC%A6--atomic-operators)
 - [多码点 / Multiple codepoints](#%E5%A4%9A%E7%A0%81%E7%82%B9--multiple-codepoints)
 
 <!-- /MarkdownTOC -->
-
 
 <a id="%E5%AD%97%E6%AF%8D%E6%95%B0%E5%AD%97%E7%AC%A6--alphabetic-characters"></a>
 # 字母数字符 / Alphabetic characters
@@ -52,10 +51,10 @@ my $var = １９; # U+FF11 U+FF19
 say $var + 2;  # OUTPUT: «21␤»
 ```
 
-<a id="%E6%95%B0%E5%80%BC%E5%80%BC--numeric-values"></a>
-# 数值值 / Numeric values
+<a id="%E6%95%B0%E5%80%BC--numeric-values"></a>
+# 数值 / Numeric values
 
-任何具有 `No`（数字，其他）或 `Nl`（数字，字母）属性的代码点都可以单独用作数值，如 ½ 和 ⅓。(这些不是十进制数字字符，所以不能合并。)例如：
+任何具有 `No`（数字，其他）或 `Nl`（数字，字母）属性的代码点都可以单独用作数值，如 ½ 和 ⅓。（这些不是十进制数字字符，所以不能合并。）例如：
 
 Any codepoint that has the `No` (Number, other) or `Nl` (Number, letter) property can be used standalone as a numeric value, such as ½ and ⅓. (These aren't decimal digit characters, so can't be combined.) For example:
 
@@ -74,7 +73,7 @@ Besides spaces and tabs you can use any other unicode whitespace character that 
 <a id="%E5%85%B6%E4%BB%96%E5%8F%AF%E6%8E%A5%E5%8F%97%E7%9A%84%E5%8D%95%E7%A0%81%E7%82%B9--other-acceptable-single-codepoints"></a>
 # 其他可接受的单码点 / Other acceptable single codepoints
 
-此列表包含在 Raku 中具有特殊意义的单个代码点[及其 ASCII 等效项]。
+此列表包含在 Raku 中具有特殊意义的单个代码点[及其他们的 ASCII 等效项]。
 
 This list contains the single codepoints [and their ASCII equivalents] that have a special meaning in Raku.
 
@@ -168,7 +167,7 @@ The ASCII alternatives are as follows:
 <a id="%E5%A4%9A%E7%A0%81%E7%82%B9--multiple-codepoints"></a>
 # 多码点 / Multiple codepoints
 
-此列表包含需要为其 ASCII 等价物特殊组合的多个代码点运算符。注意，代码点显示为空格分隔，但在使用时应作为相邻的编码点输入。
+此列表包含需要为其 ASCII 等价物特殊组合的多个代码点运算符。注意，代码点显示为空格分隔，但在使用时应作为相邻的码点输入。
 
 This list contains multiple-codepoint operators that require special composition for their ASCII equivalents. Note the codepoints are shown space-separated but should be entered as adjacent codepoints when used.
 

@@ -16,7 +16,7 @@ A context is needed, in many occasions, to interpret the value of a container. I
 
 - [Sink](#sink)
 - [Number](#number)
-- [String](#string)
+- [字符串 / String](#%E5%AD%97%E7%AC%A6%E4%B8%B2--string)
 
 <!-- /MarkdownTOC -->
 
@@ -24,7 +24,7 @@ A context is needed, in many occasions, to interpret the value of a container. I
 <a id="sink"></a>
 # Sink
 
-*Sink* 相当于 `void` 上下文，在这种上下文中我们抛出操作的结果或者代码块的返回值。通常，当语句不知道如何处理该值时，将在警告和错误中调用此上下文。
+*Sink* 相当于空上下文，在这种上下文中我们抛出操作的结果或者代码块的返回值。通常，当语句不知道如何处理该值时，将在警告和错误中调用此上下文。
 
 *Sink* is equivalent to `void` context, that is, a context in which we throw (down the sink, as it were) the result of an operation or the return value from a block. In general, this context will be invoked in warnings and errors when a statement does not know what to do with that value.
 
@@ -33,15 +33,15 @@ my $sub = -> $a { return $a² };
 $sub; # OUTPUT: «WARNINGS:␤Useless use of $sub in sink context (line 1)␤» 
 ```
 
-你可以通过使用 [`sink-all`](https://rakudocs.github.io/routine/sink-all) 方法在[迭代器](https://rakudocs.github.io/type/Iterator)上强制 sink 上下文。[Proc](https://rakudocs.github.io/type/Proc)也可以[通过 `sink` 方法下沉](https://rakudocs.github.io/type/Proc#method_sink)，强制它们引发异常而不返回任何内容。
+你可以通过使用 [`sink-all`](https://rakudocs.github.io/routine/sink-all) 方法在[迭代器](https://rakudocs.github.io/type/Iterator)上强制空上下文。[Proc](https://rakudocs.github.io/type/Proc) 也可以[通过 `sink` 方法](https://rakudocs.github.io/type/Proc#method_sink) 强制空上下文，强制它们引发异常而不返回任何内容。
 
 You can force that sink context on [Iterator](https://rakudocs.github.io/type/Iterator)s, by using the [`sink-all`](https://rakudocs.github.io/routine/sink-all) method. [Proc](https://rakudocs.github.io/type/Proc)s can also be [sunk via the `sink` method](https://rakudocs.github.io/type/Proc#method_sink), forcing them to raise an exception and not returning anything.
 
-一般来说，如果在 sink 上下文中进行计算，代码块会发出警告；但是 [gather/take 代码块](https://rakudocs.github.io/language/control#Flow%2529_gather_take) 会在 sink 上下文中显式计算，并使用 `take` 显式返回值。
+一般来说，如果在空上下文中进行计算，代码块会发出警告；但是 [gather/take 代码块](https://rakudocs.github.io/language/control#Flow%2529_gather_take) 会在空上下文中显式计算，并使用 `take` 显式返回值。
 
 In general, blocks will warn if evaluated in sink context; however, [gather/take blocks](https://rakudocs.github.io/language/control#Flow%2529_gather_take) are explicitly evaluated in sink context, with values returned explicitly using `take`.
 
-在 sink 上下文中，对象会调用存在的 `sink` 方法：
+在空上下文中，对象会调用存在的 `sink` 方法：
 
 In sink context, an object will call its `sink` method if present:
 
@@ -58,7 +58,7 @@ foo
 <a id="number"></a>
 # Number
 
-这个上下文，可能除了上面的 sink 上下文之外，都是*转换*或*解释*上下文，从这个意义上来说，它们接受一个非类型化或类型化的变量，并将其转换为执行操作所需的任何类型。在某些情况下，这意味着转换（例如，从 [Str](https://rakudocs.github.io/type/Str) 转换至 [Numeric](https://rakudocs.github.io/type/Numeric)）;其他情况下，就只是解释（[IntStr](https://rakudocs.github.io/type/IntStr) 被解释为 [Int](https://rakudocs.github.io/type/Int) 或者 [Str](https://rakudocs.github.io/type/Str)）。
+这个上下文，可能除了上面的空上下文之外，都是*转换*或*解释*上下文，从这个意义上来说，它们接受一个非类型化或类型化的变量，并将其转换为执行操作所需的任何类型。在某些情况下，这意味着转换（例如，从 [Str](https://rakudocs.github.io/type/Str) 转换至 [Numeric](https://rakudocs.github.io/type/Numeric)）;其他情况下，就只是解释（[IntStr](https://rakudocs.github.io/type/IntStr) 被解释为 [Int](https://rakudocs.github.io/type/Int) 或者 [Str](https://rakudocs.github.io/type/Str)）。
 
 This context, and probably all of them except sink above, are *conversion* or *interpretation* contexts in the sense that they take an untyped or typed variable and duck-type it to whatever is needed to perform the operation. In some cases that will imply a conversion (from [Str](https://rakudocs.github.io/type/Str) to [Numeric](https://rakudocs.github.io/type/Numeric), for instance); in other cases simply an interpretation ([IntStr](https://rakudocs.github.io/type/IntStr) will be interpreted as [Int](https://rakudocs.github.io/type/Int) or as [Str](https://rakudocs.github.io/type/Str)).
 
@@ -94,10 +94,10 @@ say True+$list; # OUTPUT: «4␤»
 
 In the case of *listy* things, the numeric value will be in general equivalent to `.elems`; in some cases, like [Thread](https://rakudocs.github.io/routine/Numeric#%28Thread%29_method_Numeric) it will return an unique thread identifier.
 
-<a id="string"></a>
-# String
+<a id="%E5%AD%97%E7%AC%A6%E4%B8%B2--string"></a>
+# 字符串 / String
 
-在*字符串上下文*中，值可以作为字符串进行操作。例如，此上下文用于强制非字符串值，以便将其打印到标准输出。
+在*字符串上下文*中，值可以作为字符串进行操作。例如，此上下文用于强制转换非字符串值，以便将其打印到标准输出。
 
 In a *string context*, values can be manipulated as strings. This context is used, for instance, for coercing non-string values so that they can be printed to standard output.
 
@@ -105,7 +105,7 @@ In a *string context*, values can be manipulated as strings. This context is use
 put $very-complicated-and-hairy-object; # OUTPUT: something meaningful 
 ```
 
-或者当智能匹配到正则表达式时：
+或者当智能匹配一个正则表达式时：
 
 Or when smartmatching to a regular expression:
 
@@ -133,6 +133,8 @@ This will happen also in a [*reduction*](https://rakudocs.github.io/language/ope
 ```Raku
 say [~] [ 3, 5+6i, Set(<a b c>), [1,2,3] ]; # OUTPUT: «35+6ic a b1 2 3␤» 
 ```
+
+从这个意义上说，空列表或其他容器将字符串化为空字符串：
 
 In that sense, empty lists or other containers will stringify to an empty string:
 
@@ -172,7 +174,7 @@ my $non-empty-also = Buf.new(0x2,0x22);
 say [~] $non-empty, $empty, $non-empty-also; # OUTPUT: «Buf:0x<03 33 02 22>␤» 
 ```
 
-一般来说，上下文将通过调用上下文语境化器将变量强制为特定类型；在混合的情况下，如果上下文类是混合的，它将以这种方式工作。
+一般来说，上下文将通过调用上下文语境化器将变量强制为特定类型；在 mixin 情况下，如果上下文类是混合的，它将以这种方式工作。
 
 In general, a context will coerce a variable to a particular type by calling the contextualizer; in the case of mixins, if the context class is mixed in, it will behave in that way.
 
@@ -181,6 +183,6 @@ my $described-number = 1i but 'Unity in complex plane';
 put $described-number; # OUTPUT: «Unity in complex plane␤» 
 ```
 
-`but` 创建一个混合的情况，它赋予复数一个 `Str` 方法。`put` 使其语境化成一个字符串，也就是说，它调用 `Str` 这个字符串上下文语境化器，结果如上图所示。
+`but` 创建一个 mixin，它赋予复数一个 `Str` 方法。`put` 使其语境化成一个字符串，也就是说，它调用 `Str` 这个字符串上下文语境化器，结果如上图所示。
 
 `but` creates a mixin, which endows the complex number with a `Str` method. `put` contextualizes it into a string, that is, it calls `Str`, the string contextualizer, with the result shown above.

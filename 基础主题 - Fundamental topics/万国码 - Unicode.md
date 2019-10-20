@@ -19,7 +19,7 @@ For an overview on MoarVM's internal representation of strings, see the [MoarVM 
 - [文件句柄和 I/O Filehandles and I/O](#%E6%96%87%E4%BB%B6%E5%8F%A5%E6%9F%84%E5%92%8C-io-filehandles-and-io)
     - [规范化 / Normalization](#%E8%A7%84%E8%8C%83%E5%8C%96--normalization)
     - [UTF8-C8](#utf8-c8)
-- [输入 Unicode 代码点和代码点序列 / Entering unicode codepoints and codepoint sequences](#%E8%BE%93%E5%85%A5-unicode-%E4%BB%A3%E7%A0%81%E7%82%B9%E5%92%8C%E4%BB%A3%E7%A0%81%E7%82%B9%E5%BA%8F%E5%88%97--entering-unicode-codepoints-and-codepoint-sequences)
+- [输入 Unicode 码点和码点序列 / Entering unicode codepoints and codepoint sequences](#%E8%BE%93%E5%85%A5-unicode-%E7%A0%81%E7%82%B9%E5%92%8C%E7%A0%81%E7%82%B9%E5%BA%8F%E5%88%97--entering-unicode-codepoints-and-codepoint-sequences)
     - [名称别名 / Name aliases](#%E5%90%8D%E7%A7%B0%E5%88%AB%E5%90%8D--name-aliases)
     - [命名序列 / Named sequences](#%E5%91%BD%E5%90%8D%E5%BA%8F%E5%88%97--named-sequences)
         - [表情序列 / Emoji sequences](#%E8%A1%A8%E6%83%85%E5%BA%8F%E5%88%97--emoji-sequences)
@@ -32,7 +32,7 @@ For an overview on MoarVM's internal representation of strings, see the [MoarVM 
 <a id="%E8%A7%84%E8%8C%83%E5%8C%96--normalization"></a>
 ## 规范化 / Normalization
 
-Raku 默认情况下对所有输入和输出应用规范化，但文件名除外，这些文件名被读和写为 [`UTF8-C8`](https://rakudocs.github.io/language/unicode#UTF8-C8)；作为用户可见的字符形式的图形符号将使用规范化表示形式。例如，可以用两种方式表示字形素 `á`，要么使用一个代码点：
+Raku 默认情况下对所有输入和输出应用规范化，但文件名除外，这些文件名被读和写为 [`UTF8-C8`](https://rakudocs.github.io/language/unicode#UTF8-C8)；字素作为用户可见的字符形式的图形符号将使用规范化表示形式。例如，可以用两种方式表示字形素 `á`，要么使用一个码点：
 
 Raku applies normalization by default to all input and output except for file names, which are read and written as [`UTF8-C8`](https://rakudocs.github.io/language/unicode#UTF8-C8); graphemes, which are user-visible forms of the characters, will use a normalized representation. For example, the grapheme `á` can be represented in two ways, either using one codepoint:
 
@@ -40,7 +40,7 @@ Raku applies normalization by default to all input and output except for file na
 á (U+E1 "LATIN SMALL LETTER A WITH ACUTE")
 ```
 
-或二个代码点：
+或二个码点：
 
 Or two codepoints:
 
@@ -48,7 +48,7 @@ Or two codepoints:
 a +  ́ (U+61 "LATIN SMALL LETTER A" + U+301 "COMBINING ACUTE ACCENT")
 ```
 
-Raku 将这两个输入转换为一个代码点，这是为规范化形式 C（*NFC*）指定的。在大多数情况下，这是有用的，这意味着两个等价的输入都是相同的。Unicode 有一个规范等价的概念，它允许我们确定字符串的规范形式，允许我们正确地比较和操作字符串，而不必担心文本会丢失这些属性。默认情况下，你从 Raku 处理或输出的任何文本都将以“规范”形式出现，即使在对字符串进行修改或连接时也是如此(有关如何避免这种情况，请参阅下面的内容)。有关规范化表单 C 和规范等价的更详细信息，请参见 Unicode 基金会关于[规范化和规范等价](https://unicode.org/reports/tr15/#Canon_Compat_Equivalence)的页面。
+Raku 将这两个输入转换为一个码点，这是为规范化形式 C（*NFC*）指定的。在大多数情况下，这是有用的，这意味着两个等价的输入都是相同的。Unicode 有一个规范等价的概念，它允许我们确定字符串的规范形式，允许我们正确地比较和操作字符串，而不必担心文本会丢失这些属性。默认情况下，你从 Raku 处理或输出的任何文本都将以“规范”形式出现，即使在对字符串进行修改或连接时也是如此（有关如何避免这种情况，请参阅下面的内容）。有关规范形式 C 和规范等价的更详细信息，请参见 Unicode 基金会关于[规范化和规范等价](https://unicode.org/reports/tr15/#Canon_Compat_Equivalence)的页面。
 
 Raku will turn both these inputs into one codepoint, as is specified for Normalization Form C (**NFC**). In most cases this is useful and means that two inputs that are equivalent are both treated the same. Unicode has a concept of canonical equivalence which allows us to determine the canonical form of a string, allowing us to properly compare strings and manipulate them, without having to worry about the text losing these properties. By default, any text you process or output from Raku will be in this “canonical” form, even when making modifications or concatenations to the string (see below for how to avoid this). For more detailed information about Normalization Form C and canonical equivalence, see the Unicode Foundation's page on [Normalization and Canonical Equivalence](https://unicode.org/reports/tr15/#Canon_Compat_Equivalence).
 
@@ -63,12 +63,12 @@ To avoid normalization you can use a special encoding format called [UTF8-C8](ht
 <a id="utf8-c8"></a>
 ## UTF8-C8
 
-UTF-8 Clean-8 是一个编码器/解码器，主要对 UTF-8 工作。但是，当遇到一个字节序列时，它将使用 [NFG 合成](https://rakudocs.github.io/language/glossary#NFG)来跟踪所涉及的原始字节。这意味着编码返回到 UTF-8 Clean-8 将能够重新创建字节，因为他们原来存在。合成体包含 4 个代码点：
+UTF-8 Clean-8 是一个编码器/解码器，主要对 UTF-8 工作。但是，当遇到一个字节序列时，它将使用 [NFG 合成](https://rakudocs.github.io/language/glossary#NFG)来跟踪所涉及的原始字节。这意味着编码返回到 UTF-8 Clean-8 将能够重新创建字节，因为他们原来存在。合成体包含 4 个码点：
 
 UTF-8 Clean-8 is an encoder/decoder that primarily works as the UTF-8 one. However, upon encountering a byte sequence that will either not decode as valid UTF-8, or that would not round-trip due to normalization, it will use [NFG synthetics](https://rakudocs.github.io/language/glossary#NFG) to keep track of the original bytes involved. This means that encoding back to UTF-8 Clean-8 will be able to recreate the bytes as they originally existed. The synthetics contain 4 codepoints:
 
-- 代码点 0x10FFFD（它是一个专用代码点）
-- 代码点 'x'
+- 码点 0x10FFFD（它是一个专用码点）
+- 码点 'x'
 - 不可解码字节的上 4 位作为十六进制字符 （0..9A..F）
 - 不可解码字节的下 4 位作为十六进制字符 （0..9A..F）
 
@@ -113,10 +113,10 @@ Reading with this type of encoding and encoding them back to UTF8-C8 will give y
 
 Please note that this encoding so far is not supported in the JVM implementation of Rakudo.
 
-<a id="%E8%BE%93%E5%85%A5-unicode-%E4%BB%A3%E7%A0%81%E7%82%B9%E5%92%8C%E4%BB%A3%E7%A0%81%E7%82%B9%E5%BA%8F%E5%88%97--entering-unicode-codepoints-and-codepoint-sequences"></a>
-# 输入 Unicode 代码点和代码点序列 / Entering unicode codepoints and codepoint sequences
+<a id="%E8%BE%93%E5%85%A5-unicode-%E7%A0%81%E7%82%B9%E5%92%8C%E7%A0%81%E7%82%B9%E5%BA%8F%E5%88%97--entering-unicode-codepoints-and-codepoint-sequences"></a>
+# 输入 Unicode 码点和码点序列 / Entering unicode codepoints and codepoint sequences
 
-你可以按数字(十进制和十六进制)输入 Unicode 代码点。例如，名为 "latin capital letter ae with macron" 的字符有十进制代码点 482 和十六进制编码点 0x1E2：
+你可以按数字(十进制和十六进制)输入 Unicode 码点。例如，名为 "latin capital letter ae with macron" 的字符有十进制码点 482 和十六进制码点 0x1E2：
 
 You can enter Unicode codepoints by number (decimal as well as hexadecimal). For example, the character named "latin capital letter ae with macron" has decimal codepoint 482 and hexadecimal codepoint 0x1E2:
 
@@ -125,7 +125,7 @@ say "\c[482]"; # OUTPUT: «Ǣ␤»
 say "\x1E2";   # OUTPUT: «Ǣ␤»
 ```
 
-你还可以按名称访问 Unicode 代码点：Raku 支持所有 Unicode 名称。
+你还可以按名称访问 Unicode 码点：Raku 支持所有 Unicode 名称。
 
 You can also access Unicode codepoints by name: Raku supports all Unicode names.
 
@@ -151,7 +151,7 @@ You can specify multiple characters by using a comma separated list with `\c[]`.
 say "\c[482,PENGUIN]"; # OUTPUT: «Ǣ🐧␤»
 ```
 
-除了在内插字符串中使用 `\c[]` 之外，还可以使用 [uniparse](https://rakudocs.github.io/routine/uniparse)：
+除了在字符串插值中使用 `\c[]` 之外，还可以使用 [uniparse](https://rakudocs.github.io/routine/uniparse)：
 
 In addition to using `\c[]` inside interpolated strings, you can also use the [uniparse](https://rakudocs.github.io/routine/uniparse):
 
@@ -163,7 +163,7 @@ say uniparse("DIGIT ONE"); # OUTPUT: «1␤»
 <a id="%E5%90%8D%E7%A7%B0%E5%88%AB%E5%90%8D--name-aliases"></a>
 ## 名称别名 / Name aliases
 
-名称别名主要用于没有正式名称的代码点、缩写或更正（Unicode 名称永不更改）。他们的完整名单见[此处](https://www.unicode.org/Public/UCD/latest/ucd/NameAliases.txt)。
+名称别名主要用于没有正式名称的码点、缩写或更正（Unicode 名称永不更改）。他们的完整名单见[此处](https://www.unicode.org/Public/UCD/latest/ucd/NameAliases.txt)。
 
 Name Aliases are used mainly for codepoints without an official name, for abbreviations, or for corrections (Unicode names never change). For full list of them see [here](https://www.unicode.org/Public/UCD/latest/ucd/NameAliases.txt).
 
@@ -220,4 +220,3 @@ Raku supports Emoji sequences. For all of them see: [Emoji ZWJ Sequences](https:
 say "\c[woman gesturing OK]";         # OUTPUT: «🙆‍♀️␤» 
 say "\c[family: man woman girl boy]"; # OUTPUT: «👨‍👩‍👧‍👦␤»
 ```
-
