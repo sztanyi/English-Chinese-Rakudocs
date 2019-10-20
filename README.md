@@ -36,6 +36,7 @@ IT 类翻译文章往往中文太生硬，英文太难懂。何不对照看。
     - [哈希和映射 - Hashes and maps](https://github.com/sztanyi/English-Chinese-Rakudocs/blob/master/%E5%9F%BA%E7%A1%80%E4%B8%BB%E9%A2%98%20-%20Fundamental%20topics/%E5%93%88%E5%B8%8C%E5%92%8C%E6%98%A0%E5%B0%84%20-%20Hashes%20and%20maps.md)
     - [语法 - Grammars](https://github.com/sztanyi/English-Chinese-Rakudocs/blob/master/%E5%9F%BA%E7%A1%80%E4%B8%BB%E9%A2%98%20-%20Fundamental%20topics/%E8%AF%AD%E6%B3%95%20-%20Grammars.md)
     - [异常 - Exceptions](https://github.com/sztanyi/English-Chinese-Rakudocs/blob/master/%E5%9F%BA%E7%A1%80%E4%B8%BB%E9%A2%98%20-%20Fundamental%20topics/%E5%BC%82%E5%B8%B8%20-%20Exceptions.md)
+    - [引文构造 - Quoting constructs](https://github.com/sztanyi/English-Chinese-Rakudocs/blob/master/%E5%9F%BA%E7%A1%80%E4%B8%BB%E9%A2%98%20-%20Fundamental%20topics/%E5%BC%95%E6%96%87%E6%9E%84%E9%80%A0%20-%20Quoting%20constructs.md)
     - [换行处理 - Newline handling in Raku](https://github.com/sztanyi/English-Chinese-Rakudocs/blob/master/%E5%9F%BA%E7%A1%80%E4%B8%BB%E9%A2%98%20-%20Fundamental%20topics/Perl%206%20%E4%B8%AD%E7%9A%84%E6%8D%A2%E8%A1%8C%E5%A4%84%E7%90%86%20-%20Newline%20handling%20in%20Perl%206.md)
     - [函数 - Functions](https://github.com/sztanyi/English-Chinese-Rakudocs/blob/master/%E5%9F%BA%E7%A1%80%E4%B8%BB%E9%A2%98%20-%20Fundamental%20topics/%E5%87%BD%E6%95%B0%20-%20Functions.md)
     - [容器 - Containers](https://github.com/sztanyi/English-Chinese-Rakudocs/blob/master/%E5%9F%BA%E7%A1%80%E4%B8%BB%E9%A2%98%20-%20Fundamental%20topics/%E5%AE%B9%E5%99%A8%20-%20Containers.md)
