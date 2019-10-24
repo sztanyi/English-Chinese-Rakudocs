@@ -47,7 +47,7 @@ A.^compose;                                                 # }
 A.x();
 ```
 
-（除了声明性表单在编译时执行，而后一个形式不执行）。
+（除了声明形式在编译时执行，而后一个形式不执行）。
 
 (except that the declarative form is executed at compile time, and the latter form does not).
 
@@ -76,7 +76,7 @@ As the example above demonstrates, all object oriented features are available to
     - [VAR](#var)
 - [元对象系统的结构 / Structure of the meta object system](#%E5%85%83%E5%AF%B9%E8%B1%A1%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%BB%93%E6%9E%84--structure-of-the-meta-object-system)
     - [引导问题 / Bootstrapping concerns](#%E5%BC%95%E5%AF%BC%E9%97%AE%E9%A2%98--bootstrapping-concerns)
-    - [创作时间与静态推理 / Composition time and static reasoning](#%E5%88%9B%E4%BD%9C%E6%97%B6%E9%97%B4%E4%B8%8E%E9%9D%99%E6%80%81%E6%8E%A8%E7%90%86--composition-time-and-static-reasoning)
+    - [重组时与静态推理 / Composition time and static reasoning](#%E9%87%8D%E7%BB%84%E6%97%B6%E4%B8%8E%E9%9D%99%E6%80%81%E6%8E%A8%E7%90%86--composition-time-and-static-reasoning)
     - [权力和责任 / Power and responsibility](#%E6%9D%83%E5%8A%9B%E5%92%8C%E8%B4%A3%E4%BB%BB--power-and-responsibility)
     - [力量、便利和陷阱 / Power, convenience and pitfalls](#%E5%8A%9B%E9%87%8F%E3%80%81%E4%BE%BF%E5%88%A9%E5%92%8C%E9%99%B7%E9%98%B1--power-convenience-and-pitfalls)
 
@@ -90,14 +90,14 @@ As the example above demonstrates, all object oriented features are available to
 
 These are introspective macros that resemble method calls.
 
-元方法通常以全大写命名，并且它被认为是避免使用全大写名称创建自己的方法的好样式。这将避免与该语言未来版本中可能出现的任何元方法发生冲突。
+元方法通常以全大写命名，应避免使用全大写名称创建自己的方法。这将避免与该语言未来版本中可能出现的任何元方法发生冲突。
 
 Metamethods are generally named with ALLCAPS, and it is considered good style to avoid creating your own methods with ALLCAPS names. This will avoid conflicts with any metamethods that may appear in future versions of the language.
 
 <a id="what"></a>
 ## WHAT
 
-类型的类型对象。这是一个可以在不产生错误或警告的情况下重载的伪方法，但将被忽略。
+类型的类型对象。这是一个可以在不产生错误或警告的情况下重载的伪方法。
 
 The type object of the type. This is a pseudo-method that can be overloaded without producing error or warning, but will be ignored.
 
@@ -108,7 +108,7 @@ For example `42.WHAT` returns the `Int` type object.
 <a id="which"></a>
 ## WHICH
 
-对象的标识值。这可用于散列和身份比较，以及如何实现 `===` 中缀运算符。
+对象的标识值。这可用于散列和身份比较，`===` 中缀运算符就是靠来这个实现的。
 
 The object's identity value. This can be used for hashing and identity comparison, and is how the `===` infix operator is implemented.
 
@@ -151,7 +151,7 @@ The attached Pod value.
 <a id="definite"></a>
 ## DEFINITE
 
-对象具有有效的具体表示形式。这是一种虚假的方法，可以被覆盖而不产生错误或警告，但将被忽视。
+对象具有有效的具体表示形式。这是一种伪方法，可以被覆盖而不产生错误或警告。
 
 The object has a valid concrete representation. This is a pseudo-method that can be overloaded without producing error or warning, but will be ignored.
 
@@ -166,7 +166,7 @@ Returns `True` for instances and `False` for type objects.
 
 Returns the underlying `Scalar` object, if there is one.
 
-`Scalar` 对象的存在表示该对象已“逐项化”，变为单数了。
+`Scalar` 对象的存在表示该对象已“单条目化”。
 
 The presence of a `Scalar` object indicates that the object is "itemized".
 
@@ -180,7 +180,7 @@ say $(1, 2, 3).VAR ~~ Scalar; # OUTPUT: «True␤»
 <a id="%E5%85%83%E5%AF%B9%E8%B1%A1%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%BB%93%E6%9E%84--structure-of-the-meta-object-system"></a>
 # 元对象系统的结构 / Structure of the meta object system
 
-**注：**本文档主要反映了由[Rakudo Raku编译器](https://rakudo.org/)实现的元对象系统，因为 [设计文档](https://design.perl6.org/) 非常详细。
+**注：**本文档主要反映了由 [Rakudo Raku 编译器](https://rakudo.org/)实现的元对象系统，因为 [设计文档](https://design.perl6.org/) 非常详细。
 
 **Note:** this documentation largely reflects the meta object system as implemented by the [Rakudo Raku compiler](https://rakudo.org/), since the [design documents](https://design.perl6.org/) are very light on details.
 
@@ -188,7 +188,7 @@ say $(1, 2, 3).VAR ~~ Scalar; # OUTPUT: «True␤»
 
 For each type declarator keyword, such as `class`, `role`, `enum`, `module`, `package`, `grammar` or `subset`, there is a separate meta class in the `Metamodel::` namespace. (Rakudo implements them in the `Perl6::Metamodel::` namespace, and then maps `Perl6::Metamodel` to `Metamodel`).
 
-这些元类中的许多都具有相同的功能。例如，角色、 grammar 和类都可以包含方法和属性，还可以扮演角色。这个共享功能是在组成适当的元类的角色中实现的。例如 [role Metamodel::RoleContainer](https://rakudocs.github.io/type/Metamodel::RoleContainer) 实现了类型可以拥有角色的功能，而 [Metamodel::ClassHOW](https://rakudocs.github.io/type/Metamodel::ClassHOW) 是关键字 `class` 后面的元类，它实现了这个角色。
+这些元类中的许多都具有相同的功能。例如，角色、 grammar 和类都可以包含方法和属性，还可以扮演角色。这个共享功能是在组成适当的元类的角色中实现的。例如[角色 Metamodel::RoleContainer](https://rakudocs.github.io/type/Metamodel::RoleContainer) 实现了类型可以拥有角色的功能，而 [Metamodel::ClassHOW](https://rakudocs.github.io/type/Metamodel::ClassHOW) 是关键字 `class` 后面的元类，它实现了这个角色。
 
 Many of the these meta classes share common functionality. For example roles, grammars and classes can all contain methods and attributes, as well as being able to do roles. This shared functionality is implemented in roles which are composed into the appropriate meta classes. For example [role Metamodel::RoleContainer](https://rakudocs.github.io/type/Metamodel::RoleContainer) implements the functionality that a type can hold roles and [Metamodel::ClassHOW](https://rakudocs.github.io/type/Metamodel::ClassHOW), which is the meta class behind the `class` keyword, does this role.
 
@@ -207,26 +207,26 @@ You might wonder how `Metamodel::ClassHOW` can be a class, when being a class is
 
 Just kidding. Bootstrapping is implementation specific. Rakudo does it by using the object system of the language in which itself is implemented, which happens to be (nearly) a subset of Raku: NQP, Not Quite Perl. NQP has a primitive, class-like kind called `knowhow`, which is used to bootstrap its own classes and roles implementation. `knowhow` is built on primitives that the virtual machine under NQP provides.
 
-由于对象模型是以较低级别的类型引导的，因此自省有时可以返回较低级别的类型，而不是你期望的类型，例如 NQP 级别的例程而不是普通的[例程](https://rakudocs.github.io/type/Routine) 对象，或者引导属性而不是[属性](https://rakudocs.github.io/type/Attribute)。
+由于对象模型是以较低级别的类型引导的，因此自省有时可以返回较低级别的类型，而不是你期望的类型，例如 NQP 级别的例程而不是普通的[例程](https://rakudocs.github.io/type/Routine)对象，或者引导属性而不是[属性](https://rakudocs.github.io/type/Attribute)。
 
 Since the object model is bootstrapped in terms of lower-level types, introspection can sometimes return low-level types instead of the ones you expect, like an NQP-level routine instead of a normal [Routine](https://rakudocs.github.io/type/Routine) object, or a bootstrap-attribute instead of [Attribute](https://rakudocs.github.io/type/Attribute).
 
-<a id="%E5%88%9B%E4%BD%9C%E6%97%B6%E9%97%B4%E4%B8%8E%E9%9D%99%E6%80%81%E6%8E%A8%E7%90%86--composition-time-and-static-reasoning"></a>
-## 创作时间与静态推理 / Composition time and static reasoning
+<a id="%E9%87%8D%E7%BB%84%E6%97%B6%E4%B8%8E%E9%9D%99%E6%80%81%E6%8E%A8%E7%90%86--composition-time-and-static-reasoning"></a>
+## 重组时与静态推理 / Composition time and static reasoning
 
 在 Raku 中，类型是在解析时构造的，因此在开始时，它必须是可变的。但是，如果所有类型都是可变的，那么在对类型进行任何修改时，关于它们的所有推理都将失效。例如，父类型的列表，因此类型检查的结果可以在这段时间内更改。
 
 In Raku, a type is constructed as it is parsed, so in the beginning, it must be mutable. However if all types were always mutable, all reasoning about them would get invalidated at any modification of a type. For example the list of parent types and thus the result of type checking can change during that time.
 
-因此，为了充分利用这两个方面，有时类型会从可变类型转换为不可变类型。这称为 *composition*，对于语法声明的类型，当类型声明被完全解析时（通常在解析右大括号时）会发生这种情况。
+因此，为了充分利用这两个方面，有时类型会从可变类型转换为不可变类型。这称为*重组*，对于在语法上声明的类型，当类型声明被完全解析时（通常在解析右大括号时）会发生这种情况。
 
 So to get the best of both worlds, there is a time when a type transitions from mutable to immutable. This is called *composition*, and for syntactically declared types, it happens when the type declaration is fully parsed (so usually when the closing curly brace is parsed).
 
-如果直接通过元对象系统创建类型，则必须先对其调用 `.^compose `才能使其完全正常工作。
+如果直接通过元对象系统创建类型，则必须先对其调用 `.^compose` 才能使其完全正常工作。
 
 If you create types through the meta-object system directly, you must call `.^compose` on them before they become fully functional.
 
-大多数元类还使用合成时间来计算一些属性，比如方法解析顺序、发布方法缓存和其他的家务活。有时可能会在类型组合完成后再对它们进行干预，但这通常会导致灾难。别这样做。
+大多数元类还使用重组来计算一些属性，比如方法解析顺序、发布方法缓存和其他的家务活。有时可能会在类型组合完成后再对它们进行干预，但这通常会导致灾难。别这样做。
 
 Most meta classes also use composition time to calculate some properties like the method resolution order, publish a method cache, and other house-keeping tasks. Meddling with types after they have been composed is sometimes possible, but usually a recipe for disaster. Don't do it.
 
@@ -252,7 +252,7 @@ So be extra careful and thoughtful when writing meta types.
 
 The meta object protocol is designed to be powerful enough to implement the Raku object system. This power occasionally comes at the cost of convenience.
 
-例如，当你编写 `my $x = 42` 然后继续在 `$x` 上调用方法时，这些方法中的大多数最终都是作用于[整数](https://rakudocs.github.io/type/Int) 42，而不是作用于存储它的[标量容器](https://rakudocs.github.io/type/Scalar)。这是普通 Raku 中的一个便利。元对象协议的许多部分不能提供自动忽略标量容器的便利性，因为它们也用于实现这些标量容器。所以如果你写  `my $t = MyType; ... ; $t.^compose` 你是在编写 `$` 变量表示的标量，而不是 `MyType`。
+例如，当你编写 `my $x = 42` 然后继续在 `$x` 上调用方法时，这些方法中的大多数最终都是作用于[整数](https://rakudocs.github.io/type/Int) 42，而不是作用于存储它的[标量容器](https://rakudocs.github.io/type/Scalar)。这是普通 Raku 中的一个便利。元对象协议的许多部分不能提供自动忽略标量容器的便利性，因为它们也用于实现这些标量容器。所以如果你写 `my $t = MyType; ... ; $t.^compose` 你是在编写 `$` 变量表示的标量，而不是 `MyType`。
 
 For example, when you write `my $x = 42` and then proceed to call methods on `$x`, most of these methods end up acting on the [integer](https://rakudocs.github.io/type/Int) 42, not on the [scalar container](https://rakudocs.github.io/type/Scalar) in which it is stored. This is a piece of convenience found in ordinary Raku. Many parts of the meta object protocol cannot afford to offer the convenience of automatically ignoring scalar containers, because they are used to implement those scalar containers as well. So if you write `my $t = MyType; ... ; $t.^compose` you are composing the Scalar that the `$`-sigiled variable implies, not `MyType`.
 

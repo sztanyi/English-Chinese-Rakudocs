@@ -6,3 +6,5 @@ Raku 原生类型 - Raku native types
 Unicode 与 ASCII 符号 - Unicode versus ASCII symbols
 万国码 - Unicode
 上下文以及上下文语境化器 - Contexts and contextualizers
+下标 - Subscripts
+元对象协议 - Meta-object protocol (MOP)
