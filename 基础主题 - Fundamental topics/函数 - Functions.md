@@ -6,7 +6,7 @@ Raku 中的函数和函数式编程
 
 Functions and functional programming in Raku
 
-例程是 Raku 重用代码的方法之一。它们有几种形式，最显著的是 [方法](https://rakudocs.github.io/type/Method)，它们属于类和角色，与一个对象相关联；以及函数（也称为*子例程*或 [sub](https://rakudocs.github.io/type/Sub)，可以独立于对象调用。
+例程是 Raku 重用代码的方法之一。它们有几种形式，最显著的是 [方法](https://rakudocs.github.io/type/Method)，它们属于类和角色，与一个对象相关联；以及函数（也称为*子例程*或 [sub](https://rakudocs.github.io/type/Sub)），可以独立于对象调用。
 
 Routines are one of the means Raku has to reuse code. They come in several forms, most notably [methods](https://rakudocs.github.io/type/Method), which belong in classes and roles and are associated with an object; and functions (also called *subroutines* or [sub](https://rakudocs.github.io/type/Sub)s, for short), which can be called independently of objects.
 
@@ -24,7 +24,7 @@ Introspection on subroutines is provided via [`Routine`](https://rakudocs.github
 
 <!-- MarkdownTOC -->
 
-- [定义/创建/使用函数 / Defining/Creating/Using functions](#%E5%AE%9A%E4%B9%89%E5%88%9B%E5%BB%BA%E4%BD%BF%E7%94%A8%E5%87%BD%E6%95%B0--definingcreatingusing-functions)
+- [定义/创建/使用函数 - Defining/Creating/Using functions](#%E5%AE%9A%E4%B9%89%E5%88%9B%E5%BB%BA%E4%BD%BF%E7%94%A8%E5%87%BD%E6%95%B0---definingcreatingusing-functions)
   - [子例程 Subroutines](#%E5%AD%90%E4%BE%8B%E7%A8%8B-subroutines)
   - [代码块和拉姆达 / Blocks and lambdas](#%E4%BB%A3%E7%A0%81%E5%9D%97%E5%92%8C%E6%8B%89%E5%A7%86%E8%BE%BE--blocks-and-lambdas)
   - [签名 / Signatures](#%E7%AD%BE%E5%90%8D--signatures)
@@ -35,8 +35,8 @@ Introspection on subroutines is provided via [`Routine`](https://rakudocs.github
   - [多分派 / Multi-dispatch](#%E5%A4%9A%E5%88%86%E6%B4%BE--multi-dispatch)
     - [proto](#proto)
   - [only](#only)
-- [习惯用法 / Conventions and idioms](#%E4%B9%A0%E6%83%AF%E7%94%A8%E6%B3%95--conventions-and-idioms)
-  - [解构约定 / Slurpy conventions](#%E8%A7%A3%E6%9E%84%E7%BA%A6%E5%AE%9A--slurpy-conventions)
+- [习惯用法和习语 / Conventions and idioms](#%E4%B9%A0%E6%83%AF%E7%94%A8%E6%B3%95%E5%92%8C%E4%B9%A0%E8%AF%AD--conventions-and-idioms)
+  - [Slurpy 约定 / Slurpy conventions](#slurpy-%E7%BA%A6%E5%AE%9A--slurpy-conventions)
 - [函数是第一等对象 / Functions are first-class objects](#%E5%87%BD%E6%95%B0%E6%98%AF%E7%AC%AC%E4%B8%80%E7%AD%89%E5%AF%B9%E8%B1%A1--functions-are-first-class-objects)
   - [中缀形式 / Infix form](#%E4%B8%AD%E7%BC%80%E5%BD%A2%E5%BC%8F--infix-form)
   - [闭包 / Closures](#%E9%97%AD%E5%8C%85--closures)
@@ -52,7 +52,7 @@ Introspection on subroutines is provided via [`Routine`](https://rakudocs.github
   - [nextwith 函数 / sub nextwith](#nextwith-%E5%87%BD%E6%95%B0--sub-nextwith)
   - [samewith 函数 / sub samewith](#samewith-%E5%87%BD%E6%95%B0--sub-samewith)
   - [nextcallee 函数 / sub nextcallee](#nextcallee-%E5%87%BD%E6%95%B0--sub-nextcallee)
-  - [打包的例程 / Wrapped routines](#%E6%89%93%E5%8C%85%E7%9A%84%E4%BE%8B%E7%A8%8B--wrapped-routines)
+  - [包装的例程 / Wrapped routines](#%E5%8C%85%E8%A3%85%E7%9A%84%E4%BE%8B%E7%A8%8B--wrapped-routines)
   - [父类例程 / Routines of parent class](#%E7%88%B6%E7%B1%BB%E4%BE%8B%E7%A8%8B--routines-of-parent-class)
 - [强制类型转换 / Coercion types](#%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2--coercion-types)
 - [Main 函数 / sub MAIN](#main-%E5%87%BD%E6%95%B0--sub-main)
@@ -60,8 +60,8 @@ Introspection on subroutines is provided via [`Routine`](https://rakudocs.github
 <!-- /MarkdownTOC -->
 
 
-<a id="%E5%AE%9A%E4%B9%89%E5%88%9B%E5%BB%BA%E4%BD%BF%E7%94%A8%E5%87%BD%E6%95%B0--definingcreatingusing-functions"></a>
-# 定义/创建/使用函数 / Defining/Creating/Using functions
+<a id="%E5%AE%9A%E4%B9%89%E5%88%9B%E5%BB%BA%E4%BD%BF%E7%94%A8%E5%87%BD%E6%95%B0---definingcreatingusing-functions"></a>
+# 定义/创建/使用函数 - Defining/Creating/Using functions
 
 <a id="%E5%AD%90%E4%BE%8B%E7%A8%8B-subroutines"></a>
 ## 子例程 Subroutines
@@ -90,7 +90,7 @@ my Code \a = sub { say ‚raw containers don't implement postcircumfix:<( )>‘ 
 a.();  # OUTPUT: «raw containers don't implement postcircumfix:<( )>␤» 
 ```
 
-声明符 `sub` 会在编译时当前范围内声明一个新名字。因此，任何间接命名都会在在编译时解决：
+声明符 `sub` 会在编译时当前作用域内声明一个新名字。因此，任何间接声明都会在在编译时解析完：
 
 The declarator `sub` will declare a new name in the current scope at compile time. As such any indirection has to be resolved at compile time:
 
@@ -115,7 +115,7 @@ sub exclaim ($phrase) {
 exclaim "Howdy, World";
 ```
 
-默认情况下，子例程为[词法作用域](https://rakudocs.github.io/syntax/my)。也就是说，`sub foo {...}` 与 `my sub foo {...}` 相同，仅在当前范围内定义。
+默认情况下，子例程为[词法作用域](https://rakudocs.github.io/syntax/my)。也就是说，`sub foo {...}` 与 `my sub foo {...}` 相同，仅在当前作用域内定义。
 
 By default, subroutines are [lexically scoped](https://rakudocs.github.io/syntax/my). That is, `sub foo {...}` is the same as `my sub foo {...}` and is only defined within the current scope.
 
@@ -124,7 +124,7 @@ sub escape($str) {
     # Puts a slash before non-alphanumeric characters 
     S:g[<-alpha -digit>] = "\\$/" given $str
 }
- 
+
 say escape 'foo#bar?'; # OUTPUT: «foo\#bar\?␤» 
  
 {
@@ -135,7 +135,7 @@ say escape 'foo#bar?'; # OUTPUT: «foo\#bar\?␤»
  
     say escape 'foo#bar?' # OUTPUT: «foo\x[23]bar\x[3F]␤» 
 }
- 
+
 # Back to original escape function 
 say escape 'foo#bar?'; # OUTPUT: «foo\#bar\?␤» 
 ```
@@ -167,7 +167,7 @@ say { $^a ** 2 + $^b ** 2 }(3, 4)            # OUTPUT: «25␤»
 <a id="%E4%BB%A3%E7%A0%81%E5%9D%97%E5%92%8C%E6%8B%89%E5%A7%86%E8%BE%BE--blocks-and-lambdas"></a>
 ## 代码块和拉姆达 / Blocks and lambdas
 
-每当你看到类似于 `{ $_ + 42 }`、 `-> $a, $b { $a ** $b }`，或 `{ $^text.indent($:spaces) }`，那就是 [Block](https://rakudocs.github.io/type/Block) 语法。它在 `if`、 `for`、`while` 等后面使用。
+每当你看到类似于 `{ $_ + 42 }`、 `-> $a, $b { $a ** $b }`，或 `{ $^text.indent($:spaces) }`，那就是 [Block](https://rakudocs.github.io/type/Block) 语法。它在 `if`、 `for` 和 `while` 等后面使用。
 
 Whenever you see something like `{ $_ + 42 }`, `-> $a, $b { $a ** $b }`, or `{ $^text.indent($:spaces) }`, that's [Block](https://rakudocs.github.io/type/Block) syntax. It's used after every `if`, `for`, `while`, etc.
 
@@ -219,7 +219,7 @@ say &s.signature # OUTPUT: «(*@_, *%_)␤»
 ```
 
 <a id="%E5%8F%82%E6%95%B0--arguments"></a>
-## 参数 / Arguments 
+## 参数 / Arguments
 
 参数以逗号分隔的列表形式提供。要消除嵌套调用的歧义，请使用括号：
 
@@ -237,12 +237,12 @@ When calling a function, positional arguments should be supplied in the same ord
 
 ```Raku
 sub f(|c){};
-f :named(35);     # A named argument (in "adverb" form) 
-f named => 35;    # Also a named argument 
-f :35named;       # A named argument using abbreviated adverb form 
-f 'named' => 35;  # Not a named argument, a Pair in a positional argument 
+f :named(35);     # A named argument (in "adverb" form)
+f named => 35;    # Also a named argument
+f :35named;       # A named argument using abbreviated adverb form
+f 'named' => 35;  # Not a named argument, a Pair in a positional argument
 my \c = <a b c>.Capture;
-f |c;             # Merge the contents of Capture $c as if they were supplied 
+f |c;             # Merge the contents of Capture $c as if they were supplied
 ```
 
 传递给函数的参数在概念上首先收集在 `Capture` 容器中。有关这些容器的语法和使用的详细信息，请参见[关于 `Capture` 类的文档](https://rakudocs.github.io/type/Capture)。
@@ -271,11 +271,11 @@ Any `Block` or `Routine` will provide the value of its last expression as a retu
 sub a { 42 };
 sub b { say a };
 sub c { };
-b;     # OUTPUT: «42␤» 
-say c; # OUTPUT: «Nil␤» 
+b;     # OUTPUT: «42␤»
+say c; # OUTPUT: «Nil␤»
 ```
 
-多个返回值作为一个列表或通过创建一个 [Capture](https://rakudocs.github.io/type/Capture)返回。析构函数可用于解开多个返回值。
+多个返回值作为一个列表或通过创建一个 [Capture](https://rakudocs.github.io/type/Capture) 返回。析构函数可用于解开多个返回值。
 
 Multiple return values are returned as a list or by creating a [Capture](https://rakudocs.github.io/type/Capture). Destructuring can be used to untangle multiple return values.
 
@@ -315,7 +315,7 @@ Attempting to return values of another type will cause a compilation error.
 sub foo() returns Int { "a"; }; foo; # Type check fails 
 ```
 
-`returns` 和 `of` 是等效的，它们都只接受一个类型，因为它们声明了 [Callable](https://rakudocs.github.io/type/Callable)的特性。最后一个声明实际上是一个类型声明，它显然只能接受一个类型。`-->`，但是，可以采用未定义或定义了的值。
+`returns` 和 `of` 是等效的，它们都只接受一个类型，因为它们声明了 [Callable](https://rakudocs.github.io/type/Callable)的特性。最后一个声明实际上是一个类型声明，它显然只能接受一个类型。但是 `-->` 可以采用未定义或定义了的值。
 
 `returns` and `of` are equivalent, and both take only a Type since they are declaring a trait of the [Callable](https://rakudocs.github.io/type/Callable). The last declaration is, in fact, a type declaration, which obviously can take only a type. `-->`, however, can take either undefined or definite values.
 
@@ -331,7 +331,7 @@ sub bar() returns Int { return }; bar; # Nil returned
 <a id="%E5%A4%9A%E5%88%86%E6%B4%BE--multi-dispatch"></a>
 ## 多分派 / Multi-dispatch
 
-Raku 允许使用相同的名称但不同的签名编写多个例程。当以名称调用例程时，运行时环境将确定正确的*候选*并调用它。
+Raku 允许使用相同的名称但不同的签名编写多个例程。当以名称调用例程时，运行时环境将确定正确的*候选例程*并调用它。
 
 Raku allows for writing several routines with the same name but different signatures. When the routine is called by name, the runtime environment determines the proper *candidate* and invokes it.
 
@@ -368,11 +368,11 @@ happy-birthday( 'Jack', 25 );                  # OUTPUT: «Happy 25th Birthday J
  
 ```
 
-`happy-birthday` 子例程的前两个版本仅在 arity（参数个数）上有所不同，而第三个版本使用命名参数，并且仅在使用命名参数时被选中，即使 arity 与另一个 `multi` 候选版本相同。
+`happy-birthday` 子例程的前两个版本仅在参数个数上有所不同，而第三个版本使用命名参数，并且仅在使用命名参数时被选中，即使参数个数与另一个 `multi` 候选版本相同。
 
 The first two versions of the `happy-birthday` sub differs only in the arity (number of arguments), while the third version uses named arguments and is chosen only when named arguments are used, even if the arity is the same of another `multi`candidate.
 
-当两个子例程具有相同的 arity 时，参数的类型驱动调度；当存在命名参数时，即使它们的类型与另一个候选类型相同，它们也驱动调度：
+当两个子例程具有相同的参数个数时，则由参数的类型驱动调度；当存在命名参数时，即使它们的类型与另一个候选类型相同，它们也驱动调度：
 
 When two sub have the same arity, the type of the arguments drive the dispatch; when there are named arguments they drive the dispatch even when their type is the same as another candidate:
 
@@ -392,7 +392,6 @@ multi happy-birthday( Str :$name, Int :$age ) {
 happy-birthday 'Luca', 40;                 # OUTPUT: «Happy 40th Birthday Luca !␤» 
 happy-birthday 'Luca', 'Mr';               # OUTPUT: «Happy Birthday Mr Luca !␤» 
 happy-birthday age => 40, name => 'Luca';  # OUTPUT: «Happy Birthday Luca, you turned 40 !␤» 
- 
 ```
 
 命名参数参与调度，即使调用中没有提供这些参数。因此，将优先考虑具有命名参数的多候选项。
@@ -523,7 +522,7 @@ This will make other declarations in the same namespace, such as
 sub you ( $can ) { "Make the darkness bright" }
 ```
 
-失败并出现类型为 `X::Redeclaration` 的异常。`only` 是所有 sub 的默认值；在上面的情况下，不将第一个子例程声明为 `only` 将产生完全相同的错误；但是，没有什么可以阻止未来的开发人员声明 proto 并在名称前面加上 `multi`。在例程之前使用 `only` 是一个[防御编程](https://en.wikipedia.org/wiki/Defensive_programming)功能，它声明将来不在同一命名空间中声明具有相同名称的例程。
+失败并出现类型为 `X::Redeclaration` 的异常。`only` 是所有 sub 的默认值；在上面的情况下，不将第一个子例程声明为 `only` 将产生完全相同的错误；但是，没有什么可以阻止未来的开发人员声明 proto 并在名称前面加上 `multi`。在例程之前使用 `only` 是一个[防御编程](https://en.wikipedia.org/wiki/Defensive_programming)特点，它声明将来不在同一命名空间中声明具有相同名称的例程。
 
 fail with an exception of type `X::Redeclaration`. `only` is the default value for all subs; in the case above, not declaring the first subroutine as `only` will yield exactly the same error; however, nothing prevents future developers from declaring a proto and preceding the names with `multi`. Using `only` before a routine is a [defensive programming](https://en.wikipedia.org/wiki/Defensive_programming) feature that declares the intention of not having routines with the same name declared in the same namespace in the future.
 
@@ -539,15 +538,15 @@ at /tmp/only-redeclaration.p6:3
 
 Anonymous sub cannot be declared `only`. `only sub {}'` will throw an error of type, surprisingly, `X::Anon::Multi`.
 
-<a id="%E4%B9%A0%E6%83%AF%E7%94%A8%E6%B3%95--conventions-and-idioms"></a>
-# 习惯用法 / Conventions and idioms
+<a id="%E4%B9%A0%E6%83%AF%E7%94%A8%E6%B3%95%E5%92%8C%E4%B9%A0%E8%AF%AD--conventions-and-idioms"></a>
+# 习惯用法和习语 / Conventions and idioms
 
 虽然上面描述的调度系统提供了很大的灵活性，但是大多数内部函数和许多模块中的函数都会遵循一些约定。
 
 While the dispatch system described above provides a lot of flexibility, there are some conventions that most internal functions, and those in many modules, will follow.
 
-<a id="%E8%A7%A3%E6%9E%84%E7%BA%A6%E5%AE%9A--slurpy-conventions"></a>
-## 解构约定 / Slurpy conventions
+<a id="slurpy-%E7%BA%A6%E5%AE%9A--slurpy-conventions"></a>
+## Slurpy 约定 / Slurpy conventions
 
 也许这些约定中最重要的一个就是处理 slurpy 列表参数的方式。大多数情况下，函数不会自动压扁 slurpy 列表。罕见的例外是那些在列表的列表上没有合理行为的函数（例如，[chrs](https://rakudocs.github.io/routine/chrs)），或者与已建立的习惯用法（例如，[pop](https://rakudocs.github.io/routine/pop) 作为 [push](https://rakudocs.github.io/routine/push) 的逆函数 ）。
 
@@ -556,7 +555,6 @@ Perhaps the most important one of these conventions is the way slurpy list argum
 如果你希望匹配这种外观和感觉，任何 [Iterable](https://rakudocs.github.io/type/Iterable) 参数都必须使用 `**@` 逐元素分解，这有两个细微差别：
 
 If you wish to match this look and feel, any [Iterable](https://rakudocs.github.io/type/Iterable) argument must be broken out element-by-element using a `**@` slurpy, with two nuances:
-
 
 - 对[标量容器](https://rakudocs.github.io/language/containers#Scalar_containers)中的 [Iterable](https://rakudocs.github.io/type/Iterable) 不生效。
 - 使用一个 [`,`](https://rakudocs.github.io/routine/,) 创建的 [List](https://rakudocs.github.io/type/List)，在最上层只会被当做一个 [Iterable](https://rakudocs.github.io/type/Iterable)。
@@ -583,7 +581,7 @@ multi sub grab(\a) {
 }
 ```
 
-这会导致下列被称为*“单参数规则”*的行为，在调用 slurpy 函数时需要了解这些行为至关重要：
+这会导致下列被称为*单参数规则*的行为，在调用 slurpy 函数时需要了解这些行为至关重要：
 
 This results in the following behavior, which is known as the *"single argument rule"* and is important to understand when invoking slurpy functions:
 
@@ -635,7 +633,7 @@ my $square = sub (Numeric $x) { $x * $x }
 say $square(6);    # OUTPUT: «36␤» 
 ```
 
-或者，可以使用前面的 `&` 来引用现有的命名函数。
+或者，可以使用在函数名前面使用 `&` 来引用现有的命名函数。
 
 Or you can reference an existing named function by using the `&`-sigil in front of it.
 
@@ -672,7 +670,7 @@ say 21 [&plus] 21;
 <a id="%E9%97%AD%E5%8C%85--closures"></a>
 ## 闭包 / Closures
 
-Raku 中的所有代码对象都是*闭包*，这意味着它们可以从外部范围引用词汇变量。
+Raku 中的所有代码对象都是*闭包*，这意味着它们可以从外部范围引用词法变量。
 
 All code objects in Raku are *closures*, which means they can reference lexical variables from an outer scope.
 
@@ -699,7 +697,7 @@ my $multiply-by = 5;
 say join ', ', map { $_ * $multiply-by }, 1..5;     # OUTPUT: «5, 10, 15, 20, 25␤» 
 ```
 
-在这里，传递给 `map` 的块引用了外部作用域中的变量 `$multiply-by`，从而使块成为一个闭包。
+在这里，传递给 `map` 的代码块引用了外部作用域中的变量 `$multiply-by`，从而使块成为一个闭包。
 
 Here, the block passed to `map` references the variable `$multiply-by` from the outer scope, making the block a closure.
 
@@ -714,7 +712,7 @@ Languages without closures cannot easily provide higher-order functions that are
 
 Routines are code objects that conform to [type `Routine`](https://rakudocs.github.io/type/Routine), most notably [`Sub`](https://rakudocs.github.io/type/Sub), [`Method`](https://rakudocs.github.io/type/Method), [`Regex`](https://rakudocs.github.io/type/Regex) and [`Submethod`](https://rakudocs.github.io/type/Submethod).
 
-除了 [`Block`](https://rakudocs.github.io/type/Block) 提供的功能外，它们还具有额外的功能：它们可以作为 [multis](https://rakudocs.github.io/language/functions#Multi-dispatch) 提供，你可以 [wrap](https://rakudocs.github.io/type/Routine#method_wrap) 他们，并使用 `return` 提前退出：
+除了 [`Block`](https://rakudocs.github.io/type/Block) 提供的功能外，它们还具有额外的功能：它们可以作为 [多分派](https://rakudocs.github.io/language/functions#Multi-dispatch)函数，你可以[包装](https://rakudocs.github.io/type/Routine#method_wrap)他们，并使用 `return` 提前退出：
 
 They carry extra functionality in addition to what a [`Block`](https://rakudocs.github.io/type/Block) supplies: they can come as [multis](https://rakudocs.github.io/language/functions#Multi-dispatch), you can [wrap](https://rakudocs.github.io/type/Routine#method_wrap) them, and exit early with `return`:
 
@@ -732,7 +730,7 @@ say has-keyword 'not', 'one', 'here';       # OUTPUT: «False␤»
 say has-keyword 'but', 'here', 'for';       # OUTPUT: «True␤» 
 ```
 
-在这里，`return` 不仅仅是离开调用它的块，而是整个例程。通常，代码块对 `return` 是透明的，它们附加到最外层的例程。
+在这里，`return` 不仅仅是离开调用它的代码块，而是整个例程。通常，代码块对 `return` 是透明的，它们附加到最外层的例程。
 
 Here, `return` doesn't just leave the block inside which it was called, but the whole routine. In general, blocks are transparent to `return`, they attach to the outermost routine.
 
@@ -820,7 +818,7 @@ sub postcircumfix:<!! !!>($left, $inside) {
 say 42!! 1 !!;      # OUTPUT: «42 -> ( 1 )␤» 
 ```
 
-代码块可以直接分配给运算符名称。使用变量声明符并在运算符名称前面加上 `&` 标记。
+代码块可以直接赋值给运算符名称。使用变量声明符并在运算符名称前面加上 `&` 标记。
 
 Blocks can be assigned directly to operator names. Use a variable declarator and prefix the operator name with a `&`-sigil.
 
@@ -892,7 +890,7 @@ or as
 1 + (2 + 3)         # right associative 
 ```
 
-对于实数的添加，这种区别有些无意义，因为 `+ `是 [数学上的关联性](https://en.wikipedia.org/wiki/Associative_property)。
+对于实数的加法，这种区别有些无意义，因为 `+ `是 [数学上的关联性](https://en.wikipedia.org/wiki/Associative_property)。
 
 For addition of real numbers, the distinction is somewhat moot, because `+` is [mathematically associative](https://en.wikipedia.org/wiki/Associative_property).
 
@@ -951,11 +949,11 @@ has $!another-attribute handles <close>;
 #                       ^^^^^^^ trait 
 ```
 
-…另外，前一节的 `is tighter`，`is looser`，`is equiv` 和 `is assoc` 也是特征。
+另外，前一节的 `is tighter`、`is looser`、`is equiv` 和 `is assoc` 也是特征。
 
 ... and also `is tighter`, `is looser`, `is equiv` and `is assoc` from the previous section.
 
-Traits 是以 `trait_mod<VERB>` 的形式声明的函数，其中 `VERB` 表示 `is`、`does` 或 `handles` 等动词。它接收修改后的对象作为参数，接收名称作为命名参数。有关详细信息，请参阅 [Sub](https://rakudocs.github.io/type/Sub#Traits)。
+Traits 是以 `trait_mod<VERB>` 的形式声明的子例程，其中 `VERB` 表示像 `is`、`does` 或 `handles` 的动词。它接收修改后的对象作为参数，接收名称作为命名参数。有关详细信息，请参阅 [Sub](https://rakudocs.github.io/type/Sub#Traits)。
 
 Traits are subs declared in the form `trait_mod<VERB>`, where `VERB` stands for the name like `is`, `does` or `handles`. It receives the modified thing as argument, and the name as a named argument. See [Sub](https://rakudocs.github.io/type/Sub#Traits) for details.
 
@@ -965,15 +963,15 @@ multi sub trait_mod:<is>(Routine $r, :$doubles!) {
         2 * callsame;
     });
 }
- 
+
 sub square($x) is doubles {
     $x * $x;
 }
- 
+
 say square 3;       # OUTPUT: «18␤» 
 ```
 
-内置的函数特征见文档 [类型 Routine](https://rakudocs.github.io/type/Routine)。
+内置的函数特征见文档[类型 Routine](https://rakudocs.github.io/type/Routine)。
 
 See [type Routine](https://rakudocs.github.io/type/Routine) for the documentation of built-in routine traits.
 
@@ -1021,7 +1019,7 @@ a 1;        # OUTPUT: «Int 1␤Any 1␤Back in Int with 5␤»
 
 ```Raku
 proto a(|) {*}
- 
+
 multi a(Any $x) {
     say "Any $x";
     return 5;
@@ -1031,7 +1029,7 @@ multi a(Int $x) {
     my $res = callwith($x + 1);
     say "Back in Int with $res";
 }
- 
+
 a 1;        # OUTPUT: «Int 1␤Any 2␤Back in Int with 5␤» 
 ```
 
@@ -1055,7 +1053,6 @@ multi how-many( Associative $a ) {
 multi how-many( Pair $a ) {
     say "Pair $a ";
     return "There is $a "
- 
 }
  
 multi how-many( Hash $a ) {
@@ -1086,9 +1083,9 @@ The arguments provided by us are a `Pair`. It does not match a `Hash`, so the co
 <a id="nextsame-%E5%87%BD%E6%95%B0--sub-nextsame"></a>
 ## nextsame 函数 / sub nextsame
 
-`nextsame` 使用与当前候选函数相同的参数调用下一个匹配的候选函数，并且**从不**返回。
+`nextsame` 使用与当前候选函数相同的参数调用下一个匹配的候选函数，并且**不**返回原函数继续执行。
 
-`nextsame` calls the next matching candidate with the same arguments that were used for the current candidate and **never**returns.
+`nextsame` calls the next matching candidate with the same arguments that were used for the current candidate and **never** returns.
 
 ```Raku
 proto a(|) {*}
@@ -1109,7 +1106,7 @@ a 1;        # OUTPUT: «Int 1␤Any 1␤»
 <a id="nextwith-%E5%87%BD%E6%95%B0--sub-nextwith"></a>
 ## nextwith 函数 / sub nextwith
 
-`nextwith` 使用用户提供的参数调用下一个匹配的候选函数，并且**从不**返回。
+`nextwith` 使用用户提供的参数调用下一个匹配的候选函数，并且**不**返回原函数继续执行。
 
 `nextwith` calls the next matching candidate with arguments provided by users and **never** returns.
 
@@ -1138,13 +1135,13 @@ a 1;        # OUTPUT: «Int 1␤Any 2␤»
 
 ```Raku
 proto a(|) {*}
- 
+
 multi a(Int $x) {
   return 1 unless $x > 1;
   return $x * samewith($x-1);
 }
- 
-say (a 10); # OUTPUT: «36288002␤» 
+
+say (a 10); # OUTPUT: «36288002␤»
 ```
 
 <a id="nextcallee-%E5%87%BD%E6%95%B0--sub-nextcallee"></a>
@@ -1156,7 +1153,7 @@ Redispatch may be required to call a block that is not the current scope what pr
 
 ```Raku
 proto pick-winner(|) {*}
- 
+
 multi pick-winner (Int \s) {
     my &nextone = nextcallee;
     Promise.in(π²).then: { nextone s }
@@ -1167,18 +1164,18 @@ with pick-winner ^5 .pick -> \result {
     say "And the winner is...";
     await result;
 }
- 
+
 # OUTPUT: 
 # And the winner is... 
 # Woot! 3 won 
 ```
 
-Int 参数候选函数调用 `nextcallee`，然后在超时后触发一个并行执行的 Promise，然后返回。我们不能在这里使用 `nextsame`，因为它会试图 `nextsame` 那个 Promise 的代码块，而不是我们原来的子例程。
+Int 参数的候选函数调用 `nextcallee`，然后在超时后触发一个并行执行的 Promise，然后返回。我们不能在这里使用 `nextsame`，因为它会试图 `nextsame` 那个有 Promise 的代码块，而不是我们原来的子例程。
 
 The Int candidate takes the `nextcallee` and then fires up a Promise to be executed in parallel, after some timeout, and then returns. We can't use `nextsame` here, because it'd be trying to `nextsame` the Promise's block instead of our original routine.
 
-<a id="%E6%89%93%E5%8C%85%E7%9A%84%E4%BE%8B%E7%A8%8B--wrapped-routines"></a>
-## 打包的例程 / Wrapped routines
+<a id="%E5%8C%85%E8%A3%85%E7%9A%84%E4%BE%8B%E7%A8%8B--wrapped-routines"></a>
+## 包装的例程 / Wrapped routines
 
 除上述情况外，在更多情况下，重新调度也很有帮助。一种是发送到被包装的例程：
 

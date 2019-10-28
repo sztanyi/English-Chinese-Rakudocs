@@ -8,3 +8,4 @@ Unicode 与 ASCII 符号 - Unicode versus ASCII symbols
 上下文以及上下文语境化器 - Contexts and contextualizers
 下标 - Subscripts
 元对象协议 - Meta-object protocol (MOP)
+函数 - Functions
