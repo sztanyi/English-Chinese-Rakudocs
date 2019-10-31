@@ -54,7 +54,7 @@ Introspection on subroutines is provided via [`Routine`](https://rakudocs.github
   - [nextcallee 函数 / sub nextcallee](#nextcallee-%E5%87%BD%E6%95%B0--sub-nextcallee)
   - [包装的例程 / Wrapped routines](#%E5%8C%85%E8%A3%85%E7%9A%84%E4%BE%8B%E7%A8%8B--wrapped-routines)
   - [父类例程 / Routines of parent class](#%E7%88%B6%E7%B1%BB%E4%BE%8B%E7%A8%8B--routines-of-parent-class)
-- [强制类型转换 / Coercion types](#%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2--coercion-types)
+- [强制类型转换的类型 / Coercion types](#%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E7%9A%84%E7%B1%BB%E5%9E%8B--coercion-types)
 - [Main 函数 / sub MAIN](#main-%E5%87%BD%E6%95%B0--sub-main)
 
 <!-- /MarkdownTOC -->
@@ -1177,7 +1177,7 @@ The Int candidate takes the `nextcallee` and then fires up a Promise to be execu
 <a id="%E5%8C%85%E8%A3%85%E7%9A%84%E4%BE%8B%E7%A8%8B--wrapped-routines"></a>
 ## 包装的例程 / Wrapped routines
 
-除上述情况外，在更多情况下，重新调度也很有帮助。一种是发送到被包装的例程：
+除上述情况外，在更多情况下，重新调度也很有帮助。分派到被包装的例程：
 
 Besides those are mentioned above, re-dispatch is helpful in more situations. One is for dispatching to wrapped routines:
 
@@ -1212,18 +1212,18 @@ class LoggedVersion is Version {
         nextsame;
     }
 }
- 
+
 say LoggedVersion.new('1.0.2');
- 
+
 # OUTPUT: 
 # New version object created with arguments \("1.0.2") 
 # v1.0.2 
 ```
 
-<a id="%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2--coercion-types"></a>
-# 强制类型转换 / Coercion types
+<a id="%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E7%9A%84%E7%B1%BB%E5%9E%8B--coercion-types"></a>
+# 强制类型转换的类型 / Coercion types
 
-强制类型转换强制例程参数的特定类型，同时允许例程本身接受更广泛的输入。调用时，参数会自动缩小到更严格的类型，因此在例程中，参数始终具有所需的类型。
+强制类型转换类型强制例程参数为特定类型，同时允许例程本身接受更广泛的输入。调用时，参数会自动缩小到更严格的类型，因此在例程中，参数始终具有所需的类型。
 
 Coercion types force a specific type for routine arguments while allowing the routine itself to accept a wider input. When invoked, the arguments are narrowed automatically to the stricter type, and therefore within the routine the arguments have always the desired type.
 
@@ -1235,7 +1235,7 @@ In the case the arguments cannot be converted to the stricter type, a *Type Chec
 sub double(Int(Cool) $x) {
     2 * $x
 }
- 
+
 say double '21';# OUTPUT: «42␤» 
 say double  21; # OUTPUT: «42␤» 
 say double Any; # Type check failed in binding $x; expected 'Cool' but got 'Any' 

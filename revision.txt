@@ -9,3 +9,5 @@ Unicode 与 ASCII 符号 - Unicode versus ASCII symbols
 下标 - Subscripts
 元对象协议 - Meta-object protocol (MOP)
 函数 - Functions
+列表、序列和数组 - Lists, sequences, and arrays
+

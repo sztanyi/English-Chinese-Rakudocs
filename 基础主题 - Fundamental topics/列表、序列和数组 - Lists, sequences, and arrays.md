@@ -1,6 +1,6 @@
 原文：https://rakudocs.github.io/language/list
 
-# 列表、序列和数组 - Lists, sequences, and arrays
+# 列表、序列和数组 / Lists, sequences, and arrays
 
 位置数据构造
 
@@ -13,7 +13,7 @@ Lists have been a central part of computing since before there were computers, d
 <!-- MarkdownTOC -->
 
 - [列表字面量 / Literal lists](#%E5%88%97%E8%A1%A8%E5%AD%97%E9%9D%A2%E9%87%8F--literal-lists)
-- [@ 符号 / The @ sigil](#-%E7%AC%A6%E5%8F%B7--the--sigil)
+- [@ 标记 / The @ sigil](#-%E6%A0%87%E8%AE%B0--the--sigil)
 - [重置列表容器 / Reset a list container](#%E9%87%8D%E7%BD%AE%E5%88%97%E8%A1%A8%E5%AE%B9%E5%99%A8--reset-a-list-container)
 - [迭代 / Iteration](#%E8%BF%AD%E4%BB%A3--iteration)
     - [单参数规则 / Single Argument Rule](#%E5%8D%95%E5%8F%82%E6%95%B0%E8%A7%84%E5%88%99--single-argument-rule)
@@ -24,14 +24,14 @@ Lists have been a central part of computing since before there were computers, d
 - [惰性列表 / Lazy lists](#%E6%83%B0%E6%80%A7%E5%88%97%E8%A1%A8--lazy-lists)
 - [不变性 / Immutability](#%E4%B8%8D%E5%8F%98%E6%80%A7--immutability)
 - [列表上下文 / List contexts](#%E5%88%97%E8%A1%A8%E4%B8%8A%E4%B8%8B%E6%96%87--list-contexts)
-    - [列表分配上下文 / List assignment context](#%E5%88%97%E8%A1%A8%E5%88%86%E9%85%8D%E4%B8%8A%E4%B8%8B%E6%96%87--list-assignment-context)
+    - [列表赋值上下文 / List assignment context](#%E5%88%97%E8%A1%A8%E8%B5%8B%E5%80%BC%E4%B8%8A%E4%B8%8B%E6%96%87--list-assignment-context)
     - [扁平化“上下文” / Flattening "context"](#%E6%89%81%E5%B9%B3%E5%8C%96%E2%80%9C%E4%B8%8A%E4%B8%8B%E6%96%87%E2%80%9D--flattening-context)
-    - [参数列表（Capture）上下文 / Argument list \(Capture\) context](#%E5%8F%82%E6%95%B0%E5%88%97%E8%A1%A8%EF%BC%88capture%EF%BC%89%E4%B8%8A%E4%B8%8B%E6%96%87--argument-list-capture-context)
+    - [参数列表上下文 / Argument list \(Capture\) context](#%E5%8F%82%E6%95%B0%E5%88%97%E8%A1%A8%E4%B8%8A%E4%B8%8B%E6%96%87--argument-list-capture-context)
     - [切片索引上下文 / Slice indexing context](#%E5%88%87%E7%89%87%E7%B4%A2%E5%BC%95%E4%B8%8A%E4%B8%8B%E6%96%87--slice-indexing-context)
     - [范围为切片 / Range as slice](#%E8%8C%83%E5%9B%B4%E4%B8%BA%E5%88%87%E7%89%87--range-as-slice)
     - [数组构造器上下文 / Array constructor context](#%E6%95%B0%E7%BB%84%E6%9E%84%E9%80%A0%E5%99%A8%E4%B8%8A%E4%B8%8B%E6%96%87--array-constructor-context)
 - [数组 / Arrays](#%E6%95%B0%E7%BB%84--arrays)
-    - [录入 / Typing](#%E5%BD%95%E5%85%A5--typing)
+    - [类型 / Typing](#%E7%B1%BB%E5%9E%8B--typing)
     - [定长数组 / Fixed size arrays](#%E5%AE%9A%E9%95%BF%E6%95%B0%E7%BB%84--fixed-size-arrays)
     - [条目化 / Itemization](#%E6%9D%A1%E7%9B%AE%E5%8C%96--itemization)
     - [字面量数组 / Literal arrays](#%E5%AD%97%E9%9D%A2%E9%87%8F%E6%95%B0%E7%BB%84--literal-arrays)
@@ -78,18 +78,17 @@ Parentheses can be used to mark the beginning and end of a `List`, so:
 (1, 2), (1, 2); # This is a list of two lists. 
 ```
 
-
 也可以通过组合逗号和分号来创建列表的列表。这也被称为多维语法，因为它最常用于索引多维数组。
 
 `List`s of `List`s can also be created by combining comma and semicolon. This is also called multi-dimensional syntax, because it is most often used to index multidimensional arrays.
 
 ```Raku
 say so (1,2; 3,4) eqv ((1,2), (3,4));
-# OUTPUT: «True␤» 
+# OUTPUT: «True␤»
 say so (1,2; 3,4;) eqv ((1,2), (3,4));
-# OUTPUT: «True␤» 
+# OUTPUT: «True␤»
 say so ("foo";) eqv ("foo") eqv (("foo")); # not a list 
-# OUTPUT: «True␤» 
+# OUTPUT: «True␤»
 ```
 
 与逗号不同，挂起的分号不会在文本中创建多维列表。但是，请注意，此行为在大多数参数列表中都会发生变化，具体的行为取决于函数…但通常是：
@@ -119,21 +118,21 @@ say so (42,42) eqv (my $a = 42; $a;);
 Individual elements can be pulled out of a list using a subscript. The first element of a list is at index number zero:
 
 ```Raku
-say (1, 2)[0];  # says 1 
-say (1, 2)[1];  # says 2 
-say (1, 2)[2];  # says Nil 
-say (1, 2)[-1]; # Error 
-say ((<a b>,<c d>),(<e f>,<g h>))[1;0;1]; # says "f" 
+say (1, 2)[0];  # says 1
+say (1, 2)[1];  # says 2
+say (1, 2)[2];  # says Nil
+say (1, 2)[-1]; # Error
+say ((<a b>,<c d>),(<e f>,<g h>))[1;0;1]; # says "f"
 ```
 
-<a id="-%E7%AC%A6%E5%8F%B7--the--sigil"></a>
-# @ 符号 / The @ sigil
+<a id="-%E6%A0%87%E8%AE%B0--the--sigil"></a>
+# @ 标记 / The @ sigil
 
-Raku 中名带有 `@` 符号的变量应该包含某种类似列表的对象。当然，其他变量也可能包含这些对象，但是 `@` 符号变量总是包含这些对象。
+Raku 中名带有 `@` 标记的变量应该包含某种类似列表的对象。当然，其他变量也可能包含这些对象，但是 `@` 标记的变量总是包含这些对象。
 
 Variables in Raku whose names bear the `@` sigil are expected to contain some sort of list-like object. Of course, other variables may also contain these objects, but `@`-sigiled variables always do, and are expected to act the part.
 
-默认情况下，当将 `List` 分配给一个 `@` 符号变量时，将创建一个 `Array`。这些内容如下所述。如果你希望使用 `@` 符号变量直接引用 `List` 对象，则可以使用 `:=` 绑定。
+默认情况下，当将 `List` 赋值给一个 `@` 标记的变量时，将创建一个 `Array`。这些内容如下所述。如果你希望使用 `@` 标记变量直接引用 `List` 对象，则可以使用 `:=` 绑定。
 
 By default, when you assign a `List` to an `@`-sigiled variable, you create an `Array`. Those are described below. If instead you want to refer directly to a `List` object using an `@`-sigiled variable, you can use binding with `:=` instead.
 
@@ -141,7 +140,7 @@ By default, when you assign a `List` to an `@`-sigiled variable, you create an `
 my @a := 1, 2, 3;
 ```
 
-`@` 符号的变量表现得像列表的方法是支持 [位置下标](https://rakudocs.github.io/language/subscripts)。 任何绑定 `@` 符号的值必须支持 [Positional](https://rakudocs.github.io/type/Positional) 角色，这意味着下面的语句注定失败：
+`@` 符号的变量表现得像列表的方法是支持[位置下标](https://rakudocs.github.io/language/subscripts)。 任何绑定 `@` 符号的值必须支持 [Positional](https://rakudocs.github.io/type/Positional) 角色，这意味着下面的语句注定失败：
 
 One of the ways `@`-sigiled variables act like lists is by always supporting [positional subscripting](https://rakudocs.github.io/language/subscripts). Anything bound to a `@`-sigiled value must support the [Positional](https://rakudocs.github.io/type/Positional) role which guarantees that this is going to fail:
 
@@ -152,7 +151,7 @@ my @a := 1; # Type check failed in binding; expected Positional but got Int
 <a id="%E9%87%8D%E7%BD%AE%E5%88%97%E8%A1%A8%E5%AE%B9%E5%99%A8--reset-a-list-container"></a>
 # 重置列表容器 / Reset a list container
 
-从位置容器中删除所有元素可以赋值 [`Empty`](https://rakudocs.github.io/type/Slip#Empty)、空列表 `()` 或者 空列表的 `Slip` 形式给容器。
+从位置容器中删除所有元素可以赋值 [`Empty`](https://rakudocs.github.io/type/Slip#Empty)、空列表 `()` 或者空列表的 `Slip` 形式给容器。
 
 To remove all elements from a Positional container assign [`Empty`](https://rakudocs.github.io/type/Slip#Empty), the empty list `()` or a `Slip` of the empty list to the container.
 
@@ -215,7 +214,7 @@ Since what `for` receives is a single argument, it will be treated as a list of 
 <a id="%E6%88%90%E5%91%98%E6%B5%8B%E8%AF%95--testing-for-elements"></a>
 # 成员测试 / Testing for elements
 
-要测试是否为列表或者数组的成员，可以使用 ["是否成员"](https://rakudocs.github.io/language/setbagmix#infix_%28elem%29) [`Set`](https://rakudocs.github.io/type/Set) 操作符
+要测试是否为列表或者数组的成员，可以使用["是否成员"](https://rakudocs.github.io/language/setbagmix#infix_%28elem%29) [`Set`](https://rakudocs.github.io/type/Set) 操作符
 
 To test for elements in a `List` or `Array`, you can use the ["is element of"](https://rakudocs.github.io/language/setbagmix#infix_%28elem%29) [`Set`](https://rakudocs.github.io/type/Set) operator.
 
@@ -244,7 +243,7 @@ It basically compares the value with each element in the array using the [===](h
 <a id="%E5%BA%8F%E5%88%97--sequences"></a>
 ## 序列 / Sequences
 
-并不是所有的列表都充满了元素。有些只创建所需的元素。这些被称为序列，其类型为 [Seq](https://rakudocs.github.io/type/Seq)。当它发生时，循环返回 `Seq`。
+并不是所有的列表都天生充满了元素。有些只创建所需的元素。这些被称为序列，其类型为 [Seq](https://rakudocs.github.io/type/Seq)。当它发生时，循环返回 `Seq`。
 
 Not all lists are born full of elements. Some only create as many elements as they are asked for. These are called sequences, which are of type [Seq](https://rakudocs.github.io/type/Seq). As it so happens, loops return `Seq`s.
 
@@ -252,7 +251,7 @@ Not all lists are born full of elements. Some only create as many elements as th
 (loop { 42.say })[2]  # OUTPUT: «42␤42␤42␤» 
 ```
 
-所以，在 Raku 中拥有无限的列表是很好的，只要你从不要求它们提供所有元素。在某些情况下，你可能希望避免询问它们的长度——如果 Raku 知道序列是无限的，它将尝试返回 `Inf`，但它不能总是知道。
+所以，在 Raku 中拥有无限列表没有问题，只要你不要求它们提供所有元素。在某些情况下，你可能希望避免询问它们的长度——如果 Raku 知道序列是无限的，它将尝试返回 `Inf`，但它不能总是知道。
 
 So, it is fine to have infinite lists in Raku, just so long as you never ask them for all their elements. In some cases, you may want to avoid asking them how long they are too – Raku will try to return `Inf` if it knows a sequence is infinite, but it cannot always know.
 
@@ -260,7 +259,7 @@ So, it is fine to have infinite lists in Raku, just so long as you never ask the
 
 These lists can be built using the [...](https://rakudocs.github.io/language/operators#infix_...) operator, which builds lazy lists using a variety of generating expressions.
 
-尽管 `Seq` 类提供了一些位置订阅，但它不提供 `Positional` 的完整接口，因此 `@` 变量可能**未**绑定到`Seq`，尝试这样做会产生错误。
+尽管 `Seq` 类提供了一些位置下标访问，但它不提供 `Positional` 的完整接口，因此 `@` 变量可能**不能**绑定到`Seq`，尝试这样做会产生错误。
 
 Although the `Seq` class does provide some positional subscripting, it does not provide the full interface of `Positional`, so an `@`-sigiled variable may **not** be bound to a `Seq`, and trying to do so will yield an error.
 
@@ -279,11 +278,11 @@ for 'filename'.IO.lines -> $line {
 }
 ```
 
-你可以确信，文件的全部内容不会留在记忆中，除非你明确地在某个地方保存这些内容。
+你可以确信，文件的全部内容不会留在内存中，除非你明确地在某个地方保存这些内容。
 
 You can be confident that the entire content of the file will not stay around in memory, unless you are explicitly storing the lines somewhere.
 
-另一方面，在某些情况下，你可能希望保留旧值。可以将 `Seq` 隐藏在 `List` 中，它仍然是懒惰的，但会记住旧值。这是通过调用 `.list` 方法完成的。由于这个 `.list` 完全支持 `Positional`，可以将它直接绑定到一个 `@` 变量。
+另一方面，在某些情况下，你可能希望保留旧值。可以将 `Seq` 隐藏在 `List` 中，它仍然是懒惰的，但会记住旧值。这是通过调用 `.list` 方法完成的。由于这个 `List` 完全支持 `Positional`，可以将它直接绑定到一个 `@` 变量。
 
 On the other hand, you may want to keep old values around in some cases. It is possible to hide a `Seq` inside a `List`, which will still be lazy, but will remember old values. This is done by calling the `.list` method. Since this `List` fully supports `Positional`, you may bind it directly to an `@`-sigiled variable.
 
@@ -316,7 +315,7 @@ repeat {
 } until $odd.Str eq IterationEnd.Str;
 ```
 
-我们没有像在 `for` 循环中那样隐式地使用迭代器，而是将它显式地分配给 `$odd-iterator` 变量，以便只处理序列的奇数元素。这样，我们可以使用 `.skip-one` 跳过偶数元素。我们必须明确测试终止，这是在 `until` 表达式中进行的。当没有剩余的东西可以迭代时，`$odd` 将具有值 `IterationEnd`。请查看[迭代器文档](https://rakudocs.github.io/type/Iterator)，了解可用的方法和函数。
+我们没有像在 `for` 循环中那样隐式地使用迭代器，而是将它显式地赋值给 `$odd-iterator` 变量，以便只处理序列的奇数元素。这样，我们可以使用 `.skip-one` 跳过偶数元素。我们必须明确测试终止，这是在 `until` 表达式中进行的。当没有剩余的东西可以迭代时，`$odd` 将具有值 `IterationEnd`。请查看[迭代器文档](https://rakudocs.github.io/type/Iterator)，了解可用的方法和函数。
 
 Instead of using the iterator implicitly as we do in `for` loops, we explicitly assign it to the `$odd-iterator` variable to work over the odd elements of the sequence only. That way, we can skip even elements using `.skip-one`. We do have to test explicitly for termination, which we do in the `until` expression. When there's nothing left to iterate, `$odd` will have the value `IterationEnd`. Please check the [documentation on `Iterator`s](https://rakudocs.github.io/type/Iterator) for the methods and functions that are available.
 
@@ -346,7 +345,7 @@ say (1, slip($(2, 3)), 4) eqv (1, 2, 3, 4);  # OUTPUT: «False␤»
 <a id="%E6%83%B0%E6%80%A7%E5%88%97%E8%A1%A8--lazy-lists"></a>
 # 惰性列表 / Lazy lists
 
-`List`、`Seq`、`Array` 和任何其他实现 [Iterator](https://rakudocs.github.io/type/Iterator) 角色的类都是惰性的，这意味着它们的值是按需计算的，并存储以备以后使用。创建懒惰对象的方法之一是使用 [gather/take](https://rakudocs.github.io/language/control#gather%2Ftake) 或[序列运算符](https://rakudocs.github.io/language/operators#infix_...)。你还可以编写一个实现角色[迭代器](https://rakudocs.github.io/type/Iterator)的类，并在调用 [is-lazy](https://rakudocs.github.io/routine/is-lazy) 时返回 `True`。请注意，某些方法（如 `elems`）不能在惰性列表中调用，并将导致引发 [Exception](https://rakudocs.github.io/type/Exception)。
+`List`、`Seq`、`Array` 和任何其他实现 [Iterator](https://rakudocs.github.io/type/Iterator) 角色的类都是惰性的，这意味着它们的值是按需计算的，并存储以备以后使用。创建懒惰对象的方法之一是使用 [gather/take](https://rakudocs.github.io/language/control#gather%2Ftake) 或[序列运算符](https://rakudocs.github.io/language/operators#infix_...)。你还可以编写一个实现角色 [Iterator](https://rakudocs.github.io/type/Iterator) 的类，并在调用 [is-lazy](https://rakudocs.github.io/routine/is-lazy) 时返回 `True`。请注意，某些方法（如 `elems`）不能在惰性列表中调用，并将导致引发 [Exception](https://rakudocs.github.io/type/Exception)。
 
 `List`s, `Seq`s, `Array`s and any other class that implements the [Iterator](https://rakudocs.github.io/type/Iterator) role can be lazy, which means that their values are computed on demand and stored for later use. One of the ways to create a lazy object is to use [gather/take](https://rakudocs.github.io/language/control#gather%2Ftake) or the [sequence operator](https://rakudocs.github.io/language/operators#infix_...). You can also write a class that implements the role [Iterator](https://rakudocs.github.io/type/Iterator) and returns `True` on a call to [is-lazy](https://rakudocs.github.io/routine/is-lazy). Please note that some methods like `elems` cannot be called on a lazy List and will result in a thrown [Exception](https://rakudocs.github.io/type/Exception).
 
@@ -367,7 +366,7 @@ say @no-longer-lazy[];
 # OUTPUT: (sequence starting with «[1 11 121» ending with a 300 digit number) 
 ```
 
-在上面的示例中，`@lazy-array` 是一个数组，通过构造，它被设置为惰性。对其调用 `is-lazy` 实际上调用了角色 `Iterator` 混合的方法，因为它源自一个懒惰列表，所以它本身就是懒惰的。
+在上面的示例中，`@lazy-array` 是一个数组，通过构造，它被设置为惰性。对其调用 `is-lazy` 实际上调用了角色 `Iterator` 混入的方法，因为它源自一个懒惰列表，所以它本身就是懒惰的。
 
 In the example above, `@lazy-array` is an `Array` which, through construction, is made `lazy`. Calling `is-lazy` on it actually calls the method mixed in by the role `Iterator`, which, since it originates in a lazy list, is itself lazy.
 
@@ -426,10 +425,10 @@ that is, it is only the list structure itself – how many elements there are an
 
 So far we have mostly dealt with lists in neutral contexts. Lists are actually very context sensitive on a syntactical level.
 
-<a id="%E5%88%97%E8%A1%A8%E5%88%86%E9%85%8D%E4%B8%8A%E4%B8%8B%E6%96%87--list-assignment-context"></a>
-## 列表分配上下文 / List assignment context
+<a id="%E5%88%97%E8%A1%A8%E8%B5%8B%E5%80%BC%E4%B8%8A%E4%B8%8B%E6%96%87--list-assignment-context"></a>
+## 列表赋值上下文 / List assignment context
 
-当一个列表（或者将要转换成列表的东西）出现在赋值的右侧，变成一个 `@` 变量时，它会被“急切地”评估。例如，这意味着 `Seq` 将被迭代，直到不能再生成任何元素。这是你不希望放置无限列表的地方之一，以免程序挂起，最终耗尽内存：
+当一个列表（或者将要转换成列表的东西）出现在赋值的右侧，变成一个 `@` 变量时，它会被“急切地”评估。例如，这意味着 `Seq` 将被遍历，直到不能再生成任何元素。这是你不希望放置无限列表的地方之一，以免程序挂起，最终耗尽内存：
 
 When a list (or something that is going to be converted into a list) appears on the right-hand side of an assignment into a `@`-sigiled variable, it is "eagerly" evaluated. This means that a `Seq` will be iterated until it can produce no more elements, for instance. This is one of the places you do not want to put an infinite list, lest your program hang and, eventually, run out of memory:
 
@@ -469,7 +468,7 @@ Note that [`Scalar`s](https://rakudocs.github.io/type/Scalar) around a list will
 for (1, (2, $(3, 4)), 5).flat { .say } # OUTPUT: «1␤2␤(3 4)␤5␤» 
 ```
 
-…但是一个带 `@` 标记的变量会溢出它的元素。
+…但是一个 `@` 标记的变量会溢出它的元素。
 
 ...but an `@`-sigiled variable will spill its elements.
 
@@ -480,10 +479,10 @@ my @a = 2, (3, 4);                 # Arrays are special, see below
 for (1, @a, 5).flat { .say };      # OUTPUT: «1␤2␤(3 4)␤5␤» 
 ```
 
-<a id="%E5%8F%82%E6%95%B0%E5%88%97%E8%A1%A8%EF%BC%88capture%EF%BC%89%E4%B8%8A%E4%B8%8B%E6%96%87--argument-list-capture-context"></a>
-## 参数列表（Capture）上下文 / Argument list (Capture) context
+<a id="%E5%8F%82%E6%95%B0%E5%88%97%E8%A1%A8%E4%B8%8A%E4%B8%8B%E6%96%87--argument-list-capture-context"></a>
+## 参数列表上下文 / Argument list (Capture) context
 
-当列表显示为函数或方法调用的参数时，将使用特殊的语法规则：列表将立即转换为 `Capture` 对象。`Capture` 本身有一个列表（`.list`）和一个哈希（`.hash`）。任何键未被引用或未加括号的 `Pair` 文本都不会进入 `.list`。相反，它们被认为是命名参数并被压缩到 `.hash`。有关此处理的详细信息，请参阅 [`Capture`页面](https://rakudocs.github.io/type/Capture)。
+当列表显示为函数或方法调用的参数时，将使用特殊的语法规则：列表将立即转换为 `Capture` 对象。`Capture` 本身有一个列表（`.list`）和一个哈希（`.hash`）。任何键未被引用或未加括号的 `Pair` 文本都不会进入 `.list`。相反，它们被认为是命名参数并被压缩到 `.hash`。有关此处理的详细信息，请参阅 [`Capture` 页面](https://rakudocs.github.io/type/Capture)。
 
 When a list appears as arguments to a function or method call, special syntax rules are at play: the list is immediately converted into a `Capture`. A `Capture` itself has a List (`.list`) and a Hash (`.hash`). Any `Pair` literals whose keys are not quoted, or which are not parenthesized, never make it into `.list`. Instead, they are considered to be named arguments and squashed into `.hash`. See the [page on `Capture`](https://rakudocs.github.io/type/Capture) for the details of this processing.
 
@@ -509,7 +508,7 @@ my @a = 1, 2, :c(3); Array.new: @a;
 my @a = 1, 2, :c(3); new Array: @a;
 ```
 
-在参数列表上下文中，应用于有 `Positional` 角色的对象的 `|` 前缀运算符始终将列表元素作为位置参数展平给 `Capture` 对象，而应用于有 `Associative` 角色的对象的 `|` 前缀运算符会将键值对作为命名参数给 `Capture` 对象：
+在参数列表上下文中，应用于 `Positional` 的 `|` 前缀运算符始终将列表元素作为位置参数展平给 `Capture` 对象，而应用于有 `Associative` 的 `|` 会将键值对作为命名参数给 `Capture` 对象：
 
 In argument list context the `|` prefix operator applied to a `Positional` will always slip list elements as positional arguments to the Capture, while a `|` prefix operator applied to an `Associative` will slip pairs in as named parameters:
 
@@ -527,7 +526,7 @@ Array.new(1, |%a, 4);    # Array contains 1, 4
 
 From the perspective of the `List` inside a [slice subscript](https://rakudocs.github.io/language/subscripts#Slices), is only remarkable in that it is unremarkable: because [adverbs](https://rakudocs.github.io/language/subscripts#Adverbs) to a slice are attached after the `]`, the inside of a slice is **not** an argument list, and no special processing of pair forms happens.
 
-大多数 `Positional` 类型都会对切片索引的每个元素强制使用整数，因此在切片索引中出现的键值对将生成错误：
+大多数 `Positional` 类型都会对切片索引的每个元素强制使用整数，因此在切片索引中出现的键值对将报错：
 
 Most `Positional` types will enforce an integer coercion on each element of a slice index, so pairs appearing there will generate an error, anyway:
 
@@ -547,7 +546,7 @@ Indices inside a slice are usually not automatically flattened, but neither are 
 say ("a", "b", "c")[(1, 2), (0, 1)] eqv (("b", "c"), ("a", "b")) # OUTPUT: «True␤» 
 ```
 
-切片也可以使用*半列表*跨多个维度进行，半列表是用分号分隔的切片列表：
+切片也可以使用*分号列表*跨多个维度进行，半列表是用分号分隔的切片列表：
 
 Slices can be taken also across several dimensions using *semilists*, which are lists of slices separated by semicolons:
 
@@ -563,7 +562,7 @@ which is selecting the 4 to 6th element from the three first dimensions (`^3`).
 <a id="%E8%8C%83%E5%9B%B4%E4%B8%BA%E5%88%87%E7%89%87--range-as-slice"></a>
 ## 范围为切片 / Range as slice
 
-[`Range`](https://rakudocs.github.io/type/Range) 是上下边界的容器，可以只有上边界或者只有下边界。生成带有 `Range` 的切片将包含边界之间的任何索引，但无限范围将 [截断](https://rakudocs.github.io/language/subscripts#Truncating_slices)不存在的元素。具有排除上边界的无限范围仍然是无限的，并且将到达所有元素。
+[`Range`](https://rakudocs.github.io/type/Range) 是上下边界的容器，可以只有上边界或者只有下边界。生成带有 `Range` 的切片将包含边界之间的任何索引，但无限范围将[截断](https://rakudocs.github.io/language/subscripts#Truncating_slices)不存在的元素。具有排除上边界的无限范围（例如 `0..^Inf`）仍然是无限的，并且将获取所有元素。
 
 A [`Range`](https://rakudocs.github.io/type/Range) is a container for a lower and an upper boundary, either of which may be excluded. Generating a slice with a `Range` will include any index between the bounds, though an infinite Range will [truncate](https://rakudocs.github.io/language/subscripts#Truncating_slices) non-existent elements. An infinite range with excluded upper boundary (e.g. `0..^Inf`) is still infinite and will reach all elements.
 
@@ -576,16 +575,16 @@ say @a[0..^*];    # OUTPUT: «(1 2 3 4 5)␤»
 say @a[0..Inf-1]; # OUTPUT: «(1 2 3 4 5)␤» 
 ```
 
-请注意，当上边界是 WhateverCode 而不是 Whatever 时，范围不是无限的，而是一个生成 Range 的可调用函数。这是 [..](https://rakudocs.github.io/type/Range) 运算符的正常行为。下标运算符 [[\]](https://rakudocs.github.io/language/subscripts#Slices) 评估 WhateverCode 时将
+请注意，当上边界是 WhateverCode 而不是 Whatever 时，范围不是无限的，而是一个生成 Range 的可调用函数。这是 [..](https://rakudocs.github.io/type/Range) 运算符的正常行为。下标运算符 [[]](https://rakudocs.github.io/language/subscripts#Slices) 评估 WhateverCode 时将
 列表的 `.elems` 作为参数，并使用结果范围进行切片：
 
-Note that when the upper boundary is a WhateverCode instead of just a Whatever, the range is not infinite but becomes a Callable producing Ranges. This is normal behavior of the [..](https://rakudocs.github.io/type/Range) operator. The subscript operator [[\]](https://rakudocs.github.io/language/subscripts#Slices) evaluates the WhateverCode providing the list's `.elems` as an argument and uses the resulting range to slice:
+Note that when the upper boundary is a WhateverCode instead of just a Whatever, the range is not infinite but becomes a Callable producing Ranges. This is normal behavior of the [..](https://rakudocs.github.io/type/Range) operator. The subscript operator [[]](https://rakudocs.github.io/language/subscripts#Slices) evaluates the WhateverCode providing the list's `.elems` as an argument and uses the resulting range to slice:
 
 ```Raku
-    say @a[0..*-1];   # OUTPUT: «(1 2 3 4 5)␤» 
-    say @a[0..^*-1];  # OUTPUT: «(1 2 3 4)␤» 
-    # Produces 0..^2.5 as the slice range 
-    say @a[0..^*/2];  # OUTPUT: «(1 2 3)␤» 
+say @a[0..*-1];   # OUTPUT: «(1 2 3 4 5)␤»
+say @a[0..^*-1];  # OUTPUT: «(1 2 3 4)␤»
+# Produces 0..^2.5 as the slice range
+say @a[0..^*/2];  # OUTPUT: «(1 2 3)␤»
 ```
 
 请注意，`0..^*` 和 `0..^*+0` 在下标中的行为一致，尽管其中一个是无限范围，另一个是生成范围的 WhateverCode，但 `0..*+0` 将为你提供额外的尾随 `Nil`，因为与无限范围 `0..*` 不同，它不会截断。
@@ -605,7 +604,7 @@ say so [ 1, 2, :c(3) ] eqv Array.new((1, 2, :c(3))); # OUTPUT: «True␤»
 (while $++ < 2 { 42.say; 43 }).map: *.say;           # OUTPUT: «42␤43␤42␤43␤» 
 ```
 
-这给我们带来了数组…
+这将我们带向了数组…
 
 Which brings us to Arrays...
 
@@ -624,8 +623,8 @@ say Array ~~ List     # OUTPUT: «True␤»
 
 A fourth, more subtle, way they differ is that when working with Arrays, it can sometimes be harder to maintain laziness or work with infinite sequences.
 
-<a id="%E5%BD%95%E5%85%A5--typing"></a>
-## 录入 / Typing
+<a id="%E7%B1%BB%E5%9E%8B--typing"></a>
+## 类型 / Typing
 
 数组可以有类型，这样在赋值时会执行类型检查。只允许分配 `Int` 值的数组的类型为 `Array[Int]`，可以使用 `Array[Int].new` 创建一个数组。如果你只打算为此目的使用 `@` 变量，则可以通过在声明元素时指定元素类型来更改其类型：
 
@@ -669,7 +668,7 @@ sub mean(Int @a) {
 }
 ```
 
-传递 Array[Int] 参数没问题：
+传递 Array[Int] 参数给函数调用将成功：
 
 Calls that pass an Array[Int] will be successful:
 
@@ -703,7 +702,7 @@ for @a -> Int $i { $_++.say };
 
 However, as long as you stick to normal assignment operations inside a trusted area of code, this will not be a problem, and typecheck errors will happen promptly during assignment to the array, if they cannot be caught at compile time. None of the core functions provided in Raku for operating on lists should ever produce a wonky typed Array.
 
-不存在的元素（索引时）或已分配 `Nil` 的元素将采用默认值。此默认值可以使用 `is default` 特性按变量进行调整。请注意，无类型的 `@` 变量的元素类型为 `Mu`，但其默认值是未定义的 `Any`：
+不存在的元素（索引时）或已赋值 `Nil` 的元素将采用默认值。此默认值可以使用 `is default` 特性按变量进行调整。请注意，无类型的 `@` 变量的元素类型为 `Mu`，但其默认值是未定义的 `Any`：
 
 Nonexistent elements (when indexed), or elements to which `Nil` has been assigned, will assume a default value. This default may be adjusted on a variable-by-variable basis with the `is default` trait. Note that an untyped `@`-sigiled variable has an element type of `Mu`, however its default value is an undefined `Any`:
 
@@ -763,7 +762,7 @@ As the third statement shows, you can assign directly to an element in a shaped 
 <a id="%E6%9D%A1%E7%9B%AE%E5%8C%96--itemization"></a>
 ## 条目化 / Itemization
 
-对于大多数情况，`Array` 由多个槽组成，每个槽都包含正确类型的标量。每个这样的标量依次包含该类型的值。 Raku 将自动检查值的类型，并在初始化、分配或构造数组时创建包含这些值的标量。
+对于大多数情况，`Array` 由多个槽组成，每个槽都包含正确类型的标量。每个这样的标量依次包含该类型的值。 Raku 将自动检查值的类型，并在初始化、赋值或构造数组时创建包含这些值的标量。
 
 For most uses, `Array`s consist of a number of slots each containing a `Scalar` of the correct type. Every such `Scalar`, in turn, contains a value of that type. Raku will automatically type-check values and create Scalars to contain them when Arrays are initialized, assigned to, or constructed.
 
@@ -771,7 +770,7 @@ For most uses, `Array`s consist of a number of slots each containing a `Scalar` 
 
 This is actually one of the trickiest parts of Raku list handling to get a firm understanding of.
 
-首先，请注意，因为假定数组中的条目化，所以它本质上意味着如果你不亲自将它们放在数组中，那么将把 `$(…)` 放在分配给数组的所有内容周围。另一方面，Array.perl 不将 `$` 放在显式显示变量中，与 List.perl 不同：
+首先，请注意，因为数组中的条目化是假定了的，所以它本质上意味着如果你不亲自将它们放在数组中，那么将把 `$(…)` 放在赋值给数组的所有内容周围。另一方面，Array.perl 不将 `$` 放在显式显示变量中，与 List.perl 不同：
 
 First, be aware that because itemization in Arrays is assumed, it essentially means that `$(…)`s are being put around everything that you assign to an array, if you do not put them there yourself. On the other side, Array.perl does not put `$` to explicitly show scalars, unlike List.perl:
 
@@ -818,7 +817,7 @@ say gather [0, [(1, 2), [3, 4]], $(5, 6)].deepmap: *.take; # OUTPUT: «(1 2 3 4 
 
 ... Future versions of Raku might find a way to make this easier. However, not returning Arrays or itemized lists from functions, when non-itemized lists are sufficient, is something that one should consider as a courtesy to their users:
 
-- 使用 `Slip`如果要始终与周围的列表合并。
+- 使用 `Slip` 如果要始终与周围的列表合并。
 - 使用非条目化列表当你想让用户更容易展平时。
 - 使用条目化数组保护用户不想展平的数据。
 - 使用 `Array` 作为条目化列表的非条目化列表，如果恰当的话。
@@ -837,7 +836,7 @@ The fact that all elements of an array are itemized (in `Scalar` containers) is 
 <a id="%E5%AD%97%E9%9D%A2%E9%87%8F%E6%95%B0%E7%BB%84--literal-arrays"></a>
 ## 字面量数组 / Literal arrays
 
-字面量 `Array` 是用方括号内的 `List` 构造的。`List` 被急切地迭代（如果可能的话，在编译时），其中的值被执行类型检查并条目化。方括号本身在扁平化时会将元素溢出到周围的列表中，但元素本身不会由于逐项化而溢出。
+字面量 `Array` 是用方括号内的 `List` 构造的。`List` 被急切地迭代（如果可能的话，在编译时），其中的值被执行类型检查并单条目化。方括号本身在扁平化时会将元素溢出到周围的列表中，但元素本身不会由于单条目化而溢出。
 
 Literal `Array`s are constructed with a `List` inside square brackets. The `List` is eagerly iterated (at compile time if possible) and values in it are each type-checked and itemized. The square brackets themselves will spill elements into surrounding lists when flattened, but the elements themselves will not spill due to the itemization.
 
@@ -892,6 +891,6 @@ $b = "bar";
 @a.say;          # OUTPUT: «[1 2 "bar"]␤» 
 ```
 
-……但强烈建议不要将 `Array` 槽直接绑定到值。如果你这样做了，就可以期待内置功能带来的惊喜。唯一可以这样做的时间是，如果需要知道值和`Scalar` 包装值之间的差异的可变容器，或者对于非常大的 `Array`，不能使用原生类型数组。这样的东西不应该传给毫无戒心的用户。
+……但强烈建议不要将 `Array` 槽直接绑定到值。如果你这样做了，就可以期待内置功能带来的惊喜。唯一可以这样做的时间是，如果知道值和 `Scalar` 包装值之间的差异的可变容器是真的需要，或者对于非常大的 `Array`，不能使用原生类型数组。这样的东西不应该传给毫无戒心的用户。
 
 ... But binding `Array` slots directly to values is strongly discouraged. If you do, expect surprises with built-in functions. The only time this would be done is if a mutable container that knows the difference between values and `Scalar`-wrapped values is needed, or for very large `Array`s where a native-typed array cannot be used. Such a creature should never be passed back to unsuspecting users.
