@@ -6,7 +6,7 @@
 
 Organizing and referencing namespaced program elements
 
-包是命名程序元素的嵌套命名空间。[模块](https://rakudocs.github.io/language/module-packages)、类、语法等都是包的类型。与目录中的文件一样，如果命名元素是本地的，则通常可以使用它们的短名引用它们，也可以引用包含名称空间的较长名称，只要它们的范围允许，就可以消除歧义。
+包是命名程序元素的嵌套命名空间。[模块](https://rakudocs.github.io/language/module-packages)、类、grammar 等都是包的类型。与目录中的文件一样，如果命名元素是本地的，则通常可以使用它们的短名引用它们，也可以引用包含名称空间的较长名称，只要它们的范围允许，就可以消除歧义。
 
 Packages are nested namespaces of named program elements. [Modules](https://rakudocs.github.io/language/module-packages), classes, grammars, and others are types of packages. Like files in a directory, you can generally refer to named elements with their short-name if they are local, or with the longer name that includes the namespace to disambiguate as long as their scope allows that.
 
@@ -16,7 +16,7 @@ Packages are nested namespaces of named program elements. [Modules](https://raku
     - [包限定名 / Package-qualified names](#%E5%8C%85%E9%99%90%E5%AE%9A%E5%90%8D--package-qualified-names)
 - [伪包 / Pseudo-packages](#%E4%BC%AA%E5%8C%85--pseudo-packages)
 - [查名字 / Looking up names](#%E6%9F%A5%E5%90%8D%E5%AD%97--looking-up-names)
-    - [插入姓名 / Interpolating into names](#%E6%8F%92%E5%85%A5%E5%A7%93%E5%90%8D--interpolating-into-names)
+    - [名称插值 / Interpolating into names](#%E5%90%8D%E7%A7%B0%E6%8F%92%E5%80%BC--interpolating-into-names)
     - [直接查找 / Direct lookup](#%E7%9B%B4%E6%8E%A5%E6%9F%A5%E6%89%BE--direct-lookup)
     - [包查找 / Package lookup](#%E5%8C%85%E6%9F%A5%E6%89%BE--package-lookup)
     - [类成员查找 / Class member lookup](#%E7%B1%BB%E6%88%90%E5%91%98%E6%9F%A5%E6%89%BE--class-member-lookup)
@@ -28,7 +28,7 @@ Packages are nested namespaces of named program elements. [Modules](https://raku
 <a id="%E5%90%8D%E5%AD%97--names"></a>
 # 名字 / Names
 
-包*名*与变量名的合法部分(不包括标记)一样。这包括：
+包*名*与变量名的合法部分（不包括标记）一样。这包括：
 
 A package *name* is anything that is a legal part of a variable name (not counting the sigil). This includes:
 
@@ -84,11 +84,11 @@ Sometimes it's clearer to keep the sigil with the variable name, so an alternate
 Foo::Bar::<$quux>
 ```
 
-这不适用于 `Foo«&zape»` 变量，因为在默认情况下，`sub` 有词法范围。该名称是在编译时解析的，因为变量名是常量。我们可以访问 `Bar` 中的其余变量(如上面的示例所示)，因为类在默认情况下具有包作用域。
+这不适用于 `Foo«&zape»` 变量，因为在默认情况下，`sub` 有词法范围。该名称是在编译时解析的，因为这个变量名是常量。我们可以访问 `Bar` 中的其余变量（如上例所示），因为类在默认情况下具有包作用域。
 
 This does not work with the `Foo«&zape»` variable, since `sub`s, by default, have lexical scope. The name is resolved at compile time because the variable name is a constant. We can access the rest of the variables in `Bar` (as shown in the example above) since classes, by default, have package scope.
 
-如果 `::` 前面的名称部分为 null，则表示包未指定，必须搜索。通常，这意味着主标记后面的第一个 `::` 是编译时已知的对名称的 no-op，不过 `::()` 也可以用来引入插值。此外，在没有其他信号的情况下，`::` 可以作为自己的标记，表示有意使用尚未声明的包名。
+如果 `::` 前面的名称部分为 null，则表示包未指定，必须搜索。通常，这意味着主标记后面的第一个 `::` 是编译时已知的对名称的空指令，不过 `::()` 也可以用来引入插值。此外，在没有其他信号的情况下，`::` 可以作为自己的标记，表示有意使用尚未声明的包名。
 
 If the name part before `::` is null, it means the package is unspecified and must be searched for. Generally this means that an initial `::` following the main sigil is a no-op on names that are known at compile time, though `::()` can also be used to introduce an interpolation. Also, in the absence of another sigil, `::` can serve as its own sigil indicating intentional use of a not-yet-declared package name.
 
@@ -102,7 +102,7 @@ The following pseudo-package names are reserved at the front of a name:
 | MY        | Symbols in the current lexical scope (aka $?SCOPE)           |
 | --------- | ------------------------------------------------------------ |
 | OUR       | Symbols in the current package (aka $?PACKAGE)               |
-| CORE      | Outermost lexical scope, definition of standard Perl         |
+| CORE      | Outermost lexical scope, definition of standard Raku         |
 | GLOBAL    | Interpreter-wide package symbols, really UNIT::GLOBAL        |
 | PROCESS   | Process-related globals (superglobals). The last place dynamic variable lookup will look. |
 | COMPILING | Lexical symbols in the scope being compiled                  |
@@ -123,17 +123,17 @@ The following relative names are also reserved but may be used anywhere in a nam
 | PARENT  | Symbols in this package's parent package (or lexical scope) |
 | CLIENT  | The nearest CALLER that comes from a different package      |
 
-该文件的作用域称为 `UNIT`，但在与语言设置相对应的范围之外有一个或多个词法作用域（在其他文化中通常称为前奏）。因此，`SETTING` 范围相当于 `UNIT::OUTERS`。对于标准 Raku 程序，`SETTING` 与 `CORE` 相同，但各种启动选项（例如 `-n` 或 `-p`）可以将你放入特定于域的语言中，在这种情况下，`CORE` 仍然是标准语言的作用域，而 `SETTING` 则表示定义 DSL 的作用域，作为当前文件的设置  。当用作名称中间的搜索词时，`SETTING` 包括它的所有外部作用域，直至 `CORE`。要获取*仅*设置的最外层作用域，请使用 `UNIT::OUTER`。
+文件的作用域称为 `UNIT`，但在与语言设置相对应的范围之外有一个或多个词法作用域（在其他文化中通常称为前奏）。因此，`SETTING` 范围相当于 `UNIT::OUTERS`。对于标准 Raku 程序，`SETTING` 与 `CORE` 相同，但各种启动选项（例如 `-n` 或 `-p`）可以将你放入特定于域的语言中，在这种情况下，`CORE` 仍然是标准语言的作用域，而 `SETTING` 则表示定义 DSL 的作用域，作为当前文件的设置  。当用作名称中间的搜索词时，`SETTING` 包括它的所有外部作用域，直至 `CORE`。要获取*仅*设置的最外层作用域，请使用 `UNIT::OUTER`。
 
 The file's scope is known as `UNIT`, but there are one or more lexical scopes outside of that corresponding to the linguistic setting (often known as the prelude in other cultures). Hence, the `SETTING` scope is equivalent to `UNIT::OUTERS`. For a standard Raku program `SETTING` is the same as `CORE`, but various startup options (such as `-n` or `-p`) can put you into a domain specific language, in which case `CORE` remains the scope of the standard language, while `SETTING` represents the scope defining the DSL that functions as the setting of the current file. When used as a search term in the middle of a name, `SETTING` includes all its outer scopes up to `CORE`. To get *only* the setting's outermost scope, use `UNIT::OUTER` instead.
 
 <a id="%E6%9F%A5%E5%90%8D%E5%AD%97--looking-up-names"></a>
 # 查名字 / Looking up names
 
-<a id="%E6%8F%92%E5%85%A5%E5%A7%93%E5%90%8D--interpolating-into-names"></a>
-## 插入姓名 / Interpolating into names
+<a id="%E5%90%8D%E7%A7%B0%E6%8F%92%E5%80%BC--interpolating-into-names"></a>
+## 名称插值 / Interpolating into names
 
-你可以使用 `::($expr)` 将字符串[插入](https://rakudocs.github.io/language/packages#Interpolating)到包或变量名中，在这里通常放置包或变量名。字符串允许包含 `::` 的其他实例，这将被解释为包嵌套。你只能内插全名，因为构造以 `::` 开头，或者直接结束，或者在括号外用另一个 `::` 继续。大多数符号引用都是用这个符号来完成的：
+你可以使用 `::($expr)` 将字符串[插值](https://rakudocs.github.io/language/packages#Interpolating)到包或变量名中，那个位置通常放置包或变量名。字符串允许包含 `::` 的其他实例，这将被解释为包嵌套。你只能插值全名，因为构造以 `::` 开头，或者直接结束，或者在括号外用另一个 `::` 继续。大多数符号引用都是用这个符号来完成的：
 
 You may [interpolate](https://rakudocs.github.io/language/packages#Interpolating) a string into a package or variable name using `::($expr)` where you'd ordinarily put a package or variable name. The string is allowed to contain additional instances of `::`, which will be interpreted as package nesting. You may only interpolate entire names, since the construct starts with `::`, and either ends immediately or is continued with another `::` outside the parentheses. Most symbolic references are done with this notation:
 
@@ -154,7 +154,7 @@ $::($foobar)           # $Foo::Bar
 @::($foo)::($bar)::baz # @Foo::Bar::baz
 ```
 
-初始的 `::` 并不意味着是全局的；在这里，作为插值语法的一部分，它甚至不意味着包。在对 `::()` 组件进行插值之后，对间接名称的查找与原始源代码中的名称完全相同，优先顺序首先是引导伪包名称，然后是词法作用域中的名称(向外搜索范围，以`CORE’结尾)。最后搜索当前包。
+`::` 开头并不意味着是全局的；在这里，作为插值语法的一部分，它甚至不意味着包。在对 `::()` 组件进行插值之后，对间接名称的查找与原始源代码中的名称完全相同，优先顺序首先是引导伪包名称，然后是词法作用域中的名称(向外搜索范围，以`CORE’结尾)。最后搜索当前包。
 
 An initial `::` doesn't imply global; here as part of the interpolation syntax it doesn't even imply package. After the interpolation of the `::()` component, the indirect name is looked up exactly as if it had been there in the original source code, with priority given first to leading pseudo-package names, then to names in the lexical scope (searching scopes outwards, ending at `CORE`). The current package is searched last.
 
@@ -192,7 +192,7 @@ say a-class."$what-method"(); # OUTPUT: «in-another-method␤»
 <a id="%E7%9B%B4%E6%8E%A5%E6%9F%A5%E6%89%BE--direct-lookup"></a>
 ## 直接查找 / Direct lookup
 
-要在不扫描的程序包的符号表中执行直接查找，请将包名称视为哈希：
+要在不扫描的程序包的符号表中执行直接查找，请将包名视为哈希：
 
 To do direct lookup in a package's symbol table without scanning, treat the package name as a hash:
 
@@ -245,6 +245,6 @@ Str.^lookup('chars')
 <a id="globals"></a>
 # Globals
 
-解释器全局符号存在于 `GLOBAL` 包中。用户的程序在 `GLOBAL` 包中启动，因此主程序代码中的 "our" 声明默认进入该包。过程范围内的变量存在于 `PROCESS` 包中。大多数预定义的全局符号(如 `$*UID` 和 `$*PID`)实际上都是进程全局符号。
+解释器全局符号存在于 `GLOBAL` 包中。用户的程序在 `GLOBAL` 包中启动，因此主程序代码中的 "our" 声明默认进入该包。过程范围内的变量存在于 `PROCESS` 包中。大多数预定义的全局符号（如 `$*UID` 和 `$*PID`）实际上都是进程全局符号。
 
 Interpreter globals live in the `GLOBAL` package. The user's program starts in the `GLOBAL` package, so "our" declarations in the mainline code go into that package by default. Process-wide variables live in the `PROCESS` package. Most predefined globals such as `$*UID` and `$*PID` are actually process globals.

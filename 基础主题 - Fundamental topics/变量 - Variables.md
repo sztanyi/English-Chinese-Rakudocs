@@ -15,7 +15,7 @@ Variable names can start with or without a special character called a *sigil*, 
 <!-- MarkdownTOC -->
 
 - [标记 / Sigils](#%E6%A0%87%E8%AE%B0--sigils)
-    - [单条目和列表赋值 / Item and List Assignment](#%E5%8D%95%E6%9D%A1%E7%9B%AE%E5%92%8C%E5%88%97%E8%A1%A8%E8%B5%8B%E5%80%BC--item-and-list-assignment)
+    - [单条目与列表赋值 / Item and List Assignment](#%E5%8D%95%E6%9D%A1%E7%9B%AE%E4%B8%8E%E5%88%97%E8%A1%A8%E8%B5%8B%E5%80%BC--item-and-list-assignment)
     - [无标记变量 / Sigilless variables](#%E6%97%A0%E6%A0%87%E8%AE%B0%E5%8F%98%E9%87%8F--sigilless-variables)
 - [符号 / Twigils](#%E7%AC%A6%E5%8F%B7--twigils)
     - [`*` 号](#-%E5%8F%B7)
@@ -95,7 +95,7 @@ Variable names can start with or without a special character called a *sigil*, 
 <a id="%E6%A0%87%E8%AE%B0--sigils"></a>
 # 标记 / Sigils
 
-共有四种标记。标量标记 `$`，位置标记 `@`，关联标记 `%` 和可调用标记 `&`。
+共有四种标记。标量标记 `$`、位置标记 `@`、关联标记 `%` 和可调用标记 `&`。
 
 There are four sigils. The scalar-sigil `$`, the positional-sigil `@`, the associative-sigil `%` and the callable-sigil `&`.
 
@@ -129,29 +129,29 @@ class FailHash is Hash {
         fail X::OutOfRange.new(:what("Hash key"), :got(key), :range(self.keys)) if $!final && !self.EXISTS-KEY(key);
         callsame
     }
- 
+
     method finalize() {
         $!final = True
     }
 }
- 
+
 my %h is FailHash = oranges => "round", bananas => "bendy";
 say %h<oranges>;
-# OUTPUT: «round» 
+# OUTPUT: «round»
 %h.finalize;
 say %h<cherry>;
 CATCH { default { put .^name, ': ', .Str } }
-# OUTPUT: «X::OutOfRange: Hash key out of range. Is: cherry, should be in (oranges bananas)» 
+# OUTPUT: «X::OutOfRange: Hash key out of range. Is: cherry, should be in (oranges bananas)»
 ```
 
-无标记的变量信息见 [sigilless variables](https://rakudocs.github.io/language/variables#Sigilless_variables).
+无标记的变量信息见[无标记变量](https://rakudocs.github.io/language/variables#Sigilless_variables).
 
 For information on variables without sigils, see [sigilless variables](https://rakudocs.github.io/language/variables#Sigilless_variables).
 
-<a id="%E5%8D%95%E6%9D%A1%E7%9B%AE%E5%92%8C%E5%88%97%E8%A1%A8%E8%B5%8B%E5%80%BC--item-and-list-assignment"></a>
-## 单条目和列表赋值 / Item and List Assignment
+<a id="%E5%8D%95%E6%9D%A1%E7%9B%AE%E4%B8%8E%E5%88%97%E8%A1%A8%E8%B5%8B%E5%80%BC--item-and-list-assignment"></a>
+## 单条目与列表赋值 / Item and List Assignment
 
-有两种类型的变量分配，单条目赋值和列表赋值。两者都用 `=` 作为操作符。左边的语法决定了 `=` 号是用作单条目还是列表赋值。
+有两种类型的变量分配、单条目赋值和列表赋值。两者都用 `=` 作为操作符。左边的语法决定了 `=` 号是用作单条目还是列表赋值。
 
 There are two types of variable assignment, *item assignment* and *list assignment*. Both use the equal sign `=` as operator. The syntax of the left-hand side determines whether an `=` means item or list assignment.
 
@@ -163,7 +163,7 @@ Item assignment places the value from the right-hand side into the variable (con
 
 List assignment leaves the choice of what to do to the variable on the left.
 
-例如，[列表](https://rakudocs.github.io/type/Array)变量（`@` 标记）在列表赋值时首先将自己清空然后接受右边所有的值。
+例如，[列表](https://rakudocs.github.io/type/Array)变量（由 `@` 标记的）在列表赋值时首先将自己清空然后接受右边所有的值。
 
 For example, [Array](https://rakudocs.github.io/type/Array) variables (`@` sigil) empty themselves on list assignment and then put all the values from the right-hand side into themselves.
 
@@ -172,16 +172,16 @@ For example, [Array](https://rakudocs.github.io/type/Array) variables (`@` si
 The type of assignment (item or list) is decided by the first context seen in the current expression or declarator:
 
 ```Raku
-my $foo = 5;            # item assignment 
-say $foo.perl;          # OUTPUT: «5» 
- 
-my @bar = 7, 9;         # list assignment 
-say @bar.^name;         # OUTPUT: «Array» 
-say @bar.perl;          # OUTPUT: «[7, 9]» 
- 
-(my $baz) = 11, 13;     # list assignment 
-say $baz.^name;         # OUTPUT: «List» 
-say $baz.perl;          # OUTPUT: «$(11, 13)» 
+my $foo = 5;            # item assignment
+say $foo.perl;          # OUTPUT: «5»
+
+my @bar = 7, 9;         # list assignment
+say @bar.^name;         # OUTPUT: «Array»
+say @bar.perl;          # OUTPUT: «[7, 9]»
+
+(my $baz) = 11, 13;     # list assignment
+say $baz.^name;         # OUTPUT: «List»
+say $baz.perl;          # OUTPUT: «$(11, 13)»
 ```
 
 列表赋值中的赋值行为依赖于包含它的表达式或者声明语句。
@@ -194,9 +194,9 @@ For instance, if the internal assignment is a declarator, item assignment is use
 
 ```Raku
 my @array;
-@array = my $num = 42, "str";   # item assignment: uses declarator 
-say @array.perl;                # OUTPUT: «[42, "str"]» (an Array) 
-say $num.perl;                  # OUTPUT: «42» (a Num) 
+@array = my $num = 42, "str";   # item assignment: uses declarator
+say @array.perl;                # OUTPUT: «[42, "str"]» (an Array)
+say $num.perl;                  # OUTPUT: «42» (a Num)
 ```
 
 类似地，如果中间的的赋值是表达式，这个表达式用来初始化声明语句，赋值类型由中间表达式的上下文决定：
@@ -205,14 +205,14 @@ Similarly, if the internal assignment is an expression that is being used as an 
 
 ```Raku
 my $num;
-my @array = $num = 42, "str";    # item assignment: uses expression 
-say @array.perl;                 # OUTPUT: «[42, "str"]» (an Array) 
-say $num.perl;                   # OUTPUT: «42» (a Num) 
+my @array = $num = 42, "str";    # item assignment: uses expression
+say @array.perl;                 # OUTPUT: «[42, "str"]» (an Array)
+say $num.perl;                   # OUTPUT: «42» (a Num)
  
 my ( @foo, $bar );
-@foo = ($bar) = 42, "str";       # list assignment: uses parentheses 
-say @foo.perl;                   # OUTPUT: «[(42, "str"),]» (an Array) 
-say $bar.perl;                   # OUTPUT: «$(42, "str")» (a List)# 
+@foo = ($bar) = 42, "str";       # list assignment: uses parentheses
+say @foo.perl;                   # OUTPUT: «[(42, "str"),]» (an Array)
+say $bar.perl;                   # OUTPUT: «$(42, "str")» (a List)#
 ```
 
 但是，如果中间的赋值既不是一个声明语句也不是一个表达式，而是更大的表达式中的一部分， 那个更大的表达式的上下文决定了赋值类型：
@@ -221,16 +221,16 @@ However, if the internal assignment is neither a declarator nor an expression, b
 
 ```Raku
 my ( @array, $num );
-@array = $num = 42, "str";    # list assignment 
-say @array.perl;              # OUTPUT: «[42, "str"]» 
-say $num.perl;                # OUTPUT: «42» 
+@array = $num = 42, "str";    # list assignment
+say @array.perl;              # OUTPUT: «[42, "str"]»
+say $num.perl;                # OUTPUT: «42»
 ```
 
 赋值语句被解析为 `@array = (($num = 42), "str")`, 因为单条目赋值比逗号的优先级更高。
 
 The assignment expression is parsed as `@array = (($num = 42), "str")`, because item assignment has tighter precedence than the comma.
 
-更多关于优先级的细节见[操作符](https://rakudocs.github.io/language/operators) 。
+更多关于优先级的细节见[操作符](https://rakudocs.github.io/language/operators)。
 
 See [operators](https://rakudocs.github.io/language/operators) for more details on precedence.
 
@@ -246,7 +246,7 @@ my \degrees = pi / 180;
 my \θ       = 15 * degrees;
 ```
 
-注意，无标记变量没有关联的[容器](https://rakudocs.github.io/language/containers)。这意味着上面例子中的 `degrees` 和  `θ` 实际上表示的是 Num。尝试在定义变量后赋值可以详细说明这一点：
+注意，无标记变量没有关联的[容器](https://rakudocs.github.io/language/containers)。这意味着上面例子中的 `degrees` 和 `θ` 实际上表示的是 Num。尝试在定义变量后赋值可以详细说明这一点：
 
 Note that sigilless variable do not have associated [containers](https://rakudocs.github.io/language/containers). This means `degrees` and `θ`, above, actually directly represent `Num`s. To illustrate, try assigning to one after you've defined it:
 
@@ -262,13 +262,13 @@ Sigilless variables do not enforce context, so they can be used to pass somethin
 sub logged(&f, |args) {
     say('Calling ' ~ &f.name ~ ' with arguments ' ~ args.perl);
     my \result = f(|args);
-    #  ^^^^^^^ not enforcing any context here 
+    #  ^^^^^^^ not enforcing any context here
     say(&f.name ~ ' returned ' ~ result.perl);
     return |result;
 }
 ```
 
-无标记变量也能用作绑定。更多信息见 [绑定](https://rakudocs.github.io/language/containers#Binding) 。
+无标记变量也能用作绑定。更多信息见[绑定](https://rakudocs.github.io/language/containers#Binding) 。
 
 Sigilless variables can also be used for binding. See [Binding](https://rakudocs.github.io/language/containers#Binding) for more information.
 
@@ -324,21 +324,21 @@ my $*dynamic2 = 100;
 sub say-all() {
     say "$lexical, $*dynamic1, $*dynamic2";
 }
- 
-say-all();    # OUTPUT: 1, 10, 100 
- 
+
+say-all();    # OUTPUT: 1, 10, 100
+
 {
     my $lexical   = 2;
     my $*dynamic1 = 11;
     $*dynamic2    = 101;
- 
-    say-all(); # OUTPUT: 1, 11, 101 
+
+    say-all(); # OUTPUT: 1, 11, 101
 }
  
-say-all();  # OUTPUT: 1, 10, 101 
+say-all();  # OUTPUT: 1, 10, 101
 ```
 
-第一次运行 `&say-all` 会打印出 “1， 10， 100”，没有意外。第二次运行却打印出 “1，11，101”。这是因为 `$lexical` 不是在调用者作用域里面查值而是在 `&say-all` 被定义时的作用域里查值。那两个动态变量是在调用者作用域里查值，因此值分别为 `11` 和 `101`。第三次运行 `&say-all` 时 `$*dynamic1` 的值不再是 `11`，但 `$*dynamic2` 仍然是 `101`。 这是因为我们在代码块里声明了一个新的 `$*dynamic1` 变量而不是像 `$*dynamic2` 那样给旧变量赋值。
+第一次运行 `&say-all` 会打印出 “`1, 10, 100`”，没有意外。第二次运行却打印出 “`1, 11, 101`”。这是因为 `$lexical` 不是在调用者作用域里面查值而是在 `&say-all` 被定义时的作用域里查值。那两个动态变量是在调用者作用域里查值，因此值分别为 `11` 和 `101`。第三次运行 `&say-all` 时 `$*dynamic1` 的值不再是 `11`，但 `$*dynamic2` 仍然是 `101`。 这是因为我们在代码块里声明了一个新的 $*dynamic1` 变量而不是像 `$*dynamic2` 那样给旧变量赋值。
 
 The first time `&say-all` is called, it prints "`1, 10, 100`" just as one would expect. The second time though, it prints "`1, 11, 101`". This is because `$lexical` isn't looked up in the caller's scope but in the scope `&say-all` was defined in. The two dynamic variables are looked up in the caller's scope and therefore have the values `11` and `101`. The third time `&say-all` is called `$*dynamic1` isn't `11`anymore, but `$*dynamic2` is still `101`. This stems from the fact that we declared a new dynamic variable `$*dynamic1` in the block and did not assign to the old variable as we did with `$*dynamic2`.
 
@@ -351,11 +351,11 @@ sub foo() {
     $*FOO // 'foo';
 }
  
-say foo; # OUTPUT: «foo» 
+say foo; # OUTPUT: «foo»
  
 my $*FOO = 'bar';
  
-say foo; # OUTPUT: «bar» 
+say foo; # OUTPUT: «bar»
 ```
 
 用 `my` 和 `our` 声明的动态变量分别有词法作用域和包作用域。动态解析以及通过 `our` 引入的借助符号表的解析是两个正交问题。
@@ -397,7 +397,7 @@ my class Point {
 }
 ```
 
-注意属性是如何通过 `$.x` 和 `$.y` 声明却通过 `$!x` 和 `$!y` 来访问的。这是因为 Raku 中所有的属性都是私有的而且可以在类中通过 `$!attribute-name` 直接访问。Raku 会直接为你生成访问器方法。更多关于对象，类和他们的属性的信息见 [object orientation](https://rakudocs.github.io/language/objects) 。
+注意属性是如何通过 `$.x` 和 `$.y` 声明却通过 `$!x` 和 `$!y` 来访问的。这是因为 Raku 中所有的属性都是私有的而且可以在类中通过 `$!attribute-name` 直接访问。Raku 会直接为你生成访问器方法。更多关于对象，类和他们的属性的信息见[面向对象](https://rakudocs.github.io/language/objects) 。
 
 Note how the attributes are declared as `$.x` and `$.y` but are still accessed via `$!x` and `$!y`. This is because in Raku all attributes are private and can be directly accessed within the class by using `$!attribute-name`. Raku may automatically generate accessor methods for you though. For more details on objects, classes and their attributes see [object orientation](https://rakudocs.github.io/language/objects).
 
@@ -414,7 +414,7 @@ my class Point {
     has $.y;
  
     method Str() {
-        "($.x, $.y)" # note that we use the . instead of ! this time 
+        "($.x, $.y)" # note that we use the . instead of ! this time
     }
 }
 ```
@@ -433,10 +433,10 @@ class SaySomething {
     method b() { $.a; }
 }
  
-SaySomething.b; # OUTPUT: «a» 
+SaySomething.b; # OUTPUT: «a»
 ```
 
-更多关于对象，类和他们的属性的信息见 [面向对象](https://rakudocs.github.io/language/objects) 。
+更多关于对象、类和他们的属性的信息见[面向对象](https://rakudocs.github.io/language/objects) 。
 
 For more details on objects, classes and their attributes and methods see [object orientation](https://rakudocs.github.io/language/objects).
 
@@ -450,7 +450,7 @@ The `^` twigil declares a formal positional parameter to blocks or subroutines
 ```Raku
 my @powers-of-three = 1,3,9…100;
 say reduce { $^b - $^a }, 0, |@powers-of-three;
-# OUTPUT: «61» 
+# OUTPUT: «61»
 ```
 
 有两个正式参数 `$a` 和 `$b`。 注意，尽管 `$^b` 在 `$^a` 之前，`$^a` 人就是代码块中的第一个正式参数。这是因为占位符变量是按 Unicode 顺序排序的。如果你有用 `$^a` 自声明变量，之后你可以用 `$a` 引用它。
@@ -466,28 +466,26 @@ Although it is possible to use nearly any valid identifier as a placeholder vari
 Normal blocks and subroutines may also make use of placeholder variables but only if they do not have an explicit parameter list.
 
 ```Raku
-sub say-it    { say $^a; } # valid 
-sub say-it()  { say $^a; } # invalid 
-              { say $^a; } # valid 
--> $x, $y, $x { say $^a; } # invalid 
+sub say-it    { say $^a; } # valid
+sub say-it()  { say $^a; } # invalid
+              { say $^a; } # valid
+-> $x, $y, $x { say $^a; } # invalid
 ```
 
-占位符变量不能有类型约束或者变量名称带有单个大写字母（这个不被允许，以免 Perl5 主义）。
+占位符变量不能有类型约束或者变量名称带有单个大写字母。
 
 Placeholder variables cannot have type constraints or a variable name with a single upper-case letter (this is disallowed to enable catching some Perl5-isms).
 
 <a id="-%E5%8F%B7-4"></a>
 ## `:` 号
 
-`:` 号为块或子例程声明一个正式的命名参数。以这种形式声明的变量也是一种占位符变量。
-
-使用这种形式声明的变量也是一种占位符变量。因此，他们与使用 `^` 声明的变量相似（除了它们不是位置的，因此不按照Unicode顺序排序）。如：
+`:` 号为块或子例程声明一个正式的命名参数。以这种形式声明的变量也是一种占位符变量。使用这种形式声明的变量也是一种占位符变量。因此，他们与使用 `^` 声明的变量相似（除了它们不是位置的，因此不按照 Unicode 顺序排序）。如：
 
 The `:` twigil declares a formal named parameter to a block or subroutine. Variables declared using this form are a type of placeholder variable too. Therefore the same things that apply to variables declared using the `^` twigil also apply here (with the exception that they are not positional and therefore not ordered using Unicode order, of course). So this:
 
 ```Raku
 say { $:add ?? $^a + $^b !! $^a - $^b }( 4, 5 ) :!add
-# OUTPUT: «-1» 
+# OUTPUT: «-1»
 ```
 
 更多占位符变量细节见 [^](https://rakudocs.github.io/routine/$CIRCUMFLEX_ACCENT) 。
@@ -497,7 +495,7 @@ See [^](https://rakudocs.github.io/routine/$CIRCUMFLEX_ACCENT) for more detail
 <a id="-%E5%8F%B7-5"></a>
 ## `=` 号
 
-= 号用于访问 Pod 变量。当前文件中的每个 Pod 块可以通过 Pod 对象访问，例如 `$=data`，`$=SYNOPSIS` 或 `=UserBlock`。即变量有着跟 Pod 块相同的名字以及一个 `=` 号。
+= 号用于访问 Pod 变量。当前文件中的每个 Pod 块可以通过 Pod 对象访问，例如 `$=data`、`$=SYNOPSIS` 或 `=UserBlock`。即变量有着跟 Pod 块相同的名字以及一个 `=` 号。
 
 The `=` twigil is used to access Pod variables. Every Pod block in the current file can be accessed via a Pod object, such as `$=data`, `$=SYNOPSIS` or `=UserBlock`. That is: a variable with the same name of the desired block and a `=` twigil.
 
@@ -512,16 +510,17 @@ The `=` twigil is used to access Pod variables. Every Pod block in the current
 ```
 
 你可以通过 `$=pod` 访问包含所有 Pod 结构的 Pod 树作为分层数据结构
+
 You may access the Pod tree which contains all Pod structures as a hierarchical data structure through `$=pod`.
 
-注意所有的 `$=someBlockName` 支持`位置`以及`关联`角色。
+注意所有的 `$=someBlockName` 支持 `Positional` 以及 `Associative` 角色。
 
 Note that all those `$=someBlockName` support the `Positional` and the `Associative` roles.
 
 <a id="%7E-%E5%8F%B7"></a>
 ## `~` 号
 
-~ 号是用来引用子语言（也叫 slangs ）。下面这些变量很有用：
+~ 号是用来引用子语言（也叫 slang ）。下面这些变量很有用：
 
 The `~` twigil is for referring to sublanguages (called slangs). The following are useful:
 
@@ -533,7 +532,7 @@ The `~` twigil is for referring to sublanguages (called slangs). The following
 | $~Trans   | the current root of transliteration language     |
 | $~P5Regex | the current root of the Perl 5 regex language    |
 
-你可以在当前的词汇范围内`扩充`这些语言。
+你可以在当前的词汇范围内扩充这些语言。
 
 You `augment` these languages in your current lexical scope.
 
@@ -599,9 +598,9 @@ Declaring a variable with `my` gives it lexical scope. This means it only exis
 ```Raku
 {
     my $foo = "bar";
-    say $foo; # OUTPUT: «"bar"» 
+    say $foo; # OUTPUT: «"bar"»
 }
-say $foo; # Exception! "Variable '$foo' is not declared" 
+say $foo; # Exception! "Variable '$foo' is not declared"
 ```
 
 这断代码会报错退出，因为 `$foo` 只有在相同作用域时才是被定义了的。
@@ -620,16 +619,16 @@ sub outer-location {
     say $location;
 }
  
-outer-location; # OUTPUT: «outside» 
+outer-location; # OUTPUT: «outside»
  
 sub in-building {
     my $location = "inside";
     say $location;
 }
  
-in-building;    # OUTPUT: «inside» 
+in-building;    # OUTPUT: «inside»
  
-outer-location; # OUTPUT: «outside» 
+outer-location; # OUTPUT: «outside»
 ```
 
 如果一个变量被重新定义，任何引用外部变量的代码依旧引用外部变量。因此这里，`&outer-location` 仍旧打印的是外部的 `$location` 的值：
@@ -696,7 +695,7 @@ This can be used in conjunction with destructuring assignment. Any assignment to
 ```Raku
 my (Str $a, Str $b, Int $c) = <a b>;
 say [$a, $b, $c].perl;
-# OUTPUT: «["a", "b", Int]» 
+# OUTPUT: «["a", "b", Int]»
 ```
 
 要将列表拆分为单个值，请使用 `($var,)` 创建包含一个元素的列表文字。与变量声明符一起使用时，将单个变量用括号括起来就足够了。
@@ -747,14 +746,14 @@ my %operations =
     half   => anon sub half($x) { $x / 2 },
     square => anon sub square($x) { $x * $x },
     ;
-say %operations<square>.name;       # square 
-say %operations<square>(8);         # 64 
+say %operations<square>.name;       # square
+say %operations<square>(8);         # 64
 ```
 
 <a id="state-%E5%A3%B0%E6%98%8E%E7%AC%A6"></a>
 ## `state` 声明符
 
-跟 `my` 类似，`state` 声明词法作用域变量。但是，初始化只会在首次遇到时执行一次。 因此，状态变量将在封闭块或例程的多次执行中保持值不被改变。
+跟 `my` 类似，`state` 声明词法作用域变量。但是，初始化只会在首次遇到时执行一次。因此，状态变量将在封闭块或例程的多次执行中保持值不被改变。
 
 `state` declares lexically scoped variables, just like `my`. However, initialization happens exactly once the first time the initialization is encountered in the normal flow of execution. Thus, state variables will retain their value across multiple executions of the enclosing block or routine.
 
@@ -783,7 +782,6 @@ will continue to increment `$l` and append it to `@x` each time it is called
 [A B C D]
 [A B C D E]
 [A B C D E F]
- 
 ```
 
 这适用于包含代码的对象的每个“克隆”，如下例所示：
@@ -825,7 +823,7 @@ say @a;        # OUTPUT: «[k1 => 3 k2 => 3 k3 => 3]» 
 say @a-cloned; # OUTPUT: «[k1 => 1 k2 => 2 k3 => 3]» 
 ```
 
-State 变量在所有线程中共享。结果可能出乎意料。
+状态变量在所有线程中共享。结果可能出乎意料。
 
 State variables are shared between all threads. The result can be unexpected.
 

@@ -28,10 +28,10 @@ Call into dynamic libraries that follow the C calling convention
     - [缓冲区和二进制大对象 / Buffers and blobs](#%E7%BC%93%E5%86%B2%E5%8C%BA%E5%92%8C%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%A4%A7%E5%AF%B9%E8%B1%A1--buffers-and-blobs)
 - [函数参数 / Function arguments](#%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0--function-arguments)
 - [库路径和名称 / Library paths and names](#%E5%BA%93%E8%B7%AF%E5%BE%84%E5%92%8C%E5%90%8D%E7%A7%B0--library-paths-and-names)
-    - [ABI/API 版本 / ABI/API version](#abiapi-%E7%89%88%E6%9C%AC--abiapi-version)
+    - [ABI/API 版本 - ABI/API version](#abiapi-%E7%89%88%E6%9C%AC---abiapi-version)
     - [例程 / Routine](#%E4%BE%8B%E7%A8%8B--routine)
     - [调用标准库 / Calling into the standard library](#%E8%B0%83%E7%94%A8%E6%A0%87%E5%87%86%E5%BA%93--calling-into-the-standard-library)
-- [导出变量 / Exported variables](#%E5%AF%BC%E5%87%BA%E5%8F%98%E9%87%8F--exported-variables)
+- [导出的变量 / Exported variables](#%E5%AF%BC%E5%87%BA%E7%9A%84%E5%8F%98%E9%87%8F--exported-variables)
 - [C++ 支持 / C++ support](#c-%E6%94%AF%E6%8C%81--c-support)
 - [帮助程序函数 / Helper functions](#%E5%B8%AE%E5%8A%A9%E7%A8%8B%E5%BA%8F%E5%87%BD%E6%95%B0--helper-functions)
     - [nativecast 子例程 / sub nativecast](#nativecast-%E5%AD%90%E4%BE%8B%E7%A8%8B--sub-nativecast)
@@ -99,7 +99,7 @@ Inside of `libfoo` there is a routine called `FOO_INIT` but, since we're creatin
 <a id="%E4%BC%A0%E9%80%92%E5%92%8C%E8%BF%94%E5%9B%9E%E5%80%BC--passing-and-returning-values"></a>
 # 传递和返回值 / Passing and returning values
 
-普通的 Raku 签名和 'returns' 特性用于传递原生函数期望的参数类型及其返回的内容。下面是一个例子。
+普通的 Raku 签名和 `returns` 特性用于传递原生函数期望的参数类型及其返回的内容。下面是一个例子。
 
 Normal Raku signatures and the `returns` trait are used in order to convey the type of arguments a native function expects and what it returns. Here is an example.
 
@@ -201,7 +201,7 @@ sub my_version(int32 is rw, int32 is rw) is native('foo') { * }
 my_version(my int32 $major, my int32 $minor); # Pass a pointer to
 ```
 
-有时你需要从 C 库中获取一个指针（例如库句柄）。你不在乎它指的是什么-你只需要抓住它。Pointer 类型为此而生。
+有时你需要从 C 库中获取一个指针（例如库句柄）。你不在乎它指向的是什么-你只需要持有它。Pointer 类型为此而生。
 
 Sometimes you need to get a pointer (for example, a library handle) back from a C library. You don't care about what it points to - you just need to keep hold of it. The Pointer type provides for this.
 
@@ -211,7 +211,7 @@ sub Foo_init() returns Pointer is native("foo") { * }
 sub Foo_free(Pointer) is native("foo") { * }
 ```
 
-这是可行的，但你可能会喜欢使用名字比 Pointer 更好的类型事实证明，任何具有表示 "CPointer" 的类都可以充当这个角色。这意味着你可以通过编写这样的类来公开处理句柄的库：
+这是可行的，但你可能会喜欢使用名字比 Pointer 更好的类型，任何具有表示 "CPointer" 的类都可以充当这个角色。这意味着你可以通过编写这样的类来公开处理句柄的库：
 
 This works out OK, but you may fancy working with a type named something better than Pointer. It turns out that any class with the representation "CPointer" can serve this role. This means you can expose libraries that work on handles by writing a class like this:
 
@@ -249,7 +249,7 @@ class FooHandle is repr('CPointer') {
 
 Note that the CPointer representation can do nothing more than hold a C pointer. This means that your class cannot have extra attributes. However, for simple libraries this may be a neat way to expose an object oriented interface to it.
 
-当然，你可以始终拥有一个空类：
+当然，可以是一个空类：
 
 Of course, you can always have an empty class:
 
@@ -281,18 +281,18 @@ sub f() returns Pointer is native('mylib') { * }
  
 my $fptr    = f();
 my &newfunc = nativecast(:(Str, size_t --> int32), $fptr);
- 
+
 say newfunc("test", 4);
 ```
 
 <a id="%E6%95%B0%E7%BB%84--arrays"></a>
 # 数组 / Arrays
 
-NativeCall 对数组有一些支持。它被限制使用机器大小的整数、双精度数和字符串、大小数值类型、指针数组、结构数组和数组的数组。
+NativeCall 对数组有一些支持。它被限制使用机器大小的整数、双精度数和字符串、定长数值类型、指针数组、结构数组和数组的数组。
 
 NativeCall has some support for arrays. It is constrained to work with machine-size integers, doubles and strings, sized numeric types, arrays of pointers, arrays of structs, and arrays of arrays.
 
-Raku 数组除了支持惰性之外，在内存中的布局与C数组截然不同。因此，NativeCall 库提供了一种更为原始的 CArray 类型，在使用 C 数组时必须使用它。
+Raku 数组除了支持惰性之外，在内存中的布局与 C 数组截然不同。因此，NativeCall 库提供了一种更为原始的 CArray 类型，在使用 C 数组时必须使用它。
 
 Raku arrays, which support amongst other things laziness, are laid out in memory in a radically different way to C arrays. Therefore, the NativeCall library offers a much more primitive CArray type, which you must use if working with C arrays.
 
@@ -313,7 +313,7 @@ my @values := CArray[num64].new;
 RenderBarChart('Weights (kg)', 3, @titles, @values);
 ```
 
-请注意，绑定用于 `@titles`，*而不是*赋值！如果你赋值，你将把这些值放入一个 Raku 数组中，它将不起作用。如果这一切都让你抓狂了，那就忘了你对 `@` 符号有任何了解，在使用 NativeCall 时只需一直使用 `$`。
+请注意，绑定用于 `@titles`，而*不是*赋值！如果你赋值，你将把这些值放入一个 Raku 数组中，它将不起作用。如果这一切都让你抓狂了，那就忘了你对 `@` 符号有任何了解，在使用 NativeCall 时只需一直使用 `$`。
 
 Note that binding was used to `@titles`, *not* assignment! If you assign, you are putting the values into a Raku array, and it will not work out. If this all freaks you out, forget you ever knew anything about the `@` sigil and just use `$` all the way when using NativeCall.
 
@@ -338,7 +338,7 @@ use NativeCall;
 sub get_n_ints(CArray[int32], int32) returns int32 is native('ints') { * }
 ```
 
-在这些情况下，在将 CArray 传递给原生子程序之前，填充元素的数量是很重要的，否则 C 函数可能会在 Raku 的内存中堆积，从而导致可能无法预测的行为：
+在这些情况下，在将 CArray 传递给原生子例程之前，填充元素的数量是很重要的，否则 C 函数可能会在 Raku 的内存中堆积，从而导致可能无法预测的行为：
 
 In these cases it is important that the CArray has at least the number of elements that are going to be populated before passing it to the native subroutine, otherwise the C function may stomp all over Raku's memory leading to possibly unpredictable behavior:
 
@@ -358,7 +358,7 @@ my $number_of_ints = 10;
 $ints[$number_of_ints - 1] = 0; # extend the array to 10 items 
 ```
 
-要理解数组的内存管理是很重要的。当你自己创建一个数组时，你可以根据需要向它添加元素，并且它将根据需要进行扩展。但是，这可能会导致它在内存中被移动（但是，对现有元素的分配永远不会导致这种情况）。这意味着，如果在将数组传递到 C 库后，再操作数组，你最好知道自己在做什么。
+要理解数组的内存管理是很重要的。当你自己创建一个数组时，你可以根据需要向它添加元素，并且它将根据需要进行扩展。但是，这可能会导致它在内存中被移动（但是，对现有元素的赋值永远不会导致这种情况）。这意味着，如果在将数组传递到 C 库后，再操作数组，你最好知道自己在做什么。
 
 The memory management of arrays is important to understand. When you create an array yourself, then you can add elements to it as you wish and it will be expanded for you as required. However, this may result in it being moved in memory (assignments to existing elements will never cause this, however). This means you'd best know what you're doing if you twiddle with an array after passing it to a C library.
 
@@ -425,7 +425,7 @@ Element at position 4 is 5
 <a id="%E7%BB%93%E6%9E%84%E4%BD%93--structs"></a>
 # 结构体 / Structs
 
-由于表示多态性，可以声明一个外观正常的 Raku 类，该类在底层以 C 编译器将它们放在类似结构定义中的方式存储其属性。只需使用 "repr" 特性：
+多亏展示的多态性，可以声明一个外观正常的 Raku 类，该类在底层以 C 编译器将它们放在类似结构定义中的方式存储其属性。只需使用 "repr" 特性：
 
 Thanks to representation polymorphism, it's possible to declare a normal looking Raku class that, under the hood, stores its attributes in the same way a C compiler would lay them out in a similar struct definition. All it takes is a quick use of the "repr" trait:
 
@@ -444,7 +444,7 @@ CStruct 对象通过引用传递给原生函数，原生函数还必须通过引
 
 CStruct objects are passed to native functions by reference and native functions must also return CStruct objects by reference. The memory management rules for these references are very much like the rules for arrays, though simpler since a struct is never resized. When you create a struct, the memory is managed for you and when the variable(s) pointing to the instance of a CStruct go away, the memory will be freed when the GC gets to it. When a CStruct-based type is used as the return type of a native function, the memory is not managed for you by the GC.
 
-NativeCall 当前不将对象成员放入容器中，因此为其分配新值（with=）不起作用。相反，你必须将新值绑定到私有成员：
+NativeCall 当前不将对象成员放入容器中，因此为其分配新值（使用 = 号）不起作用。相反，你必须将新值绑定到私有成员：
 
 NativeCall currently doesn't put object members in containers, so assigning new values to them (with =) doesn't work. Instead, you have to bind new values to the private members:
 
@@ -491,7 +491,7 @@ say nativesizeof(MyUnion.new);  # OUTPUT: «8␤»
 <a id="%E5%B5%8C%E5%85%A5-cstruct-%E5%92%8C-cunion--embedding-cstructs-and-cunions"></a>
 ## 嵌入 CStruct 和 CUnion / Embedding CStructs and CUnions
 
-CStruct 和 CUnion 可以依次被周围的 CStruct 和 CUnion 所引用或嵌入。要说前者，我们像往常一样使用 `has`，而要说后者，我们使用 `HAS` 声明符：
+CStruct 和 CUnion 可以依次被周围的 CStruct 和 CUnion 所引用或嵌入。要打印前者，我们像往常一样使用 `has`，而要打印后者，我们得使用 `HAS` 声明符：
 
 CStructs and CUnions can be in turn referenced by—or embedded into—a surrounding CStruct and CUnion. To say the former we use `has` as usual, and to do the latter we use the `HAS` declarator instead:
 
@@ -534,10 +534,10 @@ class AStringAndAnInt is repr("CStruct") {
     init_struct(self, $a_string, $an_int);
   }
 }
- 
+
 ```
 
-在这段代码中，我们首先设置成员 `$.a_string` 和 `$.an_int32`。在此之后，我们声明 `init_struct()` 函数为了 `init()` 方法可以将其进行包装；然后从 `BUILD` 调用此函数，以便在返回创建的对象之前有效地分配值。
+在这段代码中，我们首先设置成员 `$.a_string` 和 `$.an_int32`。在此之后，我们声明 `init_struct()` 函数为了 `init()` 方法可以将其进行包装；然后从 `BUILD` 调用此函数，以便在返回创建的对象之前有效地赋值。
 
 In this code we first set up our members, `$.a_string` and `$.an_int32`. After that we declare our `init_struct()` function for the `init()` method to wrap around; this function is then called from `BUILD` to effectively assign the values before returning the created object.
 
@@ -549,7 +549,7 @@ typedef struct a_string_and_an_int32_t_ {
   char *a_string;
   int32_t an_int32;
 } a_string_and_an_int32_t;
- 
+
 ```
 
 这是结构。注意这里有一个 `char *`。
@@ -560,10 +560,10 @@ Here's the structure. Notice how we've got a `char *` there.
 void init_struct(a_string_and_an_int32_t *target, char *str, int32_t int32) {
   target->an_int32 = int32;
   target->a_string = strdup(str);
- 
+
   return;
 }
- 
+
 ```
 
 在这个函数中，我们通过按值分配一个整数并通过引用传递字符串来初始化 C 结构。函数在复制字符串时，在结构中分配指向 <char *a_string> 的内存。（注意，你还必须管理内存的释放，以避免内存泄漏。）
@@ -635,7 +635,7 @@ for 1 ..^ $n {
 }
 ```
 
-void 指针也可以通过声明它们 `Pointer[void]` 来使用。有关主题的详细信息，请参阅[原生类型文档](https://rakudocs.github.io/language/nativetypes#The_void_type)。
+void 指针也可以通过声明它们为 `Pointer[void]` 来使用。有关主题的详细信息，请参阅[原生类型文档](https://rakudocs.github.io/language/nativetypes#The_void_type)。
 
 Void pointers can also be used by declaring them `Pointer[void]`. Please consult [the native types documentation](https://rakudocs.github.io/language/nativetypes#The_void_type) for more information on the subject.
 
@@ -653,13 +653,13 @@ Let's say there is some C code that caches strings passed, like so:
 #include <stdlib.h> 
  
 static char *__VERSION;
- 
+
 char *
 get_version()
 {
     return __VERSION;
 }
- 
+
 char *
 set_version(char *version)
 {
@@ -721,7 +721,7 @@ say $esponja;
 <a id="%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0--function-arguments"></a>
 # 函数参数 / Function arguments
 
-NativeCall 还支持将函数作为参数的本机函数。其中一个例子是在事件驱动系统中使用函数指针作为回调。通过nativeCall绑定这些函数时，只需提供与[代码参数约束]相同的签名（https://rakudocs.github.io/type/signature constraining_signatures_of_callables）。但是，对于 nativeCall，从 rakudo 2019.07 开始，函数参数和签名之间的空格以及普通签名文本的冒号被省略，如下所示：
+NativeCall 还支持将函数作为参数的原生函数。其中一个例子是在事件驱动系统中使用函数指针作为回调。通过 NativeCall 绑定这些函数时，只需提供与[代码参数约束](https://rakudocs.github.io/type/Signature#Constraining_signatures_of_Callables)相同的签名。但是，对于 NativeCall，从 Rakudo 2019.07 开始，函数参数和签名之间的空格以及普通签名文本的冒号被省略，如下所示：
 
 NativeCall also supports native functions that take functions as arguments. One example of this is using function pointers as callbacks in an event-driven system. When binding these functions via NativeCall, one needs only provide the equivalent signature as [a constraint on the code parameter](https://rakudocs.github.io/type/Signature#Constraining_signatures_of_Callables). In the case of NativeCall, however, as of Rakudo 2019.07, a space between the function argument and the signature, and the colon of a normal Signature literal is omitted, as in:
 
@@ -731,7 +731,7 @@ use NativeCall;
 my sub SetCallback(&callback (Str --> int32)) is native('mylib') { * }
 ```
 
-注意：原生代码负责以这种方式传递给 Raku 回调的值的内存管理。换句话说，NativeCall 不会释放传递给回调的字符串。
+注意：原生代码负责以这种方式传递给 Raku 回调的值的内存管理。换句话说，NativeCall 不会释放传递给回调的字符串的内存。
 
 Note: the native code is responsible for memory management of values passed to Raku callbacks this way. In other words, NativeCall will not free() strings passed to callbacks.
 
@@ -766,7 +766,7 @@ You can also put an incomplete path like './foo' and NativeCall will automatical
 sub bar is native({ './lib/Non Standard Naming Scheme' }) {*}
 ```
 
-注意：编译时对 `native` 特性和 `constant` 进行评估。不要编写依赖于动态变量的常量，例如：
+注意：`native` 特性和 `constant` 在编译时求值。不要编写依赖于动态变量的常量，例如：
 
 BE CAREFUL: the `native` trait and `constant` are evaluated at compile time. Don't write a constant that depends on a dynamic variable like:
 
@@ -779,14 +779,14 @@ constant LIBMYSQL = %*ENV<P6LIB_MYSQLCLIENT> || 'mysqlclient';
 
 This will keep the value given at compile time. A module will be precompiled and `LIBMYSQL` will keep the value it acquires when the module gets precompiled.
 
-<a id="abiapi-%E7%89%88%E6%9C%AC--abiapi-version"></a>
-## ABI/API 版本 / ABI/API version
+<a id="abiapi-%E7%89%88%E6%9C%AC---abiapi-version"></a>
+## ABI/API 版本 - ABI/API version
 
-如果编写 `native('foo')` NativeCall，将在类 Unix 系统下搜索 libfoo.so（OS X 上的 libfoo.dynlib，Win32 上的 foo.dll）。在大多数现代系统中，它将要求你或模块的用户安装开发包，建议始终向共享库提供 API/ABI版本，因此 libfoo.so 结尾通常是开发包提供的符号链接。
+如果编写 `native('foo')` 原生调用，将在类 Unix 系统下搜索 libfoo.so（OS X 上的 libfoo.dynlib，Win32 上的 foo.dll）。在大多数现代系统中，它将要求你或模块的用户安装开发包，建议始终向共享库提供 API/ABI版本，因此 libfoo.so 结尾通常是开发包提供的符号链接。
 
 If you write `native('foo')` NativeCall will search libfoo.so under Unix like system (libfoo.dynlib on OS X, foo.dll on win32). In most modern system it will require you or the user of your module to install the development package because it's recommended to always provide an API/ABI version to a shared library, so libfoo.so ends often being a symbolic link provided only by a development package.
 
-为了避免这种情况发生，`native` 特性允许你指定API/ABI 版本。它可以是完整版本，也可以只是其中的一部分。（尽量坚持主版本，有些 BSD 代码不关心次版本。）
+为了避免这种情况发生，`native` 特性允许你指定 API/ABI 版本。它可以是完整版本，也可以只是其中的一部分。（尽量坚持主版本，有些 BSD 代码不关心次版本。）
 
 To avoid that, the `native` trait allows you to specify the API/ABI version. It can be a full version or just a part of it. (Try to stick to Major version, some BSD code does not care for Minor.)
 
@@ -847,8 +847,8 @@ say getpwuid(getuid()).pw_dir;
 
 Though of course `$*HOME` is a much easier way :-)
 
-<a id="%E5%AF%BC%E5%87%BA%E5%8F%98%E9%87%8F--exported-variables"></a>
-# 导出变量 / Exported variables
+<a id="%E5%AF%BC%E5%87%BA%E7%9A%84%E5%8F%98%E9%87%8F--exported-variables"></a>
+# 导出的变量 / Exported variables
 
 库导出的变量（也称为“全局”或“外部”变量）可以使用 `cglobal` 访问。例如：
 
@@ -858,7 +858,7 @@ Variables exported by a library – also named "global" or "extern" variables �
 my $var := cglobal('libc.so.6', 'errno', int32)
 ```
 
-此代码绑定到 `$var` 一个新的 [Proxy](https://rakudocs.github.io/type/Proxy) 对象，该对象将其所有访问重定向到由 "libc.so.6" 库导出的名为 "errno" 的整数变量。
+此代码绑定到 `$var`， 一个新的 [Proxy](https://rakudocs.github.io/type/Proxy) 对象，该对象将其所有访问重定向到由 "libc.so.6" 库导出的名为 "errno" 的整数变量。
 
 This code binds to `$var` a new [Proxy](https://rakudocs.github.io/type/Proxy) object that redirects all its accesses to the integer variable named "errno" as exported by the "libc.so.6" library.
 
@@ -909,7 +909,7 @@ This returns a [Proxy](https://rakudocs.github.io/type/Proxy) object that provid
 sub nativesizeof($obj) is export(:DEFAULT)
 ```
 
-这将返回所提供对象的字节大小，可以认为它等同于  **C** 中的 `sizeof`。对象可以是内置的原生类型，如 `int64` 或 `num64`、`CArray` 或具有 `repr`、`CStruct`、`CUnion` 或 `CPointer` 的类。
+这将返回所提供对象的字节大小，可以认为它等同于 **C** 中的 `sizeof`。对象可以是内置的原生类型，如 `int64` 或 `num64`、`CArray` 或具有 `repr`、`CStruct`、`CUnion` 或 `CPointer` 的类。
 
 This returns the size in bytes of the supplied object, it can be thought of as being equivalent to `sizeof` in **C**. The object can be a builtin native type such as `int64` or `num64`, a `CArray` or a class with the `repr` `CStruct`, `CUnion` or `CPointer`.
 
@@ -1015,7 +1015,7 @@ The function returns a response code 0 = error, 1 = success. The data are extrac
 
 From the table of NativeCall Types we know that an `int` is `int32`. We also know that a `char *` is one of the forms C for a C `Str`, which maps simply to Str. But `addrinfo` is a structure, which means we will need to write our own Type class. However, the function declaration is straightforward:
 
-```C
+```Raku
 sub getaddrinfo( Str $node, Str $service, Addrinfo $hints, Pointer $res is rw )
     returns int32
     is native
@@ -1149,19 +1149,19 @@ sub inet_ntop(int32, Pointer, Blob, int32 --> Str)
 class SockAddr is repr('CStruct') {
     has uint16 $.sa_family;
 }
- 
+
 class SockAddr-in is repr('CStruct') {
     has int16 $.sin_family;
     has uint16 $.sin_port;
     has uint32 $.sin_addr;
- 
+
     method address {
         my $buf = buf8.allocate(INET_ADDRSTRLEN);
         inet_ntop(AF_INET, Pointer.new(nativecast(Pointer,self)+4),
             $buf, INET_ADDRSTRLEN)
     }
 }
- 
+
 class SockAddr-in6 is repr('CStruct') {
     has uint16 $.sin6_family;
     has uint16 $.sin6_port;
@@ -1169,14 +1169,14 @@ class SockAddr-in6 is repr('CStruct') {
     has uint64 $.sin6_addr0;
     has uint64 $.sin6_addr1;
     has uint32 $.sin6_scope_id;
- 
+
     method address {
         my $buf = buf8.allocate(INET6_ADDRSTRLEN);
         inet_ntop(AF_INET6, Pointer.new(nativecast(Pointer,self)+8),
             $buf, INET6_ADDRSTRLEN)
     }
 }
- 
+
 class Addrinfo is repr('CStruct') {
     has int32 $.ai_flags;
     has int32 $.ai_family;
@@ -1186,19 +1186,19 @@ class Addrinfo is repr('CStruct') {
     has SockAddr $.ai_addr is rw;
     has Str $.ai_cannonname is rw;
     has Addrinfo $.ai_next is rw;
- 
+
     method flags {
         do for AddrInfo-Flags.enums { .key if $!ai_flags +& .value }
     }
- 
+
     method family {
         AddrInfo-Family($!ai_family)
     }
- 
+
     method socktype {
         AddrInfo-Socktype($!ai_socktype)
     }
- 
+
     method address {
         given $.family {
             when AF_INET {
@@ -1210,14 +1210,14 @@ class Addrinfo is repr('CStruct') {
         }
     }
 }
- 
+
 sub getaddrinfo(Str $node, Str $service, Addrinfo $hints,
                 Pointer $res is rw --> int32)
     is native {};
- 
+
 sub freeaddrinfo(Pointer)
     is native {}
- 
+
 sub MAIN() {
     my Addrinfo $hint .= new(:ai_flags(AI_CANONNAME));
     my Pointer $res .= new;
