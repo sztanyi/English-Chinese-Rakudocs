@@ -60,7 +60,7 @@ $p1.keep('Result');
 say $p1.status;         # OUTPUT: «Kept␤» 
 say $p1.result;         # OUTPUT: «Result␤» 
                         # (since it has been kept, a result is available!) 
- 
+
 my $p2 = Promise.new;
 $p2.break('oh no');
 say $p2.status;         # OUTPUT: «Broken␤» 
@@ -69,7 +69,7 @@ CATCH { default { say .^name, ': ', .Str } };
 # OUTPUT: «X::AdHoc+{X::Promise::Broken}: oh no␤» 
 ```
 
-Promise 通过可组合特性获得很大的力量，例如通过链式调用，通常通过 [then](https://rakudocs.github.io/type/Promise#method_then) 方法：
+Promise 强大在于它的可组合特性，例如通过链式调用，通常通过 [then](https://rakudocs.github.io/type/Promise#method_then) 方法：
 
 Promises gain much of their power by being composable, for example by chaining, usually by the [then](https://rakudocs.github.io/type/Promise#method_then) method:
 
@@ -108,11 +108,11 @@ my $promise2 = $promise1.then(-> $v { say $v.status; 'Second Result' });
 say $promise2.result;
 ```
 
-promise 的方法 [in](https://rakudocs.github.io/type/Promise#method_in) 创建一个新的 promise 并且安排一个新任务在不早于提供的秒数时调用其 `keep` 方法，返回新 [Promise](https://rakudocs.github.io/type/Promise) 对象。
+promise 的[方法 in](https://rakudocs.github.io/type/Promise#method_in) 创建一个新的 promise 并且安排一个新任务在不早于提供的秒数时调用其 `keep` 方法，返回新 [Promise](https://rakudocs.github.io/type/Promise) 对象。
 
 The [method in](https://rakudocs.github.io/type/Promise#method_in) creates a new promise and schedules a new task to call `keep` on it no earlier than the supplied number of seconds, returning the new [Promise](https://rakudocs.github.io/type/Promise) object.
 
-promise 非常常用的场景是运行一段代码，代码成功返回则 keep promise，代码退出则 break。 [start](https://rakudocs.github.io/type/Promise#method_start) 方法为其快捷方式：
+promise 非常常用的场景是运行一段代码，代码成功返回则 keep promise，代码退出则 break。 [start 方法](https://rakudocs.github.io/type/Promise#method_start)为其快捷方式：
 
 A very frequent use of promises is to run a piece of code, and keep the promise once it returns successfully, or break it when the code dies. The [start method](https://rakudocs.github.io/type/Promise#method_start) provides a shortcut for that:
 
@@ -230,9 +230,9 @@ sub get_promise {
     Promise.in(10).then({$vow.keep});
     $promise;
 }
- 
+
 my $promise = get_promise();
- 
+
 # Will throw an exception 
 # "Access denied to keep/break this Promise; already vowed" 
 $promise.keep;

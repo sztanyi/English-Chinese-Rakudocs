@@ -45,7 +45,7 @@ Xorg 使用 [*Compose key*](https://en.wikipedia.org/wiki/Compose_key#GNU.2FLinu
 
 Xorg includes digraph support using a [*Compose key*](https://en.wikipedia.org/wiki/Compose_key#GNU.2FLinux) . The default of `AltGr + Shift` can be remapped to something easier such as `Capslock`. In *GNOME 2* and *MATE* this can be setup under `Preferences → Keyboard → Layouts → Options → Position of Compose Key`. So, for example, to input `»+«` you could type `CAPSLOCK > > + CAPSLOCK < <`
 
-*XCompose* 允许使用 `.XCompose` 文件自定义有向图序列，<https://github.com/kragen/xcompose/blob/master/dotXCompose> 是一个非常完整的文件。 在 *GNOME* 中，*XCompose* 被覆盖并替换为硬编码列表，但可以通过在您的环境中设置 `GTK_IM_MODULE=xim` 来恢复 *XCompose*。 可能还需要安装一个 xim 桥，例如 `uim-xim`。
+*XCompose* 允许使用 `.XCompose` 文件自定义有向图序列，<https://github.com/kragen/xcompose/blob/master/dotXCompose> 是一个非常完整的文件。 在 *GNOME* 中，*XCompose* 被覆盖并替换为硬编码列表，但可以通过在你的环境中设置 `GTK_IM_MODULE=xim` 来恢复 *XCompose*。 可能还需要安装一个 xim 桥，例如 `uim-xim`。
 
 *XCompose* allows customizing the digraph sequences using a `.XCompose` file and <https://github.com/kragen/xcompose/blob/master/dotXCompose> is an extremely complete one. In *GNOME*, *XCompose*was overridden and replaced with a hardcoded list, but it is possible to restore *XCompose* by setting `GTK_IM_MODULE=xim` in your environment. It might be necessary to install a xim bridge as well, such as `uim-xim`.
 
@@ -227,7 +227,7 @@ bindkey ^K exec .! digraphs
 ```
 
 这会将 control-k 绑定到 shell 命令 digraphs。 如果你更中意对 Perl 6 友好的有向图表
-如果你喜欢[RFC 1345]（https://tools.ietf.org/html/rfc1345）上的Perl 6友好有向图表或更改，您可以使用[digraphs]（https://github.com/gfldex/digraphs） 它符合您的需求。
+如果你喜欢[RFC 1345]（https://tools.ietf.org/html/rfc1345）上的Perl 6友好有向图表或更改，你可以使用[digraphs]（https://github.com/gfldex/digraphs） 它符合你的需求。
 
 This will bind control-k to the shell command digraphs. You can use [digraphs](https://github.com/gfldex/digraphs) if you prefer a Perl 6 friendly digraph table over [RFC 1345](https://tools.ietf.org/html/rfc1345) or change it to your needs.
 
