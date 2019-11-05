@@ -1,4 +1,4 @@
-原文：https://rakudocs.github.io/language/concurrency
+原文：https://docs.raku.org/language/concurrency
 
 # 正则：最佳实践与陷阱 / Regexes: best practices and gotchas
 
@@ -216,9 +216,9 @@ But wait! The implicit whitespace matching after the value uses up all whitespac
 
 Therefore, it's important to redefine your definition of implicit whitespace to whitespace that is not significant in the input format.
 
-这可以通过重新定义标记 `ws` 来工作；但是，它只适用于 [grammar](https://rakudocs.github.io/language/grammars)：
+这可以通过重新定义标记 `ws` 来工作；但是，它只适用于 [grammar](https://docs.raku.org/language/grammars)：
 
-This works by redefining the token `ws`; however, it only works for [grammars](https://rakudocs.github.io/language/grammars):
+This works by redefining the token `ws`; however, it only works for [grammars](https://docs.raku.org/language/grammars):
 
 ```Raku
 grammar IniFormat {

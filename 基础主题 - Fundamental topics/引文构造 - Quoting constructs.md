@@ -1,4 +1,4 @@
-原文：https://rakudocs.github.io/language/quoting
+原文：https://docs.raku.org/language/quoting
 
 # 引文构造 / Quoting constructs
 
@@ -46,9 +46,9 @@ Q ｢｢Delimiters can be repeated/nested if they are adjacent.｣｣
 
 Delimiters can be nested, but in the plain `Q` form, backslash escapes aren't allowed. In other words, basic `Q` strings are as literal as possible.
 
-在 `Q`、`q` 或 `qq` 之后不允许使用某些分隔符。不允许使用[标识符](https://rakudocs.github.io/language/syntax#Identifiers)中允许的任何字符，因为在这种情况下，引用构造连同这些字符一起被解释为标识符。此外，`( )` 是不允许的，因为它被解释为函数调用。如果你仍然希望使用这些字符作为分隔符，请用空格将它们与 `Q`、`q` 或 `qq` 分隔开。请注意，一些自然语言在字符串的右侧使用左分隔引号。`Q` 不支持这些，因为它依赖 Unicode 属性区分左分隔符和右分隔符。
+在 `Q`、`q` 或 `qq` 之后不允许使用某些分隔符。不允许使用[标识符](https://docs.raku.org/language/syntax#Identifiers)中允许的任何字符，因为在这种情况下，引用构造连同这些字符一起被解释为标识符。此外，`( )` 是不允许的，因为它被解释为函数调用。如果你仍然希望使用这些字符作为分隔符，请用空格将它们与 `Q`、`q` 或 `qq` 分隔开。请注意，一些自然语言在字符串的右侧使用左分隔引号。`Q` 不支持这些，因为它依赖 Unicode 属性区分左分隔符和右分隔符。
 
-Some delimiters are not allowed immediately after `Q`, `q`, or `qq`. Any characters that are allowed in [identifiers](https://rakudocs.github.io/language/syntax#Identifiers) are not allowed to be used, since in such a case, the quoting construct together with such characters are interpreted as an identifier. In addition, `( )` is not allowed because that is interpreted as a function call. If you still wish to use those characters as delimiters, separate them from `Q`, `q`, or `qq` with a space. Please note that some natural languages use a left delimiting quote on the right side of a string. `Q` will not support those as it relies on unicode properties to tell left and right delimiters apart.
+Some delimiters are not allowed immediately after `Q`, `q`, or `qq`. Any characters that are allowed in [identifiers](https://docs.raku.org/language/syntax#Identifiers) are not allowed to be used, since in such a case, the quoting construct together with such characters are interpreted as an identifier. In addition, `( )` is not allowed because that is interpreted as a function call. If you still wish to use those characters as delimiters, separate them from `Q`, `q`, or `qq` with a space. Please note that some natural languages use a left delimiting quote on the right side of a string. `Q` will not support those as it relies on unicode properties to tell left and right delimiters apart.
 
 ```Raku
 Q'this will not work!'
@@ -130,9 +130,9 @@ No $interpolation {here}!
 Just a literal "\n" here
 ```
 
-`\qq[...]` 转义序列为字符串的一部分启用了[`qq` 字符串插值](https://rakudocs.github.io/language/quoting#Interpolation:_qq)。当字符串中有 HTML 标记时，使用此转义序列非常方便，以避免将尖括号解释为散列键：
+`\qq[...]` 转义序列为字符串的一部分启用了[`qq` 字符串插值](https://docs.raku.org/language/quoting#Interpolation:_qq)。当字符串中有 HTML 标记时，使用此转义序列非常方便，以避免将尖括号解释为散列键：
 
-The `\qq[...]` escape sequence enables [`qq` interpolation](https://rakudocs.github.io/language/quoting#Interpolation:_qq) for a portion of the string. Using this escape sequence is handy when you have HTML markup in your strings, to avoid interpretation of angle brackets as hash keys:
+The `\qq[...]` escape sequence enables [`qq` interpolation](https://docs.raku.org/language/quoting#Interpolation:_qq) for a portion of the string. Using this escape sequence is handy when you have HTML markup in your strings, to avoid interpretation of angle brackets as hash keys:
 
 ```Raku
 my $var = 'foo';
@@ -202,9 +202,9 @@ say "abc&uc("def")ghi";
 # OUTPUT: «abcDEFghi␤»
 ```
 
-对后环缀运算符也生效，因此 [下标](https://rakudocs.github.io/language/subscripts) 也能插值。
+对后环缀运算符也生效，因此 [下标](https://docs.raku.org/language/subscripts) 也能插值。
 
-Postcircumfix operators and therefore [subscripts](https://rakudocs.github.io/language/subscripts) are interpolated as well.
+Postcircumfix operators and therefore [subscripts](https://docs.raku.org/language/subscripts) are interpolated as well.
 
 ```Raku
 my %h = :1st; say "abc%h<st>ghi";
@@ -225,9 +225,9 @@ say $s;
 # OUTPUT: «I really ♡♥❤💕 Raku!␤»
 ```
 
-你也可以在 [\c[]](https://rakudocs.github.io/language/unicode#Entering_unicode_codepoints_and_codepoint_sequences) 中使用 [unicode](https://rakudocs.github.io/language/unicode#Entering_unicode_codepoints_and_codepoint_sequences)、[命名序列](https://rakudocs.github.io/language/unicode#Named_sequences)以及[名称别名](https://rakudocs.github.io/language/unicode#Name_aliases)。
+你也可以在 [\c[]](https://docs.raku.org/language/unicode#Entering_unicode_codepoints_and_codepoint_sequences) 中使用 [unicode](https://docs.raku.org/language/unicode#Entering_unicode_codepoints_and_codepoint_sequences)、[命名序列](https://docs.raku.org/language/unicode#Named_sequences)以及[名称别名](https://docs.raku.org/language/unicode#Name_aliases)。
 
-You can also use [unicode names](https://rakudocs.github.io/language/unicode#Entering_unicode_codepoints_and_codepoint_sequences) , [named sequences](https://rakudocs.github.io/language/unicode#Named_sequences) and [name aliases](https://rakudocs.github.io/language/unicode#Name_aliases) with [\c[]](https://rakudocs.github.io/language/unicode#Entering_unicode_codepoints_and_codepoint_sequences).
+You can also use [unicode names](https://docs.raku.org/language/unicode#Entering_unicode_codepoints_and_codepoint_sequences) , [named sequences](https://docs.raku.org/language/unicode#Named_sequences) and [name aliases](https://docs.raku.org/language/unicode#Name_aliases) with [\c[]](https://docs.raku.org/language/unicode#Entering_unicode_codepoints_and_codepoint_sequences).
 
 ```Raku
 my $s = "Camelia \c[BROKEN HEART] my \c[HEAVY BLACK HEART]!";
@@ -235,9 +235,9 @@ say $s;
 # OUTPUT: «Camelia 💔 my ❤!␤»
 ```
 
-字符串插入未定义值将引发一个控制异常，该异常可以在当前块中用 [CONTROL](https://rakudocs.github.io/language/phasers#CONTROL) 捕获。
+字符串插入未定义值将引发一个控制异常，该异常可以在当前块中用 [CONTROL](https://docs.raku.org/language/phasers#CONTROL) 捕获。
 
-Interpolation of undefined values will raise a control exception that can be caught in the current block with [CONTROL](https://rakudocs.github.io/language/phasers#CONTROL).
+Interpolation of undefined values will raise a control exception that can be caught in the current block with [CONTROL](https://docs.raku.org/language/phasers#CONTROL).
 
 ```Raku
 sub niler {Nil};
@@ -286,18 +286,18 @@ say < 42 > ~~ Int; # OUTPUT: «True␤»
 say < 42 > ~~ Str; # OUTPUT: «True␤»
 ```
 
-尖括号引用类似于 `qw`，但是有了额外的特性，你可以构造[语素变体](https://rakudocs.github.io/language/glossary#index-entry-Allomorph)或特定数字的文字：
+尖括号引用类似于 `qw`，但是有了额外的特性，你可以构造[语素变体](https://docs.raku.org/language/glossary#index-entry-Allomorph)或特定数字的文字：
 
-The angle brackets quoting is like `qw`, but with extra feature that lets you construct [allomorphs](https://rakudocs.github.io/language/glossary#index-entry-Allomorph) or literals of certain numbers:
+The angle brackets quoting is like `qw`, but with extra feature that lets you construct [allomorphs](https://docs.raku.org/language/glossary#index-entry-Allomorph) or literals of certain numbers:
 
 ```Raku
 say <42 4/2 1e6 1+1i abc>.perl;
 # OUTPUT: «(IntStr.new(42, "42"), RatStr.new(2.0, "4/2"), NumStr.new(1000000e0, "1e6"), ComplexStr.new(<1+1i>, "1+1i"), "abc")␤»
 ```
 
-要构建 [`Rat`](https://rakudocs.github.io/type/Rat) 或者 [`Complex`](https://rakudocs.github.io/type/Complex)，使用尖括号包围数字，不能有多余空格：
+要构建 [`Rat`](https://docs.raku.org/type/Rat) 或者 [`Complex`](https://docs.raku.org/type/Complex)，使用尖括号包围数字，不能有多余空格：
 
-To construct a [`Rat`](https://rakudocs.github.io/type/Rat) or [`Complex`](https://rakudocs.github.io/type/Complex) literal, use angle brackets around the number, without any extra spaces:
+To construct a [`Rat`](https://docs.raku.org/type/Rat) or [`Complex`](https://docs.raku.org/type/Complex) literal, use angle brackets around the number, without any extra spaces:
 
 ```Raku
 say <42/10>.^name;   # OUTPUT: «Rat␤» 
@@ -402,9 +402,9 @@ say qqww{"$b" $b}.perl; # OUTPUT: «("1 \"2 3\"", "1", "\"2", "3\"")␤»
 <a id="%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%8F%92%E5%80%BC%E8%AF%8D%E4%BB%A5%E5%8F%8A%E5%BC%95%E5%8F%B7%E4%BF%9D%E6%8A%A4%E8%AF%8D%E5%BC%95%E6%96%87%EF%BC%9A%C2%AB-%C2%BB--word-quoting-with-interpolation-and-quote-protection-%C2%AB-%C2%BB"></a>
 ## 字符串插值词以及引号保护词引文：« » / Word quoting with interpolation and quote protection: « »
 
-这种方式的引用与 `qqww` 类似，但是有构建[语素变体](https://rakudocs.github.io/language/glossary#index-entry-Allomorph)的额外好处（使其功能上等价于 [qq:ww:v](https://rakudocs.github.io/language/quoting#index-entry-%3Aval_%28quoting_adverb%29)）。`« »` 的 ASCII 等价为双尖括号 `<< >>`。
+这种方式的引用与 `qqww` 类似，但是有构建[语素变体](https://docs.raku.org/language/glossary#index-entry-Allomorph)的额外好处（使其功能上等价于 [qq:ww:v](https://docs.raku.org/language/quoting#index-entry-%3Aval_%28quoting_adverb%29)）。`« »` 的 ASCII 等价为双尖括号 `<< >>`。
 
-This style of quoting is like `qqww`, but with the added benefit of constructing [allomorphs](https://rakudocs.github.io/language/glossary#index-entry-Allomorph) (making it functionally equivalent to [qq:ww:v](https://rakudocs.github.io/language/quoting#index-entry-%3Aval_%28quoting_adverb%29)). The ASCII equivalent to `« »` are double angle brackets `<< >>`.
+This style of quoting is like `qqww`, but with the added benefit of constructing [allomorphs](https://docs.raku.org/language/glossary#index-entry-Allomorph) (making it functionally equivalent to [qq:ww:v](https://docs.raku.org/language/quoting#index-entry-%3Aval_%28quoting_adverb%29)). The ASCII equivalent to `« »` are double angle brackets `<< >>`.
 
 ```Raku
 # Allomorph Construction 
@@ -450,9 +450,9 @@ my $output = qx{echo "hello!"};
 say $output;    # OUTPUT: «hello!␤»
 ```
 
-用其他方式执行外部命令也可以参阅 [shell](https://rakudocs.github.io/routine/shell)、[run](https://rakudocs.github.io/routine/run) 以及 [Proc::Async](https://rakudocs.github.io/type/Proc::Async)。
+用其他方式执行外部命令也可以参阅 [shell](https://docs.raku.org/routine/shell)、[run](https://docs.raku.org/routine/run) 以及 [Proc::Async](https://docs.raku.org/type/Proc::Async)。
 
-See also [shell](https://rakudocs.github.io/routine/shell), [run](https://rakudocs.github.io/routine/run) and [Proc::Async](https://rakudocs.github.io/type/Proc::Async) for other ways to execute external commands.
+See also [shell](https://docs.raku.org/routine/shell), [run](https://docs.raku.org/routine/run) and [Proc::Async](https://docs.raku.org/type/Proc::Async) for other ways to execute external commands.
 
 <a id="%E5%B8%A6%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%8F%92%E5%80%BC%E7%9A%84-shell-%E5%BC%95%E6%96%87%EF%BC%9Aqqx--shell-quoting-with-interpolation-qqx"></a>
 ## 带字符串插值的 Shell 引文：qqx / Shell quoting with interpolation: qqx
@@ -479,9 +479,9 @@ my $output = qqx{grep $option $word $file};
 say $output;      # OUTPUT: «Cooley␤Cooley's␤Coolidge␤Coolidge's␤cool␤...»
 ```
 
-还请参阅 [run](https://rakudocs.github.io/routine/run) 和 [Proc::Async](https://rakudocs.github.io/type/Proc::Async) 以获得执行外部命令的更好方法。
+还请参阅 [run](https://docs.raku.org/routine/run) 和 [Proc::Async](https://docs.raku.org/type/Proc::Async) 以获得执行外部命令的更好方法。
 
-See also [run](https://rakudocs.github.io/routine/run) and [Proc::Async](https://rakudocs.github.io/type/Proc::Async) for better ways to execute external commands.
+See also [run](https://docs.raku.org/routine/run) and [Proc::Async](https://docs.raku.org/type/Proc::Async) for better ways to execute external commands.
 
 <a id="heredocs-to"></a>
 ## Heredocs: :to
@@ -595,6 +595,6 @@ In this example, `\qq` will do double-quoting interpolation, and `\qqw` word quo
 <a id="%E6%AD%A3%E5%88%99--regexes"></a>
 # 正则 / Regexes
 
-有关引文在正则中应用的信息，请参阅[正则表达式文档](https://rakudocs.github.io/language/regexes)。
+有关引文在正则中应用的信息，请参阅[正则表达式文档](https://docs.raku.org/language/regexes)。
 
-For information about quoting as applied in regexes, see the [regular expression documentation](https://rakudocs.github.io/language/regexes).
+For information about quoting as applied in regexes, see the [regular expression documentation](https://docs.raku.org/language/regexes).

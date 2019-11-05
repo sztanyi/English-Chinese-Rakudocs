@@ -1,4 +1,4 @@
-原文：https://rakudocs.github.io/language/containers
+原文：https://docs.raku.org/language/containers
 
 # 容器 / Containers
 
@@ -51,9 +51,9 @@ In the case of `my $x`, the lexpad entry for the variable `$x` is a pointer to a
 <a id="%E6%A0%87%E9%87%8F%E5%AE%B9%E5%99%A8--scalar-containers"></a>
 # 标量容器 / Scalar containers
 
-尽管在 Raku 中，[`Scalar`](https://rakudocs.github.io/type/scalar) 类型的对象随处可见，但你很少见它们直接作为对象，因为大多数操作时*反容器化*的，这意味着它们作用于 `scalar` 容器的内容，而不是容器本身。
+尽管在 Raku 中，[`Scalar`](https://docs.raku.org/type/scalar) 类型的对象随处可见，但你很少见它们直接作为对象，因为大多数操作时*反容器化*的，这意味着它们作用于 `scalar` 容器的内容，而不是容器本身。
 
-Although objects of type [`Scalar`](https://rakudocs.github.io/type/Scalar) are everywhere in Raku, you rarely see them directly as objects, because most operations *decontainerize*, which means they act on the `Scalar` container's contents instead of the container itself.
+Although objects of type [`Scalar`](https://docs.raku.org/type/Scalar) are everywhere in Raku, you rarely see them directly as objects, because most operations *decontainerize*, which means they act on the `Scalar` container's contents instead of the container itself.
 
 在代码中
 
@@ -154,9 +154,9 @@ CATCH { default { say .^name, ': ', .Str } };
 <a id="%E5%8F%AF%E8%B0%83%E7%94%A8%E5%AE%B9%E5%99%A8--callable-containers"></a>
 # 可调用容器 / Callable containers
 
-可调用容器在存储在容器中的对象的 [Routine](https://rakudocs.github.io/type/routine) 调用的语法和方法 [CALL-ME](https://rakudocs.github.io/type/callable method_call-me) 的实际调用之间提供了一个桥梁。声明容器时需要 `&` 标记并且在执行 `Callable` 时必须省略。默认类型约束为 [Callable](https://rakudocs.github.io/type/callable)。
+可调用容器在存储在容器中的对象的 [Routine](https://docs.raku.org/type/routine) 调用的语法和方法 [CALL-ME](https://docs.raku.org/type/callable method_call-me) 的实际调用之间提供了一个桥梁。声明容器时需要 `&` 标记并且在执行 `Callable` 时必须省略。默认类型约束为 [Callable](https://docs.raku.org/type/callable)。
 
-Callable containers provide a bridge between the syntax of a [Routine](https://rakudocs.github.io/type/Routine) call and the actual call of the method [CALL-ME](https://rakudocs.github.io/type/Callable#method_CALL-ME) of the object that is stored in the container. The sigil `&` is required when declaring the container and has to be omitted when executing the `Callable`. The default type constraint is [Callable](https://rakudocs.github.io/type/Callable).
+Callable containers provide a bridge between the syntax of a [Routine](https://docs.raku.org/type/Routine) call and the actual call of the method [CALL-ME](https://docs.raku.org/type/Callable#method_CALL-ME) of the object that is stored in the container. The sigil `&` is required when declaring the container and has to be omitted when executing the `Callable`. The default type constraint is [Callable](https://docs.raku.org/type/Callable).
 
 ```Raku
 my &callable = -> $ν { say "$ν is", $ν ~~ Int??" whole"!!" not whole" }
@@ -164,9 +164,9 @@ callable( ⅓ );
 callable( 3 );
 ```
 
-引用存储在容器中的值时必须带标记。这反过来又允许将  `Routine` 用作[参数](https://rakudocs.github.io/type/Signature#Constraining_signature_s_of_Callables)调用。
+引用存储在容器中的值时必须带标记。这反过来又允许将  `Routine` 用作[参数](https://docs.raku.org/type/Signature#Constraining_signature_s_of_Callables)调用。
 
-The sigil has to be provided when referring to the value stored in the container. This in turn allows `Routine`s to be used as [arguments](https://rakudocs.github.io/type/Signature#Constraining_signatures_of_Callables) to calls.
+The sigil has to be provided when referring to the value stored in the container. This in turn allows `Routine`s to be used as [arguments](https://docs.raku.org/type/Signature#Constraining_signatures_of_Callables) to calls.
 
 ```Raku
 sub f() {}
@@ -237,9 +237,9 @@ say $a;         # OUTPUT: «44
 <a id="%E6%A0%87%E9%87%8F%E5%AE%B9%E5%99%A8%E5%92%8C%E5%88%97%E8%A1%A8--scalar-containers-and-listy-things"></a>
 # 标量容器和列表 / Scalar containers and listy things
 
-Raku 中有许多语义稍有不同的位置容器类型。最基本的是 [List](https://rakudocs.github.io/type/list)；它是由逗号操作符创建的。
+Raku 中有许多语义稍有不同的位置容器类型。最基本的是 [List](https://docs.raku.org/type/list)；它是由逗号操作符创建的。
 
-There are a number of positional container types with slightly different semantics in Raku. The most basic one is [List](https://rakudocs.github.io/type/List); it is created by the comma operator.
+There are a number of positional container types with slightly different semantics in Raku. The most basic one is [List](https://docs.raku.org/type/List); it is created by the comma operator.
 
 ```Raku
 say (1, 2, 3).^name;    # OUTPUT: «List
@@ -398,9 +398,9 @@ say f @a, 4, 5;             # OUTPUT: «5
 » 
 ```
 
-你也可以使用 `|` 生成一个 [Slip](https://rakudocs.github.io/type/Slip)，将列表引入另一个列表。
+你也可以使用 `|` 生成一个 [Slip](https://docs.raku.org/type/Slip)，将列表引入另一个列表。
 
-You can also use `|` to create a [Slip](https://rakudocs.github.io/type/Slip), introducing a list into the other.
+You can also use `|` to create a [Slip](https://docs.raku.org/type/Slip), introducing a list into the other.
 
 ```Raku
 my @l := 1, 2, (3, 4, (5, 6)), [7, 8, (9, 10)];
@@ -475,16 +475,16 @@ put @a.perl;
 » 
 ```
 
-尽管 Raku 不会阻止你创建和使用自引用数据，但是这样做可能会导致你陷入一个试图转储数据的循环中。最后，你可以使用 Promises 来[处理](https://rakudocs.github.io/type/promise-method-in)超时。
+尽管 Raku 不会阻止你创建和使用自引用数据，但是这样做可能会导致你陷入一个试图转储数据的循环中。最后，你可以使用 Promises 来[处理](https://docs.raku.org/type/promise-method-in)超时。
 
-Although Raku does not prevent you from creating and using self-referential data, by doing so you may end up in a loop trying to dump the data. As a last resort, you can use Promises to [handle](https://rakudocs.github.io/type/Promise#method_in) timeouts.
+Although Raku does not prevent you from creating and using self-referential data, by doing so you may end up in a loop trying to dump the data. As a last resort, you can use Promises to [handle](https://docs.raku.org/type/Promise#method_in) timeouts.
 
 <a id="%E7%B1%BB%E5%9E%8B%E7%BA%A6%E6%9D%9F--type-constraints"></a>
 # 类型约束 / Type constraints
 
-任何容器都有[类型对象](https://rakudocs.github.io/language/typesystem#Type_objects)或者[子集](https://rakudocs.github.io/language/typesystem#subset)形式的类型约束。两者都可以放在声明符合变量名中间或者在特性 [of] (https://rakudocs.github.io/type/Variable#trait_is_dynamic)之后。约束是变量而非容器的属性。
+任何容器都有[类型对象](https://docs.raku.org/language/typesystem#Type_objects)或者[子集](https://docs.raku.org/language/typesystem#subset)形式的类型约束。两者都可以放在声明符合变量名中间或者在特性 [of] (https://docs.raku.org/type/Variable#trait_is_dynamic)之后。约束是变量而非容器的属性。
 
-Any container can have a type constraint in the form of a [type object](https://rakudocs.github.io/language/typesystem#Type_objects) or a [subset](https://rakudocs.github.io/language/typesystem#subset). Both can be placed between a declarator and the variable name or after the trait [of](https://rakudocs.github.io/type/Variable#trait_is_dynamic). The constraint is a property of the variable, not the container.
+Any container can have a type constraint in the form of a [type object](https://docs.raku.org/language/typesystem#Type_objects) or a [subset](https://docs.raku.org/language/typesystem#subset). Both can be placed between a declarator and the variable name or after the trait [of](https://docs.raku.org/type/Variable#trait_is_dynamic). The constraint is a property of the variable, not the container.
 
 ```Raku
 subset Three-letter of Str where .chars == 3;
@@ -495,9 +495,9 @@ my Three-letter $acronym = "ÞFL";
 
 In this case, the type constraint is the (compile-type defined) subset `Three-letter`.
 
-变量中可能没有容器，但是仍然具有再绑定的能力以及类型检查那个再绑定。因为在那种情况中绑定操作符 [:=](https://rakudocs.github.io/language/operators#infix_%3A%3D) 执行了类型检查：
+变量中可能没有容器，但是仍然具有再绑定的能力以及类型检查那个再绑定。因为在那种情况中绑定操作符 [:=](https://docs.raku.org/language/operators#infix_%3A%3D) 执行了类型检查：
 
-Variables may have no container in them, yet still offer the ability to re-bind and typecheck that rebind. The reason for that is in such cases the binding operator [:=](https://rakudocs.github.io/language/operators#infix_%3A%3D) performs the typecheck:
+Variables may have no container in them, yet still offer the ability to re-bind and typecheck that rebind. The reason for that is in such cases the binding operator [:=](https://docs.raku.org/language/operators#infix_%3A%3D) performs the typecheck:
 
 ```Raku
 my Int \z = 42;
@@ -507,11 +507,11 @@ z := "x"; # Typecheck failure
 
 当绑定至 [Hash] 键时，情况又有所不同，因为绑定是被方法调用处理的（尽管语法仍旧不变，使用 `:=` 操作符）。
 
-The same isn't the case when, say, binding to a [Hash](https://rakudocs.github.io/type/Hash) key, as the binding is then handled by a method call (even though the syntax remains the same, using `:=` operator).
+The same isn't the case when, say, binding to a [Hash](https://docs.raku.org/type/Hash) key, as the binding is then handled by a method call (even though the syntax remains the same, using `:=` operator).
 
-`标量`容器的默认类型约束是 [Mu](https://rakudocs.github.io/type/Mu)。容器的类型约束反省是由 `.VAR.of` 方法提供的，对于 `@` 和 `％` 标记的变量给出了值的约束：
+`标量`容器的默认类型约束是 [Mu](https://docs.raku.org/type/Mu)。容器的类型约束反省是由 `.VAR.of` 方法提供的，对于 `@` 和 `％` 标记的变量给出了值的约束：
 
-The default type constraint of a `Scalar` container is [Mu](https://rakudocs.github.io/type/Mu). Introspection of type constraints on containers is provided by `.VAR.of` method, which for `@` and `%` sigiled variables gives the constraint for values:
+The default type constraint of a `Scalar` container is [Mu](https://docs.raku.org/type/Mu). Introspection of type constraints on containers is provided by `.VAR.of` method, which for `@` and `%` sigiled variables gives the constraint for values:
 
 ```Raku
 my Str $x;
@@ -544,9 +544,9 @@ $def = Int; # Typecheck failure
 You'll also need to initialize the variable in the declaration, it can't be left undefined after all.
 
 也可以使用[默认已定义变量的
-指令](https://rakudocs.github.io/language/variables#Default_defined_variables_pragma)在作用域中声明的所有变量中强制实施此约束。来自总是定义变量的其他语言的人会想看看。
+指令](https://docs.raku.org/language/variables#Default_defined_variables_pragma)在作用域中声明的所有变量中强制实施此约束。来自总是定义变量的其他语言的人会想看看。
 
-It's also possible to have this constraint enforced in all variables declared in a scope with the [default defined variables pragma](https://rakudocs.github.io/language/variables#Default_defined_variables_pragma). People coming from other languages where variables are always defined will want to have a look.
+It's also possible to have this constraint enforced in all variables declared in a scope with the [default defined variables pragma](https://docs.raku.org/language/variables#Default_defined_variables_pragma). People coming from other languages where variables are always defined will want to have a look.
 
 <a id="%E8%87%AA%E5%AE%9A%E4%B9%89%E5%AE%B9%E5%99%A8--custom-containers"></a>
 # 自定义容器 / Custom containers

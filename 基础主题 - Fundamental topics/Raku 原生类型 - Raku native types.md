@@ -1,4 +1,4 @@
-原文：https://rakudocs.github.io/language/nativetypes
+原文：https://docs.raku.org/language/nativetypes
 
 # Raku 原生类型 / Raku native types
 
@@ -29,13 +29,13 @@ Some simple types in Raku have a *native* representation, indicating that they w
 | num  | Equivalent to Num                                            |
 | str  | Equivalent to Str                                            |
 
-但是，这些类型不一定具有 [NativeCall](https://rakudocs.github.io/language/nativecall) 接口所需的大小(例如，Raku 的 `int` 可以是 8 个字节，而 C 的 `int` 只有 4 个字节)；必须使用以下类型而不是上面列出的 `int` 或 `num` 类型。
+但是，这些类型不一定具有 [NativeCall](https://docs.raku.org/language/nativecall) 接口所需的大小(例如，Raku 的 `int` 可以是 8 个字节，而 C 的 `int` 只有 4 个字节)；必须使用以下类型而不是上面列出的 `int` 或 `num` 类型。
 
-However, these types do not necessarily have the size that is required by the [NativeCall](https://rakudocs.github.io/language/nativecall) interface (e.g., Raku's `int` can be 8 bytes but C's `int` is only 4 bytes); the types below will have to be used instead of the types `int` or `num` listed above.
+However, these types do not necessarily have the size that is required by the [NativeCall](https://docs.raku.org/language/nativecall) interface (e.g., Raku's `int` can be 8 bytes but C's `int` is only 4 bytes); the types below will have to be used instead of the types `int` or `num` listed above.
 
-通常，这些变量将以与常规标量变量相同的方式运行，在称为[*自动装箱*](https://rakudocs.github.io/language/numerics#Auto-boxing)的行为中；但是，仍存在一些差异，因为你实际上声明的是它们的表示方式，而不是它们的实际类型。第一个问题是，它们的类型实际上是它们的等效类型，而不是它们的原生类型。
+通常，这些变量将以与常规标量变量相同的方式运行，在称为[*自动装箱*](https://docs.raku.org/language/numerics#Auto-boxing)的行为中；但是，仍存在一些差异，因为你实际上声明的是它们的表示方式，而不是它们的实际类型。第一个问题是，它们的类型实际上是它们的等效类型，而不是它们的原生类型。
 
-In general, these variables will behave in the same way as regular scalar variables, in a behavior that is called [*auto-boxing*](https://rakudocs.github.io/language/numerics#Auto-boxing); however, there are some differences, since what you are actually declaring is how they will be represented, not their actual type. The first one is that their type will be actually their equivalent type, not their native type.
+In general, these variables will behave in the same way as regular scalar variables, in a behavior that is called [*auto-boxing*](https://docs.raku.org/language/numerics#Auto-boxing); however, there are some differences, since what you are actually declaring is how they will be represented, not their actual type. The first one is that their type will be actually their equivalent type, not their native type.
 
 ```Raku
 my int $intillo = 3;
@@ -66,9 +66,9 @@ say (my num $); # OUTPUT: «0␤»
 
 **Note**: In v6.c, the default value for `num` would have been a NaN.
 
-这是因为原生数据不知道他们的类型，因为他们只是值，没有任何元数据。在[多分派](https://rakudocs.github.io/language/glossary#Multi-Dispatch)中，你可以有一个原生候选人，但你不能区分相同原生类型的不同大小。也就是说，你可以有一个 [Int](https://rakudocs.github.io/type/Int) 和 [int](https://rakudocs.github.io/type/int) 候选人，但在 [int](https://rakudocs.github.io/type/int)、[atomicint](https://rakudocs.github.io/type/atomicint) 或 [int64](https://rakudocs.github.io/language/nativetypes#index-entry-int64) 之间可能存在歧义。
+这是因为原生数据不知道他们的类型，因为他们只是值，没有任何元数据。在[多分派](https://docs.raku.org/language/glossary#Multi-Dispatch)中，你可以有一个原生候选人，但你不能区分相同原生类型的不同大小。也就是说，你可以有一个 [Int](https://docs.raku.org/type/Int) 和 [int](https://docs.raku.org/type/int) 候选人，但在 [int](https://docs.raku.org/type/int)、[atomicint](https://docs.raku.org/type/atomicint) 或 [int64](https://docs.raku.org/language/nativetypes#index-entry-int64) 之间可能存在歧义。
 
-This is due to the fact that Natives don't know their types because they're just values, without any metadata. In [multi-dispatch](https://rakudocs.github.io/language/glossary#Multi-Dispatch), you can have a native candidate, but you cannot differentiate different sizes of the same native type. That is, you can have an [Int](https://rakudocs.github.io/type/Int) and [int](https://rakudocs.github.io/type/int) candidates, but there would be an ambiguity between, for instance [int](https://rakudocs.github.io/type/int), [atomicint](https://rakudocs.github.io/type/atomicint) or [int64](https://rakudocs.github.io/language/nativetypes#index-entry-int64) candidates.
+This is due to the fact that Natives don't know their types because they're just values, without any metadata. In [multi-dispatch](https://docs.raku.org/language/glossary#Multi-Dispatch), you can have a native candidate, but you cannot differentiate different sizes of the same native type. That is, you can have an [Int](https://docs.raku.org/type/Int) and [int](https://docs.raku.org/type/int) candidates, but there would be an ambiguity between, for instance [int](https://docs.raku.org/type/int), [atomicint](https://docs.raku.org/type/atomicint) or [int64](https://docs.raku.org/language/nativetypes#index-entry-int64) candidates.
 
 他们也不能被束缚。尝试执行 `my num $numillo := 3.5` 将引发异常 `Cannot bind to natively typed variable '$variable-name'; use assignment instead`。
 
@@ -91,9 +91,9 @@ In this case, *native*ness extends to the composite type, which will be `array`
 my num @many-pi  = ^8 »*» π ; say @many-pi.^name;  # OUTPUT: «array[num]␤»
 ```
 
-原生的 `array` 为 [Iterable](https://rakudocs.github.io/type/Iterable)，但它们不是 List 的子类。但是，它们的行为类似于[Array](https://rakudocs.github.io/type/Array)；例如，它们可以被塑造：
+原生的 `array` 为 [Iterable](https://docs.raku.org/type/Iterable)，但它们不是 List 的子类。但是，它们的行为类似于[Array](https://docs.raku.org/type/Array)；例如，它们可以被塑造：
 
-Native `array`s are [Iterable](https://rakudocs.github.io/type/Iterable), but they are not a subclass of List. However, they behave similarly to [Array](https://rakudocs.github.io/type/Array)s; for instance, they can be shaped:
+Native `array`s are [Iterable](https://docs.raku.org/type/Iterable), but they are not a subclass of List. However, they behave similarly to [Array](https://docs.raku.org/type/Array)s; for instance, they can be shaped:
 
 ```Raku
 my str @letter-pairs[10] = 'a'..'j' Z~ 'A'..'J';
@@ -104,9 +104,9 @@ say @letter-pairs.perl;
 <a id="%E5%85%B7%E6%9C%89%E5%8E%9F%E7%94%9F%E8%A1%A8%E7%A4%BA%E5%BD%A2%E5%BC%8F%E5%92%8C%E5%A4%A7%E5%B0%8F%E7%9A%84%E7%B1%BB%E5%9E%8B--types-with-native-representation-and-size"></a>
 # 具有原生表示形式和大小的类型 / Types with native representation and size
 
-已经提到的具有原生表示的类型也适用于这里；它们将自动装箱到 Raku 类型，并且不可绑定。但是，下表中列出的这些类型具有在 [NativeCall](https://rakudocs.github.io/language/nativecall#Passing_and_returning_values) 函数中可用的特性。
+已经提到的具有原生表示的类型也适用于这里；它们将自动装箱到 Raku 类型，并且不可绑定。但是，下表中列出的这些类型具有在 [NativeCall](https://docs.raku.org/language/nativecall#Passing_and_returning_values) 函数中可用的特性。
 
-What has been mentioned about types with native representation also applies here; they will be auto-boxed to Raku types and will not be boundable. However, these types, which are listed in the table below, have the characteristic of being usable in [NativeCall](https://rakudocs.github.io/language/nativecall#Passing_and_returning_values) functions.
+What has been mentioned about types with native representation also applies here; they will be auto-boxed to Raku types and will not be boundable. However, these types, which are listed in the table below, have the characteristic of being usable in [NativeCall](https://docs.raku.org/language/nativecall#Passing_and_returning_values) functions.
 
 | int8        | (int8_t in C)   |
 | ----------- | --------------- |
@@ -158,9 +158,9 @@ my void $nothing;
 say $nothing.perl; # OUTPUT: «NativeCall::Types::void␤»
 ```
 
-实际上，这是一种本身很少能使用的无法实例化的类型，事实上，它[在返回类型中明确禁止](https://rakudocs.github.io/language/nativecall#Passing_and_returning_values)。但是，它通常在类型化指针中找到，表示相当于 C 中的 `void *` 指针。
+实际上，这是一种本身很少能使用的无法实例化的类型，事实上，它[在返回类型中明确禁止](https://docs.raku.org/language/nativecall#Passing_and_returning_values)。但是，它通常在类型化指针中找到，表示相当于 C 中的 `void *` 指针。
 
-In practice, it is an `Uninstantiable` type that can rarely be used by itself, and in fact it is [explicitly forbidden in `return` types](https://rakudocs.github.io/language/nativecall#Passing_and_returning_values). However, it is generally found in typed pointers representing the equivalent to the `void *` pointer in C.
+In practice, it is an `Uninstantiable` type that can rarely be used by itself, and in fact it is [explicitly forbidden in `return` types](https://docs.raku.org/language/nativecall#Passing_and_returning_values). However, it is generally found in typed pointers representing the equivalent to the `void *` pointer in C.
 
 ```Raku
 sub malloc( int32 $size --> Pointer[void] ) is native { * };
@@ -168,9 +168,9 @@ my Pointer[void] $for-malloc = malloc( 32 );
 say $for-malloc.perl;
 ```
 
-你还可以 [nativecast](https://rakudocs.github.io/routine/nativecast) [Blob](https://rakudocs.github.io/type/Blob) 类型为指向这种类型的指针，以防你需要在使用该类型的本地函数中使用它们。
+你还可以 [nativecast](https://docs.raku.org/routine/nativecast) [Blob](https://docs.raku.org/type/Blob) 类型为指向这种类型的指针，以防你需要在使用该类型的本地函数中使用它们。
 
-You can also [nativecast](https://rakudocs.github.io/routine/nativecast) [Blob](https://rakudocs.github.io/type/Blob)s to this kind of pointer in case you need to work with them in native functions that use the type
+You can also [nativecast](https://docs.raku.org/routine/nativecast) [Blob](https://docs.raku.org/type/Blob)s to this kind of pointer in case you need to work with them in native functions that use the type
 
 ```Raku
 use NativeCall;
@@ -190,9 +190,9 @@ say $native.deref; # ERROR OUTPUT: «Internal error: unhandled target type␤»
 <a id="atomic-%E7%B1%BB%E5%9E%8B--atomic-types"></a>
 # *Atomic* 类型 / Atomic* types
 
-在这种情况下，*atomic* 指的是线程下的安全操作。Raku 提供了一个 [`atomicint`](https://rakudocs.github.io/type/atomicint) 类型和[一些原子操作](https://rakudocs.github.io/type/atomicint#Routines)，它们共同保证了这一点。有关此问题的更多信息，请查看[数值页面上的原子操作部分](https://rakudocs.github.io/language/numerics#Atomic_operations)。
+在这种情况下，*atomic* 指的是线程下的安全操作。Raku 提供了一个 [`atomicint`](https://docs.raku.org/type/atomicint) 类型和[一些原子操作](https://docs.raku.org/type/atomicint#Routines)，它们共同保证了这一点。有关此问题的更多信息，请查看[数值页面上的原子操作部分](https://docs.raku.org/language/numerics#Atomic_operations)。
 
-In this context, *atomic* refers to safe operation under threading. Raku provides a type, [`atomicint`](https://rakudocs.github.io/type/atomicint), and [some operations](https://rakudocs.github.io/type/atomicint#Routines) which, together, guarantee this. Please check [the atomic operations section on the Numerics page](https://rakudocs.github.io/language/numerics#Atomic_operations) for more information on this.
+In this context, *atomic* refers to safe operation under threading. Raku provides a type, [`atomicint`](https://docs.raku.org/type/atomicint), and [some operations](https://docs.raku.org/type/atomicint#Routines) which, together, guarantee this. Please check [the atomic operations section on the Numerics page](https://docs.raku.org/language/numerics#Atomic_operations) for more information on this.
 
 <a id="rakudo-%E7%89%B9%E5%AE%9A%E7%9A%84%E5%8E%9F%E7%94%9F%E7%B1%BB%E5%9E%8B--rakudo-specific-native-types"></a>
 # Rakudo 特定的原生类型 / Rakudo specific native types

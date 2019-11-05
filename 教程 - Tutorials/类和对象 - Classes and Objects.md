@@ -1,4 +1,4 @@
-原文：https://rakudocs.github.io/language/classtut
+原文：https://docs.raku.org/language/classtut
 
 # 类与对象 / Classes and objects
 
@@ -241,9 +241,9 @@ class Singleton {
  
 ```
 
-通过 [my](https://rakudocs.github.io/syntax/my) 或者 [our](https://rakudocs.github.io/syntax/our) 定义的类属性也可能在声明时被初始化，但是我们要在这实现单例模式，对象必须在第一次使用时被创建。不可能 100% 预见什么属性初始化的时刻，因为它可以发生在编译时，运行时或者同时，尤其使用 [use](https://rakudocs.github.io/syntax/use) 关键字时。
+通过 [my](https://docs.raku.org/syntax/my) 或者 [our](https://docs.raku.org/syntax/our) 定义的类属性也可能在声明时被初始化，但是我们要在这实现单例模式，对象必须在第一次使用时被创建。不可能 100% 预见什么属性初始化的时刻，因为它可以发生在编译时，运行时或者同时，尤其使用 [use](https://docs.raku.org/syntax/use) 关键字时。
 
-Class attributes defined by [my](https://rakudocs.github.io/syntax/my) or [our](https://rakudocs.github.io/syntax/our) may also be initialized when being declared, however we are implementing the Singleton pattern here and the object must be created during its first use. It is not 100% possible to predict the moment when attribute initialization will be executed, because it can take place during compilation, runtime or both, especially when importing the class using the [use](https://rakudocs.github.io/syntax/use) keyword.
+Class attributes defined by [my](https://docs.raku.org/syntax/my) or [our](https://docs.raku.org/syntax/our) may also be initialized when being declared, however we are implementing the Singleton pattern here and the object must be created during its first use. It is not 100% possible to predict the moment when attribute initialization will be executed, because it can take place during compilation, runtime or both, especially when importing the class using the [use](https://docs.raku.org/syntax/use) keyword.
 
 ```Perl6
 class HaveStaticAttr {
@@ -350,9 +350,9 @@ method new(&callback, *@dependencies) {
 }
 ```
 
-Perl 6 中的构造器和 C 语言与 Java 语言中的构造器之间的最大区别在于，Perl 6 构造器自己创建对象本身，而不是在魔法般已创建的对象上建立状态。最简单的方法是调用 [bless](https://rakudocs.github.io/routine/bless) 方法，这个方法也继承自 [Mu]（https://rakudocs.github.io/type/mu）。`bless` 方法需要一组命名参数来为每个属性提供初始值。
+Perl 6 中的构造器和 C 语言与 Java 语言中的构造器之间的最大区别在于，Perl 6 构造器自己创建对象本身，而不是在魔法般已创建的对象上建立状态。最简单的方法是调用 [bless](https://docs.raku.org/routine/bless) 方法，这个方法也继承自 [Mu]（https://docs.raku.org/type/mu）。`bless` 方法需要一组命名参数来为每个属性提供初始值。
 
-The biggest difference between constructors in Perl 6 and constructors in languages such as C# and Java is that rather than setting up state on a somehow already magically created object, Perl 6 constructors create the object themselves. The easiest way to do this is by calling the [bless](https://rakudocs.github.io/routine/bless) method, also inherited from [Mu](https://rakudocs.github.io/type/Mu). The `bless` method expects a set of named parameters to provide the initial values for each attribute.
+The biggest difference between constructors in Perl 6 and constructors in languages such as C# and Java is that rather than setting up state on a somehow already magically created object, Perl 6 constructors create the object themselves. The easiest way to do this is by calling the [bless](https://docs.raku.org/routine/bless) method, also inherited from [Mu](https://docs.raku.org/type/Mu). The `bless` method expects a set of named parameters to provide the initial values for each attribute.
 
 示例的构造器将位置参数转换为命名参数，这样类就可以为其用户提供一个好的构造器。第一个参数是回调（将执行任务的对象）。其余参数依赖于 `Task` 实例。构造器将这些捕获到 `@dependencies` 吞噬数组中，并将它们作为命名参数传递给 `bless`（注意 `:&callback` 使用变量名减去标记作为参数名）。
 
@@ -366,9 +366,9 @@ Private attributes really are private. This means that `bless` is not allowed 
 submethod BUILD(:&!callback, :@!dependencies) { }
 ```
 
-因为 `BUILD` 在新创建的 `Task` 对象上下文中运行，可以操作这些私有属性。这里的技巧是私有属性（`&!callback` 和 `@!dependencies`）被用作 `BUILD` 参数的绑定目标。没有初始化样板代码！更多信息见[对象](https://rakudocs.github.io/language/objects#Object_Construction)。
+因为 `BUILD` 在新创建的 `Task` 对象上下文中运行，可以操作这些私有属性。这里的技巧是私有属性（`&!callback` 和 `@!dependencies`）被用作 `BUILD` 参数的绑定目标。没有初始化样板代码！更多信息见[对象](https://docs.raku.org/language/objects#Object_Construction)。
 
-Since `BUILD` runs in the context of the newly created `Task` object, it is allowed to manipulate those private attributes. The trick here is that the private attributes (`&!callback` and `@!dependencies`) are being used as the bind targets for `BUILD`'s parameters. Zero-boilerplate initialization! See [objects](https://rakudocs.github.io/language/objects#Object_Construction) for more information.
+Since `BUILD` runs in the context of the newly created `Task` object, it is allowed to manipulate those private attributes. The trick here is that the private attributes (`&!callback` and `@!dependencies`) are being used as the bind targets for `BUILD`'s parameters. Zero-boilerplate initialization! See [objects](https://docs.raku.org/language/objects#Object_Construction) for more information.
 
 `BUILD` 方法负责初始化所有属性，也必须处理默认值：
 
@@ -386,9 +386,9 @@ submethod BUILD(
     ) { }
 ```
 
-更多影响对象构建的选项以及属性初始化，参考 [对象构建](https://rakudocs.github.io/language/objects#Object_Construction) 。
+更多影响对象构建的选项以及属性初始化，参考 [对象构建](https://docs.raku.org/language/objects#Object_Construction) 。
 
-See [Object Construction](https://rakudocs.github.io/language/objects#Object_Construction) for more options to influence object construction and attribute initialization.
+See [Object Construction](https://docs.raku.org/language/objects#Object_Construction) for more options to influence object construction and attribute initialization.
 
 <a id="%E7%B1%BB%E7%9A%84%E4%BD%BF%E7%94%A8--consuming-our-class"></a>
 # 类的使用 / Consuming our class
@@ -540,9 +540,9 @@ say $baker.salary;           # OUTPUT: «50000
 
 Because the dispatcher will see the `cook` method on `Baker` before it moves up to the parent class the `Baker`'s `cook` method will be called.
 
-要访问继承链中的方法，请使用 [re-dispatch](https://rakudocs.github.io/language/functions#Re-dispatching) 或 [MOP](https://rakudocs.github.io/type/Metamodel::ClassHOW#method_can)。
+要访问继承链中的方法，请使用 [re-dispatch](https://docs.raku.org/language/functions#Re-dispatching) 或 [MOP](https://docs.raku.org/type/Metamodel::ClassHOW#method_can)。
 
-To access methods in the inheritance chain use [re-dispatch](https://rakudocs.github.io/language/functions#Re-dispatching) or the [MOP](https://rakudocs.github.io/type/Metamodel::ClassHOW#method_can).
+To access methods in the inheritance chain use [re-dispatch](https://docs.raku.org/language/functions#Re-dispatching) or the [MOP](https://docs.raku.org/type/Metamodel::ClassHOW#method_can).
 
 <a id="%E5%A4%9A%E9%87%8D%E7%BB%A7%E6%89%BF--multiple-inheritance"></a>
 ## 多重继承 / Multiple inheritance
@@ -574,9 +574,9 @@ $geek.code_to_solve('P =? NP');
 
 Now all the methods made available to the Programmer and the Cook classes are available from the GeekCook class.
 
-虽然多重继承是一个有用的概念，但需要了解并偶尔使用，但重要的是要了解有更多有用的 OOP 概念。在进行多重继承时，最好考虑使用角色是否更好地实现设计，角色通常更安全，因为它们迫使类作者明确解决冲突的方法名称。有关角色的更多信息，请参阅[角色](https://rakudocs.github.io/language/objects#Roles)。
+虽然多重继承是一个有用的概念，但需要了解并偶尔使用，但重要的是要了解有更多有用的 OOP 概念。在进行多重继承时，最好考虑使用角色是否更好地实现设计，角色通常更安全，因为它们迫使类作者明确解决冲突的方法名称。有关角色的更多信息，请参阅[角色](https://docs.raku.org/language/objects#Roles)。
 
-While multiple inheritance is a useful concept to know and occasionally use, it is important to understand that there are more useful OOP concepts. When reaching for multiple inheritance it is good practice to consider whether the design wouldn't be better realized by using roles, which are generally safer because they force the class author to explicitly resolve conflicting method names. For more information on roles see [Roles](https://rakudocs.github.io/language/objects#Roles).
+While multiple inheritance is a useful concept to know and occasionally use, it is important to understand that there are more useful OOP concepts. When reaching for multiple inheritance it is good practice to consider whether the design wouldn't be better realized by using roles, which are generally safer because they force the class author to explicitly resolve conflicting method names. For more information on roles see [Roles](https://docs.raku.org/language/objects#Roles).
 
 <a id="also-%E5%A3%B0%E6%98%8E%E7%AC%A6--the-also-declarator"></a>
 ## `also` 声明符 / The `also` declarator
@@ -638,9 +638,9 @@ The first two tests each smart-match against a class name. If the object is of t
 
 The `.WHAT` method returns the type object associated with the object `$o`, which tells us the exact type of `$o`: in this case `Programmer`.
 
-`$o.perl` 返回一个可以作为 Perl 代码执行的字符串，并重现原始对象 `$o`。虽然这在对所有情况不会都完美生效，但它对于调试简单对象非常有用。 [[\]](https://rakudocs.github.io/language/classtut#fn-1) `$o.^methods(:local)` 生成对 `$o` 调用的 [Method](https://rakudocs.github.io/type/Method) 列表。`:local` 命名参数将返回的方法限制为 `Programmer` 类中定义的方法，并排除继承的方法。
+`$o.perl` 返回一个可以作为 Perl 代码执行的字符串，并重现原始对象 `$o`。虽然这在对所有情况不会都完美生效，但它对于调试简单对象非常有用。 [[\]](https://docs.raku.org/language/classtut#fn-1) `$o.^methods(:local)` 生成对 `$o` 调用的 [Method](https://docs.raku.org/type/Method) 列表。`:local` 命名参数将返回的方法限制为 `Programmer` 类中定义的方法，并排除继承的方法。
 
-`$o.perl` returns a string that can be executed as Perl code, and reproduces the original object `$o`. While this does not work perfectly in all cases, it is very useful for debugging simple objects. [[\]](https://rakudocs.github.io/language/classtut#fn-1) `$o.^methods(:local)` produces a list of [Method](https://rakudocs.github.io/type/Method)s that can be called on `$o`. The `:local` named argument limits the returned methods to those defined in the `Programmer` class and excludes the inherited methods.
+`$o.perl` returns a string that can be executed as Perl code, and reproduces the original object `$o`. While this does not work perfectly in all cases, it is very useful for debugging simple objects. [[\]](https://docs.raku.org/language/classtut#fn-1) `$o.^methods(:local)` produces a list of [Method](https://docs.raku.org/type/Method)s that can be called on `$o`. The `:local` named argument limits the returned methods to those defined in the `Programmer` class and excludes the inherited methods.
 
 使用 `.^` 而不是单个点调用方法的语法意味着它实际上是对其*元类*的一个方法调用，它是一个管理 `Programmer` 类的属性的类 - 或任何其他类你感兴趣的类。这个元类也可以实现其他内省方式：
 

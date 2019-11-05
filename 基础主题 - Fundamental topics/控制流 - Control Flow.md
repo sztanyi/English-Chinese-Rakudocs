@@ -1,4 +1,4 @@
-原文：https://rakudocs.github.io/language/control
+原文：https://docs.raku.org/language/control
 
 # 控制流（Control Flow）
 
@@ -86,9 +86,9 @@ say 4;                    # OUTPUT: «4
 » 
 ```
 
-除非代码块仅作为语句，不然会产一个闭包。代码块里面的语句将不会马上执行。闭包时另外一个话题，它的使用将会在[其他地方](https://rakudocs.github.io/language/functions#Blocks_and_Lambdas)说明。现在最重要的是要知道代码块什么时候执行以及什么时候不执行。
+除非代码块仅作为语句，不然会产一个闭包。代码块里面的语句将不会马上执行。闭包时另外一个话题，它的使用将会在[其他地方](https://docs.raku.org/language/functions#Blocks_and_Lambdas)说明。现在最重要的是要知道代码块什么时候执行以及什么时候不执行。
 
-Unless it stands alone as a statement, a block simply creates a closure. The statements inside are not executed immediately. Closures are another topic and how they are used is explained [elsewhere](https://rakudocs.github.io/language/functions#Blocks_and_Lambdas). For now it is just important to understand when blocks run and when they do not:
+Unless it stands alone as a statement, a block simply creates a closure. The statements inside are not executed immediately. Closures are another topic and how they are used is explained [elsewhere](https://docs.raku.org/language/functions#Blocks_and_Lambdas). For now it is just important to understand when blocks run and when they do not:
 
 ```Raku
 say "We get here"; { say "then here." }; { say "not here"; 0; } or die;
@@ -238,9 +238,9 @@ say "It is easier to read code when 'if's are kept on left of screen"
 
 The statement modifier form is probably best used sparingly.
 
-如果代码块没有被执行，`if` 语句本身要么 [slip](https://rakudocs.github.io/type/Slip) 给我们一个空列表，要么返回代码块产生的值。
+如果代码块没有被执行，`if` 语句本身要么 [slip](https://docs.raku.org/type/Slip) 给我们一个空列表，要么返回代码块产生的值。
 
-The `if` statement itself will either [slip](https://rakudocs.github.io/type/Slip) us an empty list, if it does not run the block, or it will return the value which the block produces:
+The `if` statement itself will either [slip](https://docs.raku.org/type/Slip) us an empty list, if it does not run the block, or it will return the value which the block produces:
 
 ```Raku
 my $d = 0; say (1, (if 0 { $d += 42; 2; }), 3, $d); # says "(1 3 0)" 
@@ -340,9 +340,9 @@ elsif False { say "NO" }
 else        { say "yes" }                              ; # says "yes" 
 ```
 
-整个代码要么 [slips](https://rakudocs.github.io/type/Slip) 给我们一个空列表（如果没有代码块被运行）或者返回执行了的代码块产生的值。
+整个代码要么 [slips](https://docs.raku.org/type/Slip) 给我们一个空列表（如果没有代码块被运行）或者返回执行了的代码块产生的值。
 
-The whole thing either [slips](https://rakudocs.github.io/type/Slip) us an empty list (if no blocks were run) or returns the value produced by the block that did run:
+The whole thing either [slips](https://docs.raku.org/type/Slip) us an empty list (if no blocks were run) or returns the value produced by the block that did run:
 
 ```Raku
 my $d = 0; say (1,
@@ -367,9 +367,9 @@ if False { } elsif 0 { } else -> $a { $a.say }  ; # says "0"
 <a id="unless"></a>
 ## unless
 
-如果你厌烦敲代码 “if not (x)“ 你可以使用 `unless` 来反转条件语句。`unless` 不能同时使用 `else` 或者 `elsif` ，因为这会引发困惑。除了这两个区别之外，`unless` 和 [if](https://rakudocs.github.io/language/control#if) 效果一样。
+如果你厌烦敲代码 “if not (x)“ 你可以使用 `unless` 来反转条件语句。`unless` 不能同时使用 `else` 或者 `elsif` ，因为这会引发困惑。除了这两个区别之外，`unless` 和 [if](https://docs.raku.org/language/control#if) 效果一样。
 
-When you get sick of typing "if not (X)" you may use `unless` to invert the sense of a conditional statement. You cannot use `else` or `elsif` with `unless` because that ends up getting confusing. Other than those two differences `unless` works the same as [if](https://rakudocs.github.io/language/control#if):
+When you get sick of typing "if not (X)" you may use `unless` to invert the sense of a conditional statement. You cannot use `else` or `elsif` with `unless` because that ends up getting confusing. Other than those two differences `unless` works the same as [if](https://docs.raku.org/language/control#if):
 
 ```Raku
 unless 1 { "1 is false".say }  ; # does not say anything, since 1 is true 
@@ -498,9 +498,9 @@ say "foo" when X; # if X is true statement is executed
 <a id="for"></a>
 # for
 
-`for` 循环遍历数组，每次循环执行一次 [block](https://rakudocs.github.io/type/Block) 中的语句。如果代码块接收参数，数组中的元素将作为参数。
+`for` 循环遍历数组，每次循环执行一次 [block](https://docs.raku.org/type/Block) 中的语句。如果代码块接收参数，数组中的元素将作为参数。
 
-The `for` loop iterates over a list, running the statements inside a [block](https://rakudocs.github.io/type/Block) once on each iteration. If the block takes parameters, the elements of the list are provided as arguments.
+The `for` loop iterates over a list, running the statements inside a [block](https://docs.raku.org/type/Block) once on each iteration. If the block takes parameters, the elements of the list are provided as arguments.
 
 ```Raku
 my @foo = 1..3;
@@ -509,9 +509,9 @@ for @foo { .print }   # same thing, because .print implies a $_ argument
 for @foo { 42.print } # prints 42 as many times as @foo has elements 
 ```
 
-带箭头的代码块语法或者 [placeholder](https://rakudocs.github.io/language/variables#The_%5E_Twigil) 当然也可以用来命名参数。
+带箭头的代码块语法或者 [placeholder](https://docs.raku.org/language/variables#The_%5E_Twigil) 当然也可以用来命名参数。
 
-Pointy block syntax or a [placeholder](https://rakudocs.github.io/language/variables#The_%5E_Twigil) may be used to name the parameter, of course.
+Pointy block syntax or a [placeholder](https://docs.raku.org/language/variables#The_%5E_Twigil) may be used to name the parameter, of course.
 
 ```Raku
 my @foo = 1..3;
@@ -589,7 +589,7 @@ my @b = (for 1, 2, 3 { $_ * 2 }); @a.say;  # same thing
 
 gather 是一个返回值序列的语句或块前缀。这些值由 `gather` 代码块动态作用域中 `take` 返回。
 
-`gather` is a statement or block prefix that returns a [sequence](https://rakudocs.github.io/type/Seq) of values. The values come from calls to [take](https://rakudocs.github.io/type/Mu#routine_take) in the dynamic scope of the `gather` block.
+`gather` is a statement or block prefix that returns a [sequence](https://docs.raku.org/type/Seq) of values. The values come from calls to [take](https://docs.raku.org/type/Mu#routine_take) in the dynamic scope of the `gather` block.
 
 ```Raku
 my @a = gather {
@@ -603,7 +603,7 @@ say join ', ', @a;          # OUTPUT: «1, 5, 42
 
 `gather/take` 根据上下文惰性求值。如果你想强制惰性求值，使用 `lazy` 子程序或方法。绑定到一个标量或无符号的容器也会迫使惰性求值。
 
-`gather/take` can generate values lazily, depending on context. If you want to force lazy evaluation use the [lazy](https://rakudocs.github.io/type/Iterable#method_lazy) subroutine or method. Binding to a scalar or sigilless container will also force laziness.
+`gather/take` can generate values lazily, depending on context. If you want to force lazy evaluation use the [lazy](https://docs.raku.org/type/Iterable#method_lazy) subroutine or method. Binding to a scalar or sigilless container will also force laziness.
 
 例如
 
@@ -644,9 +644,9 @@ say weird(<a b c>, :direction<backward> );          # OUTPUT: «(c b a)
 » 
 ```
 
-如果值需要在调用方可改变，使用 [take-rw](https://rakudocs.github.io/type/Mu#routine_take-rw)。
+如果值需要在调用方可改变，使用 [take-rw](https://docs.raku.org/type/Mu#routine_take-rw)。
 
-If values need to be mutable on the caller side, use [take-rw](https://rakudocs.github.io/type/Mu#routine_take-rw).
+If values need to be mutable on the caller side, use [take-rw](https://docs.raku.org/type/Mu#routine_take-rw).
 
 <a id="given"></a>
 # given
@@ -747,7 +747,7 @@ given 42 {
 # OUTPUT: «42» 
 ```
 
-`when` statements can smart match against [Signatures](https://rakudocs.github.io/language/syntax#Signature_literals).
+`when` statements can smart match against [Signatures](https://docs.raku.org/language/syntax#Signature_literals).
 
 <a id="proceed"></a>
 ## proceed
@@ -1032,9 +1032,9 @@ All these forms may produce a return value the same way `loop` does.
 <a id="return"></a>
 # return
 
-`return` 将停止执行子程序或方法，运行所有相关的[阶段](https://rakudocs.github.io/language/phasers#Block_Phasers) 并向调用者提供给定的返回值。默认返回值为 `Nil`。如果提供了返回[类型约束](https://rakudocs.github.io/type/Signature#Constraining_Return_Types) ，则将检查它，除非返回值为 `Nil`。如果类型检查失败，则抛出异常 [X::TypeCheck::Return](https://rakudocs.github.io/type/X::TypeCheck::Return)。如果它通过了类型检查，则引发`控制`异常并可以使用 [CONTROL](https://rakudocs.github.io/language/phasers#CONTROL) 捕获。
+`return` 将停止执行子程序或方法，运行所有相关的[阶段](https://docs.raku.org/language/phasers#Block_Phasers) 并向调用者提供给定的返回值。默认返回值为 `Nil`。如果提供了返回[类型约束](https://docs.raku.org/type/Signature#Constraining_Return_Types) ，则将检查它，除非返回值为 `Nil`。如果类型检查失败，则抛出异常 [X::TypeCheck::Return](https://docs.raku.org/type/X::TypeCheck::Return)。如果它通过了类型检查，则引发`控制`异常并可以使用 [CONTROL](https://docs.raku.org/language/phasers#CONTROL) 捕获。
 
-The sub `return` will stop execution of a subroutine or method, run all relevant [phasers](https://rakudocs.github.io/language/phasers#Block_Phasers) and provide the given return value to the caller. The default return value is `Nil`. If a return [type constraint](https://rakudocs.github.io/type/Signature#Constraining_Return_Types) is provided it will be checked unless the return value is `Nil`. If the type check fails the exception [X::TypeCheck::Return](https://rakudocs.github.io/type/X::TypeCheck::Return) is thrown. If it passes a control exception is raised and can be caught with [CONTROL](https://rakudocs.github.io/language/phasers#CONTROL).
+The sub `return` will stop execution of a subroutine or method, run all relevant [phasers](https://docs.raku.org/language/phasers#Block_Phasers) and provide the given return value to the caller. The default return value is `Nil`. If a return [type constraint](https://docs.raku.org/type/Signature#Constraining_Return_Types) is provided it will be checked unless the return value is `Nil`. If the type check fails the exception [X::TypeCheck::Return](https://docs.raku.org/type/X::TypeCheck::Return) is thrown. If it passes a control exception is raised and can be caught with [CONTROL](https://docs.raku.org/language/phasers#CONTROL).
 
 块中的任何 `return` 都与该块的外部词法范围中的第一个`例程`相关联，无论嵌套有多深。请注意，根包中的 `return` 将在运行时失败。在惰性代码块中的 `return`（例如在 `map` 内部）可能发现在执行块时外部词法例程已经消失。几乎在任何情况下， `last` 都是更好的选择。
 
@@ -1070,9 +1070,9 @@ The same rules as for `return` regarding phasers and control exceptions apply.
 <a id="fail"></a>
 # fail
 
-离开当前例程并返回提供的 [Exception](https://rakudocs.github.io/type/Exception) 或包含在 [Failure](https://rakudocs.github.io/type/Failure) 中的 `Str`，执行所有相关的[阶段](https://rakudocs.github.io/language/phasers#Block_Phasers)之后。如果调用者通过编译指示 `use fatal;` 激活了致命异常，则抛出异常而不是作为 `Failure` 返回。
+离开当前例程并返回提供的 [Exception](https://docs.raku.org/type/Exception) 或包含在 [Failure](https://docs.raku.org/type/Failure) 中的 `Str`，执行所有相关的[阶段](https://docs.raku.org/language/phasers#Block_Phasers)之后。如果调用者通过编译指示 `use fatal;` 激活了致命异常，则抛出异常而不是作为 `Failure` 返回。
 
-Leaves the current routine and returns the provided [Exception](https://rakudocs.github.io/type/Exception) or `Str` wrapped inside a [Failure](https://rakudocs.github.io/type/Failure), after all relevant [phasers](https://rakudocs.github.io/language/phasers#Block_Phasers)are executed. If the caller activated fatal exceptions via the pragma `use fatal;`, the exception is thrown instead of being returned as a `Failure`.
+Leaves the current routine and returns the provided [Exception](https://docs.raku.org/type/Exception) or `Str` wrapped inside a [Failure](https://docs.raku.org/type/Failure), after all relevant [phasers](https://docs.raku.org/language/phasers#Block_Phasers)are executed. If the caller activated fatal exceptions via the pragma `use fatal;`, the exception is thrown instead of being returned as a `Failure`.
 
 ```Raku
 sub f { fail "WELP!" };

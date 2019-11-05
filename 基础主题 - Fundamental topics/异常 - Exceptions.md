@@ -1,4 +1,4 @@
-原文：https://rakudocs.github.io/language/exceptions
+原文：https://docs.raku.org/language/exceptions
 
 # 异常 / Exceptions
 
@@ -8,7 +8,7 @@ Using exceptions in Raku
 
 Exceptions in Raku are objects that hold information about errors. An error can be, for example, the unexpected receiving of data or a network connection no longer available, or a missing file. The information that an exception objects store is, for instance, a human-readable message about the error condition, the backtrace of the raising of the error, and so on.
 
-All built-in exceptions inherit from [Exception](https://rakudocs.github.io/type/Exception), which provides some basic behavior, including the storage of a backtrace and an interface for the backtrace printer.
+All built-in exceptions inherit from [Exception](https://docs.raku.org/type/Exception), which provides some basic behavior, including the storage of a backtrace and an interface for the backtrace printer.
 
 <!-- MarkdownTOC -->
 
@@ -28,9 +28,9 @@ All built-in exceptions inherit from [Exception](https://rakudocs.github.io/type
 <a id="%E4%B8%B4%E6%97%B6%E5%BC%82%E5%B8%B8--ad-hoc-exceptions"></a>
 # 临时异常 / *Ad hoc* exceptions
 
-可以通过调用 [die](https://rakudocs.github.io/routine/die) 使用临时异常，并对错误进行描述：
+可以通过调用 [die](https://docs.raku.org/routine/die) 使用临时异常，并对错误进行描述：
 
-Ad hoc exceptions can be used by calling [die](https://rakudocs.github.io/routine/die) with a description of the error:
+Ad hoc exceptions can be used by calling [die](https://docs.raku.org/routine/die) with a description of the error:
 
 ```Raku
 die "oops, something went wrong";
@@ -48,9 +48,9 @@ It is worth noting that `die` prints the error message to the standard error `$*
 
 Typed exceptions provide more information about the error stored within an exception object.
 
-例如，如果在一个对象上执行 `.zombie copy` 时，需要的文件路径 `foo/bar` 不可用，则 [X::IO::DoesNotExist](https://rakudocs.github.io/type/X::IO::DoesNotExist) 异常可以被抛出：
+例如，如果在一个对象上执行 `.zombie copy` 时，需要的文件路径 `foo/bar` 不可用，则 [X::IO::DoesNotExist](https://docs.raku.org/type/X::IO::DoesNotExist) 异常可以被抛出：
 
-For example, if while executing `.zombie copy` on an object, a needed path `foo/bar` becomes unavailable, then an [X::IO::DoesNotExist](https://rakudocs.github.io/type/X::IO::DoesNotExist) exception can be raised:
+For example, if while executing `.zombie copy` on an object, a needed path `foo/bar` becomes unavailable, then an [X::IO::DoesNotExist](https://docs.raku.org/type/X::IO::DoesNotExist) exception can be raised:
 
 ```Raku
 die X::IO::DoesNotExist.new(:path("foo/bar"), :trying("zombie copy"))
@@ -152,16 +152,16 @@ CATCH {
 say "Hi! I am at the outer block!"; # OUTPUT: «Hi! I am at the outer block!␤» 
 ```
 
-怎样把控制权还给异常产生的地方，参考[异常恢复](https://rakudocs.github.io/language/exceptions#Resuming_of_exceptions)
+怎样把控制权还给异常产生的地方，参考[异常恢复](https://docs.raku.org/language/exceptions#Resuming_of_exceptions)
 
-See [Resuming of exceptions](https://rakudocs.github.io/language/exceptions#Resuming_of_exceptions), for how to return control back to where the exception originated.
+See [Resuming of exceptions](https://docs.raku.org/language/exceptions#Resuming_of_exceptions), for how to return control back to where the exception originated.
 
 <a id="tyr-%E4%BB%A3%E7%A0%81%E5%9D%97--try-blocks"></a>
 # `tyr` 代码块 / `try` blocks
 
-`try` 代码块是一个普通代码块，它隐式使用 [`use fatal` 指令](https://rakudocs.github.io/language/pragmas#index-entry-fatal-fatal)，并包含一个用来用于舍弃异常的隐式 `CATCH` 代码块，这意味着你可以使用它来包含异常。捕获的异常存储在 `$!` 变量中，它保存 `Exception` 的值。
+`try` 代码块是一个普通代码块，它隐式使用 [`use fatal` 指令](https://docs.raku.org/language/pragmas#index-entry-fatal-fatal)，并包含一个用来用于舍弃异常的隐式 `CATCH` 代码块，这意味着你可以使用它来包含异常。捕获的异常存储在 `$!` 变量中，它保存 `Exception` 的值。
 
-A `try` block is a normal block which implicitly turns on the [`use fatal` pragma](https://rakudocs.github.io/language/pragmas#index-entry-fatal-fatal) and includes an implicit `CATCH` block that drops the exception, which means you can use it to contain them. Caught exceptions are stored inside the `$!` variable, which holds a value of type `Exception`.
+A `try` block is a normal block which implicitly turns on the [`use fatal` pragma](https://docs.raku.org/language/pragmas#index-entry-fatal-fatal) and includes an implicit `CATCH` block that drops the exception, which means you can use it to contain them. Caught exceptions are stored inside the `$!` variable, which holds a value of type `Exception`.
 
 像这样的一个普通代码块只会失败：
 
@@ -245,9 +245,9 @@ Just stop already!
   in block <unit> at exception.p6 line 21
 ```
 
-由于 `CATCH` 代码块只处理由 `die` 语句引发的 `X::AdHoc` 异常，而不是 `E` 异常。在没有 `CATCH` 代码块的情况下，将控制并删除所有异常，如上所示。`resume` 将在引发异常后立即恢复执行；在本例中，在 `die` 语句中。有关此方面的详细信息，请参阅 [恢复异常](https://rakudocs.github.io/language/exceptions#Resuming_of_exceptions)。
+由于 `CATCH` 代码块只处理由 `die` 语句引发的 `X::AdHoc` 异常，而不是 `E` 异常。在没有 `CATCH` 代码块的情况下，将控制并删除所有异常，如上所示。`resume` 将在引发异常后立即恢复执行；在本例中，在 `die` 语句中。有关此方面的详细信息，请参阅 [恢复异常](https://docs.raku.org/language/exceptions#Resuming_of_exceptions)。
 
-Since the `CATCH` block is handling just the `X::AdHoc` exception thrown by the `die` statement, but not the `E` exception. In the absence of a `CATCH` block, all exceptions will be contained and dropped, as indicated above. `resume` will resume execution right after the exception has been thrown; in this case, in the `die` statement. Please consult the section on [resuming of exceptions](https://rakudocs.github.io/language/exceptions#Resuming_of_exceptions) for more information on this.
+Since the `CATCH` block is handling just the `X::AdHoc` exception thrown by the `die` statement, but not the `E` exception. In the absence of a `CATCH` block, all exceptions will be contained and dropped, as indicated above. `resume` will resume execution right after the exception has been thrown; in this case, in the `die` statement. Please consult the section on [resuming of exceptions](https://docs.raku.org/language/exceptions#Resuming_of_exceptions) for more information on this.
 
 `try` 代码块是一个普通代码块，因此将其最后一条语句视为自身的返回值。因此，我们可以将其与 `//` 操作符配合使用。
 
@@ -258,9 +258,9 @@ say try { +"99999" } // "oh no"; # OUTPUT: «99999␤»
 say try { +"hello" } // "oh no"; # OUTPUT: «oh no␤» 
 ```
 
-Try 代码块通过返回表达式的返回值间接支持 `else` 代码块，如果引发异常，则返回 [Nil](https://rakudocs.github.io/type/Nil)。
+Try 代码块通过返回表达式的返回值间接支持 `else` 代码块，如果引发异常，则返回 [Nil](https://docs.raku.org/type/Nil)。
 
-Try blocks support `else` blocks indirectly by returning the return value of the expression or [Nil](https://rakudocs.github.io/type/Nil) if an exception was thrown.
+Try blocks support `else` blocks indirectly by returning the return value of the expression or [Nil](https://docs.raku.org/type/Nil) if an exception was thrown.
 
 ```Raku
 with try +"♥" {
@@ -271,9 +271,9 @@ with try +"♥" {
 # OUTPUT: «not my number!␤» 
 ```
 
-`try` 还可以与语句而不是代码块一起使用，即作为[语句前缀](https://rakudocs.github.io/language/statement-prefixes#try)：
+`try` 还可以与语句而不是代码块一起使用，即作为[语句前缀](https://docs.raku.org/language/statement-prefixes#try)：
 
-`try` can also be used with a statement instead of a block, that is, as a [statement prefix](https://rakudocs.github.io/language/statement-prefixes#try):
+`try` can also be used with a statement instead of a block, that is, as a [statement prefix](https://docs.raku.org/language/statement-prefixes#try):
 
 ```Raku
 say try "some-filename.txt".IO.slurp // "sane default";
@@ -433,9 +433,9 @@ die X::WithoutLineNumber.new(payload => "message")
 <a id="%E6%8E%A7%E5%88%B6%E5%BC%82%E5%B8%B8--control-exceptions"></a>
 # 控制异常 / Control exceptions
 
-当执行 [X::Control](https://rakudocs.github.io/type/X::Control) 角色（自 Rakudo 2019.03 起）抛出异常时，会引发控制异常。它们通常由特定的[关键字](https://rakudocs.github.io/language/phasers#CONTROL)抛出，并自动或由相应的[相位器](https://rakudocs.github.io/language/phasers#Loop_phasers)处理。任何未处理的控件异常都将转换为正常异常。
+当执行 [X::Control](https://docs.raku.org/type/X::Control) 角色（自 Rakudo 2019.03 起）抛出异常时，会引发控制异常。它们通常由特定的[关键字](https://docs.raku.org/language/phasers#CONTROL)抛出，并自动或由相应的[相位器](https://docs.raku.org/language/phasers#Loop_phasers)处理。任何未处理的控件异常都将转换为正常异常。
 
-Control exceptions are raised when throwing an Exception which does the [X::Control](https://rakudocs.github.io/type/X::Control) role (since Rakudo 2019.03). They are usually thrown by certain [keywords](https://rakudocs.github.io/language/phasers#CONTROL) and are handled either automatically or by the appropriate [phaser](https://rakudocs.github.io/language/phasers#Loop_phasers). Any unhandled control exception is converted to a normal exception.
+Control exceptions are raised when throwing an Exception which does the [X::Control](https://docs.raku.org/type/X::Control) role (since Rakudo 2019.03). They are usually thrown by certain [keywords](https://docs.raku.org/language/phasers#CONTROL) and are handled either automatically or by the appropriate [phaser](https://docs.raku.org/language/phasers#Loop_phasers). Any unhandled control exception is converted to a normal exception.
 
 ```Raku
 { return; CATCH { default { $*ERR.say: .^name, ': ', .Str } } }

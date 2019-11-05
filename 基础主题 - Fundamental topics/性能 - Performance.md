@@ -1,4 +1,4 @@
-原文：https://rakudocs.github.io/language/performance
+原文：https://docs.raku.org/language/performance
 
 # 性能 / Performance
 
@@ -40,22 +40,22 @@ This page is about [computer performance](https://en.wikipedia.org/wiki/Computer
 <a id="%E7%94%A8-now---init-now-%E8%AE%A1%E6%97%B6--time-with-now---init-now"></a>
 ## 用 `now - INIT now` 计时 / Time with `now - INIT now`
 
-`now - INIT now` 形式的表达式，其中 `INIT` 是一个 [Raku 程序运行时的相位器](https://rakudocs.github.io/language/phasers)，为计时代码片段提供了一个很好的习语。
+`now - INIT now` 形式的表达式，其中 `INIT` 是一个 [Raku 程序运行时的相位器](https://docs.raku.org/language/phasers)，为计时代码片段提供了一个很好的习语。
 
-Expressions of the form `now - INIT now`, where `INIT` is a [phase in the running of a Raku program](https://rakudocs.github.io/language/phasers), provide a great idiom for timing code snippets.
+Expressions of the form `now - INIT now`, where `INIT` is a [phase in the running of a Raku program](https://docs.raku.org/language/phasers), provide a great idiom for timing code snippets.
 
-使用 `m: your code goes here` [raku 通道 evalbot](https://rakudocs.github.io/language/glossary#camelia) 写代码，例如：
+使用 `m: your code goes here` [raku 通道 evalbot](https://docs.raku.org/language/glossary#camelia) 写代码，例如：
 
-Use the `m: your code goes here` [raku channel evalbot](https://rakudocs.github.io/language/glossary#camelia) to write lines like:
+Use the `m: your code goes here` [raku channel evalbot](https://docs.raku.org/language/glossary#camelia) to write lines like:
 
 ```Raku
 m: say now - INIT now
 rakudo-moar abc1234: OUTPUT«0.0018558␤»
 ```
 
-`INIT` 左边的 `now` 运行 0.0018558 秒比 `INIT` 右侧的 `now` *晚*，因为后者发生在 [INIT 阶段](https://rakudocs.github.io/language/phasers#INIT)。
+`INIT` 左边的 `now` 运行 0.0018558 秒比 `INIT` 右侧的 `now` *晚*，因为后者发生在 [INIT 阶段](https://docs.raku.org/language/phasers#INIT)。
 
-The `now` to the left of `INIT` runs 0.0018558 seconds *later* than the `now` to the right of the `INIT` because the latter occurs during [the INIT phase](https://rakudocs.github.io/language/phasers#INIT).
+The `now` to the left of `INIT` runs 0.0018558 seconds *later* than the `now` to the right of the `INIT` because the latter occurs during [the INIT phase](https://docs.raku.org/language/phasers#INIT).
 
 <a id="%E5%B1%80%E9%83%A8%E5%88%86%E6%9E%90--profile-locally"></a>
 ## 局部分析 / Profile locally
@@ -64,9 +64,9 @@ The `now` to the left of `INIT` runs 0.0018558 seconds *later* than the `now` to
 
 When using the [MoarVM](https://moarvm.org/) backend, the [Rakudo](https://rakudo.org/) compiler's `--profile` command line option writes the profile data to an HTML file.
 
-该文件将打开“概述”部分，其中提供了有关程序运行方式的一些总体数据，例如，总运行时、垃圾收集所花费的时间。你将在这里获得的一个重要信息是被解释的调用帧（即代码块）中被解释的百分比（最慢，红色），[spesh](https://rakudocs.github.io/language/glossary#index-entry-Spesh)（更快，以橙色表示），以及弹跳（以绿色表示最快）。
+该文件将打开“概述”部分，其中提供了有关程序运行方式的一些总体数据，例如，总运行时、垃圾收集所花费的时间。你将在这里获得的一个重要信息是被解释的调用帧（即代码块）中被解释的百分比（最慢，红色），[spesh](https://docs.raku.org/language/glossary#index-entry-Spesh)（更快，以橙色表示），以及弹跳（以绿色表示最快）。
 
-This file will open to the "Overview" section, which gives some overall data about how the program ran, e.g., total runtime, time spent doing garbage collection. One important piece of information you'll get here is percentage of the total call frames (i.e., blocks) that were interpreted (slowest, in red), [speshed](https://rakudocs.github.io/language/glossary#index-entry-Spesh) (faster, in orange), and jitted (fastest, in green).
+This file will open to the "Overview" section, which gives some overall data about how the program ran, e.g., total runtime, time spent doing garbage collection. One important piece of information you'll get here is percentage of the total call frames (i.e., blocks) that were interpreted (slowest, in red), [speshed](https://docs.raku.org/language/glossary#index-entry-Spesh) (faster, in orange), and jitted (fastest, in green).
 
 下一节，“例程”，可能是你花的时间最多的地方。它有一个可排序和可过滤的例程（或代码块）名称文件行表，它运行的次数，包含的时间（在从它调用的所有例程中花费在该例程中的时间），独占时间（仅用于该例程的时间），以及它是被解释的、spesh 还是 JIT 的（与“概述”页面相同的颜色代码）。按排他性时间排序是知道从哪里开始优化的好方法。以 `SETTING::src/core/` 或 `gen/moar/` 开头的文件名的例程来自编译器，查看自己代码中的内容的一个好方法是将你分析的脚本的文件名放在 "Name" 搜索框中。
 
@@ -177,9 +177,9 @@ This bears repeating: **make sure you're not wasting time on the wrong code**. S
 <a id="%E9%80%90%E8%A1%8C--line-by-line"></a>
 ## 逐行 / Line by line
 
-一种快速、有趣、高效的尝试逐行改进代码的方法是使用 [raku](https://rakudocs.github.io/language/glossary#IRC) evalbot [camelia](https://rakudocs.github.io/language/glossary#camelia) 与其他人协作。
+一种快速、有趣、高效的尝试逐行改进代码的方法是使用 [raku](https://docs.raku.org/language/glossary#IRC) evalbot [camelia](https://docs.raku.org/language/glossary#camelia) 与其他人协作。
 
-A quick, fun, productive way to try improve code line-by-line is to collaborate with others using the [raku](https://rakudocs.github.io/language/glossary#IRC) evalbot [camelia](https://rakudocs.github.io/language/glossary#camelia).
+A quick, fun, productive way to try improve code line-by-line is to collaborate with others using the [raku](https://docs.raku.org/language/glossary#IRC) evalbot [camelia](https://docs.raku.org/language/glossary#camelia).
 
 <a id="%E9%80%90%E4%B8%AA%E4%BE%8B%E7%A8%8B--routine-by-routine"></a>
 ## 逐个例程 / Routine by routine
@@ -203,9 +203,9 @@ The call overhead of having multiple `foo` definitions is generally insignifican
 <a id="%E5%8A%A0%E5%BF%AB%E7%B1%BB%E5%9E%8B%E6%A3%80%E6%9F%A5%E5%92%8C%E8%B0%83%E7%94%A8%E8%A7%A3%E6%9E%90--speed-up-type-checks-and-call-resolution"></a>
 ## 加快类型检查和调用解析 / Speed up type-checks and call resolution
 
-大多数 [`where` 子句](https://rakudocs.github.io/type/Signature#Type_constraints) - 因此，大多数[子集](https://design.perl6.org/S12.html#Types_and_Subtypes) - 强制动态（运行时）类型检查和对任何调用（它*可能*匹配）的调用解析。这比编译时更慢，或者至少更晚。
+大多数 [`where` 子句](https://docs.raku.org/type/Signature#Type_constraints) - 因此，大多数[子集](https://design.perl6.org/S12.html#Types_and_Subtypes) - 强制动态（运行时）类型检查和对任何调用（它*可能*匹配）的调用解析。这比编译时更慢，或者至少更晚。
 
-Most [`where` clauses](https://rakudocs.github.io/type/Signature#Type_constraints) – and thus most [subsets](https://design.perl6.org/S12.html#Types_and_Subtypes) – force dynamic (runtime) type checking and call resolution for any call it *might* match. This is slower, or at least later, than compile-time.
+Most [`where` clauses](https://docs.raku.org/type/Signature#Type_constraints) – and thus most [subsets](https://design.perl6.org/S12.html#Types_and_Subtypes) – force dynamic (runtime) type checking and call resolution for any call it *might* match. This is slower, or at least later, than compile-time.
 
 方法调用通常被尽可能晚地解析（在运行时动态地），而子调用通常在编译时被静态解析。
 
@@ -240,13 +240,13 @@ See the slides for [Parallelism, Concurrency, and Asynchrony in Raku](https://jn
 <a id="%E4%BD%BF%E7%94%A8%E7%8E%B0%E6%9C%89%E7%9A%84%E9%AB%98%E6%80%A7%E8%83%BD%E4%BB%A3%E7%A0%81--use-existing-high-performance-code"></a>
 ## 使用现有的高性能代码 / Use existing high performance code
 
-在 Raku 和 [Nativecall](https://rakudocs.github.io/language/nativecall) 中可以使用大量高性能的 C 库，从而很容易为它们创建包装。对 C 库也有实验支持。
+在 Raku 和 [Nativecall](https://docs.raku.org/language/nativecall) 中可以使用大量高性能的 C 库，从而很容易为它们创建包装。对 C 库也有实验支持。
 
-There are plenty of high performance C libraries that you can use within Raku and [NativeCall](https://rakudocs.github.io/language/nativecall) makes it easy to create wrappers for them. There's experimental support for C++ libraries, too.
+There are plenty of high performance C libraries that you can use within Raku and [NativeCall](https://docs.raku.org/language/nativecall) makes it easy to create wrappers for them. There's experimental support for C++ libraries, too.
 
-如果你想[在 Raku 中使用 Perl 5 模块](https://stackoverflow.com/a/27206428/1077672)，可以混合 Raku 类型和 [Metaobject Protocol](https://rakudocs.github.io/language/mop)。
+如果你想[在 Raku 中使用 Perl 5 模块](https://stackoverflow.com/a/27206428/1077672)，可以混合 Raku 类型和 [Metaobject Protocol](https://docs.raku.org/language/mop)。
 
-If you want to [use Perl 5 modules in Raku](https://stackoverflow.com/a/27206428/1077672), mix in Raku types and the [Metaobject Protocol](https://rakudocs.github.io/language/mop).
+If you want to [use Perl 5 modules in Raku](https://stackoverflow.com/a/27206428/1077672), mix in Raku types and the [Metaobject Protocol](https://docs.raku.org/language/mop).
 
 更广泛地说，Raku 是为了与其他语言顺利地互操作而设计的，并且有许多[模块，旨在帮助使用来自其他语言的 lib](https://modules.perl6.org/#q=inline)。
 

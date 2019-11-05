@@ -1,4 +1,4 @@
-原文：https://rakudocs.github.io/language/syntax
+原文：https://docs.raku.org/language/syntax
 
 # 句法 / Syntax
 
@@ -73,9 +73,9 @@ Raku 代码是 Unicode 文本。目前的实现支持 UTF-8 作为输入编码�
 
 Raku code is Unicode text. Current implementations support UTF-8 as the input encoding.
 
-另请参见 [Unicode 与 ASCII 符号](https://rakudocs.github.io/language/unicode_ascii)。
+另请参见 [Unicode 与 ASCII 符号](https://docs.raku.org/language/unicode_ascii)。
 
-See also [Unicode versus ASCII symbols](https://rakudocs.github.io/language/unicode_ascii).
+See also [Unicode versus ASCII symbols](https://docs.raku.org/language/unicode_ascii).
 
 <a id="%E8%87%AA%E7%94%B1%E8%AF%AD%E7%B4%A0--free-form"></a>
 ## 自由语素 / Free form
@@ -292,9 +292,9 @@ say 'code again';
 <a id="%E6%A0%87%E8%AF%86%E7%AC%A6--identifiers"></a>
 ## 标识符 / Identifiers
 
-标识符是语法构建块，可用于给实体/对象命名，例如常量、变量（例如“标量”和例程（例如 `Sub` 和对象方法）。在[变量名](https://rakudocs.github.io/language/variables)中，任何标记（和符号）都位于标识符之前，不构成标识符的一部分。
+标识符是语法构建块，可用于给实体/对象命名，例如常量、变量（例如“标量”和例程（例如 `Sub` 和对象方法）。在[变量名](https://docs.raku.org/language/variables)中，任何标记（和符号）都位于标识符之前，不构成标识符的一部分。
 
-Identifiers are grammatical building blocks that may be used to give a name to entities/objects such as constants, variables (e.g. `Scalar`s) and routines (e.g. `Sub`s and Methods). In a [variable name](https://rakudocs.github.io/language/variables), any sigil (and twigil) precedes the identifier and does not form a part thereof.
+Identifiers are grammatical building blocks that may be used to give a name to entities/objects such as constants, variables (e.g. `Scalar`s) and routines (e.g. `Sub`s and Methods). In a [variable name](https://docs.raku.org/language/variables), any sigil (and twigil) precedes the identifier and does not form a part thereof.
 
 ```Raku
 constant c = 299792458;     # identifier "c" names an Int
@@ -365,9 +365,9 @@ infix:«<=»                # the official name of the operator in $a <= $b
 
 For all such uses, you can append one or more colon-separated strings to an ordinary identifier to create a so-called *extended identifier*. When appended to an identifier (that is, in postfix position), this colon-separated string generates unique variants of that identifier.
 
-这些字符串的格式为 `:key<value>`，其中 `key` *或* `value` 是可选的；也就是说，在将其与常规标识符分隔开的冒号之后，将有一个 `key` 和/或一个引号括住的结构，如 `< >`，`« »` 或 `[' ']`，它引用一个或多个任意字符 `value`.[[1]](https://rakudocs.github.io/language/syntax#fn-1)
+这些字符串的格式为 `:key<value>`，其中 `key` *或* `value` 是可选的；也就是说，在将其与常规标识符分隔开的冒号之后，将有一个 `key` 和/或一个引号括住的结构，如 `< >`，`« »` 或 `[' ']`，它引用一个或多个任意字符 `value`.[[1]](https://docs.raku.org/language/syntax#fn-1)
 
-These strings have the form `:key<value>`, wherein `key` *or* `value` are optional; that is, after the colon that separates it from a regular identifier, there will be a `key` and/or a quoting bracketing construct such as `< >`, `« »` or `[' ']` which quotes one or more arbitrary characters `value`.[[1]](https://rakudocs.github.io/language/syntax#fn-1)
+These strings have the form `:key<value>`, wherein `key` *or* `value` are optional; that is, after the colon that separates it from a regular identifier, there will be a `key` and/or a quoting bracketing construct such as `< >`, `« »` or `[' ']` which quotes one or more arbitrary characters `value`.[[1]](https://docs.raku.org/language/syntax#fn-1)
 
 ```Raku
 # exemplary valid extended identifiers:
@@ -427,9 +427,9 @@ use ThatModule:auth<Somebody>:ver<2.7.18.28.18>
 use ThatModule:ver<2.7.18.28.18>:auth<Somebody>
 ```
 
-此外，扩展标识符支持编译时字符串插值；这要求对插值值使用[常量](https://rakudocs.github.io/language/terms#Constants)：
+此外，扩展标识符支持编译时字符串插值；这要求对插值值使用[常量](https://docs.raku.org/language/terms#Constants)：
 
-Furthermore, extended identifiers support compile-time interpolation; this requires the use of [constants](https://rakudocs.github.io/language/terms#Constants) for the interpolation values:
+Furthermore, extended identifiers support compile-time interpolation; this requires the use of [constants](https://docs.raku.org/language/terms#Constants) for the interpolation values:
 
 ```Raku
 constant $c = 42;  # Constant binds to Int; $-sigil enables interpolation
@@ -456,9 +456,9 @@ say @we:<$what>;
 
 A compound identifier is an identifier that is composed of two or more ordinary and/or extended identifiers that are separated from one another by a double colon `::`.
 
-双冒号 `::` 称为*名称空间分隔符*或*包分隔符*，它在名称中澄清了其语义功能：强制将名称的前一部分视为 [package](https://rakudocs.github.io/language/packages)/命名空间，通过该命名空间，查找后面部分的名称：
+双冒号 `::` 称为*名称空间分隔符*或*包分隔符*，它在名称中澄清了其语义功能：强制将名称的前一部分视为 [package](https://docs.raku.org/language/packages)/命名空间，通过该命名空间，查找后面部分的名称：
 
-The double colon `::` is known as the *namespace separator* or the *package delimiter*, which clarifies its semantic function in a name: to force the preceding portion of the name to be considered a [package](https://rakudocs.github.io/language/packages)/namespace through which the subsequent portion of the name is to be located:
+The double colon `::` is known as the *namespace separator* or the *package delimiter*, which clarifies its semantic function in a name: to force the preceding portion of the name to be considered a [package](https://docs.raku.org/language/packages)/namespace through which the subsequent portion of the name is to be located:
 
 ```Raku
 module MyModule {               # declare a module package
@@ -467,9 +467,9 @@ module MyModule {               # declare a module package
 say $MyModule::var              # OUTPUT: «Hello␤»
 ```
 
-在上面的示例中，`MyModule::var` 是一个复合标识符，由包名标识符 `MyModule` 和变量名 `var` 的标识符部分组成。总之，`$MyModule::var` 通常被称为[包限定名](https://rakudocs.github.io/language/packages#Package-qualified_names)。
+在上面的示例中，`MyModule::var` 是一个复合标识符，由包名标识符 `MyModule` 和变量名 `var` 的标识符部分组成。总之，`$MyModule::var` 通常被称为[包限定名](https://docs.raku.org/language/packages#Package-qualified_names)。
 
-In the example above, `MyModule::var` is a compound identifier, composed of the package name identifier `MyModule` and the identifier part of the variable name `var`. Altogether `$MyModule::var` is often referred to as a [package-qualified name](https://rakudocs.github.io/language/packages#Package-qualified_names).
+In the example above, `MyModule::var` is a compound identifier, composed of the package name identifier `MyModule` and the identifier part of the variable name `var`. Altogether `$MyModule::var` is often referred to as a [package-qualified name](https://docs.raku.org/language/packages#Package-qualified_names).
 
 用双冒号分隔标识符会导致将最右边的名称插入现有的（请参见上面的示例）*或自动创建的*包：
 
@@ -485,9 +485,9 @@ say OUR::foo.HOW          # OUTPUT: «Perl6::Metamodel::PackageHOW.new␤»
 
 The last lines shows how the `foo` package was created automatically, as a deposit for variables in that namespace.
 
-双冒号句法允许运行时字符串[插值](https://rakudocs.github.io/language/packages#Interpolating_into_names)，使用 `::($expr)` 将字符串插入到包或变量名中，通常将包或变量名放在那里：
+双冒号句法允许运行时字符串[插值](https://docs.raku.org/language/packages#Interpolating_into_names)，使用 `::($expr)` 将字符串插入到包或变量名中，通常将包或变量名放在那里：
 
-The double colon syntax enables runtime [interpolation](https://rakudocs.github.io/language/packages#Interpolating_into_names) of a string into a package or variable name using `::($expr)` where you'd ordinarily put a package or variable name:
+The double colon syntax enables runtime [interpolation](https://docs.raku.org/language/packages#Interpolating_into_names) of a string into a package or variable name using `::($expr)` where you'd ordinarily put a package or variable name:
 
 ```Raku
 my $buz = "quux";
@@ -567,9 +567,9 @@ assigns the return value of the if statement (here `42`) to the variable `$x`.
 
 Terms are the basic nouns that, optionally together with operators, can form expressions. Examples for terms are variables (`$x`), barewords such as type names (`Int`), literals (`42`), declarations (`sub f() { }`) and calls (`f()`).
 
-例如，在表达式 `2 * $salary` 中，`2` 和 `$salary` 是两个术语（一个[整数](https://rakudocs.github.io/type/Int)文本和一个[变量](https://rakudocs.github.io/language/variables)）。
+例如，在表达式 `2 * $salary` 中，`2` 和 `$salary` 是两个术语（一个[整数](https://docs.raku.org/type/Int)文本和一个[变量](https://docs.raku.org/language/variables)）。
 
-For example, in the expression `2 * $salary`, `2` and `$salary` are two terms (an [integer](https://rakudocs.github.io/type/Int) literal and a [variable](https://rakudocs.github.io/language/variables)).
+For example, in the expression `2 * $salary`, `2` and `$salary` are two terms (an [integer](https://docs.raku.org/type/Int) literal and a [variable](https://docs.raku.org/language/variables)).
 
 <a id="%E5%8F%98%E9%87%8F--variables"></a>
 ## 变量 / Variables
@@ -585,16 +585,16 @@ my $number = 21;
 say $number * 2;
 ```
 
-有关详细信息，请参阅[变量文档](https://rakudocs.github.io/language/variables)。
+有关详细信息，请参阅[变量文档](https://docs.raku.org/language/variables)。
 
-See the [documentation on variables](https://rakudocs.github.io/language/variables) for more details.
+See the [documentation on variables](https://docs.raku.org/language/variables) for more details.
 
 <a id="%E8%A3%B8%E5%AD%97%EF%BC%88%E5%B8%B8%E9%87%8F%E3%80%81%E7%B1%BB%E5%9E%8B%E5%90%8D%EF%BC%89-barewords-constants-type-names"></a>
 ## 裸字（常量、类型名）/ Barewords (constants, type names)
 
-预先声明的标识符可以是自己的术语。这些通常是类型名或常量，但也有 `self` 一词，它指的是调用方法的对象（参见[对象](https://rakudocs.github.io/language/objects)），以及无标记变量：
+预先声明的标识符可以是自己的术语。这些通常是类型名或常量，但也有 `self` 一词，它指的是调用方法的对象（参见[对象](https://docs.raku.org/language/objects)），以及无标记变量：
 
-Pre-declared identifiers can be terms on their own. Those are typically type names or constants, but also the term `self` which refers to an object that a method was called on (see [objects](https://rakudocs.github.io/language/objects)), and sigilless variables:
+Pre-declared identifiers can be terms on their own. Those are typically type names or constants, but also the term `self` which refers to an object that a method was called on (see [objects](https://docs.raku.org/language/objects)), and sigilless variables:
 
 ```Raku
 say Int;                # OUTPUT: «(Int)␤»
@@ -628,16 +628,16 @@ $Foo::($bar)::baz   # compound identifiers that perform interpolations
 Foo::Bar::bob(23)   # function invocation given qualified name
 ```
 
-有关详细信息，请参阅[软件包文档](https://rakudocs.github.io/language/packages)。
+有关详细信息，请参阅[软件包文档](https://docs.raku.org/language/packages)。
 
-See the [documentation on packages](https://rakudocs.github.io/language/packages) for more details.
+See the [documentation on packages](https://docs.raku.org/language/packages) for more details.
 
 <a id="%E5%AD%97%E9%9D%A2%E9%87%8F--literals"></a>
 ## 字面量 / Literals
 
-[字面量](https://en.wikipedia.org/wiki/Literal_%28computer_programming%29)是源代码中常量值的表示。Raku 有几个内置类型的字面量，比如 [字符串](https://rakudocs.github.io/type/Str)、一些数字类型、[键值对](https://rakudocs.github.io/type/Pair) 等等。
+[字面量](https://en.wikipedia.org/wiki/Literal_%28computer_programming%29)是源代码中常量值的表示。Raku 有几个内置类型的字面量，比如 [字符串](https://docs.raku.org/type/Str)、一些数字类型、[键值对](https://docs.raku.org/type/Pair) 等等。
 
-A [literal](https://en.wikipedia.org/wiki/Literal_%28computer_programming%29) is a representation of a constant value in source code. Raku has literals for several built-in types, like [strings](https://rakudocs.github.io/type/Str), several numeric types, [pairs](https://rakudocs.github.io/type/Pair) and more.
+A [literal](https://en.wikipedia.org/wiki/Literal_%28computer_programming%29) is a representation of a constant value in source code. Raku has literals for several built-in types, like [strings](https://docs.raku.org/type/Str), several numeric types, [pairs](https://docs.raku.org/type/Pair) and more.
 
 <a id="%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%AD%97%E9%9D%A2%E9%87%8F--string-literals"></a>
 ### 字符串字面量 / String literals
@@ -651,9 +651,9 @@ say 'a string literal';
 say "a string literal\nthat interprets escape sequences";
 ```
 
-请参阅[引用](https://rakudocs.github.io/language/quoting)了解更多选项，包括[转义引用 `q`](https://rakudocs.github.io/language/quoting#Escaping:_q)。Raku 在字面量中使用标准转义符： `\a \b \t \n \f \r \e`，其含义与[设计文档](https://design.perl6.org/S02.html#Backslash_sequences)中指定的 ASCII 转义码相同。
+请参阅[引用](https://docs.raku.org/language/quoting)了解更多选项，包括[转义引用 `q`](https://docs.raku.org/language/quoting#Escaping:_q)。Raku 在字面量中使用标准转义符： `\a \b \t \n \f \r \e`，其含义与[设计文档](https://design.perl6.org/S02.html#Backslash_sequences)中指定的 ASCII 转义码相同。
 
-See [quoting](https://rakudocs.github.io/language/quoting) for many more options, including [the escaping quoting `q`](https://rakudocs.github.io/language/quoting#Escaping:_q). Raku uses the standard escape characters in literals: `\a \b \t \n \f \r \e`, with the same meaning as the ASCII escape codes, specified in [the design document](https://design.perl6.org/S02.html#Backslash_sequences).
+See [quoting](https://docs.raku.org/language/quoting) for many more options, including [the escaping quoting `q`](https://docs.raku.org/language/quoting#Escaping:_q). Raku uses the standard escape characters in literals: `\a \b \t \n \f \r \e`, with the same meaning as the ASCII escape codes, specified in [the design document](https://design.perl6.org/S02.html#Backslash_sequences).
 
 ```Raku
 say "🔔\a";  # OUTPUT: «🔔␇␤»
@@ -680,9 +680,9 @@ In all literal formats, you can use underscores to group digits, although they d
 <a id="int-%E5%AD%97%E9%9D%A2%E9%87%8F--int-literals"></a>
 #### `Int` 字面量 / `Int` literals
 
-整数默认为带符号的 10 进制数，但可以使用其他基数。有关详细信息，请参见 [Int](https://rakudocs.github.io/type/Int)。
+整数默认为带符号的 10 进制数，但可以使用其他基数。有关详细信息，请参见 [Int](https://docs.raku.org/type/Int)。
 
-Integers default to signed base-10, but you can use other bases. For details, see [Int](https://rakudocs.github.io/type/Int).
+Integers default to signed base-10, but you can use other bases. For details, see [Int](https://docs.raku.org/type/Int).
 
 ```Raku
 # not a single literal, but unary - operator applied to numeric literal 2
@@ -696,9 +696,9 @@ Integers default to signed base-10, but you can use other bases. For details, se
 <a id="rat-%E5%AD%97%E9%9D%A2%E9%87%8F--rat-literals"></a>
 #### `Rat` 字面量 / `Rat` literals
 
-[Rat](https://rakudocs.github.io/type/Rat) 字面量（有理数）非常常见，在许多其他语言中取代了小数或浮点数。整数除法也会产生 `Rat`。
+[Rat](https://docs.raku.org/type/Rat) 字面量（有理数）非常常见，在许多其他语言中取代了小数或浮点数。整数除法也会产生 `Rat`。
 
-[Rat](https://rakudocs.github.io/type/Rat) literals (rationals) are very common, and take the place of decimals or floats in many other languages. Integer division also results in a `Rat`.
+[Rat](https://docs.raku.org/type/Rat) literals (rationals) are very common, and take the place of decimals or floats in many other languages. Integer division also results in a `Rat`.
 
 ```Raku
 1.0
@@ -712,9 +712,9 @@ Integers default to signed base-10, but you can use other bases. For details, se
 <a id="num-%E5%AD%97%E9%9D%A2%E9%87%8F--num-literals"></a>
 #### `Num` 字面量 / `Num` literals
 
-在 `e` 之后以十进制数为基数的指数的科学表示法生成[浮点数](https://rakudocs.github.io/type/Num)：
+在 `e` 之后以十进制数为基数的指数的科学表示法生成[浮点数](https://docs.raku.org/type/Num)：
 
-Scientific notation with an integer exponent to base ten after an `e` produces [floating point number](https://rakudocs.github.io/type/Num):
+Scientific notation with an integer exponent to base ten after an `e` produces [floating point number](https://docs.raku.org/type/Num):
 
 ```Raku
 1e0
@@ -727,9 +727,9 @@ Scientific notation with an integer exponent to base ten after an `e` produces [
 <a id="complex-%E5%AD%97%E9%9D%A2%E9%87%8F--complex-literals"></a>
 #### `Complex` 字面量 / `Complex` literals
 
-[复数](https://rakudocs.github.io/type/Complex)数字可以写成虚数（这只是一个附加后缀 `i` 的有理数），也可以写成实数和虚数之和：
+[复数](https://docs.raku.org/type/Complex)数字可以写成虚数（这只是一个附加后缀 `i` 的有理数），也可以写成实数和虚数之和：
 
-[Complex](https://rakudocs.github.io/type/Complex) numbers are written either as an imaginary number (which is just a rational number with postfix `i` appended), or as a sum of a real and an imaginary number:
+[Complex](https://docs.raku.org/type/Complex) numbers are written either as an imaginary number (which is just a rational number with postfix `i` appended), or as a sum of a real and an imaginary number:
 
 ```Raku
 1+2i
@@ -739,9 +739,9 @@ Scientific notation with an integer exponent to base ten after an `e` produces [
 <a id="%E9%94%AE%E5%80%BC%E5%AF%B9%E5%AD%97%E9%9D%A2%E9%87%8F--pair-literals"></a>
 ### 键值对字面量 / Pair literals
 
-[键值对](https://rakudocs.github.io/type/Pair)由一个键和一个值组成，构造它们有两种基本形式：`key => 'value'` 和 `:key('value')`。
+[键值对](https://docs.raku.org/type/Pair)由一个键和一个值组成，构造它们有两种基本形式：`key => 'value'` 和 `:key('value')`。
 
-[Pairs](https://rakudocs.github.io/type/Pair) are made of a key and a value, and there are two basic forms for constructing them: `key => 'value' `and `:key('value')`.
+[Pairs](https://docs.raku.org/type/Pair) are made of a key and a value, and there are two basic forms for constructing them: `key => 'value' `and `:key('value')`.
 
 <a id="%E7%AE%AD%E5%A4%B4%E9%94%AE%E5%80%BC%E5%AF%B9--arrow-pairs"></a>
 #### 箭头键值对 / Arrow pairs
@@ -812,18 +812,18 @@ Long forms with explicit values:
 <a id="%E6%95%B0%E7%BB%84%E5%AD%97%E9%9D%A2%E9%87%8F--array-literals"></a>
 ### 数组字面量 / Array literals
 
-一对方括号可以包围一个表达式以形成逐项[数组](https://rakudocs.github.io/type/Array)字面量；通常在以下内容中有一个逗号分隔的列表：
+一对方括号可以包围一个表达式以形成逐项[数组](https://docs.raku.org/type/Array)字面量；通常在以下内容中有一个逗号分隔的列表：
 
-A pair of square brackets can surround an expression to form an itemized [Array](https://rakudocs.github.io/type/Array) literal; typically there is a comma-delimited list inside:
+A pair of square brackets can surround an expression to form an itemized [Array](https://docs.raku.org/type/Array) literal; typically there is a comma-delimited list inside:
 
 ```Raku
 say ['a', 'b', 42].join(' ');   # OUTPUT: «a b 42␤»
 #   ^^^^^^^^^^^^^^ Array constructor
 ```
 
-如果给构造函数一个 [Iterable](https://rakudocs.github.io/type/Iterable)，它将克隆并展平它。如果只需要一个 `Iterable` 元素的 `Array`，请确保在其后使用逗号：
+如果给构造函数一个 [Iterable](https://docs.raku.org/type/Iterable)，它将克隆并展平它。如果只需要一个 `Iterable` 元素的 `Array`，请确保在其后使用逗号：
 
-If the constructor is given a single [Iterable](https://rakudocs.github.io/type/Iterable), it'll clone and flatten it. If you want an `Array` with just 1 element that is an `Iterable`, ensure to use a comma after it:
+If the constructor is given a single [Iterable](https://docs.raku.org/type/Iterable), it'll clone and flatten it. If you want an `Array` with just 1 element that is an `Iterable`, ensure to use a comma after it:
 
 ```Raku
 my @a = 1, 2;
@@ -831,9 +831,9 @@ say [@a].perl;  # OUTPUT: «[1, 2]␤»
 say [@a,].perl; # OUTPUT: «[[1, 2],]␤»
 ```
 
-`Array` 构造函数不展平其他类型的内容。使用 [Slip](https://rakudocs.github.io/type/Slip) 前缀运算符 (`|`) 压平所需的项：
+`Array` 构造函数不展平其他类型的内容。使用 [Slip](https://docs.raku.org/type/Slip) 前缀运算符 (`|`) 压平所需的项：
 
-The `Array` constructor does not flatten other types of contents. Use the [Slip](https://rakudocs.github.io/type/Slip) prefix operator (`|`) to flatten the needed items:
+The `Array` constructor does not flatten other types of contents. Use the [Slip](https://docs.raku.org/type/Slip) prefix operator (`|`) to flatten the needed items:
 
 ```Raku
 my @a = 1, 2;
@@ -841,9 +841,9 @@ say [@a, 3, 4].perl;  # OUTPUT: «[[1, 2], 3, 4]␤»
 say [|@a, 3, 4].perl; # OUTPUT: «[1, 2, 3, 4]␤»
 ```
 
-[列表](https://rakudocs.github.io/type/List)类型可以从数组字面量声明中显式创建，无需从数组强制，在声明时使用 **is** [特性](https://rakudocs.github.io/language/traits)。
+[列表](https://docs.raku.org/type/List)类型可以从数组字面量声明中显式创建，无需从数组强制，在声明时使用 **is** [特性](https://docs.raku.org/language/traits)。
 
-[List](https://rakudocs.github.io/type/List) type can be explicitly created from an array literal declaration without a coercion from Array, using **is** [trait](https://rakudocs.github.io/language/traits) on declaration.
+[List](https://docs.raku.org/type/List) type can be explicitly created from an array literal declaration without a coercion from Array, using **is** [trait](https://docs.raku.org/language/traits) on declaration.
 
 ```Raku
 my @a is List = 1, 2; # a List, not an Array
@@ -854,9 +854,9 @@ my List @a;
 <a id="%E5%93%88%E5%B8%8C%E5%AD%97%E9%9D%A2%E9%87%8F--hash-literals"></a>
 ### 哈希字面量 / Hash literals
 
-一个前导的关联标记和一对圆括号 `%( )`，可以包围一个键值对的列表，形成一个[哈希](https://rakudocs.github.io/type/Hash)字面量；通常，里面有一个逗号分隔的键值对的列表。如果使用非键值对，则假定它是键，下一个元素是值。这通常与简单的箭头键值对一起使用。
+一个前导的关联标记和一对圆括号 `%( )`，可以包围一个键值对的列表，形成一个[哈希](https://docs.raku.org/type/Hash)字面量；通常，里面有一个逗号分隔的键值对的列表。如果使用非键值对，则假定它是键，下一个元素是值。这通常与简单的箭头键值对一起使用。
 
-A leading associative sigil and pair of parenthesis `%( )` can surround a `List` of `Pairs` to form a [Hash](https://rakudocs.github.io/type/Hash) literal; typically there is a comma-delimited `List` of `Pairs` inside. If a non-pair is used, it is assumed to be a key and the next element is the value. Most often this is used with simple arrow pairs.
+A leading associative sigil and pair of parenthesis `%( )` can surround a `List` of `Pairs` to form a [Hash](https://docs.raku.org/type/Hash) literal; typically there is a comma-delimited `List` of `Pairs` inside. If a non-pair is used, it is assumed to be a key and the next element is the value. Most often this is used with simple arrow pairs.
 
 ```Raku
 say %( a => 3, b => 23, :foo, :dog<cat>, "french", "fries" );
@@ -891,9 +891,9 @@ say :{ -1 => 41, 0 => 42, 1 => 43 }<0>;  # OUTPUT: «(Any)␤»
 say :{ -1 => 41, 0 => 42, 1 => 43 }{0};  # OUTPUT: «42␤»
 ```
 
-实现了 [Associative](https://rakudocs.github.io/type/Associative) 角色的特定类型如 [Map](https://rakudocs.github.io/type/Map)（包括 [Hash](https://rakudocs.github.io/type/Hash) 、[Stash](https://rakudocs.github.io/type/Stash) 子类）和 [QuantHash](https://rakudocs.github.io/type/QuantHash)（以及它的子类）可以在声明时使用 **is** [trait](https://rakudocs.github.io/language/traits) 从哈希字面量显式创建，而无需强制类型转换：
+实现了 [Associative](https://docs.raku.org/type/Associative) 角色的特定类型如 [Map](https://docs.raku.org/type/Map)（包括 [Hash](https://docs.raku.org/type/Hash) 、[Stash](https://docs.raku.org/type/Stash) 子类）和 [QuantHash](https://docs.raku.org/type/QuantHash)（以及它的子类）可以在声明时使用 **is** [trait](https://docs.raku.org/language/traits) 从哈希字面量显式创建，而无需强制类型转换：
 
-Particular types that implement [Associative](https://rakudocs.github.io/type/Associative) role, [Map](https://rakudocs.github.io/type/Map) (including [Hash](https://rakudocs.github.io/type/Hash) and [Stash](https://rakudocs.github.io/type/Stash) subclasses) and [QuantHash](https://rakudocs.github.io/type/QuantHash) (and its subclasses), can be explicitly created from a hash literal without a coercion, using **is** [trait](https://rakudocs.github.io/language/traits) on declaration:
+Particular types that implement [Associative](https://docs.raku.org/type/Associative) role, [Map](https://docs.raku.org/type/Map) (including [Hash](https://docs.raku.org/type/Hash) and [Stash](https://docs.raku.org/type/Stash) subclasses) and [QuantHash](https://docs.raku.org/type/QuantHash) (and its subclasses), can be explicitly created from a hash literal without a coercion, using **is** [trait](https://docs.raku.org/language/traits) on declaration:
 
 ```Raku
 my %hash;                    # Hash
@@ -932,9 +932,9 @@ my Mix[Int] $mix-of-ints;
 <a id="%E6%AD%A3%E5%88%99%E5%AD%97%E9%9D%A2%E9%87%8F--regex-literals"></a>
 ### 正则字面量 / Regex literals
 
-一个 [Regex](https://rakudocs.github.io/type/Regex) 用诸如 `/foo/` 之类的斜杠声明。注意，这个 `//` 句法是完整的 `rx//` 句法的简写。
+一个 [Regex](https://docs.raku.org/type/Regex) 用诸如 `/foo/` 之类的斜杠声明。注意，这个 `//` 句法是完整的 `rx//` 句法的简写。
 
-A [Regex](https://rakudocs.github.io/type/Regex) is declared with slashes like `/foo/`. Note that this `//` syntax is shorthand for the full `rx//` syntax.
+A [Regex](https://docs.raku.org/type/Regex) is declared with slashes like `/foo/`. Note that this `//` syntax is shorthand for the full `rx//` syntax.
 
 ```Raku
 /foo/          # Short version
@@ -963,9 +963,9 @@ given "foo", 42 {
 }
 ```
 
-有关签名的详细信息，请参阅 [Signatures](https://rakudocs.github.io/type/Signature) 文档。
+有关签名的详细信息，请参阅 [Signatures](https://docs.raku.org/type/Signature) 文档。
 
-See the [Signatures](https://rakudocs.github.io/type/Signature) documentation for more about signatures.
+See the [Signatures](https://docs.raku.org/type/Signature) documentation for more about signatures.
 
 <a id="%E5%A3%B0%E6%98%8E--declarations"></a>
 ## 声明 / Declarations
@@ -982,9 +982,9 @@ my Int $x where { $_ > 3 } = 7; # constrain the value based on a function
 my Int $x where * > 3 = 7;      # same constraint, but using Whatever shorthand
 ```
 
-有关其他作用域（`our`，`has`）的详细信息，请参见[变量声明器和作用域](https://rakudocs.github.io/language/variables#Variable_declarators_and_scope)。
+有关其他作用域（`our`，`has`）的详细信息，请参见[变量声明器和作用域](https://docs.raku.org/language/variables#Variable_declarators_and_scope)。
 
-See [Variable Declarators and Scope](https://rakudocs.github.io/language/variables#Variable_declarators_and_scope) for more details on other scopes (`our`, `has`).
+See [Variable Declarators and Scope](https://docs.raku.org/language/variables#Variable_declarators_and_scope) for more details on other scopes (`our`, `has`).
 
 <a id="%E5%AD%90%E4%BE%8B%E7%A8%8B%E5%A3%B0%E6%98%8E--subroutine-declaration"></a>
 ### 子例程声明 / Subroutine declaration
@@ -1037,9 +1037,9 @@ unit module M;
 <a id="%E5%A4%9A%E5%88%86%E6%B4%BE%E5%A3%B0%E6%98%8E--multi-dispatch-declaration"></a>
 ### 多分派声明 / Multi-dispatch declaration
 
-另请参见[多分派](https://rakudocs.github.io/language/functions#Multi-dispatch)。
+另请参见[多分派](https://docs.raku.org/language/functions#Multi-dispatch)。
 
-See also [Multi-dispatch](https://rakudocs.github.io/language/functions#Multi-dispatch).
+See also [Multi-dispatch](https://docs.raku.org/language/functions#Multi-dispatch).
 
 子例程可以用多个签名声明。
 
@@ -1062,9 +1062,9 @@ multi method greet(Str $name) { }
 <a id="%E5%AD%90%E4%BE%8B%E7%A8%8B%E8%B0%83%E7%94%A8--subroutine-calls"></a>
 # 子例程调用 / Subroutine calls
 
-使用关键字 `sub` 创建子例程，后跟可选名称、可选签名和代码块。子例程在词法作用域范围内，因此如果在声明时指定了名称，则可以在词法范围内使用相同的名称来调用子例程。子例程是 [Sub](https://rakudocs.github.io/type/Sub) 类型的实例，可以分配给任何容器。
+使用关键字 `sub` 创建子例程，后跟可选名称、可选签名和代码块。子例程在词法作用域范围内，因此如果在声明时指定了名称，则可以在词法范围内使用相同的名称来调用子例程。子例程是 [Sub](https://docs.raku.org/type/Sub) 类型的实例，可以分配给任何容器。
 
-Subroutines are created with the keyword `sub` followed by an optional name, an optional signature and a code block. Subroutines are lexically scoped, so if a name is specified at the declaration time, the same name can be used in the lexical scope to invoke the subroutine. A subroutine is an instance of type [Sub](https://rakudocs.github.io/type/Sub) and can be assigned to any container.
+Subroutines are created with the keyword `sub` followed by an optional name, an optional signature and a code block. Subroutines are lexically scoped, so if a name is specified at the declaration time, the same name can be used in the lexical scope to invoke the subroutine. A subroutine is an instance of type [Sub](https://docs.raku.org/type/Sub) and can be assigned to any container.
 
 ```Raku
 foo;   # Invoke the function foo with no arguments
@@ -1075,9 +1075,9 @@ my @functions = ({say 1}, {say 2}, {say 3});
 @functions>>.(); # hyper method call operator
 ```
 
-在类内声明时，子例程被称为 "method"：方法是针对对象（即类实例）调用的子例程。在方法中，特殊变量 `self` 包含对象实例（请参见[方法](https://rakudocs.github.io/language/classtut#Methods)）。
+在类内声明时，子例程被称为 "method"：方法是针对对象（即类实例）调用的子例程。在方法中，特殊变量 `self` 包含对象实例（请参见[方法](https://docs.raku.org/language/classtut#Methods)）。
 
-When declared within a class, a subroutine is named "method": methods are subroutines invoked against an object (i.e., a class instance). Within a method the special variable `self` contains the object instance (see [Methods](https://rakudocs.github.io/language/classtut#Methods)).
+When declared within a class, a subroutine is named "method": methods are subroutines invoked against an object (i.e., a class instance). Within a method the special variable `self` contains the object instance (see [Methods](https://docs.raku.org/language/classtut#Methods)).
 
 ```Raku
 # Method invocation. Object (instance) is $person, method is set-name-age
@@ -1087,9 +1087,9 @@ set-name-age($person: 'jane', 98);  # Invocant marker
 set-name-age $person: 'jane', 98;   # Indirect invocation
 ```
 
-有关更多信息，请参见[函数](https://rakudocs.github.io/language/functions)。
+有关更多信息，请参见[函数](https://docs.raku.org/language/functions)。
 
-For more information, see [functions](https://rakudocs.github.io/language/functions).
+For more information, see [functions](https://docs.raku.org/language/functions).
 
 <a id="%E4%BC%98%E5%85%88%E7%BA%A7%E4%B8%A2%E5%BC%83--precedence-drop"></a>
 ## 优先级丢弃 / Precedence drop
@@ -1111,9 +1111,9 @@ In the second method call the rightmost `substr` is applied to "3" and not to th
 <a id="%E8%BF%90%E7%AE%97%E7%AC%A6--operators"></a>
 # 运算符 / Operators
 
-有关详细信息，请参见[运算符](https://rakudocs.github.io/language/operators)。
+有关详细信息，请参见[运算符](https://docs.raku.org/language/operators)。
 
-See [Operators](https://rakudocs.github.io/language/operators) for lots of details.
+See [Operators](https://docs.raku.org/language/operators) for lots of details.
 
 运算符是具有更重符号和可组合语法的函数。与其他函数一样，运算符可以是多分派，以允许特定于上下文的使用。
 
@@ -1180,6 +1180,6 @@ You can also wrap a unary operator with a hyper operator.
 say -« <1 2 3> # OUTPUT: «(-1 -2 -3)␤»
 ```
 
-[[↑]](https://rakudocs.github.io/language/syntax#fn-ref-1) 从 Raku 语言版本 6.d 开始，保留了以 `sym` 作为 `key`（例如 `:sym<foo>` ）的冒号对，以备将来使用。
+[[↑]](https://docs.raku.org/language/syntax#fn-ref-1) 从 Raku 语言版本 6.d 开始，保留了以 `sym` 作为 `key`（例如 `:sym<foo>` ）的冒号对，以备将来使用。
 
-[[↑]](https://rakudocs.github.io/language/syntax#fn-ref-1) Starting with Raku language version 6.d, colon pairs with `sym` as the `key` (e.g. `:sym<foo>`) are reserved for possible future use.
+[[↑]](https://docs.raku.org/language/syntax#fn-ref-1) Starting with Raku language version 6.d, colon pairs with `sym` as the `key` (e.g. `:sym<foo>`) are reserved for possible future use.

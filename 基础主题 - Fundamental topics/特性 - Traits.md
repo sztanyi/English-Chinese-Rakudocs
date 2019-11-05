@@ -18,9 +18,9 @@ proto sub trait_mod:<is>(Mu $, |) {*}
 
 ## `is` applied to classes.
 
-The most common form, involving two classes, one that is being defined and the other existing, [defines parenthood](https://rakudocs.github.io/syntax/is). `A is B`, if both are classes, defines A as a subclass of B.
+The most common form, involving two classes, one that is being defined and the other existing, [defines parenthood](https://docs.raku.org/syntax/is). `A is B`, if both are classes, defines A as a subclass of B.
 
-[`is DEPRECATED`](https://rakudocs.github.io/type/Attribute#trait_is_DEPRECATED) can be applied to classes, Attributes or Routines, marks them as deprecated and issues a message, if provided.
+[`is DEPRECATED`](https://docs.raku.org/type/Attribute#trait_is_DEPRECATED) can be applied to classes, Attributes or Routines, marks them as deprecated and issues a message, if provided.
 
 Several instances of `is` are translated directly into attributes for the class they refer to: `rw`, `nativesize`, `ctype`, `unsigned`, `hidden`, `array_type`.
 
@@ -43,12 +43,12 @@ Uninstantiable classes can still be used via their class variables and methods, 
 
 ## `is repr` and native representations.
 
-Since the `is` trait refers, in general, to the nature of the class or object they are applied to, they are used extensively in [native calls](https://rakudocs.github.io/language/nativecall) to [specify the representation](https://rakudocs.github.io/language/nativecall#Specifying_the_native_representation) of the data structures that are going to be handled by the native functions via the `is repr` suffix; at the same time, `is native` is used for the routines that are actually implemented via native functions. These are the representations that can be used:
+Since the `is` trait refers, in general, to the nature of the class or object they are applied to, they are used extensively in [native calls](https://docs.raku.org/language/nativecall) to [specify the representation](https://docs.raku.org/language/nativecall#Specifying_the_native_representation) of the data structures that are going to be handled by the native functions via the `is repr` suffix; at the same time, `is native` is used for the routines that are actually implemented via native functions. These are the representations that can be used:
 
-- CStruct corresponds to a `struct` in the C language. It is a composite data structure which includes different and heterogeneous lower-level data structures; see [this](https://rakudocs.github.io/language/nativecall#Structs) for examples and further explanations.
+- CStruct corresponds to a `struct` in the C language. It is a composite data structure which includes different and heterogeneous lower-level data structures; see [this](https://docs.raku.org/language/nativecall#Structs) for examples and further explanations.
 - CPPStruct, similarly, correspond to a `struct` in C++. However, this is Rakudo specific for the time being.
-- CPointer is a pointer in any of these languages. It is a dynamic data structure that must be instantiated before being used, can be [used](https://rakudocs.github.io/language/nativecall#Basic_use_of_pointers) for classes whose methods are also native.
-- CUnion is going to use the same representation as an `union` in C; see [this](https://rakudocs.github.io/language/nativecall#CUnions) for an example.
+- CPointer is a pointer in any of these languages. It is a dynamic data structure that must be instantiated before being used, can be [used](https://docs.raku.org/language/nativecall#Basic_use_of_pointers) for classes whose methods are also native.
+- CUnion is going to use the same representation as an `union` in C; see [this](https://docs.raku.org/language/nativecall#CUnions) for an example.
 
 On the other hand, P6opaque is the default representation used for all objects in Raku.
 
@@ -57,9 +57,9 @@ class Thar {};
 say Thar.REPR;    #OUTPUT: «P6opaque␤»
 ```
 
-The [metaobject protocol](https://rakudocs.github.io/language/mop) uses it by default for every object and class unless specified otherwise; for that reason, it is in general not necessary unless you are effectively working with that interface.
+The [metaobject protocol](https://docs.raku.org/language/mop) uses it by default for every object and class unless specified otherwise; for that reason, it is in general not necessary unless you are effectively working with that interface.
 
 ## `is` on routines
 
-The `is` trait can be used on the definition of methods and routines to establish [precedence](https://rakudocs.github.io/language/functions#Precedence) and [associativity](https://rakudocs.github.io/language/functions#Associativity). They act as a [sub defined using `trait_mod`](https://rakudocs.github.io/type/Sub#Traits) which take as argument the types and names of the traits that are going to be added. In the case of subroutines, traits would be a way of adding functionality which cuts across class and role hierarchies, or can even be used to add behaviors to independently defined routines.
+The `is` trait can be used on the definition of methods and routines to establish [precedence](https://docs.raku.org/language/functions#Precedence) and [associativity](https://docs.raku.org/language/functions#Associativity). They act as a [sub defined using `trait_mod`](https://docs.raku.org/type/Sub#Traits) which take as argument the types and names of the traits that are going to be added. In the case of subroutines, traits would be a way of adding functionality which cuts across class and role hierarchies, or can even be used to add behaviors to independently defined routines.
 

@@ -1,4 +1,4 @@
-原文：https://rakudocs.github.io/language/unicode_ascii
+原文：https://docs.raku.org/language/unicode_ascii
 
 # Unicode 与 ASCII 符号 / Unicode versus ASCII symbols
 

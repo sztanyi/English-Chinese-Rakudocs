@@ -1,4 +1,4 @@
-原文：https://rakudocs.github.io/language/packages
+原文：https://docs.raku.org/language/packages
 
 # 包 - Packages
 
@@ -6,9 +6,9 @@
 
 Organizing and referencing namespaced program elements
 
-包是命名程序元素的嵌套命名空间。[模块](https://rakudocs.github.io/language/module-packages)、类、grammar 等都是包的类型。与目录中的文件一样，如果命名元素是本地的，则通常可以使用它们的短名引用它们，也可以引用包含名称空间的较长名称，只要它们的范围允许，就可以消除歧义。
+包是命名程序元素的嵌套命名空间。[模块](https://docs.raku.org/language/module-packages)、类、grammar 等都是包的类型。与目录中的文件一样，如果命名元素是本地的，则通常可以使用它们的短名引用它们，也可以引用包含名称空间的较长名称，只要它们的范围允许，就可以消除歧义。
 
-Packages are nested namespaces of named program elements. [Modules](https://rakudocs.github.io/language/module-packages), classes, grammars, and others are types of packages. Like files in a directory, you can generally refer to named elements with their short-name if they are local, or with the longer name that includes the namespace to disambiguate as long as their scope allows that.
+Packages are nested namespaces of named program elements. [Modules](https://docs.raku.org/language/module-packages), classes, grammars, and others are types of packages. Like files in a directory, you can generally refer to named elements with their short-name if they are local, or with the longer name that includes the namespace to disambiguate as long as their scope allows that.
 
 <!-- MarkdownTOC -->
 
@@ -133,9 +133,9 @@ The file's scope is known as `UNIT`, but there are one or more lexical scopes ou
 <a id="%E5%90%8D%E7%A7%B0%E6%8F%92%E5%80%BC--interpolating-into-names"></a>
 ## 名称插值 / Interpolating into names
 
-你可以使用 `::($expr)` 将字符串[插值](https://rakudocs.github.io/language/packages#Interpolating)到包或变量名中，那个位置通常放置包或变量名。字符串允许包含 `::` 的其他实例，这将被解释为包嵌套。你只能插值全名，因为构造以 `::` 开头，或者直接结束，或者在括号外用另一个 `::` 继续。大多数符号引用都是用这个符号来完成的：
+你可以使用 `::($expr)` 将字符串[插值](https://docs.raku.org/language/packages#Interpolating)到包或变量名中，那个位置通常放置包或变量名。字符串允许包含 `::` 的其他实例，这将被解释为包嵌套。你只能插值全名，因为构造以 `::` 开头，或者直接结束，或者在括号外用另一个 `::` 继续。大多数符号引用都是用这个符号来完成的：
 
-You may [interpolate](https://rakudocs.github.io/language/packages#Interpolating) a string into a package or variable name using `::($expr)` where you'd ordinarily put a package or variable name. The string is allowed to contain additional instances of `::`, which will be interpreted as package nesting. You may only interpolate entire names, since the construct starts with `::`, and either ends immediately or is continued with another `::` outside the parentheses. Most symbolic references are done with this notation:
+You may [interpolate](https://docs.raku.org/language/packages#Interpolating) a string into a package or variable name using `::($expr)` where you'd ordinarily put a package or variable name. The string is allowed to contain additional instances of `::`, which will be interpreted as package nesting. You may only interpolate entire names, since the construct starts with `::`, and either ends immediately or is continued with another `::` outside the parentheses. Most symbolic references are done with this notation:
 
 ```Raku
 my $foo = "Foo";
@@ -234,9 +234,9 @@ MyType::<$foo>
 <a id="%E7%B1%BB%E6%88%90%E5%91%98%E6%9F%A5%E6%89%BE--class-member-lookup"></a>
 ## 类成员查找 / Class member lookup
 
-方法-包括自动生成的方法，例如公共属性的访问器-存储在类元对象中，并可以通过 [lookup](https://rakudocs.github.io/routine/lookup) 方法进行查找。
+方法-包括自动生成的方法，例如公共属性的访问器-存储在类元对象中，并可以通过 [lookup](https://docs.raku.org/routine/lookup) 方法进行查找。
 
-Methods—including auto-generated methods, such as public attributes' accessors—are stored in the class metaobject and can be looked up through by the [lookup](https://rakudocs.github.io/routine/lookup) method.
+Methods—including auto-generated methods, such as public attributes' accessors—are stored in the class metaobject and can be looked up through by the [lookup](https://docs.raku.org/routine/lookup) method.
 
 ```Raku
 Str.^lookup('chars')

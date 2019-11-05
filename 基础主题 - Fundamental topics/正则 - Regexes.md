@@ -1,4 +1,4 @@
-原文：https://rakudocs.github.io/language/regexes
+原文：https://docs.raku.org/language/regexes
 
 # 正则 / Regexes
 
@@ -173,9 +173,9 @@ if 'Life, the Universe and Everything' ~~ / and / {
 };
 ```
 
-匹配结果存储在 `$/` 变量中并且也从匹配中返回。如果匹配成功, 那么返回结果是 [Match](https://rakudocs.github.io/type/Match) 类型, 否则它就是 [Nil](https://rakudocs.github.io/type/Nil)。
+匹配结果存储在 `$/` 变量中并且也从匹配中返回。如果匹配成功, 那么返回结果是 [Match](https://docs.raku.org/type/Match) 类型, 否则它就是 [Nil](https://docs.raku.org/type/Nil)。
 
-Match results are stored in the `$/` variable and are also returned from the match. The result is of type [Match](https://rakudocs.github.io/type/Match) if the match was successful; otherwise it is [Nil](https://rakudocs.github.io/type/Nil).
+Match results are stored in the `$/` variable and are also returned from the match. The result is of type [Match](https://docs.raku.org/type/Match) if the match was successful; otherwise it is [Nil](https://docs.raku.org/type/Nil).
 
 <a id="%E9%80%9A%E9%85%8D%E7%AC%A6--wildcards"></a>
 # 通配符 / Wildcards
@@ -239,7 +239,7 @@ There are predefined character classes of the form `\w`. Its negation is written
 
 `\n` matches a single, logical newline character. `\N` matches a single character that's not a logical newline.
 
-What is considered as a single newline character is defined via the compile time variable [`$?NL`](https://rakudocs.github.io/language/variables#index-entry-%24%3FNL), and the [newline pragma](https://rakudocs.github.io/language/pragmas); therefore, `\n` is supposed to be able to match either a Unix-like newline `"\n"`, a Microsoft Windows style one `"\r\n"`, or one in the Mac style `"\r"`.
+What is considered as a single newline character is defined via the compile time variable [`$?NL`](https://docs.raku.org/language/variables#index-entry-%24%3FNL), and the [newline pragma](https://docs.raku.org/language/pragmas); therefore, `\n` is supposed to be able to match either a Unix-like newline `"\n"`, a Microsoft Windows style one `"\r\n"`, or one in the Mac style `"\r"`.
 
 <a id="t-%E5%92%8C-t"></a>
 ### `\t` 和 `\T`
@@ -389,9 +389,9 @@ Note that the character classes `<same>`, `<wb>` and `<ww>` are so called zero-w
 
 The character classes mentioned so far are mostly for convenience; another approach is to use Unicode character properties. These come in the form `<:property>`, where `property` can be a short or long Unicode General Category name. These use pair syntax.
 
-要匹配 Unicode 属性可以使用智能匹配或者 [`uniprop`](https://rakudocs.github.io/routine/uniprop)：
+要匹配 Unicode 属性可以使用智能匹配或者 [`uniprop`](https://docs.raku.org/routine/uniprop)：
 
-To match against a Unicode property you can use either smartmatch or [`uniprop`](https://rakudocs.github.io/routine/uniprop):
+To match against a Unicode property you can use either smartmatch or [`uniprop`](https://docs.raku.org/routine/uniprop):
 
 ```Raku
 "a".uniprop('Script');                 # OUTPUT: «Latin␤» 
@@ -604,9 +604,9 @@ For example, to match `dog` or `dogs`, you can write:
 <a id="%E9%80%9A%E7%94%A8%E9%87%8F%E8%AF%8D--minmax--general-quantifier--minmax"></a>
 ## 通用量词: `** min..max` / General quantifier: `** min..max`
 
-要对一个元素进行任意次数的量化，请使用 `**` 量词，该量词在其右侧接受一个 [Int](https://rakudocs.github.io/type/Int) 或 [Range](https://rakudocs.github.io/type/Range)。如果指定了 [Range](https://rakudocs.github.io/type/Range)，则两个端点指定要匹配的最小和最大次数。
+要对一个元素进行任意次数的量化，请使用 `**` 量词，该量词在其右侧接受一个 [Int](https://docs.raku.org/type/Int) 或 [Range](https://docs.raku.org/type/Range)。如果指定了 [Range](https://docs.raku.org/type/Range)，则两个端点指定要匹配的最小和最大次数。
 
-To quantify an atom an arbitrary number of times, use the `**` quantifier, which takes a single [Int](https://rakudocs.github.io/type/Int) or a [Range](https://rakudocs.github.io/type/Range) on the right-hand side that specifies the number of times to match. If [Range](https://rakudocs.github.io/type/Range) is specified, the end-points specify the minimum and maximum number of times to match.
+To quantify an atom an arbitrary number of times, use the `**` quantifier, which takes a single [Int](https://docs.raku.org/type/Int) or a [Range](https://docs.raku.org/type/Range) on the right-hand side that specifies the number of times to match. If [Range](https://docs.raku.org/type/Range) is specified, the end-points specify the minimum and maximum number of times to match.
 
 ```Raku
 say 'abcdefg' ~~ /\w ** 4/;      # OUTPUT: «｢abcd｣␤» 
@@ -618,9 +618,9 @@ say 'abcdefg' ~~ /\w ** ^3/;     # OUTPUT: «｢ab｣␤»
 say 'abcdefg' ~~ /\w ** 1..*/;   # OUTPUT: «｢abcdefg｣␤» 
 ```
 
-只支持量词右侧的基本字面量语法，以避免与其他正则构造混淆。如果需要使用更复杂的表达式，例如由变量构成的 [Range](https://rakudocs.github.io/type/Range)，请将 [Range](https://rakudocs.github.io/type/Range) 括在大括号中：
+只支持量词右侧的基本字面量语法，以避免与其他正则构造混淆。如果需要使用更复杂的表达式，例如由变量构成的 [Range](https://docs.raku.org/type/Range)，请将 [Range](https://docs.raku.org/type/Range) 括在大括号中：
 
-Only basic literal syntax for the right-hand side of the quantifier is supported, to avoid ambiguities with other regex constructs. If you need to use a more complex expression, for example, a [Range](https://rakudocs.github.io/type/Range) made from variables, enclose the [Range](https://rakudocs.github.io/type/Range) into curly braces:
+Only basic literal syntax for the right-hand side of the quantifier is supported, to avoid ambiguities with other regex constructs. If you need to use a more complex expression, for example, a [Range](https://docs.raku.org/type/Range) made from variables, enclose the [Range](https://docs.raku.org/type/Range) into curly braces:
 
 ```Raku
 my $start = 3;
@@ -639,9 +639,9 @@ say 'abcdefg' ~~ /\w ** {-10..-42}/; # OUTPUT: «｢｣␤»
 say 'abcdefg' ~~ /\w ** {-42..-10}/; # OUTPUT: «｢｣␤» 
 ```
 
-如果结果值为 `Inf` 或 `NaN`，或结果 [Range](https://rakudocs.github.io/type/Range)为空、非数字、包含 `NaN` 终结点或最小有效终结点为 `Inf`，则将引发 `X::Syntax::Regex::QuantifierValue` 异常：
+如果结果值为 `Inf` 或 `NaN`，或结果 [Range](https://docs.raku.org/type/Range)为空、非数字、包含 `NaN` 终结点或最小有效终结点为 `Inf`，则将引发 `X::Syntax::Regex::QuantifierValue` 异常：
 
-If then, the resultant value is `Inf` or `NaN` or the resultant [Range](https://rakudocs.github.io/type/Range) is empty, non-Numeric, contains `NaN` end-points, or has minimum effective end-point as `Inf`, the `X::Syntax::Regex::QuantifierValue` exception will be thrown:
+If then, the resultant value is `Inf` or `NaN` or the resultant [Range](https://docs.raku.org/type/Range) is empty, non-Numeric, contains `NaN` end-points, or has minimum effective end-point as `Inf`, the `X::Syntax::Regex::QuantifierValue` exception will be thrown:
 
 ```Raku
 (try say 'abcdefg' ~~ /\w ** {42..10}/  )
@@ -906,9 +906,9 @@ my @increasingly-edible = <f fo foo food>;
 say 'food' ~~ /@increasingly-edible/;   # OUTPUT: «｢food｣␤» 
 ```
 
-这在下面的[正则插值](https://rakudocs.github.io/language/regexes#Regex_interpolation)中有进一步的记录。
+这在下面的[正则插值](https://docs.raku.org/language/regexes#Regex_interpolation)中有进一步的记录。
 
-This is documented further under [Regex Interpolation](https://rakudocs.github.io/language/regexes#Regex_interpolation), below.
+This is documented further under [Regex Interpolation](https://docs.raku.org/language/regexes#Regex_interpolation), below.
 
 <a id="%E5%90%88%E5%8F%96%EF%BC%9A---conjunction-"></a>
 # 合取： `&&` / Conjunction: `&&`
@@ -1029,9 +1029,9 @@ The `^^` anchor matches at the start of a logical line. That is, either at the s
 
 The `$$` anchor matches at the end of a logical line. That is, before a newline character, or at the end of the string when the last character is not a newline character.
 
-要理解下面的示例，重要的是要知道 `q:to/EOS/...EOS` [heredoc](https://rakudocs.github.io/language/quoting#Heredocs%3A_%3Ato) 语法将前导缩进删除到与 `EOS` 标记相同的级别，以便第一行、第二行和最后一行没有前导空格，并且第三行和第四行各有两个前导空格。
+要理解下面的示例，重要的是要知道 `q:to/EOS/...EOS` [heredoc](https://docs.raku.org/language/quoting#Heredocs%3A_%3Ato) 语法将前导缩进删除到与 `EOS` 标记相同的级别，以便第一行、第二行和最后一行没有前导空格，并且第三行和第四行各有两个前导空格。
 
-To understand the following example, it's important to know that the `q:to/EOS/...EOS` [heredoc](https://rakudocs.github.io/language/quoting#Heredocs%3A_%3Ato) syntax removes leading indention to the same level as the `EOS` marker, so that the first, second and last lines have no leading space and the third and fourth lines have two leading spaces each.
+To understand the following example, it's important to know that the `q:to/EOS/...EOS` [heredoc](https://docs.raku.org/language/quoting#Heredocs%3A_%3Ato) syntax removes leading indention to the same level as the `EOS` marker, so that the first, second and last lines have no leading space and the third and fourth lines have two leading spaces each.
 
 ```Raku
 my $str = q:to/EOS/; 
@@ -1319,16 +1319,16 @@ The same grouping applies to quantifiers:
 / (a || b)+ /;     # matches a string of 'a's and 'b's, except empty string 
 ```
 
-未量化的捕获生成一个 [Match](https://rakudocs.github.io/type/Match) 对象。当捕获被量化时（除了用 `？` 量词）捕获变为 [Match](https://rakudocs.github.io/type/Match) 对象的列表。
+未量化的捕获生成一个 [Match](https://docs.raku.org/type/Match) 对象。当捕获被量化时（除了用 `？` 量词）捕获变为 [Match](https://docs.raku.org/type/Match) 对象的列表。
 
-An unquantified capture produces a [Match](https://rakudocs.github.io/type/Match) object. When a capture is quantified (except with the `?` quantifier) the capture becomes a list of [Match](https://rakudocs.github.io/type/Match) objects instead.
+An unquantified capture produces a [Match](https://docs.raku.org/type/Match) object. When a capture is quantified (except with the `?` quantifier) the capture becomes a list of [Match](https://docs.raku.org/type/Match) objects instead.
 
 <a id="%E6%8D%95%E8%8E%B7--capturing"></a>
 ## 捕获 / Capturing
 
-圆括号不只是分组，它们还*捕获*；也就是说，它们使组内匹配的字符串可用作变量，也可用作结果 [Match](https://rakudocs.github.io/type/Match) 对象的元素：
+圆括号不只是分组，它们还*捕获*；也就是说，它们使组内匹配的字符串可用作变量，也可用作结果 [Match](https://docs.raku.org/type/Match) 对象的元素：
 
-The round parentheses don't just group, they also *capture*; that is, they make the string matched within the group available as a variable, and also as an element of the resulting [Match](https://rakudocs.github.io/type/Match) object:
+The round parentheses don't just group, they also *capture*; that is, they make the string matched within the group available as a variable, and also as an element of the resulting [Match](https://docs.raku.org/type/Match) object:
 
 ```Raku
 my $str =  'number 42';
@@ -1507,9 +1507,9 @@ Any other code block will also reveal the variables and make them available in d
 say "Capture $c"; # OUTPUT: «Capture a␤» 
 ```
 
-与类中的 [`our`](https://rakudocs.github.io/syntax/our) 类似，`:our` 可用于 [Grammar](https://rakudocs.github.io/type/Grammar) 中声明可通过其完全限定名从 grammar 外部访问的变量：
+与类中的 [`our`](https://docs.raku.org/syntax/our) 类似，`:our` 可用于 [Grammar](https://docs.raku.org/type/Grammar) 中声明可通过其完全限定名从 grammar 外部访问的变量：
 
-The `:our`, similarly to [`our`](https://rakudocs.github.io/syntax/our) in classes, can be used in [Grammar](https://rakudocs.github.io/type/Grammar)s to declare variables that can be accessed, via its fully qualified name, from outside the grammar:
+The `:our`, similarly to [`our`](https://docs.raku.org/syntax/our) in classes, can be used in [Grammar](https://docs.raku.org/type/Grammar)s to declare variables that can be accessed, via its fully qualified name, from outside the grammar:
 
 ```Raku
 grammar HasOur {
@@ -1582,9 +1582,9 @@ if 'count=23' ~~ / $<variable>=\w+ '=' $<value>=\w+ / {
 }
 ```
 
-获取命名捕获的一个更方便的方法是使用命名正则，如 [子规则](https://rakudocs.github.io/language/regexes#Subrules) 部分所述。
+获取命名捕获的一个更方便的方法是使用命名正则，如 [子规则](https://docs.raku.org/language/regexes#Subrules) 部分所述。
 
-A more convenient way to get named captures is by using named regex as discussed in the [Subrules](https://rakudocs.github.io/language/regexes#Subrules) section.
+A more convenient way to get named captures is by using named regex as discussed in the [Subrules](https://docs.raku.org/language/regexes#Subrules) section.
 
 <a id="%E6%8D%95%E8%8E%B7%E6%A0%87%E8%AF%86%E7%AC%A6%EF%BC%9A--capture-markers-"></a>
 ## 捕获标识符： `<( )>` / Capture markers: `<( )>`
@@ -1765,9 +1765,9 @@ Using the modulo `%` operator above keeps the sample code under 80 characters, b
 <a id="%E5%B8%B8%E7%94%A8%E5%89%AF%E8%AF%8D--common-adverbs"></a>
 ## 常用副词 / Common adverbs
 
-可以应用于正则表达式的副词的完整列表可以在本文档的其他地方可以找到（[节副词](https://rakudocs.github.io/language/regexes#Adverbs)），但最常见的可能是 `:g` 和 `:i`。
+可以应用于正则表达式的副词的完整列表可以在本文档的其他地方可以找到（[节副词](https://docs.raku.org/language/regexes#Adverbs)），但最常见的可能是 `:g` 和 `:i`。
 
-The full list of adverbs that you can apply to regular expressions can be found elsewhere in this document ([section Adverbs](https://rakudocs.github.io/language/regexes#Adverbs)), but the most common are probably `:g` and `:i`.
+The full list of adverbs that you can apply to regular expressions can be found elsewhere in this document ([section Adverbs](https://docs.raku.org/language/regexes#Adverbs)), but the most common are probably `:g` and `:i`.
 
 - 全局副词 `:g`
 
@@ -1804,9 +1804,9 @@ s:i/fruit/vegetable/;
 .say;                          # OUTPUT: «vegetable␤» 
 ```
 
-有关这些副词实际操作的更多信息，请参阅本文档的[副词部分](https://rakudocs.github.io/language/regexes#Adverbs)部分。
+有关这些副词实际操作的更多信息，请参阅本文档的[副词部分](https://docs.raku.org/language/regexes#Adverbs)部分。
 
-For more information on what these adverbs are actually doing, refer to the [section Adverbs](https://rakudocs.github.io/language/regexes#Adverbs) section of this document.
+For more information on what these adverbs are actually doing, refer to the [section Adverbs](https://docs.raku.org/language/regexes#Adverbs) section of this document.
 
 这些只是可以用替换操作符应用的一些转换。现实世界中的一些简单用法包括从日志文件中删除个人数据、将 MySQL 时间戳编辑为 PostgreSQL 格式、更改 HTML 文件中的版权信息以及清理 Web 应用程序中的表单字段。
 
@@ -1944,9 +1944,9 @@ say %config.perl;
 #           :quotas(${:jack("123"), :joy("42")})}» 
 ```
 
-命名正则可以并且应该在 [grammars](https://rakudocs.github.io/language/grammars) 中分组。预先定义的子规则列表列在设计文档 [S05-regex](https://design.perl6.org/S05.html#Predefined_Subrules) 中。
+命名正则可以并且应该在 [grammars](https://docs.raku.org/language/grammars) 中分组。预先定义的子规则列表列在设计文档 [S05-regex](https://design.perl6.org/S05.html#Predefined_Subrules) 中。
 
-Named regexes can and should be grouped in [grammars](https://rakudocs.github.io/language/grammars). A list of predefined subrules is listed in [S05-regex](https://design.perl6.org/S05.html#Predefined_Subrules) of design documents.
+Named regexes can and should be grouped in [grammars](https://docs.raku.org/language/grammars). A list of predefined subrules is listed in [S05-regex](https://design.perl6.org/S05.html#Predefined_Subrules) of design documents.
 
 <a id="%E6%AD%A3%E5%88%99%E6%8F%92%E5%80%BC--regex-interpolation"></a>
 # 正则插值 / Regex interpolation
@@ -1981,9 +1981,9 @@ say 'camelia' ~~ / $($pattern.flip) /;     # OUTPUT: «｢camelia｣␤»
 
 There are four ways you can interpolate a string into regex as a pattern. That is using `$pattern`, `$($pattern)`, `<$pattern>` or `<{$pattern.method}>`.
 
-请注意，上面的两个示例以词法插入字符串，而 `<$pattern>` 和 `<$pattern.method>` 会导致[隐式 EVAL](https://rakudocs.github.io/language/traps#%3C%7B%24x%7D%3E_vs_%24%28%24x%29%3A_Implicit_EVAL)，这是一个已知的陷阱。
+请注意，上面的两个示例以词法插入字符串，而 `<$pattern>` 和 `<$pattern.method>` 会导致[隐式 EVAL](https://docs.raku.org/language/traps#%3C%7B%24x%7D%3E_vs_%24%28%24x%29%3A_Implicit_EVAL)，这是一个已知的陷阱。
 
-Note that the two examples above interpolate the string lexically, while `<$pattern>` and `<{$pattern.method}>` causes [implicit EVAL](https://rakudocs.github.io/language/traps#%3C%7B%24x%7D%3E_vs_%24%28%24x%29%3A_Implicit_EVAL), which is a known trap.
+Note that the two examples above interpolate the string lexically, while `<$pattern>` and `<{$pattern.method}>` causes [implicit EVAL](https://docs.raku.org/language/traps#%3C%7B%24x%7D%3E_vs_%24%28%24x%29%3A_Implicit_EVAL), which is a known trap.
 
 以下是显示所有四种方法的示例：
 
@@ -2008,9 +2008,9 @@ say $text ~~ / <$pattern2> /;              # OUTPUT: «｢camelia｣␤»
 say $text ~~ / <{$pattern2}> /;            # OUTPUT: «｢camelia｣␤» 
 ```
 
-当一个数组变量被插入到一个正则中时，正则引擎会像处理正则元素的一个 `|` 备选项一样处理它（请参阅上面[嵌入列表](https://rakudocs.github.io/language/regexes#Quoted_lists_are_LTM_matches)上的文档，如上图所示）。单个元素的插值规则与标量相同，因此字符串和数字按字面量匹配，而 [/type/regex](https://rakudocs.github.io/type/Regex) 对象与正则匹配。正如普通的 `|` 插值一样，最长的匹配也会成功：
+当一个数组变量被插入到一个正则中时，正则引擎会像处理正则元素的一个 `|` 备选项一样处理它（请参阅上面[嵌入列表](https://docs.raku.org/language/regexes#Quoted_lists_are_LTM_matches)上的文档，如上图所示）。单个元素的插值规则与标量相同，因此字符串和数字按字面量匹配，而 [/type/regex](https://docs.raku.org/type/Regex) 对象与正则匹配。正如普通的 `|` 插值一样，最长的匹配也会成功：
 
-When an array variable is interpolated into a regex, the regex engine handles it like a `|` alternative of the regex elements (see the documentation on [embedded lists](https://rakudocs.github.io/language/regexes#Quoted_lists_are_LTM_matches), above). The interpolation rules for individual elements are the same as for scalars, so strings and numbers match literally, and [/type/Regex](https://rakudocs.github.io/type/Regex) objects match as regexes. Just as with ordinary `|` interpolation, the longest match succeeds:
+When an array variable is interpolated into a regex, the regex engine handles it like a `|` alternative of the regex elements (see the documentation on [embedded lists](https://docs.raku.org/language/regexes#Quoted_lists_are_LTM_matches), above). The interpolation rules for individual elements are the same as for scalars, so strings and numbers match literally, and [/type/Regex](https://docs.raku.org/type/Regex) objects match as regexes. Just as with ordinary `|` interpolation, the longest match succeeds:
 
 ```Raku
 my @a = '2', 23, rx/a.+/;
@@ -2221,9 +2221,9 @@ say so 'ỡ' ~~ rx:ignoremark /o/;    # OUTPUT: «True>
 <a id="%E6%A3%98%E8%BD%AE--ratchet"></a>
 ### 棘轮 / Ratchet
 
-`:ratchet` 或 `:r` 副词导致正则引擎无法回溯（请参阅[回溯](https://rakudocs.github.io/language/regexes#Backtracking)）。助记符：一个[棘轮]（https://en.wikipedia.org/wiki/ratchet device%29）只能朝一个方向移动，不能后退。
+`:ratchet` 或 `:r` 副词导致正则引擎无法回溯（请参阅[回溯](https://docs.raku.org/language/regexes#Backtracking)）。助记符：一个[棘轮]（https://en.wikipedia.org/wiki/ratchet device%29）只能朝一个方向移动，不能后退。
 
-The `:ratchet` or `:r` adverb causes the regex engine to not backtrack (see [backtracking](https://rakudocs.github.io/language/regexes#Backtracking)). Mnemonic: a [ratchet](https://en.wikipedia.org/wiki/Ratchet_%28device%29) only moves in one direction and can't backtrack.
+The `:ratchet` or `:r` adverb causes the regex engine to not backtrack (see [backtracking](https://docs.raku.org/language/regexes#Backtracking)). Mnemonic: a [ratchet](https://en.wikipedia.org/wiki/Ratchet_%28device%29) only moves in one direction and can't backtrack.
 
 如果没有这个副词，正则表达式的某些部分将尝试不同的方法来匹配字符串，以便使正则表达式的其他部分能够匹配。例如，在 `'abc' ~~ /\w+ ./`，首先 `\w+` 会吃掉整个字符串 `abc`，然后 `.` 会失败。因此，`\w+` 放弃了一个字符，只匹配 `ab`，`.` 可以成功匹配字符串 `c`。放弃字符的过程（或者在交替的情况下，尝试不同的分支）称为回溯。
 
@@ -2467,9 +2467,9 @@ The above code produces this output:
 <a id="%E5%85%A8%E5%B1%80%E6%90%9C%E7%B4%A2--global"></a>
 ### 全局搜索 / Global
 
-不是搜索一个匹配并返回一个[匹配对象](https://rakudocs.github.io/type/Match)，而是搜索每个不重叠的匹配并返回到[列表](https://rakudocs.github.io/type/List)。为此，请使用 `:global` 副词：
+不是搜索一个匹配并返回一个[匹配对象](https://docs.raku.org/type/Match)，而是搜索每个不重叠的匹配并返回到[列表](https://docs.raku.org/type/List)。为此，请使用 `:global` 副词：
 
-Instead of searching for just one match and returning a [Match object](https://rakudocs.github.io/type/Match), search for every non-overlapping match and return them in a [List](https://rakudocs.github.io/type/List). In order to do this, use the `:global` adverb:
+Instead of searching for just one match and returning a [Match object](https://docs.raku.org/type/Match), search for every non-overlapping match and return them in a [List](https://docs.raku.org/type/List). In order to do this, use the `:global` adverb:
 
 ```Raku
 given 'several words here' {
@@ -2611,9 +2611,9 @@ say $string ~~ /(.+)(SQL) (.+) $1/; # OUTPUT: ｢PostgreSQL is an SQL｣
 
 What happens in the above example is that the string has to be matched against the second occurrence of the word *SQL*, eating all characters before and leaving out the rest.
 
-由于可以在正则表达式中执行一段代码，因此也可以检查正则表达式本身中的 [Match](https://rakudocs.github.io/type/Match) 对象：
+由于可以在正则表达式中执行一段代码，因此也可以检查正则表达式本身中的 [Match](https://docs.raku.org/type/Match) 对象：
 
-Since it is possible to execute a piece of code within a regular expression, it is also possible to inspect the [Match](https://rakudocs.github.io/type/Match) object within the regular expression itself:
+Since it is possible to execute a piece of code within a regular expression, it is also possible to inspect the [Match](https://docs.raku.org/type/Match) object within the regular expression itself:
 
 ```Raku
 my $iteration = 0;
@@ -2771,9 +2771,9 @@ Capture 1 =  database!
 [SQL][ database!]
 ```
 
-即使使用 [:r](https://rakudocs.github.io/language/regexes#Ratchet) 副词来防止回溯也不会改变：
+即使使用 [:r](https://docs.raku.org/language/regexes#Ratchet) 副词来防止回溯也不会改变：
 
-Even using the [:r](https://rakudocs.github.io/language/regexes#Ratchet) adverb to prevent backtracking will not change things:
+Even using the [:r](https://docs.raku.org/language/regexes#Ratchet) adverb to prevent backtracking will not change things:
 
 ```Raku
 my $iteration = 0;
@@ -2814,9 +2814,9 @@ This demonstrate that disabling backtracking does not mean disabling possible mu
 <a id="%24%E5%9C%A8%E6%AF%8F%E6%AC%A1%E5%8C%B9%E9%85%8D%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%97%B6%E6%9B%B4%E6%94%B9--%24-changes-each-time-a-regular-expression-is-matched"></a>
 # `$/`在每次匹配正则表达式时更改 / `$/` changes each time a regular expression is matched
 
-值得注意的是，每次使用正则表达式时，都会重置返回的[匹配对象](https://rakudocs.github.io/type/Match)（即 `$/`）。换句话说，`$/` 总是指最后一个匹配的正则表达式：
+值得注意的是，每次使用正则表达式时，都会重置返回的[匹配对象](https://docs.raku.org/type/Match)（即 `$/`）。换句话说，`$/` 总是指最后一个匹配的正则表达式：
 
-It is worth noting that each time a regular expression is used, the [Match object](https://rakudocs.github.io/type/Match) returned (i.e., `$/`) is reset. In other words, `$/`always refers to the very last regular expression matched:
+It is worth noting that each time a regular expression is used, the [Match object](https://docs.raku.org/type/Match) returned (i.e., `$/`) is reset. In other words, `$/`always refers to the very last regular expression matched:
 
 ```Raku
 my $answer = 'a lot of Stuff';
@@ -2866,6 +2866,6 @@ say $/<capital>;    # OUTPUT: Nil
 <a id="%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E5%92%8C%E6%88%90%E5%8A%9F%E6%A1%88%E4%BE%8B--best-practices-and-gotchas"></a>
 # 最佳实践和成功案例 / Best practices and gotchas
 
-[最佳实践和成功案例](https://rakudocs.github.io/language/regexes-best-practices) 提供有关如何在编写正则表达式和语法时避免常见陷阱的有用信息。
+[最佳实践和成功案例](https://docs.raku.org/language/regexes-best-practices) 提供有关如何在编写正则表达式和语法时避免常见陷阱的有用信息。
 
-The [Regexes: Best practices and gotchas](https://rakudocs.github.io/language/regexes-best-practices) provides useful information on how to avoid common pitfalls when writing regexes and grammars.
+The [Regexes: Best practices and gotchas](https://docs.raku.org/language/regexes-best-practices) provides useful information on how to avoid common pitfalls when writing regexes and grammars.

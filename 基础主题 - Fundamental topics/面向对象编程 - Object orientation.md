@@ -1,4 +1,4 @@
-原文：https://rakudocs.github.io/language/objects
+原文：https://docs.raku.org/language/objects
 
 # 面向对象（物件） / Object orientation
 
@@ -10,9 +10,9 @@ Raku 为[面向对象的编程（OOP）](https://en.wikipedia.org/wiki/Object-or
 
 Raku provides strong support for [Object Oriented Programming (OOP)](https://en.wikipedia.org/wiki/Object-oriented_programming). Although Raku allows programmers to program in multiple paradigms, Object Oriented Programming is at the heart of the language.
 
-Raku 有很多预定义的类型，可以分为两类：常规类型和[*原生*类型](https://rakudocs.github.io/language/nativetypes)。你可以存储在变量中的所有内容都是*原生值*或*对象*。它包括文字、类型（类型对象）、代码和容器。
+Raku 有很多预定义的类型，可以分为两类：常规类型和[*原生*类型](https://docs.raku.org/language/nativetypes)。你可以存储在变量中的所有内容都是*原生值*或*对象*。它包括文字、类型（类型对象）、代码和容器。
 
-Raku comes with a wealth of predefined types, which can be classified in two categories: regular and [*native* types](https://rakudocs.github.io/language/nativetypes). Everything that you can store in a variable is either a *native value* or an *object*. That includes literals, types (type objects), code and containers.
+Raku comes with a wealth of predefined types, which can be classified in two categories: regular and [*native* types](https://docs.raku.org/language/nativetypes). Everything that you can store in a variable is either a *native value* or an *object*. That includes literals, types (type objects), code and containers.
 
 原生类型用于低级类型（如 `uint64`）。即使*原生*类型不具有与对象相同的功能，如果在它们上调用方法，它们也会自动*装箱*到普通对象中。
 
@@ -117,13 +117,13 @@ Methods can return mutable containers, in which case you can assign to the retur
 $*IN.nl-in = "\r\n";
 ```
 
-在这里，我们在 `$*IN` 对象上调用方法 `nl-in`，不带参数，并将其赋值为用 [`=`](https://rakudocs.github.io/routine/=) 返回的容器。
+在这里，我们在 `$*IN` 对象上调用方法 `nl-in`，不带参数，并将其赋值为用 [`=`](https://docs.raku.org/routine/=) 返回的容器。
 
-Here, we call method `nl-in` on the `$*IN` object, without arguments, and assign to the container it returned with the [`=`](https://rakudocs.github.io/routine/=) operator.
+Here, we call method `nl-in` on the `$*IN` object, without arguments, and assign to the container it returned with the [`=`](https://docs.raku.org/routine/=) operator.
 
-所有对象都支持类 [Mu](https://rakudocs.github.io/type/Mu) 中的方法。所有对象都是从 `Mu` 派生出来的。
+所有对象都支持类 [Mu](https://docs.raku.org/type/Mu) 中的方法。所有对象都是从 `Mu` 派生出来的。
 
-All objects support methods from class [Mu](https://rakudocs.github.io/type/Mu), which is the type hierarchy root. All objects derive from `Mu`.
+All objects support methods from class [Mu](https://docs.raku.org/type/Mu), which is the type hierarchy root. All objects derive from `Mu`.
 
 <a id="%E7%B1%BB%E5%9E%8B%E5%AF%B9%E8%B1%A1--type-objects"></a>
 ## 类型对象 / Type objects
@@ -144,9 +144,9 @@ You can request the type object of anything by calling the `WHAT` method, which 
 my $int-type-obj = 1.WHAT;
 ```
 
-类型对象（不包括 [Mu](https://rakudocs.github.io/type/Mu)）可用 [`===`](https://rakudocs.github.io/routine/===) 运算符比较标识：
+类型对象（不包括 [Mu](https://docs.raku.org/type/Mu)）可用 [`===`](https://docs.raku.org/routine/===) 运算符比较标识：
 
-Type objects (other than [Mu](https://rakudocs.github.io/type/Mu)) can be compared for equality with the [`===`](https://rakudocs.github.io/routine/===) identity operator:
+Type objects (other than [Mu](https://docs.raku.org/type/Mu)) can be compared for equality with the [`===`](https://docs.raku.org/routine/===) identity operator:
 
 ```Raku
 sub f(Int $x) {
@@ -159,9 +159,9 @@ sub f(Int $x) {
 }
 ```
 
-尽管在大多数情况下，[`.isa`](https://rakudocs.github.io/routine/isa) 方法已经足够：
+尽管在大多数情况下，[`.isa`](https://docs.raku.org/routine/isa) 方法已经足够：
 
-Although, in most cases, the [`.isa`](https://rakudocs.github.io/routine/isa) method will suffice:
+Although, in most cases, the [`.isa`](https://docs.raku.org/routine/isa) method will suffice:
 
 ```Raku
 sub f($x) {
@@ -172,9 +172,9 @@ sub f($x) {
 }
 ```
 
-子类型检查可以使用[智能匹配](https://rakudocs.github.io/language/operators#infix_~~)完成：
+子类型检查可以使用[智能匹配](https://docs.raku.org/language/operators#infix_~~)完成：
 
-Subtype checking is done by [smartmatching](https://rakudocs.github.io/language/operators#infix_~~):
+Subtype checking is done by [smartmatching](https://docs.raku.org/language/operators#infix_~~):
 
 ```Raku
 if $type ~~ Real {
@@ -234,9 +234,9 @@ class Journey {
 }
 ```
 
-默认提供只读访问器。为了允许对属性进行更改，添加 [is rw](https://rakudocs.github.io/routine/is%20rw) 特性：
+默认提供只读访问器。为了允许对属性进行更改，添加 [is rw](https://docs.raku.org/routine/is%20rw) 特性：
 
-This defaults to providing a read-only accessor. In order to allow changes to the attribute, add the [is rw](https://rakudocs.github.io/routine/is%20rw) trait:
+This defaults to providing a read-only accessor. In order to allow changes to the attribute, add the [is rw](https://docs.raku.org/routine/is%20rw) trait:
 
 ```Raku
 class Journey {
@@ -251,9 +251,9 @@ class Journey {
 
 Now, after a `Journey` object is created, its `.origin`, `.destination`, and `.notes` will all be accessible from outside the class, but only `.notes` can be modified.
 
-如果一个对象实例化时没有指定特定的属性，例如 origin 或 destination，我们可能无法得到想要的结果。为了防止出现这种情况，请提供默认值，或通过使用 [is required](https://rakudocs.github.io/routine/is%20required) 特性标记属性，确保在创建对象时设置属性。
+如果一个对象实例化时没有指定特定的属性，例如 origin 或 destination，我们可能无法得到想要的结果。为了防止出现这种情况，请提供默认值，或通过使用 [is required](https://docs.raku.org/routine/is%20required) 特性标记属性，确保在创建对象时设置属性。
 
-If an object is instantiated without certain attributes, such as origin or destination, we may not get the desired result. To prevent this, provide default values or make sure that an attribute is set on object creation by marking an attribute with an [is required](https://rakudocs.github.io/routine/is%20required) trait.
+If an object is instantiated without certain attributes, such as origin or destination, we may not get the desired result. To prevent this, provide default values or make sure that an attribute is set on object creation by marking an attribute with an [is required](https://docs.raku.org/routine/is%20required) trait.
 
 ```Raku
 class Journey {
@@ -326,9 +326,9 @@ A method can have a signature, just like a subroutine. Attributes can be used in
 
 Looking at the code above, there is a subtle but important difference between using `$!origin` and `$.origin` in the method `describe`. `$!origin` is an inexpensive and obvious lookup of the attribute. `$.origin` is a method call and thus may be overridden in a subclass. Only use `$.origin` if you want to allow overriding.
 
-与子例程不同，额外的命名参数不会产生编译时间或运行时错误。这允许通过 [Re-dispatching](https://rakudocs.github.io/language/functions#Re-dispatching) 链式调用方法。
+与子例程不同，额外的命名参数不会产生编译时间或运行时错误。这允许通过 [Re-dispatching](https://docs.raku.org/language/functions#Re-dispatching) 链式调用方法。
 
-Unlike subroutines, additional named arguments will not produce compile time or runtime errors. That allows chaining of methods via [Re-dispatching](https://rakudocs.github.io/language/functions#Re-dispatching).
+Unlike subroutines, additional named arguments will not produce compile time or runtime errors. That allows chaining of methods via [Re-dispatching](https://docs.raku.org/language/functions#Re-dispatching).
 
 你可以编写自己的访问器来覆盖自动生成的访问器。
 
@@ -382,9 +382,9 @@ A.new."$name"().say;
 # OUTPUT: «(Any)␤» 
 ```
 
-用于更新 `$.notes` 的语法在本节中与前面的 [Attributes](https://rakudocs.github.io/language/objects#Attributes) 部分相关。作为赋值的替代：
+用于更新 `$.notes` 的语法在本节中与前面的 [Attributes](https://docs.raku.org/language/objects#Attributes) 部分相关。作为赋值的替代：
 
-The syntax used to update `$.notes` changed in this section with respect to the previous [Attributes](https://rakudocs.github.io/language/objects#Attributes) section. Instead of an assignment:
+The syntax used to update `$.notes` changed in this section with respect to the previous [Attributes](https://docs.raku.org/language/objects#Attributes) section. Instead of an assignment:
 
 ```Raku
 $vacation.notes = 'Pack hiking gear and sunglasses!';
@@ -418,9 +418,9 @@ class Foo {
 Foo.new.greet("Bob");    # OUTPUT: «Hi, I am Foo, nice to meet you, Bob␤» 
 ```
 
-在方法签名中提供一个调用方，还允许通过使用[类型约束](https://rakudocs.github.io/type/Signature#Type_constraints)将方法定义为类方法或对象方法。`::?CLASS` 变量可用于在编译时提供类名，并与 `:U`（用于类方法）或 `:D`（用于实例方法）组合使用。
+在方法签名中提供一个调用方，还允许通过使用[类型约束](https://docs.raku.org/type/Signature#Type_constraints)将方法定义为类方法或对象方法。`::?CLASS` 变量可用于在编译时提供类名，并与 `:U`（用于类方法）或 `:D`（用于实例方法）组合使用。
 
-Providing an invocant in the method signature also allows for defining the method as either as a class method, or as an object method, through the use of [type constraints](https://rakudocs.github.io/type/Signature#Type_constraints). The `::?CLASS` variable can be used to provide the class name at compile time, combined with either `:U` (for class methods) or `:D` (for instance methods).
+Providing an invocant in the method signature also allows for defining the method as either as a class method, or as an object method, through the use of [type constraints](https://docs.raku.org/type/Signature#Type_constraints). The `::?CLASS` variable can be used to provide the class name at compile time, combined with either `:U` (for class methods) or `:D` (for instance methods).
 
 ```Raku
 class Pizza {
@@ -447,9 +447,9 @@ CATCH { default { put .^name ~ ":\n" ~ .Str } };
 #          Did you forget a '.new'?» 
 ```
 
-一个方法既可以是类方法，也可以是对象方法，方法可以使用 [multi](https://rakudocs.github.io/syntax/multi) 声明符：
+一个方法既可以是类方法，也可以是对象方法，方法可以使用 [multi](https://docs.raku.org/syntax/multi) 声明符：
 
-A method can be both a class and object method by using the [multi](https://rakudocs.github.io/syntax/multi) declarator:
+A method can be both a class and object method by using the [multi](https://docs.raku.org/syntax/multi) declarator:
 
 ```Raku
 class C {
@@ -511,9 +511,9 @@ A.new.b; # OUTPUT: «1␤2␤3␤(1 2 3)␤»
 
 The colon-syntax for method arguments is only supported for method calls using `self`, not the shortcut.
 
-请注意，如果 [Mu](https://rakudocs.github.io/type/Mu) 的相关方法 `bless`、`CREATE` 没有重载，`self` 将指向这些方法中的类型对象。
+请注意，如果 [Mu](https://docs.raku.org/type/Mu) 的相关方法 `bless`、`CREATE` 没有重载，`self` 将指向这些方法中的类型对象。
 
-Note that if the relevant methods `bless`, `CREATE` of [Mu](https://rakudocs.github.io/type/Mu) are not overloaded, `self` will point to the type object in those methods.
+Note that if the relevant methods `bless`, `CREATE` of [Mu](https://docs.raku.org/type/Mu) are not overloaded, `self` will point to the type object in those methods.
 
 另一方面，在初始化的不同阶段调用了 `BUILD` 和 `TWEAK` 等子方法。子类中同名的子方法尚未运行，因此不应依赖这些方法中潜在的虚拟方法调用。
 
@@ -565,9 +565,9 @@ Submethods are public methods that will not be inherited by subclasses. The name
 
 Submethods are useful for object construction and destruction tasks, as well as for tasks that are so specific to a certain type that subtypes would certainly have to override them.
 
-例如，[默认方法 new](https://rakudocs.github.io/type/Mu#method_new) 对[继承](https://rakudocs.github.io/language/objects#Inheritance)链中的每个类调用子方法 `BUILD`：
+例如，[默认方法 new](https://docs.raku.org/type/Mu#method_new) 对[继承](https://docs.raku.org/language/objects#Inheritance)链中的每个类调用子方法 `BUILD`：
 
-For example, the [default method new](https://rakudocs.github.io/type/Mu#method_new) calls submethod `BUILD` on each class in an [inheritance](https://rakudocs.github.io/language/objects#Inheritance) chain:
+For example, the [default method new](https://docs.raku.org/type/Mu#method_new) calls submethod `BUILD` on each class in an [inheritance](https://docs.raku.org/language/objects#Inheritance) chain:
 
 ```Raku
 class Point2D {
@@ -594,9 +594,9 @@ say InvertiblePoint2D.new(x => 1, y => 2);
 # OUTPUT: «InvertiblePoint2D.new(x => 1, y => 2)␤» 
 ```
 
-还请参见：[对象构造](https://rakudocs.github.io/language/objects#Object_construction)。
+还请参见：[对象构造](https://docs.raku.org/language/objects#Object_construction)。
 
-See also: [Object construction](https://rakudocs.github.io/language/objects#Object_construction).
+See also: [Object construction](https://docs.raku.org/language/objects#Object_construction).
 
 <a id="%E7%BB%A7%E6%89%BF--inheritance"></a>
 ## 继承 / Inheritance
@@ -617,9 +617,9 @@ If a method is called on the child class, and the child class does not provide t
 say List.^mro;      # ((List) (Cool) (Any) (Mu)) 
 ```
 
-如果类没有指定父类，则 [Any](https://rakudocs.github.io/type/Any) 默认为父类。所有类直接或间接地派生自 [Mu](https://rakudocs.github.io/type/Mu)，它是类型层次结构的根。
+如果类没有指定父类，则 [Any](https://docs.raku.org/type/Any) 默认为父类。所有类直接或间接地派生自 [Mu](https://docs.raku.org/type/Mu)，它是类型层次结构的根。
 
-If a class does not specify a parent class, [Any](https://rakudocs.github.io/type/Any) is assumed by default. All classes directly or indirectly derive from [Mu](https://rakudocs.github.io/type/Mu), the root of the type hierarchy.
+If a class does not specify a parent class, [Any](https://docs.raku.org/type/Any) is assumed by default. All classes directly or indirectly derive from [Mu](https://docs.raku.org/type/Mu), the root of the type hierarchy.
 
 对公共方法的所有调用都是“虚拟的”，与 C++ 很像。这意味着对象的实际类型决定要调用的方法，而不是声明的类型：
 
@@ -651,9 +651,9 @@ $test.frob;          # calls the frob method of Child rather than Parent
 
 Objects are generally created through method calls, either on the type object or on another object of the same type.
 
-类 [Mu](https://rakudocs.github.io/type/Mu) 提供了一个名为 [new](https://rakudocs.github.io/routine/new) 的构造方法，它采用命名[参数](https://rakudocs.github.io/language/functions#Arguments)的方式并使用它们初始化公共属性。
+类 [Mu](https://docs.raku.org/type/Mu) 提供了一个名为 [new](https://docs.raku.org/routine/new) 的构造方法，它采用命名[参数](https://docs.raku.org/language/functions#Arguments)的方式并使用它们初始化公共属性。
 
-Class [Mu](https://rakudocs.github.io/type/Mu) provides a constructor method called [new](https://rakudocs.github.io/routine/new), which takes named [arguments](https://rakudocs.github.io/language/functions#Arguments) and uses them to initialize public attributes.
+Class [Mu](https://docs.raku.org/type/Mu) provides a constructor method called [new](https://docs.raku.org/routine/new), which takes named [arguments](https://docs.raku.org/language/functions#Arguments) and uses them to initialize public attributes.
 
 ```Raku
 class Point {
@@ -668,9 +668,9 @@ say "y: ", $p.y;
 # OUTPUT: «y: 2␤» 
 ```
 
-`Mu.new` 对自己的调用者调用方法 [bless](https://rakudocs.github.io/routine/bless)，将所有的命名[参数](https://rakudocs.github.io/language/functions#Arguments)传递给这个方法。`bless` 创建新对象，然后以反向方法解析顺序遍历所有子类(即从 [Mu](https://rakudocs.github.io/type/Mu) 到大多数派生类)，并在每个类中检查是否存在一个名为 `BUILD` 的方法。如果存在该方法，则使用 `new` 方法中的所有命名参数调用该方法。如果没有，则从同名命名参数初始化该类的公共属性。在这两种情况下，如果 `BUILD` 或默认机制都没有初始化属性，则应用默认值。这意味着 `BUILD` 可以更改一个属性，但它不能访问声明为其默认值的属性的内容；这些内容只有在 `TWEAK`（见下文）期间才可用，可以“查看”类声明中初始化的属性的内容。
+`Mu.new` 对自己的调用者调用方法 [bless](https://docs.raku.org/routine/bless)，将所有的命名[参数](https://docs.raku.org/language/functions#Arguments)传递给这个方法。`bless` 创建新对象，然后以反向方法解析顺序遍历所有子类(即从 [Mu](https://docs.raku.org/type/Mu) 到大多数派生类)，并在每个类中检查是否存在一个名为 `BUILD` 的方法。如果存在该方法，则使用 `new` 方法中的所有命名参数调用该方法。如果没有，则从同名命名参数初始化该类的公共属性。在这两种情况下，如果 `BUILD` 或默认机制都没有初始化属性，则应用默认值。这意味着 `BUILD` 可以更改一个属性，但它不能访问声明为其默认值的属性的内容；这些内容只有在 `TWEAK`（见下文）期间才可用，可以“查看”类声明中初始化的属性的内容。
 
-`Mu.new` calls method [bless](https://rakudocs.github.io/routine/bless) on its invocant, passing all the named [arguments](https://rakudocs.github.io/language/functions#Arguments). `bless` creates the new object, and then walks all subclasses in reverse method resolution order (i.e. from [Mu](https://rakudocs.github.io/type/Mu) to most derived classes) and in each class checks for the existence of a method named `BUILD`. If the method exists, the method is called with all the named arguments from the `new` method. If not, the public attributes from this class are initialized from named arguments of the same name. In either case, if neither `BUILD` nor the default mechanism has initialized the attribute, default values are applied. This means that `BUILD` may change an attribute, but it does not have access to the contents of the attribute declared as its default; these are available only during `TWEAK` (see below), which can 'see' the contents of an attribute initialized in the declaration of the class.
+`Mu.new` calls method [bless](https://docs.raku.org/routine/bless) on its invocant, passing all the named [arguments](https://docs.raku.org/language/functions#Arguments). `bless` creates the new object, and then walks all subclasses in reverse method resolution order (i.e. from [Mu](https://docs.raku.org/type/Mu) to most derived classes) and in each class checks for the existence of a method named `BUILD`. If the method exists, the method is called with all the named arguments from the `new` method. If not, the public attributes from this class are initialized from named arguments of the same name. In either case, if neither `BUILD` nor the default mechanism has initialized the attribute, default values are applied. This means that `BUILD` may change an attribute, but it does not have access to the contents of the attribute declared as its default; these are available only during `TWEAK` (see below), which can 'see' the contents of an attribute initialized in the declaration of the class.
 
 在调用 `BUILD` 方法之后，如果存在命名为 `TWEAK` 的方法，则再次调用它们，并使用传递给 `new` 的所有命名参数。参见下面使用它的示例。
 
@@ -732,9 +732,9 @@ class Point {
 
 However this is considered poor practice, because it makes correct initialization of objects from subclasses harder.
 
-另一件要注意的是，在 Raku 中，`new` 这个名字并不特殊。它只是一个常见的约定，在[大多数 Raku 类](https://rakudocs.github.io/routine/new)中都是完全遵循的。你可以从任何方法中调用 `bless` ，也可以使用 `CREATE` 来摆弄低层次的工作。
+另一件要注意的是，在 Raku 中，`new` 这个名字并不特殊。它只是一个常见的约定，在[大多数 Raku 类](https://docs.raku.org/routine/new)中都是完全遵循的。你可以从任何方法中调用 `bless` ，也可以使用 `CREATE` 来摆弄低层次的工作。
 
-Another thing to note is that the name `new` is not special in Raku. It is merely a common convention, one that is followed quite thoroughly in [most Raku classes](https://rakudocs.github.io/routine/new). You can call `bless` from any method at all, or use `CREATE` to fiddle around with low-level workings.
+Another thing to note is that the name `new` is not special in Raku. It is merely a common convention, one that is followed quite thoroughly in [most Raku classes](https://docs.raku.org/routine/new). You can call `bless` from any method at all, or use `CREATE` to fiddle around with low-level workings.
 
 `TWEAK` 子方法允许你在对象构造之后检查事物或修改属性：
 
@@ -756,9 +756,9 @@ say RectangleWithCachedArea.new( x2 => 5, x1 => 1, y2 => 1, y1 => 0).area;
 <a id="%E5%AF%B9%E8%B1%A1%E5%85%8B%E9%9A%86--object-cloning"></a>
 ## 对象克隆 / Object cloning
 
-克隆是使用 [clone](https://rakudocs.github.io/routine/clone) 方法完成的，所有对象都有这个方法，它会浅层克隆公共属性和私有属性。*公共*属性的新值可以作为命名参数提供。
+克隆是使用 [clone](https://docs.raku.org/routine/clone) 方法完成的，所有对象都有这个方法，它会浅层克隆公共属性和私有属性。*公共*属性的新值可以作为命名参数提供。
 
-The cloning is done using the [clone](https://rakudocs.github.io/routine/clone) method available on all objects, which shallow-clones both public and private attributes. New values for *public* attributes can be supplied as named arguments.
+The cloning is done using the [clone](https://docs.raku.org/routine/clone) method available on all objects, which shallow-clones both public and private attributes. New values for *public* attributes can be supplied as named arguments.
 
 ```Raku
 class Foo {
@@ -772,9 +772,9 @@ say $o1; # Foo.new(foo => 42, bar => 100)
 say $o2; # Foo.new(foo => 42, bar => 5000) 
 ```
 
-有关如何克隆非标量属性的详细信息，以及实现你自己的自定义克隆方法的示例，请参阅 [clone](https://rakudocs.github.io/routine/clone) 文档。
+有关如何克隆非标量属性的详细信息，以及实现你自己的自定义克隆方法的示例，请参阅 [clone](https://docs.raku.org/routine/clone) 文档。
 
-See document for [clone](https://rakudocs.github.io/routine/clone) for details on how non-scalar attributes get cloned, as well as examples of implementing your own custom clone methods.
+See document for [clone](https://docs.raku.org/routine/clone) for details on how non-scalar attributes get cloned, as well as examples of implementing your own custom clone methods.
 
 <a id="%E8%A7%92%E8%89%B2--roles"></a>
 # 角色 / Roles
@@ -933,9 +933,9 @@ class C does R1 does R2 { }
 <a id="%E5%8D%A0%E4%BD%8D--stubs"></a>
 ## 占位 / Stubs
 
-当角色包含[占位](https://rakudocs.github.io/routine/...)方法时，必须在角色应用于类时提供同名方法的非占位版本。这允许你创建充当抽象接口的角色。
+当角色包含[占位](https://docs.raku.org/routine/...)方法时，必须在角色应用于类时提供同名方法的非占位版本。这允许你创建充当抽象接口的角色。
 
-When a role contains a [stubbed](https://rakudocs.github.io/routine/...) method, a non-stubbed version of a method of the same name must be supplied at the time the role is applied to a class. This allows you to create roles that act as abstract interfaces.
+When a role contains a [stubbed](https://docs.raku.org/routine/...) method, a non-stubbed version of a method of the same name must be supplied at the time the role is applied to a class. This allows you to create roles that act as abstract interfaces.
 
 ```Raku
 role AbstractSerializable {
@@ -1050,9 +1050,9 @@ say Point.dimensions;              # OUTPUT «2␤»
 
 We call this automatic creation of classes *punning*, and the generated class a *pun*.
 
-然而，双关语不是由大多数[元编程](https://rakudocs.github.io/language/mop)构造引起的，因为这些结构有时用于直接处理角色。
+然而，双关语不是由大多数[元编程](https://docs.raku.org/language/mop)构造引起的，因为这些结构有时用于直接处理角色。
 
-Punning is not caused by most [metaprogramming](https://rakudocs.github.io/language/mop) constructs, however, as those are sometimes used to work directly with roles.
+Punning is not caused by most [metaprogramming](https://docs.raku.org/language/mop) constructs, however, as those are sometimes used to work directly with roles.
 
 <a id="%E5%8F%82%E6%95%B0%E5%8C%96%E8%A7%92%E8%89%B2--parameterized-roles"></a>
 ## 参数化角色 / Parameterized roles
@@ -1244,6 +1244,6 @@ say 1.^name;                        # OUTPUT: «Int␤»
 say 1.HOW.name(1);                  # OUTPUT: «Int␤» 
 ```
 
-见 [Metamodel::ClassHOW](https://rakudocs.github.io/type/Metamodel::ClassHOW) 关于 `class` 的元类的文档以及[元对象协议的一般文档](https://rakudocs.github.io/language/mop)。
+见 [Metamodel::ClassHOW](https://docs.raku.org/type/Metamodel::ClassHOW) 关于 `class` 的元类的文档以及[元对象协议的一般文档](https://docs.raku.org/language/mop)。
 
-See [Metamodel::ClassHOW](https://rakudocs.github.io/type/Metamodel::ClassHOW) for documentation on the metaclass of `class` and also the [general documentation on the metaobject protocol](https://rakudocs.github.io/language/mop).
+See [Metamodel::ClassHOW](https://docs.raku.org/type/Metamodel::ClassHOW) for documentation on the metaclass of `class` and also the [general documentation on the metaobject protocol](https://docs.raku.org/language/mop).

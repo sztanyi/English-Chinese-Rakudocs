@@ -1,4 +1,4 @@
-原文：https://rakudocs.github.io/language/unicode
+原文：https://docs.raku.org/language/unicode
 
 # 万国码 / Unicode
 
@@ -32,9 +32,9 @@ For an overview on MoarVM's internal representation of strings, see the [MoarVM 
 <a id="%E8%A7%84%E8%8C%83%E5%8C%96--normalization"></a>
 ## 规范化 / Normalization
 
-Raku 默认情况下对所有输入和输出应用规范化，但文件名除外，这些文件名被读和写为 [`UTF8-C8`](https://rakudocs.github.io/language/unicode#UTF8-C8)；字素作为用户可见的字符形式的图形符号将使用规范化表示形式。例如，可以用两种方式表示字形素 `á`，要么使用一个码点：
+Raku 默认情况下对所有输入和输出应用规范化，但文件名除外，这些文件名被读和写为 [`UTF8-C8`](https://docs.raku.org/language/unicode#UTF8-C8)；字素作为用户可见的字符形式的图形符号将使用规范化表示形式。例如，可以用两种方式表示字形素 `á`，要么使用一个码点：
 
-Raku applies normalization by default to all input and output except for file names, which are read and written as [`UTF8-C8`](https://rakudocs.github.io/language/unicode#UTF8-C8); graphemes, which are user-visible forms of the characters, will use a normalized representation. For example, the grapheme `á` can be represented in two ways, either using one codepoint:
+Raku applies normalization by default to all input and output except for file names, which are read and written as [`UTF8-C8`](https://docs.raku.org/language/unicode#UTF8-C8); graphemes, which are user-visible forms of the characters, will use a normalized representation. For example, the grapheme `á` can be represented in two ways, either using one codepoint:
 
 ```Raku
 á (U+E1 "LATIN SMALL LETTER A WITH ACUTE")
@@ -56,16 +56,16 @@ Raku will turn both these inputs into one codepoint, as is specified for Normali
 
 One case where we don't default to this, is for the names of files. This is because the names of files must be accessed exactly as the bytes are written on the disk.
 
-为了避免规范化，你可以使用名为 [UTF8-C8](https://rakudocs.github.io/language/unicode#UTF8-C8) 的特殊编码格式。将这种编码与任何文件句柄一起使用，将允许你读取磁盘上的确切字节，而无需规范化。如果你用 UTF8 打印出来，它们在打印出来时可能看起来很滑稽。如果你将它打印到输出编码为 UTF8-C8 的句柄上，那么它将按照你通常所期望的那样呈现，并且是字节精确复制的字节。关于 MoarVM 的 [UTF8-C8](https://rakudocs.github.io/language/unicode#UTF8-C8) 的更多技术细节如下所述。
+为了避免规范化，你可以使用名为 [UTF8-C8](https://docs.raku.org/language/unicode#UTF8-C8) 的特殊编码格式。将这种编码与任何文件句柄一起使用，将允许你读取磁盘上的确切字节，而无需规范化。如果你用 UTF8 打印出来，它们在打印出来时可能看起来很滑稽。如果你将它打印到输出编码为 UTF8-C8 的句柄上，那么它将按照你通常所期望的那样呈现，并且是字节精确复制的字节。关于 MoarVM 的 [UTF8-C8](https://docs.raku.org/language/unicode#UTF8-C8) 的更多技术细节如下所述。
 
-To avoid normalization you can use a special encoding format called [UTF8-C8](https://rakudocs.github.io/language/unicode#UTF8-C8). Using this encoding with any filehandle will allow you to read the exact bytes as they are on disk, without normalization. They may look funny when printed out, if you print it out using a UTF8 handle. If you print it out to a handle where the output encoding is UTF8-C8, then it will render as you would normally expect, and be a byte for byte exact copy. More technical details on [UTF8-C8](https://rakudocs.github.io/language/unicode#UTF8-C8) on MoarVM are described below.
+To avoid normalization you can use a special encoding format called [UTF8-C8](https://docs.raku.org/language/unicode#UTF8-C8). Using this encoding with any filehandle will allow you to read the exact bytes as they are on disk, without normalization. They may look funny when printed out, if you print it out using a UTF8 handle. If you print it out to a handle where the output encoding is UTF8-C8, then it will render as you would normally expect, and be a byte for byte exact copy. More technical details on [UTF8-C8](https://docs.raku.org/language/unicode#UTF8-C8) on MoarVM are described below.
 
 <a id="utf8-c8"></a>
 ## UTF8-C8
 
-UTF-8 Clean-8 是一个编码器/解码器，主要对 UTF-8 工作。但是，当遇到一个字节序列时，它将使用 [NFG 合成](https://rakudocs.github.io/language/glossary#NFG)来跟踪所涉及的原始字节。这意味着编码返回到 UTF-8 Clean-8 将能够重新创建字节，因为他们原来存在。合成体包含 4 个码点：
+UTF-8 Clean-8 是一个编码器/解码器，主要对 UTF-8 工作。但是，当遇到一个字节序列时，它将使用 [NFG 合成](https://docs.raku.org/language/glossary#NFG)来跟踪所涉及的原始字节。这意味着编码返回到 UTF-8 Clean-8 将能够重新创建字节，因为他们原来存在。合成体包含 4 个码点：
 
-UTF-8 Clean-8 is an encoder/decoder that primarily works as the UTF-8 one. However, upon encountering a byte sequence that will either not decode as valid UTF-8, or that would not round-trip due to normalization, it will use [NFG synthetics](https://rakudocs.github.io/language/glossary#NFG) to keep track of the original bytes involved. This means that encoding back to UTF-8 Clean-8 will be able to recreate the bytes as they originally existed. The synthetics contain 4 codepoints:
+UTF-8 Clean-8 is an encoder/decoder that primarily works as the UTF-8 one. However, upon encountering a byte sequence that will either not decode as valid UTF-8, or that would not round-trip due to normalization, it will use [NFG synthetics](https://docs.raku.org/language/glossary#NFG) to keep track of the original bytes involved. This means that encoding back to UTF-8 Clean-8 will be able to recreate the bytes as they originally existed. The synthetics contain 4 codepoints:
 
 - 码点 0x10FFFD（它是一个专用码点）
 - 码点 'x'
@@ -151,9 +151,9 @@ You can specify multiple characters by using a comma separated list with `\c[]`.
 say "\c[482,PENGUIN]"; # OUTPUT: «Ǣ🐧␤»
 ```
 
-除了在字符串插值中使用 `\c[]` 之外，还可以使用 [uniparse](https://rakudocs.github.io/routine/uniparse)：
+除了在字符串插值中使用 `\c[]` 之外，还可以使用 [uniparse](https://docs.raku.org/routine/uniparse)：
 
-In addition to using `\c[]` inside interpolated strings, you can also use the [uniparse](https://rakudocs.github.io/routine/uniparse):
+In addition to using `\c[]` inside interpolated strings, you can also use the [uniparse](https://docs.raku.org/routine/uniparse):
 
 ```Raku
 say "DIGIT ONE".uniparse;  # OUTPUT: «1␤» 

@@ -1,4 +1,4 @@
-原文：https://rakudocs.github.io/type/Promise
+原文：https://docs.raku.org/type/Promise
 
 # Promise 类 / class Promise
 
@@ -50,9 +50,9 @@ sub async-get-with-promise($user-agent, $url) {
 }
 ```
 
-[concurrency page](https://rakudocs.github.io/language/concurrency#Promises) 可以找到更多的示例。
+[concurrency page](https://docs.raku.org/language/concurrency#Promises) 可以找到更多的示例。
 
-Further examples can be found in the [concurrency page](https://rakudocs.github.io/language/concurrency#Promises).
+Further examples can be found in the [concurrency page](https://docs.raku.org/language/concurrency#Promises).
 
 <!-- MarkdownTOC -->
 
@@ -108,9 +108,9 @@ my $p1 = Promise.start({ ;#`( do something here ) });
 my $p2 = start { ;#`( do something here ) };
 ```
 
-在 6.d 版本中，在 [sink](https://rakudocs.github.io/routine/sink) 上下文中使用 `start` 语句前缀会自动附加异常处理程序。如果在给定的代码中有异常发生，会打印出来异常然后程序退出就像没有 `start` 语句前缀一样。
+在 6.d 版本中，在 [sink](https://docs.raku.org/routine/sink) 上下文中使用 `start` 语句前缀会自动附加异常处理程序。如果在给定的代码中有异常发生，会打印出来异常然后程序退出就像没有 `start` 语句前缀一样。
 
-As of the 6.d version of the language, `start` statement prefix used in [sink](https://rakudocs.github.io/routine/sink) context will automatically attach an exceptions handler. If an exception occurs in the given code, it will be printed and the program will then exit, like if it were thrown without any `start` statement prefixes involved.
+As of the 6.d version of the language, `start` statement prefix used in [sink](https://docs.raku.org/routine/sink) context will automatically attach an exceptions handler. If an exception occurs in the given code, it will be printed and the program will then exit, like if it were thrown without any `start` statement prefixes involved.
 
 ```Perl6
 use v6.c;
@@ -138,9 +138,9 @@ say "hello";
 # OUTPUT: «caught␤hello␤» 
 ```
 
-这种行为只是在语法上存在，通过在 sink 上下文中由 `start` 代码块创建的 [Promise](https://rakudocs.github.io/type/Promise) 对象的替代 `.sink` 方法，从而简单地 sink [Promise](https://rakudocs.github.io/type/Promise)(https://rakudocs.github.io/type/Promise)。
+这种行为只是在语法上存在，通过在 sink 上下文中由 `start` 代码块创建的 [Promise](https://docs.raku.org/type/Promise) 对象的替代 `.sink` 方法，从而简单地 sink [Promise](https://docs.raku.org/type/Promise)(https://docs.raku.org/type/Promise)。
 
-This behavior exists only syntactically, by using an alternate `.sink` method for [Promise](https://rakudocs.github.io/type/Promise) objects created by `start` blocks in sink context, thus simply sinking a [Promise](https://rakudocs.github.io/type/Promise) object that was created by other means won't trigger this behavior.
+This behavior exists only syntactically, by using an alternate `.sink` method for [Promise](https://docs.raku.org/type/Promise) objects created by `start` blocks in sink context, thus simply sinking a [Promise](https://docs.raku.org/type/Promise) object that was created by other means won't trigger this behavior.
 
 <a id="in-%E6%96%B9%E6%B3%95--method-in"></a>
 ## in 方法 / method in
@@ -168,13 +168,13 @@ my $result = await Promise.anyof(
 # OUTPUT: «timeout␤» 
 ```
 
-`$seconds` 可以是分数或负数。 负值被视为 `0` （即立即 [keeping](https://rakudocs.github.io/routine/keep) 返回的 [Promise](https://rakudocs.github.io/type/Promise))。
+`$seconds` 可以是分数或负数。 负值被视为 `0` （即立即 [keeping](https://docs.raku.org/routine/keep) 返回的 [Promise](https://docs.raku.org/type/Promise))。
 
-`$seconds` can be fractional or negative. Negative values are treated as `0` (i.e. [keeping](https://rakudocs.github.io/routine/keep) the returned [Promise](https://rakudocs.github.io/type/Promise) right away).
+`$seconds` can be fractional or negative. Negative values are treated as `0` (i.e. [keeping](https://docs.raku.org/routine/keep) the returned [Promise](https://docs.raku.org/type/Promise) right away).
 
-请注意，这些情况通常可以通过 [react 和 whenever 代码块](https://rakudocs.github.io/language/concurrency#index-entry-react-react)来更清楚地处理。
+请注意，这些情况通常可以通过 [react 和 whenever 代码块](https://docs.raku.org/language/concurrency#index-entry-react-react)来更清楚地处理。
 
-Please note that situations like these are often more clearly handled with a [react and whenever block](https://rakudocs.github.io/language/concurrency#index-entry-react-react).
+Please note that situations like these are often more clearly handled with a [react and whenever block](https://docs.raku.org/language/concurrency#index-entry-react-react).
 
 <a id="at-%E6%96%B9%E6%B3%95--method-at"></a>
 ## at 方法 / method at
@@ -183,9 +183,9 @@ Please note that situations like these are often more clearly handled with a [re
 method at(Promise:U: $at, :$scheduler = $*SCHEDULER --> Promise:D)
 ```
 
-创建一个新的 `Promise`，它将在 `$at` 给定的时间变为 kept 状态。 这个时间可以是 [Instant](https://rakudocs.github.io/type/Instant) 对象、同等的 [Numeric](https://rakudocs.github.io/type/Numeric) 对象或者在这个时间之后尽快。
+创建一个新的 `Promise`，它将在 `$at` 给定的时间变为 kept 状态。 这个时间可以是 [Instant](https://docs.raku.org/type/Instant) 对象、同等的 [Numeric](https://docs.raku.org/type/Numeric) 对象或者在这个时间之后尽快。
 
-Creates a new `Promise` that will be kept `$at` the given time—which is given as an [Instant](https://rakudocs.github.io/type/Instant) or equivalent [Numeric](https://rakudocs.github.io/type/Numeric)—or as soon as possible after it.
+Creates a new `Promise` that will be kept `$at` the given time—which is given as an [Instant](https://docs.raku.org/type/Instant) or equivalent [Numeric](https://docs.raku.org/type/Numeric)—or as soon as possible after it.
 
 ```Perl6
 my $p = Promise.at(now + 2).then({ say "2 seconds later" });
@@ -194,13 +194,13 @@ my $p = Promise.at(now + 2).then({ say "2 seconds later" });
 await $p;   # wait here until the 2 seconds are over 
 ```
 
-如果给定的是过去的时间，它会被当做 [now](https://rakudocs.github.io/routine/now) (即立即 [keeping](https://rakudocs.github.io/routine/keep) 返回的 [Promise](https://rakudocs.github.io/type/Promise))。
+如果给定的是过去的时间，它会被当做 [now](https://docs.raku.org/routine/now) (即立即 [keeping](https://docs.raku.org/routine/keep) 返回的 [Promise](https://docs.raku.org/type/Promise))。
 
-If the given time is in the past, it will be treated as [now](https://rakudocs.github.io/routine/now) (i.e. [keeping](https://rakudocs.github.io/routine/keep) the returned [Promise](https://rakudocs.github.io/type/Promise) right away).
+If the given time is in the past, it will be treated as [now](https://docs.raku.org/routine/now) (i.e. [keeping](https://docs.raku.org/routine/keep) the returned [Promise](https://docs.raku.org/type/Promise) right away).
 
-请注意，这些情况通常可以通过 [react 和 whenever 代码块](https://rakudocs.github.io/language/concurrency#index-entry-react-react)来更清楚地处理。
+请注意，这些情况通常可以通过 [react 和 whenever 代码块](https://docs.raku.org/language/concurrency#index-entry-react-react)来更清楚地处理。
 
-Please note that situations like these are often more clearly handled with a [react and whenever block](https://rakudocs.github.io/language/concurrency#index-entry-react-react).
+Please note that situations like these are often more clearly handled with a [react and whenever block](https://docs.raku.org/language/concurrency#index-entry-react-react).
 
 <a id="kept-%E6%96%B9%E6%B3%95--method-kept"></a>
 ## kept 方法 / method kept
@@ -431,10 +431,10 @@ say $p.status;          # OUTPUT: «Kept␤»
 method Supply(Promise:D:)
 ```
 
-返回一个 [Supply](https://rakudocs.github.io/type/Supply)。 如果 promise 为 kept 状态，将 `result` 方法的结果发射出来。 promise 为 broken 状态时，
+返回一个 [Supply](https://docs.raku.org/type/Supply)。 如果 promise 为 kept 状态，将 `result` 方法的结果发射出来。 promise 为 broken 状态时，
 则发出 `cause` 方法的结果给到 Supply 的 tap 方法的 `quit` 命名参数对应的代码块。
 
-Returns a [Supply](https://rakudocs.github.io/type/Supply) that will emit the `result` of the [Promise](https://rakudocs.github.io/type/Promise) being Kept or `quit` with the `cause` if the [Promise](https://rakudocs.github.io/type/Promise) is Broken.
+Returns a [Supply](https://docs.raku.org/type/Supply) that will emit the `result` of the [Promise](https://docs.raku.org/type/Promise) being Kept or `quit` with the `cause` if the [Promise](https://docs.raku.org/type/Promise) is Broken.
 
 <a id="await-%E5%AD%90%E4%BE%8B%E7%A8%8B--sub-await"></a>
 ## await 子例程 / sub await
@@ -444,15 +444,15 @@ multi sub await(Promise:D --> Promise)
 multi sub await(*@ --> Array)
 ```
 
-等待一个或者多个 promise 全部被满足，然后返回他们的值。对 [channels](https://rakudocs.github.io/type/Channel) 也生效。任何 broken 状态的 promise 会重新抛出他们的异常。如果一个 promise 数组传递给 await，它将按顺序返回每个 promise 的结果的数组。
+等待一个或者多个 promise 全部被满足，然后返回他们的值。对 [channels](https://docs.raku.org/type/Channel) 也生效。任何 broken 状态的 promise 会重新抛出他们的异常。如果一个 promise 数组传递给 await，它将按顺序返回每个 promise 的结果的数组。
 
-Waits until one or more promises are *all* fulfilled, and then returns their values. Also works on [channels](https://rakudocs.github.io/type/Channel). Any broken promises will rethrow their exceptions. If a list is passed it will return a list containing the results of awaiting each item in turn.
+Waits until one or more promises are *all* fulfilled, and then returns their values. Also works on [channels](https://docs.raku.org/type/Channel). Any broken promises will rethrow their exceptions. If a list is passed it will return a list containing the results of awaiting each item in turn.
 
 <a id="%E7%B1%BB%E5%9E%8B%E5%9B%BE--type-graph"></a>
 # 类型图 / Type Graph
 
 Type relations for `Promise`
 
-<svg width="94pt" height="188pt" viewBox="0.00 0.00 93.79 188.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 184)"><polygon fill="white" stroke="none" points="-4,4 -4,-184 89.7924,-184 89.7924,4 -4,4"></polygon><g id="node1" class="node"><g id="a_node1"><a xlink:href="https://rakudocs.github.io/type/Promise" xlink:title="Promise"><ellipse fill="none" stroke="#000000" cx="42.8962" cy="-18" rx="42.7926" ry="18"></ellipse><text text-anchor="middle" x="42.8962" y="-14.3" font-family="FreeSans" font-size="14.00" fill="#000000">Promise</text></a></g></g><g id="node3" class="node"><g id="a_node3"><a xlink:href="https://rakudocs.github.io/type/Any" xlink:title="Any"><ellipse fill="none" stroke="#000000" cx="42.8962" cy="-90" rx="27" ry="18"></ellipse><text text-anchor="middle" x="42.8962" y="-86.3" font-family="FreeSans" font-size="14.00" fill="#000000">Any</text></a></g></g><g id="edge1" class="edge"><path fill="none" stroke="#000000" d="M42.8962,-36.3034C42.8962,-44.0173 42.8962,-53.2875 42.8962,-61.8876"></path><polygon fill="#000000" stroke="#000000" points="39.3963,-61.8956 42.8962,-71.8957 46.3963,-61.8957 39.3963,-61.8956"></polygon></g><g id="node2" class="node"><g id="a_node2"><a xlink:href="https://rakudocs.github.io/type/Mu" xlink:title="Mu"><ellipse fill="none" stroke="#000000" cx="42.8962" cy="-162" rx="27" ry="18"></ellipse><text text-anchor="middle" x="42.8962" y="-158.3" font-family="FreeSans" font-size="14.00" fill="#000000">Mu</text></a></g></g><g id="edge2" class="edge"><path fill="none" stroke="#000000" d="M42.8962,-108.303C42.8962,-116.017 42.8962,-125.288 42.8962,-133.888"></path><polygon fill="#000000" stroke="#000000" points="39.3963,-133.896 42.8962,-143.896 46.3963,-133.896 39.3963,-133.896"></polygon></g></g></svg>
+<svg width="94pt" height="188pt" viewBox="0.00 0.00 93.79 188.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 184)"><polygon fill="white" stroke="none" points="-4,4 -4,-184 89.7924,-184 89.7924,4 -4,4"></polygon><g id="node1" class="node"><g id="a_node1"><a xlink:href="https://docs.raku.org/type/Promise" xlink:title="Promise"><ellipse fill="none" stroke="#000000" cx="42.8962" cy="-18" rx="42.7926" ry="18"></ellipse><text text-anchor="middle" x="42.8962" y="-14.3" font-family="FreeSans" font-size="14.00" fill="#000000">Promise</text></a></g></g><g id="node3" class="node"><g id="a_node3"><a xlink:href="https://docs.raku.org/type/Any" xlink:title="Any"><ellipse fill="none" stroke="#000000" cx="42.8962" cy="-90" rx="27" ry="18"></ellipse><text text-anchor="middle" x="42.8962" y="-86.3" font-family="FreeSans" font-size="14.00" fill="#000000">Any</text></a></g></g><g id="edge1" class="edge"><path fill="none" stroke="#000000" d="M42.8962,-36.3034C42.8962,-44.0173 42.8962,-53.2875 42.8962,-61.8876"></path><polygon fill="#000000" stroke="#000000" points="39.3963,-61.8956 42.8962,-71.8957 46.3963,-61.8957 39.3963,-61.8956"></polygon></g><g id="node2" class="node"><g id="a_node2"><a xlink:href="https://docs.raku.org/type/Mu" xlink:title="Mu"><ellipse fill="none" stroke="#000000" cx="42.8962" cy="-162" rx="27" ry="18"></ellipse><text text-anchor="middle" x="42.8962" y="-158.3" font-family="FreeSans" font-size="14.00" fill="#000000">Mu</text></a></g></g><g id="edge2" class="edge"><path fill="none" stroke="#000000" d="M42.8962,-108.303C42.8962,-116.017 42.8962,-125.288 42.8962,-133.888"></path><polygon fill="#000000" stroke="#000000" points="39.3963,-133.896 42.8962,-143.896 46.3963,-133.896 39.3963,-133.896"></polygon></g></g></svg>
 
-[Expand above chart](https://rakudocs.github.io/images/type-graph-Promise.svg)
+[Expand above chart](https://docs.raku.org/images/type-graph-Promise.svg)

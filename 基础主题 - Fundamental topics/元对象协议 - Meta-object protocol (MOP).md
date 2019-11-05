@@ -1,4 +1,4 @@
-原文：https://rakudocs.github.io/language/mop
+原文：https://docs.raku.org/language/mop
 
 # 元对象协议 / Meta-object protocol (MOP)
 
@@ -23,9 +23,9 @@ sub show-type($arr) {
 show-type $arr; # OUTPUT: «Array␤» 
 ```
 
-为了更深入地理解 `class` 的元对象，这里有一个重复两次的示例：一次在 Raku 中作为普通声明，一次通过[元模型](https://rakudocs.github.io/type/Metamodel::ClassHOW)表示：
+为了更深入地理解 `class` 的元对象，这里有一个重复两次的示例：一次在 Raku 中作为普通声明，一次通过[元模型](https://docs.raku.org/type/Metamodel::ClassHOW)表示：
 
-To get a more in-depth understanding of the meta object for a `class`, here is an example repeated twice: once as normal declarations in Raku, and once expressed through the [meta model](https://rakudocs.github.io/type/Metamodel::ClassHOW):
+To get a more in-depth understanding of the meta object for a `class`, here is an example repeated twice: once as normal declarations in Raku, and once expressed through the [meta model](https://docs.raku.org/type/Metamodel::ClassHOW):
 
 ```Raku
 class A {
@@ -137,9 +137,9 @@ Returns the metaclass object, as in "Higher Order Workings".
 say (%).HOW.^name # OUTPUT: «Perl6::Metamodel::ClassHOW+{<anon>}␤» 
 ```
 
-在本例中，`HOW` 返回类型为 `Perl6::Metamodel::ClassHOW` 的对象；此类型的对象用于生成类。对 `&` 标记的相同操作将返回 `Perl6::Metamodel::ParametricRoleGroupHOW`。每当使用 `^` 语法访问元方法时，都将调用此对象。实际上，上面的代码相当于 `say (&).HOW.HOW.name(&)`，这更难理解。[Metamodel::ClassHOW](https://rakudocs.github.io/type/Metamodel::ClassHOW) 是 Rakudo 实现的一部分，因此请谨慎使用。
+在本例中，`HOW` 返回类型为 `Perl6::Metamodel::ClassHOW` 的对象；此类型的对象用于生成类。对 `&` 标记的相同操作将返回 `Perl6::Metamodel::ParametricRoleGroupHOW`。每当使用 `^` 语法访问元方法时，都将调用此对象。实际上，上面的代码相当于 `say (&).HOW.HOW.name(&)`，这更难理解。[Metamodel::ClassHOW](https://docs.raku.org/type/Metamodel::ClassHOW) 是 Rakudo 实现的一部分，因此请谨慎使用。
 
-`HOW` returns an object of type `Perl6::Metamodel::ClassHOW` in this case; objects of this type are used to build classes. The same operation on the `&` sigil will return `Perl6::Metamodel::ParametricRoleGroupHOW`. You will be calling this object whenever you use the `^` syntax to access meta methods. In fact, the code above is equivalent to `say (&).HOW.HOW.name(&)` which is much more unwieldy. [Metamodel::ClassHOW](https://rakudocs.github.io/type/Metamodel::ClassHOW) is part of the Rakudo implementation, so use with caution.
+`HOW` returns an object of type `Perl6::Metamodel::ClassHOW` in this case; objects of this type are used to build classes. The same operation on the `&` sigil will return `Perl6::Metamodel::ParametricRoleGroupHOW`. You will be calling this object whenever you use the `^` syntax to access meta methods. In fact, the code above is equivalent to `say (&).HOW.HOW.name(&)` which is much more unwieldy. [Metamodel::ClassHOW](https://docs.raku.org/type/Metamodel::ClassHOW) is part of the Rakudo implementation, so use with caution.
 
 <a id="why"></a>
 ## WHY
@@ -188,9 +188,9 @@ say $(1, 2, 3).VAR ~~ Scalar; # OUTPUT: «True␤»
 
 For each type declarator keyword, such as `class`, `role`, `enum`, `module`, `package`, `grammar` or `subset`, there is a separate meta class in the `Metamodel::` namespace. (Rakudo implements them in the `Perl6::Metamodel::` namespace, and then maps `Perl6::Metamodel` to `Metamodel`).
 
-这些元类中的许多都具有相同的功能。例如，角色、 grammar 和类都可以包含方法和属性，还可以扮演角色。这个共享功能是在组成适当的元类的角色中实现的。例如[角色 Metamodel::RoleContainer](https://rakudocs.github.io/type/Metamodel::RoleContainer) 实现了类型可以拥有角色的功能，而 [Metamodel::ClassHOW](https://rakudocs.github.io/type/Metamodel::ClassHOW) 是关键字 `class` 后面的元类，它实现了这个角色。
+这些元类中的许多都具有相同的功能。例如，角色、 grammar 和类都可以包含方法和属性，还可以扮演角色。这个共享功能是在组成适当的元类的角色中实现的。例如[角色 Metamodel::RoleContainer](https://docs.raku.org/type/Metamodel::RoleContainer) 实现了类型可以拥有角色的功能，而 [Metamodel::ClassHOW](https://docs.raku.org/type/Metamodel::ClassHOW) 是关键字 `class` 后面的元类，它实现了这个角色。
 
-Many of the these meta classes share common functionality. For example roles, grammars and classes can all contain methods and attributes, as well as being able to do roles. This shared functionality is implemented in roles which are composed into the appropriate meta classes. For example [role Metamodel::RoleContainer](https://rakudocs.github.io/type/Metamodel::RoleContainer) implements the functionality that a type can hold roles and [Metamodel::ClassHOW](https://rakudocs.github.io/type/Metamodel::ClassHOW), which is the meta class behind the `class` keyword, does this role.
+Many of the these meta classes share common functionality. For example roles, grammars and classes can all contain methods and attributes, as well as being able to do roles. This shared functionality is implemented in roles which are composed into the appropriate meta classes. For example [role Metamodel::RoleContainer](https://docs.raku.org/type/Metamodel::RoleContainer) implements the functionality that a type can hold roles and [Metamodel::ClassHOW](https://docs.raku.org/type/Metamodel::ClassHOW), which is the meta class behind the `class` keyword, does this role.
 
 大多数元类都有一个 `compose` 方法，在创建或修改完元对象后必须调用该方法。它创建方法缓存、验证事物等等，如果忘记调用它，就会发生奇怪的行为，所以不要：-）。
 
@@ -207,9 +207,9 @@ You might wonder how `Metamodel::ClassHOW` can be a class, when being a class is
 
 Just kidding. Bootstrapping is implementation specific. Rakudo does it by using the object system of the language in which itself is implemented, which happens to be (nearly) a subset of Raku: NQP, Not Quite Perl. NQP has a primitive, class-like kind called `knowhow`, which is used to bootstrap its own classes and roles implementation. `knowhow` is built on primitives that the virtual machine under NQP provides.
 
-由于对象模型是以较低级别的类型引导的，因此自省有时可以返回较低级别的类型，而不是你期望的类型，例如 NQP 级别的例程而不是普通的[例程](https://rakudocs.github.io/type/Routine)对象，或者引导属性而不是[属性](https://rakudocs.github.io/type/Attribute)。
+由于对象模型是以较低级别的类型引导的，因此自省有时可以返回较低级别的类型，而不是你期望的类型，例如 NQP 级别的例程而不是普通的[例程](https://docs.raku.org/type/Routine)对象，或者引导属性而不是[属性](https://docs.raku.org/type/Attribute)。
 
-Since the object model is bootstrapped in terms of lower-level types, introspection can sometimes return low-level types instead of the ones you expect, like an NQP-level routine instead of a normal [Routine](https://rakudocs.github.io/type/Routine) object, or a bootstrap-attribute instead of [Attribute](https://rakudocs.github.io/type/Attribute).
+Since the object model is bootstrapped in terms of lower-level types, introspection can sometimes return low-level types instead of the ones you expect, like an NQP-level routine instead of a normal [Routine](https://docs.raku.org/type/Routine) object, or a bootstrap-attribute instead of [Attribute](https://docs.raku.org/type/Attribute).
 
 <a id="%E9%87%8D%E7%BB%84%E6%97%B6%E4%B8%8E%E9%9D%99%E6%80%81%E6%8E%A8%E7%90%86--composition-time-and-static-reasoning"></a>
 ## 重组时与静态推理 / Composition time and static reasoning
@@ -252,9 +252,9 @@ So be extra careful and thoughtful when writing meta types.
 
 The meta object protocol is designed to be powerful enough to implement the Raku object system. This power occasionally comes at the cost of convenience.
 
-例如，当你编写 `my $x = 42` 然后继续在 `$x` 上调用方法时，这些方法中的大多数最终都是作用于[整数](https://rakudocs.github.io/type/Int) 42，而不是作用于存储它的[标量容器](https://rakudocs.github.io/type/Scalar)。这是普通 Raku 中的一个便利。元对象协议的许多部分不能提供自动忽略标量容器的便利性，因为它们也用于实现这些标量容器。所以如果你写 `my $t = MyType; ... ; $t.^compose` 你是在编写 `$` 变量表示的标量，而不是 `MyType`。
+例如，当你编写 `my $x = 42` 然后继续在 `$x` 上调用方法时，这些方法中的大多数最终都是作用于[整数](https://docs.raku.org/type/Int) 42，而不是作用于存储它的[标量容器](https://docs.raku.org/type/Scalar)。这是普通 Raku 中的一个便利。元对象协议的许多部分不能提供自动忽略标量容器的便利性，因为它们也用于实现这些标量容器。所以如果你写 `my $t = MyType; ... ; $t.^compose` 你是在编写 `$` 变量表示的标量，而不是 `MyType`。
 
-For example, when you write `my $x = 42` and then proceed to call methods on `$x`, most of these methods end up acting on the [integer](https://rakudocs.github.io/type/Int) 42, not on the [scalar container](https://rakudocs.github.io/type/Scalar) in which it is stored. This is a piece of convenience found in ordinary Raku. Many parts of the meta object protocol cannot afford to offer the convenience of automatically ignoring scalar containers, because they are used to implement those scalar containers as well. So if you write `my $t = MyType; ... ; $t.^compose` you are composing the Scalar that the `$`-sigiled variable implies, not `MyType`.
+For example, when you write `my $x = 42` and then proceed to call methods on `$x`, most of these methods end up acting on the [integer](https://docs.raku.org/type/Int) 42, not on the [scalar container](https://docs.raku.org/type/Scalar) in which it is stored. This is a piece of convenience found in ordinary Raku. Many parts of the meta object protocol cannot afford to offer the convenience of automatically ignoring scalar containers, because they are used to implement those scalar containers as well. So if you write `my $t = MyType; ... ; $t.^compose` you are composing the Scalar that the `$`-sigiled variable implies, not `MyType`.
 
 其结果是，你需要对 Raku 的细微之处有一个相当详细的了解，以便在使用 MOP 时避免陷阱，并且不能期望普通 Raku 代码提供相同的“按我的意思做”的便利。
 

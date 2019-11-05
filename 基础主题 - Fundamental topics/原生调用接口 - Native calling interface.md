@@ -1,4 +1,4 @@
-原文：https://rakudocs.github.io/language/nativecall
+原文：https://docs.raku.org/language/nativecall
 
 # 原生调用协议 / Native calling interface
 
@@ -71,9 +71,9 @@ The first time you call "some_argless_function", the "libsomething" will be load
 
 Of course, most functions take arguments or return values—but everything else that you can do is just adding to this simple pattern of declaring a Raku sub, naming it after the symbol you want to call and marking it with the "native" trait.
 
-你还需要声明和使用原生类型。有关详细信息，请查看[原生类型页面](https://rakudocs.github.io/language/nativetypes)。
+你还需要声明和使用原生类型。有关详细信息，请查看[原生类型页面](https://docs.raku.org/language/nativetypes)。
 
-You will also need to declare and use native types. Please check [the native types page](https://rakudocs.github.io/language/nativetypes) for more information.
+You will also need to declare and use native types. Please check [the native types page](https://docs.raku.org/language/nativetypes) for more information.
 
 <a id="%E6%9B%B4%E5%90%8D--changing-names"></a>
 # 更名 / Changing names
@@ -108,9 +108,9 @@ use NativeCall;
 sub add(int32, int32) returns int32 is native("calculator") { * }
 ```
 
-这里，我们声明了函数接受两个 32 位整数并返回一个 32 位整数。你可以在[原生类型](https://rakudocs.github.io/language/nativetypes)页面中找到可以传递的其他类型。请注意，缺少 `returns` 特性用于指示 `void` 返回类型。*不要*在指针参数化之外的任何地方使用 `void` 类型。
+这里，我们声明了函数接受两个 32 位整数并返回一个 32 位整数。你可以在[原生类型](https://docs.raku.org/language/nativetypes)页面中找到可以传递的其他类型。请注意，缺少 `returns` 特性用于指示 `void` 返回类型。*不要*在指针参数化之外的任何地方使用 `void` 类型。
 
-Here, we have declared that the function takes two 32-bit integers and returns a 32-bit integer. You can find the other types that you may pass in the [native types](https://rakudocs.github.io/language/nativetypes) page. Note that the lack of a `returns` trait is used to indicate `void` return type. Do *not*use the `void` type anywhere except in the Pointer parameterization.
+Here, we have declared that the function takes two 32-bit integers and returns a 32-bit integer. You can find the other types that you may pass in the [native types](https://docs.raku.org/language/nativetypes) page. Note that the lack of a `returns` trait is used to indicate `void` return type. Do *not*use the `void` type anywhere except in the Pointer parameterization.
 
 对于字符串，还有一个附加的 `encoded` 特性来提供一些关于如何进行封送处理的额外提示。
 
@@ -183,9 +183,9 @@ my $result = clock_gettime( 0, $this-time);
 say "$result, $this-time"; # OUTPUT: «0, timespec<65385480>␤» 
 ```
 
-我们调用的原始函数 [clock_gettime](https://linux.die.net/man/3/clock_gettime) 使用指向 `timespec` 结构的指针作为第二个参数。我们在这里将其声明为 [class](https://rakudocs.github.io/syntax/class)，但将其表示形式指定为 `is repr('CStruct')`，以指示它对应于 C 数据结构。当我们创建该类的对象时，我们创建的正是 `clock_gettime` 所期望的指针类型。这样，可以无缝地将数据传输到原生接口或从原生接口传输数据。
+我们调用的原始函数 [clock_gettime](https://linux.die.net/man/3/clock_gettime) 使用指向 `timespec` 结构的指针作为第二个参数。我们在这里将其声明为 [class](https://docs.raku.org/syntax/class)，但将其表示形式指定为 `is repr('CStruct')`，以指示它对应于 C 数据结构。当我们创建该类的对象时，我们创建的正是 `clock_gettime` 所期望的指针类型。这样，可以无缝地将数据传输到原生接口或从原生接口传输数据。
 
-The original function we are calling, [clock_gettime](https://linux.die.net/man/3/clock_gettime), uses a pointer to the `timespec` struct as second argument. We declare it as a [class](https://rakudocs.github.io/syntax/class) here, but specify its representation as `is repr('CStruct')`, to indicate it corresponds to a C data structure. When we create an object of that class, we are creating exactly the kind of pointer `clock_gettime` expects. This way, data can be transferred seamlessly to and from the native interface.
+The original function we are calling, [clock_gettime](https://linux.die.net/man/3/clock_gettime), uses a pointer to the `timespec` struct as second argument. We declare it as a [class](https://docs.raku.org/syntax/class) here, but specify its representation as `is repr('CStruct')`, to indicate it corresponds to a C data structure. When we create an object of that class, we are creating exactly the kind of pointer `clock_gettime` expects. This way, data can be transferred seamlessly to and from the native interface.
 
 <a id="%E6%8C%87%E9%92%88%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8--basic-use-of-pointers"></a>
 # 指针的基本使用 / Basic use of pointers
@@ -375,11 +375,11 @@ Besides the usual methods available on every Raku instance, `CArray` provides th
 
 - `elems` 提供了数组中的元素数；
 - `at-pos` 在给定位置提供特定元素（从零开始）；
-- `list` 提供从原生数组迭代器生成数组中元素的[列表](https://rakudocs.github.io/type/List)。
+- `list` 提供从原生数组迭代器生成数组中元素的[列表](https://docs.raku.org/type/List)。
 
 - `elems` provides the number of elements within the array;
 - `AT-POS` provides a specific element at the given position (starting from zero);
-- `list` provides the [List](https://rakudocs.github.io/type/List) of elements within the array building it from the native array iterator.
+- `list` provides the [List](https://docs.raku.org/type/List) of elements within the array building it from the native array iterator.
 
 例如，考虑以下简单的代码：
 
@@ -635,9 +635,9 @@ for 1 ..^ $n {
 }
 ```
 
-void 指针也可以通过声明它们为 `Pointer[void]` 来使用。有关主题的详细信息，请参阅[原生类型文档](https://rakudocs.github.io/language/nativetypes#The_void_type)。
+void 指针也可以通过声明它们为 `Pointer[void]` 来使用。有关主题的详细信息，请参阅[原生类型文档](https://docs.raku.org/language/nativetypes#The_void_type)。
 
-Void pointers can also be used by declaring them `Pointer[void]`. Please consult [the native types documentation](https://rakudocs.github.io/language/nativetypes#The_void_type) for more information on the subject.
+Void pointers can also be used by declaring them `Pointer[void]`. Please consult [the native types documentation](https://docs.raku.org/language/nativetypes#The_void_type) for more information on the subject.
 
 <a id="%E5%AD%97%E7%AC%A6%E4%B8%B2--strings"></a>
 # 字符串 / Strings
@@ -700,9 +700,9 @@ Bear in mind all memory management for explicitly managed strings must be handle
 <a id="%E7%BC%93%E5%86%B2%E5%8C%BA%E5%92%8C%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%A4%A7%E5%AF%B9%E8%B1%A1--buffers-and-blobs"></a>
 ## 缓冲区和二进制大对象 / Buffers and blobs
 
-[Blob](https://rakudocs.github.io/type/Blob) 和 [Buf](https://rakudocs.github.io/type/Buf) 是 Raku 存储二进制数据的方法。我们可以使用它们与原生函数和数据结构交换数据，尽管不是直接的。我们必须使用 [`nativecast`](https://rakudocs.github.io/routine/nativecast)。
+[Blob](https://docs.raku.org/type/Blob) 和 [Buf](https://docs.raku.org/type/Buf) 是 Raku 存储二进制数据的方法。我们可以使用它们与原生函数和数据结构交换数据，尽管不是直接的。我们必须使用 [`nativecast`](https://docs.raku.org/routine/nativecast)。
 
-[Blob](https://rakudocs.github.io/type/Blob)s and [Buf](https://rakudocs.github.io/type/Buf)s are the Raku way of storing binary data. We can use them for interchange of data with native functions and data structures, although not directly. We will have to use [`nativecast`](https://rakudocs.github.io/routine/nativecast).
+[Blob](https://docs.raku.org/type/Blob)s and [Buf](https://docs.raku.org/type/Buf)s are the Raku way of storing binary data. We can use them for interchange of data with native functions and data structures, although not directly. We will have to use [`nativecast`](https://docs.raku.org/routine/nativecast).
 
 ```Raku
 my $blob = Blob.new(0x22, 0x33);
@@ -721,9 +721,9 @@ say $esponja;
 <a id="%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0--function-arguments"></a>
 # 函数参数 / Function arguments
 
-NativeCall 还支持将函数作为参数的原生函数。其中一个例子是在事件驱动系统中使用函数指针作为回调。通过 NativeCall 绑定这些函数时，只需提供与[代码参数约束](https://rakudocs.github.io/type/Signature#Constraining_signatures_of_Callables)相同的签名。但是，对于 NativeCall，从 Rakudo 2019.07 开始，函数参数和签名之间的空格以及普通签名文本的冒号被省略，如下所示：
+NativeCall 还支持将函数作为参数的原生函数。其中一个例子是在事件驱动系统中使用函数指针作为回调。通过 NativeCall 绑定这些函数时，只需提供与[代码参数约束](https://docs.raku.org/type/Signature#Constraining_signatures_of_Callables)相同的签名。但是，对于 NativeCall，从 Rakudo 2019.07 开始，函数参数和签名之间的空格以及普通签名文本的冒号被省略，如下所示：
 
-NativeCall also supports native functions that take functions as arguments. One example of this is using function pointers as callbacks in an event-driven system. When binding these functions via NativeCall, one needs only provide the equivalent signature as [a constraint on the code parameter](https://rakudocs.github.io/type/Signature#Constraining_signatures_of_Callables). In the case of NativeCall, however, as of Rakudo 2019.07, a space between the function argument and the signature, and the colon of a normal Signature literal is omitted, as in:
+NativeCall also supports native functions that take functions as arguments. One example of this is using function pointers as callbacks in an event-driven system. When binding these functions via NativeCall, one needs only provide the equivalent signature as [a constraint on the code parameter](https://docs.raku.org/type/Signature#Constraining_signatures_of_Callables). In the case of NativeCall, however, as of Rakudo 2019.07, a space between the function argument and the signature, and the colon of a normal Signature literal is omitted, as in:
 
 ```Raku
 use NativeCall;
@@ -858,9 +858,9 @@ Variables exported by a library – also named "global" or "extern" variables �
 my $var := cglobal('libc.so.6', 'errno', int32)
 ```
 
-此代码绑定到 `$var`， 一个新的 [Proxy](https://rakudocs.github.io/type/Proxy) 对象，该对象将其所有访问重定向到由 "libc.so.6" 库导出的名为 "errno" 的整数变量。
+此代码绑定到 `$var`， 一个新的 [Proxy](https://docs.raku.org/type/Proxy) 对象，该对象将其所有访问重定向到由 "libc.so.6" 库导出的名为 "errno" 的整数变量。
 
-This code binds to `$var` a new [Proxy](https://rakudocs.github.io/type/Proxy) object that redirects all its accesses to the integer variable named "errno" as exported by the "libc.so.6" library.
+This code binds to `$var` a new [Proxy](https://docs.raku.org/type/Proxy) object that redirects all its accesses to the integer variable named "errno" as exported by the "libc.so.6" library.
 
 <a id="c-%E6%94%AF%E6%8C%81--c-support"></a>
 # C++ 支持 / C++ support
@@ -887,9 +887,9 @@ sub nativecast($target-type, $source) is export(:DEFAULT)
 
 This will *cast* the Pointer `$source` to an object of `$target-type`. The source pointer will typically have been obtained from a call to a native subroutine that returns a pointer or as a member of a `struct`, this may be specified as `void *` in the `C` library definition for instance, but you may also cast from a pointer to a less specific type to a more specific one.
 
-在特殊情况下，如果将[签名](https://rakudocs.github.io/type/Signature)作为 `$target-type` 提供，则将返回一个 `subroutine`，它将调用由 `$source` 指向的原生函数，方法与用 `native` 特性声明的子例程相同。这在[函数指针](https://rakudocs.github.io/language/nativecall#Function_pointers)中描述。
+在特殊情况下，如果将[签名](https://docs.raku.org/type/Signature)作为 `$target-type` 提供，则将返回一个 `subroutine`，它将调用由 `$source` 指向的原生函数，方法与用 `native` 特性声明的子例程相同。这在[函数指针](https://docs.raku.org/language/nativecall#Function_pointers)中描述。
 
-As a special case, if a [Signature](https://rakudocs.github.io/type/Signature) is supplied as `$target-type` then a `subroutine` will be returned which will call the native function pointed to by `$source` in the same way as a subroutine declared with the `native` trait. This is described in [Function Pointers](https://rakudocs.github.io/language/nativecall#Function_pointers).
+As a special case, if a [Signature](https://docs.raku.org/type/Signature) is supplied as `$target-type` then a `subroutine` will be returned which will call the native function pointed to by `$source` in the same way as a subroutine declared with the `native` trait. This is described in [Function Pointers](https://docs.raku.org/language/nativecall#Function_pointers).
 
 <a id="cglobal-%E5%AD%90%E4%BE%8B%E7%A8%8B--sub-cglobal"></a>
 ## cglobal 子例程 / sub cglobal
@@ -898,9 +898,9 @@ As a special case, if a [Signature](https://rakudocs.github.io/type/Signature) i
 sub cglobal($libname, $symbol, $target-type) is export is rw
 ```
 
-这将返回一个 [Proxy](https://rakudocs.github.io/type/Proxy) 对象，该对象提供对指定库公开的名为 `$symbol` 的 `extern` 的访问。库的指定方式与 `native` 特性相同。
+这将返回一个 [Proxy](https://docs.raku.org/type/Proxy) 对象，该对象提供对指定库公开的名为 `$symbol` 的 `extern` 的访问。库的指定方式与 `native` 特性相同。
 
-This returns a [Proxy](https://rakudocs.github.io/type/Proxy) object that provides access to the `extern` named `$symbol` that is exposed by the specified library. The library can be specified in the same ways that they can be to the `native` trait.
+This returns a [Proxy](https://docs.raku.org/type/Proxy) object that provides access to the `extern` named `$symbol` that is exposed by the specified library. The library can be specified in the same ways that they can be to the `native` trait.
 
 <a id="nativesizeof-%E5%AD%90%E4%BE%8B%E7%A8%8B--sub-nativesizeof"></a>
 ## nativesizeof 子例程 / sub nativesizeof

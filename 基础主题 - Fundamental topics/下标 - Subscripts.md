@@ -1,4 +1,4 @@
-原文：https://rakudocs.github.io/language/subscripts
+原文：https://docs.raku.org/language/subscripts
 
 # 下标 / Subscripts
 
@@ -74,9 +74,9 @@ Raku provides two universal subscripting interfaces:1
 <a id="%E4%BD%8D%E7%BD%AE%E4%B8%8B%E6%A0%87--positional-subscripting"></a>
 ## 位置下标 / **Positional** subscripting
 
-**位置**下标（通过[后环缀运算符 `[ ]`](https://rakudocs.github.io/language/operators#postcircumfix_[_]) 按位置对有序集合的元素进行寻址。索引 0 引用第一个元素，索引 1 引用第二个元素，依此类推：
+**位置**下标（通过[后环缀运算符 `[ ]`](https://docs.raku.org/language/operators#postcircumfix_[_]) 按位置对有序集合的元素进行寻址。索引 0 引用第一个元素，索引 1 引用第二个元素，依此类推：
 
-**Positional** subscripting(via [`postcircumfix [ ]`](https://rakudocs.github.io/language/operators#postcircumfix_[_])) addresses elements of an ordered collection by their position. Index 0 refers to the first element, index 1 to the second, and so on:
+**Positional** subscripting(via [`postcircumfix [ ]`](https://docs.raku.org/language/operators#postcircumfix_[_])) addresses elements of an ordered collection by their position. Index 0 refers to the first element, index 1 to the second, and so on:
 
 ```Raku
 my @chores = "buy groceries", "feed dog", "wash car";
@@ -88,9 +88,9 @@ say @chores[2];  # OUTPUT: «wash car␤»
 <a id="%E5%85%B3%E8%81%94%E4%B8%8B%E6%A0%87--associative-subscripting"></a>
 ## 关联下标 / **Associative** subscripting
 
-**关联**下标（通过后环缀运算符 [`{ }`](https://rakudocs.github.io/language/operators#postcircumfix_{_}) 不需要集合将其元素保持任何特定顺序，而是使用唯一的键来寻址每个值。密钥的性质取决于所讨论的集合：例如，标准的 [Hash](https://rakudocs.github.io/type/Hash) 使用字符串密钥，而 [Mix](https://rakudocs.github.io/type/Mix) 允许任意对象作为键，等等：
+**关联**下标（通过后环缀运算符 [`{ }`](https://docs.raku.org/language/operators#postcircumfix_{_}) 不需要集合将其元素保持任何特定顺序，而是使用唯一的键来寻址每个值。密钥的性质取决于所讨论的集合：例如，标准的 [Hash](https://docs.raku.org/type/Hash) 使用字符串密钥，而 [Mix](https://docs.raku.org/type/Mix) 允许任意对象作为键，等等：
 
-**Associative** subscripting (via [`postcircumfix { }`](https://rakudocs.github.io/language/operators#postcircumfix_{_})), does not require the collection to keep its elements in any particular order - instead, it uses a unique key to address each value. The nature of the keys depends on the collection in question: For example a standard [Hash](https://rakudocs.github.io/type/Hash) uses string keys, whereas a [Mix](https://rakudocs.github.io/type/Mix) allows arbitrary objects as keys, etc.:
+**Associative** subscripting (via [`postcircumfix { }`](https://docs.raku.org/language/operators#postcircumfix_{_})), does not require the collection to keep its elements in any particular order - instead, it uses a unique key to address each value. The nature of the keys depends on the collection in question: For example a standard [Hash](https://docs.raku.org/type/Hash) uses string keys, whereas a [Mix](https://docs.raku.org/type/Mix) allows arbitrary objects as keys, etc.:
 
 ```Raku
 my %grade = Zoe => "C", Ben => "B+";
@@ -101,9 +101,9 @@ my $stats = ( Date.today => 4.18, Date.new(2015,  4,  5) => 17.253 ).Mix;
 say $stats{ Date.new(2015, 4, 4) + 1 };  # OUTPUT: «17.253␤»
 ```
 
-要将单个单词字符串键传递给 `{ }`，还可以使用[以尖括号括起来的引文结构](https://rakudocs.github.io/language/quoting#Word_quoting:_qw)将它们当作后环缀运算符：
+要将单个单词字符串键传递给 `{ }`，还可以使用[以尖括号括起来的引文结构](https://docs.raku.org/language/quoting#Word_quoting:_qw)将它们当作后环缀运算符：
 
-For passing single-word string keys to `{ }`, you can also use the [angle bracketed word quoting constructs](https://rakudocs.github.io/language/quoting#Word_quoting:_qw) as if they were postcircumfix operators:
+For passing single-word string keys to `{ }`, you can also use the [angle bracketed word quoting constructs](https://docs.raku.org/language/quoting#Word_quoting:_qw) as if they were postcircumfix operators:
 
 ```Raku
 my %grade = Zoe => "C", Ben => "B+";
@@ -163,9 +163,9 @@ say "__Hello__".match(/__(.*)__/)[0];   # OUTPUT: «｢Hello｣␤»
 say "__Hello__".match(/__(.*)__/).[0];  # same, in method notation
 ```
 
-位置下标和关联下标不是互斥的，例如，[Match](https://rakudocs.github.io/type/Match) 对象支持两者（两者访问不同的数据集）。此外，为了使列表处理更方便，类 [Any](https://rakudocs.github.io/type/Any) 为位置下标提供了一个备选实现，它简单地将调用者视为一个元素的列表。（但对于关联下标没有这样的备选实现，因此它们在应用于不支持它们的对象时会抛出运行时错误。）
+位置下标和关联下标不是互斥的，例如，[Match](https://docs.raku.org/type/Match) 对象支持两者（两者访问不同的数据集）。此外，为了使列表处理更方便，类 [Any](https://docs.raku.org/type/Any) 为位置下标提供了一个备选实现，它简单地将调用者视为一个元素的列表。（但对于关联下标没有这样的备选实现，因此它们在应用于不支持它们的对象时会抛出运行时错误。）
 
-Positional and associative subscripting are not mutually exclusive - for example, [Match](https://rakudocs.github.io/type/Match) objects support both (each accessing a different set of data). Also, to make list processing more convenient, class [Any](https://rakudocs.github.io/type/Any) provides a fallback implementation for positional subscripts which simply treats the invocant as a list of one element. (But there's no such fallback for associative subscripts, so they throw a runtime error when applied to an object that does not implement support for them.)
+Positional and associative subscripting are not mutually exclusive - for example, [Match](https://docs.raku.org/type/Match) objects support both (each accessing a different set of data). Also, to make list processing more convenient, class [Any](https://docs.raku.org/type/Any) provides a fallback implementation for positional subscripts which simply treats the invocant as a list of one element. (But there's no such fallback for associative subscripts, so they throw a runtime error when applied to an object that does not implement support for them.)
 
 ```Raku
 say 42[0];    # OUTPUT: «42␤» 
@@ -175,9 +175,9 @@ say 42<foo>;  # ERROR: Type Int does not support associative indexing.
 <a id="%E4%B8%8D%E5%AD%98%E5%9C%A8%E7%9A%84%E6%88%90%E5%91%98--nonexistent-elements"></a>
 # 不存在的成员 / Nonexistent elements
 
-当一个*不存在*的元素被下标寻址时会发生什么，取决于所集合的类型。标准 [Array](https://rakudocs.github.io/type/Array) 和 [Hash](https://rakudocs.github.io/type/Hash) 集合返回其[值类型约束](https://rakudocs.github.io/routine/of)的类型对象（默认情况下，是 [Any](https://rakudocs.github.io/type/Any)，除非集合已被 [`is default`](https://rakudocs.github.io/type/Variable#trait_is_default) 特性声明，在这种情况下，返回值将是程序员声明的：
+当一个*不存在*的元素被下标寻址时会发生什么，取决于所集合的类型。标准 [Array](https://docs.raku.org/type/Array) 和 [Hash](https://docs.raku.org/type/Hash) 集合返回其[值类型约束](https://docs.raku.org/routine/of)的类型对象（默认情况下，是 [Any](https://docs.raku.org/type/Any)，除非集合已被 [`is default`](https://docs.raku.org/type/Variable#trait_is_default) 特性声明，在这种情况下，返回值将是程序员声明的：
 
-What happens when a *nonexistent* element is addressed by a subscript is up to the collection type in question. Standard [Array](https://rakudocs.github.io/type/Array) and [Hash](https://rakudocs.github.io/type/Hash) collections return the type object of their [value type constraint](https://rakudocs.github.io/routine/of) (which, by default, is [Any](https://rakudocs.github.io/type/Any)) unless the collection has been declared with the [`is default`](https://rakudocs.github.io/type/Variable#trait_is_default) trait in which case the returned value will be whatever the programmer declared it to be:
+What happens when a *nonexistent* element is addressed by a subscript is up to the collection type in question. Standard [Array](https://docs.raku.org/type/Array) and [Hash](https://docs.raku.org/type/Hash) collections return the type object of their [value type constraint](https://docs.raku.org/routine/of) (which, by default, is [Any](https://docs.raku.org/type/Any)) unless the collection has been declared with the [`is default`](https://docs.raku.org/type/Variable#trait_is_default) trait in which case the returned value will be whatever the programmer declared it to be:
 
 ```Raku
 # no default values specified 
@@ -205,9 +205,9 @@ say bag(<a a b b b>)<c>;      # OUTPUT: «0␤»
 say array[uint8].new(1, 2)[2] # OUTPUT: «0␤»
 ```
 
-为了无声地跳过下标操作中不存在的元素，请参阅[截断切片](https://rakudocs.github.io/language/subscripts#Truncating_slices)和 [:v](https://rakudocs.github.io/language/subscripts#%3Av) 副词。
+为了无声地跳过下标操作中不存在的元素，请参阅[截断切片](https://docs.raku.org/language/subscripts#Truncating_slices)和 [:v](https://docs.raku.org/language/subscripts#%3Av) 副词。
 
-To silently skip nonexistent elements in a subscripting operation, see [Truncating slices](https://rakudocs.github.io/language/subscripts#Truncating_slices) and the [:v](https://rakudocs.github.io/language/subscripts#%3Av) adverb.
+To silently skip nonexistent elements in a subscripting operation, see [Truncating slices](https://docs.raku.org/language/subscripts#Truncating_slices) and the [:v](https://docs.raku.org/language/subscripts#%3Av) adverb.
 
 <a id="%E4%BB%8E%E6%9C%AB%E5%B0%BE--from-the-end"></a>
 # 从末尾 / From the end
@@ -227,9 +227,9 @@ say @alphabet[*-3];  # OUTPUT: «X␤»
 
 **Note**: The asterisk is important. Passing a bare negative integer (e.g. `@alphabet[-1]`) like you would do in many other programming languages, throws an error in Raku.
 
-这里实际发生的是，像 `*-1` 这样的表达式通过 [Whatever](https://rakudocs.github.io/type/Whatever) 来声明代码对象。 `[ ]` 下标的反应是将代码对象作为索引，以集合的长度作为参数调用它，并使用结果值作为实际索引。换句话说，`@alphabet[*-1]` 变成了 `@alphabet[@alphabet.elems - 1]`。
+这里实际发生的是，像 `*-1` 这样的表达式通过 [Whatever](https://docs.raku.org/type/Whatever) 来声明代码对象。 `[ ]` 下标的反应是将代码对象作为索引，以集合的长度作为参数调用它，并使用结果值作为实际索引。换句话说，`@alphabet[*-1]` 变成了 `@alphabet[@alphabet.elems - 1]`。
 
-What actually happens here, is that an expression like `*-1` declares a code object via [Whatever](https://rakudocs.github.io/type/Whatever)-currying - and the `[ ]` subscript reacts to being given a code object as an index, by calling it with the length of the collection as argument and using the result value as the actual index. In other words, `@alphabet[*-1]` becomes `@alphabet[@alphabet.elems - 1]`.
+What actually happens here, is that an expression like `*-1` declares a code object via [Whatever](https://docs.raku.org/type/Whatever)-currying - and the `[ ]` subscript reacts to being given a code object as an index, by calling it with the length of the collection as argument and using the result value as the actual index. In other words, `@alphabet[*-1]` becomes `@alphabet[@alphabet.elems - 1]`.
 
 这意味着你可以使用取决于集合大小的任意表达式：
 
@@ -248,18 +248,18 @@ say @array[ -> $size { $i % $size } ];  # same as previous
 
 When multiple elements of a collection need to be accessed, there's a shortcut to doing multiple separate subscripting operations: Simply specify a *list* of indices/keys in the subscript, to get back a *list* of elements - also called a "slice" - in the same order.
 
-对于位置切片，你可以将普通索引与[从末尾](https://rakudocs.github.io/language/subscripts#From_the_end)索引混合使用：
+对于位置切片，你可以将普通索引与[从末尾](https://docs.raku.org/language/subscripts#From_the_end)索引混合使用：
 
-For positional slices, you can mix normal indices with [from-the-end](https://rakudocs.github.io/language/subscripts#From_the_end) ones:
+For positional slices, you can mix normal indices with [from-the-end](https://docs.raku.org/language/subscripts#From_the_end) ones:
 
 ```Raku
 my @alphabet = 'a' .. 'z';
 say @alphabet[15, 4, *-9, 11].perl;  # OUTPUT: «("p", "e", "r", "l")␤»
 ```
 
-在上面的 `*-number` 结构中，`*` 表示数组的结尾，如上面在[从结尾](https://rakudocs.github.io/language/subscripts#From_the_end)部分中所述。因此，如果要获取数组的最后 N 个元素，则必须创建包含它的 [Range](https://rakudocs.github.io/type/Range)。
+在上面的 `*-number` 结构中，`*` 表示数组的结尾，如上面在[从结尾](https://docs.raku.org/language/subscripts#From_the_end)部分中所述。因此，如果要获取数组的最后 N 个元素，则必须创建包含它的 [Range](https://docs.raku.org/type/Range)。
 
-In the `*-number` construct above, `*` indicates the end of the array as explained above in the [From the end](https://rakudocs.github.io/language/subscripts#From_the_end) section. So if you want to take the last N elements of the array, you will have to create a [Range](https://rakudocs.github.io/type/Range) that includes it.
+In the `*-number` construct above, `*` indicates the end of the array as explained above in the [From the end](https://docs.raku.org/language/subscripts#From_the_end) section. So if you want to take the last N elements of the array, you will have to create a [Range](https://docs.raku.org/type/Range) that includes it.
 
 ```Raku
 (5802..5830).map( {.chr} )[*-10..*-5] # OUTPUT:  «(ᚽ ᚾ ᚿ ᛀ ᛁ ᛂ)␤»
@@ -280,29 +280,29 @@ say %color<cherry kiwi>;       # OUTPUT: «(red green)␤»
 say %color{*};                 # OUTPUT: «(red yellow green)␤»
 ```
 
-请注意，切片是由传递到（[一维的](https://rakudocs.github.io/language/subscripts#Multiple_dimensions)）下标的*类型*控制的，而不是它的长度。尤其是*类型*可以是以下任意一种：
+请注意，切片是由传递到（[一维的](https://docs.raku.org/language/subscripts#Multiple_dimensions)）下标的*类型*控制的，而不是它的长度。尤其是*类型*可以是以下任意一种：
 
-Be aware that slices are controlled by the *type* of what is passed to ([one dimension of](https://rakudocs.github.io/language/subscripts#Multiple_dimensions)) the subscript, not its length. In particular the *type* can be any of the following:
+Be aware that slices are controlled by the *type* of what is passed to ([one dimension of](https://docs.raku.org/language/subscripts#Multiple_dimensions)) the subscript, not its length. In particular the *type* can be any of the following:
 
-- 一个惰性的 Iterable，在[ ]中被[截断](https://rakudocs.github.io/language/subscripts#Truncating_slices)
+- 一个惰性的 Iterable，在[ ]中被[截断](https://docs.raku.org/language/subscripts#Truncating_slices)
 - 因此，无限 Range 将被截断，但有限 Range 将产生一个正常切片
 - '*' 将返回整个片（就像所有键/索引都已指定一样）
 - 任何其他提供单个元素访问而非切片的对象
 - Callable，它返回的任何内容（这可能导致递归）
-- empty, 被称为 [Zen slice](https://rakudocs.github.io/language/subscripts#Zen_slices) 的完全切片
+- empty, 被称为 [Zen slice](https://docs.raku.org/language/subscripts#Zen_slices) 的完全切片
 - 不同于上述类型的 Iterable，正常切片
 
-- a lazy Iterable, that [truncates](https://rakudocs.github.io/language/subscripts#Truncating_slices) in [ ]
+- a lazy Iterable, that [truncates](https://docs.raku.org/language/subscripts#Truncating_slices) in [ ]
 - accordingly, an infinite Range will truncate, but a finite one produces a normal slice
 - '*' (whatever-star), that returns the full slice (as if all keys/indices were specified)
 - any other object, that provides a single-element access rather than a slice
 - Callable, whatever is returned by the callable (this can lead to recursion)
-- empty, the full slice known as [Zen slice](https://rakudocs.github.io/language/subscripts#Zen_slices)
+- empty, the full slice known as [Zen slice](https://docs.raku.org/language/subscripts#Zen_slices)
 - any iterable different from the above ones, normal slice
 
-`*` 和 Zen Slice（空）之间的显著区别是，[Whatever](https://rakudocs.github.io/type/Whatever) 星号将导致完全[具体化](https://rakudocs.github.io/language/glossary#index-entry-Reify)或单条目化，而 Zen 切片不会。两个版本都会[去容器化](https://perl6advent.wordpress.com/2017/12/02/perl-6-sigils-variables-and-containers/#decont)。
+`*` 和 Zen Slice（空）之间的显著区别是，[Whatever](https://docs.raku.org/type/Whatever) 星号将导致完全[具体化](https://docs.raku.org/language/glossary#index-entry-Reify)或单条目化，而 Zen 切片不会。两个版本都会[去容器化](https://perl6advent.wordpress.com/2017/12/02/perl-6-sigils-variables-and-containers/#decont)。
 
-The notable difference between `*` and Zen slice (empty) is that the [Whatever](https://rakudocs.github.io/type/Whatever) star will cause full [reification](https://rakudocs.github.io/language/glossary#index-entry-Reify) or itemization, while Zen slice won't. Both versions also [de-cont](https://perl6advent.wordpress.com/2017/12/02/perl-6-sigils-variables-and-containers/#decont).
+The notable difference between `*` and Zen slice (empty) is that the [Whatever](https://docs.raku.org/type/Whatever) star will cause full [reification](https://docs.raku.org/language/glossary#index-entry-Reify) or itemization, while Zen slice won't. Both versions also [de-cont](https://perl6advent.wordpress.com/2017/12/02/perl-6-sigils-variables-and-containers/#decont).
 
 因此，即使是单元素列表也会返回一个切片，而裸标量值则不会：
 
@@ -316,13 +316,13 @@ say @alphabet[2];         # OUTPUT: «c␤»
 say @alphabet[2].^name;   # OUTPUT: «Str␤» 
 ```
 
-（关联下标的尖括号形式之所以有效，是因为[词引用](https://rakudocs.github.io/language/quoting#Word_quoting:_qw)在单个单词的情况下方便地返回 [Str](https://rakudocs.github.io/type/Str)，而在多个单词的情况下则返回 [List](https://rakudocs.github.io/type/List)。）
+（关联下标的尖括号形式之所以有效，是因为[词引用](https://docs.raku.org/language/quoting#Word_quoting:_qw)在单个单词的情况下方便地返回 [Str](https://docs.raku.org/type/Str)，而在多个单词的情况下则返回 [List](https://docs.raku.org/type/List)。）
 
-(The angle bracket form for associative subscripts works out because [word quoting](https://rakudocs.github.io/language/quoting#Word_quoting:_qw) conveniently returns a [Str](https://rakudocs.github.io/type/Str) in case of a single word, but a [List](https://rakudocs.github.io/type/List) in case of multiple words.)
+(The angle bracket form for associative subscripts works out because [word quoting](https://docs.raku.org/language/quoting#Word_quoting:_qw) conveniently returns a [Str](https://docs.raku.org/type/Str) in case of a single word, but a [List](https://docs.raku.org/type/List) in case of multiple words.)
 
-事实上，（[当前维度](https://rakudocs.github.io/language/subscripts#Multiple_dimensions)）的列表结构下标在切片操作中被保留（但 Iterable 的类型不是 - 结果总是列表）。
+事实上，（[当前维度](https://docs.raku.org/language/subscripts#Multiple_dimensions)）的列表结构下标在切片操作中被保留（但 Iterable 的类型不是 - 结果总是列表）。
 
-In fact, the list structure of ([the current dimension of](https://rakudocs.github.io/language/subscripts#Multiple_dimensions)) the subscript is preserved across the slice operation (but the kind of Iterable is not – the result is always just lists.)
+In fact, the list structure of ([the current dimension of](https://docs.raku.org/language/subscripts#Multiple_dimensions)) the subscript is preserved across the slice operation (but the kind of Iterable is not – the result is always just lists.)
 
 ```Raku
 say @alphabet[0, (1..2, (3,))];       # OUTPUT: «(a ((b c) (d)))␤» 
@@ -334,9 +334,9 @@ say flat @alphabet[0, (1..2, (3,))];  # OUTPUT: «(a b c d)␤»
 <a id="%E6%88%AA%E6%96%AD%E5%88%87%E7%89%87--truncating-slices"></a>
 ## 截断切片 / Truncating slices
 
-引用切片下标中不存在的元素会导致输出 `List` 包含未定义的值（或[其他任何内容](https://rakudocs.github.io/language/subscripts#Nonexistent_elements)，所讨论的集合选择返回不存在的元素）：
+引用切片下标中不存在的元素会导致输出 `List` 包含未定义的值（或[其他任何内容](https://docs.raku.org/language/subscripts#Nonexistent_elements)，所讨论的集合选择返回不存在的元素）：
 
-Referring to nonexistent elements in a slice subscript causes the output `List` to contain undefined values (or [whatever else](https://rakudocs.github.io/language/subscripts#Nonexistent_elements) the collection in question chooses to return for nonexistent elements):
+Referring to nonexistent elements in a slice subscript causes the output `List` to contain undefined values (or [whatever else](https://docs.raku.org/language/subscripts#Nonexistent_elements) the collection in question chooses to return for nonexistent elements):
 
 ```Raku
 my  @letters = <a b c d e f>;
@@ -355,18 +355,18 @@ say @letters; # OUTPUT: «[]␤»
 say @letters; # OUTPUT: «[a b c d e f g h i j]␤» 
 ```
 
-如果希望结果切片仅包含现有元素，则可以使用 [:v](https://rakudocs.github.io/language/subscripts#%3Av) 副词无提示地跳过不存在的元素。
+如果希望结果切片仅包含现有元素，则可以使用 [:v](https://docs.raku.org/language/subscripts#%3Av) 副词无提示地跳过不存在的元素。
 
-If you want the resulting slice to only include existing elements, you can silently skip the non-existent elements using the [:v](https://rakudocs.github.io/language/subscripts#%3Av) adverb.
+If you want the resulting slice to only include existing elements, you can silently skip the non-existent elements using the [:v](https://docs.raku.org/language/subscripts#%3Av) adverb.
 
 ```Raku
 my  @letters = <a b c d e f>;
 say @letters[3..7]:v;  # OUTPUT: «(d e f)␤» 
 ```
 
-通过 [lazy](https://rakudocs.github.io/language/list#Lazy_lists) 下标为集合编制索引时的行为与使用热切的对应项编制索引时的行为不同。当通过惰性下标访问时，结果切片将被截断。
+通过 [lazy](https://docs.raku.org/language/list#Lazy_lists) 下标为集合编制索引时的行为与使用热切的对应项编制索引时的行为不同。当通过惰性下标访问时，结果切片将被截断。
 
-The behavior when indexing a collection via [lazy](https://rakudocs.github.io/language/list#Lazy_lists) subscripts is different than when indexing with their eager counterparts. When accessing via a lazy subscript, the resulting slice will be truncated.
+The behavior when indexing a collection via [lazy](https://docs.raku.org/language/list#Lazy_lists) subscripts is different than when indexing with their eager counterparts. When accessing via a lazy subscript, the resulting slice will be truncated.
 
 ```Raku
 say @letters[lazy 3..7]; # OUTPUT: «(d e f)␤» 
@@ -396,9 +396,9 @@ say %bag{*};   # OUTPUT: «(1 3)␤»
 say %bag{()};  # OUTPUT: «()␤»
 ```
 
-禅切片不[具体化](https://rakudocs.github.io/language/glossary#index-entry-Reify)或[缓存](https://rakudocs.github.io/routine/cache)，只返回调用者。它通常用于[插值](https://rakudocs.github.io/language/quoting#Interpolation:_qq)整个数组/散列成字符串或[去容器化](https://rakudocs.github.io/language/glossary#index-entry-decont)。
+禅切片不[具体化](https://docs.raku.org/language/glossary#index-entry-Reify)或[缓存](https://docs.raku.org/routine/cache)，只返回调用者。它通常用于[插值](https://docs.raku.org/language/quoting#Interpolation:_qq)整个数组/散列成字符串或[去容器化](https://docs.raku.org/language/glossary#index-entry-decont)。
 
-Zen slicing does not [reify](https://rakudocs.github.io/language/glossary#index-entry-Reify) or [cache](https://rakudocs.github.io/routine/cache) and merely returns the invocant. It is usually used to [interpolate](https://rakudocs.github.io/language/quoting#Interpolation:_qq) entire arrays / hashes into strings or to [decont](https://rakudocs.github.io/language/glossary#index-entry-decont).
+Zen slicing does not [reify](https://docs.raku.org/language/glossary#index-entry-Reify) or [cache](https://docs.raku.org/routine/cache) and merely returns the invocant. It is usually used to [interpolate](https://docs.raku.org/language/quoting#Interpolation:_qq) entire arrays / hashes into strings or to [decont](https://docs.raku.org/language/glossary#index-entry-decont).
 
 ```Raku
 my @words = "cruel", "world";
@@ -432,9 +432,9 @@ say %pantheon{'Bragi','Nótt';'consort'}; # 'consort' value for both keys
 # OUTPUT: «(Iðunn Dellingr)␤»
 ```
 
-多维下标与 [Whatever](https://rakudocs.github.io/type/Whatever) 结合使用时，可用于展平嵌套列表。
+多维下标与 [Whatever](https://docs.raku.org/type/Whatever) 结合使用时，可用于展平嵌套列表。
 
-Multidimensional subscripts can be used to flatten nested lists when combined with [Whatever](https://rakudocs.github.io/type/Whatever).
+Multidimensional subscripts can be used to flatten nested lists when combined with [Whatever](https://docs.raku.org/type/Whatever).
 
 ```Raku
 my @toomany = [[<a b>], [1, 2]];
@@ -458,9 +458,9 @@ say [[1,2,[3,4]],[4,5]][*;*;*;*]; # OUTPUT: «(1 2 3 4 4 5)␤»
 
 In the first example, with one `Whatever` less than the number of levels, the deepest one will not be flattened; in the second case it is, since it's greater than the number of levels.
 
-你可以使用 [Whatever](https://rakudocs.github.io/type/Whatever) 在多维下标中选择范围或“行”。
+你可以使用 [Whatever](https://docs.raku.org/type/Whatever) 在多维下标中选择范围或“行”。
 
-You can use [Whatever](https://rakudocs.github.io/type/Whatever) to select ranges or "rows" in multidimensional subscripts.
+You can use [Whatever](https://docs.raku.org/type/Whatever) to select ranges or "rows" in multidimensional subscripts.
 
 ```Raku
 my @a = [[1,2], [3,4]];
@@ -489,9 +489,9 @@ $beatles{"White Album"}[0] = "Back in the U.S.S.R.";  # autovivification!
 say $beatles.perl;  # OUTPUT: «${"White Album" => $["Back in the U.S.S.R."]}␤» 
 ```
 
-`$beatles` 开始时未定义，但成为一个 [Hash](https://rakudocs.github.io/type/Hash) 对象，因为它在赋值中被 `{ }` 下标寻址。类似地，`$beatles{"White Album"}` 由于在赋值中用 `[ ]` 下标而成为一个 [Array](https://rakudocs.github.io/type/Array) 对象。
+`$beatles` 开始时未定义，但成为一个 [Hash](https://docs.raku.org/type/Hash) 对象，因为它在赋值中被 `{ }` 下标寻址。类似地，`$beatles{"White Album"}` 由于在赋值中用 `[ ]` 下标而成为一个 [Array](https://docs.raku.org/type/Array) 对象。
 
-`$beatles` started out undefined, but became a [Hash](https://rakudocs.github.io/type/Hash) object because it was subscripted with `{ }` in the assignment. Similarly, `$beatles{"White Album"}` became an [Array](https://rakudocs.github.io/type/Array) object due to being subscripted with `[ ]` in the assignment.
+`$beatles` started out undefined, but became a [Hash](https://docs.raku.org/type/Hash) object because it was subscripted with `{ }` in the assignment. Similarly, `$beatles{"White Album"}` became an [Array](https://docs.raku.org/type/Array) object due to being subscripted with `[ ]` in the assignment.
 
 请注意，下标本身不会导致自动生动化：只有当下标链的结果被*赋值*（或以其他方式发生转变）时，才会发生这种情况。
 
@@ -504,9 +504,9 @@ Note that the subscripting itself does not cause autovivification: It only happe
 
 A subscripting expression may also be used as the left-hand-side of a binding statement. If supported by the subscripted collection's type, this replaces whatever value container would be naturally found at that "slot" of the collection, with the specified container.
 
-内置的 [Array](https://rakudocs.github.io/type/Array) 和 [Hash](https://rakudocs.github.io/type/Hash) 类型支持此功能，以便构建复杂的链数据结构：
+内置的 [Array](https://docs.raku.org/type/Array) 和 [Hash](https://docs.raku.org/type/Hash) 类型支持此功能，以便构建复杂的链数据结构：
 
-The built-in [Array](https://rakudocs.github.io/type/Array) and [Hash](https://rakudocs.github.io/type/Hash) types support this in order to allow building complex linked data structures:
+The built-in [Array](https://docs.raku.org/type/Array) and [Hash](https://docs.raku.org/type/Hash) types support this in order to allow building complex linked data structures:
 
 ```Raku
 my @a = 10, 11, 12, 13;
@@ -542,16 +542,16 @@ for %sequences.keys -> $s {
 
 In this case, hash keys are bound to lazily generated sequences. The fact that they are bound means that whatever state has been computed is shared by the hash value and the sequence it's bound to, making computations of subsequent elements faster.
 
-底层机制见[方法 BIND-POS](https://rakudocs.github.io/language/subscripts#method_BIND-POS) 和 [方法 BIND-KEY](https://rakudocs.github.io/language/subscripts#method_BIND-KEY)。
+底层机制见[方法 BIND-POS](https://docs.raku.org/language/subscripts#method_BIND-POS) 和 [方法 BIND-KEY](https://docs.raku.org/language/subscripts#method_BIND-KEY)。
 
-See [method BIND-POS](https://rakudocs.github.io/language/subscripts#method_BIND-POS) and [method BIND-KEY](https://rakudocs.github.io/language/subscripts#method_BIND-KEY) for the underlying mechanism.
+See [method BIND-POS](https://docs.raku.org/language/subscripts#method_BIND-POS) and [method BIND-KEY](https://docs.raku.org/language/subscripts#method_BIND-KEY) for the underlying mechanism.
 
 <a id="%E5%89%AF%E8%AF%8D--adverbs"></a>
 # 副词 / Adverbs
 
-下标操作的返回值和可能的副作用可以使用副词控制；这些副词在相关的下标[运算符](https://rakudocs.github.io/language/operators#Method_postfix_precedence)上定义。
+下标操作的返回值和可能的副作用可以使用副词控制；这些副词在相关的下标[运算符](https://docs.raku.org/language/operators#Method_postfix_precedence)上定义。
 
-The return value and possible side-effect of a subscripting operation can be controlled using adverbs; these are defined on the relevant subscript [operators](https://rakudocs.github.io/language/operators#Method_postfix_precedence).
+The return value and possible side-effect of a subscripting operation can be controlled using adverbs; these are defined on the relevant subscript [operators](https://docs.raku.org/language/operators#Method_postfix_precedence).
 
 注意运算符副词的相对松散的优先级，这可能要求你在复合表达式中添加括号：
 
@@ -596,9 +596,9 @@ May also be negated to test for non-existence:
 say %fruit<apple banana>:!exists; # OUTPUT: «(False True)␤» 
 ```
 
-要检查切片中*所有*元素是否存在，请使用 [all](https://rakudocs.github.io/routine/all) junction：
+要检查切片中*所有*元素是否存在，请使用 [all](https://docs.raku.org/routine/all) junction：
 
-To check if *all* elements of a slice exist, use an [all](https://rakudocs.github.io/routine/all) junction:
+To check if *all* elements of a slice exist, use an [all](https://docs.raku.org/routine/all) junction:
 
 ```Raku
 if all %fruit<apple orange banana>:exists { ... }
@@ -618,13 +618,13 @@ say %multi-dim{1;'foo';3}:exists;            # OUTPUT: «True␤»
 say %multi-dim{1;'bar';3}:exists;            # OUTPUT: «False␤»
 ```
 
-`:exists` 可以与 [:delete](https://rakudocs.github.io/language/subscripts#%3Adelete) 和 [:p](https://rakudocs.github.io/language/subscripts#%3Ap)/[:kv](https://rakudocs.github.io/language/subscripts#%3Akv) 副词组合使用，在这种情况下，行为由这些副词决定，除了任何返回的元素*值*被相应的 [Bool](https://rakudocs.github.io/type/Bool) 替换表示元素是否*存在*。
+`:exists` 可以与 [:delete](https://docs.raku.org/language/subscripts#%3Adelete) 和 [:p](https://docs.raku.org/language/subscripts#%3Ap)/[:kv](https://docs.raku.org/language/subscripts#%3Akv) 副词组合使用，在这种情况下，行为由这些副词决定，除了任何返回的元素*值*被相应的 [Bool](https://docs.raku.org/type/Bool) 替换表示元素是否*存在*。
 
-`:exists` can be combined with the [:delete](https://rakudocs.github.io/language/subscripts#%3Adelete) and [:p](https://rakudocs.github.io/language/subscripts#%3Ap)/[:kv](https://rakudocs.github.io/language/subscripts#%3Akv) adverbs - in which case the behavior is determined by those adverbs, except that any returned element *value* is replaced with the corresponding [Bool](https://rakudocs.github.io/type/Bool) indicating element *existence*.
+`:exists` can be combined with the [:delete](https://docs.raku.org/language/subscripts#%3Adelete) and [:p](https://docs.raku.org/language/subscripts#%3Ap)/[:kv](https://docs.raku.org/language/subscripts#%3Akv) adverbs - in which case the behavior is determined by those adverbs, except that any returned element *value* is replaced with the corresponding [Bool](https://docs.raku.org/type/Bool) indicating element *existence*.
 
-底层机制见[方法 EXISTS-POS](https://rakudocs.github.io/language/subscripts#method_EXISTS-POS) 和 [方法 EXISTS-KEY](https://rakudocs.github.io/language/subscripts#method_EXISTS-KEY)。
+底层机制见[方法 EXISTS-POS](https://docs.raku.org/language/subscripts#method_EXISTS-POS) 和 [方法 EXISTS-KEY](https://docs.raku.org/language/subscripts#method_EXISTS-KEY)。
 
-See [method EXISTS-POS](https://rakudocs.github.io/language/subscripts#method_EXISTS-POS) and [method EXISTS-KEY](https://rakudocs.github.io/language/subscripts#method_EXISTS-KEY) for the underlying mechanism.
+See [method EXISTS-POS](https://docs.raku.org/language/subscripts#method_EXISTS-POS) and [method EXISTS-KEY](https://docs.raku.org/language/subscripts#method_EXISTS-KEY) for the underlying mechanism.
 
 <a id="delete"></a>
 ## `:delete`
@@ -666,20 +666,20 @@ say %fruit<apple> :delete($flag);  # deletes the element only if $flag is
                                    # true, but always returns the value. 
 ```
 
-可以与 [:exists](https://rakudocs.github.io/language/subscripts#%3Aexists) 以及 [:p](https://rakudocs.github.io/language/subscripts#%3Ap)/[:kv](https://rakudocs.github.io/language/subscripts#%3Akv)/[:k](https://rakudocs.github.io/language/subscripts#%3Ak)/[:v](https://rakudocs.github.io/language/subscripts#%3Av) 副词结合使用 - 在这种情况下返回值将由这些副词决定，但元素同时也将被删除。
+可以与 [:exists](https://docs.raku.org/language/subscripts#%3Aexists) 以及 [:p](https://docs.raku.org/language/subscripts#%3Ap)/[:kv](https://docs.raku.org/language/subscripts#%3Akv)/[:k](https://docs.raku.org/language/subscripts#%3Ak)/[:v](https://docs.raku.org/language/subscripts#%3Av) 副词结合使用 - 在这种情况下返回值将由这些副词决定，但元素同时也将被删除。
 
-Can be combined with the [:exists](https://rakudocs.github.io/language/subscripts#%3Aexists) and [:p](https://rakudocs.github.io/language/subscripts#%3Ap)/[:kv](https://rakudocs.github.io/language/subscripts#%3Akv)/[:k](https://rakudocs.github.io/language/subscripts#%3Ak)/[:v](https://rakudocs.github.io/language/subscripts#%3Av) adverbs - in which case the return value will be determined by those adverbs, but the element will at the same time also be deleted.
+Can be combined with the [:exists](https://docs.raku.org/language/subscripts#%3Aexists) and [:p](https://docs.raku.org/language/subscripts#%3Ap)/[:kv](https://docs.raku.org/language/subscripts#%3Akv)/[:k](https://docs.raku.org/language/subscripts#%3Ak)/[:v](https://docs.raku.org/language/subscripts#%3Av) adverbs - in which case the return value will be determined by those adverbs, but the element will at the same time also be deleted.
 
-底层机制见[方法 DELETE-POS](https://rakudocs.github.io/language/subscripts#method_DELETE-POS) 和[方法 DELETE-KEY](https://rakudocs.github.io/language/subscripts#method_DELETE-KEY)。
+底层机制见[方法 DELETE-POS](https://docs.raku.org/language/subscripts#method_DELETE-POS) 和[方法 DELETE-KEY](https://docs.raku.org/language/subscripts#method_DELETE-KEY)。
 
-See [method DELETE-POS](https://rakudocs.github.io/language/subscripts#method_DELETE-POS) and [method DELETE-KEY](https://rakudocs.github.io/language/subscripts#method_DELETE-KEY) for the underlying mechanism.
+See [method DELETE-POS](https://docs.raku.org/language/subscripts#method_DELETE-POS) and [method DELETE-KEY](https://docs.raku.org/language/subscripts#method_DELETE-KEY) for the underlying mechanism.
 
 <a id="p"></a>
 ## `:p`
 
-以 [Pair](https://rakudocs.github.io/type/Pair) 的形式返回索引/键和元素的值，并安静地跳过不存在的元素：
+以 [Pair](https://docs.raku.org/type/Pair) 的形式返回索引/键和元素的值，并安静地跳过不存在的元素：
 
-Return both the index/key and the value of the element, in the form of a [Pair](https://rakudocs.github.io/type/Pair), and silently skip nonexistent elements:
+Return both the index/key and the value of the element, in the form of a [Pair](https://docs.raku.org/type/Pair), and silently skip nonexistent elements:
 
 ```Raku
 my  @tens = 0, 10, 20, 30;
@@ -699,20 +699,20 @@ If you *don't* want to skip nonexistent elements, use the negated form:
 say %month<Jan Foo Mar>:!p;  # OUTPUT: «(Jan => 1 Foo => (Any) Mar => 3)␤» 
 ```
 
-可以与 [:exists](https://rakudocs.github.io/language/subscripts#%3Aexists) 和 [:delete](https://rakudocs.github.io/language/subscripts#%3Adelete) 副词组合使用。
+可以与 [:exists](https://docs.raku.org/language/subscripts#%3Aexists) 和 [:delete](https://docs.raku.org/language/subscripts#%3Adelete) 副词组合使用。
 
-Can be combined with the [:exists](https://rakudocs.github.io/language/subscripts#%3Aexists) and [:delete](https://rakudocs.github.io/language/subscripts#%3Adelete) adverbs.
+Can be combined with the [:exists](https://docs.raku.org/language/subscripts#%3Aexists) and [:delete](https://docs.raku.org/language/subscripts#%3Adelete) adverbs.
 
-另请参见 [pairs](https://rakudocs.github.io/routine/pairs) 例程。
+另请参见 [pairs](https://docs.raku.org/routine/pairs) 例程。
 
-See also the [pairs](https://rakudocs.github.io/routine/pairs) routine.
+See also the [pairs](https://docs.raku.org/routine/pairs) routine.
 
 <a id="kv"></a>
 ## `:kv`
 
-以 [List](https://rakudocs.github.io/type/List) 的形式返回索引/键和元素的值，并自动跳过不存在的元素。当在[切片](https://rakudocs.github.io/language/subscripts#Slices)上使用时，返回值是键和值交错的单一平面列表：
+以 [List](https://docs.raku.org/type/List) 的形式返回索引/键和元素的值，并自动跳过不存在的元素。当在[切片](https://docs.raku.org/language/subscripts#Slices)上使用时，返回值是键和值交错的单一平面列表：
 
-Return both the index/key and the value of the element, in the form of a [List](https://rakudocs.github.io/type/List), and silently skip nonexistent elements. When used on a [slice](https://rakudocs.github.io/language/subscripts#Slices), the return value is a single flat list of interleaved keys and values:
+Return both the index/key and the value of the element, in the form of a [List](https://docs.raku.org/type/List), and silently skip nonexistent elements. When used on a [slice](https://docs.raku.org/language/subscripts#Slices), the return value is a single flat list of interleaved keys and values:
 
 ```Raku
 my  @tens = 0, 10, 20, 30;
@@ -742,13 +742,13 @@ for %month<Feb Mar>:kv -> $month, $i {
 }
 ```
 
-可以与 [:exists](https://rakudocs.github.io/language/subscripts#%3Aexists) 和 [:delete](https://rakudocs.github.io/language/subscripts#%3Adelete) 副词组合使用。
+可以与 [:exists](https://docs.raku.org/language/subscripts#%3Aexists) 和 [:delete](https://docs.raku.org/language/subscripts#%3Adelete) 副词组合使用。
 
-Can be combined with the [:exists](https://rakudocs.github.io/language/subscripts#%3Aexists) and [:delete](https://rakudocs.github.io/language/subscripts#%3Adelete) adverbs.
+Can be combined with the [:exists](https://docs.raku.org/language/subscripts#%3Aexists) and [:delete](https://docs.raku.org/language/subscripts#%3Adelete) adverbs.
 
-另请参见 [kv](https://rakudocs.github.io/routine/kv) 例程。
+另请参见 [kv](https://docs.raku.org/routine/kv) 例程。
 
-See also the [kv](https://rakudocs.github.io/routine/kv) routine.
+See also the [kv](https://docs.raku.org/routine/kv) routine.
 
 <a id="k"></a>
 ## `:k`
@@ -775,9 +775,9 @@ If you *don't* want to skip nonexistent elements, use the negated form:
 say %month<Jan Foo Mar>:!k;  # OUTPUT: «(Jan Foo Mar)␤» 
 ```
 
-另请参见 [keys](https://rakudocs.github.io/routine/keys) 例程。
+另请参见 [keys](https://docs.raku.org/routine/keys) 例程。
 
-See also the [keys](https://rakudocs.github.io/routine/keys) routine.
+See also the [keys](https://docs.raku.org/routine/keys) routine.
 
 <a id="v"></a>
 ## `:v`
@@ -806,9 +806,9 @@ If you *don't* want to skip nonexistent elements, use the negated form:
 say %month<Jan Foo Mar>:!v;  # OUTPUT: «(1 (Any) 3)␤» 
 ```
 
-另请参见 [values](https://rakudocs.github.io/routine/values) 例程。
+另请参见 [values](https://docs.raku.org/routine/values) 例程。
 
-See also the [values](https://rakudocs.github.io/routine/values) routine.
+See also the [values](https://docs.raku.org/routine/values) routine.
 
 <a id="%E8%87%AA%E5%AE%9A%E4%B9%89%E7%B1%BB%E5%9E%8B--custom-types"></a>
 # 自定义类型 / Custom types
@@ -817,9 +817,9 @@ See also the [values](https://rakudocs.github.io/routine/values) routine.
 
 The subscripting interfaces described on this page are not meant to be exclusive to Raku's built-in collection types - you can (and should) reuse them for any custom type that wants to provide access to data by index or key.
 
-你不必手动重载[后环缀运算符 `[ ]`](https://rakudocs.github.io/routine/[%20]#postcircumfix_[_]) 和[后环缀运算符 `{ }`](https://rakudocs.github.io/routine/%7b%20%7d{postcircumfix{}) 运算符并重新实现它们的所有魔力，要实现这一点，你可以依赖于它们的标准实现分派给一组定义良好的底层方法。例如：
+你不必手动重载[后环缀运算符 `[ ]`](https://docs.raku.org/routine/[%20]#postcircumfix_[_]) 和[后环缀运算符 `{ }`](https://docs.raku.org/routine/%7b%20%7d{postcircumfix{}) 运算符并重新实现它们的所有魔力，要实现这一点，你可以依赖于它们的标准实现分派给一组定义良好的底层方法。例如：
 
-You don't have to manually overload the [`postcircumfix [ ]`](https://rakudocs.github.io/routine/[%20]#postcircumfix_[_]) and [`postcircumfix { }`](https://rakudocs.github.io/routine/%7B%20%7D#postcircumfix_{_}) operators and re-implement all their magic, to achieve that - instead, you can rely on the fact that their standard implementation dispatches to a well-defined set of low-level methods behind the scenes. For example:
+You don't have to manually overload the [`postcircumfix [ ]`](https://docs.raku.org/routine/[%20]#postcircumfix_[_]) and [`postcircumfix { }`](https://docs.raku.org/routine/%7B%20%7D#postcircumfix_{_}) operators and re-implement all their magic, to achieve that - instead, you can rely on the fact that their standard implementation dispatches to a well-defined set of low-level methods behind the scenes. For example:
 
 | when you write: | this gets called behind the scenes:            |
 | --------------- | ---------------------------------------------- |
@@ -828,13 +828,13 @@ You don't have to manually overload the [`postcircumfix [ ]`](https://rakudocs.g
 | @foo[3, 4, 5]   | @foo.AT-POS(3), @foo.AT-POS(4), @foo.AT-POS(5) |
 | @foo[*-1]       | @foo.AT-POS(@foo.elems - 1)                    |
 
-因此，为了使下标正常工作，你只需要实现或委托自定义类型的那些低级方法[下面详细介绍](https://rakudocs.github.io/language/subscripts#Methods_to_implement_for_positional_subscripting)。
+因此，为了使下标正常工作，你只需要实现或委托自定义类型的那些低级方法[下面详细介绍](https://docs.raku.org/language/subscripts#Methods_to_implement_for_positional_subscripting)。
 
-So in order to make subscripting work, you only have to implement or delegate those low-level methods ([detailed below](https://rakudocs.github.io/language/subscripts#Methods_to_implement_for_positional_subscripting)) for your custom type.
+So in order to make subscripting work, you only have to implement or delegate those low-level methods ([detailed below](https://docs.raku.org/language/subscripts#Methods_to_implement_for_positional_subscripting)) for your custom type.
 
-如果这样做了，还应该让你的类型分别组成 [`Positional`](https://rakudocs.github.io/type/Positional) 或 [`Associative`](https://rakudocs.github.io/type/Associative) 角色。这本身并没有添加任何功能，但是声明（并且可能是用于检查）类型实现了相应的下标接口。
+如果这样做了，还应该让你的类型分别组成 [`Positional`](https://docs.raku.org/type/Positional) 或 [`Associative`](https://docs.raku.org/type/Associative) 角色。这本身并没有添加任何功能，但是声明（并且可能是用于检查）类型实现了相应的下标接口。
 
-If you do, you should also let your type compose the [`Positional`](https://rakudocs.github.io/type/Positional) or [`Associative`](https://rakudocs.github.io/type/Associative) role, respectively. This doesn't add any functionality per se, but announces (and may be used to check) that the type implements the corresponding subscripting interface.
+If you do, you should also let your type compose the [`Positional`](https://docs.raku.org/type/Positional) or [`Associative`](https://docs.raku.org/type/Associative) role, respectively. This doesn't add any functionality per se, but announces (and may be used to check) that the type implements the corresponding subscripting interface.
 
 <a id="%E8%87%AA%E5%AE%9A%E4%B9%89%E7%B1%BB%E5%9E%8B%E4%BE%8B%E5%AD%90--custom-type-example"></a>
 ## 自定义类型例子 / Custom type example
@@ -856,9 +856,9 @@ say $request.header<Accept-Language>.perl;  # OUTPUT: «["en", "fr"]␤»
 my $rawheader = $request.header.Str;  # stringify according to HTTP spec 
 ```
 
-实现这个类的一个简单方法是给它一个类型为 [Hash](https://rakudocs.github.io/type/Hash) 的属性，并将所有与下标和迭代相关的功能委托给该属性（使用自定义类型约束以确保用户不会在其中插入任何非法的内容）：
+实现这个类的一个简单方法是给它一个类型为 [Hash](https://docs.raku.org/type/Hash) 的属性，并将所有与下标和迭代相关的功能委托给该属性（使用自定义类型约束以确保用户不会在其中插入任何非法的内容）：
 
-A simple way to implement this class would be to give it an attribute of type [Hash](https://rakudocs.github.io/type/Hash), and delegate all subscripting and iterating related functionality to that attribute (using a custom type constraint to make sure users don't insert anything invalid into it):
+A simple way to implement this class would be to give it an attribute of type [Hash](https://docs.raku.org/type/Hash), and delegate all subscripting and iterating related functionality to that attribute (using a custom type constraint to make sure users don't insert anything invalid into it):
 
 ```Raku
 class HTTP::Header does Associative {
@@ -917,9 +917,9 @@ Note that declaring the method as `multi` and restricting it to `:D` (defined in
 <a id="%E5%AE%9E%E7%8E%B0%E4%BD%8D%E7%BD%AE%E4%B8%8B%E6%A0%87%E7%9A%84%E6%96%B9%E6%B3%95--methods-to-implement-for-positional-subscripting"></a>
 ## 实现位置下标的方法 / Methods to implement for positional subscripting
 
-为了使通过[后环缀运算符 `[ ]`](https://rakudocs.github.io/routine/[%20]#postcircumfix_[_]) 进行的基于索引的下标能够适用于你的自定义类型，你应该至少实现 `elems`、`AT-POS` 和 `EXISTS-POS`-以及下面详细描述的可选的其他类型。
+为了使通过[后环缀运算符 `[ ]`](https://docs.raku.org/routine/[%20]#postcircumfix_[_]) 进行的基于索引的下标能够适用于你的自定义类型，你应该至少实现 `elems`、`AT-POS` 和 `EXISTS-POS`-以及下面详细描述的可选的其他类型。
 
-In order to make index-based subscripting via [`postcircumfix [ ]`](https://rakudocs.github.io/routine/[%20]#postcircumfix_[_]) work for your custom type, you should implement at least `elems`, `AT-POS` and `EXISTS-POS` - and optionally others as detailed below.
+In order to make index-based subscripting via [`postcircumfix [ ]`](https://docs.raku.org/routine/[%20]#postcircumfix_[_]) work for your custom type, you should implement at least `elems`, `AT-POS` and `EXISTS-POS` - and optionally others as detailed below.
 
 <a id="elems-%E6%96%B9%E6%B3%95--method-elems"></a>
 ### elems 方法 / method elems
@@ -928,13 +928,13 @@ In order to make index-based subscripting via [`postcircumfix [ ]`](https://raku
 multi method elems(::?CLASS:D:)
 ```
 
-应返回一个数字，指示对象中有多少可下标元素。可以由用户直接调用，也可以由[后环缀运算符 `[ ]`](https://rakudocs.github.io/routine/[%20]#postcircumfix_[_]) 从末尾索引元素时调用，如 `@foo[*-1]`。
+应返回一个数字，指示对象中有多少可下标元素。可以由用户直接调用，也可以由[后环缀运算符 `[ ]`](https://docs.raku.org/routine/[%20]#postcircumfix_[_]) 从末尾索引元素时调用，如 `@foo[*-1]`。
 
-Expected to return a number indicating how many subscriptable elements there are in the object. May be called by users directly, and is also called by [`postcircumfix [ \]`](https://rakudocs.github.io/routine/[%20]#postcircumfix_[_]) when indexing elements from the end, as in `@foo[*-1]`.
+Expected to return a number indicating how many subscriptable elements there are in the object. May be called by users directly, and is also called by [`postcircumfix [ \]`](https://docs.raku.org/routine/[%20]#postcircumfix_[_]) when indexing elements from the end, as in `@foo[*-1]`.
 
-如果未实现，则你的类型将从 `Any` 继承默认实现，该 `Any` 始终为已定义的调用者返回 `1`，这很可能不是你想要的。因此，如果不能根据位置类型知道元素的数量，则添加一个 [fail](https://rakudocs.github.io/routine/fail) 或者 [die](https://rakudocs.github.io/routine/die) 实现，以避免安静地做错误的事情。
+如果未实现，则你的类型将从 `Any` 继承默认实现，该 `Any` 始终为已定义的调用者返回 `1`，这很可能不是你想要的。因此，如果不能根据位置类型知道元素的数量，则添加一个 [fail](https://docs.raku.org/routine/fail) 或者 [die](https://docs.raku.org/routine/die) 实现，以避免安静地做错误的事情。
 
-If not implemented, your type will inherit the default implementation from `Any` that always returns `1` for defined invocants - which is most likely not what you want. So if the number of elements cannot be known for your positional type, add an implementation that [fail](https://rakudocs.github.io/routine/fail)s or [die](https://rakudocs.github.io/routine/die)s, to avoid silently doing the wrong thing.
+If not implemented, your type will inherit the default implementation from `Any` that always returns `1` for defined invocants - which is most likely not what you want. So if the number of elements cannot be known for your positional type, add an implementation that [fail](https://docs.raku.org/routine/fail)s or [die](https://docs.raku.org/routine/die)s, to avoid silently doing the wrong thing.
 
 <a id="at-pos-%E6%96%B9%E6%B3%95--method-at-pos"></a>
 ### AT-POS 方法 / method AT-POS
@@ -943,13 +943,13 @@ If not implemented, your type will inherit the default implementation from `Any`
 multi method AT-POS (::?CLASS:D: $index)
 ```
 
-应返回位于 `$index` 位置的元素。这就是通常所说的[后环缀运算符 `[ ]`](https://rakudocs.github.io/routine/[%20]#postcircumfix_[_])。
+应返回位于 `$index` 位置的元素。这就是通常所说的[后环缀运算符 `[ ]`](https://docs.raku.org/routine/[%20]#postcircumfix_[_])。
 
-Expected to return the element at position `$index`. This is what [`postcircumfix [ ]`](https://rakudocs.github.io/routine/[%20]#postcircumfix_[_]) normally calls.
+Expected to return the element at position `$index`. This is what [`postcircumfix [ ]`](https://docs.raku.org/routine/[%20]#postcircumfix_[_]) normally calls.
 
-如果你希望元素是可变的（就像它们是内置的 [Array](https://rakudocs.github.io/type/Array) 类型，那么你必须确保以单条目容器的形式返回，容器在读取时计算为元素值，并在赋值时更新它。（请记住使用 `return-rw` 或 `is rw` 例程特性来实现此功能；请参见[示例](https://rakudocs.github.io/language/subscripts#Custom_type_example)。）
+如果你希望元素是可变的（就像它们是内置的 [Array](https://docs.raku.org/type/Array) 类型，那么你必须确保以单条目容器的形式返回，容器在读取时计算为元素值，并在赋值时更新它。（请记住使用 `return-rw` 或 `is rw` 例程特性来实现此功能；请参见[示例](https://docs.raku.org/language/subscripts#Custom_type_example)。）
 
-If you want an element to be mutable (like they are for the built-in [Array](https://rakudocs.github.io/type/Array) type), you'll have to make sure to return it in the form of an item container that evaluates to the element's value when read, and updates it when assigned to. (Remember to use `return-rw` or the `is rw` routine trait to make that work; see the [example](https://rakudocs.github.io/language/subscripts#Custom_type_example).)
+If you want an element to be mutable (like they are for the built-in [Array](https://docs.raku.org/type/Array) type), you'll have to make sure to return it in the form of an item container that evaluates to the element's value when read, and updates it when assigned to. (Remember to use `return-rw` or the `is rw` routine trait to make that work; see the [example](https://docs.raku.org/language/subscripts#Custom_type_example).)
 
 <a id="exists-pos-%E6%96%B9%E6%B3%95--method-exists-pos"></a>
 ### EXISTS-POS 方法 / method EXISTS-POS
@@ -958,17 +958,17 @@ If you want an element to be mutable (like they are for the built-in [Array](htt
 multi method EXISTS-POS (::?CLASS:D: $index)
 ```
 
-预期返回一个 Bool，指示在位置 `$index` 是否有一个元素。这就是[后环缀运算符 `[ ]`](https://rakudocs.github.io/routine/[%20]#postcircumfix_[_]) 在调用如 `@foo[42]:exists` 时调用的内容。
+预期返回一个 Bool，指示在位置 `$index` 是否有一个元素。这就是[后环缀运算符 `[ ]`](https://docs.raku.org/routine/[%20]#postcircumfix_[_]) 在调用如 `@foo[42]:exists` 时调用的内容。
 
-Expected to return a Bool indicating whether or not there is an element at position `$index`. This is what [`postcircumfix [ ]`](https://rakudocs.github.io/routine/[%20]#postcircumfix_[_]) calls when invoked like `@foo[42]:exists`.
+Expected to return a Bool indicating whether or not there is an element at position `$index`. This is what [`postcircumfix [ ]`](https://docs.raku.org/routine/[%20]#postcircumfix_[_]) calls when invoked like `@foo[42]:exists`.
 
 元素的“存在”意味着什么，取决于你的类型。
 
 What "existence" of an element means, is up to your type.
 
-如果你不实现这一点，你的类型将继承 `Any` 中的默认实现，它将返回索引 0 返回 True，并为任何其他索引返回 False - 这可能不是你想要的。因此，如果不能对你的类型进行元素存在性检查，那么添加一个会 [fail](https://rakudocs.github.io/routine/fail) 或 [die](https://rakudocs.github.io/routine/die) 的实现，以避免默默地做错误的事情。
+如果你不实现这一点，你的类型将继承 `Any` 中的默认实现，它将返回索引 0 返回 True，并为任何其他索引返回 False - 这可能不是你想要的。因此，如果不能对你的类型进行元素存在性检查，那么添加一个会 [fail](https://docs.raku.org/routine/fail) 或 [die](https://docs.raku.org/routine/die) 的实现，以避免默默地做错误的事情。
 
-If you don't implement this, your type will inherit the default implementation from `Any`, which returns True for 0 and False for any other index - which is probably not what you want. So if checking for element existence cannot be done for your type, add an implementation that [fail](https://rakudocs.github.io/routine/fail)s or [die](https://rakudocs.github.io/routine/die)s, to avoid silently doing the wrong thing.
+If you don't implement this, your type will inherit the default implementation from `Any`, which returns True for 0 and False for any other index - which is probably not what you want. So if checking for element existence cannot be done for your type, add an implementation that [fail](https://docs.raku.org/routine/fail)s or [die](https://docs.raku.org/routine/die)s, to avoid silently doing the wrong thing.
 
 <a id="delete-pos-%E6%96%B9%E6%B3%95--method-delete-pos"></a>
 ### DELETE-POS 方法 / method DELETE-POS
@@ -977,9 +977,9 @@ If you don't implement this, your type will inherit the default implementation f
 multi method DELETE-POS (::?CLASS:D: $index)
 ```
 
-预期将删除位置 `$index` 处的元素，并返回其所具有的值。这就是[后环缀运算符 `[ ]`](https://rakudocs.github.io/routine/[%20]#postcircumfix_[_]) 在调用如 `@foo[42]:delete` 时调用的内容。
+预期将删除位置 `$index` 处的元素，并返回其所具有的值。这就是[后环缀运算符 `[ ]`](https://docs.raku.org/routine/[%20]#postcircumfix_[_]) 在调用如 `@foo[42]:delete` 时调用的内容。
 
-Expected to delete the element at position `$index`, and return the value it had. This is what [`postcircumfix [ ]`](https://rakudocs.github.io/routine/[%20]#postcircumfix_[_]) calls when invoked like `@foo[42]:delete`.
+Expected to delete the element at position `$index`, and return the value it had. This is what [`postcircumfix [ ]`](https://docs.raku.org/routine/[%20]#postcircumfix_[_]) calls when invoked like `@foo[42]:delete`.
 
 元素的“删除”意味着什么，取决于你的类型。
 
@@ -1024,9 +1024,9 @@ my $x = 10;
 @numbers[5] := $x;
 ```
 
-泛型 [Array](https://rakudocs.github.io/type/Array) 类支持这一点，以允许构建复杂的链数据结构，但是对于更多特定域的类型，它可能没有意义，所以不要觉得必须实现它。如果不这样做，用户在尝试绑定到该类型对象的位置槽时将得到适当的错误消息。
+泛型 [Array](https://docs.raku.org/type/Array) 类支持这一点，以允许构建复杂的链数据结构，但是对于更多特定域的类型，它可能没有意义，所以不要觉得必须实现它。如果不这样做，用户在尝试绑定到该类型对象的位置槽时将得到适当的错误消息。
 
-The generic [Array](https://rakudocs.github.io/type/Array) class supports this in order to allow building complex linked data structures, but for more domain-specific types it may not make sense, so don't feel compelled to implement it. If you don't, users will get an appropriate error message when they try to bind to a positional slot of an object of this type.
+The generic [Array](https://docs.raku.org/type/Array) class supports this in order to allow building complex linked data structures, but for more domain-specific types it may not make sense, so don't feel compelled to implement it. If you don't, users will get an appropriate error message when they try to bind to a positional slot of an object of this type.
 
 <a id="store-%E6%96%B9%E6%B3%95--method-store"></a>
 ### STORE 方法 / method STORE
@@ -1083,9 +1083,9 @@ This code takes into account the value of `$initialize`, which is set to `True` 
 <a id="%E5%AE%9E%E7%8E%B0%E5%85%B3%E8%81%94%E4%B8%8B%E6%A0%87%E7%9A%84%E6%96%B9%E6%B3%95--methods-to-implement-for-associative-subscripting"></a>
 ## 实现关联下标的方法 / Methods to implement for associative subscripting
 
-为了使基于键的下标通过[后环缀运算符 `{ }`](https://rakudocs.github.io/routine/%7B%20%7D#postcircumfix_{_}) 为你的自定义类型工作，你应该至少实现 `AT-KEY` 和 `EXISTS-KEY` - 和其他选项，详见下文。
+为了使基于键的下标通过[后环缀运算符 `{ }`](https://docs.raku.org/routine/%7B%20%7D#postcircumfix_{_}) 为你的自定义类型工作，你应该至少实现 `AT-KEY` 和 `EXISTS-KEY` - 和其他选项，详见下文。
 
-In order to make key-based subscripting via [`postcircumfix { }`](https://rakudocs.github.io/routine/%7B%20%7D#postcircumfix_{_}) work for your custom type, you should implement at least `AT-KEY` and `EXISTS-KEY` - and optionally others as detailed below.
+In order to make key-based subscripting via [`postcircumfix { }`](https://docs.raku.org/routine/%7B%20%7D#postcircumfix_{_}) work for your custom type, you should implement at least `AT-KEY` and `EXISTS-KEY` - and optionally others as detailed below.
 
 <a id="at-key-%E6%96%B9%E6%B3%95--method-at-key"></a>
 ### AT-KEY 方法 / method AT-KEY
@@ -1094,13 +1094,13 @@ In order to make key-based subscripting via [`postcircumfix { }`](https://rakudo
 multi method AT-KEY (::?CLASS:D: $key)
 ```
 
-预期将返回与 `$key` 相关的元素。这是[后环缀运算符 `{ }`](https://rakudocs.github.io/routine/%7B%20%7D#postcircumfix_{_}) 通常的调用方式。
+预期将返回与 `$key` 相关的元素。这是[后环缀运算符 `{ }`](https://docs.raku.org/routine/%7B%20%7D#postcircumfix_{_}) 通常的调用方式。
 
-Expected to return the element associated with `$key`. This is what [`postcircumfix { }`](https://rakudocs.github.io/routine/%7B%20%7D#postcircumfix_{_}) normally calls.
+Expected to return the element associated with `$key`. This is what [`postcircumfix { }`](https://docs.raku.org/routine/%7B%20%7D#postcircumfix_{_}) normally calls.
 
-如果你希望一个元素是可变的（就像内置的 [Hash](https://rakudocs.github.io/type/Hash) 类型)那样），你必须确保以条目容器的形式返回它，该容器在读取时计算元素的值，并在给它赋值时更新它。(请记住使用 `return-rw` 或 `is rw` 常规特征来实现该功能；请参见[示例](https://rakudocs.github.io/language/subscripts#Custom_type_example)。
+如果你希望一个元素是可变的（就像内置的 [Hash](https://docs.raku.org/type/Hash) 类型)那样），你必须确保以条目容器的形式返回它，该容器在读取时计算元素的值，并在给它赋值时更新它。(请记住使用 `return-rw` 或 `is rw` 常规特征来实现该功能；请参见[示例](https://docs.raku.org/language/subscripts#Custom_type_example)。
 
-If you want an element to be mutable (like they are for the built-in [Hash](https://rakudocs.github.io/type/Hash) type), you'll have to make sure to return it in the form of an item container that evaluates to the element's value when read, and updates it when assigned to. (Remember to use `return-rw` or the `is rw` routine trait to make that work; see the [example](https://rakudocs.github.io/language/subscripts#Custom_type_example).)
+If you want an element to be mutable (like they are for the built-in [Hash](https://docs.raku.org/type/Hash) type), you'll have to make sure to return it in the form of an item container that evaluates to the element's value when read, and updates it when assigned to. (Remember to use `return-rw` or the `is rw` routine trait to make that work; see the [example](https://docs.raku.org/language/subscripts#Custom_type_example).)
 
 另一方面，如果你希望你的集合是只读的，请直接返回非容器值。
 
@@ -1113,17 +1113,17 @@ On the other hand if you want your collection to be read-only, feel free to retu
 multi method EXISTS-KEY (::?CLASS:D: $key)
 ```
 
-预期返回一个 Bool，指示是否存在与 `$key` 相关的元素。这就是[后环缀运算符 `{ }`](https://rakudocs.github.io/routine/%7B%20%7D#postcircumfix_{_}) 在调用如 `%foo<aa>:exists` 时调用的内容。
+预期返回一个 Bool，指示是否存在与 `$key` 相关的元素。这就是[后环缀运算符 `{ }`](https://docs.raku.org/routine/%7B%20%7D#postcircumfix_{_}) 在调用如 `%foo<aa>:exists` 时调用的内容。
 
-Expected to return a Bool indicating whether or not there is an element associated with `$key`. This is what [`postcircumfix { }`](https://rakudocs.github.io/routine/%7B%20%7D#postcircumfix_{_}) calls when invoked like `%foo<aa>:exists`.
+Expected to return a Bool indicating whether or not there is an element associated with `$key`. This is what [`postcircumfix { }`](https://docs.raku.org/routine/%7B%20%7D#postcircumfix_{_}) calls when invoked like `%foo<aa>:exists`.
 
 元素的“存在”意味着什么，取决于你的类型。
 
 What "existence" of an element means, is up to your type.
 
-如果不实现这一点，类型将继承 `Any` 的默认实现，`Any` 总是返回 False - 这可能不是你想要的结果。因此，如果不能对你的类型进行元素存在性检查，那么添加一个会 [fail](https://rakudocs.github.io/routine/fail) 或 [die](https://rakudocs.github.io/routine/die) 的实现，以避免默默地做错误的事情。
+如果不实现这一点，类型将继承 `Any` 的默认实现，`Any` 总是返回 False - 这可能不是你想要的结果。因此，如果不能对你的类型进行元素存在性检查，那么添加一个会 [fail](https://docs.raku.org/routine/fail) 或 [die](https://docs.raku.org/routine/die) 的实现，以避免默默地做错误的事情。
 
-If you don't implement this, your type will inherit the default implementation from `Any`, which always returns False - which is probably not what you want. So if checking for element existence cannot be done for your type, add an implementation that [fail](https://rakudocs.github.io/routine/fail)s or [die](https://rakudocs.github.io/routine/die)s, to avoid silently doing the wrong thing.
+If you don't implement this, your type will inherit the default implementation from `Any`, which always returns False - which is probably not what you want. So if checking for element existence cannot be done for your type, add an implementation that [fail](https://docs.raku.org/routine/fail)s or [die](https://docs.raku.org/routine/die)s, to avoid silently doing the wrong thing.
 
 <a id="delete-key-%E6%96%B9%E6%B3%95--method-delete-key"></a>
 ### DELETE-KEY 方法 / method DELETE-KEY
@@ -1132,9 +1132,9 @@ If you don't implement this, your type will inherit the default implementation f
 multi method DELETE-KEY (::?CLASS:D: $key)
 ```
 
-预期将删除与 `$key` 相关的元素，并返回其所具有的值。这就是[后环缀运算符 `{ }`](https://rakudocs.github.io/routine/%7B%20%7D#postcircumfix_{_}) 在调用如 `%foo<aa>:delete` 时调用的内容。
+预期将删除与 `$key` 相关的元素，并返回其所具有的值。这就是[后环缀运算符 `{ }`](https://docs.raku.org/routine/%7B%20%7D#postcircumfix_{_}) 在调用如 `%foo<aa>:delete` 时调用的内容。
 
-Expected to delete the element associated with `$key`, and return the value it had. This is what [`postcircumfix { }`](https://rakudocs.github.io/routine/%7B%20%7D#postcircumfix_{_}) calls when invoked like `%foo<aa>:delete`.
+Expected to delete the element associated with `$key`, and return the value it had. This is what [`postcircumfix { }`](https://docs.raku.org/routine/%7B%20%7D#postcircumfix_{_}) calls when invoked like `%foo<aa>:delete`.
 
 一个元素的“删除”意味着什么，取决于你的类型 - 尽管它通常应该导致 `EXISTS-KEY` 方法对那个键的返回值为 `False`。
 
@@ -1179,9 +1179,9 @@ my $x = 10;
 %age<Claire> := $x;
 ```
 
-泛型 [Hash](https://rakudocs.github.io/type/Hash) 类支持这一点，以允许构建复杂的链数据结构，但对于更多特定于域的类型，它可能没有意义，所以不必感到必须实现它。如果没有实现，则当用户试图绑定到此类型对象的关联插槽时，将获得适当的错误消息。
+泛型 [Hash](https://docs.raku.org/type/Hash) 类支持这一点，以允许构建复杂的链数据结构，但对于更多特定于域的类型，它可能没有意义，所以不必感到必须实现它。如果没有实现，则当用户试图绑定到此类型对象的关联插槽时，将获得适当的错误消息。
 
-The generic [Hash](https://rakudocs.github.io/type/Hash) class supports this in order to allow building complex linked data structures, but for more domain-specific types it may not make sense, so don't feel compelled to implement it. If you don't, users will get an appropriate error message when they try to bind to an associative slot of an object of this type.
+The generic [Hash](https://docs.raku.org/type/Hash) class supports this in order to allow building complex linked data structures, but for more domain-specific types it may not make sense, so don't feel compelled to implement it. If you don't, users will get an appropriate error message when they try to bind to an associative slot of an object of this type.
 
 <a id="store-%E6%96%B9%E6%B3%95--method-store-1"></a>
 ### STORE 方法 / method STORE

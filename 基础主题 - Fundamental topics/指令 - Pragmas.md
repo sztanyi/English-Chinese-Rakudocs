@@ -1,4 +1,4 @@
-原文：https://rakudocs.github.io/language/pragmas
+原文：https://docs.raku.org/language/pragmas
 
 # 指令 / Pragmas
 
@@ -86,12 +86,12 @@ This pragma is not currently part of any Raku specification, but is present in R
 <a id="monkey-see-no-eval"></a>
 ## MONKEY-SEE-NO-EVAL
 
-[EVAL](https://rakudocs.github.io/routine/EVAL)
+[EVAL](https://docs.raku.org/routine/EVAL)
 
 <a id="monkey-typing"></a>
 ## MONKEY-TYPING
 
-[augment](https://rakudocs.github.io/syntax/augment)
+[augment](https://docs.raku.org/syntax/augment)
 
 <a id="monkey"></a>
 ## MONKEY
@@ -117,9 +117,9 @@ dynamic-scope, pragma
 <a id="dynamic-scope"></a>
 ## dynamic-scope
 
-将 [is dynamic](https://rakudocs.github.io/type/Variable#trait_is_dynamic) 特性应用于指令的词法作用域中的变量。通过将变量的名称作为参数列出，效果可以限制在变量的子集上。默认情况下，适用于*所有*变量。
+将 [is dynamic](https://docs.raku.org/type/Variable#trait_is_dynamic) 特性应用于指令的词法作用域中的变量。通过将变量的名称作为参数列出，效果可以限制在变量的子集上。默认情况下，适用于*所有*变量。
 
-Applies the [is dynamic](https://rakudocs.github.io/type/Variable#trait_is_dynamic) trait to variables in the pragma's lexical scope. The effect can be restricted to a subset of variables by listing their names as arguments. By default applies to *all* variables.
+Applies the [is dynamic](https://docs.raku.org/type/Variable#trait_is_dynamic) trait to variables in the pragma's lexical scope. The effect can be restricted to a subset of variables by listing their names as arguments. By default applies to *all* variables.
 
 ```Raku
 # Apply is dynamic only to $x, but not to $y
@@ -146,20 +146,20 @@ This pragma is not currently part of any Raku specification and was added in Rak
 <a id="experimental"></a>
 ## experimental
 
-允许使用[实验特性](https://rakudocs.github.io/language/experimental)
+允许使用[实验特性](https://docs.raku.org/language/experimental)
 
-Allows use of [experimental features](https://rakudocs.github.io/language/experimental)
+Allows use of [experimental features](https://docs.raku.org/language/experimental)
 
 <a id="fatal"></a>
 ## fatal
 
-一种词法指令，使例程发生致命错误时返回 [Failure](https://rakudocs.github.io/type/Failure)。例如，前缀 `+` 在一个 [Str](https://rakudocs.github.io/type/Str) 上将其类型强制转换到 [Numeric](https://rakudocs.github.io/type/Numeric)，但如果字符串包含非数字字符，则返回一个 [Failure](https://rakudocs.github.io/type/Failure)。保存那个 [Failure](https://rakudocs.github.io/type/Failure) 至变量中可以防止它成为 sink 上下文，因此下面的第一个代码块到达 `say $x.^name;` 行并在输出中打印 `Failure`。
+一种词法指令，使例程发生致命错误时返回 [Failure](https://docs.raku.org/type/Failure)。例如，前缀 `+` 在一个 [Str](https://docs.raku.org/type/Str) 上将其类型强制转换到 [Numeric](https://docs.raku.org/type/Numeric)，但如果字符串包含非数字字符，则返回一个 [Failure](https://docs.raku.org/type/Failure)。保存那个 [Failure](https://docs.raku.org/type/Failure) 至变量中可以防止它成为 sink 上下文，因此下面的第一个代码块到达 `say $x.^name;` 行并在输出中打印 `Failure`。
 
-A lexical pragma that makes [Failures](https://rakudocs.github.io/type/Failure) returned from routines fatal. For example, prefix `+` on a [Str](https://rakudocs.github.io/type/Str) coerces it to [Numeric](https://rakudocs.github.io/type/Numeric), but will return a [Failure](https://rakudocs.github.io/type/Failure) if the string contains non-numeric characters. Saving that [Failure](https://rakudocs.github.io/type/Failure) in a variable prevents it from being sunk, and so the first code block below reaches the `say $x.^name;` line and prints `Failure` in output.
+A lexical pragma that makes [Failures](https://docs.raku.org/type/Failure) returned from routines fatal. For example, prefix `+` on a [Str](https://docs.raku.org/type/Str) coerces it to [Numeric](https://docs.raku.org/type/Numeric), but will return a [Failure](https://docs.raku.org/type/Failure) if the string contains non-numeric characters. Saving that [Failure](https://docs.raku.org/type/Failure) in a variable prevents it from being sunk, and so the first code block below reaches the `say $x.^name;` line and prints `Failure` in output.
 
-在第二个块中，启用了 `use fatal` 指令，永远不会到达 `say` 行，因为从前缀运算符 `+` 返回的 [Failure](https://rakudocs.github.io/type/Failure) 中的 [Exception](https://rakudocs.github.io/type/Exception) 被抛出，引发 `CATCH` 块会运行，输出 `Caught...` 行。请注意，这两个块都是相同的程序，`use fatal` 只会影响它在其中使用的词法块：
+在第二个块中，启用了 `use fatal` 指令，永远不会到达 `say` 行，因为从前缀运算符 `+` 返回的 [Failure](https://docs.raku.org/type/Failure) 中的 [Exception](https://docs.raku.org/type/Exception) 被抛出，引发 `CATCH` 块会运行，输出 `Caught...` 行。请注意，这两个块都是相同的程序，`use fatal` 只会影响它在其中使用的词法块：
 
-In the second block, the `use fatal` pragma is enabled, so the `say` line is never reached because the [Exception](https://rakudocs.github.io/type/Exception) contained in the [Failure](https://rakudocs.github.io/type/Failure) returned from prefix `+` gets thrown and the `CATCH` block gets run, printing the `Caught...` line. Note that both blocks are the same program and `use fatal` only affects the lexical block it was used in:
+In the second block, the `use fatal` pragma is enabled, so the `say` line is never reached because the [Exception](https://docs.raku.org/type/Exception) contained in the [Failure](https://docs.raku.org/type/Failure) returned from prefix `+` gets thrown and the `CATCH` block gets run, printing the `Caught...` line. Note that both blocks are the same program and `use fatal` only affects the lexical block it was used in:
 
 ```Raku
 {
@@ -176,9 +176,9 @@ In the second block, the `use fatal` pragma is enabled, so the `say` line is nev
 } # OUTPUT: «Caught X::Str::Numeric␤»
 ```
 
-在 [`try` 代码块](https://rakudocs.github.io/language/exceptions#index-entry-try_blocks-try)中，`fatal` 指令是默认开启的，你可以用 `no fatal` *禁用*它：
+在 [`try` 代码块](https://docs.raku.org/language/exceptions#index-entry-try_blocks-try)中，`fatal` 指令是默认开启的，你可以用 `no fatal` *禁用*它：
 
-Inside [`try` blocks](https://rakudocs.github.io/language/exceptions#index-entry-try_blocks-try), the `fatal` pragma is enabled by default, and you can *disable* it with `no fatal`:
+Inside [`try` blocks](https://docs.raku.org/language/exceptions#index-entry-try_blocks-try), the `fatal` pragma is enabled by default, and you can *disable* it with `no fatal`:
 
 ```Raku
 try {
@@ -249,24 +249,24 @@ use isms;   # allow for Perl5 and C++ isms
 <a id="lib"></a>
 ## lib
 
-此指令将子目录添加到库搜索路径中，以便解释器能够[找到模块](https://rakudocs.github.io/language/modules#Finding_modules)。
+此指令将子目录添加到库搜索路径中，以便解释器能够[找到模块](https://docs.raku.org/language/modules#Finding_modules)。
 
-This pragma adds subdirectories to the library search path so that the interpreter can [find the modules](https://rakudocs.github.io/language/modules#Finding_modules).
+This pragma adds subdirectories to the library search path so that the interpreter can [find the modules](https://docs.raku.org/language/modules#Finding_modules).
 
 ```Raku
 use lib <lib /opt/lib /usr/local/lib>;
 ```
 
-这将搜索列表中传递的目录。请查看[模块文档](https://rakudocs.github.io/language/modules#use)以获得更多示例。
+这将搜索列表中传递的目录。请查看[模块文档](https://docs.raku.org/language/modules#use)以获得更多示例。
 
-This will search the directories passed in a list. Please check [the modules documentation](https://rakudocs.github.io/language/modules#use) for more examples.
+This will search the directories passed in a list. Please check [the modules documentation](https://docs.raku.org/language/modules#use) for more examples.
 
 <a id="newline"></a>
 ## newline
 
-在调用的作用域中设置 [$?NL](https://rakudocs.github.io/language/variables#Compile-time_variables)常量的值。可能的值是 `:lf`（这是默认的，表示 Line Feed），`:crlf`（表示回车，line Feed）和 `:cr`（表示 Carriage Return）。
+在调用的作用域中设置 [$?NL](https://docs.raku.org/language/variables#Compile-time_variables)常量的值。可能的值是 `:lf`（这是默认的，表示 Line Feed），`:crlf`（表示回车，line Feed）和 `:cr`（表示 Carriage Return）。
 
-Set the value of the [$?NL](https://rakudocs.github.io/language/variables#Compile-time_variables) constant in the scope it is called. Possible values are `:lf` (which is the default, indicating Line Feed), `:crlf` (indicating Carriage Return, Line Feed) and `:cr` (indicating Carriage Return).
+Set the value of the [$?NL](https://docs.raku.org/language/variables#Compile-time_variables) constant in the scope it is called. Possible values are `:lf` (which is the default, indicating Line Feed), `:crlf` (indicating Carriage Return, Line Feed) and `:cr` (indicating Carriage Return).
 
 <a id="nqp"></a>
 ## nqp
@@ -303,9 +303,9 @@ The default allows precompilation of source code, specifically if used in a modu
 <a id="soft"></a>
 ## soft
 
-[重新调度](https://rakudocs.github.io/language/functions#Re-dispatching)，[内联](https://rakudocs.github.io/language/functions#index-entry-use_soft_(pragma))
+[重新调度](https://docs.raku.org/language/functions#Re-dispatching)，[内联](https://docs.raku.org/language/functions#index-entry-use_soft_(pragma))
 
-[Re-dispatching](https://rakudocs.github.io/language/functions#Re-dispatching), [inlining](https://rakudocs.github.io/language/functions#index-entry-use_soft_(pragma))
+[Re-dispatching](https://docs.raku.org/language/functions#Re-dispatching), [inlining](https://docs.raku.org/language/functions#index-entry-use_soft_(pragma))
 
 <a id="strict"></a>
 ## strict
@@ -328,14 +328,14 @@ When `use trace` is activated, any line of code executing will be written to STD
 <a id="v6"></a>
 ## v6
 
-[Writing Tests](https://rakudocs.github.io/language/testing#Writing_tests)
+[Writing Tests](https://docs.raku.org/language/testing#Writing_tests)
 
 <a id="variables"></a>
 ## variables
 
-[已定义变量指令](https://rakudocs.github.io/language/variables#Default_defined_variables_pragma)
+[已定义变量指令](https://docs.raku.org/language/variables#Default_defined_variables_pragma)
 
-[Defined Variables Pragma](https://rakudocs.github.io/language/variables#Default_defined_variables_pragma)
+[Defined Variables Pragma](https://docs.raku.org/language/variables#Default_defined_variables_pragma)
 
 <a id="worries"></a>
 ## worries

@@ -1,4 +1,4 @@
-原文：https://rakudocs.github.io/language/grammar_tutorial
+原文：https://docs.raku.org/language/grammar_tutorial
 
 # 语法教程 / Grammar tutorial
 
@@ -52,9 +52,9 @@ The string could be a file that you're looking to break into sections; perhaps a
 <a id="%E8%AF%AD%E6%B3%95%E7%9A%84%E5%B9%BF%E4%B9%89%E6%A6%82%E5%BF%B5--the-broad-concept-of-grammars"></a>
 ## 语法的广义概念 / The broad concept of grammars
 
-正则表达式（[正则表达式](https://rakudocs.github.io/language/regexes)）对于在字符串中查找模式非常有效。但是，对于某些任务，比如一次找到多个模式，或者组合模式，或者测试可能围绕字符串正则表达式的模式，仅仅这样做是不够的。
+正则表达式（[正则表达式](https://docs.raku.org/language/regexes)）对于在字符串中查找模式非常有效。但是，对于某些任务，比如一次找到多个模式，或者组合模式，或者测试可能围绕字符串正则表达式的模式，仅仅这样做是不够的。
 
-Regular expressions ([Regexes](https://rakudocs.github.io/language/regexes)) work well for finding patterns in strings. However, for some tasks, like finding multiple patterns at once, or combining patterns, or testing for patterns that may surround strings regular expressions, alone, are not enough.
+Regular expressions ([Regexes](https://docs.raku.org/language/regexes)) work well for finding patterns in strings. However, for some tasks, like finding multiple patterns at once, or combining patterns, or testing for patterns that may surround strings regular expressions, alone, are not enough.
 
 使用 HTML 时，可以定义语法来识别 HTML 标记，包括开头和结尾元素以及中间的文本。然后，可以将这些元素组织到数据结构中，如数组或散列。
 
@@ -105,9 +105,9 @@ As already mentioned, grammars are declared using the *grammar* keyword and its 
 - Token methods are faster than regex methods and ignore whitespace.
 - Rule methods are the same as token methods except whitespace is not ignored.
 
-当一个方法（regex、token 或 rule）在语法中匹配时，匹配的字符串被放入[匹配对象](https://rakudocs.github.io/type/Match)中，其键为方法名相同。
+当一个方法（regex、token 或 rule）在语法中匹配时，匹配的字符串被放入[匹配对象](https://docs.raku.org/type/Match)中，其键为方法名相同。
 
-When a method (regex, token or rule) matches in the grammar, the string matched is put into a [match object](https://rakudocs.github.io/type/Match) and keyed with the same name as the method.
+When a method (regex, token or rule) matches in the grammar, the string matched is put into a [match object](https://docs.raku.org/type/Match) and keyed with the same name as the method.
 
 ```Raku
 grammar G {
@@ -131,7 +131,7 @@ say $/<thingy>.perl;
 # OUTPUT: «Match.new(made => Any, pos => 3, orig => "Þor is mighty", hash => Map.new(()), list => (), from => 0)␤» 
 ```
 
-The two first output lines show that `$match` contains a `Match` objects with the results of the parsing; but those results are also assigned to the [match variable `$/`](https://rakudocs.github.io/syntax/$$SOLIDUS). Either match object can be keyed, as indicated above, by `thingy` to return the match for that particular `token`.
+The two first output lines show that `$match` contains a `Match` objects with the results of the parsing; but those results are also assigned to the [match variable `$/`](https://docs.raku.org/syntax/$$SOLIDUS). Either match object can be keyed, as indicated above, by `thingy` to return the match for that particular `token`.
 
 The `TOP` method (whether regex, token, or rule) is the overarching pattern that must match everything (by default). If the parsed string doesn't match the TOP regex, your returned match object will be empty (`Nil`).
 
@@ -455,9 +455,9 @@ But not really; there's a little more.
 <a id="keeping-grammars-with-actions-tidy-with-make-and-made"></a>
 ## Keeping grammars with actions tidy with `make` and `made`
 
-If the grammar calls the action above on data, the data method will be called, but nothing will show up in the big `TOP` grammar match result returned to our program. In order to make the action results show up, we need to call [make](https://rakudocs.github.io/routine/make) on that result. The result can be many things, including strings, array or hash structures.
+If the grammar calls the action above on data, the data method will be called, but nothing will show up in the big `TOP` grammar match result returned to our program. In order to make the action results show up, we need to call [make](https://docs.raku.org/routine/make) on that result. The result can be many things, including strings, array or hash structures.
 
-You can imagine that the `make` places the result in a special contained area for a grammar. Everything that we `make` can be accessed later by [made](https://rakudocs.github.io/routine/made).
+You can imagine that the `make` places the result in a special contained area for a grammar. Everything that we `make` can be accessed later by [made](https://docs.raku.org/routine/made).
 
 So instead of the REST-actions class above, we should write:
 
@@ -620,6 +620,6 @@ This example is a reduced portion of a parser. Let's focus more on the feature i
 
 First, we can add actions inside the grammar itself, and such actions are performed once the control flow of the regex arrives at them. Note that action object's method will always be performed after the whole regex item matched. Second, it shows what `make` really does, which is no more than a sugar of `$/.made = ...`. And this trick introduces a way to pass messages from within a regex item.
 
-Hopefully this has helped introduce you to the grammars in Raku and shown you how grammars and grammar action classes work together. For more information, check out the more advanced [Perl Grammar Guide](https://rakudocs.github.io/language/grammars).
+Hopefully this has helped introduce you to the grammars in Raku and shown you how grammars and grammar action classes work together. For more information, check out the more advanced [Perl Grammar Guide](https://docs.raku.org/language/grammars).
 
 For more grammar debugging, see [Grammar::Debugger](https://github.com/jnthn/grammar-debugger). This provides breakpoints and color-coded MATCH and FAIL output for each of your grammar tokens.

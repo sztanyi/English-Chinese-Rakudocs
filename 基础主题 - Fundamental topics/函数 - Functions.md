@@ -1,4 +1,4 @@
-原文：https://rakudocs.github.io/language/functions
+原文：https://docs.raku.org/language/functions
 
 # 函数 / Functions
 
@@ -6,21 +6,21 @@ Raku 中的函数和函数式编程
 
 Functions and functional programming in Raku
 
-例程是 Raku 重用代码的方法之一。它们有几种形式，最显著的是 [方法](https://rakudocs.github.io/type/Method)，它们属于类和角色，与一个对象相关联；以及函数（也称为*子例程*或 [sub](https://rakudocs.github.io/type/Sub)），可以独立于对象调用。
+例程是 Raku 重用代码的方法之一。它们有几种形式，最显著的是 [方法](https://docs.raku.org/type/Method)，它们属于类和角色，与一个对象相关联；以及函数（也称为*子例程*或 [sub](https://docs.raku.org/type/Sub)），可以独立于对象调用。
 
-Routines are one of the means Raku has to reuse code. They come in several forms, most notably [methods](https://rakudocs.github.io/type/Method), which belong in classes and roles and are associated with an object; and functions (also called *subroutines* or [sub](https://rakudocs.github.io/type/Sub)s, for short), which can be called independently of objects.
+Routines are one of the means Raku has to reuse code. They come in several forms, most notably [methods](https://docs.raku.org/type/Method), which belong in classes and roles and are associated with an object; and functions (also called *subroutines* or [sub](https://docs.raku.org/type/Sub)s, for short), which can be called independently of objects.
 
 子例程默认为词法（`my`）作用域，对它们的调用通常在编译时解决。
 
 Subroutines default to lexical (`my`) scoping, and calls to them are generally resolved at compile time.
 
-子例程可以有一个[签名](https://rakudocs.github.io/type/Signature)，也称为*参数列表*，它指定签名期望的参数（如果有）。它可以指定参数的数量和类型，以及返回值。
+子例程可以有一个[签名](https://docs.raku.org/type/Signature)，也称为*参数列表*，它指定签名期望的参数（如果有）。它可以指定参数的数量和类型，以及返回值。
 
-Subroutines can have a [signature](https://rakudocs.github.io/type/Signature), also called *parameter list*, which specifies which, if any, arguments the signature expects. It can specify (or leave open) both the number and types of arguments, and the return value.
+Subroutines can have a [signature](https://docs.raku.org/type/Signature), also called *parameter list*, which specifies which, if any, arguments the signature expects. It can specify (or leave open) both the number and types of arguments, and the return value.
 
-子例程的自省通过 [`Routine`](https://rakudocs.github.io/type/Routine) 提供。
+子例程的自省通过 [`Routine`](https://docs.raku.org/type/Routine) 提供。
 
-Introspection on subroutines is provided via [`Routine`](https://rakudocs.github.io/type/Routine).
+Introspection on subroutines is provided via [`Routine`](https://docs.raku.org/type/Routine).
 
 <!-- MarkdownTOC -->
 
@@ -66,18 +66,18 @@ Introspection on subroutines is provided via [`Routine`](https://rakudocs.github
 <a id="%E5%AD%90%E4%BE%8B%E7%A8%8B-subroutines"></a>
 ## 子例程 Subroutines
 
-创建子例程的基本方法是使用 `sub` 声明符，后跟可选的[标识符](https://rakudocs.github.io/language/syntax#Identifiers)：
+创建子例程的基本方法是使用 `sub` 声明符，后跟可选的[标识符](https://docs.raku.org/language/syntax#Identifiers)：
 
-The basic way to create a subroutine is to use the `sub` declarator followed by an optional [identifier](https://rakudocs.github.io/language/syntax#Identifiers):
+The basic way to create a subroutine is to use the `sub` declarator followed by an optional [identifier](https://docs.raku.org/language/syntax#Identifiers):
 
 ```Raku
 sub my-func { say "Look ma, no args!" }
 my-func;
 ```
 
-sub 声明符返回可以存储在任何容器中的 [sub](https://rakudocs.github.io/type/Sub) 类型的值：
+sub 声明符返回可以存储在任何容器中的 [sub](https://docs.raku.org/type/Sub) 类型的值：
 
-The sub declarator returns a value of type [Sub](https://rakudocs.github.io/type/Sub) that can be stored in any container:
+The sub declarator returns a value of type [Sub](https://docs.raku.org/type/Sub) that can be stored in any container:
 
 ```Raku
 my &c = sub { say "Look ma, no name!" }
@@ -104,9 +104,9 @@ foo;
 
 This will become more useful once macros are added to Raku.
 
-要让子例程接受参数，在子例程的名称和其主体之间插入一个[签名](https://rakudocs.github.io/type/Signature)，在括号中：
+要让子例程接受参数，在子例程的名称和其主体之间插入一个[签名](https://docs.raku.org/type/Signature)，在括号中：
 
-To have the subroutine take arguments, a [signature](https://rakudocs.github.io/type/Signature) goes between the subroutine's name and its body, in parentheses:
+To have the subroutine take arguments, a [signature](https://docs.raku.org/type/Signature) goes between the subroutine's name and its body, in parentheses:
 
 ```Raku
 sub exclaim ($phrase) {
@@ -115,9 +115,9 @@ sub exclaim ($phrase) {
 exclaim "Howdy, World";
 ```
 
-默认情况下，子例程为[词法作用域](https://rakudocs.github.io/syntax/my)。也就是说，`sub foo {...}` 与 `my sub foo {...}` 相同，仅在当前作用域内定义。
+默认情况下，子例程为[词法作用域](https://docs.raku.org/syntax/my)。也就是说，`sub foo {...}` 与 `my sub foo {...}` 相同，仅在当前作用域内定义。
 
-By default, subroutines are [lexically scoped](https://rakudocs.github.io/syntax/my). That is, `sub foo {...}` is the same as `my sub foo {...}` and is only defined within the current scope.
+By default, subroutines are [lexically scoped](https://docs.raku.org/syntax/my). That is, `sub foo {...}` is the same as `my sub foo {...}` and is only defined within the current scope.
 
 ```Raku
 sub escape($str) {
@@ -148,9 +148,9 @@ Subroutines don't have to be named. If unnamed, they're called *anonymous* subro
 say sub ($a, $b) { $a ** 2 + $b ** 2 }(3, 4) # OUTPUT: «25␤» 
 ```
 
-但在这种情况下，通常需要使用更简洁的 [block](https://rakudocs.github.io/type/Block) 语法。子例程和块可以就地调用，如上面的示例所示。
+但在这种情况下，通常需要使用更简洁的 [block](https://docs.raku.org/type/Block) 语法。子例程和块可以就地调用，如上面的示例所示。
 
-But in this case, it's often desirable to use the more succinct [block](https://rakudocs.github.io/type/Block) syntax. Subroutines and blocks can be called in place, as in the example above.
+But in this case, it's often desirable to use the more succinct [block](https://docs.raku.org/type/Block) syntax. Subroutines and blocks can be called in place, as in the example above.
 
 ```Raku
 say -> $a, $b { $a ** 2 + $b ** 2 }(3, 4)    # OUTPUT: «25␤» 
@@ -167,9 +167,9 @@ say { $^a ** 2 + $^b ** 2 }(3, 4)            # OUTPUT: «25␤»
 <a id="%E4%BB%A3%E7%A0%81%E5%9D%97%E5%92%8C%E6%8B%89%E5%A7%86%E8%BE%BE--blocks-and-lambdas"></a>
 ## 代码块和拉姆达 / Blocks and lambdas
 
-每当你看到类似于 `{ $_ + 42 }`、 `-> $a, $b { $a ** $b }`，或 `{ $^text.indent($:spaces) }`，那就是 [Block](https://rakudocs.github.io/type/Block) 语法。它在 `if`、 `for` 和 `while` 等后面使用。
+每当你看到类似于 `{ $_ + 42 }`、 `-> $a, $b { $a ** $b }`，或 `{ $^text.indent($:spaces) }`，那就是 [Block](https://docs.raku.org/type/Block) 语法。它在 `if`、 `for` 和 `while` 等后面使用。
 
-Whenever you see something like `{ $_ + 42 }`, `-> $a, $b { $a ** $b }`, or `{ $^text.indent($:spaces) }`, that's [Block](https://rakudocs.github.io/type/Block) syntax. It's used after every `if`, `for`, `while`, etc.
+Whenever you see something like `{ $_ + 42 }`, `-> $a, $b { $a ** $b }`, or `{ $^text.indent($:spaces) }`, that's [Block](https://docs.raku.org/type/Block) syntax. It's used after every `if`, `for`, `while`, etc.
 
 ```Raku
 for 1, 2, 3, 4 -> $a, $b {
@@ -186,9 +186,9 @@ They can also be used on their own as anonymous blocks of code.
 say { $^a ** 2 + $^b ** 2}(3, 4) # OUTPUT: «25␤» 
 ```
 
-有关块语法的详细信息，请参阅 [Block](https://rakudocs.github.io/type/Block) 类型的文档。
+有关块语法的详细信息，请参阅 [Block](https://docs.raku.org/type/Block) 类型的文档。
 
-For block syntax details, see the documentation for the [Block](https://rakudocs.github.io/type/Block) type.
+For block syntax details, see the documentation for the [Block](https://docs.raku.org/type/Block) type.
 
 <a id="%E7%AD%BE%E5%90%8D--signatures"></a>
 ## 签名 / Signatures
@@ -202,9 +202,9 @@ sub format(Str $s) { ... }
 -> $a, $b { ... }
 ```
 
-有关签名的语法和使用的详细信息，请参见 [关于'signature'类的文档](https://rakudocs.github.io/type/Signature)。
+有关签名的语法和使用的详细信息，请参见 [关于'signature'类的文档](https://docs.raku.org/type/Signature)。
 
-Details about the syntax and use of signatures can be found in the [documentation on the `Signature` class](https://rakudocs.github.io/type/Signature).
+Details about the syntax and use of signatures can be found in the [documentation on the `Signature` class](https://docs.raku.org/type/Signature).
 
 <a id="%E8%87%AA%E5%8A%A8%E7%AD%BE%E5%90%8D--automatic-signatures"></a>
 ### 自动签名 / Automatic signatures
@@ -245,9 +245,9 @@ my \c = <a b c>.Capture;
 f |c;             # Merge the contents of Capture $c as if they were supplied
 ```
 
-传递给函数的参数在概念上首先收集在 `Capture` 容器中。有关这些容器的语法和使用的详细信息，请参见[关于 `Capture` 类的文档](https://rakudocs.github.io/type/Capture)。
+传递给函数的参数在概念上首先收集在 `Capture` 容器中。有关这些容器的语法和使用的详细信息，请参见[关于 `Capture` 类的文档](https://docs.raku.org/type/Capture)。
 
-Arguments passed to a function are conceptually first collected in a `Capture` container. Details about the syntax and use of these containers can be found in the [documentation on the `Capture` class](https://rakudocs.github.io/type/Capture).
+Arguments passed to a function are conceptually first collected in a `Capture` container. Details about the syntax and use of these containers can be found in the [documentation on the `Capture` class](https://docs.raku.org/type/Capture).
 
 使用命名参数时，请注意，普通列表“对链接”允许跳过命名参数之间的逗号。
 
@@ -263,9 +263,9 @@ f :a:b:c;            # The spaces are also optional.
 <a id="%E8%BF%94%E5%9B%9E%E5%80%BC--return-values"></a>
 ## 返回值 / Return values
 
-任何 `Block` 或 `Routine` 都会将其最后一个表达式的值作为返回值提供给调用方。如果调用了 [return](https://rakudocs.github.io/language/control#return) 或 [return-rw](https://rakudocs.github.io/language/control#return-rw) ，则其参数（如果有）将成为返回值。默认返回值为 [Nil](https://rakudocs.github.io/type/Nil)。
+任何 `Block` 或 `Routine` 都会将其最后一个表达式的值作为返回值提供给调用方。如果调用了 [return](https://docs.raku.org/language/control#return) 或 [return-rw](https://docs.raku.org/language/control#return-rw) ，则其参数（如果有）将成为返回值。默认返回值为 [Nil](https://docs.raku.org/type/Nil)。
 
-Any `Block` or `Routine` will provide the value of its last expression as a return value to the caller. If either [return](https://rakudocs.github.io/language/control#return) or [return-rw](https://rakudocs.github.io/language/control#return-rw) is called, then its parameter, if any, will become the return value. The default return value is [Nil](https://rakudocs.github.io/type/Nil).
+Any `Block` or `Routine` will provide the value of its last expression as a return value to the caller. If either [return](https://docs.raku.org/language/control#return) or [return-rw](https://docs.raku.org/language/control#return-rw) is called, then its parameter, if any, will become the return value. The default return value is [Nil](https://docs.raku.org/type/Nil).
 
 ```Raku
 sub a { 42 };
@@ -275,9 +275,9 @@ b;     # OUTPUT: «42␤»
 say c; # OUTPUT: «Nil␤»
 ```
 
-多个返回值作为一个列表或通过创建一个 [Capture](https://rakudocs.github.io/type/Capture) 返回。析构函数可用于解开多个返回值。
+多个返回值作为一个列表或通过创建一个 [Capture](https://docs.raku.org/type/Capture) 返回。析构函数可用于解开多个返回值。
 
-Multiple return values are returned as a list or by creating a [Capture](https://rakudocs.github.io/type/Capture). Destructuring can be used to untangle multiple return values.
+Multiple return values are returned as a list or by creating a [Capture](https://docs.raku.org/type/Capture). Destructuring can be used to untangle multiple return values.
 
 ```Raku
 sub a { 42, 'answer' };
@@ -315,9 +315,9 @@ Attempting to return values of another type will cause a compilation error.
 sub foo() returns Int { "a"; }; foo; # Type check fails 
 ```
 
-`returns` 和 `of` 是等效的，它们都只接受一个类型，因为它们声明了 [Callable](https://rakudocs.github.io/type/Callable)的特性。最后一个声明实际上是一个类型声明，它显然只能接受一个类型。但是 `-->` 可以采用未定义或定义了的值。
+`returns` 和 `of` 是等效的，它们都只接受一个类型，因为它们声明了 [Callable](https://docs.raku.org/type/Callable)的特性。最后一个声明实际上是一个类型声明，它显然只能接受一个类型。但是 `-->` 可以采用未定义或定义了的值。
 
-`returns` and `of` are equivalent, and both take only a Type since they are declaring a trait of the [Callable](https://rakudocs.github.io/type/Callable). The last declaration is, in fact, a type declaration, which obviously can take only a type. `-->`, however, can take either undefined or definite values.
+`returns` and `of` are equivalent, and both take only a Type since they are declaring a trait of the [Callable](https://docs.raku.org/type/Callable). The last declaration is, in fact, a type declaration, which obviously can take only a type. `-->`, however, can take either undefined or definite values.
 
 请注意，`Nil` 和 `Failure` 不受返回类型约束，并且可以从任何例程返回，无论其约束如何：
 
@@ -335,9 +335,9 @@ Raku 允许使用相同的名称但不同的签名编写多个例程。当以名
 
 Raku allows for writing several routines with the same name but different signatures. When the routine is called by name, the runtime environment determines the proper *candidate* and invokes it.
 
-每个候选项都用 `multi` 关键字声明。根据参数的编号（[arity](https://rakudocs.github.io/type/Routine#%28Code%29_method_arity)）、类型和名称进行调度。请考虑以下示例：
+每个候选项都用 `multi` 关键字声明。根据参数的编号（[arity](https://docs.raku.org/type/Routine#%28Code%29_method_arity)）、类型和名称进行调度。请考虑以下示例：
 
-Each candidate is declared with the `multi` keyword. Dispatch happens depending on the number ([arity](https://rakudocs.github.io/type/Routine#%28Code%29_method_arity)), type and name of arguments. Consider the following example:
+Each candidate is declared with the `multi` keyword. Dispatch happens depending on the number ([arity](https://docs.raku.org/type/Routine#%28Code%29_method_arity)), type and name of arguments. Consider the following example:
 
 ```Raku
 # version 1 
@@ -398,9 +398,9 @@ happy-birthday age => 40, name => 'Luca';  # OUTPUT: «Happy Birthday Luca, you 
 
 Named parameters participate in the dispatch even if they are not provided in the call. Therefore a multi candidate with named parameters will be given precedence.
 
-有关类型约束的详细信息，请参阅[签名](https://rakudocs.github.io/type/Signature#Type_constraints)类的文档。
+有关类型约束的详细信息，请参阅[签名](https://docs.raku.org/type/Signature#Type_constraints)类的文档。
 
-For more information about type constraints see the documentation for the [Signature](https://rakudocs.github.io/type/Signature#Type_constraints) class.
+For more information about type constraints see the documentation for the [Signature](https://docs.raku.org/type/Signature#Type_constraints) class.
 
 ```Raku
 multi as-json(Bool $d) { $d ?? 'true' !! 'false'; }
@@ -548,19 +548,19 @@ While the dispatch system described above provides a lot of flexibility, there a
 <a id="slurpy-%E7%BA%A6%E5%AE%9A--slurpy-conventions"></a>
 ## Slurpy 约定 / Slurpy conventions
 
-也许这些约定中最重要的一个就是处理 slurpy 列表参数的方式。大多数情况下，函数不会自动压扁 slurpy 列表。罕见的例外是那些在列表的列表上没有合理行为的函数（例如，[chrs](https://rakudocs.github.io/routine/chrs)），或者与已建立的习惯用法（例如，[pop](https://rakudocs.github.io/routine/pop) 作为 [push](https://rakudocs.github.io/routine/push) 的逆函数 ）。
+也许这些约定中最重要的一个就是处理 slurpy 列表参数的方式。大多数情况下，函数不会自动压扁 slurpy 列表。罕见的例外是那些在列表的列表上没有合理行为的函数（例如，[chrs](https://docs.raku.org/routine/chrs)），或者与已建立的习惯用法（例如，[pop](https://docs.raku.org/routine/pop) 作为 [push](https://docs.raku.org/routine/push) 的逆函数 ）。
 
-Perhaps the most important one of these conventions is the way slurpy list arguments are handled. Most of the time, functions will not automatically flatten slurpy lists. The rare exceptions are those functions that don't have a reasonable behavior on lists of lists (e.g., [chrs](https://rakudocs.github.io/routine/chrs)) or where there is a conflict with an established idiom (e.g., [pop](https://rakudocs.github.io/routine/pop) being the inverse of [push](https://rakudocs.github.io/routine/push)).
+Perhaps the most important one of these conventions is the way slurpy list arguments are handled. Most of the time, functions will not automatically flatten slurpy lists. The rare exceptions are those functions that don't have a reasonable behavior on lists of lists (e.g., [chrs](https://docs.raku.org/routine/chrs)) or where there is a conflict with an established idiom (e.g., [pop](https://docs.raku.org/routine/pop) being the inverse of [push](https://docs.raku.org/routine/push)).
 
-如果你希望匹配这种外观和感觉，任何 [Iterable](https://rakudocs.github.io/type/Iterable) 参数都必须使用 `**@` 逐元素分解，这有两个细微差别：
+如果你希望匹配这种外观和感觉，任何 [Iterable](https://docs.raku.org/type/Iterable) 参数都必须使用 `**@` 逐元素分解，这有两个细微差别：
 
-If you wish to match this look and feel, any [Iterable](https://rakudocs.github.io/type/Iterable) argument must be broken out element-by-element using a `**@` slurpy, with two nuances:
+If you wish to match this look and feel, any [Iterable](https://docs.raku.org/type/Iterable) argument must be broken out element-by-element using a `**@` slurpy, with two nuances:
 
-- 对[标量容器](https://rakudocs.github.io/language/containers#Scalar_containers)中的 [Iterable](https://rakudocs.github.io/type/Iterable) 不生效。
-- 使用一个 [`,`](https://rakudocs.github.io/routine/,) 创建的 [List](https://rakudocs.github.io/type/List)，在最上层只会被当做一个 [Iterable](https://rakudocs.github.io/type/Iterable)。
+- 对[标量容器](https://docs.raku.org/language/containers#Scalar_containers)中的 [Iterable](https://docs.raku.org/type/Iterable) 不生效。
+- 使用一个 [`,`](https://docs.raku.org/routine/,) 创建的 [List](https://docs.raku.org/type/List)，在最上层只会被当做一个 [Iterable](https://docs.raku.org/type/Iterable)。
 
-- An [Iterable](https://rakudocs.github.io/type/Iterable) inside a [Scalar container](https://rakudocs.github.io/language/containers#Scalar_containers) doesn't count.
-- [List](https://rakudocs.github.io/type/List)s created with a [`,`](https://rakudocs.github.io/routine/,) at the top level only count as one [Iterable](https://rakudocs.github.io/type/Iterable).
+- An [Iterable](https://docs.raku.org/type/Iterable) inside a [Scalar container](https://docs.raku.org/language/containers#Scalar_containers) doesn't count.
+- [List](https://docs.raku.org/type/List)s created with a [`,`](https://docs.raku.org/routine/,) at the top level only count as one [Iterable](https://docs.raku.org/type/Iterable).
 
 这可以通过使用 `+` 或者 `+@` 而不是 `**` 来实现：
 
@@ -603,9 +603,9 @@ grab(flat (1, 2));           # OUTPUT: «grab 1␤grab 2␤»
 grab(flat $(1, 2));          # OUTPUT: «grab 1␤grab 2␤» 
 ```
 
-值得注意的是，在这些情况下混合绑定和无符号变量需要一些技巧，因为在绑定期间没有使用[标量](https://rakudocs.github.io/type/Scalar)媒介。
+值得注意的是，在这些情况下混合绑定和无符号变量需要一些技巧，因为在绑定期间没有使用[标量](https://docs.raku.org/type/Scalar)媒介。
 
-It's worth noting that mixing binding and sigilless variables in these cases requires a bit of finesse, because there is no [Scalar](https://rakudocs.github.io/type/Scalar)intermediary used during binding.
+It's worth noting that mixing binding and sigilless variables in these cases requires a bit of finesse, because there is no [Scalar](https://docs.raku.org/type/Scalar)intermediary used during binding.
 
 ```Raku
 my $a = (1, 2);  # Normal assignment, equivalent to $(1, 2) 
@@ -644,9 +644,9 @@ sub square($x) { $x * $x };
 my $func = &square
 ```
 
-这对于*高阶函数*非常有用，也就是说，将其他函数作为输入的函数。一个简单的例子是 [map](https://rakudocs.github.io/type/List#routine_map)，它将一个函数应用于每个输入元素：
+这对于*高阶函数*非常有用，也就是说，将其他函数作为输入的函数。一个简单的例子是 [map](https://docs.raku.org/type/List#routine_map)，它将一个函数应用于每个输入元素：
 
-This is very useful for *higher order functions*, that is, functions that take other functions as input. A simple one is [map](https://rakudocs.github.io/type/List#routine_map), which applies a function to each input element:
+This is very useful for *higher order functions*, that is, functions that take other functions as input. A simple one is [map](https://docs.raku.org/type/List#routine_map), which applies a function to each input element:
 
 ```Raku
 sub square($x) { $x * $x };
@@ -688,9 +688,9 @@ $generated(); # OUTPUT: «42␤»
 
 Here, `$y` is a lexical variable inside `generate-sub`, and the inner subroutine that is returned uses it. By the time that inner sub is called, `generate-sub` has already exited. Yet the inner sub can still use `$y`, because it *closed* over the variable.
 
-另一个闭包示例是使用 [map](https://rakudocs.github.io/type/List#routine_map) 将数字列表相乘：
+另一个闭包示例是使用 [map](https://docs.raku.org/type/List#routine_map) 将数字列表相乘：
 
-Another closure example is the use of [map](https://rakudocs.github.io/type/List#routine_map) to multiply a list of numbers:
+Another closure example is the use of [map](https://docs.raku.org/type/List#routine_map) to multiply a list of numbers:
 
 ```Raku
 my $multiply-by = 5;
@@ -708,13 +708,13 @@ Languages without closures cannot easily provide higher-order functions that are
 <a id="%E4%BE%8B%E7%A8%8B--routines"></a>
 ## 例程 / Routines
 
-例程是符合 [类型 `Routine`](https://rakudocs.github.io/type/Routine) 的代码对象，最显著的是 [`Sub`](https://rakudocs.github.io/type/Sub)、[`Method`](https://rakudocs.github.io/type/Method)、[`Regex`](https://rakudocs.github.io/type/Regex) 和 [`Submethod`](https://rakudocs.github.io/type/Submethod)。
+例程是符合 [类型 `Routine`](https://docs.raku.org/type/Routine) 的代码对象，最显著的是 [`Sub`](https://docs.raku.org/type/Sub)、[`Method`](https://docs.raku.org/type/Method)、[`Regex`](https://docs.raku.org/type/Regex) 和 [`Submethod`](https://docs.raku.org/type/Submethod)。
 
-Routines are code objects that conform to [type `Routine`](https://rakudocs.github.io/type/Routine), most notably [`Sub`](https://rakudocs.github.io/type/Sub), [`Method`](https://rakudocs.github.io/type/Method), [`Regex`](https://rakudocs.github.io/type/Regex) and [`Submethod`](https://rakudocs.github.io/type/Submethod).
+Routines are code objects that conform to [type `Routine`](https://docs.raku.org/type/Routine), most notably [`Sub`](https://docs.raku.org/type/Sub), [`Method`](https://docs.raku.org/type/Method), [`Regex`](https://docs.raku.org/type/Regex) and [`Submethod`](https://docs.raku.org/type/Submethod).
 
-除了 [`Block`](https://rakudocs.github.io/type/Block) 提供的功能外，它们还具有额外的功能：它们可以作为 [多分派](https://rakudocs.github.io/language/functions#Multi-dispatch)函数，你可以[包装](https://rakudocs.github.io/type/Routine#method_wrap)他们，并使用 `return` 提前退出：
+除了 [`Block`](https://docs.raku.org/type/Block) 提供的功能外，它们还具有额外的功能：它们可以作为 [多分派](https://docs.raku.org/language/functions#Multi-dispatch)函数，你可以[包装](https://docs.raku.org/type/Routine#method_wrap)他们，并使用 `return` 提前退出：
 
-They carry extra functionality in addition to what a [`Block`](https://rakudocs.github.io/type/Block) supplies: they can come as [multis](https://rakudocs.github.io/language/functions#Multi-dispatch), you can [wrap](https://rakudocs.github.io/type/Routine#method_wrap) them, and exit early with `return`:
+They carry extra functionality in addition to what a [`Block`](https://docs.raku.org/type/Block) supplies: they can come as [multis](https://docs.raku.org/language/functions#Multi-dispatch), you can [wrap](https://docs.raku.org/type/Routine#method_wrap) them, and exit early with `return`:
 
 ```Raku
 my $keywords = set <if for unless while>;
@@ -953,9 +953,9 @@ has $!another-attribute handles <close>;
 
 ... and also `is tighter`, `is looser`, `is equiv` and `is assoc` from the previous section.
 
-Traits 是以 `trait_mod<VERB>` 的形式声明的子例程，其中 `VERB` 表示像 `is`、`does` 或 `handles` 的动词。它接收修改后的对象作为参数，接收名称作为命名参数。有关详细信息，请参阅 [Sub](https://rakudocs.github.io/type/Sub#Traits)。
+Traits 是以 `trait_mod<VERB>` 的形式声明的子例程，其中 `VERB` 表示像 `is`、`does` 或 `handles` 的动词。它接收修改后的对象作为参数，接收名称作为命名参数。有关详细信息，请参阅 [Sub](https://docs.raku.org/type/Sub#Traits)。
 
-Traits are subs declared in the form `trait_mod<VERB>`, where `VERB` stands for the name like `is`, `does` or `handles`. It receives the modified thing as argument, and the name as a named argument. See [Sub](https://rakudocs.github.io/type/Sub#Traits) for details.
+Traits are subs declared in the form `trait_mod<VERB>`, where `VERB` stands for the name like `is`, `does` or `handles`. It receives the modified thing as argument, and the name as a named argument. See [Sub](https://docs.raku.org/type/Sub#Traits) for details.
 
 ```Raku
 multi sub trait_mod:<is>(Routine $r, :$doubles!) {
@@ -971,9 +971,9 @@ sub square($x) is doubles {
 say square 3;       # OUTPUT: «18␤» 
 ```
 
-内置的函数特征见文档[类型 Routine](https://rakudocs.github.io/type/Routine)。
+内置的函数特征见文档[类型 Routine](https://docs.raku.org/type/Routine)。
 
-See [type Routine](https://rakudocs.github.io/type/Routine) for the documentation of built-in routine traits.
+See [type Routine](https://docs.raku.org/type/Routine) for the documentation of built-in routine traits.
 
 <a id="%E9%87%8D%E6%96%B0%E5%88%86%E6%B4%BE--re-dispatching"></a>
 # 重新分派 / Re-dispatching
@@ -1241,13 +1241,13 @@ say double  21; # OUTPUT: «42␤»
 say double Any; # Type check failed in binding $x; expected 'Cool' but got 'Any' 
 ```
 
-在上例中 [Int](https://rakudocs.github.io/type/Int) 是参数 `$x` 会强制转换的目标类型，[Cool](https://rakudocs.github.io/type/Cool) 是例程接受的更广泛的类型。
+在上例中 [Int](https://docs.raku.org/type/Int) 是参数 `$x` 会强制转换的目标类型，[Cool](https://docs.raku.org/type/Cool) 是例程接受的更广泛的类型。
 
-In the above example, the [Int](https://rakudocs.github.io/type/Int) is the target type to which the argument `$x` will be coerced, and [Cool](https://rakudocs.github.io/type/Cool) is the type that the routine accepts as wider input.
+In the above example, the [Int](https://docs.raku.org/type/Int) is the target type to which the argument `$x` will be coerced, and [Cool](https://docs.raku.org/type/Cool) is the type that the routine accepts as wider input.
 
-如果接受的更广泛的输入类型是 [Any](https://rakudocs.github.io/type/Any)，可以省略 `Any` 类型，缩写 `Int(Any)` 为 `Int()`。
+如果接受的更广泛的输入类型是 [Any](https://docs.raku.org/type/Any)，可以省略 `Any` 类型，缩写 `Int(Any)` 为 `Int()`。
 
-If the accepted wider input type is [Any](https://rakudocs.github.io/type/Any), it is possible to abbreviate the coercion `Int(Any)` omitting the `Any` type, thus resulting in `Int()`.
+If the accepted wider input type is [Any](https://docs.raku.org/type/Any), it is possible to abbreviate the coercion `Int(Any)` omitting the `Any` type, thus resulting in `Int()`.
 
 强制类型转换通过查找与目标类型同名的方法来工作：如果在参数上找到此类方法，则调用该方法将后者转换为预期的窄类型。从上面可以清楚地看出，仅提供所需方法就可以在用户类型之间提供强制类型转换：
 
@@ -1303,6 +1303,6 @@ In this case, we are coercing an `Int` to a `Bool`, which is then printed (put i
 <a id="main-%E5%87%BD%E6%95%B0--sub-main"></a>
 # Main 函数 / sub MAIN
 
-在 Raku 脚本中声明 `sub MAIN` 不是强制的，但是你可以提供一个[命令行接口](https://rakudocs.github.io/language/create-cli)来为你的脚本创建一个。
+在 Raku 脚本中声明 `sub MAIN` 不是强制的，但是你可以提供一个[命令行接口](https://docs.raku.org/language/create-cli)来为你的脚本创建一个。
 
-Declaring a `sub MAIN` is not compulsory in Raku scripts, but you can provide one to create a [command line interface](https://rakudocs.github.io/language/create-cli) for your script.
+Declaring a `sub MAIN` is not compulsory in Raku scripts, but you can provide one to create a [command line interface](https://docs.raku.org/language/create-cli) for your script.

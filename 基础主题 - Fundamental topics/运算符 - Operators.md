@@ -1,4 +1,4 @@
-原文：https://rakudocs.github.io/language/operators
+原文：https://docs.raku.org/language/operators
 
 # 运算符 / Operators
 
@@ -6,9 +6,9 @@
 
 Common Raku infixes, prefixes, postfixes, and more!
 
-有关如何定义新运算符，请参见[创建运算符](https://rakudocs.github.io/language/optut)。
+有关如何定义新运算符，请参见[创建运算符](https://docs.raku.org/language/optut)。
 
-See [creating operators](https://rakudocs.github.io/language/optut) on how to define new operators.
+See [creating operators](https://docs.raku.org/language/optut) on how to define new operators.
 <!-- MarkdownTOC -->
 
 - [运算符优先级 / Operator precedence](#%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--operator-precedence)
@@ -311,13 +311,13 @@ infix:<+>(1, 2);                # same as 1 + 2
 circumfix:«[ ]»(<a b c>);       # same as [<a b c>]
 ```
 
-作为特殊情况，列表运算符可以作为一个术语或前缀。子例程调用是最常见的列表运算符。其他情况还包括元归约中缀运算符（`[+]1、2、3`）和[前缀 ...](https://rakudocs.github.io/language/operators#prefix_...) 等存根运算符。
+作为特殊情况，列表运算符可以作为一个术语或前缀。子例程调用是最常见的列表运算符。其他情况还包括元归约中缀运算符（`[+]1、2、3`）和[前缀 ...](https://docs.raku.org/language/operators#prefix_...) 等存根运算符。
 
-As a special case, a *listop* (list operator) can stand either as a term or as a prefix. Subroutine calls are the most common listops. Other cases include meta-reduced infix operators (`[+] 1, 2, 3`) and the [prefix ...](https://rakudocs.github.io/language/operators#prefix_...) etc. stub operators.
+As a special case, a *listop* (list operator) can stand either as a term or as a prefix. Subroutine calls are the most common listops. Other cases include meta-reduced infix operators (`[+] 1, 2, 3`) and the [prefix ...](https://docs.raku.org/language/operators#prefix_...) etc. stub operators.
 
-定义自定义运算符在文档[定义运算符函数](https://rakudocs.github.io/language/functions#Defining_operators)中会介绍。
+定义自定义运算符在文档[定义运算符函数](https://docs.raku.org/language/functions#Defining_operators)中会介绍。
 
-Defining custom operators is covered in [Defining operators functions](https://rakudocs.github.io/language/functions#Defining_operators).
+Defining custom operators is covered in [Defining operators functions](https://docs.raku.org/language/functions#Defining_operators).
 
 <a id="%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6--metaoperators"></a>
 # 元运算符 / Metaoperators
@@ -342,17 +342,17 @@ $str ~~ s/o .+ d/new/;
 say $str; # OUTPUT: «new string␤»
 ```
 
-`s///` 对 `$_` 主题变量进行操作，就地更改。它使用给定的 [`Regex`](https://rakudocs.github.io/type/Regex) 查找要替换的部分，并将其更改为提供的替换字符串。将 `$/` 设置为 [`Match`](https://rakudocs.github.io/type/Match) 对象，或者，如果进行了多个匹配，则设置为一组 `Match` 对象的。返回值为 `$/`。
+`s///` 对 `$_` 主题变量进行操作，就地更改。它使用给定的 [`Regex`](https://docs.raku.org/type/Regex) 查找要替换的部分，并将其更改为提供的替换字符串。将 `$/` 设置为 [`Match`](https://docs.raku.org/type/Match) 对象，或者，如果进行了多个匹配，则设置为一组 `Match` 对象的。返回值为 `$/`。
 
-`s///` operates on the `$_` topical variable, changing it in place. It uses the given [`Regex`](https://rakudocs.github.io/type/Regex) to find portions to replace and changes them to the provided replacement string. Sets `$/` to the [`Match`](https://rakudocs.github.io/type/Match) object or, if multiple matches were made, a [`List`](https://rakudocs.github.io/type/List) of `Match` objects. Returns `$/`.
+`s///` operates on the `$_` topical variable, changing it in place. It uses the given [`Regex`](https://docs.raku.org/type/Regex) to find portions to replace and changes them to the provided replacement string. Sets `$/` to the [`Match`](https://docs.raku.org/type/Match) object or, if multiple matches were made, a [`List`](https://docs.raku.org/type/List) of `Match` objects. Returns `$/`.
 
 通常将此运算符与 `~~` 智能匹配运算符一起使用，因为它将 `$_` 设置为左侧的别名 ，而 `s///` 使用 `$_`。
 
 It's common to use this operator with the `~~` smartmatch operator, as it aliases left-hand side to `$_`, which `s///` uses.
 
-正则捕获可以在替换部分中引用；它使用与 [`.subst` 方法](https://rakudocs.github.io/routine/subst)相同的副词，这些副词位于 `s` 和开头的 `/` 之间，用可选空格分隔：
+正则捕获可以在替换部分中引用；它使用与 [`.subst` 方法](https://docs.raku.org/routine/subst)相同的副词，这些副词位于 `s` 和开头的 `/` 之间，用可选空格分隔：
 
-Regex captures can be referenced in the replacement part; it takes the same adverbs as the [`.subst` method](https://rakudocs.github.io/routine/subst), which go between the `s` and the opening `/`, separated with optional whitespace:
+Regex captures can be referenced in the replacement part; it takes the same adverbs as the [`.subst` method](https://docs.raku.org/routine/subst), which go between the `s` and the opening `/`, separated with optional whitespace:
 
 ```Raku
 my $str = 'foo muCKed into the lEn';
@@ -394,9 +394,9 @@ S:g/« (.)/$0.uc()/.say for <foo bar ber>; # OUTPUT: «Foo␤Bar␤Ber␤»
 
 `S///` uses the same semantics as the `s///` operator, except it leaves the original string intact and *returns the resultant string* instead of `$/` (`$/` still being set to the same values as with `s///`).
 
-**注意：**由于结果是作为返回值获得的，因此将此运算符与 `~~ ` 智能匹配运算符一起使用是错误的，并将发出警告。若要对不是此运算符使用的 `$_` 变量执行替换，请使用 `given`、`with`，或任何其他方式将其别名设置为 `$_`。或者，使用 [`.subst` 方法](https://rakudocs.github.io/routine/subst)。
+**注意：**由于结果是作为返回值获得的，因此将此运算符与 `~~ ` 智能匹配运算符一起使用是错误的，并将发出警告。若要对不是此运算符使用的 `$_` 变量执行替换，请使用 `given`、`with`，或任何其他方式将其别名设置为 `$_`。或者，使用 [`.subst` 方法](https://docs.raku.org/routine/subst)。
 
-**Note:** since the result is obtained as a return value, using this operator with the `~~` smartmatch operator is a mistake and will issue a warning. To execute the substitution on a variable that isn't the `$_` this operator uses, alias it to `$_` with `given`, `with`, or any other way. Alternatively, use the [`.subst` method](https://rakudocs.github.io/routine/subst).
+**Note:** since the result is obtained as a return value, using this operator with the `~~` smartmatch operator is a mistake and will issue a warning. To execute the substitution on a variable that isn't the `$_` this operator uses, alias it to `$_` with `given`, `with`, or any other way. Alternatively, use the [`.subst` method](https://docs.raku.org/routine/subst).
 
 <a id="tr-%E5%B0%B1%E5%9C%B0%E8%BD%AC%E5%86%99---tr-in-place-transliteration"></a>
 ## `tr///` 就地转写 - `tr///` in-place transliteration
@@ -407,9 +407,9 @@ $str ~~ tr/dol/wne/;
 say $str; # OUTPUT: «new string␤»
 ```
 
-`tr///` 对 `$_` 主题变量进行操作并对其进行就地变更。它的行为类似于使用单个 [Pair](https://rakudocs.github.io/type/Pair) 参数调用的 [`Str.trans`](https://rakudocs.github.io/routine/trans)，其中键是匹配部分（上面示例中的字符 `dol`），值是替换部分（上面示例中的字符 `wne`）。接受与 [`Str.trans`](https://rakudocs.github.io/routine/trans) 相同的副词。返回 [StrDistance](https://rakudocs.github.io/type/StrDistance) 对象，该对象测量原始值与返回结果字符串之间的距离。
+`tr///` 对 `$_` 主题变量进行操作并对其进行就地变更。它的行为类似于使用单个 [Pair](https://docs.raku.org/type/Pair) 参数调用的 [`Str.trans`](https://docs.raku.org/routine/trans)，其中键是匹配部分（上面示例中的字符 `dol`），值是替换部分（上面示例中的字符 `wne`）。接受与 [`Str.trans`](https://docs.raku.org/routine/trans) 相同的副词。返回 [StrDistance](https://docs.raku.org/type/StrDistance) 对象，该对象测量原始值与返回结果字符串之间的距离。
 
-`tr///` operates on the `$_` topical variable and changes it in place. It behaves similar to [`Str.trans`](https://rakudocs.github.io/routine/trans) called with a single [Pair](https://rakudocs.github.io/type/Pair) argument, where key is the matching part (characters `dol` in the example above) and value is the replacement part (characters `wne` in the example above). Accepts the same adverbs as [`Str.trans`](https://rakudocs.github.io/routine/trans). Returns the [StrDistance](https://rakudocs.github.io/type/StrDistance) object that measures the distance between original value and the resultant string.
+`tr///` operates on the `$_` topical variable and changes it in place. It behaves similar to [`Str.trans`](https://docs.raku.org/routine/trans) called with a single [Pair](https://docs.raku.org/type/Pair) argument, where key is the matching part (characters `dol` in the example above) and value is the replacement part (characters `wne` in the example above). Accepts the same adverbs as [`Str.trans`](https://docs.raku.org/routine/trans). Returns the [StrDistance](https://docs.raku.org/type/StrDistance) object that measures the distance between original value and the resultant string.
 
 ```Raku
 my $str = 'old string';
@@ -533,9 +533,9 @@ my @b = <4 5 6>;
 say (@a,@b)»[1]; # OUTPUT: «(2 5)␤»
 ```
 
-在本例中，超运算符应用于[后环缀运算符[]](https://rakudocs.github.io/language/operators#circumfix_[_])。
+在本例中，超运算符应用于[后环缀运算符[]](https://docs.raku.org/language/operators#circumfix_[_])。
 
-In this case, it's the [postcircumfix[]](https://rakudocs.github.io/language/operators#circumfix_[_]) which is being hypered.
+In this case, it's the [postcircumfix[]](https://docs.raku.org/language/operators#circumfix_[_]) which is being hypered.
 
 赋值元运算符可以被超运算符化。
 
@@ -627,9 +627,9 @@ for 60, 50, 40, 30, 20, 10 -> $test {
 # OUTPUT: «10 EB 4 EB 2 PB 5 PB 0.5 PB 4 TB 300 GB 4.5 GB 50 MB 200 MB 9 KB 0.6 MB␤»
 ```
 
-超运算符是否下放到子列表中取决于链的内部运算符的[节点性](https://rakudocs.github.io/language/typesystem#trait_is_nodal)。对于超方法调用运算符（».），目标方法的节点性是重要的。
+超运算符是否下放到子列表中取决于链的内部运算符的[节点性](https://docs.raku.org/language/typesystem#trait_is_nodal)。对于超方法调用运算符（».），目标方法的节点性是重要的。
 
-Whether hyperoperators descend into child lists depends on the [nodality](https://rakudocs.github.io/language/typesystem#trait_is_nodal) of the inner operator of a chain. For the hyper method call operator (».), the nodality of the target method is significant.
+Whether hyperoperators descend into child lists depends on the [nodality](https://docs.raku.org/language/typesystem#trait_is_nodal) of the inner operator of a chain. For the hyper method call operator (».), the nodality of the target method is significant.
 
 ```Raku
 say (<a b>, <c d e>)».elems;        # OUTPUT: «(2 3)␤» 
@@ -649,9 +649,9 @@ say $neighbors »>>+<<» ($p, *);   # OUTPUT: «((1 3) (2 2) (2 4) (3 3))␤»
 <a id="%E5%BD%92%E7%BA%A6%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6--reduction-metaoperators"></a>
 # 归约元运算符 / Reduction metaoperators
 
-归约元运算符 `[]`，使用给定的中缀运算符归约一个列表。它给出的结果与 [reduce](https://rakudocs.github.io/routine/reduce) 例程相同-有关详细信息，请参见此处。
+归约元运算符 `[]`，使用给定的中缀运算符归约一个列表。它给出的结果与 [reduce](https://docs.raku.org/routine/reduce) 例程相同-有关详细信息，请参见此处。
 
-The reduction metaoperator, `[ ]`, reduces a list with the given infix operator. It gives the same result as the [reduce](https://rakudocs.github.io/routine/reduce) routine - see there for details.
+The reduction metaoperator, `[ ]`, reduces a list with the given infix operator. It gives the same result as the [reduce](https://docs.raku.org/routine/reduce) routine - see there for details.
 
 ```Raku
 # These two are equivalent: 
@@ -703,9 +703,9 @@ The cross metaoperator, `X`, will apply a given infix operator in order of cross
 <a id="zip-%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6--zip-metaoperator"></a>
 # Zip 元运算符 / Zip metaoperator 
 
-zip 元运算符（它与 [Z](https://rakudocs.github.io/language/operators#infix_Z) 不同）将对从其参数中左、右各取一个元素组成的键值对应用给定的中缀运算符。返回结果列表。
+zip 元运算符（它与 [Z](https://docs.raku.org/language/operators#infix_Z) 不同）将对从其参数中左、右各取一个元素组成的键值对应用给定的中缀运算符。返回结果列表。
 
-The zip metaoperator (which is not the same thing as [Z](https://rakudocs.github.io/language/operators#infix_Z)) will apply a given infix operator to pairs taken one left, one right, from its arguments. The resulting list is returned.
+The zip metaoperator (which is not the same thing as [Z](https://docs.raku.org/language/operators#infix_Z)) will apply a given infix operator to pairs taken one left, one right, from its arguments. The resulting list is returned.
 
 ```Raku
 my @l = <a b c> Z~ 1, 2, 3;     # RESULT: «[a1 b2 c3]␤»
@@ -759,9 +759,9 @@ say @a;         # OUTPUT: «[19 20 21]␤»
 <a id="%E6%9C%AF%E8%AF%AD--term-"></a>
 ## 术语 `< >` / term `< >`
 
-引用词语构造将内容按空白分解，并返回单词的[列表](https://rakudocs.github.io/type/List)。如果一个单词看起来像数字字面量或键值对字面量，它将被转换为适当的数字。
+引用词语构造将内容按空白分解，并返回单词的[列表](https://docs.raku.org/type/List)。如果一个单词看起来像数字字面量或键值对字面量，它将被转换为适当的数字。
 
-The quote-words construct breaks up the contents on whitespace and returns a [List](https://rakudocs.github.io/type/List) of the words. If a word looks like a number literal or a `Pair` literal, it's converted to the appropriate number.
+The quote-words construct breaks up the contents on whitespace and returns a [List](https://docs.raku.org/type/List) of the words. If a word looks like a number literal or a `Pair` literal, it's converted to the appropriate number.
 
 ```Raku
 say <a b c>[1];   # OUTPUT: «b␤»
@@ -774,9 +774,9 @@ say <a b c>[1];   # OUTPUT: «b␤»
 
 The grouping operator.
 
-空组 `()` 创建一个[空列表](https://rakudocs.github.io/type/List#index-entry-()_empty_list)。非空表达式周围的括号只是简单地构造表达式，但没有附加的语义。
+空组 `()` 创建一个[空列表](https://docs.raku.org/type/List#index-entry-()_empty_list)。非空表达式周围的括号只是简单地构造表达式，但没有附加的语义。
 
-An empty group `()` creates an [empty list](https://rakudocs.github.io/type/List#index-entry-()_empty_list). Parentheses around non-empty expressions simply structure the expression, but do not have additional semantics.
+An empty group `()` creates an [empty list](https://docs.raku.org/type/List#index-entry-()_empty_list). Parentheses around non-empty expressions simply structure the expression, but do not have additional semantics.
 
 在参数列表中，将括号放在参数周围可防止将其解释为命名参数。
 
@@ -792,17 +792,17 @@ p (a => 1);         # OUTPUT: «positional␤»
 <a id="%E6%9C%AF%E8%AF%AD---term--"></a>
 ## 术语 `{ }` term `{ }`
 
-[代码块](https://rakudocs.github.io/type/Block) 或者[哈希](https://rakudocs.github.io/type/Hash)的构造器。
+[代码块](https://docs.raku.org/type/Block) 或者[哈希](https://docs.raku.org/type/Hash)的构造器。
 
-[Block](https://rakudocs.github.io/type/Block) or [Hash](https://rakudocs.github.io/type/Hash) constructor.
+[Block](https://docs.raku.org/type/Block) or [Hash](https://docs.raku.org/type/Hash) constructor.
 
-如果内容为空或者包含以[键值对](https://rakudocs.github.io/type/Pair)字面量或 `%` 标记的变量开头的单个列表，并且不使用 [`$_` 变量](https://rakudocs.github.io/syntax/$_)或占位符参数，则构造器返回一个[哈希](https://rakudocs.github.io/type/Hash)。否则它将构造一个[代码块](https://rakudocs.github.io/type/Block)。
+如果内容为空或者包含以[键值对](https://docs.raku.org/type/Pair)字面量或 `%` 标记的变量开头的单个列表，并且不使用 [`$_` 变量](https://docs.raku.org/syntax/$_)或占位符参数，则构造器返回一个[哈希](https://docs.raku.org/type/Hash)。否则它将构造一个[代码块](https://docs.raku.org/type/Block)。
 
-If the content is empty, or contains a single list that starts with a [Pair](https://rakudocs.github.io/type/Pair) literal or `%`-sigiled variable, and the [`$_` variable](https://rakudocs.github.io/syntax/$_) or placeholder parameters are not used, the constructor returns a [Hash](https://rakudocs.github.io/type/Hash). Otherwise it constructs a [Block](https://rakudocs.github.io/type/Block).
+If the content is empty, or contains a single list that starts with a [Pair](https://docs.raku.org/type/Pair) literal or `%`-sigiled variable, and the [`$_` variable](https://docs.raku.org/syntax/$_) or placeholder parameters are not used, the constructor returns a [Hash](https://docs.raku.org/type/Hash). Otherwise it constructs a [Block](https://docs.raku.org/type/Block).
 
-若要强制构造[代码块](https://rakudocs.github.io/type/Block)，请在左大括号后加分号。要始终确保获得一个 [Hash](https://rakudocs.github.io/type/Hash) ，可以改用 `%( )` 或 [hash](https://rakudocs.github.io/routine/hash) 例程：
+若要强制构造[代码块](https://docs.raku.org/type/Block)，请在左大括号后加分号。要始终确保获得一个 [Hash](https://docs.raku.org/type/Hash) ，可以改用 `%( )` 或 [hash](https://docs.raku.org/routine/hash) 例程：
 
-To force construction of a [Block](https://rakudocs.github.io/type/Block), follow the opening brace with a semicolon. To always ensure you end up with a [Hash](https://rakudocs.github.io/type/Hash), you can use `%( )` coercer or [hash](https://rakudocs.github.io/routine/hash) routine instead:
+To force construction of a [Block](https://docs.raku.org/type/Block), follow the opening brace with a semicolon. To always ensure you end up with a [Hash](https://docs.raku.org/type/Hash), you can use `%( )` coercer or [hash](https://docs.raku.org/routine/hash) routine instead:
 
 ```Raku
 {}.^name.say;        # OUTPUT: «Hash␤» 
@@ -816,24 +816,24 @@ hash(:$_).^name.say; # OUTPUT: «Hash␤»
 <a id="%E7%8E%AF%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6----circumfix--"></a>
 ## 环缀运算符 `[ ]` / circumfix `[ ]`
 
-[数组](https://rakudocs.github.io/type/Array)构造器返回一个在列表上下文中不展平的逐项[数组](https://rakudocs.github.io/type/Array)。看这个：
+[数组](https://docs.raku.org/type/Array)构造器返回一个在列表上下文中不展平的逐项[数组](https://docs.raku.org/type/Array)。看这个：
 
-The [Array](https://rakudocs.github.io/type/Array) constructor returns an itemized [Array](https://rakudocs.github.io/type/Array) that does not flatten in list context. Check this:
+The [Array](https://docs.raku.org/type/Array) constructor returns an itemized [Array](https://docs.raku.org/type/Array) that does not flatten in list context. Check this:
 
 ```Raku
 say .perl for [3,2,[1,0]]; # OUTPUT: «3␤2␤$[1, 0]␤»
 ```
 
-此数组是逐项列出的，即每个元素都构成一个项，如数组最后一个元素 [(列表) 条目上下文化器](https://rakudocs.github.io/type/Any#index-entry-%24_%28item_contextualizer%29)。
+此数组是逐项列出的，即每个元素都构成一个项，如数组最后一个元素 [(列表) 条目上下文化器](https://docs.raku.org/type/Any#index-entry-%24_%28item_contextualizer%29)。
 
-This array is itemized, in the sense that every element constitutes an item, as shown by the `$` preceding the last element of the array, the [(list) item contextualizer](https://rakudocs.github.io/type/Any#index-entry-%24_%28item_contextualizer%29).
+This array is itemized, in the sense that every element constitutes an item, as shown by the `$` preceding the last element of the array, the [(list) item contextualizer](https://docs.raku.org/type/Any#index-entry-%24_%28item_contextualizer%29).
 
 <a id="%E6%9C%AF%E8%AF%AD--terms"></a>
 # 术语 / Terms
 
-术语有自己的[扩展文档](https://rakudocs.github.io/language/terms)。
+术语有自己的[扩展文档](https://docs.raku.org/language/terms)。
 
-Terms have their [own extended documentation](https://rakudocs.github.io/language/terms).
+Terms have their [own extended documentation](https://docs.raku.org/language/terms).
 
 <a id="%E6%96%B9%E6%B3%95%E5%90%8E%E7%BC%80%E4%BC%98%E5%85%88%E7%BA%A7--method-postfix-precedence"></a>
 # 方法后缀优先级 / Method postfix precedence
@@ -863,9 +863,9 @@ say @alphabet[23 .. *].perl;        # OUTPUT: «("x", "y", "z")␤»
 say @alphabet[0..3].perl            # OUTPUT: «("a", "B", "C", "d")␤»
 ```
 
-请参阅[下标](https://rakudocs.github.io/language/subscripts)，了解有关此运算符行为的更详细解释以及如何在自定义类型中实现对它的支持。
+请参阅[下标](https://docs.raku.org/language/subscripts)，了解有关此运算符行为的更详细解释以及如何在自定义类型中实现对它的支持。
 
-See [Subscripts](https://rakudocs.github.io/language/subscripts), for a more detailed explanation of this operator's behavior and for how to implement support for it in custom types.
+See [Subscripts](https://docs.raku.org/language/subscripts), for a more detailed explanation of this operator's behavior and for how to implement support for it in custom types.
 
 <a id="%E5%90%8E%E7%8E%AF%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6----postcircumfix---1"></a>
 ## 后环缀运算符 `{ }` / postcircumfix `{ }`
@@ -890,9 +890,9 @@ say %color{"strawberry"}:exists;      # OUTPUT: «False␤»
 say %color;             # OUTPUT: «banana => yellowish, kiwi => green, lime => green␤»
 ```
 
-请参阅[后环缀 `< >`](https://rakudocs.github.io/routine/%3C%20%3E#(Operators)_postcircumfix_%3C_%3E) 和[后环缀 `« »`](https://rakudocs.github.io/routine/%C2%AB%20%C2%BB#(Operators)_postcircumfix_%C2%AB_%C2%BB) 以获取方便的快捷方式，以及[下标](https://rakudocs.github.io/language/subscripts)以获取有关此操作符行为的更详细解释，以及如何在自定义类型中实现对其的支持。
+请参阅[后环缀 `< >`](https://docs.raku.org/routine/%3C%20%3E#(Operators)_postcircumfix_%3C_%3E) 和[后环缀 `« »`](https://docs.raku.org/routine/%C2%AB%20%C2%BB#(Operators)_postcircumfix_%C2%AB_%C2%BB) 以获取方便的快捷方式，以及[下标](https://docs.raku.org/language/subscripts)以获取有关此操作符行为的更详细解释，以及如何在自定义类型中实现对其的支持。
 
-See [`postcircumfix < >`](https://rakudocs.github.io/routine/%3C%20%3E#(Operators)_postcircumfix_%3C_%3E) and [`postcircumfix « »`](https://rakudocs.github.io/routine/%C2%AB%20%C2%BB#(Operators)_postcircumfix_%C2%AB_%C2%BB) for convenient shortcuts, and [Subscripts](https://rakudocs.github.io/language/subscripts) for a more detailed explanation of this operator's behavior and how to implement support for it in custom types.
+See [`postcircumfix < >`](https://docs.raku.org/routine/%3C%20%3E#(Operators)_postcircumfix_%3C_%3E) and [`postcircumfix « »`](https://docs.raku.org/routine/%C2%AB%20%C2%BB#(Operators)_postcircumfix_%C2%AB_%C2%BB) for convenient shortcuts, and [Subscripts](https://docs.raku.org/language/subscripts) for a more detailed explanation of this operator's behavior and how to implement support for it in custom types.
 
 <a id="%E5%90%8E%E7%8E%AF%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6--postcircumfix-"></a>
 ## 后环缀运算符 `<>` / postcircumfix `<>`
@@ -917,9 +917,9 @@ It's a `Hash` in both cases, and it can be used like that; however, in the first
 <a id="%E5%90%8E%E7%8E%AF%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6--postcircumfix--1"></a>
 ## 后环缀运算符 `< >` / postcircumfix `< >`
 
-[后环缀 `{ }`](https://rakudocs.github.io/routine/%7B%20%7D#(Operators)_postcircumfix_{_}) 的快捷方式，该快捷方式使用与同名的[引用词运算符](https://rakudocs.github.io/routine/%3C%20%3E#circumfix_%3C_%3E)相同的规则引用其参数。
+[后环缀 `{ }`](https://docs.raku.org/routine/%7B%20%7D#(Operators)_postcircumfix_{_}) 的快捷方式，该快捷方式使用与同名的[引用词运算符](https://docs.raku.org/routine/%3C%20%3E#circumfix_%3C_%3E)相同的规则引用其参数。
 
-Shortcut for [`postcircumfix { }`](https://rakudocs.github.io/routine/%7B%20%7D#(Operators)_postcircumfix_{_}) that quotes its argument using the same rules as the [quote-words operator](https://rakudocs.github.io/routine/%3C%20%3E#circumfix_%3C_%3E) of the same name.
+Shortcut for [`postcircumfix { }`](https://docs.raku.org/routine/%7B%20%7D#(Operators)_postcircumfix_{_}) that quotes its argument using the same rules as the [quote-words operator](https://docs.raku.org/routine/%3C%20%3E#circumfix_%3C_%3E) of the same name.
 
 ```Raku
 my %color = kiwi => "green", banana => "yellow", cherry => "red";
@@ -935,9 +935,9 @@ Technically, not a real operator; it's syntactic sugar that's turned into the `{
 <a id="%E5%90%8E%E7%8E%AF%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%C2%AB-%C2%BB--postcircumfix-%C2%AB-%C2%BB"></a>
 ## 后环缀运算符 `« »` / postcircumfix `« »`
 
-[后环缀 `{ }`](https://rakudocs.github.io/routine/%7B%20%7D#(Operators)_postcircumfix_{_})的快捷方式，该快捷方式使用与同名的[引用词插值运算符](https://rakudocs.github.io/language/quoting#Word_quoting_with_interpolation_and_quote_protection:_%C2%AB_%C2%BB)相同的规则引用其参数。
+[后环缀 `{ }`](https://docs.raku.org/routine/%7B%20%7D#(Operators)_postcircumfix_{_})的快捷方式，该快捷方式使用与同名的[引用词插值运算符](https://docs.raku.org/language/quoting#Word_quoting_with_interpolation_and_quote_protection:_%C2%AB_%C2%BB)相同的规则引用其参数。
 
-Shortcut for [`postcircumfix { }`](https://rakudocs.github.io/routine/%7B%20%7D#(Operators)_postcircumfix_{_}) that quotes its argument using the same rules as the [interpolating quote-words operator](https://rakudocs.github.io/language/quoting#Word_quoting_with_interpolation_and_quote_protection:_%C2%AB_%C2%BB) of the same name.
+Shortcut for [`postcircumfix { }`](https://docs.raku.org/routine/%7B%20%7D#(Operators)_postcircumfix_{_}) that quotes its argument using the same rules as the [interpolating quote-words operator](https://docs.raku.org/language/quoting#Word_quoting_with_interpolation_and_quote_protection:_%C2%AB_%C2%BB) of the same name.
 
 ```Raku
 my %color = kiwi => "green", banana => "yellow", cherry => "red";
@@ -952,9 +952,9 @@ Technically, not a real operator; it's syntactic sugar that's turned into the `{
 <a id="%E5%90%8E%E7%8E%AF%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6----postcircumfix---2"></a>
 ## 后环缀运算符 `( )` / postcircumfix `( )`
 
-函数调用运算符将调用者视为[可调用的](https://rakudocs.github.io/type/Callable)并使用括号之间的表达式作为参数调用它。
+函数调用运算符将调用者视为[可调用的](https://docs.raku.org/type/Callable)并使用括号之间的表达式作为参数调用它。
 
-The call operator treats the invocant as a [Callable](https://rakudocs.github.io/type/Callable) and invokes it, using the expression between the parentheses as arguments.
+The call operator treats the invocant as a [Callable](https://docs.raku.org/type/Callable) and invokes it, using the expression between the parentheses as arguments.
 
 请注意，后面跟着一对圆括号的标识符始终被解析为子例程调用。
 
@@ -998,9 +998,9 @@ my sub f($invocant){ "The arg has a value of $invocant" }
 <a id="%E6%96%B9%E6%B3%95%E8%BF%90%E7%AE%97%E7%AC%A6---methodop--2"></a>
 ## 方法运算符 `.=` / methodop `.=`
 
-一个变异的方法调用。`$invocant.=method` 是 `$invocant = $invocant.method` 的语法糖，类似于 [=](https://rakudocs.github.io/routine/=)。
+一个变异的方法调用。`$invocant.=method` 是 `$invocant = $invocant.method` 的语法糖，类似于 [=](https://docs.raku.org/routine/=)。
 
-A mutating method call. `$invocant.=method` desugars to `$invocant = $invocant.method`, similar to [=](https://rakudocs.github.io/routine/=) .
+A mutating method call. `$invocant.=method` desugars to `$invocant = $invocant.method`, similar to [=](https://docs.raku.org/routine/=) .
 
 从技术上讲，不是真正的运算符；它是编译器中的句法特例。
 
@@ -1009,9 +1009,9 @@ Technically, not a real operator; it's syntax special-cased in the compiler.
 <a id="%E6%96%B9%E6%B3%95%E8%BF%90%E7%AE%97%E7%AC%A6-%5E--methodop-%5E"></a>
 ## 方法运算符 `.^` / methodop `.^`
 
-元方法调用。`$invocant.^method` 对调用者 `$invocant` 的元类调用方法 `method`。为 `$invocant.HOW.method($invocant, ...)` 的语法糖。有关详细信息，请参阅[元对象协议文档](https://rakudocs.github.io/language/mop)。
+元方法调用。`$invocant.^method` 对调用者 `$invocant` 的元类调用方法 `method`。为 `$invocant.HOW.method($invocant, ...)` 的语法糖。有关详细信息，请参阅[元对象协议文档](https://docs.raku.org/language/mop)。
 
-A meta-method call. `$invocant.^method` calls `method` on `$invocant`'s metaclass. It desugars to `$invocant.HOW.method($invocant, ...)`. See [the meta-object protocol documentation](https://rakudocs.github.io/language/mop) for more information.
+A meta-method call. `$invocant.^method` calls `method` on `$invocant`'s metaclass. It desugars to `$invocant.HOW.method($invocant, ...)`. See [the meta-object protocol documentation](https://docs.raku.org/language/mop) for more information.
 
 从技术上讲，不是真正的运算符；它是编译器中的句法特例。
 
@@ -1020,9 +1020,9 @@ Technically, not a real operator; it's syntax special-cased in the compiler.
 <a id="%E6%96%B9%E6%B3%95%E8%BF%90%E7%AE%97%E7%AC%A6---methodop--3"></a>
 ## 方法运算符 `.?` / methodop `.?`
 
-安全调用运算符。`$invocant.?method` 对调用者 `$invocant` 调用方法 `method` 如果它有这样一个名称的方法。否则返回 [Nil](https://rakudocs.github.io/type/Nil)。
+安全调用运算符。`$invocant.?method` 对调用者 `$invocant` 调用方法 `method` 如果它有这样一个名称的方法。否则返回 [Nil](https://docs.raku.org/type/Nil)。
 
-Safe call operator. `$invocant.?method` calls method `method` on `$invocant` if it has a method of such name. Otherwise it returns [Nil](https://rakudocs.github.io/type/Nil).
+Safe call operator. `$invocant.?method` calls method `method` on `$invocant` if it has a method of such name. Otherwise it returns [Nil](https://docs.raku.org/type/Nil).
 
 从技术上讲，不是真正的运算符；它是编译器中的句法特例。
 
@@ -1035,9 +1035,9 @@ Technically, not a real operator; it's syntax special-cased in the compiler.
 
 `$foo.+meth` walks the MRO and calls all the methods called `meth` and submethods called `meth` if the type is the same as type of `$foo`. Those methods might be multis, in which case the matching candidate would be called.
 
-之后，返回结果的[列表](https://rakudocs.github.io/type/List)。如果找不到这样的方法，它将抛出 [X::Method::NotFound](https://rakudocs.github.io/type/X::Method::NotFound) 异常。
+之后，返回结果的[列表](https://docs.raku.org/type/List)。如果找不到这样的方法，它将抛出 [X::Method::NotFound](https://docs.raku.org/type/X::Method::NotFound) 异常。
 
-After that, a [List](https://rakudocs.github.io/type/List) of the results are returned. If no such method was found, it throws a [X::Method::NotFound](https://rakudocs.github.io/type/X::Method::NotFound) exception.
+After that, a [List](https://docs.raku.org/type/List) of the results are returned. If no such method was found, it throws a [X::Method::NotFound](https://docs.raku.org/type/X::Method::NotFound) exception.
 
 ```Raku
 class A {
@@ -1062,9 +1062,9 @@ say C.+foo; # OUTPUT: «from C␤from B␤from A␤(True True True)␤»
 
 `$foo.*meth` walks the MRO and calls all the methods called `meth` and submethods called `meth` if the type is the same as type of `$foo`. Those methods might be multis, in which case the matching candidate would be called.
 
-之后，返回结果的[列表](https://rakudocs.github.io/type/List)。如果找不到这样的方法，返回空列表。
+之后，返回结果的[列表](https://docs.raku.org/type/List)。如果找不到这样的方法，返回空列表。
 
-After that, a [List](https://rakudocs.github.io/type/List) of the results are returned. If no such method was found, an empty [List](https://rakudocs.github.io/type/List) is returned.
+After that, a [List](https://docs.raku.org/type/List) of the results are returned. If no such method was found, an empty [List](https://docs.raku.org/type/List) is returned.
 
 技术上，后缀 `.+` 首先调用 `.*`。阅读后缀 `.+` 部分查看示例。
 
@@ -1096,17 +1096,17 @@ say @a».&foo;
 say @a».&{ .ord};
 ```
 
-超级方法调用可能看起来与执行 [map](https://rakudocs.github.io/routine/map)调用相同，但是除了向编译器提示它可以并行化调用外，该行为还受调用的[方法的节点性](https://rakudocs.github.io/routine/is%20nodal)影响，取决于执行调用时使用的是 [nodemap](https://rakudocs.github.io/routine/nodemap) 或 [deepmap](https://rakudocs.github.io/routine/deepmap) 语义。
+超级方法调用可能看起来与执行 [map](https://docs.raku.org/routine/map)调用相同，但是除了向编译器提示它可以并行化调用外，该行为还受调用的[方法的节点性](https://docs.raku.org/routine/is%20nodal)影响，取决于执行调用时使用的是 [nodemap](https://docs.raku.org/routine/nodemap) 或 [deepmap](https://docs.raku.org/routine/deepmap) 语义。
 
-Hyper method calls may appear to be the same as doing a [map](https://rakudocs.github.io/routine/map) call, however along with being a hint to the compiler that it can parallelize the call, the behavior is also affected by [nodality of the method](https://rakudocs.github.io/routine/is%20nodal) being invoked, depending on which either [nodemap](https://rakudocs.github.io/routine/nodemap) or [deepmap](https://rakudocs.github.io/routine/deepmap) semantics are used to perform the call.
+Hyper method calls may appear to be the same as doing a [map](https://docs.raku.org/routine/map) call, however along with being a hint to the compiler that it can parallelize the call, the behavior is also affected by [nodality of the method](https://docs.raku.org/routine/is%20nodal) being invoked, depending on which either [nodemap](https://docs.raku.org/routine/nodemap) or [deepmap](https://docs.raku.org/routine/deepmap) semantics are used to perform the call.
 
-通过查找[可调用](https://rakudocs.github.io/type/Callable)是否提供了 `nodal` 方法来检查节点性。如果超运算符应用于某个方法，则该[可调用](https://rakudocs.github.io/type/Callable)是该方法的名称，在[列表](https://rakudocs.github.io/type/List)类型中查找；如果超运算符应用于某个例程（例如 `».&foo`），则该例程的功能与[可调用](https://rakudocs.github.io/type/Callable)相同。如果[可调用](https://rakudocs.github.io/type/Callable)被确定为提供 `nodal` 方法，则使用 [nodemap](https://rakudocs.github.io/routine/nodemap) 语义执行超调用，否则使用 [duckmap](https://rakudocs.github.io/routine/duckmap) 语义。
+通过查找[可调用](https://docs.raku.org/type/Callable)是否提供了 `nodal` 方法来检查节点性。如果超运算符应用于某个方法，则该[可调用](https://docs.raku.org/type/Callable)是该方法的名称，在[列表](https://docs.raku.org/type/List)类型中查找；如果超运算符应用于某个例程（例如 `».&foo`），则该例程的功能与[可调用](https://docs.raku.org/type/Callable)相同。如果[可调用](https://docs.raku.org/type/Callable)被确定为提供 `nodal` 方法，则使用 [nodemap](https://docs.raku.org/routine/nodemap) 语义执行超调用，否则使用 [duckmap](https://docs.raku.org/routine/duckmap) 语义。
 
-The nodality is checked by looking up whether the [Callable](https://rakudocs.github.io/type/Callable) provides `nodal` method. If the hyper is applied to a method, that [Callable](https://rakudocs.github.io/type/Callable) is that method name, looked up on [List](https://rakudocs.github.io/type/List) type; if the hyper is applied to a routine (e.g. `».&foo`), that routine functions as that [Callable](https://rakudocs.github.io/type/Callable). If the [Callable](https://rakudocs.github.io/type/Callable) is determined to provide `nodal` method, [nodemap](https://rakudocs.github.io/routine/nodemap) semantics are used to perform the hyper call, otherwise [duckmap](https://rakudocs.github.io/routine/duckmap) semantics are used.
+The nodality is checked by looking up whether the [Callable](https://docs.raku.org/type/Callable) provides `nodal` method. If the hyper is applied to a method, that [Callable](https://docs.raku.org/type/Callable) is that method name, looked up on [List](https://docs.raku.org/type/List) type; if the hyper is applied to a routine (e.g. `».&foo`), that routine functions as that [Callable](https://docs.raku.org/type/Callable). If the [Callable](https://docs.raku.org/type/Callable) is determined to provide `nodal` method, [nodemap](https://docs.raku.org/routine/nodemap) semantics are used to perform the hyper call, otherwise [duckmap](https://docs.raku.org/routine/duckmap) semantics are used.
 
-注意避免出现预期副作用的[常见错误](https://rakudocs.github.io/language/traps#Using_%C2%BB_and_map_interchangeably)。以下 `say` *不能*保证按顺序产生输出：
+注意避免出现预期副作用的[常见错误](https://docs.raku.org/language/traps#Using_%C2%BB_and_map_interchangeably)。以下 `say` *不能*保证按顺序产生输出：
 
-Take care to avoid a [common mistake](https://rakudocs.github.io/language/traps#Using_%C2%BB_and_map_interchangeably) of expecting side-effects to occur in order. The following `say` is **not** guaranteed to produce the output in order:
+Take care to avoid a [common mistake](https://docs.raku.org/language/traps#Using_%C2%BB_and_map_interchangeably) of expecting side-effects to occur in order. The following `say` is **not** guaranteed to produce the output in order:
 
 ```Raku
 @a».say;  # WRONG! Could produce a␤b␤c␤ or c␤b␤a␤ or any other order 
@@ -1219,9 +1219,9 @@ say ++$x;   # OUTPUT: «4␤»
 say $x;     # OUTPUT: «4␤»
 ```
 
-它通过在参数上调用 [succ](https://rakudocs.github.io/routine/succ)（意为 *successor*） 方法来工作，该方法允许自定义类型自由实现自己的增量语义。
+它通过在参数上调用 [succ](https://docs.raku.org/routine/succ)（意为 *successor*） 方法来工作，该方法允许自定义类型自由实现自己的增量语义。
 
-It works by calling the [succ](https://rakudocs.github.io/routine/succ) method (for *successor*) on its argument, which gives custom types the freedom to implement their own increment semantics.
+It works by calling the [succ](https://docs.raku.org/routine/succ) method (for *successor*) on its argument, which gives custom types the freedom to implement their own increment semantics.
 
 <a id="%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-----prefix---"></a>
 ## 前缀运算符 `--` / prefix `--`
@@ -1240,9 +1240,9 @@ say --$x;   # OUTPUT: «2␤»
 say $x;     # OUTPUT: «2␤»
 ```
 
-它的工作方式是在参数上调用 [pred](https://rakudocs.github.io/routine/pred)（意为 *precondence*）方法，这给了自定义类型实现自减语义的自由。
+它的工作方式是在参数上调用 [pred](https://docs.raku.org/routine/pred)（意为 *precondence*）方法，这给了自定义类型实现自减语义的自由。
 
-It works by calling the [pred](https://rakudocs.github.io/routine/pred) method (for *predecessor*) on its argument, which gives custom types the freedom to implement their own decrement semantics.
+It works by calling the [pred](https://docs.raku.org/routine/pred) method (for *predecessor*) on its argument, which gives custom types the freedom to implement their own decrement semantics.
 
 <a id="%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---prefix--1"></a>
 ## 前缀运算符 `++` / prefix `++`
@@ -1261,9 +1261,9 @@ say $x++;   # OUTPUT: «3␤»
 say $x;     # OUTPUT: «4␤»
 ```
 
-它通过在参数上调用 [succ](https://rakudocs.github.io/routine/succ) 方法来工作，该方法允许自定义类型自由实现自增语义。
+它通过在参数上调用 [succ](https://docs.raku.org/routine/succ) 方法来工作，该方法允许自定义类型自由实现自增语义。
 
-It works by calling the [succ](https://rakudocs.github.io/routine/succ) method (for *successor*) on its argument, which gives custom types the freedom to implement their own increment semantics.
+It works by calling the [succ](https://docs.raku.org/routine/succ) method (for *successor*) on its argument, which gives custom types the freedom to implement their own increment semantics.
 
 注意，这不一定返回其参数；例如，对于未定义的值，它返回 0：
 
@@ -1275,9 +1275,9 @@ say $x++;   # OUTPUT: «0␤»
 say $x;     # OUTPUT: «1␤»
 ```
 
-[Str](https://rakudocs.github.io/type/Str) 上的增量将增加字符串的数字部分，并将结果字符串分配给容器。`is rw` 容器是必需的。
+[Str](https://docs.raku.org/type/Str) 上的增量将增加字符串的数字部分，并将结果字符串分配给容器。`is rw` 容器是必需的。
 
-Increment on [Str](https://rakudocs.github.io/type/Str) will increment the number part of a string and assign the resulting string to the container. A `is rw`-container is required.
+Increment on [Str](https://docs.raku.org/type/Str) will increment the number part of a string and assign the resulting string to the container. A `is rw`-container is required.
 
 ```Raku
 my $filename = "somefile-001.txt";
@@ -1302,9 +1302,9 @@ say $x--;   # OUTPUT: «3␤»
 say $x;     # OUTPUT: «2␤»
 ```
 
-它的工作方式是在参数上调用 [pred](https://rakudocs.github.io/routine/pred) 方法，这给了自定义类型实现自己自减语义的自由。
+它的工作方式是在参数上调用 [pred](https://docs.raku.org/routine/pred) 方法，这给了自定义类型实现自己自减语义的自由。
 
-It works by calling the [pred](https://rakudocs.github.io/routine/pred) method (for *predecessor*) on its argument, which gives custom types the freedom to implement their own decrement semantics.
+It works by calling the [pred](https://docs.raku.org/routine/pred) method (for *predecessor*) on its argument, which gives custom types the freedom to implement their own decrement semantics.
 
 注意，这不一定返回其参数；例如，对于未定义的值，它返回 0：
 
@@ -1316,9 +1316,9 @@ say $x--;   # OUTPUT: «0␤»
 say $x;     # OUTPUT: «-1␤»
 ```
 
-[Str](https://rakudocs.github.io/type/Str) 上的减量将减少字符串的数字部分，并将结果字符串分配给容器。`is rw` 容器是必需的。数字部分减到小于 0 是被禁止的并会抛出 `X::AdHoc` 异常。
+[Str](https://docs.raku.org/type/Str) 上的减量将减少字符串的数字部分，并将结果字符串分配给容器。`is rw` 容器是必需的。数字部分减到小于 0 是被禁止的并会抛出 `X::AdHoc` 异常。
 
-Decrement on [Str](https://rakudocs.github.io/type/Str) will decrement the number part of a string and assign the resulting string to the container. A `is rw`-container is required. Crossing 0 is prohibited and throws `X::AdHoc`.
+Decrement on [Str](https://docs.raku.org/type/Str) will decrement the number part of a string and assign the resulting string to the container. A `is rw`-container is required. Crossing 0 is prohibited and throws `X::AdHoc`.
 
 ```Raku
 my $filename = "somefile-003.txt";
@@ -1336,13 +1336,13 @@ say $filename-- for 1..3;
 multi sub infix:<**>(Any, Any --> Numeric:D) is assoc<right>
 ```
 
-指数运算符将两个参数强制转换为[数值](https://rakudocs.github.io/type/Numeric)，并计算左边数值的对于右边数值的指数。
+指数运算符将两个参数强制转换为[数值](https://docs.raku.org/type/Numeric)，并计算左边数值的对于右边数值的指数。
 
-The exponentiation operator coerces both arguments to [Numeric](https://rakudocs.github.io/type/Numeric) and calculates the left-hand-side raised to the power of the right-hand side.
+The exponentiation operator coerces both arguments to [Numeric](https://docs.raku.org/type/Numeric) and calculates the left-hand-side raised to the power of the right-hand side.
 
-如果右边是非负整数，左边是任意精度类型（[Int](https://rakudocs.github.io/type/Int)、[FatRat](https://rakudocs.github.io/type/FatRat)），则执行计算时不会损失精度。
+如果右边是非负整数，左边是任意精度类型（[Int](https://docs.raku.org/type/Int)、[FatRat](https://docs.raku.org/type/FatRat)），则执行计算时不会损失精度。
 
-If the right-hand side is a non-negative integer and the left-hand side is an arbitrary precision type ([Int](https://rakudocs.github.io/type/Int), [FatRat](https://rakudocs.github.io/type/FatRat)), then the calculation is carried out without loss of precision.
+If the right-hand side is a non-negative integer and the left-hand side is an arbitrary precision type ([Int](https://docs.raku.org/type/Int), [FatRat](https://docs.raku.org/type/FatRat)), then the calculation is carried out without loss of precision.
 
 Unicode 上标将以完全相同的方式运行。
 
@@ -1376,9 +1376,9 @@ multi sub prefix:<?>(Mu --> Bool:D)
 
 Boolean context operator.
 
-通过调用参数的 `Bool` 方法将其强制为 [Bool](https://rakudocs.github.io/type/Bool)。注意，这会折叠 [Junction](https://rakudocs.github.io/type/Junction) 类型。
+通过调用参数的 `Bool` 方法将其强制为 [Bool](https://docs.raku.org/type/Bool)。注意，这会折叠 [Junction](https://docs.raku.org/type/Junction) 类型。
 
-Coerces the argument to [Bool](https://rakudocs.github.io/type/Bool) by calling the `Bool` method on it. Note that this collapses [Junction](https://rakudocs.github.io/type/Junction)s.
+Coerces the argument to [Bool](https://docs.raku.org/type/Bool) by calling the `Bool` method on it. Note that this collapses [Junction](https://docs.raku.org/type/Junction)s.
 
 <a id="%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---prefix--3"></a>
 ## 前缀运算符 `!` / prefix `!`
@@ -1391,11 +1391,11 @@ multi sub prefix:<!>(Mu --> Bool:D)
 
 Negated boolean context operator.
 
-通过调用参数的 `Bool` 方法将其强制为 [Bool](https://rakudocs.github.io/type/Bool) 类型。注意，这会折叠 [Junction](https://rakudocs.github.io/type/Junction) 类型。
+通过调用参数的 `Bool` 方法将其强制为 [Bool](https://docs.raku.org/type/Bool) 类型。注意，这会折叠 [Junction](https://docs.raku.org/type/Junction) 类型。
 
-通过调用参数的 `Bool` 方法将其强制为 [Bool](https://rakudocs.github.io/type/Bool) 类型，并返回结果的否定值。注意，这会折叠[Junction](https://rakudocs.github.io/type/Junction) 类型。
+通过调用参数的 `Bool` 方法将其强制为 [Bool](https://docs.raku.org/type/Bool) 类型，并返回结果的否定值。注意，这会折叠[Junction](https://docs.raku.org/type/Junction) 类型。
 
-Coerces the argument to [Bool](https://rakudocs.github.io/type/Bool) by calling the `Bool` method on it, and returns the negation of the result. Note that this collapses [Junction](https://rakudocs.github.io/type/Junction)s.
+Coerces the argument to [Bool](https://docs.raku.org/type/Bool) by calling the `Bool` method on it, and returns the negation of the result. Note that this collapses [Junction](https://docs.raku.org/type/Junction)s.
 
 <a id="%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---prefix--4"></a>
 ## 前缀运算符 `+` / prefix `+`
@@ -1408,9 +1408,9 @@ multi sub prefix:<+>(Any --> Numeric:D)
 
 Numeric context operator.
 
-通过调用参数上的 `Numeric` 方法将其强制为[数值](https://rakudocs.github.io/type/Numeric)。
+通过调用参数上的 `Numeric` 方法将其强制为[数值](https://docs.raku.org/type/Numeric)。
 
-Coerces the argument to [Numeric](https://rakudocs.github.io/type/Numeric) by calling the `Numeric` method on it.
+Coerces the argument to [Numeric](https://docs.raku.org/type/Numeric) by calling the `Numeric` method on it.
 
 <a id="%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6----prefix--"></a>
 ## 前缀运算符 `-` / prefix `-`
@@ -1423,9 +1423,9 @@ multi sub prefix:<->(Any --> Numeric:D)
 
 Negative numeric context operator.
 
-通过调用参数上的 `Numeric` 方法将其强制为[数值](https://rakudocs.github.io/type/Numeric)，并返回结果的否定值。
+通过调用参数上的 `Numeric` 方法将其强制为[数值](https://docs.raku.org/type/Numeric)，并返回结果的否定值。
 
-Coerces the argument to [Numeric](https://rakudocs.github.io/type/Numeric) by calling the `Numeric` method on it, and then negates the result.
+Coerces the argument to [Numeric](https://docs.raku.org/type/Numeric) by calling the `Numeric` method on it, and then negates the result.
 
 <a id="%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7E--prefix-%7E"></a>
 ## 前缀运算符 `~` / prefix `~`
@@ -1438,16 +1438,16 @@ multi sub prefix:<~>(Any --> Str:D)
 
 String context operator.
 
-通过调用 [Str](https://rakudocs.github.io/type/Str) 方法，将参数强制为 [Str](https://rakudocs.github.io/type/Str) 类型。
+通过调用 [Str](https://docs.raku.org/type/Str) 方法，将参数强制为 [Str](https://docs.raku.org/type/Str) 类型。
 
-Coerces the argument to [Str](https://rakudocs.github.io/type/Str) by calling the [Str](https://rakudocs.github.io/type/List#method_Str) method on it.
+Coerces the argument to [Str](https://docs.raku.org/type/Str) by calling the [Str](https://docs.raku.org/type/List#method_Str) method on it.
 
 <a id="%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7C--prefix-%7C"></a>
 ## 前缀运算符 `|` / prefix `|`
 
-将类型为 [Capture](https://rakudocs.github.io/type/Capture)、[Pair](https://rakudocs.github.io/type/Pair)、[List](https://rakudocs.github.io/type/List)、[Map](https://rakudocs.github.io/type/Map) 和 [Hash](https://rakudocs.github.io/type/Hash) 的对象展平成参数列表。
+将类型为 [Capture](https://docs.raku.org/type/Capture)、[Pair](https://docs.raku.org/type/Pair)、[List](https://docs.raku.org/type/List)、[Map](https://docs.raku.org/type/Map) 和 [Hash](https://docs.raku.org/type/Hash) 的对象展平成参数列表。
 
-Flattens objects of type [Capture](https://rakudocs.github.io/type/Capture), [Pair](https://rakudocs.github.io/type/Pair), [List](https://rakudocs.github.io/type/List), [Map](https://rakudocs.github.io/type/Map) and [Hash](https://rakudocs.github.io/type/Hash) into an argument list.
+Flattens objects of type [Capture](https://docs.raku.org/type/Capture), [Pair](https://docs.raku.org/type/Pair), [List](https://docs.raku.org/type/List), [Map](https://docs.raku.org/type/Map) and [Hash](https://docs.raku.org/type/Hash) into an argument list.
 
 ```Raku
 sub slurpee( |args ){
@@ -1457,13 +1457,13 @@ slurpee( <a b c d>, { e => 3 }, 'e' => 'f' => 33 )
 # OUTPUT: «\(("a", "b", "c", "d"), {:e(3)}, :e(:f(33)))␤»
 ```
 
-有关此主题的详细信息，请参阅 [`Signature` 页面，特别是有关捕获的部分](https://rakudocs.github.io/type/Signature#Capture_parameters)。
+有关此主题的详细信息，请参阅 [`Signature` 页面，特别是有关捕获的部分](https://docs.raku.org/type/Signature#Capture_parameters)。
 
-Please see the [`Signature` page, specially the section on Captures](https://rakudocs.github.io/type/Signature#Capture_parameters) for more information on the subject.
+Please see the [`Signature` page, specially the section on Captures](https://docs.raku.org/type/Signature#Capture_parameters) for more information on the subject.
 
-在参数列表之外，它返回一个 [Slip](https://rakudocs.github.io/type/Slip)，这使得它扁平化为外部列表。在[参数列表](https://rakudocs.github.io/language/list#Argument_list_(Capture)_context)中，[`Positional`](https://rakudocs.github.io/type/Positional) 部分将变为位置参数，[`Associative`](https://rakudocs.github.io/type/Associative) 部分变为命名参数。
+在参数列表之外，它返回一个 [Slip](https://docs.raku.org/type/Slip)，这使得它扁平化为外部列表。在[参数列表](https://docs.raku.org/language/list#Argument_list_(Capture)_context)中，[`Positional`](https://docs.raku.org/type/Positional) 部分将变为位置参数，[`Associative`](https://docs.raku.org/type/Associative) 部分变为命名参数。
 
-Outside of argument lists, it returns a [Slip](https://rakudocs.github.io/type/Slip), which makes it flatten into the outer list. Inside [argument list](https://rakudocs.github.io/language/list#Argument_list_(Capture)_context) [`Positional`s](https://rakudocs.github.io/type/Positional) are turned into positional arguments and [`Associative`s](https://rakudocs.github.io/type/Associative) are turned into named arguments.
+Outside of argument lists, it returns a [Slip](https://docs.raku.org/type/Slip), which makes it flatten into the outer list. Inside [argument list](https://docs.raku.org/language/list#Argument_list_(Capture)_context) [`Positional`s](https://docs.raku.org/type/Positional) are turned into positional arguments and [`Associative`s](https://docs.raku.org/type/Associative) are turned into named arguments.
 
 <a id="%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5E--prefix-%5E"></a>
 ## 前缀运算符 `+^` / prefix `+^`
@@ -1472,9 +1472,9 @@ Outside of argument lists, it returns a [Slip](https://rakudocs.github.io/type/S
 multi sub prefix:<+^>(Any --> Int:D)
 ```
 
-整数位求反运算符：将参数强制为 [Int](https://rakudocs.github.io/type/Int)，并对结果进行位求反，假定[二的补码](https://en.wikipedia.org/wiki/Two%27s_complement)。
+整数位求反运算符：将参数强制为 [Int](https://docs.raku.org/type/Int)，并对结果进行位求反，假定[二的补码](https://en.wikipedia.org/wiki/Two%27s_complement)。
 
-Integer bitwise negation operator: Coerces the argument to [Int](https://rakudocs.github.io/type/Int) and does a bitwise negation on the result, assuming [two's complement](https://en.wikipedia.org/wiki/Two%27s_complement).
+Integer bitwise negation operator: Coerces the argument to [Int](https://docs.raku.org/type/Int) and does a bitwise negation on the result, assuming [two's complement](https://en.wikipedia.org/wiki/Two%27s_complement).
 
 <a id="%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7E%5E--prefix-%7E%5E"></a>
 ## 前缀运算符 `~^` / prefix `~^`
@@ -1494,9 +1494,9 @@ Please note that this has not yet been implemented.
 multi sub prefix:<?^>(Mu --> Bool:D)
 ```
 
-布尔位求反运算符：将参数强制为 [Bool](https://rakudocs.github.io/type/Bool)，然后进行位翻转，使其与 `prefix:<!>` 相同。
+布尔位求反运算符：将参数强制为 [Bool](https://docs.raku.org/type/Bool)，然后进行位翻转，使其与 `prefix:<!>` 相同。
 
-Boolean bitwise negation operator: Coerces the argument to [Bool](https://rakudocs.github.io/type/Bool) and then does a bit flip, which makes it the same as `prefix:<!>`.
+Boolean bitwise negation operator: Coerces the argument to [Bool](https://docs.raku.org/type/Bool) and then does a bit flip, which makes it the same as `prefix:<!>`.
 
 <a id="%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5E--prefix-%5E-2"></a>
 ## 前缀运算符 `^` / prefix `^`
@@ -1509,9 +1509,9 @@ multi sub prefix:<^>(Any --> Range:D)
 
 *upto* operator.
 
-将参数强制为[数值](https://rakudocs.github.io/type/Numeric)，并生成从 0 到（但不包括）参数的范围。
+将参数强制为[数值](https://docs.raku.org/type/Numeric)，并生成从 0 到（但不包括）参数的范围。
 
-Coerces the argument to [Numeric](https://rakudocs.github.io/type/Numeric), and generates a range from 0 up to (but excluding) the argument.
+Coerces the argument to [Numeric](https://docs.raku.org/type/Numeric), and generates a range from 0 up to (but excluding) the argument.
 
 ```Raku
 say ^5;         # OUTPUT: «0..^5␤» 
@@ -1579,9 +1579,9 @@ multi sub infix:<*>(Any, Any --> Numeric:D)
 
 Multiplication operator.
 
-将两个参数强制转换为[数值](https://rakudocs.github.io/type/Numeric)并将它们相乘。结果是较宽的类型。有关详细信息，请参见[数值](https://rakudocs.github.io/type/Numeric)。
+将两个参数强制转换为[数值](https://docs.raku.org/type/Numeric)并将它们相乘。结果是较宽的类型。有关详细信息，请参见[数值](https://docs.raku.org/type/Numeric)。
 
-Coerces both arguments to [Numeric](https://rakudocs.github.io/type/Numeric) and multiplies them. The result is of the wider type. See [Numeric](https://rakudocs.github.io/type/Numeric) for details.
+Coerces both arguments to [Numeric](https://docs.raku.org/type/Numeric) and multiplies them. The result is of the wider type. See [Numeric](https://docs.raku.org/type/Numeric) for details.
 
 <a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6----infix-"></a>
 ## 中缀运算符 `/` - infix `/`
@@ -1594,9 +1594,9 @@ multi sub infix:</>(Any, Any --> Numeric:D)
 
 Division operator.
 
-将两个参数强制转换为[数值](https://rakudocs.github.io/type/Numeric)并将左数除以右数。[Int](https://rakudocs.github.io/type/Int) 的除法返回 [Rat](https://rakudocs.github.io/type/Rat) 值，否则[数值](https://rakudocs.github.io/type/Numeric)中描述的“较宽类型”规则适用。
+将两个参数强制转换为[数值](https://docs.raku.org/type/Numeric)并将左数除以右数。[Int](https://docs.raku.org/type/Int) 的除法返回 [Rat](https://docs.raku.org/type/Rat) 值，否则[数值](https://docs.raku.org/type/Numeric)中描述的“较宽类型”规则适用。
 
-Coerces both argument to [Numeric](https://rakudocs.github.io/type/Numeric) and divides the left through the right number. Division of [Int](https://rakudocs.github.io/type/Int) values returns [Rat](https://rakudocs.github.io/type/Rat), otherwise the "wider type" rule described in [Numeric](https://rakudocs.github.io/type/Numeric) holds.
+Coerces both argument to [Numeric](https://docs.raku.org/type/Numeric) and divides the left through the right number. Division of [Int](https://docs.raku.org/type/Int) values returns [Rat](https://docs.raku.org/type/Rat), otherwise the "wider type" rule described in [Numeric](https://docs.raku.org/type/Numeric) holds.
 
 <a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-div--infix-div"></a>
 ## 中缀运算符 `div` / infix `div`
@@ -1616,9 +1616,9 @@ Integer division operator. Rounds down.
 multi sub infix:<%>($x, $y --> Numeric:D)
 ```
 
-模运算符。首先强制为[数值](https://rakudocs.github.io/type/Numeric)。
+模运算符。首先强制为[数值](https://docs.raku.org/type/Numeric)。
 
-Modulo operator. Coerces to [Numeric](https://rakudocs.github.io/type/Numeric) first.
+Modulo operator. Coerces to [Numeric](https://docs.raku.org/type/Numeric) first.
 
 一般来说，以下标识成立：
 
@@ -1658,9 +1658,9 @@ Integer modulo operator. Returns the remainder of an integer modulo operation.
 multi sub infix:<+&>($a, $b --> Int:D)
 ```
 
-数值按位*与*运算符。将两个参数强制为 [Int](https://rakudocs.github.io/type/Int)，并假设二的补码，执行按位*与*操作。
+数值按位*与*运算符。将两个参数强制为 [Int](https://docs.raku.org/type/Int)，并假设二的补码，执行按位*与*操作。
 
-Numeric bitwise *AND* operator. Coerces both arguments to [Int](https://rakudocs.github.io/type/Int) and does a bitwise *AND* operation assuming two's complement.
+Numeric bitwise *AND* operator. Coerces both arguments to [Int](https://docs.raku.org/type/Int) and does a bitwise *AND* operation assuming two's complement.
 
 <a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--5"></a>
 ## 中缀运算符 `+<` / infix `+<`
@@ -1719,9 +1719,9 @@ Please note that this has not yet been implemented.
 multi sub infix:<gcd>($a, $b --> Int:D)
 ```
 
-将两个参数强制为 [Int](https://rakudocs.github.io/type/Int) 并返回最大公约数。如果其中一个参数为 0，则返回另一个参数（当两个参数均为 0 时，运算符返回 0）。
+将两个参数强制为 [Int](https://docs.raku.org/type/Int) 并返回最大公约数。如果其中一个参数为 0，则返回另一个参数（当两个参数均为 0 时，运算符返回 0）。
 
-Coerces both arguments to [Int](https://rakudocs.github.io/type/Int) and returns the greatest common divisor. If one of its arguments is 0, the other is returned (when both arguments are 0, the operator returns 0).
+Coerces both arguments to [Int](https://docs.raku.org/type/Int) and returns the greatest common divisor. If one of its arguments is 0, the other is returned (when both arguments are 0, the operator returns 0).
 
 <a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-lcm--infix-lcm"></a>
 ## 中缀运算符 `lcm` / infix `lcm`
@@ -1730,9 +1730,9 @@ Coerces both arguments to [Int](https://rakudocs.github.io/type/Int) and returns
 multi sub infix:<lcm>($a, $b --> Int:D)
 ```
 
-将两个参数强制为 [Int](https://rakudocs.github.io/type/Int) 并返回最小公倍数；也就是说，可由两个参数除尽的最小整数。
+将两个参数强制为 [Int](https://docs.raku.org/type/Int) 并返回最小公倍数；也就是说，可由两个参数除尽的最小整数。
 
-Coerces both arguments to [Int](https://rakudocs.github.io/type/Int) and returns the least common multiple; that is, the smallest integer that is evenly divisible by both arguments.
+Coerces both arguments to [Int](https://docs.raku.org/type/Int) and returns the least common multiple; that is, the smallest integer that is evenly divisible by both arguments.
 
 <a id="%E5%8A%A0%E6%B3%95%E4%BC%98%E5%85%88%E7%BA%A7--additive-precedence"></a>
 # 加法优先级 / Additive precedence
@@ -1748,9 +1748,9 @@ multi sub infix:<+>($a, $b --> Numeric:D)
 
 Addition operator.
 
-将两个参数强制为[Numeric](https://rakudocs.github.io/type/Numeric)并将它们相加。
+将两个参数强制为[Numeric](https://docs.raku.org/type/Numeric)并将它们相加。
 
-Coerces both arguments to [Numeric](https://rakudocs.github.io/type/Numeric) and adds them.
+Coerces both arguments to [Numeric](https://docs.raku.org/type/Numeric) and adds them.
 
 <a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6----infix--"></a>
 ## 中缀运算符 `-` / infix `-`
@@ -1763,9 +1763,9 @@ multi sub infix:<->($a, $b --> Numeric:D)
 
 Subtraction operator.
 
-将两个参数强制为 [Numeric](https://rakudocs.github.io/type/Numeric)并从第一个参数中减去第二个参数。
+将两个参数强制为 [Numeric](https://docs.raku.org/type/Numeric)并从第一个参数中减去第二个参数。
 
-Coerces both arguments to [Numeric](https://rakudocs.github.io/type/Numeric) and subtracts the second from the first.
+Coerces both arguments to [Numeric](https://docs.raku.org/type/Numeric) and subtracts the second from the first.
 
 <a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7C--infix-%7C"></a>
 ## 中缀运算符 `+|` / infix `+|`
@@ -1774,9 +1774,9 @@ Coerces both arguments to [Numeric](https://rakudocs.github.io/type/Numeric) and
 multi sub infix:<+|>($a, $b --> Int:D)
 ```
 
-整数按位或运算符：将两个参数强制为 [Int](https://rakudocs.github.io/type/Int)，并执行按位*或*操作。
+整数按位或运算符：将两个参数强制为 [Int](https://docs.raku.org/type/Int)，并执行按位*或*操作。
 
-Integer bitwise OR operator: Coerces both arguments to [Int](https://rakudocs.github.io/type/Int) and does a bitwise *OR* (inclusive OR) operation.
+Integer bitwise OR operator: Coerces both arguments to [Int](https://docs.raku.org/type/Int) and does a bitwise *OR* (inclusive OR) operation.
 
 <a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5E--infix-%5E"></a>
 ## 中缀运算符 `+^` / infix `+^`
@@ -1785,9 +1785,9 @@ Integer bitwise OR operator: Coerces both arguments to [Int](https://rakudocs.gi
 multi sub infix:<+^>($a, $b --> Int:D)
 ```
 
-整数位异或运算符：将两个参数强制为 [Int](https://rakudocs.github.io/type/Int)，并执行位*异或*操作。
+整数位异或运算符：将两个参数强制为 [Int](https://docs.raku.org/type/Int)，并执行位*异或*操作。
 
-Integer bitwise XOR operator: Coerces both arguments to [Int](https://rakudocs.github.io/type/Int) and does a bitwise *XOR* (exclusive OR) operation.
+Integer bitwise XOR operator: Coerces both arguments to [Int](https://docs.raku.org/type/Int) and does a bitwise *XOR* (exclusive OR) operation.
 
 <a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7E%7C--infix-%7E%7C"></a>
 ## 中缀运算符 `~|` / infix `~|`
@@ -1811,9 +1811,9 @@ multi sub infix:<?^>(Mu $x = Bool::False)
 multi sub infix:<?^>(Mu \a, Mu \b)
 ```
 
-布尔位异或运算符：将参数强制为 [Bool](https://rakudocs.github.io/type/Bool) 并对其执行逻辑异或：只有其中一个参数为真值时，它才会返回真值。它返回单个参数的标识。
+布尔位异或运算符：将参数强制为 [Bool](https://docs.raku.org/type/Bool) 并对其执行逻辑异或：只有其中一个参数为真值时，它才会返回真值。它返回单个参数的标识。
 
-Boolean bitwise XOR operator: Coerces the argument(s) to [Bool](https://rakudocs.github.io/type/Bool) and performs logical XOR on them: it will return True if and only if just one of the argument is true. It returns identity on a single argument.
+Boolean bitwise XOR operator: Coerces the argument(s) to [Bool](https://docs.raku.org/type/Bool) and performs logical XOR on them: it will return True if and only if just one of the argument is true. It returns identity on a single argument.
 
 <a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7C--infix-%7C-1"></a>
 ## 中缀运算符 `?|` / infix `?|`
@@ -1826,9 +1826,9 @@ multi sub infix:<?|>($a, $b --> Bool:D)
 
 Boolean logical OR operator.
 
-将两个参数强制为 [Bool](https://rakudocs.github.io/type/Bool) 并执行逻辑*或*操作。
+将两个参数强制为 [Bool](https://docs.raku.org/type/Bool) 并执行逻辑*或*操作。
 
-Coerces both arguments to [Bool](https://rakudocs.github.io/type/Bool) and does a logical *OR* (inclusive OR) operation.
+Coerces both arguments to [Bool](https://docs.raku.org/type/Bool) and does a logical *OR* (inclusive OR) operation.
 
 <a id="%E5%A4%8D%E5%88%B6%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--replication-precedence"></a>
 # 复制运算符优先级 / Replication precedence
@@ -1844,9 +1844,9 @@ sub infix:<x>($a, $b --> Str:D)
 
 String repetition operator.
 
-重复字符串 `$a` `$b` 次，如果需要，强制将 `$a` 转换为 [`Str`](https://rakudocs.github.io/type/Str) 和 `$b` 转换为 [`Int`](https://rakudocs.github.io/type/Int)。如果 `$b` 小于 0，则返回空字符串。如果 `$b` 是 `-Inf` 或 `NaN`，则将引发异常 `X::Numeric::CannotConvert`。
+重复字符串 `$a` `$b` 次，如果需要，强制将 `$a` 转换为 [`Str`](https://docs.raku.org/type/Str) 和 `$b` 转换为 [`Int`](https://docs.raku.org/type/Int)。如果 `$b` 小于 0，则返回空字符串。如果 `$b` 是 `-Inf` 或 `NaN`，则将引发异常 `X::Numeric::CannotConvert`。
 
-Repeats the string `$a` `$b` times, if necessary coercing `$a` to [`Str`](https://rakudocs.github.io/type/Str) and `$b` [`Int`](https://rakudocs.github.io/type/Int). Returns an empty string if `$b <= 0`. An exception `X::Numeric::CannotConvert` will be thrown if `$b` is `-Inf` or `NaN`.
+Repeats the string `$a` `$b` times, if necessary coercing `$a` to [`Str`](https://docs.raku.org/type/Str) and `$b` [`Int`](https://docs.raku.org/type/Int). Returns an empty string if `$b <= 0`. An exception `X::Numeric::CannotConvert` will be thrown if `$b` is `-Inf` or `NaN`.
 
 ```Raku
 say 'ab' x 3;           # OUTPUT: «ababab␤» 
@@ -1881,9 +1881,9 @@ multi sub infix:<xx>(Mu \x, Bool:D $b)
 multi sub infix:<xx>(Mu \x, Int:D $n)
 ```
 
-一般来说，它返回一个重复的 `$a` 序列并计算 `$b` 次（`$b` 被强制为 [Int](https://rakudocs.github.io/type/Int)）。如果 `$b` 小于 0，则返回空列表。它将返回一个没有操作数的错误，并用一个操作数返回操作数本身。如果 `$b` 是 `-Inf` 或 `NaN`，则将引发异常 `X::Numeric::CannotConvert`。
+一般来说，它返回一个重复的 `$a` 序列并计算 `$b` 次（`$b` 被强制为 [Int](https://docs.raku.org/type/Int)）。如果 `$b` 小于 0，则返回空列表。它将返回一个没有操作数的错误，并用一个操作数返回操作数本身。如果 `$b` 是 `-Inf` 或 `NaN`，则将引发异常 `X::Numeric::CannotConvert`。
 
-In general, it returns a Sequence of `$a` repeated and evaluated `$b` times (`$b` is coerced to [Int](https://rakudocs.github.io/type/Int)). If `$b <= 0`, the empty list is returned. It will return an error with no operand, and return the operand itself with a single operand. An exception `X::Numeric::CannotConvert` will be thrown if `$b` is `-Inf` or `NaN`.
+In general, it returns a Sequence of `$a` repeated and evaluated `$b` times (`$b` is coerced to [Int](https://docs.raku.org/type/Int)). If `$b <= 0`, the empty list is returned. It will return an error with no operand, and return the operand itself with a single operand. An exception `X::Numeric::CannotConvert` will be thrown if `$b` is `-Inf` or `NaN`.
 
 运算符左手边的子项每次都重复计算，所以
 
@@ -1913,9 +1913,9 @@ The right-hand side can be `*`, in which case a lazy, infinite list is returned.
 <a id="%E8%BF%9E%E6%8E%A5%E6%93%8D%E4%BD%9C%E7%AC%A6--concatenation"></a>
 # 连接操作符 / Concatenation
 
-与其他中缀运算符一样，这些运算符可以与元运算符组合，例如[赋值运算符](https://rakudocs.github.io/language/operators#Assignment_operators)。
+与其他中缀运算符一样，这些运算符可以与元运算符组合，例如[赋值运算符](https://docs.raku.org/language/operators#Assignment_operators)。
 
-Same as the rest of the infix operators, these can be combined with metaoperators such as [assignment](https://rakudocs.github.io/language/operators#Assignment_operators), for instance.
+Same as the rest of the infix operators, these can be combined with metaoperators such as [assignment](https://docs.raku.org/language/operators#Assignment_operators), for instance.
 
 <a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7E--infix-%7E-3"></a>
 ## 中缀运算符 `~` / infix `~`
@@ -1926,9 +1926,9 @@ multi sub infix:<~>(Str:D, Str:D)
 multi sub infix:<~>(Buf:D, Buf:D)
 ```
 
-这是字符串连接运算符，它将两个参数强制转换为 [Str](https://rakudocs.github.io/type/Str) 并连接它们。如果两个参数都是 [Buf](https://rakudocs.github.io/type/Buf)，则返回一个组合缓冲区。
+这是字符串连接运算符，它将两个参数强制转换为 [Str](https://docs.raku.org/type/Str) 并连接它们。如果两个参数都是 [Buf](https://docs.raku.org/type/Buf)，则返回一个组合缓冲区。
 
-This is the string concatenation operator, which coerces both arguments to [Str](https://rakudocs.github.io/type/Str) and concatenates them. If both arguments are [Buf](https://rakudocs.github.io/type/Buf), a combined buffer is returned.
+This is the string concatenation operator, which coerces both arguments to [Str](https://docs.raku.org/type/Str) and concatenates them. If both arguments are [Buf](https://docs.raku.org/type/Buf), a combined buffer is returned.
 
 ```Raku
 say 'ab' ~ 'c';     # OUTPUT: «abc␤»
@@ -1943,9 +1943,9 @@ multi sub infix:<∘>(&f)
 multi sub infix:<∘>(&f, &g --> Block:D)
 ```
 
-函数合成运算符 `infix:<∘>` 或 `infix:<o>` 组合了两个函数，因此使用右函数的返回值调用左函数。如果左函数的 [`.count`](https://rakudocs.github.io/routine/count)（即参数个数） 大于 1，则右边函数的返回值将 [slipped](https://rakudocs.github.io/type/Slip)（展平） 给到左边函数。
+函数合成运算符 `infix:<∘>` 或 `infix:<o>` 组合了两个函数，因此使用右函数的返回值调用左函数。如果左函数的 [`.count`](https://docs.raku.org/routine/count)（即参数个数） 大于 1，则右边函数的返回值将 [slipped](https://docs.raku.org/type/Slip)（展平） 给到左边函数。
 
-The function composition operator `infix:<∘>` or `infix:<o>` combines two functions, so that the left function is called with the return value of the right function. If the [`.count`](https://rakudocs.github.io/routine/count) of the left function is greater than 1, the return value of the right function will be [slipped](https://rakudocs.github.io/type/Slip) into the left function.
+The function composition operator `infix:<∘>` or `infix:<o>` combines two functions, so that the left function is called with the return value of the right function. If the [`.count`](https://docs.raku.org/routine/count) of the left function is greater than 1, the return value of the right function will be [slipped](https://docs.raku.org/type/Slip) into the left function.
 
 右手边函数的 `.count` 和 `.arity` 都将保持不变。
 
@@ -1998,9 +1998,9 @@ All junction 类型运算符。
 
 All junction operator.
 
-从其参数创建一个 *all* [Junction](https://rakudocs.github.io/type/Junction)。请参阅 [Junction](https://rakudocs.github.io/type/Junction) 了解更多详细信息。
+从其参数创建一个 *all* [Junction](https://docs.raku.org/type/Junction)。请参阅 [Junction](https://docs.raku.org/type/Junction) 了解更多详细信息。
 
-Creates an *all* [Junction](https://rakudocs.github.io/type/Junction) from its arguments. See [Junction](https://rakudocs.github.io/type/Junction) for more details.
+Creates an *all* [Junction](https://docs.raku.org/type/Junction) from its arguments. See [Junction](https://docs.raku.org/type/Junction) for more details.
 
 <a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6--%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%88%A9--infix--infix-%E2%88%A9"></a>
 ## 中缀运算符 `(&)`, 中缀运算符 `∩` / infix `(&)`, infix `∩`
@@ -2014,18 +2014,18 @@ multi sub infix:<∩>(**@p)
 
 Intersection operator.
 
-返回其所有参数的**交集**。这将创建一个新的[集合](https://rakudocs.github.io/type/Set)，如果所有参数都不是 [Bag](https://rakudocs.github.io/type/Bag)、[BagHash](https://rakudocs.github.io/type/BagHash)、[Mix](https://rakudocs.github.io/type/Mix) 或 [MixHash](https://rakudocs.github.io/type/MixHash)。
+返回其所有参数的**交集**。这将创建一个新的[集合](https://docs.raku.org/type/Set)，如果所有参数都不是 [Bag](https://docs.raku.org/type/Bag)、[BagHash](https://docs.raku.org/type/BagHash)、[Mix](https://docs.raku.org/type/Mix) 或 [MixHash](https://docs.raku.org/type/MixHash)。
 
-Returns the **intersection** of all of its arguments. This creates a new [Set](https://rakudocs.github.io/type/Set) that contains only the elements common to all of the arguments if none of the arguments are a [Bag](https://rakudocs.github.io/type/Bag), [BagHash](https://rakudocs.github.io/type/BagHash), [Mix](https://rakudocs.github.io/type/Mix) or [MixHash](https://rakudocs.github.io/type/MixHash).
+Returns the **intersection** of all of its arguments. This creates a new [Set](https://docs.raku.org/type/Set) that contains only the elements common to all of the arguments if none of the arguments are a [Bag](https://docs.raku.org/type/Bag), [BagHash](https://docs.raku.org/type/BagHash), [Mix](https://docs.raku.org/type/Mix) or [MixHash](https://docs.raku.org/type/MixHash).
 
 ```Raku
 say <a b c> (&) <b c d>; # OUTPUT: «set(b c)␤» 
 <a b c d> ∩ <b c d e> ∩ <c d e f>; # OUTPUT: «set(c d)␤» 
 ```
 
-如果任何参数是 [Baggy](https://rakudocs.github.io/type/Baggy) 或 [Mixy](https://rakudocs.github.io/type/Mixy)，则结果是一个包含公共元素的新 `Bag`（或 `Mix`），每个元素的权重都是最大的*公共*权重（即该元素在所有参数上的权重的最小值）。
+如果任何参数是 [Baggy](https://docs.raku.org/type/Baggy) 或 [Mixy](https://docs.raku.org/type/Mixy)，则结果是一个包含公共元素的新 `Bag`（或 `Mix`），每个元素的权重都是最大的*公共*权重（即该元素在所有参数上的权重的最小值）。
 
-If any of the arguments are [Baggy](https://rakudocs.github.io/type/Baggy) or [Mixy](https://rakudocs.github.io/type/Mixy)>, the result is a new `Bag` (or `Mix`) containing the common elements, each weighted by the largest *common* weight (which is the minimum of the weights of that element over all arguments).
+If any of the arguments are [Baggy](https://docs.raku.org/type/Baggy) or [Mixy](https://docs.raku.org/type/Mixy)>, the result is a new `Bag` (or `Mix`) containing the common elements, each weighted by the largest *common* weight (which is the minimum of the weights of that element over all arguments).
 
 ```Raku
 say <a a b c a> (&) bag(<a a b c c>); # OUTPUT: «Bag(a(2), b, c)␤» 
@@ -2047,9 +2047,9 @@ Baggy（Bag 类型的）乘法运算符。
 
 Baggy multiplication operator.
 
-返回其参数的 Baggy **乘法**，即一个 [Bag](https://rakudocs.github.io/type/Bag)，该参数包含参数的每个元素，元素在参数之间的权重相乘得到新的权重。如果任何参数是 [Mixy](https://rakudocs.github.io/type/Mixy)，则返回 [Mix](https://rakudocs.github.io/type/Mix)。
+返回其参数的 Baggy **乘法**，即一个 [Bag](https://docs.raku.org/type/Bag)，该参数包含参数的每个元素，元素在参数之间的权重相乘得到新的权重。如果任何参数是 [Mixy](https://docs.raku.org/type/Mixy)，则返回 [Mix](https://docs.raku.org/type/Mix)。
 
-Returns the Baggy **multiplication** of its arguments, i.e., a [Bag](https://rakudocs.github.io/type/Bag) that contains each element of the arguments with the weights of the element across the arguments multiplied together to get the new weight. Returns a [Mix](https://rakudocs.github.io/type/Mix) if any of the arguments is a [Mixy](https://rakudocs.github.io/type/Mixy).
+Returns the Baggy **multiplication** of its arguments, i.e., a [Bag](https://docs.raku.org/type/Bag) that contains each element of the arguments with the weights of the element across the arguments multiplied together to get the new weight. Returns a [Mix](https://docs.raku.org/type/Mix) if any of the arguments is a [Mixy](https://docs.raku.org/type/Mixy).
 
 ```Raku
 say <a b c> (.) <a b c d>; # OUTPUT: «Bag(a, b, c)␤» 
@@ -2071,9 +2071,9 @@ say <a a b c a d> ⊍ bag(<a a b c c>); # OUTPUT: «Bag(a(6), b, c(2))␤»
 multi sub infix:<|>($a, $b --> Junction:D) is assoc<list>
 ```
 
-从其参数创建 *any* [Junction](https://rakudocs.github.io/type/Junction)。
+从其参数创建 *any* [Junction](https://docs.raku.org/type/Junction)。
 
-Creates an *any* [Junction](https://rakudocs.github.io/type/Junction) from its arguments.
+Creates an *any* [Junction](https://docs.raku.org/type/Junction) from its arguments.
 
 ```Raku
 my $three-letters = /<[a b c]>/ | /<[i j k]>/ | /<[x y z]>/;
@@ -2081,9 +2081,9 @@ say $three-letters.perl; # OUTPUT: «any(/<[a b c]>/, /<[i j k]>/, /<[x y z]>/)�
 say 'b' ~~ $three-letters; # OUTPUT: «True␤»
 ```
 
-这首先创建三个正则表达式的 `any` `Junction`（每个正则表达式都匹配三个字母中的任意一个），然后使用智能匹配检查字母 `b` 是否匹配其中任何一个，从而得到正匹配。有关更多详细信息，请参见 [Junction](https://rakudocs.github.io/type/Junction)。
+这首先创建三个正则表达式的 `any` `Junction`（每个正则表达式都匹配三个字母中的任意一个），然后使用智能匹配检查字母 `b` 是否匹配其中任何一个，从而得到正匹配。有关更多详细信息，请参见 [Junction](https://docs.raku.org/type/Junction)。
 
-This first creates an `any` `Junction` of three regular expressions (every one of them matching any of 3 letters), and then uses smartmatching to check whether the letter `b` matches any of them, resulting in a positive match. See also [Junction](https://rakudocs.github.io/type/Junction) for more details.
+This first creates an `any` `Junction` of three regular expressions (every one of them matching any of 3 letters), and then uses smartmatching to check whether the letter `b` matches any of them, resulting in a positive match. See also [Junction](https://docs.raku.org/type/Junction) for more details.
 
 <a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7C%EF%BC%8C%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%88%AA--infix-%7C-infix-%E2%88%AA"></a>
 ## 中缀运算符 `(|)`，中缀运算符 `∪` / infix `(|)`, infix `∪`
@@ -2097,17 +2097,17 @@ multi sub infix:<∪>(**@p)
 
 Union operator.
 
-返回其所有参数的**并集**。这将创建一个新的[集合](https://rakudocs.github.io/type/Set)，其中包含其参数包含的所有元素（如果没有参数是 [Bag](https://rakudocs.github.io/type/Bag)、[BagHash](https://rakudocs.github.io/type/BagHash)、[Mix](https://rakudocs.github.io/type/Mix) 或 [MixHash](https://rakudocs.github.io/type/MixHash)。
+返回其所有参数的**并集**。这将创建一个新的[集合](https://docs.raku.org/type/Set)，其中包含其参数包含的所有元素（如果没有参数是 [Bag](https://docs.raku.org/type/Bag)、[BagHash](https://docs.raku.org/type/BagHash)、[Mix](https://docs.raku.org/type/Mix) 或 [MixHash](https://docs.raku.org/type/MixHash)。
 
-Returns the **union** of all of its arguments. This creates a new [Set](https://rakudocs.github.io/type/Set) that contains all the elements its arguments contain if none of the arguments are a [Bag](https://rakudocs.github.io/type/Bag), [BagHash](https://rakudocs.github.io/type/BagHash), [Mix](https://rakudocs.github.io/type/Mix) or [MixHash](https://rakudocs.github.io/type/MixHash).
+Returns the **union** of all of its arguments. This creates a new [Set](https://docs.raku.org/type/Set) that contains all the elements its arguments contain if none of the arguments are a [Bag](https://docs.raku.org/type/Bag), [BagHash](https://docs.raku.org/type/BagHash), [Mix](https://docs.raku.org/type/Mix) or [MixHash](https://docs.raku.org/type/MixHash).
 
 ```Raku
 say <a b d> ∪ bag(<a a b c>); # OUTPUT: «Bag(a(2), b, c, d)␤» 
 ```
 
-如果任何参数是 [Baggy](https://rakudocs.github.io/type/Baggy) 或 [Mixy](https://rakudocs.github.io/type/Mixy)，则结果是一个包含所有元素的新 `Bag`（或 `Mix`），每个元素都由该元素出现的*最高*权重加权。
+如果任何参数是 [Baggy](https://docs.raku.org/type/Baggy) 或 [Mixy](https://docs.raku.org/type/Mixy)，则结果是一个包含所有元素的新 `Bag`（或 `Mix`），每个元素都由该元素出现的*最高*权重加权。
 
-If any of the arguments are [Baggy](https://rakudocs.github.io/type/Baggy) or [Mixy](https://rakudocs.github.io/type/Mixy), the result is a new `Bag` (or `Mix`) containing all the elements, each weighted by the *highest* weight that appeared for that element.
+If any of the arguments are [Baggy](https://docs.raku.org/type/Baggy) or [Mixy](https://docs.raku.org/type/Mixy), the result is a new `Bag` (or `Mix`) containing all the elements, each weighted by the *highest* weight that appeared for that element.
 
 ```Raku
 say <a b d> ∪ bag(<a a b c>); # OUTPUT: «Bag(a(2), b, c, d)␤» 
@@ -2129,17 +2129,17 @@ Baggy（Bag 类型的） 加法运算符。
 
 Baggy addition operator.
 
-返回其参数的 Baggy **和**。这将从参数的每个元素创建一个新的 [Bag](https://rakudocs.github.io/type/Bag)，如果没有参数是 [Mix](https://rakudocs.github.io/type/Mix) 或 [MixHash](https://rakudocs.github.io/type/MixHash)，则将元素的权重相加以获得新的权重。
+返回其参数的 Baggy **和**。这将从参数的每个元素创建一个新的 [Bag](https://docs.raku.org/type/Bag)，如果没有参数是 [Mix](https://docs.raku.org/type/Mix) 或 [MixHash](https://docs.raku.org/type/MixHash)，则将元素的权重相加以获得新的权重。
 
-Returns the Baggy **addition** of its arguments. This creates a new [Bag](https://rakudocs.github.io/type/Bag) from each element of the arguments with the weights of the element added together to get the new weight, if none of the arguments are a [Mix](https://rakudocs.github.io/type/Mix) or [MixHash](https://rakudocs.github.io/type/MixHash).
+Returns the Baggy **addition** of its arguments. This creates a new [Bag](https://docs.raku.org/type/Bag) from each element of the arguments with the weights of the element added together to get the new weight, if none of the arguments are a [Mix](https://docs.raku.org/type/Mix) or [MixHash](https://docs.raku.org/type/MixHash).
 
 ```Raku
 say <a a b c a d> (+) <a a b c c>; # OUTPUT: «Bag(a(5), b(2), c(3), d)␤» 
 ```
 
-如果任何参数是 [Mixy](https://rakudocs.github.io/type/Mixy)，则结果是一个新的 `Mix`。
+如果任何参数是 [Mixy](https://docs.raku.org/type/Mixy)，则结果是一个新的 `Mix`。
 
-If any of the arguments is a [Mixy](https://rakudocs.github.io/type/Mixy), the result is a new `Mix`.
+If any of the arguments is a [Mixy](https://docs.raku.org/type/Mixy), the result is a new `Mix`.
 
 ```Raku
 say <a b c> (+) (a => 2.5, b => 3.14).Mix; # OUTPUT: «Mix(a(3.5), b(4.14), c)␤» 
@@ -2161,18 +2161,18 @@ multi sub infix:<∖>(**@p)
 
 Set difference operator.
 
-返回其所有参数的**集合差**。这将创建一个新的[集合](https://rakudocs.github.io/type/Set)，其中包含第一个参数拥有的所有元素，但其他参数没有，即第一个参数的所有元素减去其他参数的元素。但前提是没有参数是 [Bag](https://rakudocs.github.io/type/Bag)、[BagHash](https://rakudocs.github.io/type/BagHash)、[Mix](https://rakudocs.github.io/type/Mix) 或 [MixHash](https://rakudocs.github.io/type/MixHash)。
+返回其所有参数的**集合差**。这将创建一个新的[集合](https://docs.raku.org/type/Set)，其中包含第一个参数拥有的所有元素，但其他参数没有，即第一个参数的所有元素减去其他参数的元素。但前提是没有参数是 [Bag](https://docs.raku.org/type/Bag)、[BagHash](https://docs.raku.org/type/BagHash)、[Mix](https://docs.raku.org/type/Mix) 或 [MixHash](https://docs.raku.org/type/MixHash)。
 
-Returns the **set difference** of all its arguments. This creates a new [Set](https://rakudocs.github.io/type/Set) that contains all the elements the first argument has but the rest of the arguments don't, i.e., of all the elements of the first argument, minus the elements from the other arguments. But only if none of the arguments are a [Bag](https://rakudocs.github.io/type/Bag), [BagHash](https://rakudocs.github.io/type/BagHash), [Mix](https://rakudocs.github.io/type/Mix) or [MixHash](https://rakudocs.github.io/type/MixHash).
+Returns the **set difference** of all its arguments. This creates a new [Set](https://docs.raku.org/type/Set) that contains all the elements the first argument has but the rest of the arguments don't, i.e., of all the elements of the first argument, minus the elements from the other arguments. But only if none of the arguments are a [Bag](https://docs.raku.org/type/Bag), [BagHash](https://docs.raku.org/type/BagHash), [Mix](https://docs.raku.org/type/Mix) or [MixHash](https://docs.raku.org/type/MixHash).
 
 ```Raku
 say <a a b c a d> (-) <a a b c c>; # OUTPUT: «set(d)␤» 
 say <a b c d e> (-) <a b c> (-) <a b d>; # OUTPUT: «set(e)␤» 
 ```
 
-如果任何参数是 [Baggy](https://rakudocs.github.io/type/Baggy) 或 [Mixy](https://rakudocs.github.io/type/Mixy)，则结果是一个新的 `Bag`（或 `Mix`）包含第一个参数之后剩余的所有元素，其权重减去其他每个参数中该元素的权重。
+如果任何参数是 [Baggy](https://docs.raku.org/type/Baggy) 或 [Mixy](https://docs.raku.org/type/Mixy)，则结果是一个新的 `Bag`（或 `Mix`）包含第一个参数之后剩余的所有元素，其权重减去其他每个参数中该元素的权重。
 
-If any of the arguments are [Baggy](https://rakudocs.github.io/type/Baggy) or [Mixy](https://rakudocs.github.io/type/Mixy), the result is a new `Bag` (or `Mix`) containing all the elements remaining after the first argument with its weight subtracted by the weight of that element in each of the other arguments.
+If any of the arguments are [Baggy](https://docs.raku.org/type/Baggy) or [Mixy](https://docs.raku.org/type/Mixy), the result is a new `Bag` (or `Mix`) containing all the elements remaining after the first argument with its weight subtracted by the weight of that element in each of the other arguments.
 
 ```Raku
 say <a a b c a d> (-) bag(<a b c c>); # OUTPUT: «Bag(a(2), d)␤» 
@@ -2194,9 +2194,9 @@ One junction 运算符.
 
 One junction operator.
 
-从其参数创建一个 *one* [Junction](https://rakudocs.github.io/type/Junction)。请参阅 [Junction](https://rakudocs.github.io/type/Junction) 了解更多详细信息。
+从其参数创建一个 *one* [Junction](https://docs.raku.org/type/Junction)。请参阅 [Junction](https://docs.raku.org/type/Junction) 了解更多详细信息。
 
-Creates a *one* [Junction](https://rakudocs.github.io/type/Junction) from its arguments. See [Junction](https://rakudocs.github.io/type/Junction) for more details.
+Creates a *one* [Junction](https://docs.raku.org/type/Junction) from its arguments. See [Junction](https://docs.raku.org/type/Junction) for more details.
 
 <a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5E%EF%BC%8C%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%96--infix-%5E-infix-%E2%8A%96"></a>
 ## 中缀运算符 `(^)`，中缀运算符 `⊖` / infix `(^)`, infix `⊖`
@@ -2213,17 +2213,17 @@ multi sub infix:<⊖>(**@p)
 
 Symmetric set difference operator.
 
-返回其所有参数的**对称集合差**。这将创建一个新的[集合](https://rakudocs.github.io/type/Set)，由 `$a` 中有但 `$b` 中没有的所有元素和 `$b` 中有但 `$a` 中没有的所有元素组成，如果参数都不是 [Bag](https://rakudocs.github.io/type/Bag)、[BagHash](https://rakudocs.github.io/type/BagHash)、[Mix](https://rakudocs.github.io/type/Mix) 或 [MixHash](https://rakudocs.github.io/type/MixHash)。相当于 `($a ∖ $b) ∪ ($b ∖ $a)`。
+返回其所有参数的**对称集合差**。这将创建一个新的[集合](https://docs.raku.org/type/Set)，由 `$a` 中有但 `$b` 中没有的所有元素和 `$b` 中有但 `$a` 中没有的所有元素组成，如果参数都不是 [Bag](https://docs.raku.org/type/Bag)、[BagHash](https://docs.raku.org/type/BagHash)、[Mix](https://docs.raku.org/type/Mix) 或 [MixHash](https://docs.raku.org/type/MixHash)。相当于 `($a ∖ $b) ∪ ($b ∖ $a)`。
 
-Returns the **symmetric set difference** of all its arguments. This creates a new [Set](https://rakudocs.github.io/type/Set) made up of all the elements that `$a` has but `$b` doesn't and all the elements `$b` has but `$a` doesn't if none of the arguments are a [Bag](https://rakudocs.github.io/type/Bag), [BagHash](https://rakudocs.github.io/type/BagHash), [Mix](https://rakudocs.github.io/type/Mix) or [MixHash](https://rakudocs.github.io/type/MixHash). Equivalent to `($a ∖ $b) ∪ ($b ∖ $a)`.
+Returns the **symmetric set difference** of all its arguments. This creates a new [Set](https://docs.raku.org/type/Set) made up of all the elements that `$a` has but `$b` doesn't and all the elements `$b` has but `$a` doesn't if none of the arguments are a [Bag](https://docs.raku.org/type/Bag), [BagHash](https://docs.raku.org/type/BagHash), [Mix](https://docs.raku.org/type/Mix) or [MixHash](https://docs.raku.org/type/MixHash). Equivalent to `($a ∖ $b) ∪ ($b ∖ $a)`.
 
 ```Raku
 say <a b> (^) <b c>; # OUTPUT: «set(a c)␤» 
 ```
 
-如果任何参数是 [Baggy](https://rakudocs.github.io/type/Baggy) 或 [Mixy](https://rakudocs.github.io/type/Mixy)，则结果是一个新的 `Bag`（或 `Mix`）。
+如果任何参数是 [Baggy](https://docs.raku.org/type/Baggy) 或 [Mixy](https://docs.raku.org/type/Mixy)，则结果是一个新的 `Bag`（或 `Mix`）。
 
-If any of the arguments are [Baggy](https://rakudocs.github.io/type/Baggy) or [Mixy](https://rakudocs.github.io/type/Mixy), the result is a new `Bag` (or `Mix`).
+If any of the arguments are [Baggy](https://docs.raku.org/type/Baggy) or [Mixy](https://docs.raku.org/type/Mixy), the result is a new `Bag` (or `Mix`).
 
 ```Raku
 say <a b> ⊖ bag(<b c>); # OUTPUT: «Bag(a, c)␤» 
@@ -2267,9 +2267,9 @@ You can also assign immediately as part of the call to temp:
 temp $a = "five";
 ```
 
-请注意，一旦离开 `temp` 所在的代码块，`temp` 效果就会被移除。如果要在 `temp` 效果消失后从 [Promise](https://rakudocs.github.io/type/Promise) 中访问该值，你将获得原始值，而不是 `temp`：
+请注意，一旦离开 `temp` 所在的代码块，`temp` 效果就会被移除。如果要在 `temp` 效果消失后从 [Promise](https://docs.raku.org/type/Promise) 中访问该值，你将获得原始值，而不是 `temp`：
 
-Be warned the `temp` effects get removed once the block is left. If you were to access the value from, say, within a [Promise](https://rakudocs.github.io/type/Promise) after the `temp` was undone, you'd get the original value, not the `temp` one:
+Be warned the `temp` effects get removed once the block is left. If you were to access the value from, say, within a [Promise](https://docs.raku.org/type/Promise) after the `temp` was undone, you'd get the original value, not the `temp` one:
 
 ```Raku
 my $v = "original";
@@ -2337,9 +2337,9 @@ sub infix:<does>(Mu $obj, Mu $role) is assoc<non>
 
 Mixes `$role` into `$obj` at runtime. Requires `$obj` to be mutable.
 
-类似于 [but](https://rakudocs.github.io/routine/but) 操作符，角色 `$role` 可以改为一个实例化对象，在这种情况下，操作符将自动为你创建一个角色。角色将包含一个名为 `$obj.^name` 的方法，该方法返回 `$obj`：
+类似于 [but](https://docs.raku.org/routine/but) 操作符，角色 `$role` 可以改为一个实例化对象，在这种情况下，操作符将自动为你创建一个角色。角色将包含一个名为 `$obj.^name` 的方法，该方法返回 `$obj`：
 
-Similar to [but](https://rakudocs.github.io/routine/but) operator, the `$role` can instead be an instantiated object, in which case, the operator will create a role for you automatically. The role will contain a single method named the same as `$obj.^name` and that returns `$obj`:
+Similar to [but](https://docs.raku.org/routine/but) operator, the `$role` can instead be an instantiated object, in which case, the operator will create a role for you automatically. The role will contain a single method named the same as `$obj.^name` and that returns `$obj`:
 
 ```Raku
 my $o = class { method Str { "original" } }.new;
@@ -2407,9 +2407,9 @@ multi sub infix:<cmp>(Version:D, Version:D)
 
 Generic, "smart" three-way comparator.
 
-用字符串语义比较字符串，用数字语义比较数字，[Pair](https://rakudocs.github.io/type/Pair) 对象首先按键比较，然后按值比较等等。
+用字符串语义比较字符串，用数字语义比较数字，[Pair](https://docs.raku.org/type/Pair) 对象首先按键比较，然后按值比较等等。
 
-Compares strings with string semantics, numbers with number semantics, [Pair](https://rakudocs.github.io/type/Pair) objects first by key and then by value etc.
+Compares strings with string semantics, numbers with number semantics, [Pair](https://docs.raku.org/type/Pair) objects first by key and then by value etc.
 
 如果 `$a eqv $b` 为真值，则 `$a cmp $b` 总是返回 `Order::Same`。
 
@@ -2474,9 +2474,9 @@ say 'a' coll 'Z';   # Less
 say 'a' cmp 'Z';    # More
 ```
 
-`coll` 和 `unicmp` 的主要区别在于前者的行为可以通过 [`$*COLLATION`](https://rakudocs.github.io/type/Any#index-entry-%24*COLLATION-%24*COLLATION) 动态变量来更改。
+`coll` 和 `unicmp` 的主要区别在于前者的行为可以通过 [`$*COLLATION`](https://docs.raku.org/type/Any#index-entry-%24*COLLATION-%24*COLLATION) 动态变量来更改。
 
-The main difference between `coll` and `unicmp` is that the behavior of the former can be changed by the [`$*COLLATION`](https://rakudocs.github.io/type/Any#index-entry-%24*COLLATION-%24*COLLATION) dynamic variable.
+The main difference between `coll` and `unicmp` is that the behavior of the former can be changed by the [`$*COLLATION`](https://docs.raku.org/type/Any#index-entry-%24*COLLATION-%24*COLLATION) dynamic variable.
 
 **注意：**这些还没有在 JVM 中实现。
 
@@ -2494,9 +2494,9 @@ multi sub infix:<leg>(Str:D, Str:D)
 
 String three-way comparator. Short for *less, equal or greater?*.
 
-将两个参数强制为 [Str](https://rakudocs.github.io/type/Str)，然后进行词典比较。
+将两个参数强制为 [Str](https://docs.raku.org/type/Str)，然后进行词典比较。
 
-Coerces both arguments to [Str](https://rakudocs.github.io/type/Str) and then does a lexicographic comparison.
+Coerces both arguments to [Str](https://docs.raku.org/type/Str) and then does a lexicographic comparison.
 
 ```Raku
 say 'a' leg 'b';       # OUTPUT: «Less␤» 
@@ -2515,9 +2515,9 @@ multi sub infix:«<=>»($a, $b --> Order:D) is assoc<non>
 
 Numeric three-way comparator.
 
-将两个参数强制转换为[实数](https://rakudocs.github.io/type/Real)类型，然后进行数值比较。
+将两个参数强制转换为[实数](https://docs.raku.org/type/Real)类型，然后进行数值比较。
 
-Coerces both arguments to [Real](https://rakudocs.github.io/type/Real) and then does a numeric comparison.
+Coerces both arguments to [Real](https://docs.raku.org/type/Real) and then does a numeric comparison.
 
 <a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--9"></a>
 ## 中缀运算符 `..` / infix `..`
@@ -2530,9 +2530,9 @@ multi sub infix:<..>($a, $b --> Range:D) is assoc<non>
 
 Range operator
 
-从参数构造一个[范围](https://rakudocs.github.io/type/Range)。
+从参数构造一个[范围](https://docs.raku.org/type/Range)。
 
-Constructs a [Range](https://rakudocs.github.io/type/Range) from the arguments.
+Constructs a [Range](https://docs.raku.org/type/Range) from the arguments.
 
 <a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5E--infix-%5E-3"></a>
 ## 中缀运算符 `..^` / infix `..^`
@@ -2545,9 +2545,9 @@ multi sub infix:<..^>($a, $b --> Range:D) is assoc<non>
 
 Right-open range operator.
 
-从参数构造[范围](https://rakudocs.github.io/type/Range)，不包括终点。
+从参数构造[范围](https://docs.raku.org/type/Range)，不包括终点。
 
-Constructs a [Range](https://rakudocs.github.io/type/Range) from the arguments, excluding the end point.
+Constructs a [Range](https://docs.raku.org/type/Range) from the arguments, excluding the end point.
 
 <a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5E--infix-%5E-4"></a>
 ## 中缀运算符 `^..` / infix `^..`
@@ -2560,9 +2560,9 @@ multi sub infix:<^..>($a, $b --> Range:D) is assoc<non>
 
 Left-open range operator.
 
-从参数构造[范围](https://rakudocs.github.io/type/Range)，不包括起点。
+从参数构造[范围](https://docs.raku.org/type/Range)，不包括起点。
 
-Constructs a [Range](https://rakudocs.github.io/type/Range) from the arguments, excluding the start point.
+Constructs a [Range](https://docs.raku.org/type/Range) from the arguments, excluding the start point.
 
 <a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5E%5E--infix-%5E%5E"></a>
 ## 中缀运算符 `^..^` / infix `^..^`
@@ -2575,9 +2575,9 @@ multi sub infix:<^..^>($a, $b --> Range:D) is assoc<non>
 
 Open range operator
 
-从参数构造[范围](https://rakudocs.github.io/type/Range)，不包括起点和终点。
+从参数构造[范围](https://docs.raku.org/type/Range)，不包括起点和终点。
 
-Constructs a [Range](https://rakudocs.github.io/type/Range) from the arguments, excluding both start and end point.
+Constructs a [Range](https://docs.raku.org/type/Range) from the arguments, excluding both start and end point.
 
 <a id="%E9%93%BE%E5%BC%8F%E4%BA%8C%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--chaining-binary-precedence"></a>
 # 链式二元运算符优先级 / Chaining binary precedence
@@ -2599,9 +2599,9 @@ multi sub infix:<==>(Numeric:D, Numeric:D)
 
 Numeric equality operator.
 
-将两个参数强制为[数值](https://rakudocs.github.io/type/Numeric)（如果需要）；如果它们相等，则返回真值。
+将两个参数强制为[数值](https://docs.raku.org/type/Numeric)（如果需要）；如果它们相等，则返回真值。
 
-Coerces both arguments to [Numeric](https://rakudocs.github.io/type/Numeric) (if necessary); returns `True` if they are equal.
+Coerces both arguments to [Numeric](https://docs.raku.org/type/Numeric) (if necessary); returns `True` if they are equal.
 
 <a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--11"></a>
 ## 中缀运算符 `!=` / infix `!=`
@@ -2614,9 +2614,9 @@ sub infix:<!=>(Mu, Mu --> Bool:D)
 
 Numeric inequality operator.
 
-将两个参数强制为[数值](https://rakudocs.github.io/type/Numeric)（如果需要）；如果它们是不同的，则返回真值。
+将两个参数强制为[数值](https://docs.raku.org/type/Numeric)（如果需要）；如果它们是不同的，则返回真值。
 
-Coerces both arguments to [Numeric](https://rakudocs.github.io/type/Numeric) (if necessary); returns `True` if they are distinct.
+Coerces both arguments to [Numeric](https://docs.raku.org/type/Numeric) (if necessary); returns `True` if they are distinct.
 
 是 `!==` 的别名。
 
@@ -2629,9 +2629,9 @@ Is an alias to `!==`.
 
 Numeric inequality operator.
 
-相当于 [!=](https://rakudocs.github.io/routine/!=)，在码位 U+2260。
+相当于 [!=](https://docs.raku.org/routine/!=)，在码位 U+2260。
 
-Equivalent to [!=](https://rakudocs.github.io/routine/!=), at codepoint U+2260 (NOT EQUAL TO).
+Equivalent to [!=](https://docs.raku.org/routine/!=), at codepoint U+2260 (NOT EQUAL TO).
 
 <a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--12"></a>
 ## 中缀运算符 `<` / infix `<`
@@ -2646,9 +2646,9 @@ multi sub infix:«<»(Real:D, Real:D)
 
 Numeric less than operator.
 
-将两个参数强制为[实数](https://rakudocs.github.io/type/Real)（如果需要）；如果第一个参数小于第二个参数，则返回真值。
+将两个参数强制为[实数](https://docs.raku.org/type/Real)（如果需要）；如果第一个参数小于第二个参数，则返回真值。
 
-Coerces both arguments to [Real](https://rakudocs.github.io/type/Real) (if necessary); returns `True` if the first argument is smaller than the second.
+Coerces both arguments to [Real](https://docs.raku.org/type/Real) (if necessary); returns `True` if the first argument is smaller than the second.
 
 <a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--13"></a>
 ## 中缀运算符 `<=` / infix `<=`
@@ -2663,9 +2663,9 @@ multi sub infix:«<=»(Real:D, Real:D)
 
 Numeric less than or equal to operator.
 
-将两个参数强制为[实数](https://rakudocs.github.io/type/Real)（如果需要）；如果第一个参数小于或等于第二个参数，则返回真值。
+将两个参数强制为[实数](https://docs.raku.org/type/Real)（如果需要）；如果第一个参数小于或等于第二个参数，则返回真值。
 
-Coerces both arguments to [Real](https://rakudocs.github.io/type/Real) (if necessary); returns `True` if the first argument is smaller than or equal to the second.
+Coerces both arguments to [Real](https://docs.raku.org/type/Real) (if necessary); returns `True` if the first argument is smaller than or equal to the second.
 
 <a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%89%A4--infix-%E2%89%A4"></a>
 ## 中缀运算符 `≤` / infix `≤`
@@ -2674,9 +2674,9 @@ Coerces both arguments to [Real](https://rakudocs.github.io/type/Real) (if neces
 
 Numeric less than or equal to operator.
 
-相当于 [<=](https://rakudocs.github.io/language/routine/%3C=)，在码位 U+2264。
+相当于 [<=](https://docs.raku.org/language/routine/%3C=)，在码位 U+2264。
 
-Equivalent to [<=](https://rakudocs.github.io/language/routine/%3C=), at codepoint U+2264 (LESS-THAN OR EQUAL TO).
+Equivalent to [<=](https://docs.raku.org/language/routine/%3C=), at codepoint U+2264 (LESS-THAN OR EQUAL TO).
 
 <a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--14"></a>
 ## 中缀运算符 `>` / infix `>`
@@ -2691,9 +2691,9 @@ multi sub infix:«>»(Real:D, Real:D)
 
 Numeric greater than operator.
 
-将两个参数强制为[实数](https://rakudocs.github.io/type/Real)（如果需要）；如果第一个参数大于第二个参数，则返回真值。
+将两个参数强制为[实数](https://docs.raku.org/type/Real)（如果需要）；如果第一个参数大于第二个参数，则返回真值。
 
-Coerces both arguments to [Real](https://rakudocs.github.io/type/Real) (if necessary); returns `True` if the first argument is larger than the second.
+Coerces both arguments to [Real](https://docs.raku.org/type/Real) (if necessary); returns `True` if the first argument is larger than the second.
 
 <a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--15"></a>
 ## 中缀运算符 `>=` / infix `>=`
@@ -2708,9 +2708,9 @@ multi sub infix:«>=»(Real:D, Real:D)
 
 Numeric greater than or equal to operator.
 
-将两个参数强制为[实数](https://rakudocs.github.io/type/Real)（如果需要）；如果第一个参数大于或等于第二个参数，则返回真值。
+将两个参数强制为[实数](https://docs.raku.org/type/Real)（如果需要）；如果第一个参数大于或等于第二个参数，则返回真值。
 
-Coerces both arguments to [Real](https://rakudocs.github.io/type/Real) (if necessary); returns `True` if the first argument is larger than or equal to the second.
+Coerces both arguments to [Real](https://docs.raku.org/type/Real) (if necessary); returns `True` if the first argument is larger than or equal to the second.
 
 <a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%89%A5--infix-%E2%89%A5"></a>
 ## 中缀运算符 `≥` / infix `≥`
@@ -2719,9 +2719,9 @@ Coerces both arguments to [Real](https://rakudocs.github.io/type/Real) (if neces
 
 Numeric greater than or equal to operator.
 
-相当于 [>=](https://rakudocs.github.io/routine/%3E=)，在码位 U+2265。
+相当于 [>=](https://docs.raku.org/routine/%3E=)，在码位 U+2265。
 
-Equivalent to [>=](https://rakudocs.github.io/routine/%3E=), at codepoint U+2265 (GREATER-THAN OR EQUAL TO).
+Equivalent to [>=](https://docs.raku.org/routine/%3E=), at codepoint U+2265 (GREATER-THAN OR EQUAL TO).
 
 <a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-eq--infix-eq"></a>
 ## 中缀运算符 `eq` / infix `eq`
@@ -2735,9 +2735,9 @@ multi sub infix:<eq>(Str:D, Str:D)
 
 String equality operator.
 
-将两个参数强制为 [Str](https://rakudocs.github.io/type/Str)（如果需要）；如果两个参数相等，则返回真值。
+将两个参数强制为 [Str](https://docs.raku.org/type/Str)（如果需要）；如果两个参数相等，则返回真值。
 
-Coerces both arguments to [Str](https://rakudocs.github.io/type/Str) (if necessary); returns `True` if both are equal.
+Coerces both arguments to [Str](https://docs.raku.org/type/Str) (if necessary); returns `True` if both are equal.
 
 助记符：*等于*
 
@@ -2755,9 +2755,9 @@ multi sub infix:<ne>(Str:D, Str:D)
 
 String inequality operator.
 
-将两个参数强制为 [Str](https://rakudocs.github.io/type/Str)（如果需要）；如果两个参数相等，则返回假值。
+将两个参数强制为 [Str](https://docs.raku.org/type/Str)（如果需要）；如果两个参数相等，则返回假值。
 
-Coerces both arguments to [Str](https://rakudocs.github.io/type/Str) (if necessary); returns `False` if both are equal.
+Coerces both arguments to [Str](https://docs.raku.org/type/Str) (if necessary); returns `False` if both are equal.
 
 助记符：*不等于*
 
@@ -2775,9 +2775,9 @@ multi sub infix:<gt>(Str:D, Str:D)
 
 String greater than operator.
 
-将两个参数强制为 [Str](https://rakudocs.github.io/type/Str)（如果需要）；如果第一个参数大于第二个，则返回假值，取决于词典比较。
+将两个参数强制为 [Str](https://docs.raku.org/type/Str)（如果需要）；如果第一个参数大于第二个，则返回假值，取决于词典比较。
 
-Coerces both arguments to [Str](https://rakudocs.github.io/type/Str) (if necessary); returns `True` if the first is larger than the second, as determined by lexicographic comparison.
+Coerces both arguments to [Str](https://docs.raku.org/type/Str) (if necessary); returns `True` if the first is larger than the second, as determined by lexicographic comparison.
 
 助记符：*大于*
 
@@ -2795,9 +2795,9 @@ multi sub infix:<ge>(Str:D, Str:D)
 
 String greater than or equal to operator.
 
-将两个参数强制为 [Str](https://rakudocs.github.io/type/Str)（如果需要）；如果第一个参数大于第二个，则返回真值，取决于词典比较。
+将两个参数强制为 [Str](https://docs.raku.org/type/Str)（如果需要）；如果第一个参数大于第二个，则返回真值，取决于词典比较。
 
-Coerces both arguments to [Str](https://rakudocs.github.io/type/Str) (if necessary); returns `True` if the first is equal to or larger than the second, as determined by lexicographic comparison.
+Coerces both arguments to [Str](https://docs.raku.org/type/Str) (if necessary); returns `True` if the first is equal to or larger than the second, as determined by lexicographic comparison.
 
 助记符：*大于或等于*
 
@@ -2815,9 +2815,9 @@ multi sub infix:<lt>(Str:D, Str:D)
 
 String less than operator.
 
-将两个参数强制为 [Str](https://rakudocs.github.io/type/Str)（如果需要）；如果第一个参数小于第二个，则返回真值，取决于词典比较。
+将两个参数强制为 [Str](https://docs.raku.org/type/Str)（如果需要）；如果第一个参数小于第二个，则返回真值，取决于词典比较。
 
-Coerces both arguments to [Str](https://rakudocs.github.io/type/Str) (if necessary); returns `True` if the first is smaller than the second, as determined by lexicographic comparison.
+Coerces both arguments to [Str](https://docs.raku.org/type/Str) (if necessary); returns `True` if the first is smaller than the second, as determined by lexicographic comparison.
 
 助记符：*小于*
 
@@ -2835,9 +2835,9 @@ multi sub infix:<le>(Str:D, Str:D)
 
 String less than or equal to operator.
 
-将两个参数强制为 [Str](https://rakudocs.github.io/type/Str)（如果需要）；如果第一个参数等于或小于第二个，则返回真值，取决于词典比较。
+将两个参数强制为 [Str](https://docs.raku.org/type/Str)（如果需要）；如果第一个参数等于或小于第二个，则返回真值，取决于词典比较。
 
-Coerces both arguments to [Str](https://rakudocs.github.io/type/Str) (if necessary); returns `True` if the first is equal to or smaller than the second, as determined by lexicographic comparison.
+Coerces both arguments to [Str](https://docs.raku.org/type/Str) (if necessary); returns `True` if the first is equal to or smaller than the second, as determined by lexicographic comparison.
 
 助记符：*小于或等于*
 
@@ -2853,9 +2853,9 @@ multi sub infix:<before>(Str:D,     Str:D)
 multi sub infix:<before>(Version:D, Version:D)
 ```
 
-通用排序，使用与 [cmp](https://rakudocs.github.io/routine/cmp) 运算符相同的语义。如果第一个参数小于第二个参数，则返回真值。
+通用排序，使用与 [cmp](https://docs.raku.org/routine/cmp) 运算符相同的语义。如果第一个参数小于第二个参数，则返回真值。
 
-Generic ordering, uses the same semantics as [cmp](https://rakudocs.github.io/routine/cmp). Returns `True` if the first argument is smaller than the second.
+Generic ordering, uses the same semantics as [cmp](https://docs.raku.org/routine/cmp). Returns `True` if the first argument is smaller than the second.
 
 <a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-after--infix-after"></a>
 ## 中缀运算符 `after` / infix `after`
@@ -2867,9 +2867,9 @@ multi sub infix:<after>(Str:D,     Str:D)
 multi sub infix:<after>(Version:D, Version:D)
 ```
 
-通用排序，使用与 [cmp](https://rakudocs.github.io/routine/cmp) 运算符相同的语义。如果第一个参数大于第二个参数，则返回真值。
+通用排序，使用与 [cmp](https://docs.raku.org/routine/cmp) 运算符相同的语义。如果第一个参数大于第二个参数，则返回真值。
 
-Generic ordering, uses the same semantics as [cmp](https://rakudocs.github.io/routine/cmp). Returns `True` if the first argument is larger than the second.
+Generic ordering, uses the same semantics as [cmp](https://docs.raku.org/routine/cmp). Returns `True` if the first argument is larger than the second.
 
 <a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-eqv--infix-eqv"></a>
 ## 中缀运算符 `eqv` / infix `eqv`
@@ -2889,9 +2889,9 @@ say 1 eqv 2;                    # OUTPUT: «False␤»
 say 1 eqv 1.0;                  # OUTPUT: «False␤»
 ```
 
-不能比较惰性 [`Iterables`](https://rakudocs.github.io/type/Iterable) 类型，因为它们被认为是无限的。但是，如果两个惰性 `Iterable` 是不同类型的，或者只有一个 `Iterable` 是惰性的，则运算符将尽力返回假值。
+不能比较惰性 [`Iterables`](https://docs.raku.org/type/Iterable) 类型，因为它们被认为是无限的。但是，如果两个惰性 `Iterable` 是不同类型的，或者只有一个 `Iterable` 是惰性的，则运算符将尽力返回假值。
 
-Lazy [`Iterables`](https://rakudocs.github.io/type/Iterable) cannot be compared, as they're assumed to be infinite. However, the operator will do its best and return `False` if the two lazy `Iterables` are of different types or if only one `Iterable` is lazy.
+Lazy [`Iterables`](https://docs.raku.org/type/Iterable) cannot be compared, as they're assumed to be infinite. However, the operator will do its best and return `False` if the two lazy `Iterables` are of different types or if only one `Iterable` is lazy.
 
 ```Raku
 say (1…∞) eqv (1…∞).List; # Both lazy, but different types;   OUTPUT: «False␤» 
@@ -2934,9 +2934,9 @@ my class A {
 say Set(A.new(a => 5)) eqv Set(A.new(a => 5));  # OUTPUT: «False␤»
 ```
 
-即使这两个集合的内容是相等的，但集合本身不相等。原因是 `eqv` 将相等性检查委托给 `Set` 对象，该对象依赖于元素以 `===` 比较。给它一个 `WHICH` 方法将类 `A` 转换为 [value 类型](https://rakudocs.github.io/type/ValueObjAt)来产生预期的行为：
+即使这两个集合的内容是相等的，但集合本身不相等。原因是 `eqv` 将相等性检查委托给 `Set` 对象，该对象依赖于元素以 `===` 比较。给它一个 `WHICH` 方法将类 `A` 转换为 [value 类型](https://docs.raku.org/type/ValueObjAt)来产生预期的行为：
 
-Even though the contents of the two sets are `eqv`, the sets are not. The reason is that `eqv` delegates the equality check to the `Set` object which relies on element-wise `===` comparison. Turning the class `A` into a [value type](https://rakudocs.github.io/type/ValueObjAt) by giving it a `WHICH` method produces the expected behavior:
+Even though the contents of the two sets are `eqv`, the sets are not. The reason is that `eqv` delegates the equality check to the `Set` object which relies on element-wise `===` comparison. Turning the class `A` into a [value type](https://docs.raku.org/type/ValueObjAt) by giving it a `WHICH` method produces the expected behavior:
 
 ```Raku
 my class A {
@@ -2982,13 +2982,13 @@ say $b === 'a';             # OUTPUT: «True␤»
 say 1 === 1.0;              # OUTPUT: «False␤»
 ```
 
-`===` 使用 [WHICH](https://rakudocs.github.io/routine/WHICH) 方法获取对象标识。
+`===` 使用 [WHICH](https://docs.raku.org/routine/WHICH) 方法获取对象标识。
 
-`===` uses the [WHICH](https://rakudocs.github.io/routine/WHICH) method to obtain the object identity.
+`===` uses the [WHICH](https://docs.raku.org/routine/WHICH) method to obtain the object identity.
 
-如果你想创建一个应该作为值类型的类，那么该类必须创建一个实例方法 `WHICH`，它应该返回一个在对象生命周期内不会改变的 [ValueObjAt](https://rakudocs.github.io/type/ValueObjAt) 对象。
+如果你想创建一个应该作为值类型的类，那么该类必须创建一个实例方法 `WHICH`，它应该返回一个在对象生命周期内不会改变的 [ValueObjAt](https://docs.raku.org/type/ValueObjAt) 对象。
 
-If you want to create a class that should act as a value type, then that class must create an instance method `WHICH`, that should return a [ValueObjAt](https://rakudocs.github.io/type/ValueObjAt) object that won't change for the lifetime of the object.
+If you want to create a class that should act as a value type, then that class must create an instance method `WHICH`, that should return a [ValueObjAt](https://docs.raku.org/type/ValueObjAt) object that won't change for the lifetime of the object.
 
 <a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--17"></a>
 ## 中缀运算符 `=:=` / infix `=:=`
@@ -3019,9 +3019,9 @@ say $b;             # OUTPUT: «5␤»
 
 The smartmatch operator aliases the left-hand side to `$_`, then evaluates the right-hand side and calls `.ACCEPTS($_)` on it. The semantics are left to the type of the right-hand side operand.
 
-下面是一些内置智能匹配功能的部分列表。有关完整的详细信息，请参见 [ACCEPTS](https://rakudocs.github.io/routine/ACCEPTS) 操作员右侧类型的文档。
+下面是一些内置智能匹配功能的部分列表。有关完整的详细信息，请参见 [ACCEPTS](https://docs.raku.org/routine/ACCEPTS) 操作员右侧类型的文档。
 
-Here is a partial list of some of the built-in smartmatching functionality. For full details, see [ACCEPTS](https://rakudocs.github.io/routine/ACCEPTS) documentation for the type on the right-hand side of the operator.
+Here is a partial list of some of the built-in smartmatching functionality. For full details, see [ACCEPTS](https://docs.raku.org/routine/ACCEPTS) documentation for the type on the right-hand side of the operator.
 
 | Right-hand side | Comparison semantics         |
 | --------------- | ---------------------------- |
@@ -3466,9 +3466,9 @@ say Any // 0 // 42;         # OUTPUT: «0␤»
 <a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-min--infix-min"></a>
 ## 中缀运算符 `min` / infix `min`
 
-返回由 [cmp](https://rakudocs.github.io/routine/cmp) 语义确定的最小参数。
+返回由 [cmp](https://docs.raku.org/routine/cmp) 语义确定的最小参数。
 
-Returns the smallest of the arguments, as determined by [cmp](https://rakudocs.github.io/routine/cmp) semantics.
+Returns the smallest of the arguments, as determined by [cmp](https://docs.raku.org/routine/cmp) semantics.
 
 ```Raku
 my $foo = 42;
@@ -3478,9 +3478,9 @@ $foo min= 0   # read as: $foo decreases to 0
 <a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-max--infix-max"></a>
 ## 中缀运算符 `max` / infix `max`
 
-返回由 [cmp](https://rakudocs.github.io/routine/cmp) 语义确定的最大参数。
+返回由 [cmp](https://docs.raku.org/routine/cmp) 语义确定的最大参数。
 
-Returns the largest of the arguments, as determined by [cmp](https://rakudocs.github.io/routine/cmp) semantics.
+Returns the largest of the arguments, as determined by [cmp](https://docs.raku.org/routine/cmp) semantics.
 
 ```Raku
 my $foo = -42;
@@ -3490,9 +3490,9 @@ $foo max= 0   # read as: $foo increases to 0
 <a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-minmax--infix-minmax"></a>
 ## 中缀运算符 `minmax` / infix `minmax`
 
-返回 [Range](https://rakudocs.github.io/type/Range) 从值的最低到最高，由 [cmp](https://rakudocs.github.io/routine/cmp) 语义决定。例如：
+返回 [Range](https://docs.raku.org/type/Range) 从值的最低到最高，由 [cmp](https://docs.raku.org/routine/cmp) 语义决定。例如：
 
-Returns the [Range](https://rakudocs.github.io/type/Range) starting from the lowest to the highest of the values, as determined by the [cmp](https://rakudocs.github.io/routine/cmp) semantics. For instance:
+Returns the [Range](https://docs.raku.org/type/Range) starting from the lowest to the highest of the values, as determined by the [cmp](https://docs.raku.org/routine/cmp) semantics. For instance:
 
 ```Raku
 # numeric comparison 
@@ -3503,26 +3503,26 @@ Returns the [Range](https://rakudocs.github.io/type/Range) starting from the low
 'z' minmax 'k';  # "k".."z" 
 ```
 
-如果最低值和最高值重合，则运算符返回由相同值生成的 [Range](https://rakudocs.github.io/type/Range)：
+如果最低值和最高值重合，则运算符返回由相同值生成的 [Range](https://docs.raku.org/type/Range)：
 
-If the lowest and highest values coincide, the operator returns a [Range](https://rakudocs.github.io/type/Range) made by the same value:
+If the lowest and highest values coincide, the operator returns a [Range](https://docs.raku.org/type/Range) made by the same value:
 
 ```Raku
 1 minmax 1;  # 1..1 
 ```
 
-应用于 [List](https://rakudocs.github.io/type/List) 时，运算符计算所有可用值中的最低值和最高值：
+应用于 [List](https://docs.raku.org/type/List) 时，运算符计算所有可用值中的最低值和最高值：
 
-When applied to [List](https://rakudocs.github.io/type/List)s, the operator evaluates the lowest and highest values among all available values:
+When applied to [List](https://docs.raku.org/type/List)s, the operator evaluates the lowest and highest values among all available values:
 
 ```Raku
 (10,20,30) minmax (0,11,22,33);       # 0..33 
 ('a','b','z') minmax ('c','d','w');   # "a".."z" 
 ```
 
-类似地，当应用于 [Hash](https://rakudocs.github.io/type/Hash) 时，它执行 [cmp](https://rakudocs.github.io/routine/cmp) 方式比较：
+类似地，当应用于 [Hash](https://docs.raku.org/type/Hash) 时，它执行 [cmp](https://docs.raku.org/routine/cmp) 方式比较：
 
-Similarly, when applied to [Hash](https://rakudocs.github.io/type/Hash)es, it performs a [cmp](https://rakudocs.github.io/routine/cmp) way comparison:
+Similarly, when applied to [Hash](https://docs.raku.org/type/Hash)es, it performs a [cmp](https://docs.raku.org/routine/cmp) way comparison:
 
 ```Raku
 my %winner = points => 30, misses => 10;
@@ -3595,9 +3595,9 @@ for <A B C D E> {
 }
 ```
 
-对于类似 `sed` 的版本，在开始条件成功后，不对停止条件尝试 `$_`，请参见 [fff](https://rakudocs.github.io/routine/fff)。
+对于类似 `sed` 的版本，在开始条件成功后，不对停止条件尝试 `$_`，请参见 [fff](https://docs.raku.org/routine/fff)。
 
-For the `sed`-like version, which does *not* try `$_` on the stop condition after succeeding on the start condition, see [fff](https://rakudocs.github.io/routine/fff).
+For the `sed`-like version, which does *not* try `$_` on the stop condition after succeeding on the start condition, see [fff](https://docs.raku.org/routine/fff).
 
 这个运算符不能重载，因为它是由编译器特别处理的。
 
@@ -3610,9 +3610,9 @@ This operator cannot be overloaded, as it's handled specially by the compiler.
 sub infix:<^ff>(Mu $a, Mu $b)
 ```
 
-工作方式与 [ff](https://rakudocs.github.io/routine/ff) 类似，但对于与开始条件匹配的项（包括也与停止条件匹配的项），它不返回 `True`。
+工作方式与 [ff](https://docs.raku.org/routine/ff) 类似，但对于与开始条件匹配的项（包括也与停止条件匹配的项），它不返回 `True`。
 
-Works like [ff](https://rakudocs.github.io/routine/ff), except it does not return `True` for items matching the start condition (including items also matching the stop condition).
+Works like [ff](https://docs.raku.org/routine/ff), except it does not return `True` for items matching the start condition (including items also matching the stop condition).
 
 对比：
 
@@ -3624,9 +3624,9 @@ say $_ if /A/ ff /C/ for @list;    # OUTPUT: «A␤B␤C␤»
 say $_ if /A/ ^ff /C/ for @list;   # OUTPUT: «B␤C␤»
 ```
 
-sed 类版本可以在 [`^fff`](https://rakudocs.github.io/routine/$CIRCUMFLEX_ACCENTfff) 中找到。
+sed 类版本可以在 [`^fff`](https://docs.raku.org/routine/$CIRCUMFLEX_ACCENTfff) 中找到。
 
-The sed-like version can be found in [`^fff`](https://rakudocs.github.io/routine/$CIRCUMFLEX_ACCENTfff).
+The sed-like version can be found in [`^fff`](https://docs.raku.org/routine/$CIRCUMFLEX_ACCENTfff).
 
 这个运算符不能重载，因为它是由编译器特别处理的。
 
@@ -3639,9 +3639,9 @@ This operator cannot be overloaded, as it's handled specially by the compiler.
 sub infix:<ff^>(Mu $a, Mu $b)
 ```
 
-工作方式与 [ff](https://rakudocs.github.io/routine/ff) 类似，但对于与停止条件匹配的项（包括首先与开始条件匹配的项），它不返回 `True`。
+工作方式与 [ff](https://docs.raku.org/routine/ff) 类似，但对于与停止条件匹配的项（包括首先与开始条件匹配的项），它不返回 `True`。
 
-Works like [ff](https://rakudocs.github.io/routine/ff), except it does not return `True` for items matching the stop condition (including items that first matched the start condition).
+Works like [ff](https://docs.raku.org/routine/ff), except it does not return `True` for items matching the stop condition (including items that first matched the start condition).
 
 ```Raku
 my @list = <A B C>;
@@ -3649,9 +3649,9 @@ say $_ if /A/ ff /C/ for @list;    # OUTPUT: «A␤B␤C␤»
 say $_ if /A/ ff^ /C/ for @list;   # OUTPUT: «A␤B␤»
 ```
 
-sed 类版本可以在 [fff^](https://rakudocs.github.io/routine/fff$CIRCUMFLEX_ACCENT) 中找到。
+sed 类版本可以在 [fff^](https://docs.raku.org/routine/fff$CIRCUMFLEX_ACCENT) 中找到。
 
-The sed-like version can be found in [fff^](https://rakudocs.github.io/routine/fff$CIRCUMFLEX_ACCENT).
+The sed-like version can be found in [fff^](https://docs.raku.org/routine/fff$CIRCUMFLEX_ACCENT).
 
 这个运算符不能重载，因为它是由编译器特别处理的。
 
@@ -3664,9 +3664,9 @@ This operator cannot be overloaded, as it's handled specially by the compiler.
 sub infix:<^ff^>(Mu $a, Mu $b)
 ```
 
-工作方式类似于 [ff](https://rakudocs.github.io/routine/ff)，但对于与停止或启动条件（或两者）匹配的项，它不返回 `True`。
+工作方式类似于 [ff](https://docs.raku.org/routine/ff)，但对于与停止或启动条件（或两者）匹配的项，它不返回 `True`。
 
-Works like [ff](https://rakudocs.github.io/routine/ff), except it does not return `True` for items matching either the stop or start condition (or both).
+Works like [ff](https://docs.raku.org/routine/ff), except it does not return `True` for items matching either the stop or start condition (or both).
 
 ```Raku
 my @list = <A B C>;
@@ -3674,9 +3674,9 @@ say $_ if /A/ ff /C/ for @list;    # OUTPUT: «A␤B␤C␤»
 say $_ if /A/ ^ff^ /C/ for @list;  # OUTPUT: «B␤»
 ```
 
-sed 类版本可以在 [`^fff^`](https://rakudocs.github.io/routine/$CIRCUMFLEX_ACCENTfff$CIRCUMFLEX_ACCENT) 中找到。
+sed 类版本可以在 [`^fff^`](https://docs.raku.org/routine/$CIRCUMFLEX_ACCENTfff$CIRCUMFLEX_ACCENT) 中找到。
 
-The sed-like version can be found in [`^fff^`](https://rakudocs.github.io/routine/$CIRCUMFLEX_ACCENTfff$CIRCUMFLEX_ACCENT).
+The sed-like version can be found in [`^fff^`](https://docs.raku.org/routine/$CIRCUMFLEX_ACCENTfff$CIRCUMFLEX_ACCENT).
 
 这个运算符不能重载，因为它是由编译器特别处理的。
 
@@ -3693,9 +3693,9 @@ sub infix:<fff>(Mu $a, Mu $b)
 
 Performs a sed-like flipflop operation, wherein it returns `False` until the left argument smartmatches against `$_`, then returns `True` until the right argument smartmatches against `$_`.
 
-与 [ff](https://rakudocs.github.io/routine/ff) 类似，只是它每次调用只尝试一个参数。也就是说，如果 `$_` 智能匹配左参数，`fff` 将**不**尝试将相同的 `$_` 与右参数匹配。
+与 [ff](https://docs.raku.org/routine/ff) 类似，只是它每次调用只尝试一个参数。也就是说，如果 `$_` 智能匹配左参数，`fff` 将**不**尝试将相同的 `$_` 与右参数匹配。
 
-Works similarly to [ff](https://rakudocs.github.io/routine/ff), except that it only tries one argument per invocation. That is, if `$_` smartmatches the left argument, `fff` will **not** then try to match that same `$_` against the right argument.
+Works similarly to [ff](https://docs.raku.org/routine/ff), except that it only tries one argument per invocation. That is, if `$_` smartmatches the left argument, `fff` will **not** then try to match that same `$_` against the right argument.
 
 ```Raku
 for <AB C D B E F> {
@@ -3703,9 +3703,9 @@ for <AB C D B E F> {
 }
 ```
 
-非 sed 类型的触发器（在成功地将左参数与 `$_` 匹配之后，将尝试对右参数使用相同的 `$_`，并相应地执行操作）。见 [ff](https://rakudocs.github.io/routine/ff)。
+非 sed 类型的触发器（在成功地将左参数与 `$_` 匹配之后，将尝试对右参数使用相同的 `$_`，并相应地执行操作）。见 [ff](https://docs.raku.org/routine/ff)。
 
-The non-sed-like flipflop (which after successfully matching the left argument against `$_` will try that same `$_` against the right argument and act accordingly). See [ff](https://rakudocs.github.io/routine/ff).
+The non-sed-like flipflop (which after successfully matching the left argument against `$_` will try that same `$_` against the right argument and act accordingly). See [ff](https://docs.raku.org/routine/ff).
 
 这个运算符不能重载，因为它是由编译器特别处理的。
 
@@ -3718,9 +3718,9 @@ This operator cannot be overloaded, as it's handled specially by the compiler.
 sub infix:<^fff>(Mu $a, Mu $b)
 ```
 
-与 [fff](https://rakudocs.github.io/routine/fff) 类似，但对于左参数的匹配，它不返回真值。
+与 [fff](https://docs.raku.org/routine/fff) 类似，但对于左参数的匹配，它不返回真值。
 
-Like [fff](https://rakudocs.github.io/routine/fff), except it does not return true for matches to the left argument.
+Like [fff](https://docs.raku.org/routine/fff), except it does not return true for matches to the left argument.
 
 ```Raku
 my @list = <A B C>;
@@ -3728,9 +3728,9 @@ say $_ if /A/ fff /C/ for @list;   # OUTPUT: «A␤B␤C␤»
 say $_ if /A/ ^fff /C/ for @list;  # OUTPUT: «B␤C␤»
 ```
 
-对于非 sed 版本，请参见 [`^ff`](https://rakudocs.github.io/routine/$CIRCUMFLEX_ACCENTff)。
+对于非 sed 版本，请参见 [`^ff`](https://docs.raku.org/routine/$CIRCUMFLEX_ACCENTff)。
 
-For the non-sed version, see [`^ff`](https://rakudocs.github.io/routine/$CIRCUMFLEX_ACCENTff).
+For the non-sed version, see [`^ff`](https://docs.raku.org/routine/$CIRCUMFLEX_ACCENTff).
 
 这个运算符不能重载，因为它是由编译器特别处理的。
 
@@ -3743,9 +3743,9 @@ This operator cannot be overloaded, as it's handled specially by the compiler.
 sub infix:<fff^>(Mu $a, Mu $b)
 ```
 
-与 [fff](https://rakudocs.github.io/routine/fff) 类似，只不过对于右参数的匹配不返回真值。
+与 [fff](https://docs.raku.org/routine/fff) 类似，只不过对于右参数的匹配不返回真值。
 
-Like [fff](https://rakudocs.github.io/routine/fff), except it does not return true for matches to the right argument.
+Like [fff](https://docs.raku.org/routine/fff), except it does not return true for matches to the right argument.
 
 ```Raku
 my @list = <A B C>;
@@ -3753,9 +3753,9 @@ say $_ if /A/ fff /C/ for @list;   # OUTPUT: «A␤B␤C␤»
 say $_ if /A/ fff^ /C/ for @list;  # OUTPUT: «A␤B␤»
 ```
 
-对于非 sed 版本，请参见 [ff^](https://rakudocs.github.io/routine/ff$CIRCUMFLEX_ACCENT)。
+对于非 sed 版本，请参见 [ff^](https://docs.raku.org/routine/ff$CIRCUMFLEX_ACCENT)。
 
-For the non-sed version, see [ff^](https://rakudocs.github.io/routine/ff$CIRCUMFLEX_ACCENT).
+For the non-sed version, see [ff^](https://docs.raku.org/routine/ff$CIRCUMFLEX_ACCENT).
 
 这个运算符不能重载，因为它是由编译器特别处理的。
 
@@ -3768,9 +3768,9 @@ This operator cannot be overloaded, as it's handled specially by the compiler.
 sub infix:<^fff^>(Mu $a, Mu $b)
 ```
 
-与 [fff](https://rakudocs.github.io/routine/fff) 类似，但对于左参数或右参数的匹配，它不返回真值。
+与 [fff](https://docs.raku.org/routine/fff) 类似，但对于左参数或右参数的匹配，它不返回真值。
 
-Like [fff](https://rakudocs.github.io/routine/fff), except it does not return true for matches to either the left or right argument.
+Like [fff](https://docs.raku.org/routine/fff), except it does not return true for matches to either the left or right argument.
 
 ```Raku
 my @list = <A B C>;
@@ -3778,9 +3778,9 @@ say $_ if /A/ fff /C/ for @list;   # OUTPUT: «A␤B␤C␤»
 say $_ if /A/ ^fff^ /C/ for @list; # OUTPUT: «B␤»
 ```
 
-对于非 sed 版本，请参见 [`^ff^`](https://rakudocs.github.io/routine/$CIRCUMFLEX_ACCENTff$CIRCUMFLEX_ACCENT)。
+对于非 sed 版本，请参见 [`^ff^`](https://docs.raku.org/routine/$CIRCUMFLEX_ACCENTff$CIRCUMFLEX_ACCENT)。
 
-For the non-sed version, see [`^ff^`](https://rakudocs.github.io/routine/$CIRCUMFLEX_ACCENTff$CIRCUMFLEX_ACCENT).
+For the non-sed version, see [`^ff^`](https://docs.raku.org/routine/$CIRCUMFLEX_ACCENTff$CIRCUMFLEX_ACCENT).
 
 这个运算符不能重载，因为它是由编译器特别处理的。
 
@@ -3811,13 +3811,13 @@ Called the *item assignment operator*, it Places the value of the right-hand sid
 sub infix:«=>»($key, Mu $value --> Pair:D)
 ```
 
-[Pair](https://rakudocs.github.io/type/Pair) 构造器.
+[Pair](https://docs.raku.org/type/Pair) 构造器.
 
-[Pair](https://rakudocs.github.io/type/Pair) constructor.
+[Pair](https://docs.raku.org/type/Pair) constructor.
 
-构造一个 [Pair](https://rakudocs.github.io/type/Pair) 对象，左侧为键，右侧为值。
+构造一个 [Pair](https://docs.raku.org/type/Pair) 对象，左侧为键，右侧为值。
 
-Constructs a [Pair](https://rakudocs.github.io/type/Pair) object with the left-hand side as the key and the right-hand side as the value.
+Constructs a [Pair](https://docs.raku.org/type/Pair) object with the left-hand side as the key and the right-hand side as the value.
 
 注意 `=>` 操作符是语法上特殊的案例，因为它允许在左侧使用未加引号的标识符。
 
@@ -3829,13 +3829,13 @@ say $p.key;         # OUTPUT: «a␤»
 say $p.value;       # OUTPUT: «1␤»
 ```
 
-参数列表中的一个 [Pair](https://rakudocs.github.io/type/Pair) 在左边有一个未被引用的标识符，它被解释为一个命名参数。
+参数列表中的一个 [Pair](https://docs.raku.org/type/Pair) 在左边有一个未被引用的标识符，它被解释为一个命名参数。
 
-A [Pair](https://rakudocs.github.io/type/Pair) within an argument list with an unquoted identifier on the left is interpreted as a named argument.
+A [Pair](https://docs.raku.org/type/Pair) within an argument list with an unquoted identifier on the left is interpreted as a named argument.
 
-有关创建 `Pair` 对象的更多方法，请参见[术语语言文档](https://rakudocs.github.io/language/terms#Pair)。
+有关创建 `Pair` 对象的更多方法，请参见[术语语言文档](https://docs.raku.org/language/terms#Pair)。
 
-See [the Terms language documentation](https://rakudocs.github.io/language/terms#Pair) for more ways to create `Pair` objects.
+See [the Terms language documentation](https://docs.raku.org/language/terms#Pair) for more ways to create `Pair` objects.
 
 <a id="%E6%9D%BE%E6%95%A3%E7%9A%84%E4%B8%80%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E6%9D%83--loose-unary-precedence"></a>
 # 松散的一元运算符优先权 / Loose unary precedence
@@ -3847,9 +3847,9 @@ See [the Terms language documentation](https://rakudocs.github.io/language/terms
 multi sub prefix:<not>(Mu $x --> Bool:D)
 ```
 
-在布尔上下文中计算其参数（从而折叠 [Junction](https://rakudocs.github.io/type/Junction)），并对结果求反。请注意，`not` 很容易被误用。请参阅[陷阱](https://rakudocs.github.io/language/traps#Loose_boolean_operators)。
+在布尔上下文中计算其参数（从而折叠 [Junction](https://docs.raku.org/type/Junction)），并对结果求反。请注意，`not` 很容易被误用。请参阅[陷阱](https://docs.raku.org/language/traps#Loose_boolean_operators)。
 
-Evaluates its argument in boolean context (and thus collapses [Junction](https://rakudocs.github.io/type/Junction)s), and negates the result. Please note that `not` is easy to misuse. See [traps](https://rakudocs.github.io/language/traps#Loose_boolean_operators).
+Evaluates its argument in boolean context (and thus collapses [Junction](https://docs.raku.org/type/Junction)s), and negates the result. Please note that `not` is easy to misuse. See [traps](https://docs.raku.org/language/traps#Loose_boolean_operators).
 
 <a id="%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-so--prefix-so"></a>
 ## 前缀运算符 `so` / prefix `so`
@@ -3858,9 +3858,9 @@ Evaluates its argument in boolean context (and thus collapses [Junction](https:/
 multi sub prefix:<so>(Mu $x --> Bool:D)
 ```
 
-在布尔上下文中计算其参数（从而折叠 [Junction](https://rakudocs.github.io/type/Junction)），并返回结果。
+在布尔上下文中计算其参数（从而折叠 [Junction](https://docs.raku.org/type/Junction)），并返回结果。
 
-Evaluates its argument in boolean context (and thus collapses [Junction](https://rakudocs.github.io/type/Junction)s), and returns the result.
+Evaluates its argument in boolean context (and thus collapses [Junction](https://docs.raku.org/type/Junction)s), and returns the result.
 
 <a id="%E9%80%97%E5%8F%B7%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--comma-operator-precedence"></a>
 # 逗号运算符优先级 / Comma operator precedence
@@ -3872,9 +3872,9 @@ Evaluates its argument in boolean context (and thus collapses [Junction](https:/
 sub infix:<,>(*@a --> List:D) is assoc<list>
 ```
 
-从参数构造一个高阶 [Cool](https://rakudocs.github.io/type/Cool) 对象。
+从参数构造一个高阶 [Cool](https://docs.raku.org/type/Cool) 对象。
 
-Constructs a higher-order [Cool](https://rakudocs.github.io/type/Cool) from its arguments.
+Constructs a higher-order [Cool](https://docs.raku.org/type/Cool) from its arguments.
 
 ```Raku
 my @list = :god('Þor'), ['is',"mighty"];
@@ -3885,13 +3885,13 @@ my %a = :11a, :22b;
 say %(%a, :33x);  # OUTPUT: «{a => 11, b => 22, x => 33}␤»
 ```
 
-在第一种情况下，它返回一个 [List](https://rakudocs.github.io/type/List)，在第二种情况下，由于参数是 [Pair](https://rakudocs.github.io/type/Pair)，它构建一个 [Hash](https://rakudocs.github.io/type/Hash)。
+在第一种情况下，它返回一个 [List](https://docs.raku.org/type/List)，在第二种情况下，由于参数是 [Pair](https://docs.raku.org/type/Pair)，它构建一个 [Hash](https://docs.raku.org/type/Hash)。
 
-In the first case it returns a [List](https://rakudocs.github.io/type/List), in the second case, since the arguments are [Pair](https://rakudocs.github.io/type/Pair)s, it builds a [Hash](https://rakudocs.github.io/type/Hash).
+In the first case it returns a [List](https://docs.raku.org/type/List), in the second case, since the arguments are [Pair](https://docs.raku.org/type/Pair)s, it builds a [Hash](https://docs.raku.org/type/Hash).
 
-它还可用于从其他变量构造变量，排序不同类型的元素，在本例中为 [Hash](https://rakudocs.github.io/type/Hash) 和 [Pair](https://rakudocs.github.io/type/Pair)：
+它还可用于从其他变量构造变量，排序不同类型的元素，在本例中为 [Hash](https://docs.raku.org/type/Hash) 和 [Pair](https://docs.raku.org/type/Pair)：
 
-It can also be used for constructing variables from other variables, collating elements of different types, in this case a [Hash](https://rakudocs.github.io/type/Hash) and a [Pair](https://rakudocs.github.io/type/Pair):
+It can also be used for constructing variables from other variables, collating elements of different types, in this case a [Hash](https://docs.raku.org/type/Hash) and a [Pair](https://docs.raku.org/type/Pair):
 
 ```Raku
 my %features = %hash, :wields("hammer");
@@ -3993,13 +3993,13 @@ multi sub infix:<...^>(**@) is assoc<list>
 
 The sequence operator, which can be written either as `...` or as `…` (with variants `...^` and `…^`) will produce (possibly lazy) generic sequences on demand.
 
-左侧始终包含初始元素；它也可能包含生成器（在第一个或多个元素之后）。右边将有一个端点，对于“无限”列表（即只按需生成元素的*惰性*列表），可以是 `*` 或 `*`，当为 `True` 时将结束序列的表达式，或者其他元素，如 [Junctions](https://rakudocs.github.io/type/Junction)。
+左侧始终包含初始元素；它也可能包含生成器（在第一个或多个元素之后）。右边将有一个端点，对于“无限”列表（即只按需生成元素的*惰性*列表），可以是 `*` 或 `*`，当为 `True` 时将结束序列的表达式，或者其他元素，如 [Junctions](https://docs.raku.org/type/Junction)。
 
-The left-hand side will always include the initial elements; it may include a generator too (after the first element or elements). The right-hand side will have an endpoint, which can be `Inf` or `*` for "infinite" lists (that is, *lazy* lists whose elements are only produced on demand), an expression which will end the sequence when `True`, or other elements such as [Junctions](https://rakudocs.github.io/type/Junction).
+The left-hand side will always include the initial elements; it may include a generator too (after the first element or elements). The right-hand side will have an endpoint, which can be `Inf` or `*` for "infinite" lists (that is, *lazy* lists whose elements are only produced on demand), an expression which will end the sequence when `True`, or other elements such as [Junctions](https://docs.raku.org/type/Junction).
 
-序列运算符使用所需的参数调用生成器。参数取自初始元素和已生成的元素。根据端点的比较方式，默认生成器为 `*.`[succ](https://rakudocs.github.io/routine/succ) 或 `*.`[pred](https://rakudocs.github.io/routine/pred)：
+序列运算符使用所需的参数调用生成器。参数取自初始元素和已生成的元素。根据端点的比较方式，默认生成器为 `*.`[succ](https://docs.raku.org/routine/succ) 或 `*.`[pred](https://docs.raku.org/routine/pred)：
 
-The sequence operator invokes the generator with as many arguments as necessary. The arguments are taken from the initial elements and the already generated elements. The default generator is `*.`[succ](https://rakudocs.github.io/routine/succ) or `*.`[pred](https://rakudocs.github.io/routine/pred), depending on how the end points compare:
+The sequence operator invokes the generator with as many arguments as necessary. The arguments are taken from the initial elements and the already generated elements. The default generator is `*.`[succ](https://docs.raku.org/routine/succ) or `*.`[pred](https://docs.raku.org/routine/pred), depending on how the end points compare:
 
 ```Raku
 say 1 ... 4;        # OUTPUT: «(1 2 3 4)␤» 
@@ -4008,9 +4008,9 @@ say 'a' ... 'e';    # OUTPUT: «(a b c d e)␤»
 say 'e' ... 'a';    # OUTPUT: «(e d c b a)␤»
 ```
 
-`*` ([Whatever](https://rakudocs.github.io/type/Whatever)) 、`Inf` 或 `∞` 的端点按需生成无限序列，默认生成器为 `*.succ`。
+`*` ([Whatever](https://docs.raku.org/type/Whatever)) 、`Inf` 或 `∞` 的端点按需生成无限序列，默认生成器为 `*.succ`。
 
-An endpoint of `*` ([Whatever](https://rakudocs.github.io/type/Whatever)), `Inf` or `∞` generates on demand an infinite sequence, with a default generator of `*.succ`
+An endpoint of `*` ([Whatever](https://docs.raku.org/type/Whatever)), `Inf` or `∞` generates on demand an infinite sequence, with a default generator of `*.succ`
 
 ```Raku
 say (1 ... *)[^5];  # OUTPUT: «(1 2 3 4 5)␤»
@@ -4077,9 +4077,9 @@ say 1, 2, 4, 8, 16 ... $end;
 <a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--25"></a>
 ## 中缀运算符 `=` / infix `=`
 
-在此上下文中，它充当列表赋值运算符。它的确切语义留给左侧的容器类型。常见情况见[数组](https://rakudocs.github.io/type/Array)和[散列](https://rakudocs.github.io/type/Hash)。
+在此上下文中，它充当列表赋值运算符。它的确切语义留给左侧的容器类型。常见情况见[数组](https://docs.raku.org/type/Array)和[散列](https://docs.raku.org/type/Hash)。
 
-In this context, it acts as the list assignment operator. Its exact semantics are left to the container type on the left-hand side. See [Array](https://rakudocs.github.io/type/Array) and [Hash](https://rakudocs.github.io/type/Hash) for common cases.
+In this context, it acts as the list assignment operator. Its exact semantics are left to the container type on the left-hand side. See [Array](https://docs.raku.org/type/Array) and [Hash](https://docs.raku.org/type/Hash) for common cases.
 
 单条目赋值和列表赋值之间的区别由解析器根据左侧的语法决定。
 
@@ -4099,9 +4099,9 @@ $b++;
 say $a;
 ```
 
-这将输出42，因为 `$a` 和 `$b` 都包含数字 `42`，但[容器](https://rakudocs.github.io/language/containers#Binding)不同。
+这将输出42，因为 `$a` 和 `$b` 都包含数字 `42`，但[容器](https://docs.raku.org/language/containers#Binding)不同。
 
-This will output 42, because `$a` and `$b` both contained the number `42`, but the [containers](https://rakudocs.github.io/language/containers#Binding) were different.
+This will output 42, because `$a` and `$b` both contained the number `42`, but the [containers](https://docs.raku.org/language/containers#Binding) were different.
 
 ```Raku
 my $a = 42;
@@ -4125,9 +4125,9 @@ Please note that `:=` is a compile time operator. As such it can not be referred
 <a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--27"></a>
 ## 中缀运算符 `::=` / infix `::=`
 
-只读绑定运算符，尚未在 Rakudo 中实现。请参见 [`infix :=`](https://rakudocs.github.io/routine/:=)。
+只读绑定运算符，尚未在 Rakudo 中实现。请参见 [`infix :=`](https://docs.raku.org/routine/:=)。
 
-Read-only binding operator, not yet implemented in Rakudo. See [`infix :=`](https://rakudocs.github.io/routine/:=).
+Read-only binding operator, not yet implemented in Rakudo. See [`infix :=`](https://docs.raku.org/routine/:=).
 
 <a id="%E5%88%97%E8%A1%A8%E8%BF%90%E7%AE%97%E7%AC%A6---listop-"></a>
 ## 列表运算符 `...` / listop `...`
@@ -4136,9 +4136,9 @@ Read-only binding operator, not yet implemented in Rakudo. See [`infix :=`](http
 
 Called the *yada, yada, yada* operator or *stub* operator, if it's the only statement in a routine or type, it marks that routine or type as a stub (which is significant in the context of pre-declaring types and composing roles).
 
-如果执行了 `...` 语句，它将调用 [fail](https://rakudocs.github.io/routine/fail)，并显示默认消息 `Stub code executed`。
+如果执行了 `...` 语句，它将调用 [fail](https://docs.raku.org/routine/fail)，并显示默认消息 `Stub code executed`。
 
-If the `...` statement is executed, it calls [fail](https://rakudocs.github.io/routine/fail), with the default message `Stub code executed`.
+If the `...` statement is executed, it calls [fail](https://docs.raku.org/routine/fail), with the default message `Stub code executed`.
 
 <a id="%E5%88%97%E8%A1%A8%E8%BF%90%E7%AE%97%E7%AC%A6---listop--1"></a>
 ## 列表运算符 `!!!` / listop `!!!`
@@ -4147,9 +4147,9 @@ If the `...` statement is executed, it calls [fail](https://rakudocs.github.io/r
 
 If it's the only statement in a routine or type, it marks that routine or type as a stub (which is significant in the context of pre-declaring types and composing roles).
 
-如果 `!!!` 语句被执行，它调用 [die](https://rakudocs.github.io/routine/die)，默认消息是 `Stub code executed`。
+如果 `!!!` 语句被执行，它调用 [die](https://docs.raku.org/routine/die)，默认消息是 `Stub code executed`。
 
-If the `!!!` statement is executed, it calls [die](https://rakudocs.github.io/routine/die), with the default message `Stub code executed`.
+If the `!!!` statement is executed, it calls [die](https://docs.raku.org/routine/die), with the default message `Stub code executed`.
 
 <a id="%E5%88%97%E8%A1%A8%E8%BF%90%E7%AE%97%E7%AC%A6---listop--2"></a>
 ## 列表运算符 `???` / listop `???`
@@ -4158,9 +4158,9 @@ If the `!!!` statement is executed, it calls [die](https://rakudocs.github.io/ro
 
 If it's the only statement in a routine or type, it marks that routine or type as a stub (which is significant in the context of pre-declaring types and composing roles).
 
-如果 `???` 语句被执行，它调用 [warn](https://rakudocs.github.io/routine/warn)，默认消息是 `Stub code executed`。
+如果 `???` 语句被执行，它调用 [warn](https://docs.raku.org/routine/warn)，默认消息是 `Stub code executed`。
 
-If the `???` statement is executed, it calls [warn](https://rakudocs.github.io/routine/warn), with the default message `Stub code executed`.
+If the `???` statement is executed, it calls [warn](https://docs.raku.org/routine/warn), with the default message `Stub code executed`.
 
 <a id="%E5%BD%92%E7%BA%A6%E8%BF%90%E7%AE%97%E7%AC%A6--reduction-operators"></a>
 ## 归约运算符 / Reduction operators
@@ -4190,24 +4190,24 @@ say [**] 4, 3, 2;     # 4**3**2 = 4**(3**2) = 262144
 <a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-and--infix-and"></a>
 ## 中缀运算符 `and` / infix `and`
 
-与[中缀运算符 &&](https://rakudocs.github.io/language/operators#infix_%26%26) 相同，但优先级较低。
+与[中缀运算符 &&](https://docs.raku.org/language/operators#infix_%26%26) 相同，但优先级较低。
 
-Same as [infix &&](https://rakudocs.github.io/language/operators#infix_%26%26), except with looser precedence.
+Same as [infix &&](https://docs.raku.org/language/operators#infix_%26%26), except with looser precedence.
 
-返回计算结果为 `False` 的第一个操作数，否则返回最后一个操作数。注意 `and` 很容易被误用，请参见[陷阱](https://rakudocs.github.io/language/traps#Loose_boolean_operators)。
+返回计算结果为 `False` 的第一个操作数，否则返回最后一个操作数。注意 `and` 很容易被误用，请参见[陷阱](https://docs.raku.org/language/traps#Loose_boolean_operators)。
 
-Short-circuits so that it returns the first operand that evaluates to `False`, otherwise returns the last operand. Note that `and` is easy to misuse, see [traps](https://rakudocs.github.io/language/traps#Loose_boolean_operators).
+Short-circuits so that it returns the first operand that evaluates to `False`, otherwise returns the last operand. Note that `and` is easy to misuse, see [traps](https://docs.raku.org/language/traps#Loose_boolean_operators).
 
 <a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-andthen--infix-andthen"></a>
 ## 中缀运算符 `andthen` / infix `andthen`
 
-当遇到第一个[未定义](https://rakudocs.github.io/routine/defined)参数时，`andthen` 运算符返回 [`Empty`](https://rakudocs.github.io/type/Slip#index-entry-Empty-Empty)，否则返回最后一个参数。最后一个参数按原样返回，不检查其是否定义。左边的计算结果绑定到右边的 `$_` 上，或者如果右边是一个 [`Callable`](https://rakudocs.github.io/type/Callable) 作为参数传递，其[函数参数个数](https://rakudocs.github.io/routine/count) 必须是 `0` 或 `1`。
+当遇到第一个[未定义](https://docs.raku.org/routine/defined)参数时，`andthen` 运算符返回 [`Empty`](https://docs.raku.org/type/Slip#index-entry-Empty-Empty)，否则返回最后一个参数。最后一个参数按原样返回，不检查其是否定义。左边的计算结果绑定到右边的 `$_` 上，或者如果右边是一个 [`Callable`](https://docs.raku.org/type/Callable) 作为参数传递，其[函数参数个数](https://docs.raku.org/routine/count) 必须是 `0` 或 `1`。
 
-The `andthen` operator returns [`Empty`](https://rakudocs.github.io/type/Slip#index-entry-Empty-Empty) upon encountering the first [undefined](https://rakudocs.github.io/routine/defined) argument, otherwise the last argument. Last argument is returned as-is, without being checked for definedness at all. Short-circuits. The result of the left side is bound to `$_` for the right side, or passed as arguments if the right side is a [`Callable`](https://rakudocs.github.io/type/Callable), whose [count](https://rakudocs.github.io/routine/count) must be `0` or `1`.
+The `andthen` operator returns [`Empty`](https://docs.raku.org/type/Slip#index-entry-Empty-Empty) upon encountering the first [undefined](https://docs.raku.org/routine/defined) argument, otherwise the last argument. Last argument is returned as-is, without being checked for definedness at all. Short-circuits. The result of the left side is bound to `$_` for the right side, or passed as arguments if the right side is a [`Callable`](https://docs.raku.org/type/Callable), whose [count](https://docs.raku.org/routine/count) must be `0` or `1`.
 
-此运算符的一个方便用法是将例程的返回值别名为 `$_`，并对其进行其他操作，例如打印或将其返回给调用方。由于 `andthen` 运算符有短路效果，除非定义了左侧，否则不会执行右侧的语句（提示：[Failures](https://rakudocs.github.io/type/Failure) 从来没有定义，因此可以使用此运算符处理它们）。
+此运算符的一个方便用法是将例程的返回值别名为 `$_`，并对其进行其他操作，例如打印或将其返回给调用方。由于 `andthen` 运算符有短路效果，除非定义了左侧，否则不会执行右侧的语句（提示：[Failures](https://docs.raku.org/type/Failure) 从来没有定义，因此可以使用此运算符处理它们）。
 
-A handy use of this operator is to alias a routine's return value to `$_` and to do additional manipulation with it, such as printing or returning it to caller. Since the `andthen` operator short-circuits, statements on the right-hand side won't get executed, unless left-hand side is defined (tip: [Failures](https://rakudocs.github.io/type/Failure) are never defined, so you can handle them with this operator).
+A handy use of this operator is to alias a routine's return value to `$_` and to do additional manipulation with it, such as printing or returning it to caller. Since the `andthen` operator short-circuits, statements on the right-hand side won't get executed, unless left-hand side is defined (tip: [Failures](https://docs.raku.org/type/Failure) are never defined, so you can handle them with this operator).
 
 ```Raku
 sub load-data {
@@ -4225,9 +4225,9 @@ die "Failed to load data!!";
 
 The above example will print `good data is good` only if the subroutine returned any items that match `/good/` and will die unless loading data returned a defined value. The aliasing behavior lets us pipe the values across the operator.
 
-`andthen` 运算符是 [`with` 语句修饰符](https://rakudocs.github.io/syntax/with%20orwith%20without)的近亲，有些编译器将 `with` 编译为 `andthen`，这意味着这两行具有相同的行为：
+`andthen` 运算符是 [`with` 语句修饰符](https://docs.raku.org/syntax/with%20orwith%20without)的近亲，有些编译器将 `with` 编译为 `andthen`，这意味着这两行具有相同的行为：
 
-The `andthen` operator is a close relative of [`with` statement modifier](https://rakudocs.github.io/syntax/with%20orwith%20without), and some compilers compile `with` to `andthen`, meaning these two lines have equivalent behavior:
+The `andthen` operator is a close relative of [`with` statement modifier](https://docs.raku.org/syntax/with%20orwith%20without), and some compilers compile `with` to `andthen`, meaning these two lines have equivalent behavior:
 
 ```Raku
 .say with 42;
@@ -4237,13 +4237,13 @@ The `andthen` operator is a close relative of [`with` statement modifier](https:
 <a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-notandthen--infix-notandthen"></a>
 ## 中缀运算符 `notandthen` / infix `notandthen`
 
-`notandthen` 运算符在遇到第一个[已定义](https://rakudocs.github.io/routine/defined)参数时返回 [`Empty`](https://rakudocs.github.io/type/Slip#index-entry-Empty-Empty)，否则返回最后一个参数。最后一个参数按原样返回，不检查其定义。左边的结果绑定到右边的 `$_` 上，或者如果右边是一个 [`Callable`](https://rakudocs.github.io/type/Callable) 则左边的结果作为参数传递，其[函数参数个数](https://rakudocs.github.io/routine/count)必须是 `0` 或 `1`。
+`notandthen` 运算符在遇到第一个[已定义](https://docs.raku.org/routine/defined)参数时返回 [`Empty`](https://docs.raku.org/type/Slip#index-entry-Empty-Empty)，否则返回最后一个参数。最后一个参数按原样返回，不检查其定义。左边的结果绑定到右边的 `$_` 上，或者如果右边是一个 [`Callable`](https://docs.raku.org/type/Callable) 则左边的结果作为参数传递，其[函数参数个数](https://docs.raku.org/routine/count)必须是 `0` 或 `1`。
 
-The `notandthen` operator returns [`Empty`](https://rakudocs.github.io/type/Slip#index-entry-Empty-Empty) upon encountering the first [defined](https://rakudocs.github.io/routine/defined) argument, otherwise the last argument. Last argument is returned as-is, without being checked for definedness at all. Short-circuits. The result of the left side is bound to `$_` for the right side, or passed as arguments if the right side is a [`Callable`](https://rakudocs.github.io/type/Callable), whose [count](https://rakudocs.github.io/routine/count) must be `0` or `1`.
+The `notandthen` operator returns [`Empty`](https://docs.raku.org/type/Slip#index-entry-Empty-Empty) upon encountering the first [defined](https://docs.raku.org/routine/defined) argument, otherwise the last argument. Last argument is returned as-is, without being checked for definedness at all. Short-circuits. The result of the left side is bound to `$_` for the right side, or passed as arguments if the right side is a [`Callable`](https://docs.raku.org/type/Callable), whose [count](https://docs.raku.org/routine/count) must be `0` or `1`.
 
-乍一看，[notandthen](https://rakudocs.github.io/routine/notandthen) 可能看起来与 [orelse](https://rakudocs.github.io/routine/orelse) 运算符相同。区别很微妙：[notandthen](https://rakudocs.github.io/routine/notandthen) 在遇到[定义的](https://rakudocs.github.io/routine/defined)项（这不是最后一个项）时返回 [`Empty`](https://rakudocs.github.io/type/Slip#index-entry-Empty-Empty)，而 [orelse](https://rakudocs.github.io/routine/orelse) 返回该定义的项。换句话说，[notandthen](https://rakudocs.github.io/routine/notandthen) 是一种在未定义项时执行的方法，而 [orelse](https://rakudocs.github.io/routine/orelse) 是获取第一个定义项的方法：
+乍一看，[notandthen](https://docs.raku.org/routine/notandthen) 可能看起来与 [orelse](https://docs.raku.org/routine/orelse) 运算符相同。区别很微妙：[notandthen](https://docs.raku.org/routine/notandthen) 在遇到[定义的](https://docs.raku.org/routine/defined)项（这不是最后一个项）时返回 [`Empty`](https://docs.raku.org/type/Slip#index-entry-Empty-Empty)，而 [orelse](https://docs.raku.org/routine/orelse) 返回该定义的项。换句话说，[notandthen](https://docs.raku.org/routine/notandthen) 是一种在未定义项时执行的方法，而 [orelse](https://docs.raku.org/routine/orelse) 是获取第一个定义项的方法：
 
-At first glance, [notandthen](https://rakudocs.github.io/routine/notandthen) might appear to be the same thing as the [orelse](https://rakudocs.github.io/routine/orelse) operator. The difference is subtle: [notandthen](https://rakudocs.github.io/routine/notandthen) returns [`Empty`](https://rakudocs.github.io/type/Slip#index-entry-Empty-Empty) when it encounters a [defined](https://rakudocs.github.io/routine/defined) item (that isn't the last item), whereas [orelse](https://rakudocs.github.io/routine/orelse) returns that item. In other words, [notandthen](https://rakudocs.github.io/routine/notandthen) is a means to act when items aren't defined, whereas [orelse](https://rakudocs.github.io/routine/orelse) is a means to obtain the first defined item:
+At first glance, [notandthen](https://docs.raku.org/routine/notandthen) might appear to be the same thing as the [orelse](https://docs.raku.org/routine/orelse) operator. The difference is subtle: [notandthen](https://docs.raku.org/routine/notandthen) returns [`Empty`](https://docs.raku.org/type/Slip#index-entry-Empty-Empty) when it encounters a [defined](https://docs.raku.org/routine/defined) item (that isn't the last item), whereas [orelse](https://docs.raku.org/routine/orelse) returns that item. In other words, [notandthen](https://docs.raku.org/routine/notandthen) is a means to act when items aren't defined, whereas [orelse](https://docs.raku.org/routine/orelse) is a means to obtain the first defined item:
 
 ```Raku
 sub all-sensors-down     { [notandthen] |@_, True             }
@@ -4258,9 +4258,9 @@ all-sensors-down Nil, 42, Nil
 say first-working-sensor Nil, 42, Nil;  # OUTPUT:«42␤» 
 ```
 
-`notandthen` 运算符是 [`without` 语句修饰符](https://rakudocs.github.io/syntax/with%20orwith%20without)，一些编译器编译 `without` 为 `notandthen`，这意味着下面这两行具有相同的行为：
+`notandthen` 运算符是 [`without` 语句修饰符](https://docs.raku.org/syntax/with%20orwith%20without)，一些编译器编译 `without` 为 `notandthen`，这意味着下面这两行具有相同的行为：
 
-The `notandthen` operator is a close relative of [`without` statement modifier](https://rakudocs.github.io/syntax/with%20orwith%20without), and some compilers compile `without` to `notandthen`, meaning these two lines have equivalent behavior:
+The `notandthen` operator is a close relative of [`without` statement modifier](https://docs.raku.org/syntax/with%20orwith%20without), and some compilers compile `without` to `notandthen`, meaning these two lines have equivalent behavior:
 
 ```Raku
 sub good-things { fail }
@@ -4275,13 +4275,13 @@ good-things() notandthen 'boo'.say;
 <a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-or--infix-or"></a>
 ## 中缀运算符 `or` / infix `or`
 
-与 [infix `||`](https://rakudocs.github.io/routine/%7C%7C) 相同，但优先级较低。
+与 [infix `||`](https://docs.raku.org/routine/%7C%7C) 相同，但优先级较低。
 
-Same as [infix `||`](https://rakudocs.github.io/routine/%7C%7C), except with looser precedence.
+Same as [infix `||`](https://docs.raku.org/routine/%7C%7C), except with looser precedence.
 
-返回在布尔上下文中计算为 `True` 的第一个参数，或者最后一个参数，它有短路效果。请注意 `or` 很容易被误用。请参阅[陷阱](https://rakudocs.github.io/language/traps#Loose_boolean_operators)。
+返回在布尔上下文中计算为 `True` 的第一个参数，或者最后一个参数，它有短路效果。请注意 `or` 很容易被误用。请参阅[陷阱](https://docs.raku.org/language/traps#Loose_boolean_operators)。
 
-Returns the first argument that evaluates to `True` in boolean context, or otherwise the last argument, it short-circuits. Please note that `or` is easy to misuse. See [traps](https://rakudocs.github.io/language/traps#Loose_boolean_operators).
+Returns the first argument that evaluates to `True` in boolean context, or otherwise the last argument, it short-circuits. Please note that `or` is easy to misuse. See [traps](https://docs.raku.org/language/traps#Loose_boolean_operators).
 
 <a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-orelse--infix-orelse"></a>
 ## 中缀运算符 `orelse` / infix `orelse`
@@ -4290,13 +4290,13 @@ Returns the first argument that evaluates to `True` in boolean context, or other
 
 The `orelse` operator is similar to `infix //`, except with looser precedence and `$_` aliasing.
 
-返回第一个定义的参数，否则返回最后一个参数。最后一个参数按原样返回，不检查其定义。左边的结果绑定到右边的 `$_` 上，或者如果右边是一个 [`Callable`](https://rakudocs.github.io/type/Callable) 则左边的结果作为参数传递，其[函数参数个数](https://rakudocs.github.io/routine/count)必须是 `0` 或 `1`。
+返回第一个定义的参数，否则返回最后一个参数。最后一个参数按原样返回，不检查其定义。左边的结果绑定到右边的 `$_` 上，或者如果右边是一个 [`Callable`](https://docs.raku.org/type/Callable) 则左边的结果作为参数传递，其[函数参数个数](https://docs.raku.org/routine/count)必须是 `0` 或 `1`。
 
-Returns the first defined argument, or else the last argument. Last argument is returned as-is, without being checked for definedness at all. Short-circuits. The result of the left side is bound to `$_` for the right side, or passed as an argument if the right side is a [`Callable`](https://rakudocs.github.io/type/Callable), whose [count](https://rakudocs.github.io/routine/count) must be `0` or `1`.
+Returns the first defined argument, or else the last argument. Last argument is returned as-is, without being checked for definedness at all. Short-circuits. The result of the left side is bound to `$_` for the right side, or passed as an argument if the right side is a [`Callable`](https://docs.raku.org/type/Callable), whose [count](https://docs.raku.org/routine/count) must be `0` or `1`.
 
-此运算符对于处理例程返回的 [Failure](https://rakudocs.github.io/type/Failure) 非常有用，因为预期值通常是[定义的](https://rakudocs.github.io/routine/defined)和 [Failure](https://rakudocs.github.io/type/Failure) 从不是：
+此运算符对于处理例程返回的 [Failure](https://docs.raku.org/type/Failure) 非常有用，因为预期值通常是[定义的](https://docs.raku.org/routine/defined)和 [Failure](https://docs.raku.org/type/Failure) 从不是：
 
-This operator is useful for handling [Failures](https://rakudocs.github.io/type/Failure) returned by routines since the expected value is usually [defined](https://rakudocs.github.io/routine/defined) and [Failure](https://rakudocs.github.io/type/Failure) never is:
+This operator is useful for handling [Failures](https://docs.raku.org/type/Failure) returned by routines since the expected value is usually [defined](https://docs.raku.org/routine/defined) and [Failure](https://docs.raku.org/type/Failure) never is:
 
 ```Raku
 sub meows { ++$ < 4 ?? fail 'out of meows!' !! '🐱' }
@@ -4319,9 +4319,9 @@ meows-processor3;           # OUTPUT: «🐱␤»
 <a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-xor--infix-xor"></a>
 ## 中缀运算符 `xor` / infix `xor`
 
-与 [infix `^^`](https://rakudocs.github.io/routine/$CIRCUMFLEX_ACCENT$CIRCUMFLEX_ACCENT) 相同，但优先级较低。
+与 [infix `^^`](https://docs.raku.org/routine/$CIRCUMFLEX_ACCENT$CIRCUMFLEX_ACCENT) 相同，但优先级较低。
 
-Same as [infix `^^`](https://rakudocs.github.io/routine/$CIRCUMFLEX_ACCENT$CIRCUMFLEX_ACCENT), except with looser precedence.
+Same as [infix `^^`](https://docs.raku.org/routine/$CIRCUMFLEX_ACCENT$CIRCUMFLEX_ACCENT), except with looser precedence.
 
 返回在布尔上下文中计算为 `True` 的操作数，如果且仅当其他操作数在布尔上下文中计算为 `False` 时返回。如果两个操作数都被评估为 `False`，则返回最后一个参数。如果两个操作数都被评估为 `True`，返回 `Nil`。
 
@@ -4490,9 +4490,9 @@ Note: In the future, this operator will see some change as it gains the ability 
 <a id="%E6%A0%87%E8%AF%86--identity"></a>
 # 标识 / Identity
 
-一般来说，中缀运算符可以应用于单个元素或空元素，而不会产生错误，通常在 [reduce](https://rakudocs.github.io/routine/reduce) 操作的上下文中。
+一般来说，中缀运算符可以应用于单个元素或空元素，而不会产生错误，通常在 [reduce](https://docs.raku.org/routine/reduce) 操作的上下文中。
 
-In general, infix operators can be applied to a single or no element without yielding an error, generally in the context of a [reduce](https://rakudocs.github.io/routine/reduce) operation.
+In general, infix operators can be applied to a single or no element without yielding an error, generally in the context of a [reduce](https://docs.raku.org/routine/reduce) operation.
 
 ```Raku
 say [-] ()  # OUTPUT: «0␤»

@@ -2,7 +2,7 @@
 
 English-Chinese Raku documentation
 
-Official documentation address: https://rakudocs.github.io/language.html
+Official documentation address: https://docs.raku.org/language.html
 
 IT 类翻译文章往往中文太生硬，英文太难懂。何不对照看。
 

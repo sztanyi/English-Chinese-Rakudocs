@@ -1,4 +1,4 @@
-原文：https://rakudocs.github.io/language/grammars
+原文：https://docs.raku.org/language/grammars
 
 # 语法 / Grammars
 
@@ -45,9 +45,9 @@ If you didn't like grammar in school, don't let that scare you off grammars. Gra
 <a id="%E5%91%BD%E5%90%8D%E6%AD%A3%E5%88%99--named-regexes"></a>
 # 命名正则 / Named Regexes
 
-语法的主要成分为命名[正则](https://rakudocs.github.io/language/regexes)。虽然 Raku 正则的语法不在本文档的范围内，但*命名*正则有一个特殊的语法，类似于子例程定义：[[1\]](https://rakudocs.github.io/language/grammars#fn-1)
+语法的主要成分为命名[正则](https://docs.raku.org/language/regexes)。虽然 Raku 正则的语法不在本文档的范围内，但*命名*正则有一个特殊的语法，类似于子例程定义：[[1\]](https://docs.raku.org/language/grammars#fn-1)
 
-The main ingredient of grammars is named [regexes](https://rakudocs.github.io/language/regexes). While the syntax of [Raku Regexes](https://rakudocs.github.io/language/regexes) is outside the scope of this document, *named* regexes have a special syntax, similar to subroutine definitions: [[1\]](https://rakudocs.github.io/language/grammars#fn-1)
+The main ingredient of grammars is named [regexes](https://docs.raku.org/language/regexes). While the syntax of [Raku Regexes](https://docs.raku.org/language/regexes) is outside the scope of this document, *named* regexes have a special syntax, similar to subroutine definitions: [[1\]](https://docs.raku.org/language/grammars#fn-1)
 
 ```Raku
 my regex number { \d+ [ \. \d+ ]? }
@@ -93,9 +93,9 @@ say so "bd" ~~ &tok-b;        # OUTPUT: «True␤»
 <a id="%E8%A7%84%E5%88%99--rules"></a>
 ## 规则 / Rules
 
-`token` 和 `rule` 声明符之间的唯一区别是，`rule` 声明符使 [`:sigspace`](https://rakudocs.github.io/language/regexes#Sigspace) 在 Regex 中生效：
+`token` 和 `rule` 声明符之间的唯一区别是，`rule` 声明符使 [`:sigspace`](https://docs.raku.org/language/regexes#Sigspace) 在 Regex 中生效：
 
-The only difference between the `token` and `rule` declarators is that the `rule` declarator causes [`:sigspace`](https://rakudocs.github.io/language/regexes#Sigspace) to go into effect for the Regex:
+The only difference between the `token` and `rule` declarators is that the `rule` declarator causes [`:sigspace`](https://docs.raku.org/language/regexes#Sigspace) to go into effect for the Regex:
 
 ```Raku
 my token non-space-y { 'once' 'upon' 'a' 'time' }
@@ -109,24 +109,24 @@ say so 'once upon a time' ~~ &space-y;     # OUTPUT: «True␤»
 <a id="%E5%88%9B%E5%BB%BA%E8%AF%AD%E6%B3%95--creating-grammars"></a>
 # 创建语法 / Creating grammars
 
-[Grammar](https://rakudocs.github.io/type/Grammar) 是类在用 `grammar` 关键字而不是 `class` 声明时自动获得的超类。Grammar 只能用于解析文本；如果希望提取复杂数据，可以在 grammar 中添加操作，或者建议将[操作对象](https://rakudocs.github.io/language/grammars#Action_objects)与 grammar 一起使用。如果不使用操作对象，`.parse` 返回一个 [Match](https://rakudocs.github.io/type/Match) 对象，并在默认情况下将[默认匹配对象 `$/`](https://rakudocs.github.io/syntax/$$SOLIDUS)设置为相同的值。
+[Grammar](https://docs.raku.org/type/Grammar) 是类在用 `grammar` 关键字而不是 `class` 声明时自动获得的超类。Grammar 只能用于解析文本；如果希望提取复杂数据，可以在 grammar 中添加操作，或者建议将[操作对象](https://docs.raku.org/language/grammars#Action_objects)与 grammar 一起使用。如果不使用操作对象，`.parse` 返回一个 [Match](https://docs.raku.org/type/Match) 对象，并在默认情况下将[默认匹配对象 `$/`](https://docs.raku.org/syntax/$$SOLIDUS)设置为相同的值。
 
-[Grammar](https://rakudocs.github.io/type/Grammar) is the superclass that classes automatically get when they are declared with the `grammar` keyword instead of `class`. Grammars should only be used to parse text; if you wish to extract complex data, you can add actions within the grammar, or an [action object](https://rakudocs.github.io/language/grammars#Action_objects) is recommended to be used in conjunction with the grammar. If action objects are not used, `.parse` returns a [Match](https://rakudocs.github.io/type/Match) object and sets, by default, the [default match object `$/`](https://rakudocs.github.io/syntax/$$SOLIDUS), to the same value.
+[Grammar](https://docs.raku.org/type/Grammar) is the superclass that classes automatically get when they are declared with the `grammar` keyword instead of `class`. Grammars should only be used to parse text; if you wish to extract complex data, you can add actions within the grammar, or an [action object](https://docs.raku.org/language/grammars#Action_objects) is recommended to be used in conjunction with the grammar. If action objects are not used, `.parse` returns a [Match](https://docs.raku.org/type/Match) object and sets, by default, the [default match object `$/`](https://docs.raku.org/syntax/$$SOLIDUS), to the same value.
 
 <a id="%E5%8E%9F%E5%9E%8B%E5%8C%96%E6%AD%A3%E5%88%99--proto-regexes"></a>
 ## 原型化正则 / Proto regexes
 
-[Grammar](https://rakudocs.github.io/type/Grammar) 由规则、标记和正则组成；这些实际上是方法，因为 grammar 是类。
+[Grammar](https://docs.raku.org/type/Grammar) 由规则、标记和正则组成；这些实际上是方法，因为 grammar 是类。
 
-[Grammar](https://rakudocs.github.io/type/Grammar)s are composed of rules, tokens and regexes; these are actually methods, since grammars are classes.
+[Grammar](https://docs.raku.org/type/Grammar)s are composed of rules, tokens and regexes; these are actually methods, since grammars are classes.
 
 它们实际上是一种特殊的类，但对于该节的其余部分，它们的行为方式与普通类相同。
 
 They are actually a special kind of class, but for the rest of the section, they behave in the same way as a normal class would
 
-这些方法可以共享一个共同的名称和功能，因此可以使用 [proto](https://rakudocs.github.io/syntax/proto)。
+这些方法可以共享一个共同的名称和功能，因此可以使用 [proto](https://docs.raku.org/syntax/proto)。
 
-These methods can share a name and functionality in common, and thus can use [proto](https://rakudocs.github.io/syntax/proto).
+These methods can share a name and functionality in common, and thus can use [proto](https://docs.raku.org/syntax/proto).
 
 例如，如果你有很多替换，那么可能很难生成可读代码或对 grammar 进行子类化。在下面的 `Actions` 类中，`method TOP` 中的三元操作不理想，并且我们添加的操作越多，它就越糟糕：
 
@@ -219,9 +219,9 @@ grammar Foo {
 }
 ```
 
-`TOP` 标记是用 grammar 分析时尝试匹配的默认第一个标记。请注意，如果使用 [`.parse`](https://rakudocs.github.io/type/Grammar#method_parse) 方法进行分析，`token TOP` 将自动锚定到字符串的开头和结尾。如果你不想解析整个字符串，请查看 [`.subparse`](https://rakudocs.github.io/type/Grammar#method_subparse)。
+`TOP` 标记是用 grammar 分析时尝试匹配的默认第一个标记。请注意，如果使用 [`.parse`](https://docs.raku.org/type/Grammar#method_parse) 方法进行分析，`token TOP` 将自动锚定到字符串的开头和结尾。如果你不想解析整个字符串，请查看 [`.subparse`](https://docs.raku.org/type/Grammar#method_subparse)。
 
-The `TOP` token is the default first token attempted to match when parsing with a grammar. Note that if you're parsing with [`.parse`](https://rakudocs.github.io/type/Grammar#method_parse) method, `token TOP` is automatically anchored to the start and end of the string. If you don't want to parse the whole string, look up [`.subparse`](https://rakudocs.github.io/type/Grammar#method_subparse).
+The `TOP` token is the default first token attempted to match when parsing with a grammar. Note that if you're parsing with [`.parse`](https://docs.raku.org/type/Grammar#method_parse) method, `token TOP` is automatically anchored to the start and end of the string. If you don't want to parse the whole string, look up [`.subparse`](https://docs.raku.org/type/Grammar#method_subparse).
 
 也可以使用 `rule TOP` 或者 `regex TOP`。
 
@@ -355,9 +355,9 @@ say Digifier.parse('255 435 777', actions => Devanagari.new).made;
 <a id="grammar-%E4%B8%AD%E7%9A%84%E6%96%B9%E6%B3%95--methods-in-grammars"></a>
 ## grammar 中的方法 / Methods in grammars
 
-在 grammar 中使用方法而不是 rule 或 token 是很好的，只要它们返回一个 [Match](https://rakudocs.github.io/type/Match)：
+在 grammar 中使用方法而不是 rule 或 token 是很好的，只要它们返回一个 [Match](https://docs.raku.org/type/Match)：
 
-It's fine to use methods instead of rules or tokens in a grammar, as long as they return a [Match](https://rakudocs.github.io/type/Match):
+It's fine to use methods instead of rules or tokens in a grammar, as long as they return a [Match](https://docs.raku.org/type/Match):
 
 ```Raku
 grammar DigitMatcher {
@@ -431,9 +431,9 @@ say GrammarAdvice.subparse("use regexes for significant whitespace by default")
 <a id="grammar-%E4%B8%AD%E7%9A%84%E5%B1%9E%E6%80%A7--attributes-in-grammars"></a>
 ## grammar 中的属性 / Attributes in grammars
 
-属性可以在 grammar 中定义。但是，只能通过方法访问它们。试图从令牌中使用它们将引发异常，因为 method 是 [Match](https://rakudocs.github.io/type/Match)，而不是 grammar 本身。注意，从一个在 token 中调用的方法中改变一个属性将*只修改该 token 自己的匹配对象*的属性！ grammar 属性可以在解析后返回的匹配项中访问，如果公开：
+属性可以在 grammar 中定义。但是，只能通过方法访问它们。试图从令牌中使用它们将引发异常，因为 method 是 [Match](https://docs.raku.org/type/Match)，而不是 grammar 本身。注意，从一个在 token 中调用的方法中改变一个属性将*只修改该 token 自己的匹配对象*的属性！ grammar 属性可以在解析后返回的匹配项中访问，如果公开：
 
-Attributes may be defined in grammars. However, they can only be accessed by methods. Attempting to use them from within a token will throw an exception because tokens are methods of [Match](https://rakudocs.github.io/type/Match), not of the grammar itself. Note that mutating an attribute from within a method called in a token will *only modify the attribute for that token's own match object*! Grammar attributes can be accessed in the match returned after parsing if made public:
+Attributes may be defined in grammars. However, they can only be accessed by methods. Attempting to use them from within a token will throw an exception because tokens are methods of [Match](https://docs.raku.org/type/Match), not of the grammar itself. Note that mutating an attribute from within a method called in a token will *only modify the attribute for that token's own match object*! Grammar attributes can be accessed in the match returned after parsing if made public:
 
 ```Raku
 grammar HTTPRequest {
@@ -468,7 +468,7 @@ grammar HTTPRequest {
     }
 }
  
-my $header = "MEOWS / HTTP/1.1\r\nHost: rakudocs.github.io\r\nsup lol\r\n\r\n";
+my $header = "MEOWS / HTTP/1.1\r\nHost: docs.raku.org\r\nsup lol\r\n\r\n";
 my $/ = HTTPRequest.parse($header);
 say $<type>.invalid;
 # OUTPUT: True 
@@ -547,13 +547,13 @@ say demonstrate-arguments-dynamic.parse("I like everything else",
 <a id="%E6%93%8D%E4%BD%9C%E5%AF%B9%E8%B1%A1--action-objects"></a>
 # *操作对象 / Action objects
 
-成功的 grammar 匹配为你提供了一个 [Match](https://rakudocs.github.io/type/Match) 对象的解析树，匹配树得到的深度越深，语法中的分支越多，浏览匹配树获得你真正感兴趣的信息就越困难。
+成功的 grammar 匹配为你提供了一个 [Match](https://docs.raku.org/type/Match) 对象的解析树，匹配树得到的深度越深，语法中的分支越多，浏览匹配树获得你真正感兴趣的信息就越困难。
 
-A successful grammar match gives you a parse tree of [Match](https://rakudocs.github.io/type/Match) objects, and the deeper that match tree gets, and the more branches in the grammar are, the harder it becomes to navigate the match tree to get the information you are actually interested in.
+A successful grammar match gives you a parse tree of [Match](https://docs.raku.org/type/Match) objects, and the deeper that match tree gets, and the more branches in the grammar are, the harder it becomes to navigate the match tree to get the information you are actually interested in.
 
-为了避免深入到匹配树中，可以提供一个*操作*对象。每次成功解析语法中的命名规则后，它都会尝试调用与语法规则同名的方法，并将新创建的 [Match](https://rakudocs.github.io/type/Match) 对象作为位置参数。如果不存在这样的方法，则跳过它。
+为了避免深入到匹配树中，可以提供一个*操作*对象。每次成功解析语法中的命名规则后，它都会尝试调用与语法规则同名的方法，并将新创建的 [Match](https://docs.raku.org/type/Match) 对象作为位置参数。如果不存在这样的方法，则跳过它。
 
-To avoid the need for diving deep into a match tree, you can supply an *actions* object. After each successful parse of a named rule in your grammar, it tries to call a method of the same name as the grammar rule, giving it the newly created [Match](https://rakudocs.github.io/type/Match) object as a positional argument. If no such method exists, it is skipped.
+To avoid the need for diving deep into a match tree, you can supply an *actions* object. After each successful parse of a named rule in your grammar, it tries to call a method of the same name as the grammar rule, giving it the newly created [Match](https://docs.raku.org/type/Match) object as a positional argument. If no such method exists, it is skipped.
 
 下面是一个精心设计的 grammar 和实际操作示例：
 
@@ -575,9 +575,9 @@ say $match;         # OUTPUT: «｢40｣␤»
 say $match.made;    # OUTPUT: «42␤» 
 ```
 
-`TestActions` 实例作为命名参数 `actions` 传递给 [parse](https://rakudocs.github.io/routine/parse) 调用，当 token `TOP` 匹配成功时，它自动调用方法 `TOP`，将匹配对象作为参数传递。
+`TestActions` 实例作为命名参数 `actions` 传递给 [parse](https://docs.raku.org/routine/parse) 调用，当 token `TOP` 匹配成功时，它自动调用方法 `TOP`，将匹配对象作为参数传递。
 
-An instance of `TestActions` is passed as named argument `actions` to the [parse](https://rakudocs.github.io/routine/parse) call, and when token `TOP` has matched successfully, it automatically calls method `TOP`, passing the match object as an argument.
+An instance of `TestActions` is passed as named argument `actions` to the [parse](https://docs.raku.org/routine/parse) call, and when token `TOP` has matched successfully, it automatically calls method `TOP`, passing the match object as an argument.
 
 为了清楚地表明参数是匹配对象，该示例使用 `$/` 作为操作方法的参数名，尽管这只是一个方便的约定，但并不是内在的。`$match` 也可以。（尽管使用 `$/` 确实提供了 `$<capture>` 作为 `$/<capture>` 的快捷方式的优势）。
 
@@ -641,9 +641,9 @@ Key: hits       Value: 42
 Key: perl       Value: 6
 ```
 
-Rule `pair` 解析由等号分隔的 pair，它为对 token `identifier` 的两个调用起别名，以分离捕获名称，使它们更容易和直观地可用。相应的操作方法构造一个 [Pair](https://rakudocs.github.io/type/Pair) 对象，并使用子匹配对象的 `.made` 属性。所以它（和操作方法 `TOP` 一样）利用了这样一个事实：子匹配的操作方法调用发生在外部正则或者调用者之前。因此，操作方法按 [post-order](https://en.wikipedia.org/wiki/Tree_traversal#Post-order) 调用。
+Rule `pair` 解析由等号分隔的 pair，它为对 token `identifier` 的两个调用起别名，以分离捕获名称，使它们更容易和直观地可用。相应的操作方法构造一个 [Pair](https://docs.raku.org/type/Pair) 对象，并使用子匹配对象的 `.made` 属性。所以它（和操作方法 `TOP` 一样）利用了这样一个事实：子匹配的操作方法调用发生在外部正则或者调用者之前。因此，操作方法按 [post-order](https://en.wikipedia.org/wiki/Tree_traversal#Post-order) 调用。
 
-Rule `pair`, which parsed a pair separated by an equals sign, aliases the two calls to token `identifier` to separate capture names to make them available more easily and intuitively. The corresponding action method constructs a [Pair](https://rakudocs.github.io/type/Pair) object, and uses the `.made` property of the sub match objects. So it (like the action method `TOP` too) exploits the fact that action methods for submatches are called before those of the calling/outer regex. So action methods are called in [post-order](https://en.wikipedia.org/wiki/Tree_traversal#Post-order).
+Rule `pair`, which parsed a pair separated by an equals sign, aliases the two calls to token `identifier` to separate capture names to make them available more easily and intuitively. The corresponding action method constructs a [Pair](https://docs.raku.org/type/Pair) object, and uses the `.made` property of the sub match objects. So it (like the action method `TOP` too) exploits the fact that action methods for submatches are called before those of the calling/outer regex. So action methods are called in [post-order](https://en.wikipedia.org/wiki/Tree_traversal#Post-order).
 
 操作方法 `TOP` 只收集由 `pair` rule 的多个匹配项通过方法 `.made` 生成的所有对象，并在列表中返回它们。
 

@@ -1,4 +1,4 @@
-原文：https://rakudocs.github.io/language/variables
+原文：https://docs.raku.org/language/variables
 
 # 变量 / Variables
 
@@ -6,9 +6,9 @@ Raku 中的变量
 
 Variables in Raku
 
-变量名字以一种叫做标记的特殊字符开头，后面跟着叫 twigil 的特殊字符最后才是[识别符](https://rakudocs.github.io/language/syntax#Identifiers)，前面两个特殊符号都是可选的。变量是值或者[容器](https://rakudocs.github.io/language/containers)符号名称。定义变量或者给变量赋值会直接生成容器。
+变量名字以一种叫做标记的特殊字符开头，后面跟着叫 twigil 的特殊字符最后才是[识别符](https://docs.raku.org/language/syntax#Identifiers)，前面两个特殊符号都是可选的。变量是值或者[容器](https://docs.raku.org/language/containers)符号名称。定义变量或者给变量赋值会直接生成容器。
 
-Variable names can start with or without a special character called a *sigil*, followed optionally by a second special character named *twigil* and then an [identifier](https://rakudocs.github.io/language/syntax#Identifiers). Variables are symbolic names for values or [containers](https://rakudocs.github.io/language/containers). Variable declarations or assignment of values may create a container on the fly.
+Variable names can start with or without a special character called a *sigil*, followed optionally by a second special character named *twigil* and then an [identifier](https://docs.raku.org/language/syntax#Identifiers). Variables are symbolic names for values or [containers](https://docs.raku.org/language/containers). Variable declarations or assignment of values may create a container on the fly.
 
 # 目录 / Table of Contents
 
@@ -99,9 +99,9 @@ Variable names can start with or without a special character called a *sigil*, 
 
 There are four sigils. The scalar-sigil `$`, the positional-sigil `@`, the associative-sigil `%` and the callable-sigil `&`.
 
-标记链接了语法，类型系统和[容器](https://rakudocs.github.io/language/containers)。这些标记为最常见的类型约束提供快捷方式，当声明变量以及为[字符串插值](https://rakudocs.github.io/language/quoting#Interpolation%3A_qq)充当标记时。[位置标记](https://rakudocs.github.io/language/containers#Flattening%2C_items_and_containers)和[关联标记](https://rakudocs.github.io/language/containers#Flattening%2C_items_and_containers)起到了类型约束的作用，使基础类型[下标](https://rakudocs.github.io/language/subscripts#Custom_types)需要知道分派给哪些方法。可调用标记对函数调用起到了同样的作用。可调用标记还会告诉编译器哪些括号可以省略。位置和关联签名也可以通过默认情况下展平来简化赋值。
+标记链接了语法，类型系统和[容器](https://docs.raku.org/language/containers)。这些标记为最常见的类型约束提供快捷方式，当声明变量以及为[字符串插值](https://docs.raku.org/language/quoting#Interpolation%3A_qq)充当标记时。[位置标记](https://docs.raku.org/language/containers#Flattening%2C_items_and_containers)和[关联标记](https://docs.raku.org/language/containers#Flattening%2C_items_and_containers)起到了类型约束的作用，使基础类型[下标](https://docs.raku.org/language/subscripts#Custom_types)需要知道分派给哪些方法。可调用标记对函数调用起到了同样的作用。可调用标记还会告诉编译器哪些括号可以省略。位置和关联签名也可以通过默认情况下展平来简化赋值。
 
-Sigils provide a link between syntax, the type system and [containers](https://rakudocs.github.io/language/containers). They provide a shortcut for the most common type constraints when declaring variables and serve as markers for [string interpolation](https://rakudocs.github.io/language/quoting#Interpolation%3A_qq). The [positional-sigil](https://rakudocs.github.io/language/containers#Flattening%2C_items_and_containers) and the [associative-sigil](https://rakudocs.github.io/language/containers#Flattening%2C_items_and_containers) provide type constraint that enforce a base type [subscripts](https://rakudocs.github.io/language/subscripts#Custom_types) require to know what methods to dispatch to. The [callable-sigil](https://rakudocs.github.io/language/containers#Callable_containers) does the same for function calls. The latter also tells the compiler where parentheses for calls can be omitted. The positional and associative-sigil also simplify assignment by flattening by default.
+Sigils provide a link between syntax, the type system and [containers](https://docs.raku.org/language/containers). They provide a shortcut for the most common type constraints when declaring variables and serve as markers for [string interpolation](https://docs.raku.org/language/quoting#Interpolation%3A_qq). The [positional-sigil](https://docs.raku.org/language/containers#Flattening%2C_items_and_containers) and the [associative-sigil](https://docs.raku.org/language/containers#Flattening%2C_items_and_containers) provide type constraint that enforce a base type [subscripts](https://docs.raku.org/language/subscripts#Custom_types) require to know what methods to dispatch to. The [callable-sigil](https://docs.raku.org/language/containers#Callable_containers) does the same for function calls. The latter also tells the compiler where parentheses for calls can be omitted. The positional and associative-sigil also simplify assignment by flattening by default.
 
 | 标记 | 类型约束                | 默认类型 | 赋值 | 例子                        |
 | ---- | ----------------------- | -------- | ---- | --------------------------- |
@@ -144,9 +144,9 @@ CATCH { default { put .^name, ': ', .Str } }
 # OUTPUT: «X::OutOfRange: Hash key out of range. Is: cherry, should be in (oranges bananas)»
 ```
 
-无标记的变量信息见[无标记变量](https://rakudocs.github.io/language/variables#Sigilless_variables).
+无标记的变量信息见[无标记变量](https://docs.raku.org/language/variables#Sigilless_variables).
 
-For information on variables without sigils, see [sigilless variables](https://rakudocs.github.io/language/variables#Sigilless_variables).
+For information on variables without sigils, see [sigilless variables](https://docs.raku.org/language/variables#Sigilless_variables).
 
 <a id="%E5%8D%95%E6%9D%A1%E7%9B%AE%E4%B8%8E%E5%88%97%E8%A1%A8%E8%B5%8B%E5%80%BC--item-and-list-assignment"></a>
 ## 单条目与列表赋值 / Item and List Assignment
@@ -163,9 +163,9 @@ Item assignment places the value from the right-hand side into the variable (con
 
 List assignment leaves the choice of what to do to the variable on the left.
 
-例如，[列表](https://rakudocs.github.io/type/Array)变量（由 `@` 标记的）在列表赋值时首先将自己清空然后接受右边所有的值。
+例如，[列表](https://docs.raku.org/type/Array)变量（由 `@` 标记的）在列表赋值时首先将自己清空然后接受右边所有的值。
 
-For example, [Array](https://rakudocs.github.io/type/Array) variables (`@` sigil) empty themselves on list assignment and then put all the values from the right-hand side into themselves.
+For example, [Array](https://docs.raku.org/type/Array) variables (`@` sigil) empty themselves on list assignment and then put all the values from the right-hand side into themselves.
 
 赋值的类型（单条目或者列表）由当前表达式或声明语句的第一个上下文决定。
 
@@ -230,9 +230,9 @@ say $num.perl;                # OUTPUT: «42»
 
 The assignment expression is parsed as `@array = (($num = 42), "str")`, because item assignment has tighter precedence than the comma.
 
-更多关于优先级的细节见[操作符](https://rakudocs.github.io/language/operators)。
+更多关于优先级的细节见[操作符](https://docs.raku.org/language/operators)。
 
-See [operators](https://rakudocs.github.io/language/operators) for more details on precedence.
+See [operators](https://docs.raku.org/language/operators) for more details on precedence.
 
 <a id="%E6%97%A0%E6%A0%87%E8%AE%B0%E5%8F%98%E9%87%8F--sigilless-variables"></a>
 ## 无标记变量 / Sigilless variables
@@ -246,9 +246,9 @@ my \degrees = pi / 180;
 my \θ       = 15 * degrees;
 ```
 
-注意，无标记变量没有关联的[容器](https://rakudocs.github.io/language/containers)。这意味着上面例子中的 `degrees` 和 `θ` 实际上表示的是 Num。尝试在定义变量后赋值可以详细说明这一点：
+注意，无标记变量没有关联的[容器](https://docs.raku.org/language/containers)。这意味着上面例子中的 `degrees` 和 `θ` 实际上表示的是 Num。尝试在定义变量后赋值可以详细说明这一点：
 
-Note that sigilless variable do not have associated [containers](https://rakudocs.github.io/language/containers). This means `degrees` and `θ`, above, actually directly represent `Num`s. To illustrate, try assigning to one after you've defined it:
+Note that sigilless variable do not have associated [containers](https://docs.raku.org/language/containers). This means `degrees` and `θ`, above, actually directly represent `Num`s. To illustrate, try assigning to one after you've defined it:
 
 ```Raku
 θ = 3; # Dies with the error "Cannot modify an immutable Num" 
@@ -268,9 +268,9 @@ sub logged(&f, |args) {
 }
 ```
 
-无标记变量也能用作绑定。更多信息见[绑定](https://rakudocs.github.io/language/containers#Binding) 。
+无标记变量也能用作绑定。更多信息见[绑定](https://docs.raku.org/language/containers#Binding) 。
 
-Sigilless variables can also be used for binding. See [Binding](https://rakudocs.github.io/language/containers#Binding) for more information.
+Sigilless variables can also be used for binding. See [Binding](https://docs.raku.org/language/containers#Binding) for more information.
 
 <a id="%E7%AC%A6%E5%8F%B7--twigils"></a>
 # 符号 / Twigils
@@ -342,9 +342,9 @@ say-all();  # OUTPUT: 1, 10, 101
 
 The first time `&say-all` is called, it prints "`1, 10, 100`" just as one would expect. The second time though, it prints "`1, 11, 101`". This is because `$lexical` isn't looked up in the caller's scope but in the scope `&say-all` was defined in. The two dynamic variables are looked up in the caller's scope and therefore have the values `11` and `101`. The third time `&say-all` is called `$*dynamic1` isn't `11`anymore, but `$*dynamic2` is still `101`. This stems from the fact that we declared a new dynamic variable `$*dynamic1` in the block and did not assign to the old variable as we did with `$*dynamic2`.
 
-动态变量与其他变量不同之处在于，引用一个没有声明的动态变量不是一个编译时错误而是一个运行时[错误](https://rakudocs.github.io/type/Failure)。因此动态变量可以不用声明便使用，只要在使用前检查了是否定义或者在布尔上下文中被用到：
+动态变量与其他变量不同之处在于，引用一个没有声明的动态变量不是一个编译时错误而是一个运行时[错误](https://docs.raku.org/type/Failure)。因此动态变量可以不用声明便使用，只要在使用前检查了是否定义或者在布尔上下文中被用到：
 
-The dynamic variables differ from other variable types in that referring to an undeclared dynamic variable is not a compile time error but a runtime [failure](https://rakudocs.github.io/type/Failure), so a dynamic variable can be used undeclared as long as it's checked for definedness or used in a boolean context before using it for anything else:
+The dynamic variables differ from other variable types in that referring to an undeclared dynamic variable is not a compile time error but a runtime [failure](https://docs.raku.org/type/Failure), so a dynamic variable can be used undeclared as long as it's checked for definedness or used in a boolean context before using it for anything else:
 
 ```Raku
 sub foo() {
@@ -375,16 +375,16 @@ say "$?FILE: $?LINE"; # OUTPUT: "hello.pl: 23" 
                       # file named "hello.pl" 
 ```
 
-如果想要这些特殊变量的列表，可以参考[编译时变量](https://rakudocs.github.io/language/variables#Compile-time_variables).
+如果想要这些特殊变量的列表，可以参考[编译时变量](https://docs.raku.org/language/variables#Compile-time_variables).
 
-For a list of these special variables, see [compile-time variables](https://rakudocs.github.io/language/variables#Compile-time_variables).
+For a list of these special variables, see [compile-time variables](https://docs.raku.org/language/variables#Compile-time_variables).
 
 <a id="-%E5%8F%B7-2"></a>
 ## `!` 号
 
 属性是存在于类实例中的变量。他们可以在类中通过 `!` 号被直接访问：
 
-[Attributes](https://rakudocs.github.io/language/objects#Attributes) are variables that exist per instance of a class. They may be directly accessed from within the class via `!`:
+[Attributes](https://docs.raku.org/language/objects#Attributes) are variables that exist per instance of a class. They may be directly accessed from within the class via `!`:
 
 ```Raku
 my class Point {
@@ -397,9 +397,9 @@ my class Point {
 }
 ```
 
-注意属性是如何通过 `$.x` 和 `$.y` 声明却通过 `$!x` 和 `$!y` 来访问的。这是因为 Raku 中所有的属性都是私有的而且可以在类中通过 `$!attribute-name` 直接访问。Raku 会直接为你生成访问器方法。更多关于对象，类和他们的属性的信息见[面向对象](https://rakudocs.github.io/language/objects) 。
+注意属性是如何通过 `$.x` 和 `$.y` 声明却通过 `$!x` 和 `$!y` 来访问的。这是因为 Raku 中所有的属性都是私有的而且可以在类中通过 `$!attribute-name` 直接访问。Raku 会直接为你生成访问器方法。更多关于对象，类和他们的属性的信息见[面向对象](https://docs.raku.org/language/objects) 。
 
-Note how the attributes are declared as `$.x` and `$.y` but are still accessed via `$!x` and `$!y`. This is because in Raku all attributes are private and can be directly accessed within the class by using `$!attribute-name`. Raku may automatically generate accessor methods for you though. For more details on objects, classes and their attributes see [object orientation](https://rakudocs.github.io/language/objects).
+Note how the attributes are declared as `$.x` and `$.y` but are still accessed via `$!x` and `$!y`. This is because in Raku all attributes are private and can be directly accessed within the class by using `$!attribute-name`. Raku may automatically generate accessor methods for you though. For more details on objects, classes and their attributes see [object orientation](https://docs.raku.org/language/objects).
 
 <a id="-%E5%8F%B7-3"></a>
 ## `.` 号
@@ -436,9 +436,9 @@ class SaySomething {
 SaySomething.b; # OUTPUT: «a»
 ```
 
-更多关于对象、类和他们的属性的信息见[面向对象](https://rakudocs.github.io/language/objects) 。
+更多关于对象、类和他们的属性的信息见[面向对象](https://docs.raku.org/language/objects) 。
 
-For more details on objects, classes and their attributes and methods see [object orientation](https://rakudocs.github.io/language/objects).
+For more details on objects, classes and their attributes and methods see [object orientation](https://docs.raku.org/language/objects).
 
 <a id="%5E-%E5%8F%B7"></a>
 ## `^` 号
@@ -488,9 +488,9 @@ say { $:add ?? $^a + $^b !! $^a - $^b }( 4, 5 ) :!add
 # OUTPUT: «-1»
 ```
 
-更多占位符变量细节见 [^](https://rakudocs.github.io/routine/$CIRCUMFLEX_ACCENT) 。
+更多占位符变量细节见 [^](https://docs.raku.org/routine/$CIRCUMFLEX_ACCENT) 。
 
-See [^](https://rakudocs.github.io/routine/$CIRCUMFLEX_ACCENT) for more details about placeholder variables.
+See [^](https://docs.raku.org/routine/$CIRCUMFLEX_ACCENT) for more details about placeholder variables.
 
 <a id="-%E5%8F%B7-5"></a>
 ## `=` 号
@@ -555,9 +555,9 @@ my $amazing-variable = "World";
 say "Hello $amazing-variable!"; # OUTPUT: «Hello World!» 
 ```
 
-但是，有许多声明符可以改变作用域的一些细节，这超越了[符号](https://rakudocs.github.io/language/variables#Twigils)所能做的。
+但是，有许多声明符可以改变作用域的一些细节，这超越了[符号](https://docs.raku.org/language/variables#Twigils)所能做的。
 
-However, there are many declarators that change the details of scoping beyond what [Twigils](https://rakudocs.github.io/language/variables#Twigils) can do.
+However, there are many declarators that change the details of scoping beyond what [Twigils](https://docs.raku.org/language/variables#Twigils) can do.
 
 | 声明符    | 作用                             |
 | --------- | -------------------------------- |
@@ -644,9 +644,9 @@ sub new-location {
 new-location; # OUTPUT: «outside» 
 ```
 
-要使 `new-location()` 打印出 `nowhere`，使用 [* 号](https://rakudocs.github.io/language/variables#The_%2A_Twigil) 使 `$location` 成为一个动态变量。这个符号让编译器在调用者的作用域查找变量符号，而不是查完本地作用域没找到后查外部作用域。
+要使 `new-location()` 打印出 `nowhere`，使用 [* 号](https://docs.raku.org/language/variables#The_%2A_Twigil) 使 `$location` 成为一个动态变量。这个符号让编译器在调用者的作用域查找变量符号，而不是查完本地作用域没找到后查外部作用域。
 
-To make `new-location()` print `nowhere`, make `$location` a dynamic variable using [the * twigil](https://rakudocs.github.io/language/variables#The_%2A_Twigil). This twigil makes the compiler look up the symbol in the calling scope instead of the outer scope after trying the local scope.
+To make `new-location()` print `nowhere`, make `$location` a dynamic variable using [the * twigil](https://docs.raku.org/language/variables#The_%2A_Twigil). This twigil makes the compiler look up the symbol in the calling scope instead of the outer scope after trying the local scope.
 
 `my` 是子例程的默认作用域，因此 `my sub x() {}` 和 `sub x() {}` 是完全一样的。
 
@@ -726,9 +726,9 @@ say [$a, %h].perl;
 
 `has` scopes attributes to instances of a class or role, and methods to classes or roles. `has` is implied for methods, so `has method x() {}` and `method x() {}` do the same thing.
 
-更多文档和例子，见[面向对象](https://rakudocs.github.io/language/objects)。
+更多文档和例子，见[面向对象](https://docs.raku.org/language/objects)。
 
-See [object orientation](https://rakudocs.github.io/language/objects) for more documentation and some examples.
+See [object orientation](https://docs.raku.org/language/objects) for more documentation and some examples.
 
 <a id="anon-%E5%A3%B0%E6%98%8E%E7%AC%A6"></a>
 ## `anon` 声明符
@@ -927,9 +927,9 @@ subset DynInt where state $ = ::('Int'); # 初始化只会被调用一�
 <a id="-%E5%8F%98%E9%87%8F"></a>
 ### `@` 变量
 
-类似于 `$` 变量，还有一个匿名[位置](https://rakudocs.github.io/type/Positional) `state` 变量 `@` 。
+类似于 `$` 变量，还有一个匿名[位置](https://docs.raku.org/type/Positional) `state` 变量 `@` 。
 
-Similar to the `$` variable, there is also a [Positional](https://rakudocs.github.io/type/Positional) anonymous state variable `@`.
+Similar to the `$` variable, there is also a [Positional](https://docs.raku.org/type/Positional) anonymous state variable `@`.
 
 ```Raku
 sub foo($x) {
@@ -969,9 +969,9 @@ As with `$`, each mention of `@` in a scope introduces a new anonymous array.
 <a id="%25-%E5%8F%98%E9%87%8F"></a>
 ### `%` 变量
 
-另外，还有一个[关联](https://rakudocs.github.io/type/Associative)匿名关联变量 `%`。
+另外，还有一个[关联](https://docs.raku.org/type/Associative)匿名关联变量 `%`。
 
-In addition, there's an [Associative](https://rakudocs.github.io/type/Associative) anonymous state variable `%`.
+In addition, there's an [Associative](https://docs.raku.org/type/Associative) anonymous state variable `%`.
 
 ```Raku
 sub foo($x) {
@@ -1003,7 +1003,7 @@ foo($_) for ^3;
 #          {0 => 0, 1 => 1, 2 => 2}» 
 ```
 
-与其他匿名状态变量一样，每个`given` 范围内的 `%` 都将有效地引入一个独立的变量。
+与其他匿名状态变量一样，每个 `given` 范围内的 `%` 都将有效地引入一个独立的变量。
 
 As with the other anonymous state variables, each mention of `%` within a given scope will effectively introduce a separate variable.
 
@@ -1012,7 +1012,7 @@ As with the other anonymous state variables, each mention of `%` within a give
 
 使用 `augment`，你可以将属性和方法添加到现有的类和语法，只要你先激活 `MONKEY-TYPING` 指令即可。
 
-With `augment`, you can add attributes and methods to existing classes and grammars, provided you activated the `MONKEY-TYPING`pragma first.
+With `augment`, you can add attributes and methods to existing classes and grammars, provided you activated the `MONKEY-TYPING` pragma first.
 
 由于类通常与 `our` 同作用域，因此是全局的，这样做意味着修改全局状态，这是非常不推荐的。几乎所有的这种情况都有更好的解决方案。
 
@@ -1027,9 +1027,9 @@ augment class Int {
 say 42.is-answer;       # OUTPUT: «True» 
 ```
 
-在这个情况下，更好的解决方案是使用 [函数](https://rakudocs.github.io/language/functions)。
+在这个情况下，更好的解决方案是使用[函数](https://docs.raku.org/language/functions)。
 
-(In this case, the better solution would be to use a [function](https://rakudocs.github.io/language/functions)).
+(In this case, the better solution would be to use a [function](https://docs.raku.org/language/functions)).
 
 <a id="temp-%E5%89%8D%E7%BC%80"></a>
 ## `temp` 前缀
@@ -1100,9 +1100,9 @@ In the above case, if the `Bool.pick` returns true, the answer will stay as 84
 <a id="%E7%B1%BB%E5%9E%8B%E7%BA%A6%E6%9D%9F%E5%8F%8A%E5%88%9D%E5%A7%8B%E5%8C%96--type-constraints-and-initialization"></a>
 # 类型约束及初始化 / Type Constraints and Initialization
 
-变量通过所绑定的[容器](https://rakudocs.github.io/language/containers)有类型约束，容器在声明符与变量名之间。默认的类型约束是 [Mu](https://rakudocs.github.io/type/Mu)。也可以使用 [of](https://rakudocs.github.io/type/Variable#trait_of)特性来设置类型约束。
+变量通过所绑定的[容器](https://docs.raku.org/language/containers)有类型约束，容器在声明符与变量名之间。默认的类型约束是 [Mu](https://docs.raku.org/type/Mu)。也可以使用 [of](https://docs.raku.org/type/Variable#trait_of)特性来设置类型约束。
 
-Variables have a type constraint via the [container](https://rakudocs.github.io/language/containers) they are bound to, which goes between the declarator and the variable name. The default type constraint is [Mu](https://rakudocs.github.io/type/Mu). You can also use the trait [of](https://rakudocs.github.io/type/Variable#trait_of) to set a type constraint.
+Variables have a type constraint via the [container](https://docs.raku.org/language/containers) they are bound to, which goes between the declarator and the variable name. The default type constraint is [Mu](https://docs.raku.org/type/Mu). You can also use the trait [of](https://docs.raku.org/type/Variable#trait_of) to set a type constraint.
 
 ```Raku
 my Int $x = 42;
@@ -1121,13 +1121,13 @@ say $x.^name;       # OUTPUT: «Int» 
 say $x.defined;     # OUTPUT: «False» 
 ```
 
-没有显示类型约束的标量变量写作 [Mu](https://rakudocs.github.io/type/Mu) 但是默认是 [Any](https://rakudocs.github.io/type/Any)类型对象。
+没有显示类型约束的标量变量写作 [Mu](https://docs.raku.org/type/Mu) 但是默认是 [Any](https://docs.raku.org/type/Any)类型对象。
 
-Scalar variables without an explicit type constraint are typed as [Mu](https://rakudocs.github.io/type/Mu) but default to the [Any](https://rakudocs.github.io/type/Any) type object.
+Scalar variables without an explicit type constraint are typed as [Mu](https://docs.raku.org/type/Mu) but default to the [Any](https://docs.raku.org/type/Any) type object.
 
-带 `@` 标记的变量初始化时生成一个空[数组](https://rakudocs.github.io/type/Array); 带 `%` 标记带变量初始化时生成一个空[哈希](https://rakudocs.github.io/type/Hash)。
+带 `@` 标记的变量初始化时生成一个空[数组](https://docs.raku.org/type/Array); 带 `%` 标记带变量初始化时生成一个空[哈希](https://docs.raku.org/type/Hash)。
 
-Variables with the `@` sigil are initialized with an empty [Array](https://rakudocs.github.io/type/Array); variables with the `%` sigil are initialized with an empty [Hash](https://rakudocs.github.io/type/Hash).
+Variables with the `@` sigil are initialized with an empty [Array](https://docs.raku.org/type/Array); variables with the `%` sigil are initialized with an empty [Hash](https://docs.raku.org/type/Hash).
 
 变量默认值可以通过 `is default` 特性来设置，赋值 `Nil` 给变量恢复默认值。
 
@@ -1158,9 +1158,9 @@ my Int $i = 1; # that works 
 { use variables :_; my Int $i; } # switch it off in this block 
 ```
 
-注意赋值 [Nil](https://rakudocs.github.io/type/Nil) 会使变量恢复默认值。有已定义约束的类型的默认值就是后面跟 `:D` 的类型 (e.g. `Int:D`)。那意味着已定义约束不保证变量的已定义。这个只对变量初始化生效，不适用于[签名](https://rakudocs.github.io/type/Signature)或者其后的变量赋值。
+注意赋值 [Nil](https://docs.raku.org/type/Nil) 会使变量恢复默认值。有已定义约束的类型的默认值就是后面跟 `:D` 的类型 (e.g. `Int:D`)。那意味着已定义约束不保证变量的已定义。这个只对变量初始化生效，不适用于[签名](https://docs.raku.org/type/Signature)或者其后的变量赋值。
 
-Note that assigning [Nil](https://rakudocs.github.io/type/Nil) will revert the variable to its default value. The default value of a defined constraint type is the type appended with `:D` (e.g. `Int:D`). That means a definedness constraint is no guarantee of definedness. This only applies to variable initializers, not to [Signature](https://rakudocs.github.io/type/Signature)s. or subsequent assignments to a variable.
+Note that assigning [Nil](https://docs.raku.org/type/Nil) will revert the variable to its default value. The default value of a defined constraint type is the type appended with `:D` (e.g. `Int:D`). That means a definedness constraint is no guarantee of definedness. This only applies to variable initializers, not to [Signature](https://docs.raku.org/type/Signature)s. or subsequent assignments to a variable.
 
 <a id="%E7%89%B9%E6%AE%8A%E5%8F%98%E9%87%8F--special-variables"></a>
 # 特殊变量 / Special Variables
@@ -1227,18 +1227,18 @@ for <ab:c d$e fgh ij*> {
 <a id="%24-%E5%8F%98%E9%87%8F--the-%24-variable"></a>
 ### `$/` 变量 / The `$/` Variable
 
-`$/` 是匹配变量。它存储了上一次[正则](https://rakudocs.github.io/language/regexes)匹配的结果，因此通常包含[匹配](https://rakudocs.github.io/type/Match)类型的对象。
+`$/` 是匹配变量。它存储了上一次[正则](https://docs.raku.org/language/regexes)匹配的结果，因此通常包含[匹配](https://docs.raku.org/type/Match)类型的对象。
 
-`$/` is the match variable. It stores the result of the last [Regex](https://rakudocs.github.io/language/regexes) match and so usually contains objects of type [Match](https://rakudocs.github.io/type/Match).
+`$/` is the match variable. It stores the result of the last [Regex](https://docs.raku.org/language/regexes) match and so usually contains objects of type [Match](https://docs.raku.org/type/Match).
 
 ```Raku
 'abc 12' ~~ /\w+/;  # sets $/ to a Match object 
 say $/.Str;         # OUTPUT: «abc» 
 ```
 
-`Grammar.parse` 方法也会将调用者的 `$/` 变量设置为结果中的[匹配](https://rakudocs.github.io/type/Match)对象。下列代码：
+`Grammar.parse` 方法也会将调用者的 `$/` 变量设置为结果中的[匹配](https://docs.raku.org/type/Match)对象。下列代码：
 
-The `Grammar.parse` method also sets the caller's `$/` to the resulting [Match](https://rakudocs.github.io/type/Match) object. For the following code:
+The `Grammar.parse` method also sets the caller's `$/` to the resulting [Match](https://docs.raku.org/type/Match) object. For the following code:
 
 ```Raku
 use XML::Grammar; # zef install XML 
@@ -1258,9 +1258,9 @@ say $/;
 #             textnode => ｢some text｣» 
 ```
 
-在 6.c 版本中，你可以使用 `$()` 从 `$/` 中[匹配](https://rakudocs.github.io/type/Match)得到[ast](https://rakudocs.github.io/routine/ast)的值, 如果那个值为真的话。也可以从[匹配](https://rakudocs.github.io/type/Match)对象的字符串形式中获得。
+在 6.c 版本中，你可以使用 `$()` 从 `$/` 中[匹配](https://docs.raku.org/type/Match)得到[ast](https://docs.raku.org/routine/ast)的值, 如果那个值为真的话。也可以从[匹配](https://docs.raku.org/type/Match)对象的字符串形式中获得。
 
-In the 6.c version, you can use `$()` shortcut (no spaces inside the parentheses) to get the [ast](https://rakudocs.github.io/routine/ast) value from `$/` [Match](https://rakudocs.github.io/type/Match) if that value is truthy, or the stringification of the [Match](https://rakudocs.github.io/type/Match) object otherwise.
+In the 6.c version, you can use `$()` shortcut (no spaces inside the parentheses) to get the [ast](https://docs.raku.org/routine/ast) value from `$/` [Match](https://docs.raku.org/type/Match) if that value is truthy, or the stringification of the [Match](https://docs.raku.org/type/Match) object otherwise.
 
 ```Raku
 'test' ~~ /.../;
@@ -1273,9 +1273,9 @@ say $(); # OUTPUT: «McTesty»;
 <a id="%E4%BD%8D%E7%BD%AE%E5%B1%9E%E6%80%A7--positional-attributes"></a>
 #### 位置属性 / Positional Attributes
 
-`$/` 有位置属性，如果[正则]中(https://rakudocs.github.io/language/regexes)有匹配组的话，就是那些括号组成的匹配组。
+`$/` 有位置属性，如果[正则]中(https://docs.raku.org/language/regexes)有匹配组的话，就是那些括号组成的匹配组。
 
-`$/` can have positional attributes if the [Regex](https://rakudocs.github.io/language/regexes) had capture-groups in it, which are just formed with parentheses.
+`$/` can have positional attributes if the [Regex](https://docs.raku.org/language/regexes) had capture-groups in it, which are just formed with parentheses.
 
 ```Raku
 'abbbbbcdddddeffg' ~~ / a (b+) c (d+ef+) g /;
@@ -1308,9 +1308,9 @@ say @().join; # OUTPUT: «bbbbbdddddeff» 
 <a id="%E5%91%BD%E5%90%8D%E5%B1%9E%E6%80%A7--named-attributes"></a>
 #### 命名属性 / Named Attributes
 
-`$/` 有命名属性当[正则](https://rakudocs.github.io/language/regexes)中有命名群组捕获或者正则中有调用另外一个正则。
+`$/` 有命名属性当[正则](https://docs.raku.org/language/regexes)中有命名群组捕获或者正则中有调用另外一个正则。
 
-`$/` can have named attributes if the [Regex](https://rakudocs.github.io/language/regexes) had named capture-groups in it, or if the Regex called out to another Regex.
+`$/` can have named attributes if the [Regex](https://docs.raku.org/language/regexes) had named capture-groups in it, or if the Regex called out to another Regex.
 
 ```Raku
 'I.... see?' ~~ / \w+ $<punctuation>=[ <-[\w\s]>+ ] \s* $<final-word> = [ \w+ . ] /;
@@ -1378,9 +1378,9 @@ The following compile time variables allow for a deeper introspection:
 | $?NL           | What a vertical newline "\n" means: LF, CR or CRLF       | 换行符的意思是：LF， CR 还是 CRLF               |
 | $?DISTRIBUTION | The Distribution of the current compilation unit.        | 当前编译单元的发行版                            |
 
-特别是关于 `$?NL`，见[换行指令](https://rakudocs.github.io/language/pragmas)
+特别是关于 `$?NL`，见[换行指令](https://docs.raku.org/language/pragmas)
 
-With particular regard to the `$?NL`, see the [newline pragma](https://rakudocs.github.io/language/pragmas).
+With particular regard to the `$?NL`, see the [newline pragma](https://docs.raku.org/language/pragmas).
 
 这些变量是Rakudo特有的，具有所有相应的注意事项：
 
@@ -1391,9 +1391,9 @@ These variables are Rakudo specific, with all the corresponding caveats:
 <a id="routine"></a>
 ### &?ROUTINE
 
-程序实际在哪个函数，编译时变量 `&ROUTINE` 为此提供了内省功能。它会返回当前函数的一个 [Sub](https://rakudocs.github.io/type/Sub) 实例。它支持使用方法 `.name` 或者 `.signature` 以及其他跟 `Sub` 相关的方法来获取调用函数名。
+程序实际在哪个函数，编译时变量 `&ROUTINE` 为此提供了内省功能。它会返回当前函数的一个 [Sub](https://docs.raku.org/type/Sub) 实例。它支持使用方法 `.name` 或者 `.signature` 以及其他跟 `Sub` 相关的方法来获取调用函数名。
 
-The compile time variable `&?ROUTINE` provides introspection about which routine the program is actually within. It returns an instance of [Sub](https://rakudocs.github.io/type/Sub) attached to the current routine. It does support the method `.name` to obtain the name of the called routine, as well as `.signature`and others method related to `Sub`:
+The compile time variable `&?ROUTINE` provides introspection about which routine the program is actually within. It returns an instance of [Sub](https://docs.raku.org/type/Sub) attached to the current routine. It does support the method `.name` to obtain the name of the called routine, as well as `.signature`and others method related to `Sub`:
 
 ```Raku
 sub awesome-sub { say &?ROUTINE.name }
@@ -1416,9 +1416,9 @@ do-work;
 <a id="block"></a>
 ### &?BLOCK
 
-`&?BLOCK` 行为与 `&?ROUTINE` 类似，但是它允许内省单一代码块。其持有一个 [Sub](https://rakudocs.github.io/type/Sub) 并且允许在相同代码块中迭代。
+`&?BLOCK` 行为与 `&?ROUTINE` 类似，但是它允许内省单一代码块。其持有一个 [Sub](https://docs.raku.org/type/Sub) 并且允许在相同代码块中迭代。
 
-The special compile variable `&?BLOCK` behaves similarly to `&?ROUTINE` but it allows to introspect a single block of code. It holds a [Sub](https://rakudocs.github.io/type/Sub)and allows for recursion within the same block:
+The special compile variable `&?BLOCK` behaves similarly to `&?ROUTINE` but it allows to introspect a single block of code. It holds a [Sub](https://docs.raku.org/type/Sub)and allows for recursion within the same block:
 
 ```Raku
 for '.' {
@@ -1430,9 +1430,9 @@ for '.' {
 <a id="%24distribution"></a>
 ### $?DISTRIBUTION
 
-`$？DISTRIBUTION` 提供对当前编译单元的 [Distribution](https://rakudocs.github.io/type/distribution) 的访问。这使模块作者可以通过原始相对路径名引用分发中的其他文件，或查看元数据（通过 `.meta` 方法），而无需知道底层文件结构（例如 `Compunit::Repository::Installation` 如何在安装时更改文件布局）。
+`$？DISTRIBUTION` 提供对当前编译单元的 [Distribution](https://docs.raku.org/type/distribution) 的访问。这使模块作者可以通过原始相对路径名引用分发中的其他文件，或查看元数据（通过 `.meta` 方法），而无需知道底层文件结构（例如 `Compunit::Repository::Installation` 如何在安装时更改文件布局）。
 
-`$?DISTRIBUTION` provides access to the [Distribution](https://rakudocs.github.io/type/Distribution) of the current compilation unit. This gives module authors a way to reference other files in the distribution by their original relative path names, or to view the metadata (via the `.meta` method), without needing to know the underlying file structure (such as how `CompUnit::Repository::Installation` changes the file layout on installation).
+`$?DISTRIBUTION` provides access to the [Distribution](https://docs.raku.org/type/Distribution) of the current compilation unit. This gives module authors a way to reference other files in the distribution by their original relative path names, or to view the metadata (via the `.meta` method), without needing to know the underlying file structure (such as how `CompUnit::Repository::Installation` changes the file layout on installation).
 
 ```Raku
 unit module MyFoo;
@@ -1465,10 +1465,10 @@ These variables are related to the arguments passed to a script.
 <a id="%24argfiles"></a>
 #### `$*ARGFILES`
 
-[IO::ArgFiles](https://rakudocs.github.io/type/IO::ArgFiles) （一个 [IO::CatHandle](https://rakudocs.github.io/type/IO::CatHandle) 的空子类），如果 `@*ARGS` 中包含文件话，使用 `@*ARGS` 作为源文件，否则用 `$*IN`。 当使用 `$*IN` 时， 它的 `:chomp`，`:encoding` 以及 `:bin` 将会被给到
-[IO::ArgFiles](https://rakudocs.github.io/type/IO::ArgFiles) 对象。
+[IO::ArgFiles](https://docs.raku.org/type/IO::ArgFiles) （一个 [IO::CatHandle](https://docs.raku.org/type/IO::CatHandle) 的空子类），如果 `@*ARGS` 中包含文件话，使用 `@*ARGS` 作为源文件，否则用 `$*IN`。 当使用 `$*IN` 时， 它的 `:chomp`，`:encoding` 以及 `:bin` 将会被给到
+[IO::ArgFiles](https://docs.raku.org/type/IO::ArgFiles) 对象。
 
-As of the 6.d version, `$*ARGFILES` *inside* [`sub MAIN`](https://rakudocs.github.io/language/functions#sub_MAIN) is always set to `$*IN`, even when `@*ARGS` is not empty. See [the class documentation](https://rakudocs.github.io/type/IO::ArgFiles#%24%2AARGFILES) for examples and more context.
+As of the 6.d version, `$*ARGFILES` *inside* [`sub MAIN`](https://docs.raku.org/language/functions#sub_MAIN) is always set to `$*IN`, even when `@*ARGS` is not empty. See [the class documentation](https://docs.raku.org/type/IO::ArgFiles#%24%2AARGFILES) for examples and more context.
 
 <a id="args"></a>
 #### `@*ARGS`
@@ -1480,23 +1480,23 @@ As of the 6.d version, `$*ARGFILES` *inside* [`sub MAIN`](https://rakudocs.githu
 <a id="args-to-capture"></a>
 #### `&*ARGS-TO-CAPTURE`
 
-在任意用来分析默认参数的自定义 [`ARGS-TO-CAPTURE`](https://rakudocs.github.io/language/create-cli#sub_ARGS-TO-CAPTURE) 函数中的动态作用域变量。其与自定义 `ARGS-TO-CAPTURE` 函数一样接受同样的参数。
+在任意用来分析默认参数的自定义 [`ARGS-TO-CAPTURE`](https://docs.raku.org/language/create-cli#sub_ARGS-TO-CAPTURE) 函数中的动态作用域变量。其与自定义 `ARGS-TO-CAPTURE` 函数一样接受同样的参数。
 
-A dynamic variable available inside any custom [`ARGS-TO-CAPTURE`](https://rakudocs.github.io/language/create-cli#sub_ARGS-TO-CAPTURE) subroutine that can be used to perform the default argument parsing. Takes the same parameters as are expected of the custom `ARGS-TO-CAPTURE` subroutine.
+A dynamic variable available inside any custom [`ARGS-TO-CAPTURE`](https://docs.raku.org/language/create-cli#sub_ARGS-TO-CAPTURE) subroutine that can be used to perform the default argument parsing. Takes the same parameters as are expected of the custom `ARGS-TO-CAPTURE` subroutine.
 
 <a id="generate-usage"></a>
 #### `&*GENERATE-USAGE`
 
-在任意用来生成默认使用说明信息的自定义 [`GENERATE-USAGE`](https://rakudocs.github.io/language/create-cli#sub_GENERATE-USAGE) 函数中的动态作用域变量。其与自定义 `GENERATE-USAGE` 函数一样接受同样的参数。
+在任意用来生成默认使用说明信息的自定义 [`GENERATE-USAGE`](https://docs.raku.org/language/create-cli#sub_GENERATE-USAGE) 函数中的动态作用域变量。其与自定义 `GENERATE-USAGE` 函数一样接受同样的参数。
 
-A dynamic variable available inside any custom [`GENERATE-USAGE`](https://rakudocs.github.io/language/create-cli#sub_GENERATE-USAGE) subroutine that can be used to perform the default usage message creation. Takes the same parameters as are expected of the custom `GENERATE-USAGE` subroutine.
+A dynamic variable available inside any custom [`GENERATE-USAGE`](https://docs.raku.org/language/create-cli#sub_GENERATE-USAGE) subroutine that can be used to perform the default usage message creation. Takes the same parameters as are expected of the custom `GENERATE-USAGE` subroutine.
 
 <a id="%E7%89%B9%E6%AE%8A%E6%96%87%E4%BB%B6%E5%8F%A5%E6%9F%84%EF%BC%9A-stdin%EF%BC%8Cstdout-%E4%BB%A5%E5%8F%8A-stderr--special-filehandles-stdin-stdout-and-stderr"></a>
 ### 特殊文件句柄： `STDIN`，`STDOUT` 以及 `STDERR` / Special filehandles: `STDIN`, `STDOUT` and `STDERR`
 
-更多关于特殊文件句柄的信息请参考 [Input and Output](https://rakudocs.github.io/language/io) 以及[IO::Special](https://rakudocs.github.io/type/IO::Special) 类。[IO::Handle](https://rakudocs.github.io/type/IO::Handle) 包含使用 `$*IN` 读取标准输入的几个例子。
+更多关于特殊文件句柄的信息请参考 [Input and Output](https://docs.raku.org/language/io) 以及[IO::Special](https://docs.raku.org/type/IO::Special) 类。[IO::Handle](https://docs.raku.org/type/IO::Handle) 包含使用 `$*IN` 读取标准输入的几个例子。
 
-For more information about special filehandles please see also the [Input and Output](https://rakudocs.github.io/language/io) page and the [IO::Special](https://rakudocs.github.io/type/IO::Special) class. [IO::Handle](https://rakudocs.github.io/type/IO::Handle)contains several examples of using `$*IN` for reading standard input.
+For more information about special filehandles please see also the [Input and Output](https://docs.raku.org/language/io) page and the [IO::Special](https://docs.raku.org/type/IO::Special) class. [IO::Handle](https://docs.raku.org/type/IO::Handle)contains several examples of using `$*IN` for reading standard input.
 
 - `$*IN` 标准输入文件句柄, 即 *STDIN*.
 - `$*OUT` 标准输出文件句柄, 即 *STDOUT*.
@@ -1516,9 +1516,9 @@ These dynamic variables contain information related to the environment the scrip
 <a id="%25env"></a>
 #### `%*ENV`
 
-操作系统环境变量。数值由 [allomorphs](https://rakudocs.github.io/language/glossary#index-entry-Allomorph)提供。
+操作系统环境变量。数值由 [allomorphs](https://docs.raku.org/language/glossary#index-entry-Allomorph)提供。
 
-Operating system environment variables. Numeric values are provided as [allomorphs](https://rakudocs.github.io/language/glossary#index-entry-Allomorph)
+Operating system environment variables. Numeric values are provided as [allomorphs](https://docs.raku.org/language/glossary#index-entry-Allomorph)
 
 <a id="%24repo"></a>
 #### `$*REPO`
@@ -1530,9 +1530,9 @@ This variable holds information about modules installed/loaded.
 <a id="%24init-instant"></a>
 #### `$*INIT-INSTANT`
 
-`$*INIT-INSTANT` 是一个 [Instant](https://rakudocs.github.io/type/Instant) 对象，表示程序的启动时间。这个表示的是核心代码启动时的时间，因此它的值可能比你程序中的 `INIT now` 或者 `BEGIN now` 要早几毫秒。
+`$*INIT-INSTANT` 是一个 [Instant](https://docs.raku.org/type/Instant) 对象，表示程序的启动时间。这个表示的是核心代码启动时的时间，因此它的值可能比你程序中的 `INIT now` 或者 `BEGIN now` 要早几毫秒。
 
-`$*INIT-INSTANT` is an [Instant](https://rakudocs.github.io/type/Instant) object representing program startup time. In particular, this is when the core code starts up, so the value of `$*INIT-INSTANT` may be a few milliseconds earlier than `INIT now` or even `BEGIN now` executed in your program.
+`$*INIT-INSTANT` is an [Instant](https://docs.raku.org/type/Instant) object representing program startup time. In particular, this is when the core code starts up, so the value of `$*INIT-INSTANT` may be a few milliseconds earlier than `INIT now` or even `BEGIN now` executed in your program.
 
 <a id="%24tz"></a>
 #### `$*TZ`
@@ -1551,9 +1551,9 @@ It contains the `C`urrent `W`orking `D`irectory.
 <a id="%24kernel"></a>
 #### `$*KERNEL`
 
-`$*KERNEL` 包含一个 [`Kernel` 实例](https://rakudocs.github.io/type/Kernel)，它调用 `.gist` 方法的输出即为当前生效内核。
+`$*KERNEL` 包含一个 [`Kernel` 实例](https://docs.raku.org/type/Kernel)，它调用 `.gist` 方法的输出即为当前生效内核。
 
-`$*KERNEL` contains a [`Kernel` instance](https://rakudocs.github.io/type/Kernel), the `.gist` of it being the current running kernel.
+`$*KERNEL` contains a [`Kernel` instance](https://docs.raku.org/type/Kernel), the `.gist` of it being the current running kernel.
 
 ```Raku
 say $*KERNEL; # OUTPUT: «linux (4.4.92.31.default)» 
@@ -1670,9 +1670,9 @@ Contains the location (in the form of an `IO::Path` object) of the Raku program 
 <a id="exit"></a>
 #### `&*EXIT`
 
-这是一个[可调用](https://rakudocs.github.io/type/callable)，其中包含执行 `exit()` 调用时将执行的代码。用于将 Raku 嵌入到另一个语言运行时（如 Perl5 中的 Inline::Perl6）的情况。
+这是一个[可调用](https://docs.raku.org/type/callable)，其中包含执行 `exit()` 调用时将执行的代码。用于将 Raku 嵌入到另一个语言运行时（如 Perl5 中的 Inline::Perl6）的情况。
 
-This is a [Callable](https://rakudocs.github.io/type/Callable) that contains the code that will be executed when doing an `exit()` call. Intended to be used in situations where Raku is embedded in another language runtime (such as Inline::Perl6 in Perl 5).
+This is a [Callable](https://docs.raku.org/type/Callable) that contains the code that will be executed when doing an `exit()` call. Intended to be used in situations where Raku is embedded in another language runtime (such as Inline::Perl6 in Perl 5).
 
 <a id="%24executable"></a>
 #### `$*EXECUTABLE`
@@ -1726,48 +1726,48 @@ Contains information about the path to the user directory that is running the pr
 <a id="%24home"></a>
 #### `$*HOME`
 
-包含一个 [IO::Path](https://rakudocs.github.io/type/IO::Path) 对象，表示运行程序的用户的“家目录”。如果设置，则使用 `%*ENV<HOME>`。
+包含一个 [IO::Path](https://docs.raku.org/type/IO::Path) 对象，表示运行程序的用户的“家目录”。如果设置，则使用 `%*ENV<HOME>`。
 
-Contains an [IO::Path](https://rakudocs.github.io/type/IO::Path) object representing the "home directory" of the user that is running the program. Uses `%*ENV<HOME>` if set.
+Contains an [IO::Path](https://docs.raku.org/type/IO::Path) object representing the "home directory" of the user that is running the program. Uses `%*ENV<HOME>` if set.
 
-在 Windows 上，使用 `%*ENV<HOMEDRIVE> ~ %*ENV<HOMEPATH>`。如果无法确定家目录，它将是 [Any]（https://rakudocs.github.io/type/any）。
+在 Windows 上，使用 `%*ENV<HOMEDRIVE> ~ %*ENV<HOMEPATH>`。如果无法确定家目录，它将是 [Any]（https://docs.raku.org/type/any）。
 
-On Windows, uses `%*ENV<HOMEDRIVE> ~ %*ENV<HOMEPATH>`. If the home directory cannot be determined, it will be [Any](https://rakudocs.github.io/type/Any).
+On Windows, uses `%*ENV<HOMEDRIVE> ~ %*ENV<HOMEPATH>`. If the home directory cannot be determined, it will be [Any](https://docs.raku.org/type/Any).
 
 <a id="%24spec"></a>
 #### `$*SPEC`
 
-包含程序所运行平台的适当 [IO::Spec](https://rakudocs.github.io/type/IO::Spec) 子类。这是操作系统的一个更高级别的类；例如，对于Linux，它将返回 `Unix`（以 `IO::Spec` 类的形式，用于当前实现）。
+包含程序所运行平台的适当 [IO::Spec](https://docs.raku.org/type/IO::Spec) 子类。这是操作系统的一个更高级别的类；例如，对于Linux，它将返回 `Unix`（以 `IO::Spec` 类的形式，用于当前实现）。
 
-Contains the appropriate [IO::Spec](https://rakudocs.github.io/type/IO::Spec) sub-class for the platform that the program is running on. This is a higher-level class for the operating system; it will return `Unix`, for instance, in the case of Linux (in the form of the `IO::Spec` class used for the current implementation).
+Contains the appropriate [IO::Spec](https://docs.raku.org/type/IO::Spec) sub-class for the platform that the program is running on. This is a higher-level class for the operating system; it will return `Unix`, for instance, in the case of Linux (in the form of the `IO::Spec` class used for the current implementation).
 
 <a id="%24tmpdir"></a>
 #### `$*TMPDIR`
 
-这是一个 [IO::Path](https://rakudocs.github.io/type/IO::Path) 对象，表示由 [`.tmpdir IO::Spec::* method`](https://rakudocs.github.io/routine/tmpdir)确定的“系统临时目录”。
+这是一个 [IO::Path](https://docs.raku.org/type/IO::Path) 对象，表示由 [`.tmpdir IO::Spec::* method`](https://docs.raku.org/routine/tmpdir)确定的“系统临时目录”。
 
-This is an [IO::Path](https://rakudocs.github.io/type/IO::Path) object representing the "system temporary directory" as determined by [`.tmpdir IO::Spec::* method`](https://rakudocs.github.io/routine/tmpdir).
+This is an [IO::Path](https://docs.raku.org/type/IO::Path) object representing the "system temporary directory" as determined by [`.tmpdir IO::Spec::* method`](https://docs.raku.org/routine/tmpdir).
 
 <a id="%24tolerance"></a>
 #### `$*TOLERANCE`
 
-由 [`=~=`](https://rakudocs.github.io/routine/=~=) 运算符和依赖它的任何操作使用的变量，以确定两个值是否近似相等。默认为 `1e-15`。
+由 [`=~=`](https://docs.raku.org/routine/=~=) 运算符和依赖它的任何操作使用的变量，以确定两个值是否近似相等。默认为 `1e-15`。
 
-Variable used by the [`=~=`](https://rakudocs.github.io/routine/=~=) operator, and any operations that depend on it, to decide if two values are approximately equal. Defaults to `1e-15`.
+Variable used by the [`=~=`](https://docs.raku.org/routine/=~=) operator, and any operations that depend on it, to decide if two values are approximately equal. Defaults to `1e-15`.
 
 <a id="%24thread"></a>
 #### `$*THREAD`
 
-包含表示当前执行线程的 [Thread](https://rakudocs.github.io/type/thread) 对象。
+包含表示当前执行线程的 [Thread](https://docs.raku.org/type/thread) 对象。
 
-Contains a [Thread](https://rakudocs.github.io/type/Thread) object representing the currently executing thread.
+Contains a [Thread](https://docs.raku.org/type/Thread) object representing the currently executing thread.
 
 <a id="%24scheduler"></a>
 #### `$*SCHEDULER`
 
-这是表示当前默认计划程序的 [ThreadPoolScheduler](https://rakudocs.github.io/type/threadpoolscheduler) 对象。
+这是表示当前默认计划程序的 [ThreadPoolScheduler](https://docs.raku.org/type/threadpoolscheduler) 对象。
 
-This is a [ThreadPoolScheduler](https://rakudocs.github.io/type/ThreadPoolScheduler) object representing the current default scheduler.
+This is a [ThreadPoolScheduler](https://docs.raku.org/type/ThreadPoolScheduler) object representing the current default scheduler.
 
 默认情况下，在方法 `.hyper`、`.race` 和使用该调度程序的其他线程池类（如 `Promise` 或 `Supply`）上，这最多可施加 64 个线程。但是，这取决于实现，可能会发生更改。要更改线程的最大数目，可以在运行 Raku 之前设置环境变量 `RAKUDO_MAX_THREADS`，或者在使用它们之前创建一个范围复制，并更改默认值：
 
@@ -1784,9 +1784,9 @@ This behavior is not tested in the spec tests and is subject to change.
 <a id="%24sampler"></a>
 #### `$*SAMPLER`
 
-当前用于生成系统状态快照的 [Telemetry::Sampler](https://rakudocs.github.io/type/Telemetry::Sampler)。仅当已加载 [Telemetry]（https://rakudocs.github.io/type/teletry）时可用。
+当前用于生成系统状态快照的 [Telemetry::Sampler](https://docs.raku.org/type/Telemetry::Sampler)。仅当已加载 [Telemetry]（https://docs.raku.org/type/teletry）时可用。
 
-The current [Telemetry::Sampler](https://rakudocs.github.io/type/Telemetry::Sampler) used for making snapshots of system state. Only available if [Telemetry](https://rakudocs.github.io/type/Telemetry) has been loaded.
+The current [Telemetry::Sampler](https://docs.raku.org/type/Telemetry::Sampler) used for making snapshots of system state. Only available if [Telemetry](https://docs.raku.org/type/Telemetry) has been loaded.
 
 <a id="%E5%91%BD%E5%90%8D%E7%BA%A6%E5%AE%9A--naming-conventions"></a>
 # 命名约定 / Naming conventions

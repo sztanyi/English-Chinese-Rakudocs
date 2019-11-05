@@ -1,4 +1,4 @@
-原文：https://rakudocs.github.io/language/phasers
+原文：https://docs.raku.org/language/phasers
 
 # 相位器 / Phasers
 
@@ -289,9 +289,9 @@ for ^3 {
 # 6-3
 ```
 
-相位器中的 `^10 .pick` 只生成一次，然后在运行时由循环重新使用。注意在 `BEGIN` 代码块中的 [say](https://rakudocs.github.io/routine/say) 是如何在循环上方的 [say](https://rakudocs.github.io/routine/say) 之前执行的。
+相位器中的 `^10 .pick` 只生成一次，然后在运行时由循环重新使用。注意在 `BEGIN` 代码块中的 [say](https://docs.raku.org/routine/say) 是如何在循环上方的 [say](https://docs.raku.org/routine/say) 之前执行的。
 
-The `^10 .pick` in the phaser is generated only once and is then re-used by the loop during runtime. Note how the [say](https://rakudocs.github.io/routine/say) in the `BEGIN` block is executed before the [say](https://rakudocs.github.io/routine/say) that is above the loop.
+The `^10 .pick` in the phaser is generated only once and is then re-used by the loop during runtime. Note how the [say](https://docs.raku.org/routine/say) in the `BEGIN` block is executed before the [say](https://docs.raku.org/routine/say) that is above the loop.
 
 <a id="check"></a>
 ## CHECK
@@ -375,9 +375,9 @@ An exception thrown from an `ENTER` phaser will abort the `ENTER` queue, but one
 <a id="leave"></a>
 ## LEAVE
 
-在每个块退出时运行（甚至堆栈从异常中展开），除非程序突然退出（例如使用 [`exit`](https://rakudocs.github.io/routine/exit)）。
+在每个块退出时运行（甚至堆栈从异常中展开），除非程序突然退出（例如使用 [`exit`](https://docs.raku.org/routine/exit)）。
 
-Runs at every block exit time (even stack unwinds from exceptions), except when the program exits abruptly (e.g. with [`exit`](https://rakudocs.github.io/routine/exit)).
+Runs at every block exit time (even stack unwinds from exceptions), except when the program exits abruptly (e.g. with [`exit`](https://docs.raku.org/routine/exit)).
 
 一定要在任何 `CATCH` 和 `CONTROL` 相位器之后对某一区块的 `LEAVE` 相位器进行评估。这包括`LEAVE` 变体、`KEEP`  和 `UNDO`。`POST` 相位器评估发生在其他所有事情之后，以保证即使是 `LEAVE` 相位器也不会违反后条件。
 
@@ -411,9 +411,9 @@ sub foo (Int) {
 try foo rand; # OUTPUT: «oh noes!␤»
 ```
 
-尽管子例程的主体没有运行，因为子例程期望有一个 [Int](https://rakudocs.github.io/type/Int) 和 [`rand`](https://rakudocs.github.io/routine/rand) 并返回一个 [Num](https://rakudocs.github.io/type/Num)，进入代码块后就离开了(当参数绑定失败时)，所以 `LEAVE` 相位器被运行了。
+尽管子例程的主体没有运行，因为子例程期望有一个 [Int](https://docs.raku.org/type/Int) 和 [`rand`](https://docs.raku.org/routine/rand) 并返回一个 [Num](https://docs.raku.org/type/Num)，进入代码块后就离开了(当参数绑定失败时)，所以 `LEAVE` 相位器被运行了。
 
-Although the subroutine's body did not get run, because the sub expects an [Int](https://rakudocs.github.io/type/Int) and [`rand`](https://rakudocs.github.io/routine/rand) returned a [Num](https://rakudocs.github.io/type/Num), its block was entered and left (when param binding failed), and so the `LEAVE` phaser *was* run.
+Although the subroutine's body did not get run, because the sub expects an [Int](https://docs.raku.org/type/Int) and [`rand`](https://docs.raku.org/routine/rand) returned a [Num](https://docs.raku.org/type/Num), its block was entered and left (when param binding failed), and so the `LEAVE` phaser *was* run.
 
 <a id="keep"></a>
 ## KEEP
@@ -548,9 +548,9 @@ Runs when a role is composed into a class.
 <a id="last-1"></a>
 ## LAST
 
-当一个 [Supply](https://rakudocs.github.io/type/Supply) 以调用 `done` 结束，或者当一个 `supply` 代码块正常退出时运行。`whenever` 代码块后运行，它被放置在完成前。
+当一个 [Supply](https://docs.raku.org/type/Supply) 以调用 `done` 结束，或者当一个 `supply` 代码块正常退出时运行。`whenever` 代码块后运行，它被放置在完成前。
 
-Runs when a [Supply](https://rakudocs.github.io/type/Supply) finishes with a call to `done` or when a `supply` block exits normally. It runs completely after the `whenever` block it is placed within finishes.
+Runs when a [Supply](https://docs.raku.org/type/Supply) finishes with a call to `done` or when a `supply` block exits normally. It runs completely after the `whenever` block it is placed within finishes.
 
 此相位器重复使用名称 `LAST`，但其工作方式与 `LAST` 循环相位器不同。此相位器类似于设置 `done` 例程，同时使用 `tap` 消费 supply。
 
@@ -559,9 +559,9 @@ This phaser reuses the name `LAST`, but works differently from the `LAST` loop p
 <a id="quit"></a>
 ## QUIT
 
-当 [Supply](https://rakudocs.github.io/type/Supply) 在异常情况下提前终止时运行。它运行在 `whenever` 代码块之后，它被放置在完成之前。
+当 [Supply](https://docs.raku.org/type/Supply) 在异常情况下提前终止时运行。它运行在 `whenever` 代码块之后，它被放置在完成之前。
 
-Runs when a [Supply](https://rakudocs.github.io/type/Supply) terminates early with an exception. It runs after the `whenever` block it is placed within finishes.
+Runs when a [Supply](https://docs.raku.org/type/Supply) terminates early with an exception. It runs after the `whenever` block it is placed within finishes.
 
 这个相位类似于设置 `quit` 例程，同时使用 `tap` 消费 supply。
 
