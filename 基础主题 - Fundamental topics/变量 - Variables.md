@@ -338,7 +338,7 @@ say-all();    # OUTPUT: 1, 10, 100
 say-all();  # OUTPUT: 1, 10, 101
 ```
 
-第一次运行 `&say-all` 会打印出 “`1, 10, 100`”，没有意外。第二次运行却打印出 “`1, 11, 101`”。这是因为 `$lexical` 不是在调用者作用域里面查值而是在 `&say-all` 被定义时的作用域里查值。那两个动态变量是在调用者作用域里查值，因此值分别为 `11` 和 `101`。第三次运行 `&say-all` 时 `$*dynamic1` 的值不再是 `11`，但 `$*dynamic2` 仍然是 `101`。 这是因为我们在代码块里声明了一个新的 $*dynamic1` 变量而不是像 `$*dynamic2` 那样给旧变量赋值。
+第一次运行 `&say-all` 会打印出 “`1, 10, 100`”，没有意外。第二次运行却打印出 “`1, 11, 101`”。这是因为 `$lexical` 不是在调用者作用域里面查值而是在 `&say-all` 被定义时的作用域里查值。那两个动态变量是在调用者作用域里查值，因此值分别为 `11` 和 `101`。第三次运行 `&say-all` 时 `$*dynamic1` 的值不再是 `11`，但 `$*dynamic2` 仍然是 `101`。 这是因为我们在代码块里声明了一个新的 `$*dynamic1` 变量而不是像 `$*dynamic2` 那样给旧变量赋值。
 
 The first time `&say-all` is called, it prints "`1, 10, 100`" just as one would expect. The second time though, it prints "`1, 11, 101`". This is because `$lexical` isn't looked up in the caller's scope but in the scope `&say-all` was defined in. The two dynamic variables are looked up in the caller's scope and therefore have the values `11` and `101`. The third time `&say-all` is called `$*dynamic1` isn't `11`anymore, but `$*dynamic2` is still `101`. This stems from the fact that we declared a new dynamic variable `$*dynamic1` in the block and did not assign to the old variable as we did with `$*dynamic2`.
 
@@ -495,9 +495,9 @@ See [^](https://rakudocs.github.io/routine/$CIRCUMFLEX_ACCENT) for more detail
 <a id="-%E5%8F%B7-5"></a>
 ## `=` 号
 
-= 号用于访问 Pod 变量。当前文件中的每个 Pod 块可以通过 Pod 对象访问，例如 `$=data`、`$=SYNOPSIS` 或 `=UserBlock`。即变量有着跟 Pod 块相同的名字以及一个 `=` 号。
+= 号用于访问 Pod 变量。当前文件中的每个 Pod 块可以通过 Pod 对象访问，例如 `$=data`、`$=SYNOPSIS` 或 `$=UserBlock`。即变量有着跟 Pod 块相同的名字以及一个 `=` 号。
 
-The `=` twigil is used to access Pod variables. Every Pod block in the current file can be accessed via a Pod object, such as `$=data`, `$=SYNOPSIS` or `=UserBlock`. That is: a variable with the same name of the desired block and a `=` twigil.
+The `=` twigil is used to access Pod variables. Every Pod block in the current file can be accessed via a Pod object, such as `$=data`, `$=SYNOPSIS` or `$=UserBlock`. That is: a variable with the same name of the desired block and a `=` twigil.
 
 ```Raku
   =begin code
@@ -524,7 +524,7 @@ Note that all those `$=someBlockName` support the `Positional` and the `Ass
 
 The `~` twigil is for referring to sublanguages (called slangs). The following are useful:
 
-| $~MAIN    | the current main language (e.g. Perl statements) |
+| $~MAIN    | the current main language (e.g. Raku statements) |
 | --------- | ------------------------------------------------ |
 | $~Quote   | the current root of quoting language             |
 | $~Quasi   | the current root of quasiquoting language        |
@@ -722,7 +722,7 @@ say [$a, %h].perl;
 <a id="has-%E5%A3%B0%E6%98%8E%E7%AC%A6"></a>
 ## `has` 声明符
 
-`has` 将属性作用于类实例或者角色，以及类或角色的方法。`has` 暗示了方法，因此 `has method x() {}` 与 `mehod x() {}` 等价。
+`has` 声明类实例或者角色的属性以及方法。`has` 暗示了方法，因此 `has method x() {}` 与 `method x() {}` 等价。
 
 `has` scopes attributes to instances of a class or role, and methods to classes or roles. `has` is implied for methods, so `has method x() {}` and `method x() {}` do the same thing.
 
