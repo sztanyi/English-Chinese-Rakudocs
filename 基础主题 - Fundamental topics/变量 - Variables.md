@@ -1283,7 +1283,7 @@ say $/[0]; # OUTPUT: «｢bbbbb｣» 
 say $/[1]; # OUTPUT: «｢dddddeff｣» 
 ```
 
-也可以通过快捷变量 `$0`, `$1`, `$2` 等等表示。
+也可以通过快捷变量 `$0`、`$1`、 `$2` 等等表示。
 
 These can also be accessed by the shortcuts `$0`, `$1`, `$2`, etc.
 
@@ -1298,7 +1298,7 @@ say $1; # OUTPUT: «｢dddddeff｣» 
 To get all of the positional attributes, you can use `$/.list` or `@$/`. In the 6.c language, you can also use the `@()` shortcut (no spaces inside the parentheses).
 
 ```Raku
-say @$/.join; # OUTPUT: «bbbbbdddddeff
+say @$/.join; # OUTPUT: «bbbbbdddddeff»
 
 # 6.c language only:
 'abbbbbcdddddeffg' ~~ / a (b+) c (d+ef+) g /;
@@ -1308,7 +1308,7 @@ say @().join; # OUTPUT: «bbbbbdddddeff» 
 <a id="%E5%91%BD%E5%90%8D%E5%B1%9E%E6%80%A7--named-attributes"></a>
 #### 命名属性 / Named Attributes
 
-`$/` 有命名属性当[正则](https://docs.raku.org/language/regexes)中有命名群组捕获或者正则中有调用另外一个正则。
+`$/` 可以有命名属性如果[正则](https://docs.raku.org/language/regexes)中有命名群组捕获或者正则中有调用另外一个正则。
 
 `$/` can have named attributes if the [Regex](https://docs.raku.org/language/regexes) had named capture-groups in it, or if the Regex called out to another Regex.
 
@@ -1319,6 +1319,7 @@ say $/<final-word>;  # OUTPUT: «｢see?｣» 
 ```
 
 这些也可以通过 `$` 更快捷地访问。
+
 These can also be accessed by the shortcut `$`.
 
 ```Raku
@@ -1343,14 +1344,14 @@ say %().join;       # OUTPUT: «"punctuation     ....final-word 
 
 `$!` is the error variable. If a `try` block or statement prefix catches an exception, that exception is stored in `$!`. If no exception was caught, `$!` is set to the `Any` type object.
 
-注意 `CATCH` 代码块*不会*设置 `$!`，在代码块中设置 `$_` 来获取异常。
+注意 `CATCH` 代码块*不会*设置 `$!`，在代码块中设置 `$_` 来捕获异常。
 
 Note that `CATCH` blocks *do not* set `$!`. Rather they set `$_` inside the block to the caught exception.
 
 <a id="%E7%BC%96%E8%AF%91%E6%97%B6%E5%8F%98%E9%87%8F--compile-time-variables"></a>
 ## 编译时变量 / Compile-time variables
 
-所有的编译时变量在符号中都带有问号。身为*编译时*，它们无法在运行时被改变，但是它们在内省程序时很有价值。最常见的编译时变量如下：
+所有的编译时变量在符号中都带有问号。*编译时*变量无法在运行时被改变，但是它们在内省程序时很有价值。最常见的编译时变量如下：
 
 All compile time variables have a question mark as part of the twigil. Being *compile time* they cannot be changed at run-time, however they are valuable in order to introspect the program. The most common compile time variables are the following:
 
@@ -1382,7 +1383,7 @@ The following compile time variables allow for a deeper introspection:
 
 With particular regard to the `$?NL`, see the [newline pragma](https://docs.raku.org/language/pragmas).
 
-这些变量是Rakudo特有的，具有所有相应的注意事项：
+这些变量是 Rakudo 特有的，具有所有相应的注意事项：
 
 These variables are Rakudo specific, with all the corresponding caveats:
 
@@ -1465,7 +1466,7 @@ These variables are related to the arguments passed to a script.
 <a id="%24argfiles"></a>
 #### `$*ARGFILES`
 
-[IO::ArgFiles](https://docs.raku.org/type/IO::ArgFiles) （一个 [IO::CatHandle](https://docs.raku.org/type/IO::CatHandle) 的空子类），如果 `@*ARGS` 中包含文件话，使用 `@*ARGS` 作为源文件，否则用 `$*IN`。 当使用 `$*IN` 时， 它的 `:chomp`，`:encoding` 以及 `:bin` 将会被给到
+[IO::ArgFiles](https://docs.raku.org/type/IO::ArgFiles) （一个 [IO::CatHandle](https://docs.raku.org/type/IO::CatHandle) 的空子类），如果 `@*ARGS` 中包含文件话，使用 `@*ARGS` 作为源文件，否则用 `$*IN`。 当使用 `$*IN` 时， 它的 `:chomp`、`:encoding` 以及 `:bin` 将会被给到
 [IO::ArgFiles](https://docs.raku.org/type/IO::ArgFiles) 对象。
 
 As of the 6.d version, `$*ARGFILES` *inside* [`sub MAIN`](https://docs.raku.org/language/functions#sub_MAIN) is always set to `$*IN`, even when `@*ARGS` is not empty. See [the class documentation](https://docs.raku.org/type/IO::ArgFiles#%24%2AARGFILES) for examples and more context.
@@ -1492,9 +1493,9 @@ A dynamic variable available inside any custom [`ARGS-TO-CAPTURE`](https://docs.
 A dynamic variable available inside any custom [`GENERATE-USAGE`](https://docs.raku.org/language/create-cli#sub_GENERATE-USAGE) subroutine that can be used to perform the default usage message creation. Takes the same parameters as are expected of the custom `GENERATE-USAGE` subroutine.
 
 <a id="%E7%89%B9%E6%AE%8A%E6%96%87%E4%BB%B6%E5%8F%A5%E6%9F%84%EF%BC%9A-stdin%EF%BC%8Cstdout-%E4%BB%A5%E5%8F%8A-stderr--special-filehandles-stdin-stdout-and-stderr"></a>
-### 特殊文件句柄： `STDIN`，`STDOUT` 以及 `STDERR` / Special filehandles: `STDIN`, `STDOUT` and `STDERR`
+### 特殊文件句柄： `STDIN`、`STDOUT` 以及 `STDERR` / Special filehandles: `STDIN`, `STDOUT` and `STDERR`
 
-更多关于特殊文件句柄的信息请参考 [Input and Output](https://docs.raku.org/language/io) 以及[IO::Special](https://docs.raku.org/type/IO::Special) 类。[IO::Handle](https://docs.raku.org/type/IO::Handle) 包含使用 `$*IN` 读取标准输入的几个例子。
+更多关于特殊文件句柄的信息请参考 [Input and Output](https://docs.raku.org/language/io) 以及 [IO::Special](https://docs.raku.org/type/IO::Special) 类。[IO::Handle](https://docs.raku.org/type/IO::Handle) 包含使用 `$*IN` 读取标准输入的几个例子。
 
 For more information about special filehandles please see also the [Input and Output](https://docs.raku.org/language/io) page and the [IO::Special](https://docs.raku.org/type/IO::Special) class. [IO::Handle](https://docs.raku.org/type/IO::Handle)contains several examples of using `$*IN` for reading standard input.
 
@@ -1544,7 +1545,7 @@ This variable holds information about modules installed/loaded.
 <a id="%24cwd"></a>
 #### `$*CWD`
 
-当前工作目录。
+表示当前工作目录。
 
 It contains the `C`urrent `W`orking `D`irectory.
 
@@ -1562,7 +1563,7 @@ say $*KERNEL; # OUTPUT: «linux (4.4.92.31.default)»
 <a id="%24distro"></a>
 #### `$*DISTRO`
 
-这个对象(类型为 `Distro`)包含当前操作系统的发行版信息。例如：
+这个对象（类型为 `Distro`）包含当前操作系统的发行版信息。例如：
 
 This object (of type `Distro`) contains information about the current operating system distribution. For instance:
 
@@ -1574,7 +1575,7 @@ say "Some sort of Windows" if $*DISTRO.is-win;
 
 `$*DISTRO.name` takes a set of values that depend on the operating system. These names will vary with version and implementation, so you should double-check and test before using them in your programs; since these names are implementation defined and not in the specification, they could vary and change at any moment.
 
-使用 `say` 显示 `$*DISTRO` 的 gist(返回对象的名字和版本) 形式。
+使用 `say` 显示 `$*DISTRO` 的 gist（返回对象的名字和版本）形式。
 
 The `$*DISTRO` gist is displayed by using `say`:
 
@@ -1606,7 +1607,7 @@ This variable contains the current virtual machine running the code, as well as 
 say $*VM.precomp-ext, " ", $*VM.precomp-target; # OUTPUT: «moarvm mbc» 
 ```
 
-例如，这两个方法将显示预编译字节码脚本中使用的扩展名和使用的目标。这是在 moar 虚拟机中的情况，但它也可能随版本和实现而变化。其他的VM，例如 Java，将为它们显示不同的值。`$*VM.config` 包括用于创建虚拟机的所有配置值，例如:
+例如，这两个方法将显示预编译字节码脚本中使用的扩展名和使用的目标。这是在 Moar 虚拟机中的情况，但它也可能随版本和实现而变化。其他的VM，例如 Java，将为它们显示不同的值。`$*VM.config` 包括用于创建虚拟机的所有配置值，例如:
 
 These two methods, for instance, will show the extension used in the precompiled bytecode scripts and the target used. This is what is found in the Moar Virtual Machine, but it could also vary with version and implementation. Other VM, such as Java, will show different values for them. `$*VM.config` includes all configuration values used to create the virtual machine, e.g.
 
@@ -1622,7 +1623,7 @@ which are the version of the virtual machine, generally the same one as the one 
 <a id="%24perl"></a>
 #### `$*PERL`
 
-此对象包含有关当前Perl6语言实现的信息：
+此对象包含有关当前 Raku 语言实现的信息：
 
 This object contains information on the current implementation of the Raku language:
 
@@ -1635,7 +1636,7 @@ say $*PERL.compiler.version; # OUTPUT: «v2018.11.52.g.06156.a.7.ca»
 but its gist includes the name of the language, followed by the major version of the compiler:
 
 ```Raku
-say $*PERL; # OUTPUT: «Perl 6 (6.d)» 
+say $*PERL; # OUTPUT: «Raku (6.d)» 
 ```
 
 它将字符串化为 `Raku` ：
@@ -1712,7 +1713,7 @@ An `Allomorph` with the primary group of the user who is running the program. It
 <a id="%24homedrive"></a>
 #### `$*HOMEDRIVE`
 
-包含有关在 Windows 上运行程序的用户的“家驱动器”的信息。它在其他操作系统中没有定义。
+包含有关在 Windows 上运行程序的用户的“家目录盘”的信息。它在其他操作系统中没有定义。
 
 Contains information about the "home drive" of the user that is running the program on Windows. It's not defined in other operating systems.
 
@@ -1737,7 +1738,7 @@ On Windows, uses `%*ENV<HOMEDRIVE> ~ %*ENV<HOMEPATH>`. If the home directory can
 <a id="%24spec"></a>
 #### `$*SPEC`
 
-包含程序所运行平台的适当 [IO::Spec](https://docs.raku.org/type/IO::Spec) 子类。这是操作系统的一个更高级别的类；例如，对于Linux，它将返回 `Unix`（以 `IO::Spec` 类的形式，用于当前实现）。
+包含程序所运行平台的适当 [IO::Spec](https://docs.raku.org/type/IO::Spec) 子类。这是操作系统的一个更高级别的类；例如，对于 Linux，它将返回 `Unix`（以 `IO::Spec` 类的形式，用于当前实现）。
 
 Contains the appropriate [IO::Spec](https://docs.raku.org/type/IO::Spec) sub-class for the platform that the program is running on. This is a higher-level class for the operating system; it will return `Unix`, for instance, in the case of Linux (in the form of the `IO::Spec` class used for the current implementation).
 
@@ -1799,8 +1800,8 @@ It is helpful to know our naming conventions in order to understand what codes d
 - 符合词被当作一个词来处理，如 `substr`、`subbuf` 和 `deepmap`（就像我们用英语写 "starfish"，而不是 "star fish"）。
 - 在特殊时间自动为你调用的函数和方法都是大写的。这包括 `MAIN` 函数、`AT-POS` 和实现容器类型的相关方法，以及 `BUILD` 和 `DESTROY`。
 - 类型名采用驼峰法，除了本地类型（小写）。对于例外情况，你可以通过以下方式记住它：它们以更紧凑的方式存储，因此它们的名称看起来也更小。
-- 内置的动态作用域变量和编译时变量总是大写的，例如 `$*out`，`$?FILE`。
-- 来自 MOP(元对象协议) 和其他内部的方法使用 "_" 来分隔多个单词，例如 `add_method`。
+- 内置的动态作用域变量和编译时变量总是大写的，例如 `$*out`、`$?FILE`。
+- 来自 MOP(元对象协议) 和其他内部的方法使用下划线来分隔多个单词，例如 `add_method`。
 
 
 - Subs and methods from the built-ins library try to have single-word names when a good one could be found. In cases where there are two or more words making up a name, they are separated by a "-".
