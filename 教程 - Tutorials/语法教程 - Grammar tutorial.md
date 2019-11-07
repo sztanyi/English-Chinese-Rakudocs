@@ -18,11 +18,11 @@ An introduction to grammars
 - [案例学习 - REST 设计 / Learning by example - a REST contrivance](#%E6%A1%88%E4%BE%8B%E5%AD%A6%E4%B9%A0---rest-%E8%AE%BE%E8%AE%A1--learning-by-example---a-rest-contrivance)
     - [增加一些灵活性 / Adding some flexibility](#%E5%A2%9E%E5%8A%A0%E4%B8%80%E4%BA%9B%E7%81%B5%E6%B4%BB%E6%80%A7--adding-some-flexibility)
     - [从语法继承 / Inheriting from a grammar](#%E4%BB%8E%E8%AF%AD%E6%B3%95%E7%BB%A7%E6%89%BF--inheriting-from-a-grammar)
-    - [Adding some constraints](#adding-some-constraints)
-    - [Putting our RESTful grammar together](#putting-our-restful-grammar-together)
-- [Grammar actions](#grammar-actions)
-    - [Grammars by example with actions](#grammars-by-example-with-actions)
-    - [Keeping grammars with actions tidy with `make` and `made`](#keeping-grammars-with-actions-tidy-with-make-and-made)
+    - [添加一些约束 / Adding some constraints](#%E6%B7%BB%E5%8A%A0%E4%B8%80%E4%BA%9B%E7%BA%A6%E6%9D%9F--adding-some-constraints)
+    - [把我们的 RESTful 语法放在一起 / Putting our RESTful grammar together](#%E6%8A%8A%E6%88%91%E4%BB%AC%E7%9A%84-restful-%E8%AF%AD%E6%B3%95%E6%94%BE%E5%9C%A8%E4%B8%80%E8%B5%B7--putting-our-restful-grammar-together)
+- [语法动作 / Grammar actions](#%E8%AF%AD%E6%B3%95%E5%8A%A8%E4%BD%9C--grammar-actions)
+    - [有动作的语法示例 / Grammars by example with actions](#%E6%9C%89%E5%8A%A8%E4%BD%9C%E7%9A%84%E8%AF%AD%E6%B3%95%E7%A4%BA%E4%BE%8B--grammars-by-example-with-actions)
+    - [用 `make` 和 `made` 保持语法与动作的整洁 / Keeping grammars with actions tidy with `make` and `made`](#%E7%94%A8-make-%E5%92%8C-made-%E4%BF%9D%E6%8C%81%E8%AF%AD%E6%B3%95%E4%B8%8E%E5%8A%A8%E4%BD%9C%E7%9A%84%E6%95%B4%E6%B4%81--keeping-grammars-with-actions-tidy-with-make-and-made)
     - [Add actions directly](#add-actions-directly)
 
 <!-- /MarkdownTOC -->
@@ -216,7 +216,7 @@ The data can be accessed directly by using `$match<subject>` or `$match<command>
 <a id="%E5%A2%9E%E5%8A%A0%E4%B8%80%E4%BA%9B%E7%81%B5%E6%B4%BB%E6%80%A7--adding-some-flexibility"></a>
 ## 增加一些灵活性 / Adding some flexibility
 
-到目前为止，语法将处理检索、删除和更新。但是，*create* 命令没有第三个部分（*data* 部分）。这意味着如果我们尝试解析创建 URI，则语法将失败。为了避免这种情况，我们需要使最后的 *data* 位置匹配可选，以及前面的 '/' 。这通过将问号添加到顶部令牌的分组 '/' 和 *data* 组件来实现，以指示它们的可选性质，就像普通正则表达式一样。
+到目前为止，语法将处理检索、删除和更新。但是，*create* 命令没有第三个部分（*data* 部分）。这意味着如果我们尝试解析创建 URI，则语法将失败。为了避免这种情况，我们需要使最后的 *data* 位置匹配可选，以及前面的 '/' 。这通过将问号添加到 TOP token 的分组 '/' 和 *data* 组件来实现，以指示它们的可选性质，就像普通正则表达式一样。
 
 So far, the grammar will handle retrieves, deletes and updates. However, a *create* command doesn't have the third part (the *data* portion). This means the grammar will fail to match if we try to parse a create URI. To avoid this, we need to make that last *data* position match optional, along with the '/' preceding it. This is accomplished by adding a question mark to the grouped '/' and *data* components of the TOP token, to indicate their optional nature, just like a normal regex.
 
@@ -346,6 +346,8 @@ grammar Quoted-Other does Letters does Quote-Other {
 }
 ```
 
+输出将与上面的代码完全相同。由于类和角色之间的差异，使用角色组合两次定义 `token quote` 这样的冲突将导致错误：
+
 Will output exactly the same as the code above. Symptomatic of the difference between Classes and Roles, a conflict like defining `token quote` twice using Role composition will result in an error:
 
 ```Raku
@@ -353,8 +355,10 @@ grammar Quoted-Quotes does Letters does Quote-Quotes does Quote-Other { ... }
 # OUTPUT: ... Error while compiling ... Method 'quote' must be resolved ... 
 ```
 
-<a id="adding-some-constraints"></a>
-## Adding some constraints
+<a id="%E6%B7%BB%E5%8A%A0%E4%B8%80%E4%BA%9B%E7%BA%A6%E6%9D%9F--adding-some-constraints"></a>
+## 添加一些约束 / Adding some constraints
+
+我们希望 RESTful 语法只允许 CRUD 操作。任何我们想要分析的东西。这意味着我们上面的“命令”应该有四个值之一：创建、检索、更新或删除。
 
 We want our RESTful grammar to allow for CRUD operations only. Anything else we want to fail to parse. That means our "command" above should have one of four values: create, retrieve, update or delete.
 
@@ -368,9 +372,15 @@ token command { \w+ }
 token command { 'create'|'retrieve'|'update'|'delete' }
 ```
 
+要使 URI 成功解析，'/' 之间的字符串的第二部分必须是那些 CRUD 值之一，否则解析就会失败，这正是我们想要的。
+
 For a URI to parse successfully, the second part of the string between '/'s must be one of those CRUD values, otherwise the parsing fails. Exactly what we want.
 
+当选项越来越大时，还有另一种技术提供了更大的灵活性和更好的可读性：*原型正则*。
+
 There's another technique that provides greater flexibility and improved readability when options grow large: *proto-regexes*.
+
+为了利用这些原型正则表达式（实际上是多个方法）将自己限制在有效的 CRUD 选项上，我们将 `token command` 替换为：
 
 To utilize these proto-regexes (multimethods, in fact) to limit ourselves to the valid CRUD options, we'll replace `token command` with the following:
 
@@ -382,16 +392,26 @@ token command:sym<update>   { <sym> }
 token command:sym<delete>   { <sym> }
 ```
 
+`sym` 关键字用于创建各种原型正则选项。每个选项都被命名（例如 `sym<update>`），对于该选项，使用相同名称自动生成特殊的 `<sym>` 标记。
+
 The `sym` keyword is used to create the various proto-regex options. Each option is named (e.g., `sym<update>`), and for that option's use, a special `<sym>` token is auto-generated with the same name.
+
+`<sym>` token 以及其他用户定义的 token 可以用于原型正则选项块中，以定义特定*匹配条件*。正则 token 为编译过的形式，并且一旦定义，则随后不能被副词操作（例如 `:i`）修改。因此，当它是自动生成时，特殊的 `<sym>` token 仅在需要选项名称的精确匹配时才有用。
 
 The `<sym>` token, as well as other user-defined tokens, may be used in the proto-regex option block to define the specific *match condition*. Regex tokens are compiled forms and, once defined, cannot subsequently be modified by adverb actions (e.g., `:i`). Therefore, as it's auto-generated, the special `<sym>` token is useful only where an exact match of the option name is required.
 
+如果，对于一个原型正则选项，出现匹配条件，则整个原型的搜索将终止。匹配数据以匹配对象的形式分配给父原型 token。如果使用了特殊的 `<sym>` token 并形成了全部或部分实际匹配，则在匹配对象中将其保存为子级别，否则将不存在。
+
 If, for one of the proto-regex options, a match condition occurs, then the whole proto's search terminates. The matching data, in the form of a match object, is assigned to the parent proto token. If the special `<sym>` token was employed and formed all or part of the actual match, then it's preserved as a sub-level in the match object, otherwise it's absent.
+
+使用像这样的原型正则给了我们很多灵活性。例如，与其返回 `<sym>`，在这种情况下是匹配的整个字符串，我们可以改为输入自己的字符串，或者做其他有趣的事情。我们可以用 `token subject` 方法做同样的操作，也可以限制它只正确解析有效的主题（如 'part' 或 'people' 等）。
 
 Using proto-regex like this gives us a lot of flexibility. For example, instead of returning `<sym>`, which in this case is the entire string that was matched, we could instead enter our own string, or do other funny stuff. We could do the same with the `token subject` method and limit it also to only parsing correctly on valid subjects (like 'part' or 'people', etc.).
 
-<a id="putting-our-restful-grammar-together"></a>
-## Putting our RESTful grammar together
+<a id="%E6%8A%8A%E6%88%91%E4%BB%AC%E7%9A%84-restful-%E8%AF%AD%E6%B3%95%E6%94%BE%E5%9C%A8%E4%B8%80%E8%B5%B7--putting-our-restful-grammar-together"></a>
+## 把我们的 RESTful 语法放在一起 / Putting our RESTful grammar together
+
+到目前为止，这就是我们处理 RESTful URI 的方法：
 
 This is what we have for processing our RESTful URIs, so far:
 
@@ -412,6 +432,8 @@ grammar REST
 }
 ```
 
+让我们看看各种 URI，看看他们如何处理我们的语法。
+
 Let's look at various URIs and see how they work with our grammar.
 
 ```Raku
@@ -429,18 +451,30 @@ for @uris -> $uri {
 #          Sub: item Cmd: delete Dat: 4␤» 
 ```
 
+注意，由于 `<data>` 不匹配第二个字符串上的任何内容，`$m<data>` 将是 `Nil`，然后在 `say` 函数中的字符串上下文中使用它。
+
 Note that since `<data>` matches nothing on the second string, `$m<data>` will be `Nil`, then using it in string context in the `say` function warns.
+
+有了语法的这一部分，我们几乎得到了我们想要的一切。URI 被解析，我们用数据得到一个数据结构。
 
 With just this part of a grammar, we're getting almost everything we're looking for. The URIs get parsed and we get a data structure with the data.
 
+*data* token 将 URI 的整个结尾作为一个字符串返回。4 没问题。然而，从 '7/notify' 开始，我们只需要 7。为了得到 7，我们将使用语法类的另一个特性：*动作*。
+
 The *data* token returns the entire end of the URI as one string. The 4 is fine. However from the '7/notify', we only want the 7. To get just the 7, we'll use another feature of grammar classes: *actions*.
 
-<a id="grammar-actions"></a>
-# Grammar actions
+<a id="%E8%AF%AD%E6%B3%95%E5%8A%A8%E4%BD%9C--grammar-actions"></a>
+# 语法动作 / Grammar actions
+
+语法动作在语法类中被用来做匹配的事情。动作是在它们自己的类中定义的，与语法类不同。
 
 Grammar actions are used within grammar classes to do things with matches. Actions are defined in their own classes, distinct from grammar classes.
 
+您可以将语法动作看作是语法的一种插件扩展模块。很多时候，您会很高兴地使用语法本身。但是，当您需要进一步处理这些字符串时，可以插入动作扩展模块。
+
 You can think of grammar actions as a kind of plug-in expansion module for grammars. A lot of the time you'll be happy using grammars all by their own. But when you need to further process some of those strings, you can plug in the Actions expansion module.
+
+要处理动作，您可以使用一个名为 `actions` 的命名参数，该参数应该包含动作类的一个实例。使用上面的代码，如果我们的动作类名为 REST-Actions，我们将解析 URI 字符串，如下所示：
 
 To work with actions, you use a named parameter called `actions` which should contain an instance of your actions class. With the code above, if our actions class called REST-actions, we would parse the URI string like this:
 
@@ -452,12 +486,18 @@ my $matchObject = REST.parse($uri, actions => REST-actions.new);
 my $matchObject = REST.parse($uri, :actions(REST-actions.new));
 ```
 
+如果您使用与语法方法*（token、regex、rule）相同的名称命名您的操作方法，则当您的语法方法匹配时，将自动调用具有相同名称的操作方法。该方法也将通过相应的匹配对象（由 `$/` 变量表示）。
+
 If you *name your action methods with the same name as your grammar methods* (tokens, regexes, rules), then when your grammar methods match, your action method with the same name will get called automatically. The method will also be passed the corresponding match object (represented by the `$/` variable).
+
+让我们来举个例子。
 
 Let's turn to an example.
 
-<a id="grammars-by-example-with-actions"></a>
-## Grammars by example with actions
+<a id="%E6%9C%89%E5%8A%A8%E4%BD%9C%E7%9A%84%E8%AF%AD%E6%B3%95%E7%A4%BA%E4%BE%8B--grammars-by-example-with-actions"></a>
+## 有动作的语法示例 / Grammars by example with actions
+
+在这里，我们回到我们的语法。
 
 Here we are back to our grammar.
 
@@ -478,6 +518,8 @@ grammar REST
 }
 ```
 
+回想一下，我们希望进一步处理 data token "7/notify"，以获得 7。为此，我们将创建一个动作类，该类具有与命名令牌同名的方法。在本例中，我们的 token 名为 `data`，因此我们的方法也被命名为 `data`。
+
 Recall that we want to further process the data token "7/notify", to get the 7. To do this, we'll create an action class that has a method with the same name as the named token. In this case, our token is named `data` so our method is also named `data`.
 
 ```Raku
@@ -487,16 +529,26 @@ class REST-actions
 }
 ```
 
+现在，当我们通过语法传递 URI 字符串时，*data token 匹配*将传递给 *REST-actions 的 data 方法*。action 方法将字符串拆分为 '/' 字符，返回列表的第一个元素将是 ID 号（在 "7/notify" 的情况下为 7）。
+
 Now when we pass the URI string through the grammar, the *data token match* will be passed to the *REST-actions' data method*. The action method will split the string by the '/' character and the first element of the returned list will be the ID number (7 in the case of "7/notify").
+
+但不是真的，还有更多。
 
 But not really; there's a little more.
 
-<a id="keeping-grammars-with-actions-tidy-with-make-and-made"></a>
-## Keeping grammars with actions tidy with `make` and `made`
+<a id="%E7%94%A8-make-%E5%92%8C-made-%E4%BF%9D%E6%8C%81%E8%AF%AD%E6%B3%95%E4%B8%8E%E5%8A%A8%E4%BD%9C%E7%9A%84%E6%95%B4%E6%B4%81--keeping-grammars-with-actions-tidy-with-make-and-made"></a>
+## 用 `make` 和 `made` 保持语法与动作的整洁 / Keeping grammars with actions tidy with `make` and `made`
+
+如果语法调用上面对 data 的动作，data 方法将被调用，但是在返回给我们程序的大 `TOP` 语法匹配结果中什么也不会显示出来。为了使动作结果显示出来，我们需要调用 [make](https://docs.raku.org/routine/make)。结果可能是许多事情，包括字符串、数组或哈希结构。
 
 If the grammar calls the action above on data, the data method will be called, but nothing will show up in the big `TOP` grammar match result returned to our program. In order to make the action results show up, we need to call [make](https://docs.raku.org/routine/make) on that result. The result can be many things, including strings, array or hash structures.
 
+您可以想象 `make` 将结果放置在一个特殊的语法包含区域中。`make` 出来的一切，以后都可以由 [made](https://docs.raku.org/routine/made) 访问。
+
 You can imagine that the `make` places the result in a special contained area for a grammar. Everything that we `make` can be accessed later by [made](https://docs.raku.org/routine/made).
+
+因此，我们不应该使用上面的 REST-actions 类，而应该写：
 
 So instead of the REST-actions class above, we should write:
 
@@ -506,6 +558,8 @@ class REST-actions
     method data($/) { make $/.split('/') }
 }
 ```
+
+当我们将 `make` 添加到匹配拆分（它返回一个列表）时，该动作将返回一个数据结构到语法，该语法将与原始语法的 `data` token 分开存储。这样，如果我们需要的话，我们可以和两者一起工作。
 
 When we add `make` to the match split (which returns a list), the action will return a data structure to the grammar that will be stored separately from the `data` token of the original grammar. This way, we can work with both if we need to.
 
