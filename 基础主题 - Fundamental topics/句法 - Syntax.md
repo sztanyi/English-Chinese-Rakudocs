@@ -841,7 +841,7 @@ say [@a, 3, 4].perl;  # OUTPUT: «[[1, 2], 3, 4]␤»
 say [|@a, 3, 4].perl; # OUTPUT: «[1, 2, 3, 4]␤»
 ```
 
-[列表](https://docs.raku.org/type/List)类型可以从数组字面量声明中显式创建，无需从数组强制，在声明时使用 **is** [特性](https://docs.raku.org/language/traits)。
+[列表](https://docs.raku.org/type/List)类型可以从数组字面量声明中显式创建，无需从数组强制转换，在声明时使用 **is** [特性](https://docs.raku.org/language/traits)。
 
 [List](https://docs.raku.org/type/List) type can be explicitly created from an array literal declaration without a coercion from Array, using **is** [trait](https://docs.raku.org/language/traits) on declaration.
 
@@ -891,7 +891,7 @@ say :{ -1 => 41, 0 => 42, 1 => 43 }<0>;  # OUTPUT: «(Any)␤»
 say :{ -1 => 41, 0 => 42, 1 => 43 }{0};  # OUTPUT: «42␤»
 ```
 
-实现了 [Associative](https://docs.raku.org/type/Associative) 角色的特定类型如 [Map](https://docs.raku.org/type/Map)（包括 [Hash](https://docs.raku.org/type/Hash) 、[Stash](https://docs.raku.org/type/Stash) 子类）和 [QuantHash](https://docs.raku.org/type/QuantHash)（以及它的子类）可以在声明时使用 **is** [trait](https://docs.raku.org/language/traits) 从哈希字面量显式创建，而无需强制类型转换：
+实现了 [Associative](https://docs.raku.org/type/Associative) 角色的特定类型如 [Map](https://docs.raku.org/type/Map)（包括 [Hash](https://docs.raku.org/type/Hash) 、[Stash](https://docs.raku.org/type/Stash) 子类）和 [QuantHash](https://docs.raku.org/type/QuantHash)（以及它的子类）可以在声明时使用 **is** [特性](https://docs.raku.org/language/traits)从哈希字面量显式创建，而无需强制类型转换：
 
 Particular types that implement [Associative](https://docs.raku.org/type/Associative) role, [Map](https://docs.raku.org/type/Map) (including [Hash](https://docs.raku.org/type/Hash) and [Stash](https://docs.raku.org/type/Stash) subclasses) and [QuantHash](https://docs.raku.org/type/QuantHash) (and its subclasses), can be explicitly created from a hash literal without a coercion, using **is** [trait](https://docs.raku.org/language/traits) on declaration:
 
