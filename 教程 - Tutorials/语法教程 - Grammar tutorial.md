@@ -15,9 +15,9 @@ An introduction to grammars
 - [变得更技术性 / Getting more technical](#%E5%8F%98%E5%BE%97%E6%9B%B4%E6%8A%80%E6%9C%AF%E6%80%A7--getting-more-technical)
     - [概念概述 / The conceptual overview](#%E6%A6%82%E5%BF%B5%E6%A6%82%E8%BF%B0--the-conceptual-overview)
     - [技术概述 / The technical overview](#%E6%8A%80%E6%9C%AF%E6%A6%82%E8%BF%B0--the-technical-overview)
-- [Learning by example - a REST contrivance](#learning-by-example---a-rest-contrivance)
-    - [Adding some flexibility](#adding-some-flexibility)
-    - [Inheriting from a grammar](#inheriting-from-a-grammar)
+- [案例学习 - REST 设计 / Learning by example - a REST contrivance](#%E6%A1%88%E4%BE%8B%E5%AD%A6%E4%B9%A0---rest-%E8%AE%BE%E8%AE%A1--learning-by-example---a-rest-contrivance)
+    - [增加一些灵活性 / Adding some flexibility](#%E5%A2%9E%E5%8A%A0%E4%B8%80%E4%BA%9B%E7%81%B5%E6%B4%BB%E6%80%A7--adding-some-flexibility)
+    - [从语法继承 / Inheriting from a grammar](#%E4%BB%8E%E8%AF%AD%E6%B3%95%E7%BB%A7%E6%89%BF--inheriting-from-a-grammar)
     - [Adding some constraints](#adding-some-constraints)
     - [Putting our RESTful grammar together](#putting-our-restful-grammar-together)
 - [Grammar actions](#grammar-actions)
@@ -116,6 +116,8 @@ grammar G {
 }
 ```
 
+如果您要使用 `my $match = G.parse($string)`，并且您的字符串以 'clever_text_keyword' 开头，那么您将得到一个包含 'clever_text_keyword' 的匹配对象，`<thingy>` 为该对象的键。例如：
+
 If you were to use `my $match = G.parse($string)` and your string started with 'clever_text_keyword', you would get a match object back that contained 'clever_text_keyword' keyed by the name of `<thingy>` in your match object. For instance:
 
 ```Raku
@@ -131,23 +133,40 @@ say $/<thingy>.perl;
 # OUTPUT: «Match.new(made => Any, pos => 3, orig => "Þor is mighty", hash => Map.new(()), list => (), from => 0)␤» 
 ```
 
+前两个输出行显示 `$match` 包含一个带有解析结果的 `Match` 对象；但是这些结果也分配给[匹配变量 `$/`](https://docs.raku.org/syntax/$$SOLIDUS)。两者都可以通过键访问，如上面所示。可以通过 `thingy` 键访问以返回特定 `token` 的匹配对象。
+
 The two first output lines show that `$match` contains a `Match` objects with the results of the parsing; but those results are also assigned to the [match variable `$/`](https://docs.raku.org/syntax/$$SOLIDUS). Either match object can be keyed, as indicated above, by `thingy` to return the match for that particular `token`.
+
+`TOP` 方法（无论是 regex、token 还是 rule）是必须匹配一切（默认情况下）的总体模式。如果已解析的字符串与顶部正则表达式不匹配，则返回的Match对象将为空(`NIL‘)。
 
 The `TOP` method (whether regex, token, or rule) is the overarching pattern that must match everything (by default). If the parsed string doesn't match the TOP regex, your returned match object will be empty (`Nil`).
 
+如上文所示，在 `TOP` 中，提到了 `<thingy>` token。`<thingy>` 在下一行定义。这意味着 `'clever_text_keyword'` ‘**必须**是字符串中的第一件事，否则语法解析将失败，我们将得到一个空匹配。这对于识别应该丢弃的格式错误的字符串非常有用。
+
 As you can see above, in `TOP`, the `<thingy>` token is mentioned. The `<thingy>` is defined on the next line. That means that `'clever_text_keyword'` **must** be the first thing in the string, or the grammar parse will fail and we'll get an empty match. This is great for recognizing a malformed string that should be discarded.
 
-<a id="learning-by-example---a-rest-contrivance"></a>
-# Learning by example - a REST contrivance
+<a id="%E6%A1%88%E4%BE%8B%E5%AD%A6%E4%B9%A0---rest-%E8%AE%BE%E8%AE%A1--learning-by-example---a-rest-contrivance"></a>
+# 案例学习 - REST 设计 / Learning by example - a REST contrivance
+
+假设我们希望将 URI 解析为构成 RESTful 请求的组件部分。我们希望 URI 这样工作：
 
 Let's suppose we'd like to parse a URI into the component parts that make up a RESTful request. We want the URIs to work like this:
+
+- URI 的第一部分将是“主体”，就像一个组件、一个产品或一个人。
+- URI的第二部分是“命令”，这是标准的 CRUD 函数（创建、检索、更新或删除）。
+- URI的第三部分将是任意数据，可能是我们将要使用的特定 ID，或者是由 "/" 分隔的一长串数据。
+- 当我们得到一个 URI 时，我们希望将上面的 1-3 放在一个数据结构中，我们可以很容易地使用这个结构（并在以后进行增强）。
 
 - The first part of the URI will be the "subject", like a part, or a product, or a person.
 - The second part of the URI will be the "command", the standard CRUD functions (create, retrieve, update, or delete).
 - The third part of the URI will be arbitrary data, perhaps the specific ID we'll be working with or a long list of data separated by "/"'s.
 - When we get a URI, we'll want 1-3 above to be placed into a data structure that we can easily work with (and later enhance).
 
+因此，如果我们有 "/product/update/7/notify"，那么我们希望语法给出一个匹配的对象，该对象主题为 "product"、命令为 "update"、数据为 "7/notify"。
+
 So, if we have "/product/update/7/notify", we would want our grammar to give us a match object that has a `subject` of "product", a `command` of "update", and `data` of "7/notify".
+
+我们将通过为主题、命令和数据定义语法类和一些匹配方法而开始。我们将使用 token 声明器，因为我们不关心空白。
 
 We'll start by defining a grammar class and some match methods for the subject, command, and data. We'll use the token declarator since we don't care about whitespace.
 
@@ -159,7 +178,11 @@ grammar REST {
 }
 ```
 
+到目前为止，这个 REST 语法表示我们需要一个主题，它将是 *word* 字符，命令将是 *word* 字符，而数据将是字符串中剩下的所有内容。
+
 So far, this REST grammar says we want a subject that will be just *word* characters, a command that will be just *word* characters, and data that will be everything else left in the string.
+
+接下来，我们希望在 URI 的更大上下文中安排这些匹配的 token。这就是 TOP 方法允许我们做的。我们将添加 TOP 方法，并将标记的名称与构成整个模式的其余模式一起放在其中。请注意，我们是如何从命名正则构建更大的正则表达式的。
 
 Next, we'll want to arrange these matching tokens within the larger context of the URI. That's what the TOP method allows us to do. We'll add the TOP method and place the names of our tokens within it, together with the rest of the patterns that makes up the overall pattern. Note how we're building a larger regex from our named regexes.
 
@@ -171,6 +194,8 @@ grammar REST {
     token data    { .* }
 }
 ```
+
+有了这段代码，我们就可以得到 RESTful 请求的三个部分：
 
 With this code, we can already get the three parts of our RESTful request:
 
@@ -184,12 +209,18 @@ say $match;
 #          data => ｢7/notify｣» 
 ```
 
+可以通过使用 `$match<subject>` 或 `$match<command>` 或 `$match<data>` 来直接访问数据，以返回所解析的值。它们都包含你可以进一步处理的匹配对象，例如将其强制放入字符串（`$match<command>.Str`）。
+
 The data can be accessed directly by using `$match<subject>` or `$match<command>` or `$match<data>` to return the values parsed. They each contain match objects that you can work further with, such as coercing into a string ( `$match<command>.Str` ).
 
-<a id="adding-some-flexibility"></a>
-## Adding some flexibility
+<a id="%E5%A2%9E%E5%8A%A0%E4%B8%80%E4%BA%9B%E7%81%B5%E6%B4%BB%E6%80%A7--adding-some-flexibility"></a>
+## 增加一些灵活性 / Adding some flexibility
+
+到目前为止，语法将处理检索、删除和更新。但是，*create* 命令没有第三个部分（*data* 部分）。这意味着如果我们尝试解析创建 URI，则语法将失败。为了避免这种情况，我们需要使最后的 *data* 位置匹配可选，以及前面的 '/' 。这通过将问号添加到顶部令牌的分组 '/' 和 *data* 组件来实现，以指示它们的可选性质，就像普通正则表达式一样。
 
 So far, the grammar will handle retrieves, deletes and updates. However, a *create* command doesn't have the third part (the *data* portion). This means the grammar will fail to match if we try to parse a create URI. To avoid this, we need to make that last *data* position match optional, along with the '/' preceding it. This is accomplished by adding a question mark to the grouped '/' and *data* components of the TOP token, to indicate their optional nature, just like a normal regex.
+
+所以，现在我们有：
 
 So, now we have:
 
@@ -206,6 +237,8 @@ say $m<subject>, $m<command>;
  
 # OUTPUT: «｢product｣｢create｣␤» 
 ```
+
+接下来，假设 URI 将由用户手动输入，并且用户可能会意外地在 '/' 之间放置空格。如果我们想适应这种情况，可以用允许空格的 token 替换 TOP 中的 '/'。
 
 Next, assume that the URIs will be entered manually by a user and that the user might accidentally put spaces between the '/'s. If we wanted to accommodate for this, we could replace the '/'s in TOP with a token that allowed for spaces.
 
@@ -231,10 +264,14 @@ say $m;
 #          data => ｢7 /notify｣» 
 ```
 
+我们现在在匹配对象中得到了一些额外的垃圾，还有那些斜杠。有一些技术可以解决这个问题，我们稍后再谈。
+
 We're getting some extra junk in the match object now, with those slashes. There's techniques to clean that up that we'll get to later.
 
-<a id="inheriting-from-a-grammar"></a>
-## Inheriting from a grammar
+<a id="%E4%BB%8E%E8%AF%AD%E6%B3%95%E7%BB%A7%E6%89%BF--inheriting-from-a-grammar"></a>
+## 从语法继承 / Inheriting from a grammar
+
+由于语法是类，所以从面向对象的角度看，它们的行为方式与任何其他类一样；具体来说，它们可以从包含一些 token 或 rule 的基类继承，这种方式如下：
 
 Since grammars are classes, they behave, OOP-wise, in the same way as any other class; specifically, they can inherit from base classes that include some tokens or rules, this way:
 
@@ -242,25 +279,25 @@ Since grammars are classes, they behave, OOP-wise, in the same way as any other 
 grammar Letters {
     token letters { \w+ }
 }
- 
+
 grammar Quote-Quotes {
     token quote { "\""|"`"|"'" }
 }
- 
+
 grammar Quote-Other {
     token quote { "|"|"/"|"¡" }
 }
- 
+
 grammar Quoted-Quotes is Letters is Quote-Quotes {
     token TOP { ^  <quoted> $}
     token quoted { <quote>? <letters> <quote>?  }
 }
- 
+
 grammar Quoted-Other is Letters is Quote-Other {
     token TOP { ^  <quoted> $}
     token quoted { <quote>? <letters> <quote>?  }
 }
- 
+
 my $quoted = q{"enhanced"};
 my $parsed = Quoted-Quotes.parse($quoted);
 say $parsed;
@@ -269,7 +306,7 @@ say $parsed;
 # quote => ｢"｣ 
 # letters => ｢enhanced｣ 
 #quote => ｢"｣ 
- 
+
 $quoted = "|barred|";
 $parsed = Quoted-Other.parse($quoted);
 say $parsed;
@@ -279,6 +316,8 @@ say $parsed;
 #letters => ｢barred｣ 
 #quote => ｢|｣ 
 ```
+
+本例通过改变与 `quotes` 对应的规则，使用多重继承来组成两种不同的语法。此外，在这种情况下，我们使用的是组合而不是继承，因此我们可以使用角色而不是继承。
 
 This example uses multiple inheritance to compose two different grammars by varying the rules that correspond to `quotes`. In this case, besides, we are rather using composition than inheritance, so we could use Roles instead of inheritance.
 
