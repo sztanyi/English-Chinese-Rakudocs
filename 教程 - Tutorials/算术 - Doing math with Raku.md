@@ -76,7 +76,7 @@ We declare `⁻` as the *complement* operation, which computes the symmetrical d
 
 # 算术 / Arithmetic
 
-Raku 可以使用不同的数据类型进行算术。[Num](https://docs.raku.org/type/Num)、[Rat](https://docs.raku.org/type/Rat) 和 [Complex](https://docs.raku.org/type/Complex) 都可以作为[加法、减法、乘法和除法运算符的字段](https://en.wikipedia.org/wiki/Field_(mathematics))（从技术上讲，处理浮点数表示的数据类型由于其算术本身的不精确性而不是数学意义上的领域。然而，在大多数情况下，它们构成了这类数学对象的一个足够近似的、计算机友好的版本）。等价的数学领域是：
+Raku 可以使用不同的数据类型进行算术。[Num](https://docs.raku.org/type/Num)、[Rat](https://docs.raku.org/type/Rat) 和 [Complex](https://docs.raku.org/type/Complex) 都可以作为[加法、减法、乘法和除法运算符的字段](https://en.wikipedia.org/wiki/Field_(mathematics))（从技术上讲，处理浮点数表示的数据类型由于其算术本身的不精确性而不是数学意义上的字段。然而，在大多数情况下，它们构成了这类数学对象的一个足够近似的、计算机友好的版本）。等价的数学字段是：
 
 Raku can do arithmetic using different data types. [Num](https://docs.raku.org/type/Num), [Rat](https://docs.raku.org/type/Rat) and [Complex](https://docs.raku.org/type/Complex) can all operate as a [field under the operations of addition, subtraction, multiplication and division](https://en.wikipedia.org/wiki/Field_(mathematics)) (technically, it should be noted that data types dealing with floating point number representations are not a field in the mathematical sense due to the inherent imprecisions of their arithmetic. However, they constitute an approximate enough, computer friendly version of such mathematical objects for most of the cases). The equivalent mathematical fields are:
 
@@ -86,7 +86,11 @@ Raku can do arithmetic using different data types. [Num](https://docs.raku.org/t
 | Num        | ℝ     |
 | Complex    | ℂ     |
 
+在数学中通常被这样叫的 `Int` 或 ℤ，不是一个数学字段，而是一个环，因为它们不是在乘法逆运算下封闭的。但是，如果使用整数除法 `div`，则它们的操作总是会产生其他整数；而如果使用 `/`，则结果通常是 [Rat](https://docs.raku.org/type/Rat)。
+
 The `Int`s or ℤ, as they're usually called in mathematics, are not a mathematical field but rather a ring, since they are not closed under multiplicative inverses. However, if the integer division `div` is used, their operations will always yield other integers; if `/` is used, on the other hand, in general the result will be a [Rat](https://docs.raku.org/type/Rat).
+
+此外，`Int` 可以执行无限精度运算（或至少在内存允许的范围内；“数字溢出”仍可发生），如果数字太大，则不回退回到 [Num](https://docs.raku.org/type/Num)：
 
 Besides, `Int` can do infinite-precision arithmetic (or at least infinite as memory allows; `Numeric overflow` can still occur), without falling back to [Num](https://docs.raku.org/type/Num) if the number is too big:
 
@@ -94,9 +98,19 @@ Besides, `Int` can do infinite-precision arithmetic (or at least infinite as mem
 my @powers = 2, 2 ** * ... Inf; say @powers[4].chars; # OUTPUT: «19729␤»
 ```
 
+严格地说，行为像数学字段的 Rational 类是 [FatRat](https://docs.raku.org/type/FatRat)。出于效率原因，当数字足够大或分子和分母之间有很大差异时，使用 `Rat` 的操作将回到 `Num`。`FatRat` 可以以任意精度工作，与默认的 `Int` 类相同。
+
 Also strictly speaking, the Rational class that behaves like a mathematical field is [FatRat](https://docs.raku.org/type/FatRat). For efficiency reasons, operating with `Rat`s will fall back to `Num` when the numbers are big enough or when there is a big difference between numerator and denominator. `FatRat` can work with arbitrary precision, the same as the default `Int` class.
 
+生态系统中的某些模块可以在数学上处理其他数据类型：
+
 Some modules in the ecosystem can work with additional data types mathematically:
+
+- [`Math::Vector`](https://github.com/colomon/Math-Vector) 可以对 [vectors](https://en.wikipedia.org/wiki/Coordinate_vector) 执行基本运算。
+- [`Math::Matrix`](https://github.com/pierre-vigier/Perl6-Math-Matrix) 对[数值环上的矩阵环](https://en.wikipedia.org/wiki/Matrix_(mathematics))运算。
+- [`Math::Quaternion`](https://github.com/Util/Perl6-Math-Quaternion) 为[四元数代数, ℍ](https://en.wikipedia.org/wiki/Quaternion) 运算。
+- [`Math::Polynomial`](https://github.com/colomon/Math-Polynomial) 处理多项式并且能够用它们做简单的算术。
+- [`Math::Symbolic`](https://github.com/raydiak/Math-Symbolic) 处理符号数学。
 
 - [`Math::Vector`](https://github.com/colomon/Math-Vector) basic operations for [vectors](https://en.wikipedia.org/wiki/Coordinate_vector).
 - [`Math::Matrix`](https://github.com/pierre-vigier/Perl6-Math-Matrix) operates on [matrices rings over numeric rings](https://en.wikipedia.org/wiki/Matrix_(mathematics)).
@@ -104,11 +118,15 @@ Some modules in the ecosystem can work with additional data types mathematically
 - [`Math::Polynomial`](https://github.com/colomon/Math-Polynomial) works with polynomials, and is able to do simple arithmetic with them.
 - [`Math::Symbolic`](https://github.com/raydiak/Math-Symbolic), for symbolic math.
 
+数字将被自动类型转换到实际表示的数字类：
+
 Numbers are duck-typed automatically to the numeric class they actually represent:
 
 ```Raku
 .^name.say for (4, ⅗, 1e-9, 3+.1i); # OUTPUT: «Int␤Rat␤Num␤Complex␤»
 ```
+
+算术运算是通过考虑操作数的类型来执行的：
 
 Arithmetic operations are performed by taking into account the type of operands:
 
@@ -116,11 +134,15 @@ Arithmetic operations are performed by taking into account the type of operands:
 say .33-.22-.11 == 0; # OUTPUT: «True␤»
 ```
 
+在这种情况下，所有数字都被解释为 `Rat`，这使得操作准确。一般来说，大多数其他语言都会将它们解释为浮点数，如果需要，也可以用 Raku 语言实现：
+
 In this case, all numbers are interpreted as `Rat`s, which makes the operation exact. In general, most other languages would interpret them as floating point numbers, which can also be achieved in Raku if needed:
 
 ```Raku
 say .33.Num -.22.Num - .11.Num; # OUTPUT: «1.3877787807814457e-17␤»
 ```
+
+对于这种情况，Raku 还包括一个“近似相等”运算符 [≅](https://docs.raku.org/language/operators#infix_=~=)
 
 For cases such as this, Raku also includes an `approximately equal` operator, [≅](https://docs.raku.org/language/operators#infix_=~=)
 
@@ -128,7 +150,7 @@ For cases such as this, Raku also includes an `approximately equal` operator, [�
 say .33.Num -.22.Num - .11.Num ≅ 0; # OUTPUT: «True␤»
 ```
 
-# Sequences
+# 序列 / Sequences
 
 A [sequence](https://en.wikipedia.org/wiki/Sequence) is an *enumerated* collection of objects in which repetitions are allowed, and also a first-class data type in Raku called [Seq](https://docs.raku.org/type/Seq). `Seq` is able to represent infinite sequences, like the natural numbers:
 
