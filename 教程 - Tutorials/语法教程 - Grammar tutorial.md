@@ -23,7 +23,7 @@ An introduction to grammars
 - [语法动作 / Grammar actions](#%E8%AF%AD%E6%B3%95%E5%8A%A8%E4%BD%9C--grammar-actions)
     - [有动作的语法示例 / Grammars by example with actions](#%E6%9C%89%E5%8A%A8%E4%BD%9C%E7%9A%84%E8%AF%AD%E6%B3%95%E7%A4%BA%E4%BE%8B--grammars-by-example-with-actions)
     - [用 `make` 和 `made` 保持语法与动作的整洁 / Keeping grammars with actions tidy with `make` and `made`](#%E7%94%A8-make-%E5%92%8C-made-%E4%BF%9D%E6%8C%81%E8%AF%AD%E6%B3%95%E4%B8%8E%E5%8A%A8%E4%BD%9C%E7%9A%84%E6%95%B4%E6%B4%81--keeping-grammars-with-actions-tidy-with-make-and-made)
-    - [Add actions directly](#add-actions-directly)
+    - [直接添加动作 / Add actions directly](#%E7%9B%B4%E6%8E%A5%E6%B7%BB%E5%8A%A0%E5%8A%A8%E4%BD%9C--add-actions-directly)
 
 <!-- /MarkdownTOC -->
 
@@ -86,7 +86,7 @@ my $matchObject = G.parse($string);
 
 Now, you may be wondering, if I have all these regexes defined that just return their results, how does that help with parsing strings that may be ahead or backwards in another string, or things that need to be combined from many of those regexes... And that's where grammar actions come in.
 
-对于语法中匹配的每一个“方法”，都会得到一个可用于对该匹配进行操作的操作。您还可以获得一个总体操作，用于将所有匹配项绑定在一起并构建数据结构。默认情况下，此总体方法称为 `TOP`。
+对于语法中匹配的每一个“方法”，都会得到一个可用于对该匹配进行操作的操作。你还可以获得一个总体操作，用于将所有匹配项绑定在一起并构建数据结构。默认情况下，此总体方法称为 `TOP`。
 
 For every "method" you match in your grammar, you get an action you can use to act on that match. You also get an overarching action that you can use to tie together all your matches and to build a data structure. This overarching method is called `TOP` by default.
 
@@ -116,7 +116,7 @@ grammar G {
 }
 ```
 
-如果您要使用 `my $match = G.parse($string)`，并且您的字符串以 'clever_text_keyword' 开头，那么您将得到一个包含 'clever_text_keyword' 的匹配对象，`<thingy>` 为该对象的键。例如：
+如果你要使用 `my $match = G.parse($string)`，并且你的字符串以 'clever_text_keyword' 开头，那么你将得到一个包含 'clever_text_keyword' 的匹配对象，`<thingy>` 为该对象的键。例如：
 
 If you were to use `my $match = G.parse($string)` and your string started with 'clever_text_keyword', you would get a match object back that contained 'clever_text_keyword' keyed by the name of `<thingy>` in your match object. For instance:
 
@@ -470,11 +470,11 @@ The *data* token returns the entire end of the URI as one string. The 4 is fine.
 
 Grammar actions are used within grammar classes to do things with matches. Actions are defined in their own classes, distinct from grammar classes.
 
-您可以将语法动作看作是语法的一种插件扩展模块。很多时候，您会很高兴地使用语法本身。但是，当您需要进一步处理这些字符串时，可以插入动作扩展模块。
+你可以将语法动作看作是语法的一种插件扩展模块。很多时候，你会很高兴地使用语法本身。但是，当你需要进一步处理这些字符串时，可以插入动作扩展模块。
 
 You can think of grammar actions as a kind of plug-in expansion module for grammars. A lot of the time you'll be happy using grammars all by their own. But when you need to further process some of those strings, you can plug in the Actions expansion module.
 
-要处理动作，您可以使用一个名为 `actions` 的命名参数，该参数应该包含动作类的一个实例。使用上面的代码，如果我们的动作类名为 REST-Actions，我们将解析 URI 字符串，如下所示：
+要处理动作，你可以使用一个名为 `actions` 的命名参数，该参数应该包含动作类的一个实例。使用上面的代码，如果我们的动作类名为 REST-Actions，我们将解析 URI 字符串，如下所示：
 
 To work with actions, you use a named parameter called `actions` which should contain an instance of your actions class. With the code above, if our actions class called REST-actions, we would parse the URI string like this:
 
@@ -486,7 +486,7 @@ my $matchObject = REST.parse($uri, actions => REST-actions.new);
 my $matchObject = REST.parse($uri, :actions(REST-actions.new));
 ```
 
-如果您使用与语法方法*（token、regex、rule）相同的名称命名您的操作方法，则当您的语法方法匹配时，将自动调用具有相同名称的操作方法。该方法也将通过相应的匹配对象（由 `$/` 变量表示）。
+如果你使用与语法方法*（token、regex、rule）相同的名称命名你的操作方法，则当你的语法方法匹配时，将自动调用具有相同名称的操作方法。该方法也将通过相应的匹配对象（由 `$/` 变量表示）。
 
 If you *name your action methods with the same name as your grammar methods* (tokens, regexes, rules), then when your grammar methods match, your action method with the same name will get called automatically. The method will also be passed the corresponding match object (represented by the `$/` variable).
 
@@ -544,7 +544,7 @@ But not really; there's a little more.
 
 If the grammar calls the action above on data, the data method will be called, but nothing will show up in the big `TOP` grammar match result returned to our program. In order to make the action results show up, we need to call [make](https://docs.raku.org/routine/make) on that result. The result can be many things, including strings, array or hash structures.
 
-您可以想象 `make` 将结果放置在一个特殊的语法包含区域中。`make` 出来的一切，以后都可以由 [made](https://docs.raku.org/routine/made) 访问。
+你可以想象 `make` 将结果放置在一个特殊的语法包含区域中。`make` 出来的一切，以后都可以由 [made](https://docs.raku.org/routine/made) 访问。
 
 You can imagine that the `make` places the result in a special contained area for a grammar. Everything that we `make` can be accessed later by [made](https://docs.raku.org/routine/made).
 
@@ -563,6 +563,8 @@ class REST-actions
 
 When we add `make` to the match split (which returns a list), the action will return a data structure to the grammar that will be stored separately from the `data` token of the original grammar. This way, we can work with both if we need to.
 
+如果我们只想从那个长 URI 访问 7 的 ID，那么我们访问 `data` 动作用 `made` 返回的列表的第一个元素：
+
 If we want to access just the ID of 7 from that long URI, we access the first element of the list returned from the `data` action that we `made`:
 
 ```Raku
@@ -574,9 +576,15 @@ say $match<data>.made[0];  # OUTPUT: «7␤»
 say $match<command>.Str;   # OUTPUT: «update␤» 
 ```
 
+我们对 data 调用 `made`，因为我们希望得到动作类中同名 data 方法中使用 `make` 返回的那个拆分数组。这太可爱了！但是，如果我们能 `make` 一个包含我们想要的所有东西的更友好的数据结构，而不是强迫类型沌河和记住阵列，那岂不是更可爱吗？
+
 Here we call `made` on data, because we want the result of the action that we `made` (with `make`) to get the split array. That's lovely! But, wouldn't it be lovelier if we could `make` a friendlier data structure that contained all of the stuff we want, rather than having to coerce types and remember arrays?
 
+就像语法的 `TOP`（与整个字符串匹配）一样，动作也有一个 TOP 方法。我们可以 `make` 所有单独的匹配组件，如 `data` 或 `subject` 或 `command`，然后我们可以将它们放置在数据结构中并在 TOP 中将他们 `make`。当我们返回最终的匹配对象时，我们可以访问这个数据结构。
+
 Just like Grammar's `TOP`, which matches the entire string, actions have a TOP method as well. We can `make` all of the individual match components, like `data` or `subject` or `command`, and then we can place them in a data structure that we will `make` in TOP. When we return the final match object, we can then access this data structure.
+
+为此，我们将方法 `TOP` 添加到动作类中，并从组件片段中添加任何我们喜欢的数据结构。
 
 To do this, we add the method `TOP` to the action class and `make` whatever data structure we like from the component pieces.
 
@@ -595,9 +603,15 @@ class REST-actions
 }
 ```
 
+在 `TOP` 方法中，`subject` 与我们在语法中匹配的 subject 保持不变。此外，`command` 返回匹配的有效 `<sym>` （创建、更新、检索或删除）。因为我们不需要完整的匹配对象，所以将他们用 `.Str` 方法转换为字符串。
+
 Here in the `TOP` method, the `subject` remains the same as the subject we matched in the grammar. Also, `command` returns the valid `<sym>` that was matched (create, update, retrieve, or delete). We coerce each into `.Str`, as well, since we don't need the full match object.
 
+我们希望确保在 `$<data>` 对象上使用 `made` 方法，因为我们希望访问我们在 action 中使用 data 方法用 `make` 返回的拆分数组，而不是 `$<data>` 对象。
+
 We want to make sure to use the `made` method on the `$<data>` object, since we want to access the split one that we `made` with `make` in our action, rather than the proper `$<data>` object.
+
+在语法动作的 `TOP` 方法中 `make` 之后，我们就可以通过调用语法结果对象上的 `made` 方法来访问所有的自定义值。代码现在变成
 
 After we `make` something in the `TOP` method of a grammar action, we can then access all the custom values by calling the `made` method on the grammar result object. The code now becomes
 
@@ -612,6 +626,8 @@ say $rest<command>;   # OUTPUT: «update␤»
 say $rest<subject>;   # OUTPUT: «product␤» 
 ```
 
+如果不需要完整的返回匹配对象，则只能从 action 的 `TOP` 返回已生成的数据。
+
 If the complete return match object is not needed, you could return only the made data from your action's `TOP`.
 
 ```Raku
@@ -624,6 +640,8 @@ say $rest<command>;   # OUTPUT: «update␤»
 say $rest<subject>;   # OUTPUT: «product␤» 
 ```
 
+哦，我们忘了去掉那个丑陋的数组元素了吗？嗯。让我们在 `TOP` 中的语法自定义返回中新的东西。。。我们称其为 `subject-id`，并将其设置为 `<data>` 的第一个元素如何？
+
 Oh, did we forget to get rid of that ugly array element number? Hmm. Let's make something new in the grammar's custom return in `TOP`... how about we call it `subject-id` and have it set to element 0 of `<data>`.
 
 ```Raku
@@ -635,10 +653,12 @@ class REST-actions
                data       => $<data>.made,
                subject-id => $<data>.made[0] }
     }
- 
+
     method data($/) { make $/.split('/') }
 }
 ```
+
+现在我们可以这样做：
 
 Now we can do this instead:
 
@@ -651,6 +671,8 @@ say $rest<command>;    # OUTPUT: «update␤»
 say $rest<subject>;    # OUTPUT: «product␤» 
 say $rest<subject-id>; # OUTPUT: «7␤» 
 ```
+
+完整代码：
 
 Here's the final code:
 
@@ -684,8 +706,10 @@ class REST-actions
 }
 ```
 
-<a id="add-actions-directly"></a>
-## Add actions directly
+<a id="%E7%9B%B4%E6%8E%A5%E6%B7%BB%E5%8A%A0%E5%8A%A8%E4%BD%9C--add-actions-directly"></a>
+## 直接添加动作 / Add actions directly
+
+上面，我们将介绍如何将语法与动作对象关联起来，并在匹配对象上执行动作。然而，当我们想要处理匹配对象时，这不是唯一的方法。见下面的例子：
 
 Above we see how to associate grammars with action objects and perform actions on the match object. However, when we want to deal with the match object, that isn't the only way. See the example below:
 
@@ -709,10 +733,18 @@ G.parse('sub f ( a ) { }');
 # OUTPUT: «func f␤param a␤end f␤» 
 ```
 
+此示例是解析器的缩减部分。让我们更多地关注它显示的特性。
+
 This example is a reduced portion of a parser. Let's focus more on the feature it shows.
+
+首先，我们可以在语法本身中添加动作，这些动作在正则表达式的控制流到达它们之后执行。注意，动作对象的方法总是在整个正则项匹配之后执行。第二，它显示了 `make` 真正做了什么，它不过是 `$/.made = ...` 的语法糖。这个技巧引入了一种从正则项中传递消息的方法。
 
 First, we can add actions inside the grammar itself, and such actions are performed once the control flow of the regex arrives at them. Note that action object's method will always be performed after the whole regex item matched. Second, it shows what `make` really does, which is no more than a sugar of `$/.made = ...`. And this trick introduces a way to pass messages from within a regex item.
 
-Hopefully this has helped introduce you to the grammars in Raku and shown you how grammars and grammar action classes work together. For more information, check out the more advanced [Perl Grammar Guide](https://docs.raku.org/language/grammars).
+希望这有助于你了解 Raku 中的语法，并向你展示语法和语法动作类是如何协同工作的。有关更多信息，请查看 [Raku 语法指南](https://docs.raku.org/language/grammars)。
+
+Hopefully this has helped introduce you to the grammars in Raku and shown you how grammars and grammar action classes work together. For more information, check out the more advanced [Raku Grammar Guide](https://docs.raku.org/language/grammars).
+
+有关语法调试的更多信息，请参见 [Grammar::Debugger](https://github.com/jnthn/grammar-debugger)。这为每个语法标记提供断点和颜色编码匹配以及失败输出。
 
 For more grammar debugging, see [Grammar::Debugger](https://github.com/jnthn/grammar-debugger). This provides breakpoints and color-coded MATCH and FAIL output for each of your grammar tokens.
