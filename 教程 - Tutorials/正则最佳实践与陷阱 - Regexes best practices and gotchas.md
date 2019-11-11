@@ -26,7 +26,7 @@ To help with robust regexes and grammars, here are some best practices for code 
 
 Without the `:sigspace` adverb, whitespace is not significant in Raku regexes. Use that to your own advantage and insert whitespace where it increases readability. Also, insert comments where necessary.
 
-紧凑版
+紧凑版本
 
 Compare the very compact
 
@@ -34,7 +34,7 @@ Compare the very compact
 my regex float { <[+-]>?\d*'.'\d+[e<[+-]>?\d+]? }
 ```
 
-更高可读性版
+更高可读性版本
 
 to the more readable
 
