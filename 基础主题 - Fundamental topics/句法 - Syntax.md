@@ -1075,7 +1075,7 @@ my @functions = ({say 1}, {say 2}, {say 3});
 @functions>>.(); # hyper method call operator
 ```
 
-在类内声明时，子例程被称为 "method"：方法是针对对象（即类实例）调用的子例程。在方法中，特殊变量 `self` 包含对象实例（请参见[方法](https://docs.raku.org/language/classtut#Methods)）。
+在类内声明时，子例程被称为方法：方法是针对对象（即类实例）调用的子例程。在方法中，特殊变量 `self` 包含对象实例（请参见[方法](https://docs.raku.org/language/classtut#Methods)）。
 
 When declared within a class, a subroutine is named "method": methods are subroutines invoked against an object (i.e., a class instance). Within a method the special variable `self` contains the object instance (see [Methods](https://docs.raku.org/language/classtut#Methods)).
 
