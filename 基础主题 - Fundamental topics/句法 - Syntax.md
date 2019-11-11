@@ -120,14 +120,14 @@ or even
 if True {say "Hello"}
 ```
 
-尽管你不能遗漏任何剩余的空白。
+尽管你不能去掉任何剩余的空白。
 
 though you can't leave out any of the remaining whitespace.
 
 <a id="%E5%8F%8D%E7%A9%BA%E6%A0%BC--unspace"></a>
 ## 反空格 / Unspace
 
-在编译器不允许空格的许多地方，只要用反斜杠引起来，就可以使用任意数量的空格。不支持 token 中的非空格。编译器生成行号时，反空格的新行仍然算数。反空格的用例是后缀操作符和例程参数列表的分离。
+很多在编译器不允许空格的地方，只要用反斜杠引起来，就可以使用任意数量的空格。反空格在 token 中是不支持的。编译器生成行号时，反空格的新行仍然算数。反空格的用例是后缀操作符和例程参数列表的分离。
 
 In many places where the compiler would not allow a space you can use any amount of whitespace, as long as it is quoted with a backslash. Unspaces in tokens are not supported. Newlines that are unspaced still count when the compiler produces line numbers. Use cases for unspace are separation of postfix operators and routine argument lists.
 
@@ -217,7 +217,7 @@ say "world";
 <a id="%E6%B3%A8%E9%87%8A--comments"></a>
 ## 注释 / Comments
 
-注释是程序文本的一部分，仅面向人类读者；Raku 编译器不会将它们作为程序文本进行计算。它们是*非环境*代码的一部分，包括 *Pod 6* 文本。
+注释是程序文本的一部分，仅面向人类读者；Raku 编译器不会将它们作为程序文本。它们是*非环境*代码的一部分，包括 *Pod 6* 文本。
 
 Comments are parts of the program text which are only intended for human readers; the Raku compilers do not evaluate them as program text. They are part of the *non-ambient* code that includes *Pod 6* text.
 
@@ -242,7 +242,7 @@ if $age > 250 {     # catch obvious outliers
 <a id="%E5%A4%9A%E8%A1%8C%E5%B5%8C%E5%85%A5%E6%B3%A8%E9%87%8A---multi-line--embedded-comments"></a>
 ### 多行/嵌入注释 - Multi-line / embedded comments
 
-多行和嵌入的注释以井号字符开头，后跟一个反撇号，然后是一些开始的括号字符，最后是匹配的结束括号字符。只有成对的字符（）、{}、[] 和 <> 才对限制注释块有效。（不同于匹配和替换，其中的成对如 !!、|| 或 @ 可以使用。）内容不仅可以跨多行，还可以内嵌。
+多行和嵌入的注释以井字符号开头，后跟一个反撇号，然后是一些开始的括号字符，最后是匹配的结束括号字符。只有成对的字符（）、{}、[] 和 <> 才对限制注释块有效。（不同于匹配和替换，其中的成对如 !!、|| 或 @ 可以使用。）内容不仅可以跨多行，还可以内嵌。
 
 Multi-line and embedded comments start with a hash character, followed by a backtick, and then some opening bracketing character, and end with the matching closing bracketing character. Only the paired characters (), {}, [], and <> are valid for bounding comment blocks. (Unlike matches and substitutions, where pairs such as !!, || or @ may be used.) The content can not only span multiple lines, but can also be embedded inline.
 
@@ -292,7 +292,7 @@ say 'code again';
 <a id="%E6%A0%87%E8%AF%86%E7%AC%A6--identifiers"></a>
 ## 标识符 / Identifiers
 
-标识符是语法构建块，可用于给实体/对象命名，例如常量、变量（例如“标量”和例程（例如 `Sub` 和对象方法）。在[变量名](https://docs.raku.org/language/variables)中，任何标记（和符号）都位于标识符之前，不构成标识符的一部分。
+标识符是语法上的构建块，可用于给实体/对象命名，例如常量、变量（例如“标量”）和例程（例如 `Sub` 和对象方法）。在[变量名](https://docs.raku.org/language/variables)中，任何标记（和符号）都位于标识符之前，不构成标识符的一部分。
 
 Identifiers are grammatical building blocks that may be used to give a name to entities/objects such as constants, variables (e.g. `Scalar`s) and routines (e.g. `Sub`s and Methods). In a [variable name](https://docs.raku.org/language/variables), any sigil (and twigil) precedes the identifier and does not form a part thereof.
 
@@ -313,7 +313,7 @@ Identifiers come in different forms: ordinary, extended, and compound identifier
 
 An ordinary identifier is composed of a leading alphabetic character which may be followed by one or more alphanumeric characters. It may also contain isolated, embedded apostrophes `'` and/or hyphens `-`, provided that the next character is each time alphabetic.
 
-“字母”和“字母数字”的定义包括适当的 Unicode 字符。哪些字符“合适”取决于实现。在 Rakudo/MoarVM Raku 实现中，字母字符包括具有 Unicode 通用类别值 *Letter* (L) 和下划线 `_` 的字符。字母数字字符还包括 Unicode 通用类别值 *数字、十进制数字*（Nd）的字符。
+“字母”和“字母数字”的定义包括适当的 Unicode 字符。哪些字符“合适”取决于实现。在 Rakudo/MoarVM Raku 实现中，字母字符包括具有 Unicode 通用类别值 *Letter* (L) 和下划线 `_` 的字符。字母数字字符还包括 Unicode 通用类别值*数字、十进制数字*（Nd）的字符。
 
 The definitions of "alphabetic" and "alphanumeric" include appropriate Unicode characters. Which characters are "appropriate" depends on the implementation. In the Rakudo/MoarVM Raku implementation alphabetic characters include characters with the Unicode General Category value *Letter* (L), and the underscore `_`. Alphanumeric characters additionally include characters with the Unicode General Category value *Number, Decimal Digit* (Nd).
 

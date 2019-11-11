@@ -13,7 +13,7 @@ To help with robust regexes and grammars, here are some best practices for code 
 <!-- MarkdownTOC -->
 
 - [代码布局 / Code layout](#%E4%BB%A3%E7%A0%81%E5%B8%83%E5%B1%80--code-layout)
-- [保持小一点 / Keep it small](#%E4%BF%9D%E6%8C%81%E5%B0%8F%E4%B8%80%E7%82%B9--keep-it-small)
+- [小一点 / Keep it small](#%E4%BF%9D%E6%8C%81%E5%B0%8F%E4%B8%80%E7%82%B9--keep-it-small)
 - [匹配什么 / What to match](#%E5%8C%B9%E9%85%8D%E4%BB%80%E4%B9%88--what-to-match)
 - [匹配空格 / Matching whitespace](#%E5%8C%B9%E9%85%8D%E7%A9%BA%E6%A0%BC--matching-whitespace)
 
