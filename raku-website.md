@@ -15,3 +15,9 @@ https://pl6anet.org/
 
 # Presentations by Jonathan Worthington
 http://www.jnthn.net/articles.shtml
+
+# Red ORM
+https://fco.github.io/Red/
+
+# WEEKLY CHALLENGE - PERL & RAKU
+https://perlweeklychallenge.org/

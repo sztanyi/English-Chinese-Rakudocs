@@ -98,7 +98,7 @@ Making classes associative provides a very convenient way of using and working w
 <a id="%E5%8F%AF%E5%8F%98%E5%93%88%E5%B8%8C%E5%92%8C%E4%B8%8D%E5%8F%98%E6%98%A0%E5%B0%84--mutable-hashes-and-immutable-maps"></a>
 # 可变哈希和不变映射 / Mutable hashes and immutable maps
 
-`Hash` 是从键到值的可变映射（在其他编程语言中称为 *dictionary*、 *hash table* 或 *map*）。这些值都是标量容器，这意味着你可以分配给它们。[Map](https://docs.raku.org/type/Map) 是不可变的。一旦一个键与一个值配对，就不能更改此配对。
+`Hash` 是从键到值的可变映射（在其他编程语言中称为*字典*、*哈希表*或*映射*）。这些值都是标量容器，这意味着你可以给它们赋值。[Map](https://docs.raku.org/type/Map) 是不可变的。一旦一个键与一个值配对，就不能更改此配对。
 
 A `Hash` is a mutable mapping from keys to values (called *dictionary*, *hash table* or *map* in other programming languages). The values are all scalar containers, which means you can assign to them. [Map](https://docs.raku.org/type/Map)s are, on the other hand, immutable. Once a key has been paired with a value, this pairing cannot be changed.
 
@@ -106,7 +106,7 @@ A `Hash` is a mutable mapping from keys to values (called *dictionary*, *hash ta
 
 Maps and hashes are usually stored in variables with the percent `%` sigil, which is used to indicate they are Associative.
 
-哈希和映射元素由键通过 `{ }` postcircumfix 运算符访问：
+哈希和映射元素由键通过 `{ }` 后环缀运算符访问：
 
 Hash and map elements are accessed by key via the `{ }` postcircumfix operator:
 
@@ -115,7 +115,7 @@ say %*ENV{'HOME', 'PATH'}.perl;
 # OUTPUT: «("/home/camelia", "/usr/bin:/sbin:/bin")␤»
 ```
 
-一般的[下标](https://docs.raku.org/language/subscripts)规则应用于为文本字符串列表提供快捷方式，包括字符串插值和不插值。
+一般的[下标](https://docs.raku.org/language/subscripts)规则应用于为文本字符串列表提供快捷方式，可以使用字符串插值。
 
 The general [Subscript](https://docs.raku.org/language/subscripts) rules apply providing shortcuts for lists of literal strings, with and without interpolation.
 
