@@ -175,6 +175,8 @@ do-something();
 
 If `MyModule` doesn't export `&something` then `require` will fail.
 
+带有编译时符号的 `require` 将安装占位符 `package`，该占位符 `package` 将更新为已加载的模块、类或包。请注意，占位符将被保留，**即使需要加载模块失败。**这意味着检查是否加载这样的模块是错误的：
+
 A `require` with compile-time symbol will install a placeholder `package` that will be updated to the loaded module, class, or package. Note that the placeholder will be kept, **even if require failed to load the module.** This means that checking if a module loaded like this is wrong:
 
 ```Raku
@@ -183,6 +185,8 @@ try require Foo;
 if ::('Foo') ~~ Failure { say "Failed to load Foo!"; }
 # *** WRONG: ***
 ```
+
+由于包是编译时安装的导致 `::('Foo')` 永远不是 `Failure`。正确的方法是：
 
 As the compile-time installed package causes `::('Foo')` to never be a `Failure`. The correct way is:
 
@@ -198,11 +202,15 @@ if ::('Foo') ~~ Failure {
 }
 ```
 
-## Lexical module loading
+## 词法模块加载 / Lexical module loading
+
+Raku 非常注意避免全局状态，即无论您在模块中做什么，它都不应该影响其他代码。例如，这就是为什么默认情况下子例程定义在词法 （`my`）作用域内。如果您希望其他人看到它们，则需要明确地使它们 `our` 作用域或导出它们。
 
 Raku takes great care to avoid global state, i.e. whatever you do in your module, it should not affect other code. For instance, that's why subroutine definitions are lexically (`my`) scoped by default. If you want others to see them, you need to explicitly make them `our` scoped or export them.
 
-Classes are exported by default on the assumption that loading a module will not be of much use when you cannot access the classes it contains. Loaded classes are thus registered only in the scope which loaded them in the first place [[4\]](https://docs.raku.org/language/modules#fn-4). This means that we will have to `use` a class in every scope in which we actually employ it.
+默认情况下类是导出的。它基于这样一种假设，当无法访问模块包含的类时，加载模块不会有多大用处。因此，加载的类只在首先加载它们的作用域 [[4]](https://docs.raku.org/language/modules#fn-4) 中注册。这意味着我们必须在实际使用它的每一个范围中 `use` 一个类。
+
+Classes are exported by default on the assumption that loading a module will not be of much use when you cannot access the classes it contains. Loaded classes are thus registered only in the scope which loaded them in the first place [[4]](https://docs.raku.org/language/modules#fn-4). This means that we will have to `use` a class in every scope in which we actually employ it.
 
 ```Raku
 use Foo;           # Foo has "use Bar" somewhere. 
@@ -211,9 +219,11 @@ my $foo = Foo.new;
 my $bar = Bar.new;
 ```
 
-## Exporting and selective importing
+## 导出和选择性导入 / Exporting and selective importing
 
 ### is export
+
+包、子例程、变量、常量和枚举是通过使用 [is export](https://docs.raku.org/routine/is%20export) 特性来导出的（还请注意用于指示作者和版本的标记）。
 
 Packages, subroutines, variables, constants, and enums are exported by marking them with the [is export](https://docs.raku.org/routine/is%20export) trait (also note the tags available for indicating authors and versions).
 
@@ -223,7 +233,8 @@ our $var is export = 3;
 sub foo is export { ... };
 constant FOO is export = "foobar";
 enum FooBar is export <one two three>;
- 
+
+# 对于 multi 方法，如果声明 proto，只需要标记用 is proto
 # for multi methods, if you declare a proto you 
 # only need to mark the proto with is export 
 proto sub quux(Str $x, |) is export { * };
