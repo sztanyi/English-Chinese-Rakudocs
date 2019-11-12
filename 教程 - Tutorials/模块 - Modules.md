@@ -1,18 +1,26 @@
 原文：https://docs.raku.org/language/modules
 
-# Modules
+# 模块 / Modules
+
+如何创建、使用和分发 Raku 模块
 
 How to create, use, and distribute Raku modules
 
-# Creating and using modules
+# 创建和使用模块 / Creating and using modules
+
+模块通常是一个或一组揭露 Raku 构造的源文件。
 
 A module is usually a source file or set of source files that expose Raku constructs.
 
-[[1\]](https://docs.raku.org/language/modules#fn-1)
+[[1]](https://docs.raku.org/language/modules#fn-1)
+
+模块通常是软件包（[类](https://docs.raku.org/language/objects#Classes)、[角色](https://docs.raku.org/language/objects#Roles)、[语法](https://docs.raku.org/type/Grammar)）、[子例程](https://docs.raku.org/language/functions)，有时是[变量](https://docs.raku.org/language/variables)。在 Raku *模块*中，还可以引用使用 `module` 关键字声明的包的类型（请参见[模块包](https://docs.raku.org/language/module-packages)和下面的示例），但此处我们主要指的是作为命名空间中的一组源文件的"模块"。
 
 Modules are typically packages ([classes](https://docs.raku.org/language/objects#Classes), [roles](https://docs.raku.org/language/objects#Roles), [grammars](https://docs.raku.org/type/Grammar)), [subroutines](https://docs.raku.org/language/functions), and sometimes [variables](https://docs.raku.org/language/variables). In Raku *module* can also refer to a type of package declared with the `module` keyword (see [Module Packages](https://docs.raku.org/language/module-packages) and the examples below) but here we mostly mean "module" as a set of source files in a namespace.
 
-## Looking for and installing modules.
+## 寻找和安装模块 / Looking for and installing modules.
+
+[`zef`](https://github.com/ugexe/zef) 是用于在 Raku 中安装模块的应用程序。模块列在 [Raku 生态系统](https://modules.perl6.org/) 中，可以在那里搜索，也可以从命令行使用 `zef search` 搜索：
 
 [`zef`](https://github.com/ugexe/zef) is the application used for installing modules in Raku. Modules are listed in [the Raku ecosystem](https://modules.perl6.org/) and can be searched there or from the command line using `zef search`:
 
@@ -20,25 +28,37 @@ Modules are typically packages ([classes](https://docs.raku.org/language/objects
 zef search WWW
 ```
 
+将返回包含 WWW 的模块列表。然后,
+
 will return a list of modules that includes WWW in their name, for instance. Then,
 
 ```Raku
 zef install WWW
 ```
 
+如果尚未安装，将使用该特定名称安装模块。[[2]](https://docs.raku.org/language/modules#fn-2)
+
 will install the module with that particular name, if it is not already installed. [[2\]](https://docs.raku.org/language/modules#fn-2)
 
-## Basic structure
+## 基本结构 / Basic structure
 
-Module distributions (in the *set of related source files* sense) in Raku have the same structure as any distribution in the Perl family of languages: there is a main project directory containing a `README` and a `LICENSE` file, a `lib` directory for the source files, which may be individually referred to as modules and/or may themselves define modules with the `module` keyword [[3\]](https://docs.raku.org/language/modules#fn-3) , a `t` directory for tests, and possibly a `bin` directory for executable programs and scripts.
+Raku 中的模块分布（在*关联源码文件集合*的意义上）具有与 Perl 族语言中的任何分布相同的结构：存在一个主项目目录，包含一个 `README` 和一个 `LICENSE` 文件，用于源文件的“lib”目录，这些文件可以单独地称为模块和/或可以自己定义带有 `module` 关键字的模块 [[3]](https://docs.raku.org/language/modules#fn-3)，用于测试的 `t` 目录，以及可执行文件和脚本的 `bin` 目录。
+
+Module distributions (in the *set of related source files* sense) in Raku have the same structure as any distribution in the Perl family of languages: there is a main project directory containing a `README` and a `LICENSE` file, a `lib` directory for the source files, which may be individually referred to as modules and/or may themselves define modules with the `module` keyword [[3]](https://docs.raku.org/language/modules#fn-3) , a `t` directory for tests, and possibly a `bin` directory for executable programs and scripts.
+
+源文件通常使用 `.pm6` 扩展名，脚本或可执行文件使用 `.p6`。测试文件使用 `.t` 扩展名。包含文档的文件使用 `.pod6` 扩展名。
 
 Source files generally use the `.pm6` extension, and scripts or executables use the `.p6`. Test files use the `.t` extension. Files which contain documentation use the `.pod6` extension.
 
-# Loading and basic importing
+# 加载与基本引入 / Loading and basic importing
+
+加载模块使在加载程序的文件范围内声明的相同命名空间中的包可用。从模块导入使导出的符号在导入语句的词法范围中可用。
 
 Loading a module makes the packages in the same namespace declared within available in the file scope of the loader. Importing from a module makes the symbols exported available in the lexical scope of the importing statement.
 
 ## `need`
+
+`need` 在编译时加载 `compunit`。
 
 `need` loads a `compunit` at compile time.
 
@@ -46,23 +66,29 @@ Loading a module makes the packages in the same namespace declared within availa
 need MyModule;
 ```
 
+也可以使用在定义的命名空间中的任何包。
+
 Any packages in the namespace defined within will also be available.
 
 ```Raku
 # MyModule.pm6 
 unit module MyModule;
- 
+
 class Class {}
 ```
+
+`MyModule::Class` 将在加载 `MyModule` 时定义，您可以直接使用它的完全限定名（FQN）使用它。通过这种方式定义的类和其他类型不会自动导出；如果要使用它的短名称，则需要显式导出它：
 
 `MyModule::Class` will be defined when `MyModule` is loaded, and you can use it directly employing its fully qualified name (FQN). Classes and other types defined that way are not automatically exported; you will need to explicitly export it if you want to use it by its short name:
 
 ```Raku
 # MyModule.pm6 
 unit module MyModule;
- 
+
 class Class is export {}
 ```
+
+然后
 
 And then
 
@@ -75,11 +101,15 @@ say $class.perl;
 
 ## `use`
 
+`use` 在编译时从计算单元加载并导入。它将查找以 `.pm6` 结尾的文件（`.pm`也受支持，但不受鼓励）。运行时将在哪里查找模块，请看[这](https://docs.raku.org/language/modules#Finding_installed_modules)。
+
 `use` loads and then imports from a compunit at compile time. It will look for files that end in `.pm6` (`.pm` is also supported, but discouraged). See [here](https://docs.raku.org/language/modules#Finding_installed_modules) for where the runtime will look for modules.
 
 ```Raku
 use MyModule;
 ```
+
+等同于：
 
 This is equivalent to:
 
@@ -88,9 +118,13 @@ need MyModule;
 import MyModule;
 ```
 
+还请参阅[选择性导入](https://docs.raku.org/language/modules#Exporting_and_selective_importing)以限制您导入的内容。
+
 See also [selective importing](https://docs.raku.org/language/modules#Exporting_and_selective_importing) to restrict what you import.
 
 ## `require`
+
+`require` 在运行时加载一个计算单元并导入明确的符号。
 
 `require` loads a compunit and imports definite symbols at runtime.
 
@@ -99,12 +133,16 @@ say "loading MyModule";
 require MyModule;
 ```
 
+如果将计算单元名称放入间接查找中，则它可以位于运行时变量中。
+
 The compunit name can be in a runtime variable if you put it inside an indirect lookup.
 
 ```Raku
 my $name = 'MyModule';
 require ::($name);
 ```
+
+加载模块提供的符号不会导入当前范围。例如，您可以用[动态查看](https://docs.raku.org/language/packages#index-entry-::()) 或 [动态子集](https://docs.raku.org/language/typesystem#subset)来使用它们，通过提供符号的完全限定名：
 
 The symbols provided by the loaded module will not be imported into the current scope. You may use [dynamic lookup](https://docs.raku.org/language/packages#index-entry-::()) or [dynamic subsets](https://docs.raku.org/language/typesystem#subset) to use them by providing the fully qualified name of a symbol, for instance:
 
@@ -114,7 +152,11 @@ my &mmk = ::("Test::EXPORT::DEFAULT::&ok");
 mmk('oi‽'); # OUTPUT: «ok 1 - ␤»
 ```
 
+`ok` 的全限定名是 `Test::EXPORT::DEFAULT::&ok`。我们将其别名为 `mmk`，以便在当前范围内使用 `Test` 提供的符号。
+
 The FQN of `ok` is `Test::EXPORT::DEFAULT::&ok`. We are aliasing it to `mmk` so that we can use that symbol provided by `Test` in the current scope.
+
+要导入符号，必须在编译时定义它们。**注：** `require` 在词汇范围内：
 
 To import symbols you must define them at compile time. **NOTE:** `require` is lexically scoped:
 
@@ -128,6 +170,8 @@ say ::('MyModule'); # This will NOT contain the MyModule symbol
 do-something();
 # &something will not be defined here
 ```
+
+如果 `MyModule` 不导出 `&something` 那么 `require` 就会失败。
 
 If `MyModule` doesn't export `&something` then `require` will fail.
 
