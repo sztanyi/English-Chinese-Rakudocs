@@ -77,7 +77,7 @@ unit module MyModule;
 class Class {}
 ```
 
-`MyModule::Class` 将在加载 `MyModule` 时定义，您可以直接使用它的完全限定名（FQN）使用它。通过这种方式定义的类和其他类型不会自动导出；如果要使用它的短名称，则需要显式导出它：
+`MyModule::Class` 将在加载 `MyModule` 时定义，你可以直接使用它的完全限定名（FQN）使用它。通过这种方式定义的类和其他类型不会自动导出；如果要使用它的短名称，则需要显式导出它：
 
 `MyModule::Class` will be defined when `MyModule` is loaded, and you can use it directly employing its fully qualified name (FQN). Classes and other types defined that way are not automatically exported; you will need to explicitly export it if you want to use it by its short name:
 
@@ -101,7 +101,7 @@ say $class.perl;
 
 ## `use`
 
-`use` 在编译时从计算单元加载并导入。它将查找以 `.pm6` 结尾的文件（`.pm`也受支持，但不受鼓励）。运行时将在哪里查找模块，请看[这](https://docs.raku.org/language/modules#Finding_installed_modules)。
+`use` 在编译时从编译单元加载并导入。它将查找以 `.pm6` 结尾的文件（`.pm`也受支持，但不受鼓励）。运行时将在哪里查找模块，请看[这](https://docs.raku.org/language/modules#Finding_installed_modules)。
 
 `use` loads and then imports from a compunit at compile time. It will look for files that end in `.pm6` (`.pm` is also supported, but discouraged). See [here](https://docs.raku.org/language/modules#Finding_installed_modules) for where the runtime will look for modules.
 
@@ -118,7 +118,7 @@ need MyModule;
 import MyModule;
 ```
 
-还请参阅[选择性导入](https://docs.raku.org/language/modules#Exporting_and_selective_importing)以限制您导入的内容。
+还请参阅[选择性导入](https://docs.raku.org/language/modules#Exporting_and_selective_importing)以限制你导入的内容。
 
 See also [selective importing](https://docs.raku.org/language/modules#Exporting_and_selective_importing) to restrict what you import.
 
@@ -142,7 +142,7 @@ my $name = 'MyModule';
 require ::($name);
 ```
 
-加载模块提供的符号不会导入当前范围。例如，您可以用[动态查看](https://docs.raku.org/language/packages#index-entry-::()) 或 [动态子集](https://docs.raku.org/language/typesystem#subset)来使用它们，通过提供符号的完全限定名：
+加载模块提供的符号不会导入当前范围。例如，你可以用[动态查看](https://docs.raku.org/language/packages#index-entry-::()) 或 [动态子集](https://docs.raku.org/language/typesystem#subset)来使用它们，通过提供符号的完全限定名：
 
 The symbols provided by the loaded module will not be imported into the current scope. You may use [dynamic lookup](https://docs.raku.org/language/packages#index-entry-::()) or [dynamic subsets](https://docs.raku.org/language/typesystem#subset) to use them by providing the fully qualified name of a symbol, for instance:
 
@@ -204,7 +204,7 @@ if ::('Foo') ~~ Failure {
 
 ## 词法模块加载 / Lexical module loading
 
-Raku 非常注意避免全局状态，即无论您在模块中做什么，它都不应该影响其他代码。例如，这就是为什么默认情况下子例程定义在词法 （`my`）作用域内。如果您希望其他人看到它们，则需要明确地使它们 `our` 作用域或导出它们。
+Raku 非常注意避免全局状态，即无论你在模块中做什么，它都不应该影响其他代码。例如，这就是为什么默认情况下子例程定义在词法 （`my`）作用域内。如果你希望其他人看到它们，则需要明确地使它们 `our` 作用域或导出它们。
 
 Raku takes great care to avoid global state, i.e. whatever you do in your module, it should not affect other code. For instance, that's why subroutine definitions are lexically (`my`) scoped by default. If you want others to see them, you need to explicitly make them `our` scoped or export them.
 
@@ -234,31 +234,39 @@ sub foo is export { ... };
 constant FOO is export = "foobar";
 enum FooBar is export <one two three>;
 
-# 对于 multi 方法，如果声明 proto，只需要标记用 is proto
+# 对于原型 multi 方法，只需要用 is export 标记
 # for multi methods, if you declare a proto you 
 # only need to mark the proto with is export 
 proto sub quux(Str $x, |) is export { * };
 multi sub quux(Str $x) { ... };
 multi sub quux(Str $x, $y) { ... };
- 
+
+# 对于 multi 方法，只需要用 is export 标记其中的一个
+# 但是代码更具一致性如果所有的方法都标记
 # for multi methods, you only need to mark one with is export 
 # but the code is most consistent if all are marked 
 multi sub quux(Str $x) is export { ... };
 multi sub quux(Str $x, $y) is export { ... };
- 
+
+# 包也可以到处，如类
 # Packages like classes can be exported too 
 class MyClass is export {};
- 
+
+# 如果子包在当前包的命名空间，不需要明确导出
 # If a subpackage is in the namespace of the current package 
-# it doesn't need to be explicitly exported 
+# it doesn't need to be explicitly exported
 class MyModule::MyClass {};
 ```
+
+与所有特性一样，如果应用于例程，`is export` 应在任何参数列表后出现。
 
 As with all traits, if applied to a routine, `is export` should appear after any argument list.
 
 ```Raku
 sub foo(Str $string) is export { ... }
 ```
+
+你可以将命名参数传递给 `is export`，以分组用于导出的符号，以便导入者选择。有三个预定义的标签：`ALL`、`DEFAULT` 和 `MANDATORY`。
 
 You can pass named parameters to `is export` to group symbols for exporting so that the importer can pick and choose. There are three predefined tags: `ALL`, `DEFAULT` and `MANDATORY`.
 
@@ -280,11 +288,15 @@ use MyModule :night;   # pants, torch
 use MyModule :ALL;     # bag, pants, sunglasses, torch, underpants 
 ```
 
+**注**：如果模块作者没有为此做好准备，目前用户无法导入单个对象，这目前并不是一项容易的任务（参见 [RT #127305](https://rt.perl.org/Public/Bug/Display.html?id=127305)）作者可以提供这种访问的一种方式是给每个 `export` 特性赋予自己独特的标签。（标记可以是对象名！）然后用户可以（1）导入所有对象：
+
 **Note**: there currently is no way for the user to import a single object if the module author hasn't made provision for that, and it is not an easy task at the moment (see [RT #127305](https://rt.perl.org/Public/Bug/Display.html?id=127305)). One way the author can provide such access is to give each `export` trait its own unique tag. (And the tag can be the object name!). Then the user can either (1) import all objects:
 
 ```Raku
 use Foo :ALL;
 ```
+
+或者（2）有选择性地导入一个或者多个对象：
 
 or (2) import one or more objects selectively:
 
@@ -292,15 +304,19 @@ or (2) import one or more objects selectively:
 use Foo :bar, :s5;
 ```
 
+注意：
+
 Notes:
 
-\1. The `:MANDATORY` tag on an exported sub ensures it will be exported no matter whether the using program adds any tag or not.
+1. 导出子例程中的 `:MANDATORY` 标记确保无论使用程序是否使用任何标记，都将会导出该标记。
+2. 所有没有显式标记的导出子例程都隐式为 `:DEFAULT`。
+3. 模块名称后面和标记之前的空格是强制性的。
+4. 可以使用多个导入标记（用逗号分隔）。例如：
 
-\2. All exported subs without an explicit tag are implicitly `:DEFAULT`.
-
-\3. The space after the module name and before the tag is mandatory.
-
-\4. Multiple import tags may be used (separated by commas). For example:
+1. The `:MANDATORY` tag on an exported sub ensures it will be exported no matter whether the using program adds any tag or not.
+2. All exported subs without an explicit tag are implicitly `:DEFAULT`.
+3. The space after the module name and before the tag is mandatory.
+4. Multiple import tags may be used (separated by commas). For example:
 
 ```Raku
 # main.p6 
@@ -308,7 +324,9 @@ use lib 'lib';
 use MyModule :day, :night; # pants, sunglasses, torch 
 ```
 
-\5. Multiple tags may be used in the `export` trait, but they must all be separated by either commas, or whitespace, but not both.
+5. 在 `export` 特性中可以使用多个标签，但它们都必须用逗号或空格分隔，但不能两者兼用。
+
+5. Multiple tags may be used in the `export` trait, but they must all be separated by either commas, or whitespace, but not both.
 
 ```Raku
 sub foo() is export(:foo :s2 :net) {}
@@ -316,6 +334,8 @@ sub bar() is export(:bar, :s3, :some) {}
 ```
 
 ### UNIT::EXPORT::*
+
+在表面之下，`is export` 是将符号添加到 `EXPORT` 命名空间中的 `UNIT` 作用域包中。例如，`is export(:FOO)` 将把目标添加到 `UNIT::EXPORT::FOO` 包中。这就是 Raku 真正用来决定导入什么的方法。
 
 Beneath the surface, `is export` is adding the symbols to a `UNIT` scoped package in the `EXPORT` namespace. For example, `is export(:FOO)` will add the target to the `UNIT::EXPORT::FOO` package. This is what Raku is really using to decide what to import.
 
@@ -325,6 +345,8 @@ unit module MyModule;
 sub foo is export { ... }
 sub bar is export(:other) { ... }
 ```
+
+相当于：
 
 Is the same as:
 
@@ -339,6 +361,8 @@ my package EXPORT::other {
     our sub bar { ... }
 }
 ```
+
+在大多数情况下，`is export` 就足够了，但是当你想动态生成导出的符号时，`EXPORT` 包是有用的。例如：
 
 For most purposes, `is export` is sufficient but the `EXPORT` packages are useful when you want to produce the exported symbols dynamically. For example:
 
@@ -361,6 +385,8 @@ say log-of-zero;  # OUTPUT: «-Inf␤»
 ```
 
 ### EXPORT 
+
+您可以使用 `EXPORT` 子例程导出任意符号。`EXPORT` 必须返回一个 [Map](https://docs.raku.org/type/Map)，其中键是符号名，值是所需的值。名称应该包括关联类型的标记（如果有的话）。
 
 You can export arbitrary symbols with an `EXPORT` sub. `EXPORT` must return a [Map](https://docs.raku.org/type/Map), where the keys are the symbol names and the values are the desired values. The names should include the sigil (if any) for the associated type.
 
@@ -388,7 +414,11 @@ doit();            # OUTPUT: «Greetings from exported sub␤»
 say ShortName.new; # OUTPUT: «MyModule::Class.new␤» 
 ```
 
+注：`EXPORT` 不能在包中声明，因为它是编译单元而不是包的一部分。
+
 Note, `EXPORT` can't be declared inside a package because it is part of the compunit rather than the package.
+
+鉴于 `UNIT::EXPORT` 包处理传递给 `use` 的命名参数，而 `EXPORT` 子例程处理位置参数。如果将位置参数传递给 `use`，它们将被传递给 `EXPORT`。如果传递位置参数，则模块不再导出默认符号。您仍然可以通过将 `:DEFAULT` 传递给 `use` 以及您的位置参数显式地导入它们。
 
 Whereas `UNIT::EXPORT` packages deal with the named parameters passed to `use`, the `EXPORT` sub handles positional parameters. If you pass positional parameters to `use`, they will be passed to `EXPORT`. If a positional is passed, the module no longer exports default symbols. You may still import them explicitly by passing `:DEFAULT` to `use` along with your positional parameters.
 
@@ -402,9 +432,9 @@ sub EXPORT($short_name?) {
       do $short_name => MyModule::Class if $short_name
     )
 }
- 
+
 sub always is export(:MANDATORY) { say "works" }
- 
+
 #import with :ALL or :DEFAULT to get 
 sub shy is export { say "you found me!" }
 # main.p6 
@@ -415,6 +445,8 @@ say foo.new(); # OUTPUT: «MyModule::Class.new␤»
 always();      # OK   - is imported 
 shy();         # FAIL - won't be imported 
 ```
+
+您可以将 `EXPORT` 与类型捕获结合起来，以获得有趣的效果。此示例创建一个 `?` 后缀，它只在 [Cool](https://docs.raku.org/type/Cool) 上工作。
 
 You can combine `EXPORT` with type captures for interesting effect. This example creates a `?` postfix which will only work on [Cool](https://docs.raku.org/type/Cool)s.
 
@@ -430,7 +462,9 @@ use MakeQuestionable Cool;
 say ( 0?, 1?, {}?, %( a => "b" )? ).join(' '); # OUTPUT: «False True False True␤» 
 ```
 
-## Introspection
+## 内省 / Introspection
+
+要列出模块导出的符号，首先查询模块支持的导出标记。
 
 To list exported symbols of a module first query the export tags supported by the module.
 
@@ -440,6 +474,8 @@ say URI::Escape::EXPORT::.keys;
 # OUTPUT: «(DEFAULT ALL)␤»
 ```
 
+然后使用您喜欢的标记，并按其名称选择符号。
+
 Then use the tag you like and pick the symbol by its name.
 
 ```Raku
@@ -447,6 +483,8 @@ say URI::Escape::EXPORT::DEFAULT::.keys;
 # OUTPUT: «(&uri-escape &uri-unescape &uri_escape &uri_unescape)␤» 
 my &escape-uri = URI::Escape::EXPORT::DEFAULT::<&uri_escape>;
 ```
+
+小心*不要*在 [`unit` declarator](https://docs.raku.org/syntax/unit) 之后加上 `sub EXPORT` 如果您这样做，它将成为您的包内的一个子例程，而不是特殊的导出子例程：
 
 Be careful *not* to put `sub EXPORT` after [`unit` declarator](https://docs.raku.org/syntax/unit). If you do so, it'll become just a sub inside your package, rather than the special export sub:
 
@@ -457,7 +495,9 @@ sub EXPORT { %(Foo => &say) } # RIGHT!!! Sub is outside the module
 unit module Bar;
 ```
 
-## Finding installed modules
+## 查找已安装的模块 / Finding installed modules
+
+这取决于模块安装程序知道 `compunit` 期望模块放置在哪里。[distribution](https://docs.raku.org/routine/distribution) 将在当前主目录中提供一个位置。无论如何，让模块安装程序处理您的模块是一个安全的选择。
 
 It is up to the module installer to know where `compunit` expects modules to be placed. There will be a location provided by the [distribution](https://docs.raku.org/routine/distribution) and in the current home directory. In any case, letting the module installer deal with your modules is a safe bet.
 
@@ -466,32 +506,53 @@ cd your-module-dir
 zef --force install .
 ```
 
+用户可能有一组在正常生态系统中找不到的模块，这些模块由模块或包管理器维护，但定期需要。可以使用 `PERL6LIB` 环境变量来指向模块位置，而不是使用 `use lib` 指令。例如：
+
 A user may have a collection of modules not found in the normal ecosystem, maintained by a module or package manager, but needed regularly. Instead of using the `use lib` pragma one can use the `PERL6LIB` environment variable to point to module locations. For example:
 
 ```Raku
 export PERL6LIB=/path/to/my-modules,/path/to/more/modules
 ```
 
+注意，逗号用作目录分隔符。
+
 Note that the comma (',') is used as the directory separator.
+
+在启动 Rakudo 时，将递归地搜索包含路径以查找任何模块。以点开始的目录将被忽略，并遵循符号链接。
 
 The include path will be searched recursively for any modules when Rakudo is started. Directories that start with a dot are ignored and symlinks are followed.
 
-# Distributing modules
+# 发布模块 / Distributing modules
+
+如果您编写了一个 Raku 模块并希望与社区共享，我们很高兴将它列在 [Raku modules directory](https://modules.perl6.org/) 中。
 
 If you've written a Raku module and would like to share it with the community, we'd be delighted to have it listed in the [Raku modules directory](https://modules.perl6.org/). `:)`
 
+目前有两种不同的模块生态系统（模块分配网络）：
+
 Currently there are two different module ecosystems (module distribution networks) available:
 
-- **CPAN** This is the same ecosystem Perl5 is using. Modules are uploaded as *.zip* or *.tar.gz* files on [PAUSE](https://pause.perl.org/).
+- **CPAN** 这是 Perl 正在使用的一个生态系统。模块被上传为 *.zip* 或 *.tar.gz* 文件到 [PAUSE](https://pause.perl.org/) 上。
+- **p6c** 直到最近才成为唯一的生态系统。它基于可直接访问的 Github 存储库。它在版本控制方面的能力有限。
+
+- **CPAN** This is the same ecosystem Perl is using. Modules are uploaded as *.zip* or *.tar.gz* files on [PAUSE](https://pause.perl.org/).
 - **p6c** Up until recently the only ecosystem. It is based on Github repositories which are directly accessed. It has only limited capability for versioning.
+
+共享您的模块的过程包括两个步骤：准备模块并将模块上载到一个生态系统。
 
 The process of sharing your module consists of two steps, preparing the module and uploading the module to one of the ecosystems.
 
-## Preparing the module
+## 准备模块 / Preparing the module
+
+一个模块要在任何一个生态系统中工作，它都需要遵循一定的结构。这样做：
 
 For a module to work in any of the ecosystems, it needs to follow a certain structure. Here is how to do that:
 
+- 创建一个以模块命名的项目目录。例如，如果您的模块是 `Vortex::TotalPerspective`，那么创建一个名为 `Vortex-TotalPerspective` 的项目目录。
+
 - Create a project directory named after your module. For example, if your module is `Vortex::TotalPerspective`, then create a project directory named `Vortex-TotalPerspective`.
+
+- 使项目目录看起来如下：
 
 - Make your project directory look like this:
 
@@ -507,7 +568,9 @@ For a module to work in any of the ecosystems, it needs to follow a certain stru
       └── basic.t
   ```
 
-  If your project contains other modules that help the main module do its job, they should go in your lib directory like so:
+如果您的项目包含帮助主模块完成其工作的其他模块，它们应该位于 lib 目录中，如下所示：
+
+If your project contains other modules that help the main module do its job, they should go in your lib directory like so:
 
   ```
   lib
@@ -518,6 +581,8 @@ For a module to work in any of the ecosystems, it needs to follow a certain stru
           └── Gargravarr.pm6
   ```
 
+- 如果您希望安装任何其他文件（例如模板或动态库），以便在运行时访问它们，则应将它们放在项目的 `resources` 子目录中，例如：
+
 - If you have any additional files (such as templates or a dynamic library) that you wish to have installed so you can access them at runtime, they should be placed in a `resources` sub-directory of your project, e.g.:
 
   ```
@@ -526,24 +591,28 @@ For a module to work in any of the ecosystems, it needs to follow a certain stru
           └── default-template.mustache
   ```
 
-  The file must then be referenced in `META6.json` (see below for more on `META6.json`) so that the distribution path can be provided to the program.
+然后必须在 `META6.json` 中引用该文件（详见下文 `META6.json`），以便向程序提供发布路径。
 
-  ```
-  {
-      "name" : "Vortex::TotalPerspective",
-      "provides" : {
-          "Vortex::TotalPerspective" : "lib/Vortex/TotalPerspective.pm6"
-      },
-      "resources": [ "templates/default-template.mustache"]
-  }
-  ```
+The file must then be referenced in `META6.json` (see below for more on `META6.json`) so that the distribution path can be provided to the program.
 
-  The additional file can then be accessed inside module code:
+```
+{
+    "name" : "Vortex::TotalPerspective",
+    "provides" : {
+        "Vortex::TotalPerspective" : "lib/Vortex/TotalPerspective.pm6"
+    },
+    "resources": [ "templates/default-template.mustache"]
+}
+```
 
-  ```
-  my $template-text = %?RESOURCES<templates/default-template.mustache>.slurp;
-  # Note that %?RESOURCES provides a C<IO> path object 
-  ```
+然后，可以在模块代码中访问附加文件：
+
+The additional file can then be accessed inside module code:
+
+```
+my $template-text = %?RESOURCES<templates/default-template.mustache>.slurp;
+# Note that %?RESOURCES provides a C<IO> path object 
+```
 
 - The `README.md` file is a [markdown-formatted](https://help.github.com/articles/markdown-basics/) text file, which will later be automatically rendered as HTML by GitHub/GitLab for modules kept in those ecosystems or by [modules.perl6.org](https://modules.perl6.org/) website for modules kept on [CPAN](https://docs.raku.org/language/faq#index-entry-CPAN_(FAQ)).
 

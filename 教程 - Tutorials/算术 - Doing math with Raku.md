@@ -199,7 +199,7 @@ say @otherphi[^10, |(20, 30 ... 100)];  # OUTPUT:
 # -0.618033…»
 ```
 
-[Math::Sequences](https://github.com/ajs/perl6-Math-Sequences) 模块包括许多已经为您定义的数学序列。它有许多[百科全书中的序列](https://oeis.org/)，其中有些有它们的原名，如 ℤ。
+[Math::Sequences](https://github.com/ajs/perl6-Math-Sequences) 模块包括许多已经为你定义的数学序列。它有许多[百科全书中的序列](https://oeis.org/)，其中有些有它们的原名，如 ℤ。
 
 The [Math::Sequences](https://github.com/ajs/perl6-Math-Sequences) module includes many mathematical sequences, already defined for you. It has many [sequences from the encyclopedia](https://oeis.org/), some of them with their original name, such as ℤ.
 
