@@ -52,7 +52,7 @@ IT 类翻译往往中文太生硬，英文太难懂。中英对照更方便也�
     - [语法教程 - Grammar tutorial](https://github.com/sztanyi/English-Chinese-Rakudocs/blob/master/%E6%95%99%E7%A8%8B%20-%20Tutorials/%E8%AF%AD%E6%B3%95%E6%95%99%E7%A8%8B%20-%20Grammar%20tutorial.md)
     - [输入 Unicode 字符 - Entering unicode characters](https://github.com/sztanyi/English-Chinese-Rakudocs/blob/master/%E6%95%99%E7%A8%8B%20-%20Tutorials/%E8%BE%93%E5%85%A5%20unicode%20%E5%AD%97%E7%AC%A6%20-%20Entering%20unicode%20characters.md)
     - [创建运算符 - Creating operators](https://github.com/sztanyi/English-Chinese-Rakudocs/blob/master/%E6%95%99%E7%A8%8B%20-%20Tutorials/%E5%88%9B%E5%BB%BA%E8%BF%90%E7%AE%97%E7%AC%A6%20-%20Creating%20operators.md)
-    - [输入与输出 - Input and Output](https://github.com/sztanyi/English-Chinese-Rakudocs/blob/master/%E6%95%99%E7%A8%8B%20-%20Tutorials/%E8%BE%93%E5%85%A5%E4%B8%8E%E8%BE%93%E5%87%BA%20-%20Input%20and%20Output.md)
+    - [输入输出 - IO](https://github.com/sztanyi/English-Chinese-Rakudocs/blob/master/%E6%95%99%E7%A8%8B%20-%20Tutorials/%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%20-%20IO.md)
     - [算术 - Doing math with Raku](https://github.com/sztanyi/English-Chinese-Rakudocs/blob/master/%E6%95%99%E7%A8%8B%20-%20Tutorials/%E7%AE%97%E6%9C%AF%20-%20Doing%20math%20with%20Raku.md)
     - [模块 - Modules](https://github.com/sztanyi/English-Chinese-Rakudocs/blob/master/%E6%95%99%E7%A8%8B%20-%20Tutorials/%E6%A8%A1%E5%9D%97%20-%20Modules.md)
     - [进程间通信 - Inter-process communication](https://github.com/sztanyi/English-Chinese-Rakudocs/blob/master/%E6%95%99%E7%A8%8B%20-%20Tutorials/%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1%20-%20Inter-process%20communication.md)

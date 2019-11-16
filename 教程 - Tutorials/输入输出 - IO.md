@@ -10,6 +10,20 @@ File-related operations
 
 Here we present a quick overview of the file-related input/output operations. Details can be found in the documentation for the [IO](https://docs.raku.org/type/IO) role, as well as the [IO::Handle](https://docs.raku.org/type/IO::Handle) and [IO::Path](https://docs.raku.org/type/IO::Path) types.
 
+<!-- MarkdownTOC -->
+
+- [读文件 / Reading from files](#%E8%AF%BB%E6%96%87%E4%BB%B6--reading-from-files)
+    - [逐行读取 / Line by line](#%E9%80%90%E8%A1%8C%E8%AF%BB%E5%8F%96--line-by-line)
+- [写文件 / Writing to files](#%E5%86%99%E6%96%87%E4%BB%B6--writing-to-files)
+- [复制、重命名和删除文件 / Copying, renaming, and removing files](#%E5%A4%8D%E5%88%B6%E3%80%81%E9%87%8D%E5%91%BD%E5%90%8D%E5%92%8C%E5%88%A0%E9%99%A4%E6%96%87%E4%BB%B6--copying-renaming-and-removing-files)
+- [检查文件和目录 / Checking files and directories](#%E6%A3%80%E6%9F%A5%E6%96%87%E4%BB%B6%E5%92%8C%E7%9B%AE%E5%BD%95--checking-files-and-directories)
+- [获取目录列表 / Getting a directory listing](#%E8%8E%B7%E5%8F%96%E7%9B%AE%E5%BD%95%E5%88%97%E8%A1%A8--getting-a-directory-listing)
+- [创建和删除目录 / Creating and removing directories](#%E5%88%9B%E5%BB%BA%E5%92%8C%E5%88%A0%E9%99%A4%E7%9B%AE%E5%BD%95--creating-and-removing-directories)
+
+<!-- /MarkdownTOC -->
+
+
+<a id="%E8%AF%BB%E6%96%87%E4%BB%B6--reading-from-files"></a>
 # 读文件 / Reading from files
 
 读取文件内容的一种方法是使用 `:r` 文件模式选项通过 `open` 函数打开文件，并在代码内容中使用 slurp 方法：
@@ -36,6 +50,7 @@ $contents = slurp "testfile"
 
 By adding the `IO` role to the file name string, we are effectively able to refer to the string as the file object itself and thus slurp in its contents directly. Note that the `slurp` takes care of opening and closing the file for you.
 
+<a id="%E9%80%90%E8%A1%8C%E8%AF%BB%E5%8F%96--line-by-line"></a>
 ## 逐行读取 / Line by line
 
 当然，我们也可以选择逐行读取文件。新的行分隔符（即 `$*IN.nl-in`）将被排除在外。
@@ -51,6 +66,7 @@ for 'huge-csv'.IO.lines -> $line {
 my @lines = 'huge-csv'.IO.lines;
 ```
 
+<a id="%E5%86%99%E6%96%87%E4%BB%B6--writing-to-files"></a>
 # 写文件 / Writing to files
 
 要将数据写入文件，我们同样可以选择调用 `open` 函数的传统方法--这次使用 `:w` 选项--并将数据打印到文件中：
@@ -131,6 +147,7 @@ spurt "testfile", "more data\n", :append;
 
 To explicitly write binary data to a file, open it with the `:bin` option. The input/output operations then will take place using the `Buf` type instead of the `Str` type.
 
+<a id="%E5%A4%8D%E5%88%B6%E3%80%81%E9%87%8D%E5%91%BD%E5%90%8D%E5%92%8C%E5%88%A0%E9%99%A4%E6%96%87%E4%BB%B6--copying-renaming-and-removing-files"></a>
 # 复制、重命名和删除文件 / Copying, renaming, and removing files
 
 子例程 `copy`、 `rename`、 `move`、 和 `unlink` 可用，以此避免低级系统命令。更多细节见 [copy](https://docs.raku.org/routine/copy)、 [rename](https://docs.raku.org/routine/rename)、 [move](https://docs.raku.org/routine/move) 和 `unlink|/routine/unlink`。一些例子:
@@ -161,6 +178,7 @@ $fileb.IO.unlink;
 
 The two `unlink` sentences remove their argument if it exists, unless the user does not have the correct permissions to do so; in that case, it raises an exception.
 
+<a id="%E6%A3%80%E6%9F%A5%E6%96%87%E4%BB%B6%E5%92%8C%E7%9B%AE%E5%BD%95--checking-files-and-directories"></a>
 # 检查文件和目录 / Checking files and directories
 
 使用 `IO::Handle` 对象上的 `e` 方法来测试文件或目录是否存在。
@@ -233,6 +251,7 @@ say $f.IO.s;        # return size of file (or directory inode) in bytes
 
 See more methods and details at [IO::Path](https://docs.raku.org/type/IO::Path).
 
+<a id="%E8%8E%B7%E5%8F%96%E7%9B%AE%E5%BD%95%E5%88%97%E8%A1%A8--getting-a-directory-listing"></a>
 # 获取目录列表 / Getting a directory listing
 
 要列出当前目录的内容，请使用 `dir` 功能。它返回一个 [IO::Path](https://docs.raku.org/type/IO::Path) 对象的列表。
@@ -251,6 +270,7 @@ To list the files and directories in a given directory, simply pass a path as an
 say dir "/etc/";  # OUTPUT: «"/etc/ld.so.conf".IO "/etc/shadow".IO ....␤»
 ```
 
+<a id="%E5%88%9B%E5%BB%BA%E5%92%8C%E5%88%A0%E9%99%A4%E7%9B%AE%E5%BD%95--creating-and-removing-directories"></a>
 # 创建和删除目录 / Creating and removing directories
 
 要创建新目录，只需将目录名作为参数传给 `mkdir` 函数：
