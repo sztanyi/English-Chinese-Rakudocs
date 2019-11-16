@@ -4,7 +4,7 @@ English-Chinese Raku documentation
 
 Official documentation address: https://docs.raku.org/language.html
 
-IT 类翻译文章往往中文太生硬，英文太难懂。何不对照看。
+IT 类翻译往往中文太生硬，英文太难懂。中英对照更方便也更容易发现错误。
 
 # `目录`
 
@@ -55,6 +55,7 @@ IT 类翻译文章往往中文太生硬，英文太难懂。何不对照看。
     - [输入与输出 - Input and Output](https://github.com/sztanyi/English-Chinese-Rakudocs/blob/master/%E6%95%99%E7%A8%8B%20-%20Tutorials/%E8%BE%93%E5%85%A5%E4%B8%8E%E8%BE%93%E5%87%BA%20-%20Input%20and%20Output.md)
     - [算术 - Doing math with Raku](https://github.com/sztanyi/English-Chinese-Rakudocs/blob/master/%E6%95%99%E7%A8%8B%20-%20Tutorials/%E7%AE%97%E6%9C%AF%20-%20Doing%20math%20with%20Raku.md)
     - [模块 - Modules](https://github.com/sztanyi/English-Chinese-Rakudocs/blob/master/%E6%95%99%E7%A8%8B%20-%20Tutorials/%E6%A8%A1%E5%9D%97%20-%20Modules.md)
+    - [进程间通信 - Inter-process communication](https://github.com/sztanyi/English-Chinese-Rakudocs/blob/master/%E6%95%99%E7%A8%8B%20-%20Tutorials/%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1%20-%20Inter-process%20communication.md)
 - [类型 - Type](https://github.com/sztanyi/English-Chinese-Rakudocs/tree/master/%E7%B1%BB%E5%9E%8B%20-%20Type)
     - [基础 - Basic](https://github.com/sztanyi/English-Chinese-Rakudocs/tree/master/%E7%B1%BB%E5%9E%8B%20-%20Type/%E5%9F%BA%E7%A1%80%20-%20Basic)
         - [签名 - Signature](https://github.com/sztanyi/English-Chinese-Rakudocs/blob/master/%E7%B1%BB%E5%9E%8B%20-%20Type/%E5%9F%BA%E7%A1%80%20-%20Basic/%E7%AD%BE%E5%90%8D%20-%20Signature.md)
