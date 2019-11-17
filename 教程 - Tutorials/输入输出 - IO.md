@@ -46,7 +46,7 @@ my $contents = "testfile".IO.slurp;
 $contents = slurp "testfile"
 ```
 
-通过将 `IO` 角色添加到文件名字符串中，我们可以有效地将字符串称为文件对象本身，从而直接全部读取其内容。请注意，`slurp` 负责为您打开和关闭文件。
+通过将 `IO` 角色添加到文件名字符串中，我们可以有效地将字符串称为文件对象本身，从而直接全部读取其内容。请注意，`slurp` 负责为你打开和关闭文件。
 
 By adding the `IO` role to the file name string, we are effectively able to refer to the string as the file object itself and thus slurp in its contents directly. Note that the `slurp` takes care of opening and closing the file for you.
 

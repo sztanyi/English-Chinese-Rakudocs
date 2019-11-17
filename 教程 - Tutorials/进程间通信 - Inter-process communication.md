@@ -29,7 +29,7 @@ run 'git', 'status';
 
 This line runs the program named "git" and passes "git" and "status" to its command-line. It will find the program using the `%*ENV<PATH>` setting.
 
-如果您想通过向 shell 发送命令行来运行程序，那么也有一个工具可以实现这一点。所有 shell 元字符都由 shell 解释，包括管道、重定向、环境变量替换等。
+如果你想通过向 shell 发送命令行来运行程序，那么也有一个工具可以实现这一点。所有 shell 元字符都由 shell 解释，包括管道、重定向、环境变量替换等。
 
 If you would like to run a program by sending a command-line to the shell, there's a tool for that as well. All shell metacharacters are interpreted by the shell, including pipes, redirects, environment variable substitutions and so on.
 
@@ -57,7 +57,7 @@ for $git.out.lines -> $line {
 $git.out.close();
 ```
 
-如果程序失败（以非零退出代码退出），当返回的 [Proc](https://docs.raku.org/type/Proc) 对象在 sink 上下文（返回值）时，它将抛出异常。您可以将其保存到变量，甚至是匿名变量，以防止 sink 上下文：
+如果程序失败（以非零退出代码退出），当返回的 [Proc](https://docs.raku.org/type/Proc) 对象在 sink 上下文（返回值）时，它将抛出异常。你可以将其保存到变量，甚至是匿名变量，以防止 sink 上下文：
 
 If the program fails (exits with a non-zero exit code), it will throw an exception when the returned [Proc](https://docs.raku.org/type/Proc) object is sunk. You can save it into a variable, even anonymous one, to prevent the sinking:
 
@@ -65,7 +65,7 @@ If the program fails (exits with a non-zero exit code), it will throw an excepti
 $ = run '/bin/false'; # does not sink the Proc and so does not throw
 ```
 
-通过传递 `:out` 和 `:err` 标志，可以告诉 `Proc` 对象将输出捕获为文件句柄。您还可以通过 `:in` 标志传递输入。
+通过传递 `:out` 和 `:err` 标志，可以告诉 `Proc` 对象将输出捕获为文件句柄。你还可以通过 `:in` 标志传递输入。
 
 You can tell the `Proc` object to capture output as a filehandle by passing the `:out` and `:err` flags. You may also pass input via the `:in` flag.
 
@@ -76,7 +76,7 @@ say $cat.out.get;
 $cat.out.close();
 ```
 
-您还可以使用 `Proc` 捕获 PID，向应用程序发送信号，并检查退出代码。
+你还可以使用 `Proc` 捕获 PID，向应用程序发送信号，并检查退出代码。
 
 You may also use `Proc` to capture the PID, send signals to the application, and check the exitcode.
 
@@ -93,7 +93,7 @@ else {
 <a id="procasync-%E5%AF%B9%E8%B1%A1--the-procasync-object"></a>
 # `Proc::Async` 对象 / The `Proc::Async` object
 
-当您需要更多地控制与另一个进程之间的通信时，您将需要使用 [Proc::Async](https://docs.raku.org/type/Proc::Async)。这个类支持与程序的异步通信，以及向程序发送信号的能力。
+当你需要更多地控制与另一个进程之间的通信时，你将需要使用 [Proc::Async](https://docs.raku.org/type/Proc::Async)。这个类支持与程序的异步通信，以及向程序发送信号的能力。
 
 When you need more control over the communication with and from another process, you will want to make use of [Proc::Async](https://docs.raku.org/type/Proc::Async). This class provides support for asynchronous communication with a program, as well as the ability to send signals to that program.
 

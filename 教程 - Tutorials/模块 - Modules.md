@@ -899,11 +899,11 @@ If you want to use the *p6c* ecosystem you need to use git for your module's ver
 - Create a PR on [ecosystem](https://github.com/perl6/ecosystem) adding your module to META.list, or ping someone on IRC (#perl6 at freenode) to get help having it added.
 - After the pull request has been accepted, wait for an hour. If your module doesn't show up on <https://modules.perl6.org/>, please view the log file at <https://modules.perl6.org/update.log> to see if it identifies an error with your module or `meta` file.
 
-**就这样!感谢您对 Raku 社区的贡献！**
+**就这样!感谢你对 Raku 社区的贡献！**
 
 **That's it! Thanks for contributing to the Raku community!**
 
-如果您想尝试安装模块，请使用 Rakudo Star Raku 附带的 zef 模块安装程序工具：
+如果你想尝试安装模块，请使用 Rakudo Star Raku 附带的 zef 模块安装程序工具：
 
 If you'd like to try out installing your module, use the zef module installer tool which is included with Rakudo Star Raku:
 
@@ -911,29 +911,29 @@ If you'd like to try out installing your module, use the zef module installer to
 zef install Vortex::TotalPerspective
 ```
 
-这将下载您的模块到它自己的工作目录（`~/.zef`），在那里构建它，并将该模块安装到您的本地 Raku 安装目录中。
+这将下载你的模块到它自己的工作目录（`~/.zef`），在那里构建它，并将该模块安装到你的本地 Raku 安装目录中。
 
 This will download your module to its own working directory (`~/.zef`), build it there, and install the module into your local Raku installation directory.
 
-要从脚本中使用 `Vortex::TotalPerspective`，只需编写 `use Vortex::TotalPerspective`，您的 Raku 实现将知道在何处查找模块文件。
+要从脚本中使用 `Vortex::TotalPerspective`，只需编写 `use Vortex::TotalPerspective`，你的 Raku 实现将知道在何处查找模块文件。
 
 To use `Vortex::TotalPerspective` from your scripts, just write `use Vortex::TotalPerspective`, and your Raku implementation will know where to look for the module file(s).
 
 <a id="%E4%B8%8E%E6%A8%A1%E5%9D%97%E5%88%9B%E4%BD%9C%E7%9B%B8%E5%85%B3%E7%9A%84%E6%A8%A1%E5%9D%97%E5%92%8C%E5%B7%A5%E5%85%B7--modules-and-tools-related-to-module-authoring"></a>
 # 与模块创作相关的模块和工具 / Modules and tools related to module authoring
 
-您可以在[额外模组](https://docs.raku.org/language/modules-extra)]中找到旨在提高编写/测试模块经验的模块和工具列表。
+你可以在[额外模组](https://docs.raku.org/language/modules-extra)]中找到旨在提高编写/测试模块经验的模块和工具列表。
 
 You can find a list of modules and tools that aim to improve the experience of writing/test modules at [Modules Extra](https://docs.raku.org/language/modules-extra)
 
 <a id="%E8%81%94%E7%B3%BB%E4%BF%A1%E6%81%AF--contact-information"></a>
 ## 联系信息 / Contact information
 
-要讨论一般的模块开发，或者如果您的模块能够满足生态系统、命名等方面的需求，您可以使用 [irc.freenode.net 的 perl6](irc://irc.freenode.net/#perl6) IRC 频道。
+要讨论一般的模块开发，或者如果你的模块能够满足生态系统、命名等方面的需求，你可以使用 [irc.freenode.net 的 perl6](irc://irc.freenode.net/#perl6) IRC 频道。
 
 To discuss module development in general, or if your module would fill a need in the ecosystem, naming, etc., you can use the [perl6 on irc.freenode.net](irc://irc.freenode.net/#perl6) IRC channel.
 
-要讨论工具链特定的问题，您可以使用在 [irc.freenode.net 上的 perl6-toolchain](irc://irc.freenode.net/#perl6-toolchain) IRC 频道。还提供了一个讨论工具问题的存储库 <https://github.com/perl6/toolchain-bikeshed>。
+要讨论工具链特定的问题，你可以使用在 [irc.freenode.net 上的 perl6-toolchain](irc://irc.freenode.net/#perl6-toolchain) IRC 频道。还提供了一个讨论工具问题的存储库 <https://github.com/perl6/toolchain-bikeshed>。
 
 To discuss toolchain specific questions, you can use the [perl6-toolchain on irc.freenode.net](irc://irc.freenode.net/#perl6-toolchain) IRC channel. A repository to discuss tooling issues is also available at <https://github.com/perl6/toolchain-bikeshed>.
 
@@ -941,7 +941,7 @@ To discuss toolchain specific questions, you can use the [perl6-toolchain on irc
 2. [[↑]](https://docs.raku.org/language/modules#fn-ref-2) 如果模组安装了，只有当模块的版本比已安装的版本更新时，它才会重新安装。
 3. [[↑]](https://docs.raku.org/language/modules#fn-ref-3) 如[概要 S11](https://design.raku.org/S11.html#Units) 所说：混淆？是的。
 4. [[↑]](https://docs.raku.org/language/modules#fn-ref-4) 这一变化是在 2016 年末引入的。如果使用的版本早于此，则行为将不同。
-5. [[↑]](https://docs.raku.org/language/modules#fn-ref-5) 注意，上面描述的是一个最小的项目目录。如果项目包含要与模块一起分发的脚本，请将它们放在 `bin` 目录中。如果您希望在模块目录下的模块旁边显示图形徽标，请创建 `logotype` 目录并将 `logo_32x32.png` 文件放入其中。在某些情况下，您还可以考虑添加 `CONTRIBUTORS`、`NEWS`、`TODO` 或其他文件。
+5. [[↑]](https://docs.raku.org/language/modules#fn-ref-5) 注意，上面描述的是一个最小的项目目录。如果项目包含要与模块一起分发的脚本，请将它们放在 `bin` 目录中。如果你希望在模块目录下的模块旁边显示图形徽标，请创建 `logotype` 目录并将 `logo_32x32.png` 文件放入其中。在某些情况下，你还可以考虑添加 `CONTRIBUTORS`、`NEWS`、`TODO` 或其他文件。
 6. [[↑]](https://docs.raku.org/language/modules#fn-ref-6) 一些旧的模块还提供了一个 `source-type` 字段，用于指示源代码管理系统的类型，通常是 `git`，该字段可用于下载模块。然而，这个领域现在被 `zef` 和其他工具所忽略。
 
 1. [[↑]](https://docs.raku.org/language/modules#fn-ref-1) Technically a module is a set of *compunits* which are usually files but could come from anywhere as long as there is a *compunit repository* that can provide it. See [S11](https://design.raku.org/S11.html).
