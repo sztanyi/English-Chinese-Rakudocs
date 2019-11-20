@@ -121,7 +121,7 @@ This can be done more systematically through the use of the [`gather/take` block
 
 Classic `for` loops, with a loop variable being incremented, can be done in Raku through the [`loop` keyword](https://docs.raku.org/language/control#loop). Other [repeat](https://docs.raku.org/language/control#repeat/while,_repeat/until) and [while](https://docs.raku.org/language/control#while,_until) loops are also possible.
 
-然而，总的来说，他们是不受欢迎的。Raku 是一种功能和并发语言；在用 Raku 编写代码时，您应该以一种功能的方式查看循环：一个接一个地处理迭代器产生的项，也就是说，将一个项输入一个块，而不产生任何次要效果。此功能视图还允许通过 [`hyper`](https://docs.raku.org/routine/hyper)或 [`race`](https://docs.raku.org/routine/race) 自动线程方法对操作进行简单的并行化。
+然而，总的来说，他们是不受欢迎的。Raku 是一种功能和并发语言；在用 Raku 编写代码时，你应该以一种功能的方式查看循环：一个接一个地处理迭代器产生的项，也就是说，将一个项输入一个块，而不产生任何次要效果。此功能视图还允许通过 [`hyper`](https://docs.raku.org/routine/hyper)或 [`race`](https://docs.raku.org/routine/race) 自动线程方法对操作进行简单的并行化。
 
 However, in general, they are discouraged. Raku is a functional and concurrent language; when coding in Raku, you should look at loops in a functional way: processing, one by one, the items produced by an iterator, that is, feeding an item to a block without any kind of secondary effects. This functional view allows also easy parallelization of the operation via the [`hyper`](https://docs.raku.org/routine/hyper) or [`race`](https://docs.raku.org/routine/race) auto-threading methods.
 
