@@ -6,7 +6,7 @@
 
 What can help you write/test/improve your module(s)
 
-这里是一个模组列表，您可以在 Raku 生态系统中找到，目的是使开发 Raku 模组的体验更有趣。
+这里是一个模组列表，你可以在 Raku 生态系统中找到，目的是使开发 Raku 模组的体验更有趣。
 
 Here is a list of modules that you can find in the Raku ecosystem which aim to make the experience of developing Raku modules more fun.
 
@@ -23,7 +23,7 @@ Here is a list of modules that you can find in the Raku ecosystem which aim to m
 <a id="%E6%A8%A1%E7%BB%84%E6%9E%84%E5%BB%BA%E5%99%A8%E5%92%8C%E5%88%9B%E4%BD%9C%E5%B7%A5%E5%85%B7--module-builder-and-authoring-tools"></a>
 # 模组构建器和创作工具 / Module builder and authoring tools
 
-一些模组和工具可以帮助您生成作为模组发行版一部分的文件。
+一些模组和工具可以帮助你生成作为模组发行版一部分的文件。
 
 Some modules and tools to help you with generating files that are part of a module distribution.
 
@@ -59,7 +59,7 @@ Some tests of module quality.
 <a id="nativecall"></a>
 # NativeCall
 
-这里有一些模组可以帮助您使用 NativeCall。
+这里有一些模组可以帮助你使用 NativeCall。
 
 Here some modules to help you work with NativeCall.
 
