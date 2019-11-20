@@ -201,7 +201,7 @@ This declaration results in a type object being created and installed in the cur
 my class Journey { }
 ```
 
-这限制了它们对当前词法作用域的可见性，如果类是嵌套在模块或其他类中的实现详细信息，则这将非常有用。
+这限制了它们对当前词法作用域的可见性，如果类是嵌套在模组或其他类中的实现详细信息，则这将非常有用。
 
 This restricts their visibility to the current lexical scope, which can be useful if the class is an implementation detail nested inside a module or another class.
 

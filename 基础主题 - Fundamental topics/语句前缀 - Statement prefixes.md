@@ -271,6 +271,6 @@ $supply.tap( -> $v { say "Drawing: $v" }, done => { say "No more cards" });
 # No more cards 
 ```
 
-在本例中，`supply` 充当先前定义的 `cards` 例程的前缀。它很可能被定义为一个块，但是在这种情况下给它取一个名称可能会增加可读性，或者简单地将定义它的责任交给其他模块。
+在本例中，`supply` 充当先前定义的 `cards` 例程的前缀。它很可能被定义为一个块，但是在这种情况下给它取一个名称可能会增加可读性，或者简单地将定义它的责任交给其他模组。
 
 In this example, `supply` acts as prefix of the previously defined `cards` routine. It would very well be defined as a block, but giving it a name in this case might increase legibility or simply give the responsibility of defining it to other module.

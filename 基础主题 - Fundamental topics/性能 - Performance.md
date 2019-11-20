@@ -126,7 +126,7 @@ sqlite> select
     limit 30;
 ```
 
-正在开发中的下一代分析器是 [moarperf](https://github.com/timo/moarperf)，与原始分析器相比它可以接受 .sql 或者 SQLite 文件并有各种新功能。但是，它与相对独立的原始分析器有更多的依赖关系，因此在使用它之前，你必须先安装一些模块。
+正在开发中的下一代分析器是 [moarperf](https://github.com/timo/moarperf)，与原始分析器相比它可以接受 .sql 或者 SQLite 文件并有各种新功能。但是，它与相对独立的原始分析器有更多的依赖关系，因此在使用它之前，你必须先安装一些模组。
 
 The in-progress, next-gen profiler is [moarperf](https://github.com/timo/moarperf), which can accept .sql or SQLite files and has a bunch of new functionality compared to the original profiler. However, it has more dependencies than the relatively stand-alone original profiler, so you'll have to install some modules before using it.
 
@@ -244,11 +244,11 @@ See the slides for [Parallelism, Concurrency, and Asynchrony in Raku](https://jn
 
 There are plenty of high performance C libraries that you can use within Raku and [NativeCall](https://docs.raku.org/language/nativecall) makes it easy to create wrappers for them. There's experimental support for C++ libraries, too.
 
-如果你想[在 Raku 中使用 Perl 5 模块](https://stackoverflow.com/a/27206428/1077672)，可以混合 Raku 类型和 [Metaobject Protocol](https://docs.raku.org/language/mop)。
+如果你想[在 Raku 中使用 Perl 5 模组](https://stackoverflow.com/a/27206428/1077672)，可以混合 Raku 类型和 [Metaobject Protocol](https://docs.raku.org/language/mop)。
 
 If you want to [use Perl 5 modules in Raku](https://stackoverflow.com/a/27206428/1077672), mix in Raku types and the [Metaobject Protocol](https://docs.raku.org/language/mop).
 
-更广泛地说，Raku 是为了与其他语言顺利地互操作而设计的，并且有许多[模块，旨在帮助使用来自其他语言的 lib](https://modules.perl6.org/#q=inline)。
+更广泛地说，Raku 是为了与其他语言顺利地互操作而设计的，并且有许多[模组，旨在帮助使用来自其他语言的 lib](https://modules.perl6.org/#q=inline)。
 
 More generally, Raku is designed to smoothly interoperate with other languages and there are a number of [modules aimed at facilitating the use of libs from other langs](https://modules.perl6.org/#q=inline).
 

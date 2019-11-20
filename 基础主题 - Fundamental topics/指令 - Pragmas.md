@@ -2,11 +2,11 @@
 
 # 指令 / Pragmas
 
-定义代码某些方面行为的特殊模块
+定义代码某些方面行为的特殊模组
 
 Special modules that define certain aspects of the behavior of the code
 
-在 Raku 中，**指令**是用于标识要使用的 Raku 的特定版本或以某种方式修改编译器的正常行为的指令。`use` 关键字启用了一个实用程序(类似于你如何 `use` 一个模块)。若要禁用实用程序，请使用 `no` 关键字：
+在 Raku 中，**指令**是用于标识要使用的 Raku 的特定版本或以某种方式修改编译器的正常行为的指令。`use` 关键字启用了一个实用程序(类似于你如何 `use` 一个模组)。若要禁用实用程序，请使用 `no` 关键字：
 
 In Raku, **pragmas** are directive used to either identify a specific version of Raku to be used or to modify the compiler's normal behavior in some way. The `use` keyword enables a pragma (similar to how you can `use` a module). To disable a pragma, use the `no` keyword:
 
@@ -249,7 +249,7 @@ use isms;   # allow for Perl5 and C++ isms
 <a id="lib"></a>
 ## lib
 
-此指令将子目录添加到库搜索路径中，以便解释器能够[找到模块](https://docs.raku.org/language/modules#Finding_modules)。
+此指令将子目录添加到库搜索路径中，以便解释器能够[找到模组](https://docs.raku.org/language/modules#Finding_modules)。
 
 This pragma adds subdirectories to the library search path so that the interpreter can [find the modules](https://docs.raku.org/language/modules#Finding_modules).
 
@@ -257,7 +257,7 @@ This pragma adds subdirectories to the library search path so that the interpret
 use lib <lib /opt/lib /usr/local/lib>;
 ```
 
-这将搜索列表中传递的目录。请查看[模块文档](https://docs.raku.org/language/modules#use)以获得更多示例。
+这将搜索列表中传递的目录。请查看[模组文档](https://docs.raku.org/language/modules#use)以获得更多示例。
 
 This will search the directories passed in a list. Please check [the modules documentation](https://docs.raku.org/language/modules#use) for more examples.
 
@@ -296,7 +296,7 @@ This uses the underlying nqp `say` opcode instead of the Raku routine. This prag
 <a id="precompilation"></a>
 ## precompilation
 
-默认允许预编译源代码，特别是在模块中使用时。如果出于任何原因，你不希望预编译(模块的代码)，则可以使用 `no precompilation`。这将防止整个编译单元(通常是一个文件)被预编译。
+默认允许预编译源代码，特别是在模组中使用时。如果出于任何原因，你不希望预编译(模组的代码)，则可以使用 `no precompilation`。这将防止整个编译单元(通常是一个文件)被预编译。
 
 The default allows precompilation of source code, specifically if used in a module. If for whatever reason you do not want the code (of your module) to be precompiled, you can use `no precompilation`. This will prevent the entire compilation unit (usually a file) from being precompiled.
 

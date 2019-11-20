@@ -59,7 +59,7 @@ Variable names can start with or without a special character called a *sigil*, 
             - [`@*ARGS`](#args)
             - [`&*ARGS-TO-CAPTURE`](#args-to-capture)
             - [`&*GENERATE-USAGE`](#generate-usage)
-        - [特殊文件句柄： `STDIN`，`STDOUT` 以及 `STDERR` / Special filehandles: `STDIN`, `STDOUT` and `STDERR`](#%E7%89%B9%E6%AE%8A%E6%96%87%E4%BB%B6%E5%8F%A5%E6%9F%84%EF%BC%9A-stdin%EF%BC%8Cstdout-%E4%BB%A5%E5%8F%8A-stderr--special-filehandles-stdin-stdout-and-stderr)
+        - [特殊文件句柄： `STDIN`、`STDOUT` 以及 `STDERR` / Special filehandles: `STDIN`, `STDOUT` and `STDERR`](#%E7%89%B9%E6%AE%8A%E6%96%87%E4%BB%B6%E5%8F%A5%E6%9F%84%EF%BC%9A-stdin%E3%80%81stdout-%E4%BB%A5%E5%8F%8A-stderr--special-filehandles-stdin-stdout-and-stderr)
         - [运行时环境 / Runtime environment](#%E8%BF%90%E8%A1%8C%E6%97%B6%E7%8E%AF%E5%A2%83--runtime-environment)
             - [`%*ENV`](#%25env)
             - [`$*REPO`](#%24repo)
@@ -1431,7 +1431,7 @@ for '.' {
 <a id="%24distribution"></a>
 ### $?DISTRIBUTION
 
-`$？DISTRIBUTION` 提供对当前编译单元的 [Distribution](https://docs.raku.org/type/distribution) 的访问。这使模块作者可以通过原始相对路径名引用分发中的其他文件，或查看元数据（通过 `.meta` 方法），而无需知道底层文件结构（例如 `Compunit::Repository::Installation` 如何在安装时更改文件布局）。
+`$？DISTRIBUTION` 提供对当前编译单元的 [Distribution](https://docs.raku.org/type/distribution) 的访问。这使模组作者可以通过原始相对路径名引用分发中的其他文件，或查看元数据（通过 `.meta` 方法），而无需知道底层文件结构（例如 `Compunit::Repository::Installation` 如何在安装时更改文件布局）。
 
 `$?DISTRIBUTION` provides access to the [Distribution](https://docs.raku.org/type/Distribution) of the current compilation unit. This gives module authors a way to reference other files in the distribution by their original relative path names, or to view the metadata (via the `.meta` method), without needing to know the underlying file structure (such as how `CompUnit::Repository::Installation` changes the file layout on installation).
 
@@ -1492,7 +1492,7 @@ A dynamic variable available inside any custom [`ARGS-TO-CAPTURE`](https://docs.
 
 A dynamic variable available inside any custom [`GENERATE-USAGE`](https://docs.raku.org/language/create-cli#sub_GENERATE-USAGE) subroutine that can be used to perform the default usage message creation. Takes the same parameters as are expected of the custom `GENERATE-USAGE` subroutine.
 
-<a id="%E7%89%B9%E6%AE%8A%E6%96%87%E4%BB%B6%E5%8F%A5%E6%9F%84%EF%BC%9A-stdin%EF%BC%8Cstdout-%E4%BB%A5%E5%8F%8A-stderr--special-filehandles-stdin-stdout-and-stderr"></a>
+<a id="%E7%89%B9%E6%AE%8A%E6%96%87%E4%BB%B6%E5%8F%A5%E6%9F%84%EF%BC%9A-stdin%E3%80%81stdout-%E4%BB%A5%E5%8F%8A-stderr--special-filehandles-stdin-stdout-and-stderr"></a>
 ### 特殊文件句柄： `STDIN`、`STDOUT` 以及 `STDERR` / Special filehandles: `STDIN`, `STDOUT` and `STDERR`
 
 更多关于特殊文件句柄的信息请参考 [Input and Output](https://docs.raku.org/language/io) 以及 [IO::Special](https://docs.raku.org/type/IO::Special) 类。[IO::Handle](https://docs.raku.org/type/IO::Handle) 包含使用 `$*IN` 读取标准输入的几个例子。
@@ -1524,7 +1524,7 @@ Operating system environment variables. Numeric values are provided as [allomorp
 <a id="%24repo"></a>
 #### `$*REPO`
 
-这个变量有已安装或者装载的模块信息。
+这个变量有已安装或者装载的模组信息。
 
 This variable holds information about modules installed/loaded.
 

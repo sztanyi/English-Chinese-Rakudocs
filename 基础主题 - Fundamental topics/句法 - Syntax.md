@@ -57,7 +57,7 @@ It is also self-clocking, so that the parser can detect most of the common error
     - [声明 / Declarations](#%E5%A3%B0%E6%98%8E--declarations)
         - [变量声明 / Variable declaration](#%E5%8F%98%E9%87%8F%E5%A3%B0%E6%98%8E--variable-declaration)
         - [子例程声明 / Subroutine declaration](#%E5%AD%90%E4%BE%8B%E7%A8%8B%E5%A3%B0%E6%98%8E--subroutine-declaration)
-        - [包、模块、类、角色和语法声明 / `Package`, `Module`, `Class`, `Role`, and `Grammar` declaration](#%E5%8C%85%E3%80%81%E6%A8%A1%E5%9D%97%E3%80%81%E7%B1%BB%E3%80%81%E8%A7%92%E8%89%B2%E5%92%8C%E8%AF%AD%E6%B3%95%E5%A3%B0%E6%98%8E--package-module-class-role-and-grammar-declaration)
+        - [包、模组、类、角色和语法声明 / `Package`, `Module`, `Class`, `Role`, and `Grammar` declaration](#%E5%8C%85%E3%80%81%E6%A8%A1%E7%BB%84%E3%80%81%E7%B1%BB%E3%80%81%E8%A7%92%E8%89%B2%E5%92%8C%E8%AF%AD%E6%B3%95%E5%A3%B0%E6%98%8E--package-module-class-role-and-grammar-declaration)
         - [多分派声明 / Multi-dispatch declaration](#%E5%A4%9A%E5%88%86%E6%B4%BE%E5%A3%B0%E6%98%8E--multi-dispatch-declaration)
 - [子例程调用 / Subroutine calls](#%E5%AD%90%E4%BE%8B%E7%A8%8B%E8%B0%83%E7%94%A8--subroutine-calls)
     - [优先级丢弃 / Precedence drop](#%E4%BC%98%E5%85%88%E7%BA%A7%E4%B8%A2%E5%BC%83--precedence-drop)
@@ -336,7 +336,7 @@ x²                 # superscript 2 is not alphanumeric (explained above)
 <a id="%E6%89%A9%E5%B1%95%E6%A0%87%E8%AF%86%E7%AC%A6--extended-identifiers"></a>
 ### 扩展标识符 / Extended identifiers
 
-通常，名称包含普通标识符中不允许使用的字符是很方便的。用例包括这样的情况：一组实体共享一个通用的“短”名称，但仍然需要单独标识其每个元素。例如，可以使用短名称为 `Dog` 的模块，而长名称包括其命名者和版本：
+通常，名称包含普通标识符中不允许使用的字符是很方便的。用例包括这样的情况：一组实体共享一个通用的“短”名称，但仍然需要单独标识其每个元素。例如，可以使用短名称为 `Dog` 的模组，而长名称包括其命名者和版本：
 
 It is often convenient to have names that contain characters that are not allowed in ordinary identifiers. Use cases include situations where a set of entities shares a common "short" name, but still needs for each of its elements to be identifiable individually. For example, you might use a module whose short name is `Dog`, while its long name includes its naming authority and version:
 
@@ -418,7 +418,7 @@ my $a:d<e>:b<c> = 200;
 say $a:b<c>:d<e>;               # OUTPUT: «100␤», NOT: «200␤»
 ```
 
-此规则的一个例外是*模块版本控制*；因此这些标识符有效地命名了同一个模块：
+此规则的一个例外是*模组版本控制*；因此这些标识符有效地命名了同一个模组：
 
 An exception to this rule is *module versioning*; so these identifiers effectively name the same module:
 
@@ -617,7 +617,7 @@ say Foo.type-name;     # OUTPUT: «Foo␤»
 <a id="%E5%8C%85%E5%92%8C%E9%99%90%E5%AE%9A%E5%90%8D--packages-and-qualified-names"></a>
 ## 包和限定名 / Packages and qualified names
 
-命名实体（如变量、常量、类、模块或子）是命名空间的一部分。名称的嵌套部分使用 `::` 分隔层次结构。一些例子：
+命名实体（如变量、常量、类、模组或子）是命名空间的一部分。名称的嵌套部分使用 `::` 分隔层次结构。一些例子：
 
 Named entities, such as variables, constants, classes, modules or subs, are part of a namespace. Nested parts of a name use `::` to separate the hierarchy. Some examples:
 
@@ -1006,8 +1006,8 @@ my &f = -> { say "Hello!" }  # Lambda style syntax. The & sigil indicates the va
 my $f = -> { say "Hello!" }  # Functions can also be put into scalars
 ```
 
-<a id="%E5%8C%85%E3%80%81%E6%A8%A1%E5%9D%97%E3%80%81%E7%B1%BB%E3%80%81%E8%A7%92%E8%89%B2%E5%92%8C%E8%AF%AD%E6%B3%95%E5%A3%B0%E6%98%8E--package-module-class-role-and-grammar-declaration"></a>
-### 包、模块、类、角色和语法声明 / `Package`, `Module`, `Class`, `Role`, and `Grammar` declaration
+<a id="%E5%8C%85%E3%80%81%E6%A8%A1%E7%BB%84%E3%80%81%E7%B1%BB%E3%80%81%E8%A7%92%E8%89%B2%E5%92%8C%E8%AF%AD%E6%B3%95%E5%A3%B0%E6%98%8E--package-module-class-role-and-grammar-declaration"></a>
+### 包、模组、类、角色和语法声明 / `Package`, `Module`, `Class`, `Role`, and `Grammar` declaration
 
 有几种类型的包，每种包都用一个关键字、一个名称、一些可选特性和一系列子例程、方法或规则声明。
 

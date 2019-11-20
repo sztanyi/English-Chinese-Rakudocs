@@ -1030,7 +1030,7 @@ The last example shows what happens if there is no enum-pair that includes that 
 <a id="module"></a>
 ## `module`
 
-模块通常是公开 Raku 构造的一个或多个源文件，例如类、角色、语法、子例程和变量。模块通常用于将 Raku 核心代码作为库分发，这些库可以在另一个 Raku 程序中使用。
+模组通常是公开 Raku 构造的一个或多个源文件，例如类、角色、语法、子例程和变量。模组通常用于将 Raku 核心代码作为库分发，这些库可以在另一个 Raku 程序中使用。
 
 Modules are usually one or more source files that expose Raku constructs, such as classes, roles, grammars, subroutines and variables. Modules are usually used for distributing Raku code as libraries which can be used in another Raku program.
 
@@ -1054,7 +1054,7 @@ say [M.^ver, M.^auth];
 <a id="package"></a>
 ## `package`
 
-包是命名程序元素的嵌套命名空间。模块、类和语法都是包的类型。
+包是命名程序元素的嵌套命名空间。模组、类和语法都是包的类型。
 
 Packages are nested namespaces of named program elements. Modules, classes and grammars are all types of package.
 
