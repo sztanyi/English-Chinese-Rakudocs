@@ -315,7 +315,7 @@ Code that is generated at runtime can still fire off `CHECK` and `INIT` phasers,
 
 Runs after compilation during main execution, as soon as possible, only runs once. It can have a return value that is provided even in later phases.
 
-当相位器在不同的模块中时，`INIT` 和 `END` 相位器被视为与在使用模块中的 `use` 声明类似。（但是，如果该模块不止一次使用，则依赖此顺序是错误的，因为只在第一次注意到时相位器才配置。）
+当相位器在不同的模组中时，`INIT` 和 `END` 相位器被视为与在使用模组中的 `use` 声明类似。（但是，如果该模组不止一次使用，则依赖此顺序是错误的，因为只在第一次注意到时相位器才配置。）
 
 When phasers are in different modules, the `INIT` and `END` phasers are treated as if declared at `use` time in the using module. (It is erroneous to depend on this order if the module is used more than once, however, since the phasers are only installed the first time they're noticed.)
 
@@ -334,7 +334,7 @@ An `INIT` only runs once for all copies of a cloned closure.
 
 Runs after compilation during main execution, as late as possible, only runs once.
 
-当相位器在不同的模块中时，`INIT` 和 `END` 相位器被视为与在使用模块中的 `use` 声明类似。（但是，如果该模块不止一次使用，则依赖此顺序是错误的，因为只在第一次注意到时相位器才配置。）
+当相位器在不同的模组中时，`INIT` 和 `END` 相位器被视为与在使用模组中的 `use` 声明类似。（但是，如果该模组不止一次使用，则依赖此顺序是错误的，因为只在第一次注意到时相位器才配置。）
 
 When phasers are in different modules, the `INIT` and `END` phasers are treated as if declared at `use` time in the using module. (It is erroneous to depend on this order if the module is used more than once, however, since the phasers are only installed the first time they're noticed.)
 

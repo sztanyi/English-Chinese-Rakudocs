@@ -6,7 +6,7 @@
 
 Organizing and referencing namespaced program elements
 
-包是命名程序元素的嵌套命名空间。[模块](https://docs.raku.org/language/module-packages)、类、grammar 等都是包的类型。与目录中的文件一样，如果命名元素是本地的，则通常可以使用它们的短名引用它们，也可以引用包含名称空间的较长名称，只要它们的范围允许，就可以消除歧义。
+包是命名程序元素的嵌套命名空间。[模组](https://docs.raku.org/language/module-packages)、类、grammar 等都是包的类型。与目录中的文件一样，如果命名元素是本地的，则通常可以使用它们的短名引用它们，也可以引用包含名称空间的较长名称，只要它们的范围允许，就可以消除歧义。
 
 Packages are nested namespaces of named program elements. [Modules](https://docs.raku.org/language/module-packages), classes, grammars, and others are types of packages. Like files in a directory, you can generally refer to named elements with their short-name if they are local, or with the longer name that includes the namespace to disambiguate as long as their scope allows that.
 
@@ -55,7 +55,7 @@ $!;                     # certain punctuation variables
 
 `::` is used to separate nested package names.
 
-包实际上没有标识；例如，它们可以只是模块或类名的一部分。它们更类似于命名空间，而不是模块；使用同名的模块*捕获*包的标识(如果存在的话)。
+包实际上没有标识；例如，它们可以只是模组或类名的一部分。它们更类似于命名空间，而不是模组；使用同名的模组*捕获*包的标识(如果存在的话)。
 
 Packages do not really have an identity; they can be simply part of a module or class name, for instance. They are more similar to namespaces than to modules; with a module of the same name *capturing* the identity of a package if it exists.
 
@@ -65,7 +65,7 @@ module Foo:ver<1> {};
 say Foo.^ver; # OUTPUT: «1␤»
 ```
 
-语法允许声明的包使用版本号，但事实上，它被取消了；只有模块和类有一个标识，其中可能包括 `auth` 和 `ver`。
+语法允许声明的包使用版本号，但事实上，它被取消了；只有模组和类有一个标识，其中可能包括 `auth` 和 `ver`。
 
 The syntax allows the declared package to use a version, but as a matter of fact, it's dismissed; only modules and classes have an identity that might include `auth` and `ver`.
 

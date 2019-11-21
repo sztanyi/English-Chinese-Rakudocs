@@ -78,7 +78,7 @@ You will also need to declare and use native types. Please check [the native typ
 <a id="%E6%9B%B4%E5%90%8D--changing-names"></a>
 # 更名 / Changing names
 
-有时，你希望 Raku 子例程的名称与你正在加载的库中使用的名称不同。可能名称很长，或者大小写不同，或者在你试图创建的模块上下文中很麻烦。
+有时，你希望 Raku 子例程的名称与你正在加载的库中使用的名称不同。可能名称很长，或者大小写不同，或者在你试图创建的模组上下文中很麻烦。
 
 Sometimes you want the name of your Raku subroutine to be different from the name used in the library you're loading. Maybe the name is long or has different casing or is otherwise cumbersome within the context of the module you are trying to create.
 
@@ -92,7 +92,7 @@ use NativeCall;
 our sub init() is native('foo') is symbol('FOO_INIT') { * }
 ```
 
-在 `libfoo` 内部有一个名为 `FOO_INIT` 的例程，但是，由于我们正在创建一个名为 Foo 的模块，我们宁愿将该例程称为 `Foo::init`，所以我们使用 `symbol` 特性来指定 `libfoo` 中符号的名称，并根据需要调用子例程（"init"）。
+在 `libfoo` 内部有一个名为 `FOO_INIT` 的例程，但是，由于我们正在创建一个名为 Foo 的模组，我们宁愿将该例程称为 `Foo::init`，所以我们使用 `symbol` 特性来指定 `libfoo` 中符号的名称，并根据需要调用子例程（"init"）。
 
 Inside of `libfoo` there is a routine called `FOO_INIT` but, since we're creating a module called Foo and we'd rather call the routine as `Foo::init`, we use the `symbol` trait to specify the name of the symbol in `libfoo` and call the subroutine whatever we want ("init" in this case).
 
@@ -775,14 +775,14 @@ BE CAREFUL: the `native` trait and `constant` are evaluated at compile time. Don
 constant LIBMYSQL = %*ENV<P6LIB_MYSQLCLIENT> || 'mysqlclient';
 ```
 
-这将保留编译时给定的值。模块将被预编译，`LIBMYSQL` 将保留模块预编译时获取的值。
+这将保留编译时给定的值。模组将被预编译，`LIBMYSQL` 将保留模组预编译时获取的值。
 
 This will keep the value given at compile time. A module will be precompiled and `LIBMYSQL` will keep the value it acquires when the module gets precompiled.
 
 <a id="abiapi-%E7%89%88%E6%9C%AC---abiapi-version"></a>
 ## ABI/API 版本 - ABI/API version
 
-如果编写 `native('foo')` 原生调用，将在类 Unix 系统下搜索 libfoo.so（OS X 上的 libfoo.dynlib，Win32 上的 foo.dll）。在大多数现代系统中，它将要求你或模块的用户安装开发包，建议始终向共享库提供 API/ABI版本，因此 libfoo.so 结尾通常是开发包提供的符号链接。
+如果编写 `native('foo')` 原生调用，将在类 Unix 系统下搜索 libfoo.so（OS X 上的 libfoo.dynlib，Win32 上的 foo.dll）。在大多数现代系统中，它将要求你或模组的用户安装开发包，建议始终向共享库提供 API/ABI版本，因此 libfoo.so 结尾通常是开发包提供的符号链接。
 
 If you write `native('foo')` NativeCall will search libfoo.so under Unix like system (libfoo.dynlib on OS X, foo.dll on win32). In most modern system it will require you or the user of your module to install the development package because it's recommended to always provide an API/ABI version to a shared library, so libfoo.so ends often being a symbolic link provided only by a development package.
 

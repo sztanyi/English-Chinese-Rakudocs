@@ -541,7 +541,7 @@ Anonymous sub cannot be declared `only`. `only sub {}'` will throw an error of t
 <a id="%E4%B9%A0%E6%83%AF%E7%94%A8%E6%B3%95%E5%92%8C%E4%B9%A0%E8%AF%AD--conventions-and-idioms"></a>
 # 习惯用法和习语 / Conventions and idioms
 
-虽然上面描述的调度系统提供了很大的灵活性，但是大多数内部函数和许多模块中的函数都会遵循一些约定。
+虽然上面描述的调度系统提供了很大的灵活性，但是大多数内部函数和许多模组中的函数都会遵循一些约定。
 
 While the dispatch system described above provides a lot of flexibility, there are some conventions that most internal functions, and those in many modules, will follow.
 

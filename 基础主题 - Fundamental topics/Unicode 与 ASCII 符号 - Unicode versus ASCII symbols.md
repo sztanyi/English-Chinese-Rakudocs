@@ -6,7 +6,7 @@ Unicode 符号及其 ASCII 等价物
 
 Unicode symbols and their ASCII equivalents
 
-以下 Unicode 符号可以在 Raku 中使用，而无需加载任何其他模块。其中一些具有只用输入 ASCII 字符的等效符号。
+以下 Unicode 符号可以在 Raku 中使用，而无需加载任何其他模组。其中一些具有只用输入 ASCII 字符的等效符号。
 
 The following Unicode symbols can be used in Raku without needing to load any additional modules. Some of them have equivalents which can be typed with ASCII-only characters.
 
