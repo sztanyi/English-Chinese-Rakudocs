@@ -32,7 +32,11 @@ unit module Something::Or::Other;
 constant $config-file = "config.txt".IO.slurp;
 ```
 
+在预编译过程中，`$config-file` 将被删除，当您再次启动脚本时，对 `config.txt` 文件的更改不会被重新加载；只有当模块被重新编译时，才会重新加载文件。
+
 The `$config-file` will be slurped during precompilation and changes to `config.txt` file won't be re-loaded when you start the script again; only when the module is re-compiled.
+
+避免[使用容器](https://docs.raku.org/language/containers)，而更偏向[绑定一个值](https://docs.raku.org/language/containers#Binding)至变量，该变量提供类似于常量的行为，但允许更新该值：
 
 Avoid [using a container](https://docs.raku.org/language/containers) and prefer [binding a value](https://docs.raku.org/language/containers#Binding) to a variable that offers a behavior similar to a constant, but allowing the value to get updated:
 
@@ -42,7 +46,9 @@ unit module Something::Or::Other;
 my $config-file := "config.txt".IO.slurp;
 ```
 
-## Assigning to `Nil` produces a different value, usually `Any`
+## 分配给 `Nil` 会产生一个不同的值，通常为 `Any` / Assigning to `Nil` produces a different value, usually `Any`
+
+实际上，赋值 `Nil` [将变量恢复为其默认值](https://docs.raku.org/type/Nil)。所以：
 
 Actually, assigning to `Nil` [reverts the variable to its default value](https://docs.raku.org/type/Nil). So:
 
@@ -52,7 +58,11 @@ my @a = 4, 8, 15, 16;
 say @a; # OUTPUT: «[4 8 (Any) 16]␤» 
 ```
 
+在这种情况下，`Any` 是 `Array` 元素的默认值。
+
 In this case, `Any` is the default value of an `Array` element.
+
+您可以有意地将 `Nil` 赋值为默认值：
 
 You can purposefully assign `Nil` as a default value:
 
@@ -61,12 +71,16 @@ my %h is default(Nil) = a => Nil;
 say %h; # OUTPUT: «Hash %h = {:a(Nil)}␤» 
 ```
 
+或者将一个值绑定到 `Nil`，如果这是您想要的结果：
+
 Or bind a value to `Nil` if that is the result you want:
 
 ```Raku
 @a[3] := Nil;
 say @a; # OUTPUT: «[4 8 (Any) Nil]␤» 
 ```
+
+这个陷阱可能隐藏在函数的结果中，例如匹配：
 
 This trap might be hidden in the result of functions, such as matches:
 
@@ -75,9 +89,13 @@ my $result2 = 'abcdef' ~~ / dex /;
 say "Result2 is { $result2.^name }"; # OUTPUT: «Result2 is Any␤» 
 ```
 
+如果没有发现任何结果，则 [`Match` 将是 `Nil`](https://docs.raku.org/language/regexes#Literals)；但是，将 `Nil` 赋值给 `$result2` 将导致其值为默认值，即 `Any`。
+
 A [`Match` will be `Nil`](https://docs.raku.org/language/regexes#Literals) if it finds nothing; however assigning `Nil` to `$result2` above will result in its default value, which is `Any` as shown.
 
-## Using a block to interpolate anon state vars
+## 使用代码块插值一个匿名状态变量 / Using a block to interpolate anon state vars
+
+程序员打算让代码计算调用例程的次数，但是计数器没有增加：
 
 The programmer intended for the code to count the number of times the routine is called, but the counter is not increasing:
 
@@ -85,11 +103,13 @@ The programmer intended for the code to count the number of times the routine is
 sub count-it { say "Count is {$++}" }
 count-it;
 count-it;
- 
-# OUTPUT: 
-# Count is 0 
-# Count is 0 
+
+# OUTPUT:
+# Count is 0
+# Count is 0
 ```
+
+当涉及状态变量时，每当重新进入代码块中的代码块时，就会克隆声明变量的块，并重新初始化变量。这允许像下面这样的构造行为；每次调用子例程时，循环中的状态变量都会重新初始化：
 
 When it comes to state variables, the block in which the vars are declared gets cloned —and vars get initialized anew— whenever that block's block is re-entered. This lets constructs like the one below behave appropriately; the state variable inside the loop gets initialized anew each time the sub is called:
 
@@ -101,21 +121,23 @@ sub count-it {
         $count++;
     }
 }
- 
+
 count-it;
 say "…and again…";
 count-it;
- 
- 
+
+
 # OUTPUT: 
-# Count is 0 
-# Count is 1 
-# Count is 2 
-# …and again… 
-# Count is 0 
-# Count is 1 
-# Count is 2 
+# Count is 0
+# Count is 1
+# Count is 2
+# …and again…
+# Count is 0
+# Count is 1
+# Count is 2
 ```
+
+同样的布局存在于我们的有缺陷的程序中。双引号字符串中的 `{ }` 不仅仅是执行一段代码的插值。它实际上是它自己的块，就像上面的例子一样，每次输入子时都会被克隆，重新初始化我们的状态变量。为了得到正确的计数，我们需要去掉这个内部块，使用标量上下文化器来插值我们的代码：
 
 The same layout exists in our buggy program. The `{ }` inside a double-quoted string isn't merely an interpolation to execute a piece of code. It's actually its own block, which is just as in the example above gets cloned each time the sub is entered, re-initializing our state variable. To get the right count, we need to get rid of that inner block, using a scalar contextualizer to interpolate our piece of code instead:
 
@@ -129,37 +151,45 @@ count-it;
 # Count is 1 
 ```
 
+或者，你也可以使用[连接运算符](https://docs.raku.org/routine/~)，而不是：
+
 Alternatively, you can also use the [concatenation operator](https://docs.raku.org/routine/~) instead:
 
 ```Raku
 sub count-it { say "Count is " ~ $++ }
 ```
 
-## Using set subroutines on `Associative` when the value is falsy
+## 当值为假时，在 `Associative` 上使用集合子例程 / Using set subroutines on `Associative` when the value is falsy
+
+对实现了 [Associative](https://docs.raku.org/type/Associative) 的类使用 [(cont)](https://docs.raku.org/routine/(cont)%20,%20infix%20%20%E2%88%8B)、 [∋](https://docs.raku.org/routine/(cont),%20infix%20%E2%88%8B)、 [∌](https://docs.raku.org/routine/%E2%88%8C)、 [(elem)](https://docs.raku.org/routine/(elem),%20infix%20%E2%88%88)、 [∈](https://docs.raku.org/routine/(elem),%20infix%20%E2%88%88) 或者 [∉](https://docs.raku.org/routine/%E2%88%89) 将返回 `False` 如果键的值为假。
 
 Using [(cont)](https://docs.raku.org/routine/(cont)%20,%20infix%20%20%E2%88%8B), [∋](https://docs.raku.org/routine/(cont),%20infix%20%E2%88%8B), [∌](https://docs.raku.org/routine/%E2%88%8C), [(elem)](https://docs.raku.org/routine/(elem),%20infix%20%E2%88%88), [∈](https://docs.raku.org/routine/(elem),%20infix%20%E2%88%88), or [∉](https://docs.raku.org/routine/%E2%88%89) on classes implementing [Associative](https://docs.raku.org/type/Associative) will return `False` if the value of the key is falsy:
 
 ```Raku
 enum Foo «a b»;
 say Foo.enums ∋ 'a';
- 
-# OUTPUT: 
-# False 
+
+# OUTPUT:
+# False
 ```
+
+使用 `:exists` 时：
 
 Instead, use `:exists`:
 
 ```Raku
 enum Foo «a b»;
 say Foo.enums<a>:exists;
- 
-# OUTPUT: 
-# True 
+
+# OUTPUT:
+# True
 ```
 
-# Blocks
+# 代码块 / Blocks
 
-## Beware of empty "blocks"
+## 小心空“代码块” / Beware of empty "blocks"
+
+花括号用于声明块。但是，空大括号将声明散列。
 
 Curly braces are used to declare blocks. However, empty curly braces will declare a hash.
 
@@ -170,6 +200,8 @@ $ = {…}       # Block
 $ = { }       # Hash 
 ```
 
+如果您有效地想要声明空的块，则可以使用第二种形式：
+
 You can use the second form if you effectively want to declare an empty block:
 
 ```Raku
@@ -177,11 +209,15 @@ my &does-nothing = {;};
 say does-nothing(33); # OUTPUT: «Nil␤»
 ```
 
-# Objects
+# 对象 / Objects
 
-## Assigning to attributes
+## 赋值给属性 / Assigning to attributes
+
+新手通常认为，因为具有访问器的属性被声明为 `has $.x`，所以它们可以赋值给类内部的 `$.x`。不是这样。
 
 Newcomers often think that, because attributes with accessors are declared as `has $.x`, they can assign to `$.x` inside the class. That's not the case.
+
+例如
 
 For example
 
@@ -200,9 +236,15 @@ say Point.new(x => 1, y => -2).double.x
 # OUTPUT: «Cannot assign to an immutable value␤» 
 ```
 
+方法 `double` 中的第一行被标记为 `# WRONG`，因为 `$.x` 是 `$( self.x )` 的缩写，它是对只读访问器的调用。
+
 the first line inside the method `double` is marked with `# WRONG` because `$.x`, short for `$( self.x )`, is a call to a read-only accessor.
 
+语法 `has $.x` 是类似于 `has $!x; method x() { $!x }` 的缩写，因此实际的属性称为 `$!x`，并且自动生成只读访问器方法。
+
 The syntax `has $.x` is short for something like `has $!x; method x() { $!x }`, so the actual attribute is called `$!x`, and a read-only accessor method is automatically generated.
+
+因此，编写 `double` 方法的正确方法是
 
 Thus the correct way to write the method `double` is
 
@@ -214,9 +256,13 @@ method double {
 }
 ```
 
+直接对属性进行操作。
+
 which operates on the attributes directly.
 
-## `BUILD` prevents automatic attribute initialization from constructor arguments
+## `BUILD` 防止构造函数参数的自动属性初始化 / `BUILD` prevents automatic attribute initialization from constructor arguments
+
+定义自己的 `BUILD` 子方法时，必须自己初始化所有属性。例如
 
 When you define your own `BUILD` submethod, you must take care of initializing all attributes by yourself. For example
 
@@ -232,9 +278,15 @@ class A {
 say A.new(x => 42).x;       # OUTPUT: «Any␤» 
 ```
 
+`$!x` 未初始化，因为自定义 `BUILD` 没有初始化它。
+
 leaves `$!x` uninitialized, because the custom `BUILD` doesn't initialize it.
 
+**注意：**考虑使用 [TWEAK](https://docs.raku.org/language/objects#index-entry-TWEAK) 代替。自 2016.11 版以来，[Rakudo](https://docs.raku.org/language/glossary#Rakudo) 支持 [TWEAK](https://docs.raku.org/language/objects#index-entry-TWEAK) 方法。
+
 **Note:** Consider using [TWEAK](https://docs.raku.org/language/objects#index-entry-TWEAK) instead. [Rakudo](https://docs.raku.org/language/glossary#Rakudo) supports [TWEAK](https://docs.raku.org/language/objects#index-entry-TWEAK) method since release 2016.11.
+
+一个可能的补救办法是在 `BUILD` 中显式初始化属性：
 
 One possible remedy is to explicitly initialize the attribute in `BUILD`:
 
@@ -245,6 +297,8 @@ submethod BUILD(:$x) {
 }
 ```
 
+可缩短为：
+
 which can be shortened to:
 
 ```Raku
@@ -253,17 +307,28 @@ submethod BUILD(:$!x) {
 }
 ```
 
-# Whitespace
+# 空格 / Whitespace
 
-## Whitespace in regexes does not match literally
+## 正则表达式中的空格不匹配 / Whitespace in regexes does not match literally
 
 ```Raku
 say 'a b' ~~ /a b/; # OUTPUT: «False␤» 
 ```
 
+默认情况下，正则中的空格被认为是没有语义的可选填充，就像 Raku 语言的其他部分一样。
+
 Whitespace in regexes is, by default, considered an optional filler without semantics, just like in the rest of the Raku language.
 
+匹配空格的方法：
+
 Ways to match whitespace:
+
+- `\s` 匹配任意一个空格，`\s` 匹配至少一个空格
+- `' '`（引号中的空格）匹配单一空格
+- `\t`, `\n` 匹配特定的空额（制表符、换行符）
+- `\h`, `\v` 匹配垂直、水平空格
+- `.ws`，这是一个内置的匹配空格 rule，它经常做你想要它做的事情。
+- 使用 `m:s/a b/` 或者 `m:sigspace/a b/`， 正则中的空白匹配任意空格
 
 - `\s` to match any one whitespace, `\s+` to match at least one
 - `' '` (a blank in quotes) to match a single blank
@@ -272,46 +337,58 @@ Ways to match whitespace:
 - `.ws`, a built-in rule for whitespace that oftentimes does what you actually want it to do
 - with `m:s/a b/` or `m:sigspace/a b/`, the blank in the regexes matches arbitrary whitespace
 
-## Ambiguities in parsing
+## 句法分析中的歧义 / Ambiguities in parsing
+
+虽然有些语言可以让您尽可能地移除标记之间的空白，但 Raku 就不那么宽容了。最重要的口号是我们不鼓励代码高尔夫，所以不要限制空格（这些限制背后更严重的根本原因是单程解析和解析 Raku 程序的能力，而实际上没有[回溯](https://en.wikipedia.org/wiki/Backtracking)）。
 
 While some languages will let you get away with removing as much whitespace between tokens as possible, Raku is less forgiving. The overarching mantra is we discourage code golf, so don't scrimp on whitespace (the more serious underlying reason behind these restrictions is single-pass parsing and ability to parse Raku programs with virtually no [backtracking](https://en.wikipedia.org/wiki/Backtracking)).
 
+你应该注意的共同领域是：
+
 The common areas you should watch out for are:
 
-### Block vs. Hash slice ambiguity
+### 代码块与哈希切片模糊度 / Block vs. Hash slice ambiguity
 
 ```Raku
+# 错误；试图哈希切片一个布尔值
 # WRONG; trying to hash-slice a Bool: 
 while ($++ > 5){ .say }
 # RIGHT: 
 while ($++ > 5) { .say }
- 
+
 # EVEN BETTER; Raku does not require parentheses there: 
 while $++ > 5 { .say }
 ```
 
-### Reduction vs. Array constructor ambiguity
+### 约简与数组构造函数歧义 / Reduction vs. Array constructor ambiguity
 
 ```Raku
+# 错误；`[<]` 元运算符歧义
 # WRONG; ambiguity with `[<]` metaop: 
 my @a = [[<foo>],];
+# 正确；约简中不能有空格，所以在里面放置一个：
 # RIGHT; reductions cannot have spaces in them, so put one in: 
 my @a = [[ <foo>],];
- 
+
+# 这里没有歧义，项目之间的自然空间足以解决这一问题：
 # No ambiguity here, natural spaces between items suffice to resolve it: 
 my @a = [[<foo bar ber>],];
 ```
 
-### Less than vs. Word quoting/Associative indexing
+### 少于运算符与词引文/关联数组索引 - Less than vs. Word quoting/Associative indexing
 
 ```Raku
+# 错误；试图用索引关联数组的方式求 3 的索引
 # WRONG; trying to index 3 associatively: 
 say 3<5>4
+# 正确；在中缀运算符周围添加一些额外的空格：
 # RIGHT; prefer some extra whitespace around infix operators: 
 say 3 < 5 > 4
 ```
 
-### Exclusive sequences vs. sequences with Ranges
+### 排他序列与范围序列 / Exclusive sequences vs. sequences with Ranges
+
+有关 `...^` 运算符如何会被误认为是 `...` 运算符后紧跟 `^` 运算符的更多信息，请参见[运算符陷阱](https://docs.raku.org/language/traps#Exclusive_sequence_operator)一节。您必须正确地使用空格来指示后续的解释执行。
 
 See the section on [operator traps](https://docs.raku.org/language/traps#Exclusive_sequence_operator) for more information about how the `...^` operator can be mistaken for the `...` operator with a `^` operator immediately following it. You must use whitespace correctly to indicate which interpretation will be followed.
 
