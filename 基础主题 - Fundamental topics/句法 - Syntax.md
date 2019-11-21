@@ -351,7 +351,7 @@ use Dog:auth<Somebody>:ver<2.0>;
 my Dog $spot .= new("woof");
 ```
 
-类似地，一组运算符在不同的语法类别中协同工作，它们的名称有 `prefix`、`infix` 和 `postfix`。这些运算符的正式名称通常包含从普通标识符中排除的字符。长名称是扩展标识符的组成部分，包含此语法类别；短名称将包含在定义中的引号中：
+类似地，一组运算符在不同的语法类别中协同工作，它们的名称有 `prefix`、 `infix` 和 `postfix`。这些运算符的正式名称通常包含从普通标识符中排除的字符。长名称是扩展标识符的组成部分，包含此语法类别；短名称将包含在定义中的引号中：
 
 Similarly, sets of operators work together in various syntactic categories with names like `prefix`, `infix` and `postfix`. The official names of these operators often contain characters that are excluded from ordinary identifiers. The long name is what constitutes the extended identifier, and includes this syntactic category; the short name will be included in quotes in the definition:
 
