@@ -394,7 +394,9 @@ See the section on [operator traps](https://docs.raku.org/language/traps#Exclusi
 
 # Captures
 
-## Containers versus values in a capture
+## 容器与 capture 中的值相对应的值 / Containers versus values in a capture
+
+初学者可能期望 `Capture` 中的一个变量在以后使用 `Capture` 时提供它的当前值。例如：
 
 Beginners might expect a variable in a `Capture` to supply its current value when that `Capture` is later used. For example:
 
@@ -402,7 +404,11 @@ Beginners might expect a variable in a `Capture` to supply its current value whe
 my $a = 2; say join ",", ($a, ++$a);  # OUTPUT: «3,3␤» 
 ```
 
+在这里，`Capture` 包含由 `$a` 和表达式 `++$a` 的结果的**值**指向的**容器**。因为 `Capture` 必须在 `&say` 能使用它之前具体化，`++$a` 可能发生在 `&say` 查看 `$a` 中的容器（并且在 `List` 被创建之前）之前，因此它可能已经增加了。
+
 Here the `Capture` contained the **container** pointed to by `$a` and the **value** of the result of the expression `++$a`. Since the `Capture` must be reified before `&say` can use it, the `++$a` may happen before `&say` looks inside the container in `$a` (and before the `List` is created with the two terms) and so it may already be incremented.
+
+相反，当您想要一个值时，使用一个产生一个值的表达式。
 
 Instead, use an expression that produces a value when you want a value.
 
@@ -410,11 +416,15 @@ Instead, use an expression that produces a value when you want a value.
 my $a = 2; say join ",", (+$a, ++$a); # OUTPUT: «2,3␤» 
 ```
 
+甚至更简单
+
 Or even simpler
 
 ```Raku
 my $a = 2; say  "$a, {++$a}"; # OUTPUT: «2, 3␤» 
 ```
+
+同样的情况也发生在这种情况下：
 
 The same happens in this case:
 
@@ -428,6 +438,8 @@ for ^5 {
 };
 ```
 
+输出 `«[(1 2)]␤[(2 3) (2 3)]␤[(3 5) (3 5) (3 5)]␤...`。`$a` 和 `$b` 直到 `say` 被调用才被具体化，它们在那个精确时刻所具有的价值是印刷出来的。为了避免这种情况，在使用之前，用某种方式解除值的容器或将它们从变量中取出。
+
 Outputs `«[(1 2)]␤[(2 3) (2 3)]␤[(3 5) (3 5) (3 5)]␤...`. `$a` and `$b` are not reified until `say` is called, the value that they have in that precise moment is the one printed. To avoid that, decontainerize values or take them out of the variable in some way before using them.
 
 ```Raku
@@ -440,17 +452,25 @@ for ^5 {
 };
 ```
 
+使用 [item](https://docs.raku.org/routine/item)，容器将在项目上下文中进行求值，提取其值，并获得预期的结果。
+
 With [item](https://docs.raku.org/routine/item), the container will be evaluated in item context, its value extracted, and the desired outcome achieved.
 
-# `Cool` tricks
+# `Cool` 技巧 / `Cool` tricks
+
+Raku 包含一个 [Cool](https://docs.raku.org/type/Cool) 类，它提供了一些我们在必要时通过强制参数来习惯的 DWIM 行为。然而，DWIM 从来都不是完美的。特别是在 [List](https://docs.raku.org/type/List)，即 `Cool`，有许多方法不可能完成您可能认为它们所做的工作，包括 `contains`、`starts-with` 或 `index`。请参阅下面一节中的一些例子。
 
 Raku includes a [Cool](https://docs.raku.org/type/Cool) class, which provides some of the DWIM behaviors we got used to by coercing arguments when necessary. However, DWIM is never perfect. Especially with [List](https://docs.raku.org/type/List)s, which are `Cool`, there are many methods that will not do what you probably think they do, including `contains`, `starts-with` or `index`. Please see some examples in the section below.
 
-## Strings are not `List`s, so beware indexing
+## 字符串不是“列表”，当心索引 / Strings are not `List`s, so beware indexing
+
+在 Raku 中，[字符串](https://docs.raku.org/type/Str)不是字符列表。不能像处理列表一样[遍历](https://docs.raku.org/language/traps#Strings_are_not_iterable)，尽管有名为 [.index 的子例程](https://docs.raku.org/type/Str#routine_index)。
 
 In Raku, [strings](https://docs.raku.org/type/Str) are not lists of characters. One [cannot iterate](https://docs.raku.org/language/traps#Strings_are_not_iterable) over them or index into them as you can with [lists](https://docs.raku.org/type/List), despite the name of the [.index routine](https://docs.raku.org/type/Str#routine_index).
 
-## `List`s become strings, so beware `.index()`ing
+## `List` 变成字符串，所以 `.index()` 时小心 / `List`s become strings, so beware `.index()`ing
+
+[list](https://docs.raku.org/type/List) 继承自 [Cool](https://docs.raku.org/type/Cool)，能使用 [.index](https://docs.raku.org/type/Str#routine_index) 子例程。由于 `.index` [强制转换](https://docs.raku.org/type/List#method_Str)数组类型至 [Str](https://docs.raku.org/type/Str)，这个有时返回列表元素的索引，但行为不是这样定义的。
 
 [List](https://docs.raku.org/type/List) inherits from [Cool](https://docs.raku.org/type/Cool), which provides access to [.index](https://docs.raku.org/type/Str#routine_index). Because of the way `.index` [coerces](https://docs.raku.org/type/List#method_Str) a `List` into a [Str](https://docs.raku.org/type/Str), this can sometimes appear to be returning the index of an element in the list, but that is not how the behavior is defined.
 
@@ -462,9 +482,13 @@ say @a.index('b c');  # 2 -- not undefined!
 say @a.index(<a b>);  # 0 -- not undefined! 
 ```
 
+这些警告同样的也适用于 [.rindex](https://docs.raku.org/type/Str#routine_rindex).
+
 These same caveats apply to [.rindex](https://docs.raku.org/type/Str#routine_rindex).
 
-## `List`s become strings, so beware `.contains()`
+## 列表变为字符串，当心 `.contains()` / `List`s become strings, so beware `.contains()`
+
+同样的，[.contains](https://docs.raku.org/type/List#(Cool)_method_contains) 方法不会查找列表里面的元素。
 
 Similarly, [.contains](https://docs.raku.org/type/List#(Cool)_method_contains) does not look for elements in the list.
 
@@ -477,6 +501,8 @@ say @menu.contains('er fr');                # True!
 say @menu.contains(<es mi>);                # True! 
 ```
 
+如果您实际上想检查是否存在一个元素，那么对单个元素使用 [(cont)](https://docs.raku.org/routine/(elem),%20infix%20%E2%88%88) 运算符，对多个元素使用 [superset](https://docs.raku.org/language/operators#infix_(%3E=),_infix_%E2%8A%87) 和 [strict superset](https://docs.raku.org/language/operators#infix_(%3E),_infix_%E2%8A%83) 运算符。
+
 If you actually want to check for the presence of an element, use the [(cont)](https://docs.raku.org/routine/(elem),%20infix%20%E2%88%88) operator for single elements, and the [superset](https://docs.raku.org/language/operators#infix_(%3E=),_infix_%E2%8A%87) and [strict superset](https://docs.raku.org/language/operators#infix_(%3E),_infix_%E2%8A%83) operators for multiple elements.
 
 ```Raku
@@ -487,9 +513,13 @@ say @menu (>) <hamburger fries>;            # True
 say @menu (>) <milkshake fries>;            # True (! NB: order doesn't matter) 
 ```
 
+如果您正在进行大量元素测试，则可以使用 [Set](https://docs.raku.org/type/Set) 更安逸。
+
 If you are doing a lot of element testing, you may be better off using a [Set](https://docs.raku.org/type/Set).
 
-## `Numeric` literals are parsed before coercion
+## `Numeric` 字面量在强制类型转换前被解析 / `Numeric` literals are parsed before coercion
+
+经验丰富的程序员可能不会对此感到惊讶，但数字文字在被强制放入字符串之前将被解析为数字值，这可能会产生非直观的结果。
 
 Experienced programmers will probably not be surprised by this, but Numeric literals will be parsed into their numeric value before being coerced into a string, which may create nonintuitive results.
 
@@ -500,7 +530,9 @@ say 12_345.contains("23");  # True
 say 12_345.contains("2_");  # False 
 ```
 
-## Getting a random item from a `List`
+## 从列表中获取一个随机项 / Getting a random item from a `List`
+
+一个常见的任务是从一个集合中检索一个或多个随机元素，但 `List.rand` 做不到。[Cool](https://docs.raku.org/type/Cool) 提供了 [rand](https://docs.raku.org/routine/rand#class_Cool)，但它首先将 `List` 转换为列表中的项目数，并返回 0 到该值之间的随机实数。要获得随机元素，请参见 [pick](https://docs.raku.org/routine/pick) 和 [roll](https://docs.raku.org/routine/roll)。
 
 A common task is to retrieve one or more random elements from a collection, but `List.rand` isn't the way to do that. [Cool](https://docs.raku.org/type/Cool) provides [rand](https://docs.raku.org/routine/rand#class_Cool), but that first coerces the `List` into the number of items in the list, and returns a random real number between 0 and that value. To get random elements, see [pick](https://docs.raku.org/routine/pick) and [roll](https://docs.raku.org/routine/roll).
 
@@ -513,13 +545,17 @@ say @colors.pick(2);    # yellow violet  (cannot repeat)
 say @colors.roll(3);    # red green red  (can repeat) 
 ```
 
-## `List`s numify to their number of elements in numeric context
+## 列表中数字上下文中元素的个数 / `List`s numify to their number of elements in numeric context
+
+您要检查一个数字是否可被一组数字中的任何一个整除：
 
 You want to check whether a number is divisible by any of a set of numbers:
 
 ```Raku
 say 42 %% <11 33 88 55 111 20325>; # OUTPUT: «True␤»
 ```
+
+什么？没有一个数字可整除 42。然而，这个列表有 6 个元素，42 可以被 6 整除，这就是为什么输出是真的。在这种情况下，您应该将列表转换为 [Junction](https://docs.raku.org/type/Junction)：
 
 What? There's no single number 42 should be divisible by. However, that list has 6 elements, and 42 is divisible by 6. That's why the output is true. In this case, you should turn the `List` into a [Junction](https://docs.raku.org/type/Junction):
 
@@ -528,18 +564,24 @@ say 42 %% <11 33 88 55 111 20325>.any;
 # OUTPUT: «any(False, False, False, False, False, False)␤» 
 ```
 
+这将清楚地揭示列表中所有数字的可否整除 42 的真假值。
+
 which will clearly reveal the falsehood of the divisiveness of all the numbers in the list, which will be numified separately.
 
-# Arrays
+# 数组 / Arrays
 
-## Referencing the last element of an array
+## 引用数组中的最后一个元素 / Referencing the last element of an array
+
+在某些语言中，可以通过请求阵列的 "-1th" 元素来引用数组的最后一个元素，例如：
 
 In some languages one could reference the last element of an array by asking for the "-1th" element of the array, e.g.:
 
-```Raku
+```Perl
 my @array = qw{victor alice bob charlie eve};
 say @array[-1];    # OUTPUT: «eve␤» 
 ```
+
+在 Raku 中，不能使用负的下标，然而，实际上可以使用函数，即 `*-1` 来实现相同的下标。因此，访问阵列的最后一个元素变为：
 
 In Raku it is not possible to use negative subscripts, however the same is achieved by actually using a function, namely `*-1`. Thus, accessing the last element of an array becomes:
 
@@ -547,6 +589,8 @@ In Raku it is not possible to use negative subscripts, however the same is achie
 my @array = qw{victor alice bob charlie eve};
 say @array[*-1];   # OUTPUT: «eve␤» 
 ```
+
+另一种方法是利用数组的 `tail` 方法：
 
 Yet another way is to utilize the array's tail method:
 
@@ -556,7 +600,9 @@ say @array.tail;      # OUTPUT: «eve␤»
 say @array.tail(2);   # OUTPUT: «(charlie eve)␤» 
 ```
 
-## Typed array parameters
+## 类型化数组参数 / Typed array parameters
+
+很常见的是，新用户可能会这样写：
 
 Quite often new users will happen to write something like:
 
@@ -564,11 +610,15 @@ Quite often new users will happen to write something like:
 sub foo(Array @a) { ... }
 ```
 
+在文档中得到足够多的信息之前，他们会意识到这是在要求数组的数组。要 `@a` 只接受数组，请使用：
+
 ...before they have gotten far enough in the documentation to realize that this is asking for an Array of Arrays. To say that `@a` should only accept Arrays, use instead:
 
 ```Raku
 sub foo(@a where Array) { ... }
 ```
+
+同样常见的是，期望它能起作用，但实际没有：
 
 It is also common to expect this to work, when it does not:
 
@@ -576,6 +626,8 @@ It is also common to expect this to work, when it does not:
 sub bar(Int @a) { 42.say };
 bar([1, 2, 3]);             # expected Positional[Int] but got Array 
 ```
+
+这里的问题是，[1, 2, 3] 不是一个 `Array[Int]`，它是一个普通的数组，恰好里面有 Int。为了使其工作，该参数也必须是 `Array[Int]`。
 
 The problem here is that [1, 2, 3] is not an `Array[Int]`, it is a plain old Array that just happens to have Ints in it. To get it to work, the argument must also be an `Array[Int]`.
 
@@ -585,9 +637,13 @@ bar(@b);                    # OUTPUT: «42␤»
 bar(Array[Int].new(1, 2, 3));
 ```
 
+这似乎是不方便的，但是好处是它将类型检查从将什么赋值给 `@b` 移到了赋值发生的位置，而不是要求在每次调用上检查每个元素。
+
 This may seem inconvenient, but on the upside it moves the type-check on what is assigned to `@b` to where the assignment happens, rather than requiring every element to be checked on every call.
 
-## Using `«»` quoting when you don't need it
+## 在不需要时使用 `«»` 引用 / Using `«»` quoting when you don't need it
+
+这个陷阱可以从不同的变种中看到。以下是其中一些：
 
 This trap can be seen in different varieties. Here are some of them:
 
@@ -609,13 +665,19 @@ run ‘touch’, ‘--’, $y; # ← RIGHT; explicit and *always* correct
 run <touch -->, $y;    # ← RIGHT; < > are OK, this is short and correct 
 ```
 
+基本上，`«»` 引用只有在你记得*始终*用引号括起来你的变量时才是安全的。问题是，它将默认行为转换为不安全的变体，因此，只要忘记一些引号，你就有可能引入一个错误，甚至是一个安全漏洞。为了安全起见，不要使用 `«»`。
+
 Basically, `«»` quoting is only safe to use if you remember to *always* quote your variables. The problem is that it inverts the default behavior to unsafe variant, so just by forgetting some quotes you are risking to introduce either a bug or maybe even a security hole. To stay on the safe side, refrain from using `«»`.
 
-# Strings
+# 字符串 / Strings
+
+处理[字符串](https://docs.raku.org/type/Str)时可能出现的一些问题
 
 Some problems that might arise when dealing with [strings](https://docs.raku.org/type/Str).
 
-## Quotes and interpolation
+## 引用和插值 / Quotes and interpolation
+
+字符串字面量的插值对于你自己来说可能太聪明了。
 
 Interpolation in string literals can be too clever for your own good.
 
@@ -628,6 +690,8 @@ Interpolation in string literals can be too clever for your own good.
 "$foo(' ~ @args ~ ')"
 ```
 
+您可以使用非插值单引号和使用 `\qq[]` 转义序列切换到更自由的插值操作来避免这些问题：
+
 You can avoid those problems using non-interpolating single quotes and switching to more liberal interpolation with `\qq[]` escape sequence:
 
 ```Raku
@@ -635,6 +699,8 @@ my $a = 1;
 say '\qq[$a]()$b()';
 # OUTPUT: «1()$b()␤» 
 ```
+
+另一种选择是对所有插值使用 `Q:c` 引用符号，并使用代码块 `{}` 来进行字符串插值操作：
 
 Another alternative is to use `Q:c` quoter, and use code blocks `{}` for all interpolation:
 
@@ -644,7 +710,9 @@ say Q:c«{$a}()$b()»;
 # OUTPUT: «1()$b()␤» 
 ```
 
-## Strings are not iterable
+## 字符串不是 Iterable / Strings are not iterable
+
+有些方法是 [Str](https://docs.raku.org/type/Str) 继承自 [Any](https://docs.raku.org/type/Any)，用于处理列表之类的可迭代性。字符串上的迭代器包含一个元素，即整个字符串。若要使用基于列表的方法，如 `sort` 和 `reverse`，您需要首先将字符串转换为列表。
 
 There are methods that [Str](https://docs.raku.org/type/Str) inherits from [Any](https://docs.raku.org/type/Any) that work on iterables like lists. Iterators on strings contain one element that is the whole string. To use list-based methods like `sort`, `reverse`, you need to convert the string into a list first.
 
