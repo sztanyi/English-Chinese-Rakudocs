@@ -721,7 +721,10 @@ say "cba".sort;              # OUTPUT: «(cba)␤»
 say "cba".comb.sort.join;    # OUTPUT: «abc␤» 
 ```
 
-## `.chars` gets the number of graphemes, not Codepoints
+## `.chars` 获取字素的数量，而不是编码点 / `.chars` gets the number of graphemes, not Codepoints
+
+在 Raku 中，字符串的 [`.chars`](https://docs.raku.org/routine/chars) 方法返回字素（用户课件的字符）的个数。例如字素可以由一个字母加上一个重音组成。如果你需要编码点的个数，你应该使用 [`.codes`](https://docs.raku.org/routine/codes) 方法。如果需要将字节数编码为 UTF8，则应该使用 `.encode.bytes` 将字符串编码为 UTF8，然后获取字节数。
+
 
 In Raku, [`.chars`](https://docs.raku.org/routine/chars) returns the number of graphemes, or user visible characters. These graphemes could be made up of a letter plus an accent for example. If you need the number of codepoints, you should use [`.codes`](https://docs.raku.org/routine/codes). If you need the number of bytes when encoded as UTF8, you should use `.encode.bytes` to encode the string as UTF8 and then get the number of bytes.
 
@@ -732,15 +735,23 @@ say 'ǰ̣'.chars;        # OUTPUT: «1»
 say 'ǰ̣'.encode.bytes; # OUTPUT: «4»
 ```
 
+有关字符串如何在 Raku 中工作的更多信息，请参见 [Unicode 页面](https://docs.raku.org/language/unicode)。
+
 For more information on how strings work in Raku, see the [Unicode page](https://docs.raku.org/language/unicode).
 
-## All text is normalized by default
+## 所有文本均按默认进行规格化 / All text is normalized by default
+
+Raku 将所有文本规格化为 Unicode NFC 形式。文件名是默认的唯一未规范化的文本。如果您希望字符串保持字节表示为原始的字节，则需要在读取或写入任何文件句柄时使用 [`UTF8-C8`](https://docs.raku.org/language/unicode#UTF8-C8)。
 
 Raku normalizes all text into Unicode NFC form (Normalization Form Canonical). Filenames are the only text not normalized by default. If you are expecting your strings to maintain a byte for byte representation as the original, you need to use [`UTF8-C8`](https://docs.raku.org/language/unicode#UTF8-C8) when reading or writing to any filehandles.
 
-## Allomorphs generally follow numeric semantics
+## 语素变体通常遵循数字语义 / Allomorphs generally follow numeric semantics
+
+字符 `"0"` 为真，而数字 `0` 为假。那么[语素变体](https://docs.raku.org/language/glossary#index-entry-Allomorph) `<0>` 的布尔值是什么？
 
 [Str](https://docs.raku.org/type/Str) `"0"` is `True`, while [Numeric](https://docs.raku.org/type/Numeric) is `False`. So what's the [Bool](https://docs.raku.org/type/Bool) value of [allomorph](https://docs.raku.org/language/glossary#index-entry-Allomorph) `<0>`?
+
+语素变体通常遵循数字语义，因此数字值为零的为假：
 
 In general, allomorphs follow [Numeric](https://docs.raku.org/type/Numeric) semantics, so the ones that *numerically* evaluate to zero are `False`:
 
@@ -750,6 +761,8 @@ say so <0e0>; # OUTPUT: «False␤»
 say so <0.0>; # OUTPUT: «False␤»
 ```
 
+要强制语素变体的[字符串](https://docs.raku.org/type/Stringy)部分比较的话，使用[前缀运算符 `~`](https://docs.raku.org/routine/~)、 [Str](https://docs.raku.org/type/Str) 方法或者 [chars](https://docs.raku.org/routine/chars) 子例程来测试语素变体是否有长度：
+
 To force comparison being done for the [Stringy](https://docs.raku.org/type/Stringy) part of the allomorph, use [prefix `~` operator](https://docs.raku.org/routine/~) or the [Str](https://docs.raku.org/type/Str) method to coerce the allomorph to [Str](https://docs.raku.org/type/Str), or use the [chars](https://docs.raku.org/routine/chars) routine to test whether the allomorph has any length:
 
 ```Raku
@@ -758,7 +771,9 @@ say so       <0>.Str; # OUTPUT: «True␤»
 say so chars <0>;     # OUTPUT: «True␤»
 ```
 
-## Case-insensitive comparison of strings
+## 字符串的大小写不敏感比较 / Case-insensitive comparison of strings
+
+为了进行不区分大小写的比较，可以使用 `.fc` 方法。问题是人们倾向于使用 `.lc` 或 `.uc`，而且它似乎在 ASCII 范围内有效，但在其他字符上却失败了。这不仅仅是一个 Raku 陷阱，其他语言也是如此。
 
 In order to do case-insensitive comparison, you can use `.fc` (fold-case). The problem is that people tend to use `.lc` or `.uc`, and it does seem to work within the ASCII range, but fails on other characters. This is not just a Raku trap, the same applies to other languages.
 
@@ -768,11 +783,15 @@ say ‘groß’.uc eq ‘GROSS’.uc; # ← WRONG; True, but that's just luck
 say ‘groß’.fc eq ‘GROSS’.fc; # ← RIGHT; True 
 ```
 
+如果您正在使用正则，那么就没有必要使用 `.fc`，您可以使用 `:i`（`:ignorecase`）副词。
+
 If you are working with regexes, then there is no need to use `.fc` and you can use `:i` (`:ignorecase`) adverb instead.
 
-# Pairs
+# 键值对 / Pairs
 
-## Constants on the left-hand side of pair notation
+## 键值对标记左手边的常量 / Constants on the left-hand side of pair notation
+
+考虑以下代码：
 
 Consider this code:
 
@@ -782,13 +801,21 @@ my %h := :{ Dog => 42 };
 say %h{Dog}; # OUTPUT: «(Any)␤» 
 ```
 
+`:{ … }` 句法是用来创建[对象哈希](https://docs.raku.org/type/Hash#Non-string_keys_(object_hash))的。编写该代码的人的意图是创建一个以 Enum 对象作为键的哈希（以及 `say %h{Dog}` 试图使用 Enum 对象来执行查找）。然而，这不是键值对符号的工作方式。
+
 The `:{ … }` syntax is used to create [object hashes](https://docs.raku.org/type/Hash#Non-string_keys_(object_hash)). The intentions of someone who wrote that code were to create a hash with Enum objects as keys (and `say %h{Dog}` attempts to get a value using the Enum object to perform the lookup). However, that's not how pair notation works.
+
+例如，在 `Dog => 42` 中，键将是一个字符串。也就是说，不管是否有一个常量，或者一个同名的枚举。只要这对符号看起来像一个标识符，它总是使用左边作为字符串文字。
 
 For example, in `Dog => 42` the key will be a `Str`. That is, it doesn't matter if there is a constant, or an enumeration with the same name. The pair notation will always use the left-hand side as a string literal, as long as it looks like an identifier.
 
+为了避免这种情况，使用 `(Dog) => 42` 或者 `::Dog => 42`。
+
 To avoid this, use `(Dog) => 42` or `::Dog => 42`.
 
-## Scalar values within `Pair`
+## `Pair` 中的标量值 / Scalar values within `Pair`
+
+在处理 [Scalar](https://docs.raku.org/type/Scalar) 值时，`Pair` 将容器保存到该值。这意味着可以从 `Pair` 之外反映对 `Scalar` 值的更改：
 
 When dealing with [Scalar](https://docs.raku.org/type/Scalar) values, the `Pair` holds the container to the value. This means that it is possible to reflect changes to the `Scalar` value from outside the `Pair`:
 
@@ -801,11 +828,15 @@ $v = 'value B';
 $pair.say; # OUTPUT: a => value B 
 ```
 
+使用 [freeze](https://docs.raku.org/type/Pair#method_freeze) 方法强制从 `Pair` 中移除 `Scalar` 容器。有关详细信息，请参阅关于 [Pair](https://docs.raku.org/type/Pair) 的文档
+
 Use the method [freeze](https://docs.raku.org/type/Pair#method_freeze) to force the removal of the `Scalar` container from the `Pair`. For more details see the documentation about [Pair](https://docs.raku.org/type/Pair).
 
-# Sets, bags and mixes
+# 集合、背包和混合 / Sets, bags and mixes
 
-## Sets, bags and mixes do not have a fixed order
+## 集合、背包和混合是无序的 / Sets, bags and mixes do not have a fixed order
+
+当迭代这类对象时，没有定义顺序。
 
 When iterating over this kind of objects, an order is not defined.
 
@@ -816,6 +847,8 @@ my $set = <a b c>.Set;
 # OUTPUT: «c => True␤b => True␤a => True␤» 
 ```
 
+每一次迭代都可能产生不同的顺序，因此不能信任集合中特定的元素序列。如果顺序不重要，那就用这样的方式。如果有，请使用 `sort` 方法
+
 Every iteration might (and will) yield a different order, so you cannot trust a particular sequence of the elements of a set. If order does not matter, just use them that way. If it does, use `sort`
 
 ```Raku
@@ -823,17 +856,25 @@ my $set = <a b c>.Set;
 .say for $set.list.sort;  # OUTPUT: «a => True␤b => True␤c => True␤»
 ```
 
+通常，集合、背包和混合是无序的，因此不应该依赖它们的特定顺序。
+
 In general, sets, bags and mixes are unordered, so you should not depend on them having a particular order.
 
-# Operators
+# 运算符 / Operators
+
+在 Raku 语言中，一些常见于其他语言的操作符被重新定位为其他更常见的东西：
 
 Some operators commonly shared among other languages were repurposed in Raku for other, more common, things:
 
 ## Junctions
 
+`^`、 `|` 和 `&` 不是位运算符，使用他们会创建 [Junctions](https://docs.raku.org/type/Junction)。Raku 中相对应的位运算符是：`+^`、 `+|` 和 `+&` 为整数的，`?^`、 `?|` 和 `?&` 为布尔值的。
+
 The `^`, `|`, and `&` are *not* bitwise operators, they create [Junctions](https://docs.raku.org/type/Junction). The corresponding bitwise operators in Raku are: `+^`, `+|`, `+&` for integers and `?^`, `?|`, `?&` for booleans.
 
-## Exclusive sequence operator
+## 排他序列运算符 / Exclusive sequence operator
+
+大量使用空格有助于提高可读性，但请记住，中缀运算符中不能包含任何空格。其中一个运算符是排除右点的序列运算符：`...^`（或其 [Unicode 等效](https://docs.raku.org/language/unicode_ascii) `…^`）。
 
 Lavish use of whitespace helps readability, but keep in mind infix operators cannot have any whitespace in them. One such operator is the sequence operator that excludes right point: `...^` (or its [Unicode equivalent](https://docs.raku.org/language/unicode_ascii) `…^`).
 
