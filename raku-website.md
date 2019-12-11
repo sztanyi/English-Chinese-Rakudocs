@@ -1,4 +1,4 @@
-# Raku
+# Home Page for Raku
 https://raku.org/
 
 # Raku docs
@@ -21,3 +21,6 @@ https://fco.github.io/Red/
 
 # WEEKLY CHALLENGE - PERL & RAKU
 https://perlweeklychallenge.org/
+
+# Chinese Raku Guide
+https://raku.guide/zh/
