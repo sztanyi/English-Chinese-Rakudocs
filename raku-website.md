@@ -24,3 +24,6 @@ https://perlweeklychallenge.org/
 
 # Chinese Raku Guide
 https://raku.guide/zh/
+
+# Lean Raku in Y minutes
+https://learnxinyminutes.com/docs/perl6/
