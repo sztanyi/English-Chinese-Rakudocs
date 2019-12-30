@@ -27,3 +27,6 @@ https://raku.guide/zh/
 
 # Lean Raku in Y minutes
 https://learnxinyminutes.com/docs/perl6/
+
+# Raku Musings
+https://raku-musings.com/
