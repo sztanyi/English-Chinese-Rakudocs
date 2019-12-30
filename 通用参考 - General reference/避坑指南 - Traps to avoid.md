@@ -874,7 +874,7 @@ The `^`, `|`, and `&` are *not* bitwise operators, they create [Junctions](https
 
 ## 排他序列运算符 / Exclusive sequence operator
 
-大量使用空格有助于提高可读性，但请记住，中缀运算符中不能包含任何空格。其中一个运算符是排除右点的序列运算符：`...^`（或其 [Unicode 等效](https://docs.raku.org/language/unicode_ascii) `…^`）。
+大量使用空格有助于提高可读性，但请记住，中缀运算符中不能包含任何空格。其中一个运算符是排除右点的序列运算符：`...^`（或其 [Unicode 等效](https://docs.raku.org/language/unicode_ascii)运算符 `…^`）。
 
 Lavish use of whitespace helps readability, but keep in mind infix operators cannot have any whitespace in them. One such operator is the sequence operator that excludes right point: `...^` (or its [Unicode equivalent](https://docs.raku.org/language/unicode_ascii) `…^`).
 
@@ -883,9 +883,13 @@ say 1... ^5; # OUTPUT: «(1 0 1 2 3 4)␤»
 say 1...^5;  # OUTPUT: «(1 2 3 4)␤»
 ```
 
+如果在省略号之间放置空格和插入符号，它不再是单个中缀运算符，而是一个序列运算符加一个范围运算符。[Iterables](https://docs.raku.org/type/Iterable) 是序列运算符的有效端点，因此你将得到的结果可能与预期不一样。
+
 If you place whitespace between the ellipsis (`…`) and the caret (`^`), it's no longer a single infix operator, but an infix inclusive sequence operator (`…`) and a prefix [Range](https://docs.raku.org/type/Range) operator (`^`). [Iterables](https://docs.raku.org/type/Iterable) are valid endpoints for the sequence operator, so the result you'll get might not be what you expected.
 
-## String ranges/Sequences
+## 字符串范围/序列 - String ranges/Sequences
+
+在某些语言中，使用字符串作为范围终结点时，在计算下一个字符串应该是什么时，需要考虑整个字符串；松散地将字符串视为数字。下面是 Perl 5 版本的代码示例：
 
 In some languages, using strings as range end points, considers the entire string when figuring out what the next string should be; loosely treating the strings as numbers in a large base. Here's Perl 5 version:
 
@@ -893,6 +897,8 @@ In some languages, using strings as range end points, considers the entire strin
 say join ", ", "az".."bc";
 # OUTPUT: «az, ba, bb, bc␤» 
 ```
+
+Raku 中的这样一个范围将产生不同的结果，其中*每个字母*将排列到终点的相应字母，产生更复杂的序列：
 
 Such a range in Raku will produce a different result, where *each letter* will be ranged to a corresponding letter in the end point, producing more complex sequences:
 
@@ -907,6 +913,8 @@ say join ", ", "r2".."t3";
 # OUTPUT: «r2, r3, s2, s3, t2, t3␤» 
 ```
 
+为了实现更简单的行为，类似于上面的 Perl 5 示例，使用在起始字符串上调用 `.succ` 方法的序列操作符：
+
 To achieve simpler behavior, similar to the Perl 5 example above, use a sequence operator that calls `.succ` method on the starting string:
 
 ```Raku
@@ -914,7 +922,9 @@ say join ", ", ("az", *.succ ... "bc");
 # OUTPUT: «az, ba, bb, bc␤» 
 ```
 
-## Topicalizing operators
+## 主题运算符 / Topicalizing operators
+
+智能匹配运算符 `~~` 和 `andthen` 将主题 `$_` 设置在他们的左手边。结合对该主题的隐式方法调用，这可能会导致令人惊讶的结果。
 
 The smartmatch operator `~~` and `andthen` set the topic `$_` to their left-hand-side. In conjunction with implicit method calls on the topic this can lead to surprising results.
 
@@ -927,6 +937,8 @@ say 'topic' ~~ .&method;
 # OUTPUT: «topic␤True␤» 
 ```
 
+在许多情况下，将方法调用翻转到左手边也行。
+
 In many cases flipping the method call to the LHS will work.
 
 ```Raku
@@ -938,7 +950,9 @@ say .&method ~~ 'topic';
 # OUTPUT: «object␤False␤» 
 ```
 
-## Fat arrow and constants
+## 胖箭头与常量 / Fat arrow and constants
+
+胖箭头运算符 `=>` 会将其左手边的单词转换为 `Str` 并且不会检查常量或者 `\` 标记的变量的作用域。使用显式作用域才能得到你想表达的意思。
 
 The fat arrow operator `=>` will turn words on its left-hand side to `Str` without checking the scope for constants or `\`-sigiled variables. Use explicit scoping to get what you mean.
 
@@ -949,7 +963,9 @@ say %h.perl
 # OUTPUT: «{:V("oi‽"), :x(42)}␤» 
 ```
 
-## Infix operator assignment
+## 中缀运算符赋值 / Infix operator assignment
+
+中缀运算符，包括内置的和用户定义的，都可以与赋值运算符结合使用，正如这个加法示例所演示的：
 
 Infix operators, both built in and user defined, can be combined with the assignment operator as this addition example demonstrates:
 
@@ -959,6 +975,8 @@ $x += 20;
 say $x;     # OUTPUT: «30␤»
 ```
 
+对于任何给定的中缀运算符，`L op= R` 等同于 `L = L op R` (其中 `L` 和 `R` 分别是左参数和右参数)。这意味着以下代码的行为可能不像预期的那样：
+
 For any given infix operator `op`, `L op= R` is equivalent to `L = L op R` (where `L` and `R` are the left and right arguments, respectively). This means that the following code may not behave as expected:
 
 ```Raku
@@ -966,6 +984,8 @@ my @a = 1, 2, 3;
 @a += 10;
 say @a;  # OUTPUT: «[13]␤»
 ```
+
+如果你来自像 C 这样的语言，这可能看起来很奇怪。重要的是要记住，`+=` 不是定义为左手参数上的方法（此处是 `@a` 数组），而是简便方式：
 
 Coming from a language like C++, this might seem odd. It is important to bear in mind that `+=` isn't defined as method on the left hand argument (here the `@a` array) but is simply shorthand for:
 
@@ -975,7 +995,11 @@ my @a = 1, 2, 3;
 say @a;  # OUTPUT: «[13]␤»
 ```
 
+此处 `@a` 被赋值为 `@a`（其中有三个元素）和 `10` 的和；因此，`@a` 中为 `13`。
+
 Here `@a` is assigned the result of adding `@a` (which has three elements) and `10`; `13` is therefore placed in `@a`.
+
+也可使用赋值运算符的[超级形式](https://docs.raku.org/language/operators#Hyper_operators)代替：
 
 Use the [hyper form](https://docs.raku.org/language/operators#Hyper_operators) of the assignment operators instead:
 
@@ -985,11 +1009,15 @@ my @a = 1, 2, 3;
 say @a;  # OUTPUT: «[11 12 13]␤»
 ```
 
-# Regexes
+# 正则 / Regexes
 
-## `$x` vs `<$x>`, and `$(code)` vs `<{code}>`
+## `$x` 与 `<$x>`，`$(code)` 与 `<{code}>` / `$x` vs `<$x>`, and `$(code)` vs `<{code}>`
+
+Raku 提供了几个在运行时通过字符串插值构造正则（请从[这里](https://docs.raku.org/language/regexes#Regex_interpolation)参阅它们的详细描述）。当以这种方式生成的正则表达式只包含文本时，上述结构的行为（成对）是相同的，就好像它们是等效的替代物一样。然而，一旦生成的正则包含元字符，它们的行为就会有所不同，这可能是一个令人困惑的意外。
 
 Raku offers several constructs to generate regexes at runtime through interpolation (see their detailed description [here](https://docs.raku.org/language/regexes#Regex_interpolation)). When a regex generated this way contains only literals, the above constructs behave (pairwise) identically, as if they are equivalent alternatives. As soon as the generated regex contains metacharacters, however, they behave differently, which may come as a confusing surprise.
+
+前两个可能容易混淆的结构是 `$variable` 和 `<$variable>`：
 
 The first two constructs that may easily be confused with each other are `$variable` and `<$variable>`:
 
@@ -999,6 +1027,8 @@ say ‘I ♥ camelia’ ~~ /  $variable  /;   # OUTPUT: ｢camelia｣
 say ‘I ♥ camelia’ ~~ / <$variable> /;   # OUTPUT: ｢camelia｣
 ```
 
+在这里，它们的作用是相同的，因为 `$variable` 的值是由字面量组成的。但是，当变量更改为包含正则元字符时，输出就不同了：
+
 Here they act the same because the value of `$variable` consists of literals. But when the variable is changed to comprise regex metacharacters the outputs become different:
 
 ```Raku
@@ -1007,7 +1037,11 @@ say ‘I ♥ #camelia’ ~~ /  $variable  /;   # OUTPUT: ｢#camelia｣
 say ‘I ♥ #camelia’ ~~ / <$variable> /;   # !! Error: malformed regex
 ```
 
+这里发生的是字符串 `#camelia` 包含元字符 `#`。在正则的上下文中，应该这个字符需要用引号括起来来匹配；如果没有引用，`#` 将被解析为一个注释的开始，该注释一直运行到行尾，这反过来会导致正则不被终止，从而导致格式错误。
+
 What happens here is that the string `#camelia` contains the metacharacter `#`. In the context of a regex, this character should be quoted to match literally; without quoting, the `#` is parsed as the start of a comment that runs until the end of the line, which in turn causes the regex not to be terminated, and thus to be malformed.
+
+另外两个必须相互区别的构造是 `$(code)` 和 `<{code}>`。与以前一样，只要 `code` 的（字符串化）返回值仅包括文字，两者之间就没有区别：
 
 Two other constructs that must similarly be distinguished from one another are `$(code)` and `<{code}>`. Like before, as long as the (stringified) return value of `code` comprises only literals, there is no distinction between the two:
 
@@ -1017,6 +1051,8 @@ say ‘I ♥ camelia’ ~~ / $($variable.flip)   /;   # OUTPUT: ｢camelia｣
 say ‘I ♥ camelia’ ~~ / <{$variable.flip}>  /;   # OUTPUT: ｢camelia｣
 ```
 
+但是，当返回值更改为包含正则元字符时，输出就会不同：
+
 But when the return value is changed to comprise regex metacharacters, the outputs diverge:
 
 ```Raku
@@ -1025,15 +1061,25 @@ say ‘I ♥ camelia’ ~~ / $($variable.flip)   /;   # OUTPUT: Nil
 say ‘I ♥ camelia’ ~~ / <{$variable.flip}>  /;   # OUTPUT: ｢camelia｣
 ```
 
+在这种情况下，代码的返回值是字符串 `.amelia`，它包含元字符 `.`。上面通过 `$(code)` 来匹配这个点的尝试实际上失败了；`<{code}>` 将这个点匹配为正则表达式通配符的尝试成功了。因此有不同的输出。
+
 In this case the return value of the code is the string `.amelia`, which contains the metacharacter `.`. The above attempt by `$(code)` to match the dot literally fails; the attempt by `<{code}>` to match the dot as a regex wildcard succeeds. Hence the different outputs.
 
-## `|` vs `||`: which branch will win
+## `|` 与 `||`: 哪个分支将胜出 / `|` vs `||`: which branch will win
+
+为了匹配几种可能的替代方案之一，将使用 `||` 或者 `|`。但它们是如此不同。
 
 To match one of several possible alternatives, `||` or `|` will be used. But they are so different.
 
+当有多个匹配的替代方案时，被 `||` 分隔时，第一个匹配的交替将获胜；被 `|` 分隔时，哪一个获胜是由 LTM 策略决定的。另请参阅：[`||` 的文档](https://docs.raku.org/language/regexes#Alternation：_||) 和 [`|` 的文档](https://docs.raku.org/language/regexes#Longest_alternation:_|)
+
 When there are multiple matching alternations, for those separated by `||`, the first matching alternation wins; for those separated by `|`, which to win is decided by LTM strategy. See also: [documentation on `||`](https://docs.raku.org/language/regexes#Alternation:_||) and [documentation on `|`](https://docs.raku.org/language/regexes#Longest_alternation:_|).
 
+对于简单的正则，只需使用 `||` 而不是 `|` 就会得到熟悉的语义，但如果编写 grammar，那么了解 LTM 和声明前缀是有用的，并且更喜欢 `|`。别让自己在一个正则中使用它们。当您必须这样做时，添加括号，并确保您知道 LTM 策略是如何工作的，以使代码做到您想要的。
+
 For simple regexes just using `||` instead of `|` will get you familiar semantics, but if writing grammars then it's useful to learn about LTM and declarative prefixes and prefer `|`. And keep yourself away from using them in one regex. When you have to do that, add parentheses and ensure that you know how LTM strategy works to make the code do what you want.
+
+通常，当您试图在同一个正则中混合 `|` 和 `||` 时，就会产生陷阱：
 
 The trap typically arises when you try to mix both `|` and `||` in the same regex:
 
@@ -1042,19 +1088,31 @@ say 42 ~~ / [  0 || 42 ] | 4/; # OUTPUT: «｢4｣␤»
 say 42 ~~ / [ 42 ||  0 ] | 4/; # OUTPUT: «｢42｣␤» 
 ```
 
+上面的代码似乎产生了错误的结果，但实现实际上是正确的。
+
 The code above may seem like it is producing a wrong result, but the implementation is actually right.
 
-## `$/` changes each time a regular expression is matched
+## `$/` 每次匹配正则表达式时都会更改 - `$/` changes each time a regular expression is matched
 
-Each time a regular expression is matched against something, the special variable `$/` holding the result [Match object](https://docs.raku.org/type/Match) is changed accordingly to the result of the match (that could also be `Nil`).
+每次将正则表达式与某物匹配时，特殊变量 `$/` 持有匹配结果。[匹配对象](https://docs.raku.org/type/Match)随着匹配结果相应地更改（其值也可以是 `Nil`）。
+
+Each time a regular expression is matched against something, the special variable `$/` holding the result. [Match object](https://docs.raku.org/type/Match) is changed accordingly to the result of the match (that could also be `Nil`).
+
+`$/` 被更改，与在其中被匹配的正则表达式作用域无关。
 
 The `$/` is changed without any regard to the scope the regular expression is matched within.
 
+有关更多信息和示例，请参见[正则表达式文档相关](https://docs.raku.org/language/regexes.html#$/_changes_each_time_a_regular_expression_is_matched)。
+
 For further information and examples please see the [related section in the Regular Expressions documentation](https://docs.raku.org/language/regexes.html#$/_changes_each_time_a_regular_expression_is_matched).
 
-## `` vs. `< foo>`: named rules vs. quoted lists
+## `<foo>` 与 `< foo>`: 命名 rule 与引用列表 / `<foo>` vs. `< foo>`: named rules vs. quoted lists
+
+正则可以包含引用列表；对列表的元素执行最长令牌匹配，就好像使用了 `|`（有关更多信息，请参见[这里](https://docs.raku.org/language/regexes#Quoted_lists_are_LTM_matches)）。
 
 Regexes can contain quoted lists; longest token matching is performed on the list's elements as if a `|` alternation had been specified (see [here](https://docs.raku.org/language/regexes#Quoted_lists_are_LTM_matches) for further information).
+
+下面的正则中为仅有一个条目 `'foo'` 的列表：
 
 Within a regex, the following are lists with a single item, `'foo'`:
 
@@ -1063,6 +1121,8 @@ say 'foo' ~~ /< foo >/;  # OUTPUT: «｢foo｣␤»
 say 'foo' ~~ /< foo>/;   # OUTPUT: «｢foo｣␤»
 ```
 
+对命名 rule `foo` 的调用：
+
 but this is a call to the named rule `foo`:
 
 ```Raku
@@ -1070,9 +1130,13 @@ say 'foo' ~~ /<foo>/;
 # OUTPUT: «No such method 'foo' for invocant of type 'Match'␤ in block <unit> at <unknown file> line 1␤» 
 ```
 
+注意两者的差异；如果您打算使用引用的列表，请确保 `<` 后跟空格。
+
 Be wary of the difference; if you intend to use a quoted list, ensure that whitespace follows the initial `<`.
 
-## Non-capturing, non-global matching in list context
+## 列表上下文中的非捕获、非全局匹配 / Non-capturing, non-global matching in list context
+
+与 Perl 5 不同，列表上下文中的非捕获和非全局匹配不会产生任何值：
 
 Unlike Perl 5, non-capturing and non-global matching in list context doesn't produce any values:
 
@@ -1081,11 +1145,15 @@ if  'x' ~~ /./ { say 'yes' }  # OUTPUT: «yes␤»
 for 'x' ~~ /./ { say 'yes' }  # NO OUTPUT
 ```
 
+这是因为它的继承自 Capture 类的 list 槽没有被原始匹配对象填充：
+
 This is because its 'list' slot (inherited from Capture class) doesn't get populated with the original Match object:
 
 ```Raku
 say ('x' ~~ /./).list  # OUTPUT: «()␤»
 ```
+
+为了达到预期的结果，使用全局匹配、捕获括号或带有尾随逗号的列表：
 
 To achieve the desired result, use global matching, capturing parentheses or a list with a trailing comma:
 
@@ -1095,9 +1163,11 @@ for 'x' ~~ /(.)/  { say 'yes' }  # OUTPUT: «yes␤»
 for ('x' ~~ /./,) { say 'yes' }  # OUTPUT: «yes␤»
 ```
 
-# Common precedence mistakes
+# 常见的优先级错误 / Common precedence mistakes
 
-## Adverbs and precedence
+## 副词与优先级 / Adverbs and precedence
+
+副词确实有一个优先顺序，可能不遵循显示在屏幕上的操作符的顺序。如果两个相同优先级的运算符后面跟着一个副词，它将选择它在抽象语法树中找到的第一个运算符。使用括号来帮助 Raku 理解您的意思或使用具有更松散优先级的运算符。
 
 Adverbs do have a precedence that may not follow the order of operators that is displayed on your screen. If two operators of equal precedence are followed by an adverb it will pick the first operator it finds in the abstract syntax tree. Use parentheses to help Raku understand what you mean or use operators with looser precedence.
 
@@ -1110,7 +1180,9 @@ say not %x<b>:exists;         # works as well
 say True unless %x<b>:exists; # avoid negation altogether 
 ```
 
-## Ranges and precedence
+## 范围与优先级 / Ranges and precedence
+
+`..` 的松散优先级可能会导致一些错误。当您想要对整个范围进行操作时，通常最好使用括号将整个范围括起来。
 
 The loose precedence of `..` can lead to some errors. It is usually best to parenthesize ranges when you want to operate on the entire range.
 
@@ -1119,7 +1191,9 @@ The loose precedence of `..` can lead to some errors. It is usually best to pare
 (1..3).say;  # says "1..3" 
 ```
 
-## Loose boolean operators
+## 松散的布尔运算符 / Loose boolean operators
+
+`and`、 `or` 等的优先级比函数调用更松散。这对于调用在其他语言中是运算符或者语句的诸如 `return`、 `last` 以及其他运算符可能会产生令人惊讶的结果。
 
 The precedence of `and`, `or`, etc. is looser than routine calls. This can have surprising results for calls to routines that would be operators or statements in other languages like `return`, `last` and many others.
 
@@ -1132,12 +1206,14 @@ sub f {
 say f; # OUTPUT: «True␤» 
 ```
 
-## Exponentiation operator and prefix minus
+## 显式运算符和减号前缀运算符 / Exponentiation operator and prefix minus
 
 ```Raku
 say -1²;   # OUTPUT: «-1␤» 
 say -1**2; # OUTPUT: «-1␤» 
 ```
+
+当进行[常规数学计算](https://www.wolframalpha.com/input/?i=-1%C2%B2)时，幂优先于负数；因此 `-1²` 可以写成 `-(1²)`。Raku 与这些数学规则相匹配，`**` 运算符的优先级比前缀 `-` 的优先级更紧。如果您希望对负数求幂，请使用括号：
 
 When performing a [regular mathematical calculation](https://www.wolframalpha.com/input/?i=-1%C2%B2), the power takes precedence over the minus; so `-1²` can be written as `-(1²)`. Raku matches these rules of mathematics and the precedence of `**` operator is tighter than that of the prefix `-`. If you wish to raise a negative number to a power, use parentheses:
 
@@ -1146,7 +1222,9 @@ say (-1)²;   # OUTPUT: «1␤»
 say (-1)**2; # OUTPUT: «1␤» 
 ```
 
-## Method operator calls and prefix minus
+## 方法运算符调用和减号前缀运算符 / Method operator calls and prefix minus
+
+减号前缀运算符绑定比点号的方法操作调用更宽松。减号前缀运算符将应用于方法的返回值。为了确保减号作为参数的一部分被传递，请用括号括起来。
 
 Prefix minus binds looser than dotty method op calls. The prefix minus will be applied to the return value from the method. To ensure the minus gets passed as part of the argument, enclose in parenthesis.
 
@@ -1155,7 +1233,9 @@ say  -1.abs;  # OUTPUT: «-1␤»
 say (-1).abs; # OUTPUT: «1␤» 
 ```
 
-# Subroutine and method calls
+# 子程序和方法调用 / Subroutine and method calls
+
+子程序和方法调用可以使用两种形式之一：
 
 Subroutine and method calls can be made using one of two forms:
 
@@ -1164,7 +1244,11 @@ foo(...); # function call form, where ... represent the required arguments
 foo ...;  # list op form, where ... represent the required arguments 
 ```
 
+粗心的读者会在函数或方法名称之后与开括号之前添加空格，这会导致问题。
+
 The function call form can cause problems for the unwary when whitespace is added after the function or method name and before the opening parenthesis.
+
+首先，我们考虑零或一个参数的函数：
 
 First we consider functions with zero or one parameter:
 
@@ -1172,6 +1256,8 @@ First we consider functions with zero or one parameter:
 sub foo() { say 'no arg' }
 sub bar($a) { say "one arg: $a" }
 ```
+
+执行在函数名称后面有空格和无空格的情况：
 
 Then execute each with and without a space after the name:
 
@@ -1182,11 +1268,15 @@ bar($a);  # okay: one arg: 1
 bar ($a); # okay: one arg: 1 
 ```
 
+现在声明两个参数的函数：
+
 Now declare a function of two parameters:
 
 ```Raku
 sub foo($a, $b) { say "two args: $a, $b" }
 ```
+
+执行在函数名称后面有空格和无空格的情况：
 
 Execute it with and without the space after the name:
 
@@ -1195,13 +1285,21 @@ foo($a, $b);  # okay: two args: 1, 2
 foo ($a, $b); # FAIL: Too few positionals passed; expected 2 arguments but got 1 
 ```
 
+教训是：“使用函数调用格式时，注意子和方法名称后面的空格。”通常，使用函数调用格式时，最好避免函数名后面的空格。
+
 The lesson is: "be careful with spaces following sub and method names when using the function call format." As a general rule, good practice might be to avoid the space after a function name when using the function call format.
+
+请注意，有一些巧妙的方法可以消除函数调用格式和空间的错误，但这是近乎黑客的方式，这里不会提到。有关更多信息，请参阅[函数](https://docs.raku.org/language/functions#Functions)。
 
 Note that there are clever ways to eliminate the error with the function call format and the space, but that is bordering on hackery and will not be mentioned here. For more information, consult [Functions](https://docs.raku.org/language/functions#Functions).
 
+最后，请注意，目前，在声明函数时，可以在函数或方法名称与参数列表周围的括号之间使用空格，没有问题。
+
 Finally, note that, currently, when declaring the functions whitespace may be used between a function or method name and the parentheses surrounding the parameter list without problems.
 
-## Named parameters
+## 命名参数 / Named parameters
+
+许多内置子例程和方法调用接受命名参数，您自己的代码也可能接受它们，但请确保调用例程时传递的参数实际上是命名参数：
 
 Many built-in subroutines and method calls accept named parameters and your own code may accept them as well, but be sure the arguments you pass when calling your routines are actually named parameters:
 
@@ -1210,13 +1308,15 @@ sub foo($a, :$b) { ... }
 foo(1, 'b' => 2); # FAIL: Too many positionals passed; expected 1 argument but got 2 
 ```
 
-What happened? That second argument is not a named parameter argument, but a [Pair](https://docs.raku.org/type/Pair) passed as a positional argument. If you want a named parameter it has to look like a name to Perl:
+出什么事了？第二个参数不是命名参数，而是作为位置参数传递的 [Pair](https://docs.raku.org/type/Pair)。如果您想要一个命名参数，它必须看起来像 Raku 的名称：
+
+What happened? That second argument is not a named parameter argument, but a [Pair](https://docs.raku.org/type/Pair) passed as a positional argument. If you want a named parameter it has to look like a name to Raku:
 
 ```Raku
 foo(1, b => 2); # okay 
 foo(1, :b(2));  # okay 
 foo(1, :b<it>); # okay 
- 
+
 my $b = 2;
 foo(1, :b($b)); # okay, but redundant 
 foo(1, :$b);    # okay 
@@ -1226,7 +1326,11 @@ my %arg = 'b' => 2;
 foo(1, |%arg);  # okay too 
 ```
 
+最后一个可能令人困惑，但由于它在 [Hash](https://docs.raku.org/type/Hash) 上使用 `|` 前缀，这是一个特殊的编译器构造，指示您希望使用*变量的内容*作为参数，这对于散列意味着将它们视为命名参数。
+
 That last one may be confusing, but since it uses the `|` prefix on a [Hash](https://docs.raku.org/type/Hash), which is a special compiler construct indicating you want to use *the contents* of the variable as arguments, which for hashes means to treat them as named arguments.
+
+如果您确实希望将它们作为键值对传递，则应该使用 [List](https://docs.raku.org/type/List) 或 [Capture](https://docs.raku.org/type/Capture)：
 
 If you really do want to pass them as pairs you should use a [List](https://docs.raku.org/type/List) or [Capture](https://docs.raku.org/type/Capture) instead:
 
@@ -1240,11 +1344,17 @@ foo(|$cap, :$b); # okay: we passed the pair 'b' => 2 to the first argument
 foo(1, |$cap);   # FAIL: Too many positionals passed; expected 1 argument but got 2 
 ```
 
+Capture 通常是最好的选择，因为它的工作原理与常规调用中通常捕获的例程参数完全一样。
+
 A Capture is usually the best option for this as it works exactly like the usual capturing of routine arguments during a regular call.
+
+这种区别很好的一点是，它让开发人员可以将对传递为命名参数或位置参数，这在各种情况下都很方便。
 
 The nice thing about the distinction here is that it gives the developer the option of passing pairs as either named or positional arguments, which can be handy in various instances.
 
-## Argument count limit
+## 参数计数极限 / Argument count limit
+
+虽然它通常是不引人注意的，但有一个后端依赖的参数计数限制。如果元素太多，任何将任意大小的数组扁平化为参数的代码都不会起作用。
 
 While it is typically unnoticeable, there is a backend-dependent argument count limit. Any code that does flattening of arbitrarily sized arrays into arguments won't work if there are too many elements.
 
@@ -1258,6 +1368,8 @@ my @b;
 @b.push: |@a; # OUTPUT: «Too many arguments in flattening array.␤  in block <unit> at <tmp> line 1␤␤» 
 ```
 
+通过重写代码来避免这个陷阱，以使得不会发生扁平化。在上面的例子中，你可以用 `append` 代替 `push`。这样，就不需要扁平化，因为数组可以按原样传递。
+
 Avoid this trap by rewriting the code so that there is no flattening. In the example above, you can replace `push` with `append`. This way, no flattening is required because the array can be passed as is.
 
 ```Raku
@@ -1267,7 +1379,7 @@ my @b;
 say @b.elems # OUTPUT: «999999␤» 
 ```
 
-## Phasers and implicit return
+## 相位和隐式返回 / Phasers and implicit return
 
 ```Raku
 sub returns-ret () {
@@ -1289,6 +1401,8 @@ say doesn't-return-ret;
 # BAD: outputs «Nil» and a warning «Useless use of constant string "ret" in sink context (line 13)» 
 ```
 
+`returns-ret` 和 `doesn't-return-ret` 的代码看起来可能完全一样，因为原则上 [`CATCH`](https://docs.raku.org/language/phasers#index-entry-Phasers__CATCH-CATCH) 代码块的去向并不重要。然而，代码块是一个对象，`sub` 中的最后一个对象将被返回，因此 `doesn't-return-ret` 将返回 `Nil`，此外，由于 “ret” 现在将处于 sink 上下文中，它将发出警告。如果您想将相位器放置在基于常规原因的最后，请使用 `return` 的显式形式。
+
 Code for `returns-ret` and `doesn't-return-ret` might look exactly the same, since in principle it does not matter where the [`CATCH`](https://docs.raku.org/language/phasers#index-entry-Phasers__CATCH-CATCH) block goes. However, a block is an object and the last object in a `sub` will be returned, so the `doesn't-return-ret` will return `Nil`, and, besides, since "ret" will be now in sink context, it will issue a warning. In case you want to place phasers last for conventional reasons, use the explicit form of `return`.
 
 ```Raku
@@ -1300,17 +1414,23 @@ sub explicitly-return-ret () {
 }
 ```
 
-# Input and output
+# 输入输出 / Input and output
 
 ## Closing open filehandles and pipes
 
+与其他语言不同，Raku 不使用引用计数，因此**文件句柄在超出作用域**时不会关闭。您必须使用 [Close](https://docs.raku.org/routine/close) 例程或使用 `:close` 参数显式地关闭它们，许多 [IO::Handle](https://docs.raku.org/type/IO::Handle) 的方法都接受这个参数。有关详细信息，请参阅 [`IO::Handle.close`](https://docs.raku.org/type/IO::Handle#routine_close)。
+
 Unlike some other languages, Raku does not use reference counting, and so **the filehandles are NOT closed when they go out of scope**. You have to explicitly close them either by using [close](https://docs.raku.org/routine/close) routine or using the `:close` argument several of [IO::Handle's](https://docs.raku.org/type/IO::Handle) methods accept. See [`IO::Handle.close`](https://docs.raku.org/type/IO::Handle#routine_close) for details.
+
+同样的规则也适用于 [IO::Handle](https://docs.raku.org/type/IO::Handle) 的子类 [IO::Pipe](https://docs.raku.org/type/IO::Pipe)，这是您在使用例程 [run](https://docs.raku.org/routine/run) 和 [shell](https://docs.raku.org/routine/shell) 读取 [Proc](https://docs.raku.org/type/Proc) 时所使用的操作。
 
 The same rules apply to [IO::Handle's](https://docs.raku.org/type/IO::Handle) subclass [IO::Pipe](https://docs.raku.org/type/IO::Pipe), which is what you operate on when reading from a [Proc](https://docs.raku.org/type/Proc) you get with routines [run](https://docs.raku.org/routine/run) and [shell](https://docs.raku.org/routine/shell).
 
+警告也适用于 [IO::CatHandle](https://docs.raku.org/type/IO::CatHandle) 类型，尽管不是那么严重。详情请参阅 [`IO::CatHandle.close`](https://docs.raku.org/type/IO::CatHandle#method_close)。
+
 The caveat applies to [IO::CatHandle](https://docs.raku.org/type/IO::CatHandle) type as well, though not as severely. See [`IO::CatHandle.close`](https://docs.raku.org/type/IO::CatHandle#method_close) for details.
 
-## IO::Path stringification
+## 字符串化 IO::Path / IO::Path stringification
 
 Partly for historical reasons and partly by design, an [IO::Path](https://docs.raku.org/type/IO::Path) object [stringifies](https://docs.raku.org/type/IO::Path#method_Str) without considering its [`CWD` attribute](https://docs.raku.org/type/IO::Path#attribute_CWD), which means if you [chdir](https://docs.raku.org/routine/chdir) and then stringify an [IO::Path](https://docs.raku.org/type/IO::Path), or stringify an [IO::Path](https://docs.raku.org/type/IO::Path) with custom `$!CWD` attribute, the resultant string won't reference the original filesystem object:
 
