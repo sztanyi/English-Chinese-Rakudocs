@@ -30,3 +30,11 @@ https://learnxinyminutes.com/docs/perl6/
 
 # Raku Musings
 https://raku-musings.com/
+
+# Vim-Raku
+https://github.com/Raku/vim-raku
+
+# Raku Blog by Sterling Hanenkamp
+https://zostay.com/
+
+
