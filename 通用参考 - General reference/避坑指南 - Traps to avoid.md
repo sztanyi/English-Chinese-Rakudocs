@@ -32,7 +32,7 @@ unit module Something::Or::Other;
 constant $config-file = "config.txt".IO.slurp;
 ```
 
-在预编译过程中，`$config-file` 将被删除，当您再次启动脚本时，对 `config.txt` 文件的更改不会被重新加载；只有当模块被重新编译时，才会重新加载文件。
+在预编译过程中，`$config-file` 将被删除，当你再次启动脚本时，对 `config.txt` 文件的更改不会被重新加载；只有当模块被重新编译时，才会重新加载文件。
 
 The `$config-file` will be slurped during precompilation and changes to `config.txt` file won't be re-loaded when you start the script again; only when the module is re-compiled.
 
@@ -62,7 +62,7 @@ say @a; # OUTPUT: «[4 8 (Any) 16]␤»
 
 In this case, `Any` is the default value of an `Array` element.
 
-您可以有意地将 `Nil` 赋值为默认值：
+你可以有意地将 `Nil` 赋值为默认值：
 
 You can purposefully assign `Nil` as a default value:
 
@@ -71,7 +71,7 @@ my %h is default(Nil) = a => Nil;
 say %h; # OUTPUT: «Hash %h = {:a(Nil)}␤» 
 ```
 
-或者将一个值绑定到 `Nil`，如果这是您想要的结果：
+或者将一个值绑定到 `Nil`，如果这是你想要的结果：
 
 Or bind a value to `Nil` if that is the result you want:
 
@@ -200,7 +200,7 @@ $ = {…}       # Block
 $ = { }       # Hash 
 ```
 
-如果您有效地想要声明空的块，则可以使用第二种形式：
+如果你有效地想要声明空的块，则可以使用第二种形式：
 
 You can use the second form if you effectively want to declare an empty block:
 
@@ -339,7 +339,7 @@ Ways to match whitespace:
 
 ## 句法分析中的歧义 / Ambiguities in parsing
 
-虽然有些语言可以让您尽可能地移除标记之间的空白，但 Raku 就不那么宽容了。最重要的口号是我们不鼓励代码高尔夫，所以不要限制空格（这些限制背后更严重的根本原因是单程解析和解析 Raku 程序的能力，而实际上没有[回溯](https://en.wikipedia.org/wiki/Backtracking)）。
+虽然有些语言可以让你尽可能地移除标记之间的空白，但 Raku 就不那么宽容了。最重要的口号是我们不鼓励代码高尔夫，所以不要限制空格（这些限制背后更严重的根本原因是单程解析和解析 Raku 程序的能力，而实际上没有[回溯](https://en.wikipedia.org/wiki/Backtracking)）。
 
 While some languages will let you get away with removing as much whitespace between tokens as possible, Raku is less forgiving. The overarching mantra is we discourage code golf, so don't scrimp on whitespace (the more serious underlying reason behind these restrictions is single-pass parsing and ability to parse Raku programs with virtually no [backtracking](https://en.wikipedia.org/wiki/Backtracking)).
 
@@ -388,7 +388,7 @@ say 3 < 5 > 4
 
 ### 排他序列与范围序列 / Exclusive sequences vs. sequences with Ranges
 
-有关 `...^` 运算符如何会被误认为是 `...` 运算符后紧跟 `^` 运算符的更多信息，请参见[运算符陷阱](https://docs.raku.org/language/traps#Exclusive_sequence_operator)一节。您必须正确地使用空格来指示后续的解释执行。
+有关 `...^` 运算符如何会被误认为是 `...` 运算符后紧跟 `^` 运算符的更多信息，请参见[运算符陷阱](https://docs.raku.org/language/traps#Exclusive_sequence_operator)一节。你必须正确地使用空格来指示后续的解释执行。
 
 See the section on [operator traps](https://docs.raku.org/language/traps#Exclusive_sequence_operator) for more information about how the `...^` operator can be mistaken for the `...` operator with a `^` operator immediately following it. You must use whitespace correctly to indicate which interpretation will be followed.
 
@@ -408,7 +408,7 @@ my $a = 2; say join ",", ($a, ++$a);  # OUTPUT: «3,3␤»
 
 Here the `Capture` contained the **container** pointed to by `$a` and the **value** of the result of the expression `++$a`. Since the `Capture` must be reified before `&say` can use it, the `++$a` may happen before `&say` looks inside the container in `$a` (and before the `List` is created with the two terms) and so it may already be incremented.
 
-相反，当您想要一个值时，使用一个产生一个值的表达式。
+相反，当你想要一个值时，使用一个产生一个值的表达式。
 
 Instead, use an expression that produces a value when you want a value.
 
@@ -458,7 +458,7 @@ With [item](https://docs.raku.org/routine/item), the container will be evaluated
 
 # `Cool` 技巧 / `Cool` tricks
 
-Raku 包含一个 [Cool](https://docs.raku.org/type/Cool) 类，它提供了一些我们在必要时通过强制参数来习惯的 DWIM 行为。然而，DWIM 从来都不是完美的。特别是在 [List](https://docs.raku.org/type/List)，即 `Cool`，有许多方法不可能完成您可能认为它们所做的工作，包括 `contains`、`starts-with` 或 `index`。请参阅下面一节中的一些例子。
+Raku 包含一个 [Cool](https://docs.raku.org/type/Cool) 类，它提供了一些我们在必要时通过强制参数来习惯的 DWIM 行为。然而，DWIM 从来都不是完美的。特别是在 [List](https://docs.raku.org/type/List)，即 `Cool`，有许多方法不可能完成你可能认为它们所做的工作，包括 `contains`、`starts-with` 或 `index`。请参阅下面一节中的一些例子。
 
 Raku includes a [Cool](https://docs.raku.org/type/Cool) class, which provides some of the DWIM behaviors we got used to by coercing arguments when necessary. However, DWIM is never perfect. Especially with [List](https://docs.raku.org/type/List)s, which are `Cool`, there are many methods that will not do what you probably think they do, including `contains`, `starts-with` or `index`. Please see some examples in the section below.
 
@@ -501,7 +501,7 @@ say @menu.contains('er fr');                # True!
 say @menu.contains(<es mi>);                # True! 
 ```
 
-如果您实际上想检查是否存在一个元素，那么对单个元素使用 [(cont)](https://docs.raku.org/routine/(elem),%20infix%20%E2%88%88) 运算符，对多个元素使用 [superset](https://docs.raku.org/language/operators#infix_(%3E=),_infix_%E2%8A%87) 和 [strict superset](https://docs.raku.org/language/operators#infix_(%3E),_infix_%E2%8A%83) 运算符。
+如果你实际上想检查是否存在一个元素，那么对单个元素使用 [(cont)](https://docs.raku.org/routine/(elem),%20infix%20%E2%88%88) 运算符，对多个元素使用 [superset](https://docs.raku.org/language/operators#infix_(%3E=),_infix_%E2%8A%87) 和 [strict superset](https://docs.raku.org/language/operators#infix_(%3E),_infix_%E2%8A%83) 运算符。
 
 If you actually want to check for the presence of an element, use the [(cont)](https://docs.raku.org/routine/(elem),%20infix%20%E2%88%88) operator for single elements, and the [superset](https://docs.raku.org/language/operators#infix_(%3E=),_infix_%E2%8A%87) and [strict superset](https://docs.raku.org/language/operators#infix_(%3E),_infix_%E2%8A%83) operators for multiple elements.
 
@@ -513,7 +513,7 @@ say @menu (>) <hamburger fries>;            # True
 say @menu (>) <milkshake fries>;            # True (! NB: order doesn't matter) 
 ```
 
-如果您正在进行大量元素测试，则可以使用 [Set](https://docs.raku.org/type/Set) 更安逸。
+如果你正在进行大量元素测试，则可以使用 [Set](https://docs.raku.org/type/Set) 更安逸。
 
 If you are doing a lot of element testing, you may be better off using a [Set](https://docs.raku.org/type/Set).
 
@@ -547,7 +547,7 @@ say @colors.roll(3);    # red green red  (can repeat)
 
 ## 列表中数字上下文中元素的个数 / `List`s numify to their number of elements in numeric context
 
-您要检查一个数字是否可被一组数字中的任何一个整除：
+你要检查一个数字是否可被一组数字中的任何一个整除：
 
 You want to check whether a number is divisible by any of a set of numbers:
 
@@ -555,7 +555,7 @@ You want to check whether a number is divisible by any of a set of numbers:
 say 42 %% <11 33 88 55 111 20325>; # OUTPUT: «True␤»
 ```
 
-什么？没有一个数字可整除 42。然而，这个列表有 6 个元素，42 可以被 6 整除，这就是为什么输出是真的。在这种情况下，您应该将列表转换为 [Junction](https://docs.raku.org/type/Junction)：
+什么？没有一个数字可整除 42。然而，这个列表有 6 个元素，42 可以被 6 整除，这就是为什么输出是真的。在这种情况下，你应该将列表转换为 [Junction](https://docs.raku.org/type/Junction)：
 
 What? There's no single number 42 should be divisible by. However, that list has 6 elements, and 42 is divisible by 6. That's why the output is true. In this case, you should turn the `List` into a [Junction](https://docs.raku.org/type/Junction):
 
@@ -690,7 +690,7 @@ Interpolation in string literals can be too clever for your own good.
 "$foo(' ~ @args ~ ')"
 ```
 
-您可以使用非插值单引号和使用 `\qq[]` 转义序列切换到更自由的插值操作来避免这些问题：
+你可以使用非插值单引号和使用 `\qq[]` 转义序列切换到更自由的插值操作来避免这些问题：
 
 You can avoid those problems using non-interpolating single quotes and switching to more liberal interpolation with `\qq[]` escape sequence:
 
@@ -712,7 +712,7 @@ say Q:c«{$a}()$b()»;
 
 ## 字符串不是 Iterable / Strings are not iterable
 
-有些方法是 [Str](https://docs.raku.org/type/Str) 继承自 [Any](https://docs.raku.org/type/Any)，用于处理列表之类的可迭代性。字符串上的迭代器包含一个元素，即整个字符串。若要使用基于列表的方法，如 `sort` 和 `reverse`，您需要首先将字符串转换为列表。
+有些方法是 [Str](https://docs.raku.org/type/Str) 继承自 [Any](https://docs.raku.org/type/Any)，用于处理列表之类的可迭代性。字符串上的迭代器包含一个元素，即整个字符串。若要使用基于列表的方法，如 `sort` 和 `reverse`，你需要首先将字符串转换为列表。
 
 There are methods that [Str](https://docs.raku.org/type/Str) inherits from [Any](https://docs.raku.org/type/Any) that work on iterables like lists. Iterators on strings contain one element that is the whole string. To use list-based methods like `sort`, `reverse`, you need to convert the string into a list first.
 
@@ -741,7 +741,7 @@ For more information on how strings work in Raku, see the [Unicode page](https:/
 
 ## 所有文本均按默认进行规格化 / All text is normalized by default
 
-Raku 将所有文本规格化为 Unicode NFC 形式。文件名是默认的唯一未规范化的文本。如果您希望字符串保持字节表示为原始的字节，则需要在读取或写入任何文件句柄时使用 [`UTF8-C8`](https://docs.raku.org/language/unicode#UTF8-C8)。
+Raku 将所有文本规格化为 Unicode NFC 形式。文件名是默认的唯一未规范化的文本。如果你希望字符串保持字节表示为原始的字节，则需要在读取或写入任何文件句柄时使用 [`UTF8-C8`](https://docs.raku.org/language/unicode#UTF8-C8)。
 
 Raku normalizes all text into Unicode NFC form (Normalization Form Canonical). Filenames are the only text not normalized by default. If you are expecting your strings to maintain a byte for byte representation as the original, you need to use [`UTF8-C8`](https://docs.raku.org/language/unicode#UTF8-C8) when reading or writing to any filehandles.
 
@@ -783,7 +783,7 @@ say ‘groß’.uc eq ‘GROSS’.uc; # ← WRONG; True, but that's just luck
 say ‘groß’.fc eq ‘GROSS’.fc; # ← RIGHT; True 
 ```
 
-如果您正在使用正则，那么就没有必要使用 `.fc`，您可以使用 `:i`（`:ignorecase`）副词。
+如果你正在使用正则，那么就没有必要使用 `.fc`，你可以使用 `:i`（`:ignorecase`）副词。
 
 If you are working with regexes, then there is no need to use `.fc` and you can use `:i` (`:ignorecase`) adverb instead.
 
@@ -1075,11 +1075,11 @@ To match one of several possible alternatives, `||` or `|` will be used. But the
 
 When there are multiple matching alternations, for those separated by `||`, the first matching alternation wins; for those separated by `|`, which to win is decided by LTM strategy. See also: [documentation on `||`](https://docs.raku.org/language/regexes#Alternation:_||) and [documentation on `|`](https://docs.raku.org/language/regexes#Longest_alternation:_|).
 
-对于简单的正则，只需使用 `||` 而不是 `|` 就会得到熟悉的语义，但如果编写 grammar，那么了解 LTM 和声明前缀是有用的，并且更喜欢 `|`。别让自己在一个正则中使用它们。当您必须这样做时，添加括号，并确保您知道 LTM 策略是如何工作的，以使代码做到您想要的。
+对于简单的正则，只需使用 `||` 而不是 `|` 就会得到熟悉的语义，但如果编写 grammar，那么了解 LTM 和声明前缀是有用的，并且更喜欢 `|`。别让自己在一个正则中使用它们。当你必须这样做时，添加括号，并确保你知道 LTM 策略是如何工作的，以使代码做到你想要的。
 
 For simple regexes just using `||` instead of `|` will get you familiar semantics, but if writing grammars then it's useful to learn about LTM and declarative prefixes and prefer `|`. And keep yourself away from using them in one regex. When you have to do that, add parentheses and ensure that you know how LTM strategy works to make the code do what you want.
 
-通常，当您试图在同一个正则中混合 `|` 和 `||` 时，就会产生陷阱：
+通常，当你试图在同一个正则中混合 `|` 和 `||` 时，就会产生陷阱：
 
 The trap typically arises when you try to mix both `|` and `||` in the same regex:
 
@@ -1130,7 +1130,7 @@ say 'foo' ~~ /<foo>/;
 # OUTPUT: «No such method 'foo' for invocant of type 'Match'␤ in block <unit> at <unknown file> line 1␤» 
 ```
 
-注意两者的差异；如果您打算使用引用的列表，请确保 `<` 后跟空格。
+注意两者的差异；如果你打算使用引用的列表，请确保 `<` 后跟空格。
 
 Be wary of the difference; if you intend to use a quoted list, ensure that whitespace follows the initial `<`.
 
@@ -1167,7 +1167,7 @@ for ('x' ~~ /./,) { say 'yes' }  # OUTPUT: «yes␤»
 
 ## 副词与优先级 / Adverbs and precedence
 
-副词确实有一个优先顺序，可能不遵循显示在屏幕上的操作符的顺序。如果两个相同优先级的运算符后面跟着一个副词，它将选择它在抽象语法树中找到的第一个运算符。使用括号来帮助 Raku 理解您的意思或使用具有更松散优先级的运算符。
+副词确实有一个优先顺序，可能不遵循显示在屏幕上的操作符的顺序。如果两个相同优先级的运算符后面跟着一个副词，它将选择它在抽象语法树中找到的第一个运算符。使用括号来帮助 Raku 理解你的意思或使用具有更松散优先级的运算符。
 
 Adverbs do have a precedence that may not follow the order of operators that is displayed on your screen. If two operators of equal precedence are followed by an adverb it will pick the first operator it finds in the abstract syntax tree. Use parentheses to help Raku understand what you mean or use operators with looser precedence.
 
@@ -1182,7 +1182,7 @@ say True unless %x<b>:exists; # avoid negation altogether
 
 ## 范围与优先级 / Ranges and precedence
 
-`..` 的松散优先级可能会导致一些错误。当您想要对整个范围进行操作时，通常最好使用括号将整个范围括起来。
+`..` 的松散优先级可能会导致一些错误。当你想要对整个范围进行操作时，通常最好使用括号将整个范围括起来。
 
 The loose precedence of `..` can lead to some errors. It is usually best to parenthesize ranges when you want to operate on the entire range.
 
@@ -1213,7 +1213,7 @@ say -1²;   # OUTPUT: «-1␤»
 say -1**2; # OUTPUT: «-1␤» 
 ```
 
-当进行[常规数学计算](https://www.wolframalpha.com/input/?i=-1%C2%B2)时，幂优先于负数；因此 `-1²` 可以写成 `-(1²)`。Raku 与这些数学规则相匹配，`**` 运算符的优先级比前缀 `-` 的优先级更紧。如果您希望对负数求幂，请使用括号：
+当进行[常规数学计算](https://www.wolframalpha.com/input/?i=-1%C2%B2)时，幂优先于负数；因此 `-1²` 可以写成 `-(1²)`。Raku 与这些数学规则相匹配，`**` 运算符的优先级比前缀 `-` 的优先级更紧。如果你希望对负数求幂，请使用括号：
 
 When performing a [regular mathematical calculation](https://www.wolframalpha.com/input/?i=-1%C2%B2), the power takes precedence over the minus; so `-1²` can be written as `-(1²)`. Raku matches these rules of mathematics and the precedence of `**` operator is tighter than that of the prefix `-`. If you wish to raise a negative number to a power, use parentheses:
 
@@ -1299,7 +1299,7 @@ Finally, note that, currently, when declaring the functions whitespace may be us
 
 ## 命名参数 / Named parameters
 
-许多内置子例程和方法调用接受命名参数，您自己的代码也可能接受它们，但请确保调用例程时传递的参数实际上是命名参数：
+许多内置子例程和方法调用接受命名参数，你自己的代码也可能接受它们，但请确保调用例程时传递的参数实际上是命名参数：
 
 Many built-in subroutines and method calls accept named parameters and your own code may accept them as well, but be sure the arguments you pass when calling your routines are actually named parameters:
 
@@ -1308,7 +1308,7 @@ sub foo($a, :$b) { ... }
 foo(1, 'b' => 2); # FAIL: Too many positionals passed; expected 1 argument but got 2 
 ```
 
-出什么事了？第二个参数不是命名参数，而是作为位置参数传递的 [Pair](https://docs.raku.org/type/Pair)。如果您想要一个命名参数，它必须看起来像 Raku 的名称：
+出什么事了？第二个参数不是命名参数，而是作为位置参数传递的 [Pair](https://docs.raku.org/type/Pair)。如果你想要一个命名参数，它必须看起来像 Raku 的名称：
 
 What happened? That second argument is not a named parameter argument, but a [Pair](https://docs.raku.org/type/Pair) passed as a positional argument. If you want a named parameter it has to look like a name to Raku:
 
@@ -1326,11 +1326,11 @@ my %arg = 'b' => 2;
 foo(1, |%arg);  # okay too 
 ```
 
-最后一个可能令人困惑，但由于它在 [Hash](https://docs.raku.org/type/Hash) 上使用 `|` 前缀，这是一个特殊的编译器构造，指示您希望使用*变量的内容*作为参数，这对于散列意味着将它们视为命名参数。
+最后一个可能令人困惑，但由于它在 [Hash](https://docs.raku.org/type/Hash) 上使用 `|` 前缀，这是一个特殊的编译器构造，指示你希望使用*变量的内容*作为参数，这对于散列意味着将它们视为命名参数。
 
 That last one may be confusing, but since it uses the `|` prefix on a [Hash](https://docs.raku.org/type/Hash), which is a special compiler construct indicating you want to use *the contents* of the variable as arguments, which for hashes means to treat them as named arguments.
 
-如果您确实希望将它们作为键值对传递，则应该使用 [List](https://docs.raku.org/type/List) 或 [Capture](https://docs.raku.org/type/Capture)：
+如果你确实希望将它们作为键值对传递，则应该使用 [List](https://docs.raku.org/type/List) 或 [Capture](https://docs.raku.org/type/Capture)：
 
 If you really do want to pass them as pairs you should use a [List](https://docs.raku.org/type/List) or [Capture](https://docs.raku.org/type/Capture) instead:
 
@@ -1401,7 +1401,7 @@ say doesn't-return-ret;
 # BAD: outputs «Nil» and a warning «Useless use of constant string "ret" in sink context (line 13)» 
 ```
 
-`returns-ret` 和 `doesn't-return-ret` 的代码看起来可能完全一样，因为原则上 [`CATCH`](https://docs.raku.org/language/phasers#index-entry-Phasers__CATCH-CATCH) 代码块的去向并不重要。然而，代码块是一个对象，`sub` 中的最后一个对象将被返回，因此 `doesn't-return-ret` 将返回 `Nil`，此外，由于 “ret” 现在将处于 sink 上下文中，它将发出警告。如果您想将相位器放置在基于常规原因的最后，请使用 `return` 的显式形式。
+`returns-ret` 和 `doesn't-return-ret` 的代码看起来可能完全一样，因为原则上 [`CATCH`](https://docs.raku.org/language/phasers#index-entry-Phasers__CATCH-CATCH) 代码块的去向并不重要。然而，代码块是一个对象，`sub` 中的最后一个对象将被返回，因此 `doesn't-return-ret` 将返回 `Nil`，此外，由于 “ret” 现在将处于 sink 上下文中，它将发出警告。如果你想将相位器放置在基于常规原因的最后，请使用 `return` 的显式形式。
 
 Code for `returns-ret` and `doesn't-return-ret` might look exactly the same, since in principle it does not matter where the [`CATCH`](https://docs.raku.org/language/phasers#index-entry-Phasers__CATCH-CATCH) block goes. However, a block is an object and the last object in a `sub` will be returned, so the `doesn't-return-ret` will return `Nil`, and, besides, since "ret" will be now in sink context, it will issue a warning. In case you want to place phasers last for conventional reasons, use the explicit form of `return`.
 
@@ -1418,11 +1418,11 @@ sub explicitly-return-ret () {
 
 ## Closing open filehandles and pipes
 
-与其他语言不同，Raku 不使用引用计数，因此**文件句柄在超出作用域**时不会关闭。您必须使用 [Close](https://docs.raku.org/routine/close) 例程或使用 `:close` 参数显式地关闭它们，许多 [IO::Handle](https://docs.raku.org/type/IO::Handle) 的方法都接受这个参数。有关详细信息，请参阅 [`IO::Handle.close`](https://docs.raku.org/type/IO::Handle#routine_close)。
+与其他语言不同，Raku 不使用引用计数，因此**文件句柄在超出作用域**时不会关闭。你必须使用 [Close](https://docs.raku.org/routine/close) 例程或使用 `:close` 参数显式地关闭它们，许多 [IO::Handle](https://docs.raku.org/type/IO::Handle) 的方法都接受这个参数。有关详细信息，请参阅 [`IO::Handle.close`](https://docs.raku.org/type/IO::Handle#routine_close)。
 
 Unlike some other languages, Raku does not use reference counting, and so **the filehandles are NOT closed when they go out of scope**. You have to explicitly close them either by using [close](https://docs.raku.org/routine/close) routine or using the `:close` argument several of [IO::Handle's](https://docs.raku.org/type/IO::Handle) methods accept. See [`IO::Handle.close`](https://docs.raku.org/type/IO::Handle#routine_close) for details.
 
-同样的规则也适用于 [IO::Handle](https://docs.raku.org/type/IO::Handle) 的子类 [IO::Pipe](https://docs.raku.org/type/IO::Pipe)，这是您在使用例程 [run](https://docs.raku.org/routine/run) 和 [shell](https://docs.raku.org/routine/shell) 读取 [Proc](https://docs.raku.org/type/Proc) 时所使用的操作。
+同样的规则也适用于 [IO::Handle](https://docs.raku.org/type/IO::Handle) 的子类 [IO::Pipe](https://docs.raku.org/type/IO::Pipe)，这是你在使用例程 [run](https://docs.raku.org/routine/run) 和 [shell](https://docs.raku.org/routine/shell) 读取 [Proc](https://docs.raku.org/type/Proc) 时所使用的操作。
 
 The same rules apply to [IO::Handle's](https://docs.raku.org/type/IO::Handle) subclass [IO::Pipe](https://docs.raku.org/type/IO::Pipe), which is what you operate on when reading from a [Proc](https://docs.raku.org/type/Proc) you get with routines [run](https://docs.raku.org/routine/run) and [shell](https://docs.raku.org/routine/shell).
 
@@ -1431,6 +1431,8 @@ The same rules apply to [IO::Handle's](https://docs.raku.org/type/IO::Handle) su
 The caveat applies to [IO::CatHandle](https://docs.raku.org/type/IO::CatHandle) type as well, though not as severely. See [`IO::CatHandle.close`](https://docs.raku.org/type/IO::CatHandle#method_close) for details.
 
 ## 字符串化 IO::Path / IO::Path stringification
+
+部分是出于历史原因部分出于设计原因。[IO::Path](https://docs.raku.org/type/IO::Path) 对象在转为字符串时不会考虑它的 [`CWD` 属性](https://docs.raku.org/type/IO::Path#attribute_CWD)，意味着如果你 [chdir](https://docs.raku.org/routine/chdir) 后将 [IO::Path](https://docs.raku.org/type/IO::Path) 对象转为字符串或者转为字符串时使用客制化的 `$!CWD` 属性，出来的字符串不会引用原始的文件系统对象：
 
 Partly for historical reasons and partly by design, an [IO::Path](https://docs.raku.org/type/IO::Path) object [stringifies](https://docs.raku.org/type/IO::Path#method_Str) without considering its [`CWD` attribute](https://docs.raku.org/type/IO::Path#attribute_CWD), which means if you [chdir](https://docs.raku.org/routine/chdir) and then stringify an [IO::Path](https://docs.raku.org/type/IO::Path), or stringify an [IO::Path](https://docs.raku.org/type/IO::Path) with custom `$!CWD` attribute, the resultant string won't reference the original filesystem object:
 
@@ -1448,13 +1450,21 @@ with 'foo'.IO {
 unlink IO::Path.new("foo", :CWD</bar>).Str
 ```
 
+避免此问题的简单方法是根本不对 [IO::Path](https://docs.raku.org/type/IO::Path) 对象进行字符串化处理。使用路径的核心例程可以采用 [IO::Path](https://docs.raku.org/type/IO::Path) 对象，因此你无需对路径进行字符串化。
+
 The easy way to avoid this issue is to not stringify an [IO::Path](https://docs.raku.org/type/IO::Path) object at all. Core routines that work with paths can take an [IO::Path](https://docs.raku.org/type/IO::Path) object, so you don't need to stringify the paths.
+
+如果你确实需要 [IO::Path](https://docs.raku.org/type/IO::Path) 的字符串化版本，请使用 [absolute](https://docs.raku.org/routine/absolute) 或 [relative](https://docs.raku.org/routine/relative) 方法分别将其分为绝对路径或相对路径。
 
 If you do have a case where you need a stringified version of an [IO::Path](https://docs.raku.org/type/IO::Path), use [absolute](https://docs.raku.org/routine/absolute) or [relative](https://docs.raku.org/routine/relative) methods to stringify it into an absolute or relative path, respectively.
 
+如果由于在代码中使用 [chdir](https://docs.raku.org/routine/chdir) 而遇到此问题，请考虑以不涉及更改当前目录的方式重写它。例如，你可以将 `cwd` 的命名参数传递给 [run](https://docs.raku.org/routine/run)，而不必在其周围使用 `chdir`。
+
 If you are facing this issue because you use [chdir](https://docs.raku.org/routine/chdir) in your code, consider rewriting it in a way that does not involve changing the current directory. For example, you can pass `cwd` named argument to [run](https://docs.raku.org/routine/run) without having to use `chdir` around it.
 
-## Splitting the input data into lines
+## 将输入数据分裂成行 / Splitting the input data into lines
+
+在 [`IO::Handle`](https://docs.raku.org/type/IO::Handle#routine_lines) 和 [`Str`](https://docs.raku.org/type/Str#routine_lines) 上调用 `.lines` 有一点差异。 如果开始认为两个数据是相同的，就会出现陷阱。
 
 There is a difference between using `.lines` on [`IO::Handle`](https://docs.raku.org/type/IO::Handle#routine_lines) and on a [`Str`](https://docs.raku.org/type/Str#routine_lines). The trap arises if you start assuming that both split data the same way.
 
@@ -1466,7 +1476,11 @@ say $_.perl for $*IN.lines # .lines called on IO::Handle
 # "fooz" 
 ```
 
+如你在上面的示例中所看到的，有一行包含 `\r`（“回车”控制字符）。 但是，输入严格由 `\n` 分隔，因此 `\r` 被保留为字符串的一部分。
+
 As you can see in the example above, there was a line which contained `\r` (“carriage return” control character). However, the input is split strictly by `\n`, so `\r` was kept as part of the string.
+
+另一方面，[`Str.lines`](https://docs.raku.org/type/Str#routine_lines) 试图“聪明”地处理来自不同操作系统的数据。 因此，它将被换行符的所有可能变体分开。
 
 On the other hand, [`Str.lines`](https://docs.raku.org/type/Str#routine_lines) attempts to be “smart” about processing data from different operating systems. Therefore, it will split by all possible variations of a newline.
 
@@ -1479,17 +1493,29 @@ say $_.perl for $*IN.slurp(:bin).decode.lines # .lines called on a Str
 # "fooz" 
 ```
 
+规则非常简单：在以编程方式生成的输出中使用 [`IO::Handle.lines`](https://docs.raku.org/type/IO::Handle#routine_lines)，使用用户编写的文本时，请使用 [`Str.lines`](https://docs.raku.org/type/Str#routine_lines)。
+
 The rule is quite simple: use [`IO::Handle.lines`](https://docs.raku.org/type/IO::Handle#routine_lines) when working with programmatically generated output, and [`Str.lines`](https://docs.raku.org/type/Str#routine_lines) when working with user-written texts.
+
+如果你需要 [`IO::Handle.lines`](https://docs.raku.org/type/IO::Handle#routine_lines) 的行为，请使用 `$data.split(“\n”)`，但原始的 [IO::Handle](https://docs.raku.org/type/IO::Handle) 不可用。
 
 Use `$data.split(“\n”)` in cases where you need the behavior of [`IO::Handle.lines`](https://docs.raku.org/type/IO::Handle#routine_lines) but the original [IO::Handle](https://docs.raku.org/type/IO::Handle) is not available.
 
+请注意，如果你真的想先对数据进行处理，则必须使用 `.IO.slurp(:bin).decode.split(“\n”)`。 请注意，我们如何使用 `:bin` 来阻止解码，只是以后无论如何都要调用 `.decode`。 所需的全部内容是因为 `.slurp` 假设你正在使用文本，因此它会尝试对换行符敏感。
+
 Note that if you really want to slurp the data first, then you will have to use `.IO.slurp(:bin).decode.split(“\n”)`. Notice how we use `:bin` to prevent it from doing the decoding, only to call `.decode` later anyway. All that is needed because `.slurp` is assuming that you are working with text and therefore it attempts to be smart about newlines.
+
+如果你使用的是 [Proc::Async](https://docs.raku.org/type/Proc::Async)，那么目前尚无简便方法可以使其以正确的方式拆分数据。 你可以尝试读取整个输出，然后使用 [`Str.split`](https://docs.raku.org/type/Str#routine_split)（如果要处理大数据则不可行）或编写自己的逻辑以所需的方式拆分传入的数据。 如果你的数据为 null 分隔的，则同样适用。
 
 If you are using [Proc::Async](https://docs.raku.org/type/Proc::Async), then there is currently no easy way to make it split data the right way. You can try reading the whole output and then using [`Str.split`](https://docs.raku.org/type/Str#routine_split) (not viable if you are dealing with large data) or writing your own logic to split the incoming data the way you need. Same applies if your data is null-separated.
 
-## Proc::Async and `print`
+## Proc::Async 与 `print` / Proc::Async and `print`
+
+使用 Proc::Async 时，你不应假定 `.print`（或任何其他类似方法）是同步的。 此陷阱的最大问题是，你一次运行代码可能不会注意到该问题，因此可能导致难以检测的间歇性故障。
 
 When using Proc::Async you should not assume that `.print` (or any other similar method) is synchronous. The biggest issue of this trap is that you will likely not notice the problem by running the code once, so it may cause a hard-to-detect intermittent fail.
+
+这是一个说明问题的示例：
 
 Here is an example that demonstrates the issue:
 
@@ -1523,6 +1549,8 @@ Died with the exception:
       in block  at print.p6 line 6
 ```
 
+解决这个问题很容易，因为 `.print` 返回一个可以等待的 promise。 如果你在 [react]（https://docs.raku.org/language/concurrency#index-entry-react）块中工作，则解决方案会更加漂亮：
+
 Resolving this is easy because `.print` returns a promise that you can await on. The solution is even more beautiful if you are working in a [react](https://docs.raku.org/language/concurrency#index-entry-react) block:
 
 ```Raku
@@ -1531,7 +1559,9 @@ whenever $proc.print: “one\ntwo\nthree\nfour” {
 }
 ```
 
-## Using `.stdout` without `.lines`
+## 使用 `.stdout` 后不调用 `.lines` / Using `.stdout` without `.lines`
+
+[Proc::Async](https://docs.raku.org/type/Proc::Async) 的方法 `.stdout` 返回的 supply 将发出*大块*的数据，而不是行。 陷阱是，有时人们认为它会立即产生行数据。
 
 Method `.stdout` of [Proc::Async](https://docs.raku.org/type/Proc::Async) returns a supply that emits *chunks* of data, not lines. The trap is that sometimes people assume it to give lines right away.
 
@@ -1542,6 +1572,8 @@ react {
     whenever $proc.start { }
 }
 ```
+
+输出显然不只是一行：
 
 The output is clearly not just 1 line:
 
@@ -1567,11 +1599,15 @@ Abbott's
 Abby
 ```
 
+如果要行数据，请使用 `$proc.stdout.lines`。 如果你追求的是整个输出，那么应该使用类似以下方法： `whenever $proc.stdout { $out ~= $_ }`。
+
 If you want to work with lines, then use `$proc.stdout.lines`. If you're after the whole output, then something like this should do the trick: `whenever $proc.stdout { $out ~= $_ }`.
 
-# Exception handling
+# 异常处理 / Exception handling
 
 ## Sunk `Proc`
+
+有些方法返回一个 [Proc](https://docs.raku.org/type/Proc) 对象。如果它代表的是一个失败的进程，`Proc` 本身不会抛出异常，但是在 sink 上下文中会导致 [X::Proc::Unsuccessful](https://docs.raku.org/type/X::Proc::Unsuccessful) 异常抛出。这意味着
 
 Some methods return a [Proc](https://docs.raku.org/type/Proc) object. If it represents a failed process, `Proc` itself won't be exception-like, but **sinking it** will cause an [X::Proc::Unsuccessful](https://docs.raku.org/type/X::Proc::Unsuccessful) exception to be thrown. That means this construct will throw, despite the `try` in place:
 
@@ -1581,6 +1617,8 @@ say "still alive";
 # OUTPUT: «The spawned process exited unsuccessfully (exit code: 42)␤» 
 ```
 
+这是因为 `try` 收到了一个 `Proc` 并且将其作为返回值，但是返回值被抛弃异常被抛出。
+
 This is because `try` receives a `Proc` and returns it, at which point it sinks and throws. Explicitly sinking it inside the `try` avoids the issue and ensures the exception is thrown inside the `try`:
 
 ```Raku
@@ -1588,6 +1626,8 @@ try sink run("perl6", "-e", "exit 42");
 say "still alive";
 # OUTPUT: «still alive␤» 
 ```
+
+如果你对捕获任何异常不感兴趣，请使用匿名变量来保存返回的 `Proc`，这样它就永远不会 sink：
 
 If you're not interested in catching any exceptions, then use an anonymous variable to keep the returned `Proc` in; this way it'll never sink:
 
@@ -1597,9 +1637,11 @@ say "still alive";
 # OUTPUT: «still alive␤» 
 ```
 
-# Using shortcuts
+# 使用简写 / Using shortcuts
 
-## The ^ twigil
+## ^ 符号 / The ^ twigil
+
+使用 '^' 符号可以节省相当数量的时间和空间时，编写小块代码。例如：
 
 Using the `^` twigil can save a fair amount of time and space when writing out small blocks of code. As an example:
 
@@ -1607,11 +1649,15 @@ Using the `^` twigil can save a fair amount of time and space when writing out s
 for 1..8 -> $a, $b { say $a + $b; }
 ```
 
+可以简写为
+
 can be shortened to just
 
 ```Raku
 for 1..8 { say $^a + $^b; }
 ```
+
+当一个人想对变量使用比一个字母更复杂的名称时，麻烦就会出现。^ 符号可以使用乱序的位置变量并且变量名随意。但赋值基于变量的 Unicode 排序。在上面的例子中，我们可以使 `$^a` 和 `$^b`转换位置，这些变量将保持它们的位置值。这是因为 Unicode 字符 'a' 在字符 'b' 之前。例如：
 
 The trouble arises when a person wants to use more complex names for the variables, instead of just one letter. The `^` twigil is able to have the positional variables be out of order and named whatever you want, but assigns values based on the variable's Unicode ordering. In the above example, we can have `$^a` and `$^b` switch places, and those variables will keep their positional values. This is because the Unicode character 'a' comes before the character 'b'. For example:
 
@@ -1624,6 +1670,8 @@ sub f2 { say "$^second $^first"; }
 f2 "Hello", "there";    # OUTPUT: «there Hello␤» 
 ```
 
+由于变量名允许被称为任何东西，如果你不习惯 Raku 如何处理这些变量，这可能会导致一些问题。
+
 Due to the variables allowed to be called anything, this can cause some problems if you are not accustomed to how Raku handles these variables.
 
 ```Raku
@@ -1634,15 +1682,21 @@ for 1..4 { say "$^one $^two $^three $^four"; }    # OUTPUT: «2 4 3 1␤»
 for 1..4 { say "$^a $^b $^c $^d"; }               # OUTPUT: «1 2 3 4␤» 
 ```
 
-## Using `»` and `map` interchangeably
+## 可互换地使用 `»` 和 `map` / Using `»` and `map` interchangeably
+
+虽然 [`»`](https://docs.raku.org/language/operators#index-entry-hyper_%3C%3C-hyper_%3E%3E-hyper_%C2%AB-hyper_%C2%BB-Hyper_Operators) 看起来像 `map` 的短形式，他们在某些方面是不一样的。
 
 While [`»`](https://docs.raku.org/language/operators#index-entry-hyper_%3C%3C-hyper_%3E%3E-hyper_%C2%AB-hyper_%C2%BB-Hyper_Operators) may look like a shorter way to write `map`, they differ in some key aspects.
+
+首先，`»` 包括一个给编译器的*提示*，它可以自动线程执行，因此，如果你使用它来调用一个产生副作用的例程，这些副作用可能会产生无序（但是运算符的结果是有序的）。此外，如果被调用的例程访问资源，则有可能出现一个竞争条件，因为多个调用可能同时发生，来自不同的线程。
 
 First, the `»` includes a *hint* to the compiler that it may autothread the execution, thus if you're using it to call a routine that produces side effects, those side effects may be produced out of order (the result of the operator *is* kept in order, however). Also if the routine being invoked accesses a resource, there's the possibility of a race condition, as multiple invocations may happen simultaneously, from different threads.
 
 ```Raku
 <a b c d>».say # OUTPUT: «d␤b␤c␤a␤» 
 ```
+
+其次，`»` 检查被调用例程的 [nodality](https://docs.raku.org/routine/is%20nodal)，并基于此使用 [deepmap](https://docs.raku.org/routine/deepmap) 或者 [nodemap](https://docs.raku.org/routine/nodemap) 来映射列表，这可能与 [map](https://docs.raku.org/routine/map) 调用如何映射列表不同：
 
 Second, `»` checks the [nodality](https://docs.raku.org/routine/is%20nodal) of the routine being invoked and based on that will use either [deepmap](https://docs.raku.org/routine/deepmap) or [nodemap](https://docs.raku.org/routine/nodemap) to map over the list, which can be different from how a [map](https://docs.raku.org/routine/map) call would map over it:
 
@@ -1651,9 +1705,13 @@ say ((1, 2, 3), [^4], '5')».Numeric;       # OUTPUT: «((1 2 3) [0 1 2 3] 5)␤
 say ((1, 2, 3), [^4], '5').map: *.Numeric; # OUTPUT: «(3 4 5)␤» 
 ```
 
+底线是 `map` 和 `»` 是不可互换的，但只要你理解不同之处，使用一个而不是另一个。
+
 The bottom line is that `map` and `»` are not interchangeable, but using one instead of the other is OK as long as you understand the differences.
 
-## Word splitting in `« »`
+## `« »` 中的分词 / Word splitting in `« »`
+
+请记住，`« »` 执行分词的方式与 shell 的方式类似，所以[许多 shell 陷阱](https://mywiki.wooledge.org/BashPitfalls)也适用于此（特别是与 `run` 结合使用时）：
 
 Keep in mind that `« »` performs word splitting similarly to how shells do it, so [many shell pitfalls](https://mywiki.wooledge.org/BashPitfalls) apply here as well (especially when using in combination with `run`):
 
@@ -1668,11 +1726,15 @@ run ‘touch’, $file;        # WRONG; error from `touch`
 run «touch "$file"»;       # WRONG; error from `touch`
 ```
 
+请注意，许多程序需要 `--` 来消除命令行参数和[以连字符开头的文件名](https://mywiki.wooledge.org/BashPitfalls#Filenames_with_leading_dashes)之间的歧义。
+
 Note that `--` is required for many programs to disambiguate between command-line arguments and [filenames that begin with hyphens](https://mywiki.wooledge.org/BashPitfalls#Filenames_with_leading_dashes).
 
 # Scope
 
-## Using a `once` block
+## 使用 `once` 代码块 / Using a `once` block
+
+`once` 块是一个代码块，仅在其父块运行时运行一次。举个例子：
 
 The `once` block is a block of code that will only run once when its parent block is run. As an example:
 
