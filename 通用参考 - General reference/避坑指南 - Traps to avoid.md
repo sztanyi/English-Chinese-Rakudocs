@@ -1515,7 +1515,7 @@ If you are using [Proc::Async](https://docs.raku.org/type/Proc::Async), then the
 
 When using Proc::Async you should not assume that `.print` (or any other similar method) is synchronous. The biggest issue of this trap is that you will likely not notice the problem by running the code once, so it may cause a hard-to-detect intermittent fail.
 
-这是一个说明问题的示例：
+这是一个说明该问题的示例：
 
 Here is an example that demonstrates the issue:
 
@@ -1534,6 +1534,8 @@ loop {
 }
 ```
 
+可能的输出：
+
 And the output it may produce:
 
 ```Raku
@@ -1549,7 +1551,7 @@ Died with the exception:
       in block  at print.p6 line 6
 ```
 
-解决这个问题很容易，因为 `.print` 返回一个可以等待的 promise。 如果你在 [react]（https://docs.raku.org/language/concurrency#index-entry-react）块中工作，则解决方案会更加漂亮：
+解决这个问题很容易，因为 `.print` 返回一个可以等待的 promise。 如果你在 [react]（https://docs.raku.org/language/concurrency#index-entry-react）代码块中工作，则解决方案会更加漂亮：
 
 Resolving this is easy because `.print` returns a promise that you can await on. The solution is even more beautiful if you are working in a [react](https://docs.raku.org/language/concurrency#index-entry-react) block:
 
@@ -1605,7 +1607,7 @@ If you want to work with lines, then use `$proc.stdout.lines`. If you're after t
 
 # 异常处理 / Exception handling
 
-## Sunk `Proc`
+## 舍弃 `Proc` 的返回值 / Sunk `Proc`
 
 有些方法返回一个 [Proc](https://docs.raku.org/type/Proc) 对象。如果它代表的是一个失败的进程，`Proc` 本身不会抛出异常，但是在 sink 上下文中会导致 [X::Proc::Unsuccessful](https://docs.raku.org/type/X::Proc::Unsuccessful) 异常抛出。这意味着
 
@@ -1730,11 +1732,11 @@ run «touch "$file"»;       # WRONG; error from `touch`
 
 Note that `--` is required for many programs to disambiguate between command-line arguments and [filenames that begin with hyphens](https://mywiki.wooledge.org/BashPitfalls#Filenames_with_leading_dashes).
 
-# Scope
+# 作用域 / Scope
 
 ## 使用 `once` 代码块 / Using a `once` block
 
-`once` 块是一个代码块，仅在其父块运行时运行一次。举个例子：
+`once` 块是一个仅在其父块运行时运行一次的代码块。举个例子：
 
 The `once` block is a block of code that will only run once when its parent block is run. As an example:
 
@@ -1746,6 +1748,8 @@ for 1..10 {
 say "Variable = $var";    # OUTPUT: «Variable = 1␤» 
 ```
 
+这一功能还适用于其他代码块，如 `sub` 和 `while`，而不仅仅是 `for` 循环。但是，当试图在其他代码块中嵌套 `once` 块时，就会出现问题：
+
 This functionality also applies to other code blocks like `sub` and `while`, not just `for` loops. Problems arise though, when trying to nest `once` blocks inside of other code blocks:
 
 ```Raku
@@ -1756,7 +1760,11 @@ for 1..10 {
 say "Variable = $var";    # OUTPUT: «Variable = 10␤» 
 ```
 
+在上面的例子中，`once` 块嵌套在代码块中，而代码块位于 `for` 循环代码块中。这会导致 `once` 块多次运行，因为 `once` 块使用状态变量来确定它以前是否运行过。这意味着，如果父代码块超出作用域，那么 `once` 块用来跟踪它以前是否运行过的状态变量也会超出作用域。这就是为什么 `once` 块和 `state` 变量在埋藏在多层代码块中时会导致一些不必要的行为。
+
 In the above example, the `once` block was nested inside of a code block which was inside of a `for` loop code block. This causes the `once` block to run multiple times, because the `once` block uses state variables to determine whether it has run previously. This means that if the parent code block goes out of scope, then the state variable the `once` block uses to keep track of if it has run previously, goes out of scope as well. This is why `once` blocks and `state` variables can cause some unwanted behavior when buried within more than one code block.
+
+如果您想有一些东西可以模拟 once 块的功能，而且深埋在多层代码块中时仍然有效，我们可以手动构建一个 `once` 块的功能。使用上面的例子，我们可以改变它，使它只运行一次，即使在 `do` 块内，通过改变 `state` 变量的作用域。
 
 If you want to have something that will emulate the functionality of a once block, but still work when buried a few code blocks deep, we can manually build the functionality of a `once` block. Using the above example, we can change it so that it will only run once, even when inside the `do` block by changing the scope of the `state` variable.
 
@@ -1769,9 +1777,15 @@ for 1..10 {
 say "Variable = $var";    # OUTPUT: «Variable = 1␤» 
 ```
 
+在这个例子中，我们基本上手动构建了一个 `once` 块，方法是在最高级别上创建一个名为 `$run-code` 的 `state` 变量，该变量将不止一次运行，然后检查 `$run-code` 是否 `true` 使用常规 `if`。如果变量 `$run-code` 为 `true`，则将变量 `false` 改为只应完成一次的代码。
+
 In this example, we essentially manually build a `once` block by making a `state` variable called `$run-code` at the highest level that will be run more than once, then checking to see if `$run-code` is `True` using a regular `if`. If the variable `$run-code` is `True`, then make the variable `False` and continue with the code that should only be completed once.
 
+使用像上面的例子一样的 `state` 变量和使用常规 `once` 块之间的主要区别是 `state` 变量在什么作用域。由 `once` 块创建的 `state` 变量的作用域与将该块放置的位置相同（想象一下 '`once`' 一词被替换为一个状态变量和一个 `if` 来查看变量）。上面使用 `state` 变量的例子起作用是因为该变量在将要重复的块的最上层作用域内；`do` 内有 `once` 代码块的例子使 `do` 代码块内的变量不是在将要重复的代码块中最上层作用域内。
+
 The main difference between using a `state` variable like the above example and using a regular `once` block is what scope the `state` variable is in. The scope for the `state` variable created by the `once` block, is the same as where you put the block (imagine that the word '`once`' is replaced with a state variable and an `if` to look at the variable). The example above using `state` variables works because the variable is at the highest scope that will be repeated; whereas the example that has a `once` block inside of a `do`, made the variable within the `do` block which is not the highest scope that is repeated.
+
+在类方法中使用 `once` 代码块将导致 once 状态横跨该类的所有实例，只执行一次。例如：
 
 Using a `once` block inside a class method will cause the once state to carry across all instances of that class. For example:
 
@@ -1785,9 +1799,13 @@ my $b = A.new;
 $b.sayit;      # nothing 
 ```
 
-## `LEAVE` phaser and `exit`
+## `LEAVE` 相位器与 `exit` / `LEAVE` phaser and `exit`
+
+使用 [`LEAVE`](https://docs.raku.org/language/phasers#LEAVE) 相位器执行优雅的资源终止是一种常见的模式，但它不包括程序 通过 [`exit`](https://docs.raku.org/routine/exit) 停止时的情况。
 
 Using [`LEAVE`](https://docs.raku.org/language/phasers#LEAVE) phaser to perform graceful resource termination is a common pattern, but it does not cover the case when the program is stopped with [`exit`](https://docs.raku.org/routine/exit).
+
+下列非确定性的例子应说明这一陷阱的复杂性：
 
 The following nondeterministic example should demonstrate the complications of this trap:
 
@@ -1799,6 +1817,8 @@ exit 42 if rand < ⅓; # ① ｢exit｣ is bad
 die ‘Dying because of unhandled exception’ if rand < ½; # ② ｢die｣ is ok 
 # fallthru ③ 
 ```
+
+可能有三种结果：
 
 There are three possible results:
 
@@ -1817,9 +1837,11 @@ Opened some resource
 Closing the resource gracefully
 ```
 
+对许多程序来说，调用 `exit` 是正常操作的一部分，因此请当心 `LEAVE` 相位器和 `exit` 调用的无意识组合。
+
 A call to `exit` is part of normal operation for many programs, so beware unintentional combination of `LEAVE` phasers and `exit` calls.
 
-## `LEAVE` phaser may run sooner than you think
+## `LEAVE` 相位器可能比你想象的要早运行 / `LEAVE` phaser may run sooner than you think
 
 Parameter binding is executed when we're "inside" the routine's block, which means `LEAVE` phaser would run when we leave that block if parameter binding fails when wrong arguments are given:
 
@@ -1931,7 +1953,7 @@ say ‘a and b’    if all %h<a b>:exists;   # ← RIGHT (all); True
 
 The reason why it is always `True` (without using a junction) is that it returns a list with [Bool](https://docs.raku.org/type/Bool) values for each requested lookup. Non-empty lists always give `True` when you [Bool](https://docs.raku.org/type/Bool)ify them, so the check always succeeds no matter what keys you give it.
 
-## Using `[…\]` metaoperator with a list of lists
+## Using `[…]` metaoperator with a list of lists
 
 Every now and then, someone gets the idea that they can use `[Z]` to create the transpose of a list-of-lists:
 
@@ -1951,7 +1973,7 @@ say @transpose;              # [(X Y)] – not the expected transpose [(X) (Y)]
 
 This happens partly because of the [single argument rule](https://docs.raku.org/language/functions#Slurpy_conventions), and there are other cases when this kind of a generalization may not work.
 
-## Using [~\] for concatenating a list of blobs
+## Using [~] for concatenating a list of blobs
 
 The [`~` infix operator](https://docs.raku.org/routine/~#(Operators)_infix_~) can be used to concatenate [Str](https://docs.raku.org/type/Str)s *or* [Blob](https://docs.raku.org/type/Blob)s. However, an empty list will *always* be reduced to an empty `Str`. This is due to the fact that, in the presence of a list with no elements, the [reduction](https://docs.raku.org/language/operators#Reduction_operators) metaoperator returns the [identity element](https://docs.raku.org/language/operators#Identity) for the given operator. Identity element for `~` is an empty string, regardless of the kind of elements the list could be populated with.
 
