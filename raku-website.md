@@ -22,8 +22,8 @@ https://fco.github.io/Red/
 # WEEKLY CHALLENGE - PERL & RAKU
 https://perlweeklychallenge.org/
 
-# Chinese Raku Guide
-https://raku.guide/zh/
+# Raku Guide
+https://raku.guide
 
 # Lean Raku in Y minutes
 https://learnxinyminutes.com/docs/perl6/
@@ -37,4 +37,5 @@ https://github.com/Raku/vim-raku
 # Raku Blog by Sterling Hanenkamp
 https://zostay.com/
 
-
+# Raku exercises
+https://exercism.io/tracks/raku
