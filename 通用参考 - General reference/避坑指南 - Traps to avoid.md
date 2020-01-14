@@ -2139,7 +2139,7 @@ say @a.grep( *.Int ~~ 2 );
 
 The error message does not make a lot of sense. It does, however, if you put it in terms of the `ACCEPTS` method: that code is equivalent to `2.ACCEPTS( *.Int )`, but `*.Int` cannot be [coerced to `Numeric`](https://docs.raku.org/routine/ACCEPTS#(Numeric)_method_ACCEPTS), being as it is a `Block`.
 
-解决方法：不要在智能配对的左手边使用 `WhateverCode`：
+解决方法：不要在智能配对的左边使用 `WhateverCode`：
 
 Solution: don't use `WhateverCode` in the left hand side of a smartmatch:
 
