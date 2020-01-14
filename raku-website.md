@@ -39,3 +39,6 @@ https://zostay.com/
 
 # Raku exercises
 https://exercism.io/tracks/raku
+
+# Andrew Shitov’s Blog
+https://andrewshitov.com/
