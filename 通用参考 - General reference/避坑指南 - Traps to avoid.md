@@ -1764,7 +1764,7 @@ say "Variable = $var";    # OUTPUT: «Variable = 10␤»
 
 In the above example, the `once` block was nested inside of a code block which was inside of a `for` loop code block. This causes the `once` block to run multiple times, because the `once` block uses state variables to determine whether it has run previously. This means that if the parent code block goes out of scope, then the state variable the `once` block uses to keep track of if it has run previously, goes out of scope as well. This is why `once` blocks and `state` variables can cause some unwanted behavior when buried within more than one code block.
 
-如果您想有一些东西可以模拟 once 块的功能，而且深埋在多层代码块中时仍然有效，我们可以手动构建一个 `once` 块的功能。使用上面的例子，我们可以改变它，使它只运行一次，即使在 `do` 块内，通过改变 `state` 变量的作用域。
+如果你想有一些东西可以模拟 once 块的功能，而且深埋在多层代码块中时仍然有效，我们可以手动构建一个 `once` 块的功能。使用上面的例子，我们可以改变它，使它只运行一次，即使在 `do` 块内，通过改变 `state` 变量的作用域。
 
 If you want to have something that will emulate the functionality of a once block, but still work when buried a few code blocks deep, we can manually build the functionality of a `once` block. Using the above example, we can change it so that it will only run once, even when inside the `do` block by changing the scope of the `state` variable.
 
@@ -1843,6 +1843,8 @@ A call to `exit` is part of normal operation for many programs, so beware uninte
 
 ## `LEAVE` 相位器可能比你想象的要早运行 / `LEAVE` phaser may run sooner than you think
 
+只要我们进入子例程，参数绑定就会被执行。这意味着当我们因为参数绑定失败而离开子例程时 `LEAVE` 相位器将会被执行：
+
 Parameter binding is executed when we're "inside" the routine's block, which means `LEAVE` phaser would run when we leave that block if parameter binding fails when wrong arguments are given:
 
 ```Raku
@@ -1852,6 +1854,8 @@ sub foo(Int) {
 }
 say foo rand; # OUTPUT: «No such method 'Int' for invocant of type 'Any'␤» 
 ```
+
+避免这个问题的一个简单方法是声明你的子例程或方法是多重的，这样在分派过程中候选就被消除了，代码永远不会绑定到子例程里面的任何东西，从而永远不会进入例程的主体：
 
 A simple way to avoid this issue is to declare your sub or method a multi, so the candidate is eliminated during dispatch and the code never gets to binding anything inside the sub, thus never entering the routine's body:
 
@@ -1863,7 +1867,9 @@ multi foo(Int) {
 say foo rand; # OUTPUT: «Cannot resolve caller foo(Num); none of these signatures match: (Int)␤» 
 ```
 
-Another alternative is placing the `LEAVE` into another block (assuming it's appropriate for it to be executed when *that* block is left, not the routine's body:
+另一种选择是将 `LEAVE` 放入另一个块（假设它在离开*那个*块时被执行是合适的，而不是例程的主体）：
+
+Another alternative is placing the `LEAVE` into another block (assuming it's appropriate for it to be executed when *that* block is left, not the routine's body):
 
 ```Raku
 sub foo(Int) {
@@ -1872,6 +1878,8 @@ sub foo(Int) {
 }
 say foo rand; # OUTPUT: «Type check failed in binding to parameter '<anon>'; expected Int but got Num (0.7289418947969465e0)␤» 
 ```
+
+你还可以确保即使由于参数绑定失败而离开例程，也可以执行 `LEAVE`。在我们的例子中，我们在用它做任何事情之前先检查 `$x` [是已定义的](https://docs.raku.org/routine/andthen)。
 
 You can also ensure `LEAVE` can be executed even if the routine is left due to failed argument binding. In our example, we check `$x` [is defined](https://docs.raku.org/routine/andthen) before doing anything with it.
 
@@ -1885,18 +1893,20 @@ say foo rand; # OUTPUT: «Type check failed in binding to parameter '<anon>'; ex
 
 # Grammars
 
-## Using regexes within grammar's actions
+## 在 grammar 动作中使用正则表达式 / Using regexes within grammar's actions
 
 ```Raku
 grammar will-fail {
     token TOP {^ <word> $}
     token word { \w+ }
 }
- 
+
 class will-fail-actions {
     method TOP ($/) { my $foo = ~$/; say $foo ~~ /foo/;  }
 }
 ```
+
+将在 `TOP` 方法上报 `Cannot assign to a readonly variable ($/) or a value` 的错。这里的问题是正则表达式也影响 `$/`。由于它是在 `TOP` 函数签名中，它是一个只读变量，这就是产生错误的原因。你可以安全地在签名中使用另一个变量，或者添加 `is copy`，像这样：
 
 Will fail with `Cannot assign to a readonly variable ($/) or a value` on method `TOP`. The problem here is that regular expressions also affect `$/`. Since it is in `TOP`'s signature, it is a read-only variable, which is what produces the error. You can safely either use another variable in the signature or add `is copy`, this way:
 
@@ -1904,7 +1914,9 @@ Will fail with `Cannot assign to a readonly variable ($/) or a value` on method 
 method TOP ($/ is copy) { my $foo = ~$/; my $v = $foo ~~ /foo/;  }
 ```
 
-## Using certain names for rules/token/regexes
+## 给 rule/token/regex 起某些名称 / Using certain names for rules/token/regexes
+
+语法实际上是一种类。
 
 Grammars are actually a type of classes.
 
@@ -1912,6 +1924,8 @@ Grammars are actually a type of classes.
 grammar G {};
 say G.^mro; # OUTPUT: «((G) (Grammar) (Match) (Capture) (Cool) (Any) (Mu))␤»
 ```
+
+`^mro` 打印了这个空语法类层次结构，显示所有的超类。而这些超类有他们自己的方法。定义语法中的一个方法可能与类层次结构中的方法相冲突：
 
 `^mro` prints the class hierarchy of this empty grammar, showing all the superclasses. And these superclasses have their very own methods. Defining a method in that grammar might clash with the ones inhabiting the class hierarchy:
 
@@ -1924,13 +1938,19 @@ say g.parse('defined');
 # OUTPUT: «Too many positionals passed; expected 1 argument but got 2␤  in regex item at /tmp/grammar-clash.p6 line 3␤  in regex TOP at /tmp/grammar-clash.p6 line 2␤  in block <unit> at /tmp/grammar-clash.p6 line 5» 
 ```
 
+`item` 似乎是无害的，但它是在 [类 `Mu` 中定义的子例程](https://docs.raku.org/routine/item)。这个消息有点神秘，完全与这个事实无关，但这就是为什么这被列为一个陷阱。一般来说，在层次结构的任何部分中定义的所有子都会引起问题；有些方法也会。例如，`CREATE`、`take` 和 `defined`（在 [Mu](https://docs.raku.org/type/Mu) 中定义的）。一般来说，多重方法和简单方法不会有任何问题，但将它们用作 rule 名称可能不是一个好的做法。
+
 `item` seems innocuous enough, but it is a [`sub` defined in class `Mu`](https://docs.raku.org/routine/item). The message is a bit cryptic and totally unrelated to that fact, but that is why this is listed as a trap. In general, all subs defined in any part of the hierarchy are going to cause problems; some methods will too. For instance, `CREATE`, `take` and `defined` (which are defined in [Mu](https://docs.raku.org/type/Mu)). In general, multi methods and simple methods will not have any problem, but it might not be a good practice to use them as rule names.
+
+还要避免对 rule、token 和 regex 使用[相位器](https://docs.raku.org/language/objects#Object_construction) 名称：`Theak`、`BUILD` 和 `BUILD-ALL` 将抛出异常消息 `Cannot find method 'match': no method cache and no .^find_method`，消息再次只与实际情况略有关联。
 
 Also avoid [phasers](https://docs.raku.org/language/objects#Object_construction) for rule/token/regex names: `TWEAK`, `BUILD`, `BUILD-ALL` will throw another kind of exception if you do that: `Cannot find method 'match': no method cache and no .^find_method`, once again only slightly related to what is actually going on.
 
-# Unfortunate generalization
+# 不幸的泛化 / Unfortunate generalization
 
 ## `:exists` with more than one key
+
+假设你有一个散列，你想在不止一个元素上使用 `:exists`：
 
 Let's say you have a hash and you want to use `:exists` on more than one element:
 
@@ -1940,6 +1960,8 @@ say ‘a exists’ if %h<a>:exists;   # ← OK; True
 say ‘y exists’ if %h<y>:exists;   # ← OK; False 
 say ‘Huh‽’     if %h<x y>:exists; # ← WRONG; returns a 2-item list 
 ```
+
+你的意思是如果其中任何一个存在，还是说所有这些都应该存在？使用 `any` 或 `all` [Junction](https://docs.raku.org/type/Junction) 来澄清：
 
 Did you mean “if `any` of them exists”, or did you mean that `all` of them should exist? Use `any` or `all` [Junction](https://docs.raku.org/type/Junction) to clarify:
 
@@ -1951,9 +1973,13 @@ say ‘a, x and y’ if all %h<a x y>:exists; # ← RIGHT (all); False
 say ‘a and b’    if all %h<a b>:exists;   # ← RIGHT (all); True 
 ```
 
+它之所以总是 `True`（不使用 Junction），是因为它为每个请求的查找返回一个 [Bool](https://docs.raku.org/type/Bool) 值的列表。在布尔上下文中，非空列表总是为真，所以检查总是成功，无论你给它什么键。
+
 The reason why it is always `True` (without using a junction) is that it returns a list with [Bool](https://docs.raku.org/type/Bool) values for each requested lookup. Non-empty lists always give `True` when you [Bool](https://docs.raku.org/type/Bool)ify them, so the check always succeeds no matter what keys you give it.
 
-## Using `[…]` metaoperator with a list of lists
+## 使用带有列表的 `[…]` 元运算符 / Using `[…]` metaoperator with a list of lists
+
+不时有人想到，他们可以使用 `[Z]` 来创建一个二维列表的转换：
 
 Every now and then, someone gets the idea that they can use `[Z]` to create the transpose of a list-of-lists:
 
@@ -1963,6 +1989,8 @@ my @transpose = [Z] @matrix; # ← WRONG; but so far so good ↙
 say @transpose;              # [(X a 1) (Y b 2)] 
 ```
 
+一切都很好，直到你得到一个输入只有一行的列表 @matrix：
+
 And everything works fine, until you get an input @matrix with *exactly one* row (child list):
 
 ```Raku
@@ -1971,9 +1999,13 @@ my @transpose = [Z] @matrix; # ← WRONG; ↙
 say @transpose;              # [(X Y)] – not the expected transpose [(X) (Y)] 
 ```
 
+发生这种情况的部分原因是[单一参数规则](https://docs.raku.org/language/functions#Slurpy_conventions)，还有其他情况，这种概括可能不起作用。
+
 This happens partly because of the [single argument rule](https://docs.raku.org/language/functions#Slurpy_conventions), and there are other cases when this kind of a generalization may not work.
 
-## Using [~] for concatenating a list of blobs
+## 使用 [~] 连接一个 blob 列表 / Using [~] for concatenating a list of blobs
+
+[`~` 中缀运算符](https://docs.raku.org/routine/~#(Operators)_infix_~) 可以用来连接 [Str](https://docs.raku.org/type/Str) 或者 [Blob](https://docs.raku.org/type/Blob)。然而，空列表在字符串连接时将*总是*转换为空字符串。这是由于在没有元素的列表中，[reduction](https://docs.raku.org/language/operators#Reduction_operators) 元运算符返回给定运算符的[标识元素](https://docs.raku.org/language/operators#Identity)。`~` 的标识元素是一个空字符串，不管列表中可以填充哪种元素。
 
 The [`~` infix operator](https://docs.raku.org/routine/~#(Operators)_infix_~) can be used to concatenate [Str](https://docs.raku.org/type/Str)s *or* [Blob](https://docs.raku.org/type/Blob)s. However, an empty list will *always* be reduced to an empty `Str`. This is due to the fact that, in the presence of a list with no elements, the [reduction](https://docs.raku.org/language/operators#Reduction_operators) metaoperator returns the [identity element](https://docs.raku.org/language/operators#Identity) for the given operator. Identity element for `~` is an empty string, regardless of the kind of elements the list could be populated with.
 
@@ -1981,6 +2013,8 @@ The [`~` infix operator](https://docs.raku.org/routine/~#(Operators)_infix_~) ca
 my Blob @chunks;
 say ([~] @chunks).perl; # OUTPUT: «""␤» 
 ```
+
+如果你试图在假设结果为 Blob 时使用该结果，这可能会造成问题：
 
 This might cause a problem if you attempt to use the result while assuming that it is a Blob:
 
@@ -1990,6 +2024,8 @@ say ([~] @chunks).decode;
 # OUTPUT: «No such method 'decode' for invocant of type 'Str'. Did you mean 'encode'?␤…» 
 ```
 
+有很多方法可以掩盖这个案子。你可以完全避免使用 `[ ]` 元运算符：
+
 There are many ways to cover that case. You can avoid `[ ]` metaoperator altogether:
 
 ```Raku
@@ -1997,6 +2033,8 @@ my @chunks;
 # … 
 say Blob.new: |«@chunks; # OUTPUT: «Blob:0x<>␤» 
 ```
+
+或者，你可以使用空 Blob 初始化数组：
 
 Alternatively, you can initialize the array with an empty Blob:
 
@@ -2006,6 +2044,8 @@ my @chunks = Blob.new;
 say [~] @chunks; # OUTPUT: «Blob:0x<>␤» 
 ```
 
+或者你可以使用 [`||`](https://docs.raku.org/language/operators#infix%20||) 运算符来使其返回空 Blob 在列表为空的情况。
+
 Or you can utilize [`||`](https://docs.raku.org/language/operators#infix%20||) operator to make it use an empty Blob in case the list is empty:
 
 ```Raku
@@ -2014,11 +2054,15 @@ my @chunks;
 say [~] @chunks || Blob.new; # OUTPUT: «Blob:0x<>␤» 
 ```
 
+请注意，在与其他操作员减少列表时可能会出现类似的问题。
+
 Please note that a similar issue may arise when reducing lists with other operators.
 
 # Maps
 
-## Beware of nesting `Map`s in sink context
+## 注意在 sink 上下文中的嵌套 `Map` / Beware of nesting `Map`s in sink context
+
+Map 将表达式应用于[列表](https://docs.raku.org/type/List)的每个元素，并返回 [Seq](https://docs.raku.org/type/Seq)：
 
 Maps apply an expression to every element of a [List](https://docs.raku.org/type/List) and return a [Seq](https://docs.raku.org/type/Seq):
 
@@ -2026,11 +2070,15 @@ Maps apply an expression to every element of a [List](https://docs.raku.org/type
 say <þor oðin loki>.map: *.codes; # OUTPUT: «(3 4 4)␤»
 ```
 
+Map 经常被用作一个循环的紧凑替代品，在 map 代码块中执行某种操作：
+
 Maps are often used as a compact substitute for a loop, performing some kind of action in the map code block:
 
 ```Raku
 <þor oðin loki>.map: *.codes.say; # OUTPUT: «3␤4␤4␤»
 ```
+
+当 map 被嵌套并且[在 sink 上下文中](https://docs.raku.org/language/contexts#index-entry-sink_context)时，可能会出现问题。
 
 The problem might arise when maps are nested and [in a sink context](https://docs.raku.org/language/contexts#index-entry-sink_context).
 
@@ -2038,7 +2086,11 @@ The problem might arise when maps are nested and [in a sink context](https://doc
 <foo bar ber>.map: { $^a.comb.map: { $^b.say}}; # OUTPUT: «»
 ```
 
+你可能期望最里面的映射到*冒泡*结果到最外层的映射，但它什么也没做。映射返回 `Seq`，在 sink 上下文中，最里面的映射将迭代并丢弃产生的值，这就是为什么它不会产生任何值。
+
 You might expect the innermost map to *bubble* the result up to the outermost map, but it simply does nothing. Maps return `Seq`s, and in sink context the innermost map will iterate and discard the produced values, which is why it yields nothing.
+
+只需在句首使用 `say` 就可以将结果从 sink 上下文中救出来：
 
 Simply using `say` at the beginning of the sentence will save the result from sink context:
 
@@ -2047,6 +2099,8 @@ say <foo bar ber>.map: *.comb.map: *.say ;
 # OUTPUT: «f␤o␤o␤b␤a␤r␤b␤e␤r␤((True True True) (True True True) (True True True))␤»
 ```
 
+然而，它将不会按预期奏效；第一个 `f␤o␤o␤b␤a␤r␤b␤e␤r␤` 是最内层 `say` 的结果，然后 [`say` 返回一个`Bool`](https://docs.raku.org/routine/say#(Mu)_method_say)，在这情况下返回 `True`。`True` 就是最外面用 `say` 打印出来的东西，每个字母都有一个。一个好得多的选择是展平最外层的序列：
+
 However, it will not be working as intended; the first `f␤o␤o␤b␤a␤r␤b␤e␤r␤` is the result of the innermost `say`, but then [`say` returns a `Bool`](https://docs.raku.org/routine/say#(Mu)_method_say), `True` in this case. Those `True`s are what get printed by the outermost `say`, one for every letter. A much better option would be to `flat`ten the outermost sequence:
 
 ```Raku
@@ -2054,17 +2108,23 @@ However, it will not be working as intended; the first `f␤o␤o␤b␤a␤r␤
 # OUTPUT: «f␤o␤o␤b␤a␤r␤b␤e␤r␤»
 ```
 
+当然，用 `say` 来保留结果也会产生预期的结果，因为它将使两个嵌套序列从空上下文中脱离出来：
+
 Of course, saving `say` for the result will also produce the intended result, as it will be saving the two nested sequences from void context:
 
 ```Raku
 say <foo bar ber>.map: { $^þ.comb }; # OUTPUT: « ((f o o) (b a r) (b e r))»
 ```
 
-# Smartmatching
+# 智能匹配 / Smartmatching
+
+[智能匹配运算符](https://docs.raku.org/language/operators#index-entry-smartmatch_operator) 简写为右手边*接受*左手边。这可能会引起一些混乱。
 
 The [smartmatch operator](https://docs.raku.org/language/operators#index-entry-smartmatch_operator) shortcuts to the right hand side *accepting* the left hand side. This may cause some confusion.
 
-## Smartmatch and `WhateverCode`
+## 智能匹配与 `WhateverCode` / Smartmatch and `WhateverCode`
+
+在智能匹配的左手边使用 `WhateverCode` 不会像预期的那样工作，或者根本不会：
 
 Using `WhateverCode` in the left hand side of a smartmatch does not work as expected, or at all:
 
@@ -2075,7 +2135,11 @@ say @a.grep( *.Int ~~ 2 );
 # use $_ inside a block?␤␤␤» 
 ```
 
+错误信息没有多大意义。但是，如果你把它用 `ACCEPTS` 方法来表述：这种代码相当于 `2.ACCEPTS( *.Int )`，但是 `*.Int` 不能[强制类型转换为 `Numeric`](https://docs.raku.org/routine/ACCEPTS#(Numeric)_method_ACCEPTS)，因为它是 `Block`。
+
 The error message does not make a lot of sense. It does, however, if you put it in terms of the `ACCEPTS` method: that code is equivalent to `2.ACCEPTS( *.Int )`, but `*.Int` cannot be [coerced to `Numeric`](https://docs.raku.org/routine/ACCEPTS#(Numeric)_method_ACCEPTS), being as it is a `Block`.
+
+解决方法：不要在智能配对的左手边使用 `WhateverCode`：
 
 Solution: don't use `WhateverCode` in the left hand side of a smartmatch:
 
