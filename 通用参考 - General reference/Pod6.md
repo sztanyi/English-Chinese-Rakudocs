@@ -339,7 +339,7 @@ When you're not blue.
 When you're not happy.
 ```
 
-将翻译为
+将渲染为
 
 will be rendered as
 
@@ -353,9 +353,15 @@ will be rendered as
 
 ### 多层列表 / Multi-level lists
 
+List 可以是多级的，每一级的项目都使用 `=item1`、 `=item2`、 `=item3` 等块。
+
 Lists may be multi-level, with items at each level specified using the `=item1`, `=item2`, `=item3`, etc. blocks.
 
+请注意，`=item` 只是 `=item1` 的缩写。
+
 Note that `=item` is just an abbreviation for `=item1`.
+
+例如：
 
 For example:
 
@@ -381,9 +387,13 @@ For example:
   - Liquid
   - Gas
 
-### Multi-paragraph lists
+### 多段列表 / Multi-paragraph lists
+
+使用 `=item` 块的分隔形式（`=begin item` 和 `=end item`），我们可以指定包含多个段落的条目。
 
 Using the delimited form of the `=item` block (`=begin item` and `=end item`), we can specify items that contain multiple paragraphs.
+
+例如：
 
 For example:
 
@@ -408,7 +418,11 @@ for breakfast.
 As you can see, folk wisdom is often of dubious value.
 ```
 
+将渲染为：
+
 Renders as:
+
+让我们考虑两个常见的谚语：
 
 Let's consider two common proverbs:
 
@@ -424,9 +438,13 @@ As you can see, folk wisdom is often of dubious value.
 
 ## Tables
 
+查看此页面以获得与 [Tables](https://docs.raku.org/language/tables) 有关的文档
+
 Check out this page for documentation related to [Tables](https://docs.raku.org/language/tables)
 
-## Pod6 comments
+## Pod6 注释 / Pod6 comments
+
+Pod6 注释是 Pod6 渲染器忽略的注释。
 
 Pod6 comments are comments that Pod6 renderers ignore.
 
@@ -494,8 +512,6 @@ To underline a text enclose it in `U< >`
 ```Raku
 Raku is U<awesome>
 ```
-
-
 
 ## Code
 
@@ -605,8 +621,6 @@ To create a note enclose it in `N< >`
 Raku is multi-paradigmatic N<Supporting Procedural, Object Oriented, and Functional programming>
 ```
 
-
-
 ## Keyboard input
 
 To flag text as keyboard input enclose it in `K< >`
@@ -614,8 +628,6 @@ To flag text as keyboard input enclose it in `K< >`
 ```Raku
 Enter your name K<John Doe>
 ```
-
-
 
 ## Replaceable
 
@@ -641,8 +653,6 @@ To flag text as terminal output enclose it in `T< >`
 ```Raku
 Hello T<John Doe>
 ```
-
-
 
 ## Unicode
 
