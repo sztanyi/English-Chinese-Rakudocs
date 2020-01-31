@@ -1,3 +1,5 @@
+原文：https://docs.raku.org/language/pod
+
 # Pod6
 
 一种易于使用的标记语言，用于记录 Raku 模块和程序的文档
@@ -87,7 +89,7 @@ Top Level Heading
 
 ## 缩写块 / Abbreviated blocks
 
-缩写块的开头是一个 `'='` 符号，紧接着是块的类型名称。以下所有数据都是块内容的一部分，因此无法为*缩写*块指定配置数据*。块结束于下一个 Pod6 指令或第一个空行。
+缩写块的开头是一个 `'='` 符号，紧接着是块的类型名称。以下所有数据都是块内容的一部分，因此无法为*缩写*块指定配置数据。块结束于下一个 Pod6 指令或第一个空行。
 
 Abbreviated blocks begin by an `'='` sign, which is followed immediately by the `typename` of the block. All following data are part of the contents of the block, thus configuration data **cannot** be specified for an *abbreviated* block. The block ends at the next Pod6 directive or the first blank line.
 
@@ -113,7 +115,7 @@ Blocks starting with `#|` are attached to the code after them, and blocks starti
 
 Since declarator blocks are attached to source code, they can be used to document classes, roles, subroutines and in general any statement or block.
 
-`WHY` 方法可用于这些类、角色、子程序等。若要返回附加的 Pod6 值，请执行以下操作。
+`WHY` 方法可用于这些类、角色、子程序等，用来返回附加的 Pod6 值。
 
 The `WHY` method can be used on these classes, roles, subroutines etc. to return the attached Pod6 value.
 
@@ -167,7 +169,7 @@ Pod6 offers a wide range of standard block types.
 
 ## 标题 / Headings
 
-标题可以使用 `=headN` 定义，其中 N 大于零（例如，`=head1`，`=head2`，。。。）。
+标题可以使用 `=headN` 定义，其中 N 大于零（例如，`=head1`、`=head2`。。。）。
 
 Headings can be defined using `=headN`, where N is greater than zero (e.g., `=head1`, `=head2`, …).
 
@@ -353,9 +355,15 @@ will be rendered as
 
 ### 多层列表 / Multi-level lists
 
+列表可能是多层的，每一层的条目使用 `=item1`、`=item2`、`=item3` 等块指定。
+
 Lists may be multi-level, with items at each level specified using the `=item1`, `=item2`, `=item3`, etc. blocks.
 
+注意，`=item` 只是 `=item1` 的缩写。
+
 Note that `=item` is just an abbreviation for `=item1`.
+
+例如：
 
 For example:
 
@@ -370,6 +378,7 @@ For example:
 =item2     Gas 
 ```
 
+```
 - Animal
 
 - - Vertebrate
@@ -380,10 +389,15 @@ For example:
 - - Solid
   - Liquid
   - Gas
+```
 
-### Multi-paragraph lists
+### 多段落列表 / Multi-paragraph lists
+
+使用 `=item` 块（`=begin item` 和 `=end item`）的分隔形式，我们可以指定包含多个段落的项。
 
 Using the delimited form of the `=item` block (`=begin item` and `=end item`), we can specify items that contain multiple paragraphs.
+
+例如：
 
 For example:
 
@@ -408,8 +422,11 @@ for breakfast.
 As you can see, folk wisdom is often of dubious value.
 ```
 
+翻译为：
+
 Renders as:
 
+```
 Let's consider two common proverbs:
 
 - *The rain in Spain falls mainly on the plain.*
@@ -421,20 +438,29 @@ Let's consider two common proverbs:
   In deciding whether to become an early riser, it is worth considering whether you would actually enjoy annelids for breakfast.
 
 As you can see, folk wisdom is often of dubious value.
+```
 
-## Tables
+## 表格 / Tables
+
+有关文档，请查看 [表格](https://docs.raku.org/language/tables)
 
 Check out this page for documentation related to [Tables](https://docs.raku.org/language/tables)
 
-## Pod6 comments
+## Pod6 注释 / Pod6 comments
+
+Pod6 注释将会被 Pod6 渲染器忽略。
 
 Pod6 comments are comments that Pod6 renderers ignore.
+
+注释对*元*文档（记录文档的文档）有用处。单行注释使用 `=comment` 标记：
 
 Comments are useful for *meta*documentation (documenting the documentation). Single-line comments use the `=comment` marker:
 
 ```Raku
 =comment Add more here about the algorithm 
 ```
+
+对于多行注释，使用分隔的 `comment` 代码块：
 
 For multi-line comments, use a delimited `comment` block:
 
@@ -445,7 +471,9 @@ multi-line.
 =end comment
 ```
 
-## Semantic blocks
+## 语义块 / Semantic blocks
+
+所有大写块类型名都保留用于指定标准文档、发布、源组件或元信息。
 
 All uppercase block typenames are reserved for specifying standard documentation, publishing, source components, or metainformation.
 
@@ -457,17 +485,27 @@ All uppercase block typenames are reserved for specifying standard documentation
 =SUBTITLE
 ```
 
-# Formatting codes
+# 格式化代码 / Formatting codes
+
+格式化代码提供了一种将内联标记添加到文本的方法。
 
 Formatting codes provide a way to add inline mark-up to a piece of text.
 
+所有 Pod6 格式代码都由一个大写字母和一组单尖括号或双尖括号组成；可以使用 Unicode 双尖括号。
+
 All Pod6 formatting codes consist of a single capital letter followed immediately by a set of single or double angle brackets; Unicode double angle brackets may be used.
+
+格式化代码可以嵌套其他格式化代码。
 
 Formatting codes may nest other formatting codes.
 
+提供这些代码：**B**、**C**、**E**、**I**、**K**、**L**、**N**、**P**、**R**、**T**、**U**、**V**、**X**、**Z**。
+
 The following codes are available: **B**, **C**, **E**, **I**, **K**, **L**, **N**, **P**, **R**, **T**, **U**, **V**, **X**, and **Z**.
 
-## Bold
+## 粗体 / Bold
+
+若要用粗体设置文本格式，请将其括在 `B< >` 中
 
 To format a text in bold enclose it in `B< >`
 
