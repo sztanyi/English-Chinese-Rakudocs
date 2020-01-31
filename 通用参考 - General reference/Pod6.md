@@ -341,7 +341,7 @@ When you're not blue.
 When you're not happy.
 ```
 
-将翻译为
+将渲染为
 
 will be rendered as
 
@@ -393,7 +393,9 @@ For example:
 
 ### 多段落列表 / Multi-paragraph lists
 
-使用 `=item` 块（`=begin item` 和 `=end item`）的分隔形式，我们可以指定包含多个段落的项。
+### 多段列表 / Multi-paragraph lists
+
+使用 `=item` 块的分隔形式（`=begin item` 和 `=end item`），我们可以指定包含多个段落的条目。
 
 Using the delimited form of the `=item` block (`=begin item` and `=end item`), we can specify items that contain multiple paragraphs.
 
@@ -422,11 +424,12 @@ for breakfast.
 As you can see, folk wisdom is often of dubious value.
 ```
 
-翻译为：
+将渲染为：
 
 Renders as:
 
-```
+让我们考虑两个常见的谚语：
+
 Let's consider two common proverbs:
 
 - *The rain in Spain falls mainly on the plain.*
@@ -443,6 +446,8 @@ As you can see, folk wisdom is often of dubious value.
 ## 表格 / Tables
 
 有关文档，请查看 [表格](https://docs.raku.org/language/tables)
+
+查看此页面以获得与 [Tables](https://docs.raku.org/language/tables) 有关的文档
 
 Check out this page for documentation related to [Tables](https://docs.raku.org/language/tables)
 
@@ -532,8 +537,6 @@ To underline a text enclose it in `U< >`
 ```Raku
 Raku is U<awesome>
 ```
-
-
 
 ## Code
 
@@ -643,8 +646,6 @@ To create a note enclose it in `N< >`
 Raku is multi-paradigmatic N<Supporting Procedural, Object Oriented, and Functional programming>
 ```
 
-
-
 ## Keyboard input
 
 To flag text as keyboard input enclose it in `K< >`
@@ -652,8 +653,6 @@ To flag text as keyboard input enclose it in `K< >`
 ```Raku
 Enter your name K<John Doe>
 ```
-
-
 
 ## Replaceable
 
@@ -679,8 +678,6 @@ To flag text as terminal output enclose it in `T< >`
 ```Raku
 Hello T<John Doe>
 ```
-
-
 
 ## Unicode
 
