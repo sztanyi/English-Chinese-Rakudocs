@@ -448,11 +448,15 @@ Pod6 注释是 Pod6 渲染器忽略的注释。
 
 Pod6 comments are comments that Pod6 renderers ignore.
 
+评论对于*元*文档（记录文档）是有用的。单行评论使用 `=comment` 标记：
+
 Comments are useful for *meta*documentation (documenting the documentation). Single-line comments use the `=comment` marker:
 
 ```Raku
 =comment Add more here about the algorithm 
 ```
+
+对于多行注释，使用分隔的 `comment` 块：
 
 For multi-line comments, use a delimited `comment` block:
 
@@ -463,7 +467,9 @@ multi-line.
 =end comment
 ```
 
-## Semantic blocks
+## 语义块 / Semantic blocks
+
+所有大写块类型名称都保留用于指定标准文档、发布、源组件或元信息。
 
 All uppercase block typenames are reserved for specifying standard documentation, publishing, source components, or metainformation.
 
@@ -475,17 +481,27 @@ All uppercase block typenames are reserved for specifying standard documentation
 =SUBTITLE
 ```
 
-# Formatting codes
+# 格式化代码 / Formatting codes
+
+格式化代码提供了一种向文本中添加内联标记的方法。
 
 Formatting codes provide a way to add inline mark-up to a piece of text.
 
+所有 Pod6 格式化代码由一个大写字母组成，紧接着是一组单或双角括号；可以使用 Unicode 双角括号。
+
 All Pod6 formatting codes consist of a single capital letter followed immediately by a set of single or double angle brackets; Unicode double angle brackets may be used.
+
+格式化代码可以嵌套其他格式代码。
 
 Formatting codes may nest other formatting codes.
 
+可使用下列代码：**B**、**C**、**E**、**I**、**K**、**L**、**N**、**P**、**R**、**T**、**U**、**V**、**X** 和 **Z**。
+
 The following codes are available: **B**, **C**, **E**, **I**, **K**, **L**, **N**, **P**, **R**, **T**, **U**, **V**, **X**, and **Z**.
 
-## Bold
+## 粗体 / Bold
+
+格式化一段文本为粗体，可将文字括在 `B< >` 中。
 
 To format a text in bold enclose it in `B< >`
 
@@ -495,7 +511,9 @@ Raku is B<awesome>
 
 Raku is **awesome**
 
-## Italic
+## 斜体 / Italic
+
+格式化一段文本为斜体，可将文字括在 `I< >` 中。
 
 To format a text in italic enclose it in `I< >`
 
@@ -505,7 +523,9 @@ Raku is I<awesome>
 
 Raku is *awesome*
 
-## Underlined
+## 下划线 / Underlined
+
+在一段文本下划线，可将文字括在 `U< >` 中。
 
 To underline a text enclose it in `U< >`
 
@@ -513,7 +533,9 @@ To underline a text enclose it in `U< >`
 Raku is U<awesome>
 ```
 
-## Code
+## 代码 / Code
+
+将文本标记为代码，并完全照字面展示，将其放在 `C< >` 中。
 
 To flag text as code and treat it verbatim enclose it in `C< >`
 
@@ -522,11 +544,17 @@ C<my $var = 1; say $var;>
 my $var = 1; say $var;
 ```
 
-## Links
+## 链接 / Links
+
+将文本放在 `L< >` 中创建一个链接
 
 To create a link enclose it in `L< >`
 
+竖线（可选）将标签和目标分开。
+
 A vertical bar (optional) separates label and target.
+
+目标位置可以是一个 URL（第一个示例）或本地 Pod6 文档（第二个示例）。本地文件名相对于项目基础目录，而不是当前文档。
 
 The target location can be an URL (first example) or a local Pod6 document (second example). Local file names are relative to the base of the project, not the current document.
 
