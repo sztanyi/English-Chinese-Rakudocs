@@ -6,7 +6,7 @@ Raku 中的变量
 
 Variables in Raku
 
-变量名字以一种叫做标记的特殊字符开头，后面跟着叫 twigil 的特殊字符最后才是[识别符](https://docs.raku.org/language/syntax#Identifiers)，前面两个特殊符号都是可选的。变量是值或者[容器](https://docs.raku.org/language/containers)符号名称。定义变量或者给变量赋值会直接生成容器。
+变量名字以一种叫做标记的特殊字符开头，后面跟着叫 twigil 的特殊字符最后才是[标记符](https://docs.raku.org/language/syntax#Identifiers)，前面两个特殊符号都是可选的。变量是值或者[容器](https://docs.raku.org/language/containers)的符号名称。定义变量或者给变量赋值会直接生成容器。
 
 Variable names can start with or without a special character called a *sigil*, followed optionally by a second special character named *twigil* and then an [identifier](https://docs.raku.org/language/syntax#Identifiers). Variables are symbolic names for values or [containers](https://docs.raku.org/language/containers). Variable declarations or assignment of values may create a container on the fly.
 
@@ -99,7 +99,7 @@ Variable names can start with or without a special character called a *sigil*, 
 
 There are four sigils. The scalar-sigil `$`, the positional-sigil `@`, the associative-sigil `%` and the callable-sigil `&`.
 
-标记链接了语法，类型系统和[容器](https://docs.raku.org/language/containers)。这些标记为最常见的类型约束提供快捷方式，当声明变量以及为[字符串插值](https://docs.raku.org/language/quoting#Interpolation%3A_qq)充当标记时。[位置标记](https://docs.raku.org/language/containers#Flattening%2C_items_and_containers)和[关联标记](https://docs.raku.org/language/containers#Flattening%2C_items_and_containers)起到了类型约束的作用，使基础类型[下标](https://docs.raku.org/language/subscripts#Custom_types)需要知道分派给哪些方法。可调用标记对函数调用起到了同样的作用。可调用标记还会告诉编译器哪些括号可以省略。位置和关联签名也可以通过默认情况下展平来简化赋值。
+标记链接了语法、类型系统和[容器](https://docs.raku.org/language/containers)。这些标记为最常见的类型约束提供快捷方式，当声明变量以及为[字符串插值](https://docs.raku.org/language/quoting#Interpolation%3A_qq)充当标记时。[位置标记](https://docs.raku.org/language/containers#Flattening%2C_items_and_containers)和[关联标记](https://docs.raku.org/language/containers#Flattening%2C_items_and_containers)起到了类型约束的作用，使基础类型[下标](https://docs.raku.org/language/subscripts#Custom_types)需要知道分派给哪些方法。可调用标记对函数调用起到了同样的作用。可调用标记还会告诉编译器哪些括号可以省略。位置和关联签名也可以通过默认情况下展平来简化赋值。
 
 Sigils provide a link between syntax, the type system and [containers](https://docs.raku.org/language/containers). They provide a shortcut for the most common type constraints when declaring variables and serve as markers for [string interpolation](https://docs.raku.org/language/quoting#Interpolation%3A_qq). The [positional-sigil](https://docs.raku.org/language/containers#Flattening%2C_items_and_containers) and the [associative-sigil](https://docs.raku.org/language/containers#Flattening%2C_items_and_containers) provide type constraint that enforce a base type [subscripts](https://docs.raku.org/language/subscripts#Custom_types) require to know what methods to dispatch to. The [callable-sigil](https://docs.raku.org/language/containers#Callable_containers) does the same for function calls. The latter also tells the compiler where parentheses for calls can be omitted. The positional and associative-sigil also simplify assignment by flattening by default.
 
@@ -159,11 +159,11 @@ There are two types of variable assignment, *item assignment* and *list assig
 
 Item assignment places the value from the right-hand side into the variable (container) on the left.
 
-列表赋值将怎么做的选择权给了左边的变量。
+列表赋值将选择权给了左边的变量。
 
 List assignment leaves the choice of what to do to the variable on the left.
 
-例如，[列表](https://docs.raku.org/type/Array)变量（由 `@` 标记的）在列表赋值时首先将自己清空然后接受右边所有的值。
+例如，[Array](https://docs.raku.org/type/Array) 变量（由 `@` 标记的）在列表赋值时首先将自己清空然后接受右边所有的值。
 
 For example, [Array](https://docs.raku.org/type/Array) variables (`@` sigil) empty themselves on list assignment and then put all the values from the right-hand side into themselves.
 
@@ -188,7 +188,7 @@ say $baz.perl;          # OUTPUT: «$(11, 13)»
 
 Thus, the behavior of an assignment contained within a list assignment depends on the expression or declarator that contains it.
 
-例如，如果中间的赋值是声明语句，这时为单条目赋值，它比逗号和列表赋值有更高的优先级：
+例如，如果中间的赋值是声明符，这时为单条目赋值，它比逗号和列表赋值有更高的优先级：
 
 For instance, if the internal assignment is a declarator, item assignment is used, which has tighter precedence than both the comma and the list assignment:
 
@@ -199,7 +199,7 @@ say @array.perl;                # OUTPUT: «[42, "str"]» (
 say $num.perl;                  # OUTPUT: «42» (a Num)
 ```
 
-类似地，如果中间的的赋值是表达式，这个表达式用来初始化声明语句，赋值类型由中间表达式的上下文决定：
+类似地，如果中间的的赋值是一个用来初始化声明符的语句，赋值类型由中间表达式的上下文决定：
 
 Similarly, if the internal assignment is an expression that is being used as an initializer for a declarator, the context of the internal expression determines the assignment type:
 
@@ -230,7 +230,7 @@ say $num.perl;                # OUTPUT: «42»
 
 The assignment expression is parsed as `@array = (($num = 42), "str")`, because item assignment has tighter precedence than the comma.
 
-更多关于优先级的细节见[操作符](https://docs.raku.org/language/operators)。
+更多关于优先级的细节见[运算符](https://docs.raku.org/language/operators)。
 
 See [operators](https://docs.raku.org/language/operators) for more details on precedence.
 
@@ -290,7 +290,7 @@ Twigils influence the scoping of a variable; however, they have no influence ove
 | ^    | 自声明的正式的位置参数                |
 | :    | 自声明的正式的命名参数                |
 | =    | Pod 文档变量                          |
-| ~    | 分歧器在当前词法点上可见的子语言      |
+| ~    | 分析器器在当前词法点上可见的子语言      |
 
 | Twigil | Scope                                                   |
 | ------ | ------------------------------------------------------- |
@@ -312,9 +312,9 @@ Twigils influence the scoping of a variable; however, they have no influence ove
 
 This twigil is used for dynamic variables which are looked up through the caller's, not through the outer, scope. Look at the example below.
 
-注意：至今为止，如果你使用 rakudo perl6，下面的代码在 REPL 中无法运行。需要将代码拷贝粘贴至文件，然后运行这个文件。
+注意：至今为止，下面的代码在 REPL 中无法运行。需要将代码拷贝粘贴至文件，然后运行这个文件。
 
-*Note:* So far, if you use rakudo perl6, the example below cannot run correctly in the REPL. Please test it by copy-pasting it into a file, then run the file.
+*Note:* So far, the example below cannot run correctly in the REPL. Please test it by copy-pasting it into a file, then run the file.
 
 ```Raku
 my $lexical   = 1;
@@ -338,11 +338,11 @@ say-all();    # OUTPUT: 1, 10, 100
 say-all();  # OUTPUT: 1, 10, 101
 ```
 
-第一次运行 `&say-all` 会打印出 “`1, 10, 100`”，没有意外。第二次运行却打印出 “`1, 11, 101`”。这是因为 `$lexical` 不是在调用者作用域里面查值而是在 `&say-all` 被定义时的作用域里查值。那两个动态变量是在调用者作用域里查值，因此值分别为 `11` 和 `101`。第三次运行 `&say-all` 时 `$*dynamic1` 的值不再是 `11`，但 `$*dynamic2` 仍然是 `101`。 这是因为我们在代码块里声明了一个新的 `$*dynamic1` 变量而不是像 `$*dynamic2` 那样给旧变量赋值。
+第一次运行 `&say-all` 会打印出 “`1, 10, 100`”，意料之中。第二次运行却打印出 “`1, 11, 101`”。这是因为 `$lexical` 不是在调用者作用域里面查值而是在 `&say-all` 被定义时的作用域里查值。那两个动态变量是在调用者作用域里查值，因此值分别为 `11` 和 `101`。第三次运行 `&say-all` 时 `$*dynamic1` 的值不再是 `11`，但 `$*dynamic2` 仍然是 `101`。 这是因为我们在代码块里声明了一个新的 `$*dynamic1` 变量而不是像 `$*dynamic2` 那样给旧变量赋值。
 
 The first time `&say-all` is called, it prints "`1, 10, 100`" just as one would expect. The second time though, it prints "`1, 11, 101`". This is because `$lexical` isn't looked up in the caller's scope but in the scope `&say-all` was defined in. The two dynamic variables are looked up in the caller's scope and therefore have the values `11` and `101`. The third time `&say-all` is called `$*dynamic1` isn't `11`anymore, but `$*dynamic2` is still `101`. This stems from the fact that we declared a new dynamic variable `$*dynamic1` in the block and did not assign to the old variable as we did with `$*dynamic2`.
 
-动态变量与其他变量不同之处在于，引用一个没有声明的动态变量不是一个编译时错误而是一个运行时[错误](https://docs.raku.org/type/Failure)。因此动态变量可以不用声明便使用，只要在使用前检查了是否定义或者在布尔上下文中被用到：
+动态变量与其他变量不同之处在于，引用一个没有声明的动态变量不是一个编译时错误而是一个运行时 [failure](https://docs.raku.org/type/Failure)。因此动态变量可以不用声明便使用，只要在使用前检查了是否定义或者在布尔上下文中被用到：
 
 The dynamic variables differ from other variable types in that referring to an undeclared dynamic variable is not a compile time error but a runtime [failure](https://docs.raku.org/type/Failure), so a dynamic variable can be used undeclared as long as it's checked for definedness or used in a boolean context before using it for anything else:
 
@@ -365,7 +365,7 @@ Dynamic variables can have lexical scope when declared with `my` or package scop
 <a id="-%E5%8F%B7-1"></a>
 ## `?` 号
 
-编译时变量使用 `?` 号。这个变量就会被编译器知晓，并且在变量编译进去后不能修改。一个常见的例子是：
+编译时变量使用 `?` 号。这个变量就会被编译器知晓，并且在变量编译后不能修改。一个常见的例子是：
 
 Compile-time variables may be addressed via the `?` twigil. They are known to the compiler and may not be modified after being compiled in. A popular example for this is:
 
@@ -457,7 +457,7 @@ say reduce { $^b - $^a }, 0, |@powers-of-three;
 
 has two formal parameters, namely `$a` and `$b`. Note that even though `$^b` appears before `$^a` in the code, `$^a` is still the first formal parameter to that block. This is because the placeholder variables are sorted in Unicode order. If you have self-declared a parameter using `$^a` once, you may refer to it using only `$a` thereafter.
 
-尽管用任意合法的标记符作为占位符变量是可以的，还是建议使用短名或者容易理解的名称，以免给读者带来不必要的惊喜。
+尽管用任意合法的标记符作为占位符变量是可以的，还是建议使用短名或者容易理解的名称，以免给读者带来不必要的惊吓。
 
 Although it is possible to use nearly any valid identifier as a placeholder variable, it is recommended to use short names or ones that can be trivially understood in the correct order, to avoid surprise on behalf of the reader.
 
@@ -513,7 +513,7 @@ The `=` twigil is used to access Pod variables. Every Pod block in the current
 
 You may access the Pod tree which contains all Pod structures as a hierarchical data structure through `$=pod`.
 
-注意所有的 `$=someBlockName` 支持 `Positional` 以及 `Associative` 角色。
+注意, 所有的 `$=someBlockName` 支持 `Positional` 以及 `Associative` 角色。
 
 Note that all those `$=someBlockName` support the `Positional` and the `Associative` roles.
 

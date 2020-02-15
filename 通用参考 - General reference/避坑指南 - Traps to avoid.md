@@ -501,7 +501,7 @@ say @menu.contains('er fr');                # True!
 say @menu.contains(<es mi>);                # True! 
 ```
 
-如果你实际上想检查是否存在一个元素，那么对单个元素使用 [(cont)](https://docs.raku.org/routine/(elem),%20infix%20%E2%88%88) 运算符，对多个元素使用 [superset](https://docs.raku.org/language/operators#infix_(%3E=),_infix_%E2%8A%87) 和 [strict superset](https://docs.raku.org/language/operators#infix_(%3E),_infix_%E2%8A%83) 运算符。
+如果你实际上想检查某个元素是否存在，那么对单个元素使用 [(cont)](https://docs.raku.org/routine/(elem),%20infix%20%E2%88%88) 运算符，对多个元素使用 [superset](https://docs.raku.org/language/operators#infix_(%3E=),_infix_%E2%8A%87) 和 [strict superset](https://docs.raku.org/language/operators#infix_(%3E),_infix_%E2%8A%83) 运算符。
 
 If you actually want to check for the presence of an element, use the [(cont)](https://docs.raku.org/routine/(elem),%20infix%20%E2%88%88) operator for single elements, and the [superset](https://docs.raku.org/language/operators#infix_(%3E=),_infix_%E2%8A%87) and [strict superset](https://docs.raku.org/language/operators#infix_(%3E),_infix_%E2%8A%83) operators for multiple elements.
 
