@@ -22,12 +22,36 @@ A very simple Pod6 document
 =end pod
 ```
 
+<!-- MarkdownTOC -->
+
+- [代码块结构 / Block structure](#%E4%BB%A3%E7%A0%81%E5%9D%97%E7%BB%93%E6%9E%84--block-structure)
+  - [分隔块 / Delimited blocks](#%E5%88%86%E9%9A%94%E5%9D%97--delimited-blocks)
+    - [配置信息 / Configuration information](#%E9%85%8D%E7%BD%AE%E4%BF%A1%E6%81%AF--configuration-information)
+  - [段落块 / Paragraph blocks](#%E6%AE%B5%E8%90%BD%E5%9D%97--paragraph-blocks)
+  - [缩写块 / Abbreviated blocks](#%E7%BC%A9%E5%86%99%E5%9D%97--abbreviated-blocks)
+  - [声明块 / Declarator blocks](#%E5%A3%B0%E6%98%8E%E5%9D%97--declarator-blocks)
+- [块类型 / Block types](#%E5%9D%97%E7%B1%BB%E5%9E%8B--block-types)
+  - [标题 / Headings](#%E6%A0%87%E9%A2%98--headings)
+  - [普通段落 / Ordinary paragraphs](#%E6%99%AE%E9%80%9A%E6%AE%B5%E8%90%BD--ordinary-paragraphs)
+  - [代码块 / Code blocks](#%E4%BB%A3%E7%A0%81%E5%9D%97--code-blocks)
+  - [输入输出块 - I/O blocks](#%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E5%9D%97---io-blocks)
+  - [列表 / Lists](#%E5%88%97%E8%A1%A8--lists)
+    - [无序列表 / Unordered lists](#%E6%97%A0%E5%BA%8F%E5%88%97%E8%A1%A8--unordered-lists)
+    - [定义列表 / Definition lists](#%E5%AE%9A%E4%B9%89%E5%88%97%E8%A1%A8--definition-lists)
+    - [多层列表 / Multi-level lists](#%E5%A4%9A%E5%B1%82%E5%88%97%E8%A1%A8--multi-level-lists)
+    - [多段落列表 / Multi-paragraph lists](#%E5%A4%9A%E6%AE%B5%E8%90%BD%E5%88%97%E8%A1%A8--multi-paragraph-lists)
+
+<!-- /MarkdownTOC -->
+
+
+<a id="%E4%BB%A3%E7%A0%81%E5%9D%97%E7%BB%93%E6%9E%84--block-structure"></a>
 # 代码块结构 / Block structure
 
 一个 Pod6 文档可以由多个 Pod6 块组成。定义块有四种方法：分隔、段落、缩写和声明；前三种方法产生相同的结果，但第四种方法不同。您可以使用哪种形式最方便您的特定文档任务。
 
 A Pod6 document may consist of multiple Pod6 blocks. There are four ways to define a block: delimited, paragraph, abbreviated, and declarator; the first three yield the same result but the fourth differs. You can use whichever form is most convenient for your particular documentation task.
 
+<a id="%E5%88%86%E9%9A%94%E5%9D%97--delimited-blocks"></a>
 ## 分隔块 / Delimited blocks
 
 分隔块以 `=begin` 和 `=end` 标记为界，两者后面都有一个有效的 Raku 标识符，即块的 `typename`。保留完全小写（例如：`=begin head1`）或完全大写（例如：`=begin SYNOPSIS`）的类型名称。
@@ -40,6 +64,7 @@ Top Level Heading
 =end head1
 ```
 
+<a id="%E9%85%8D%E7%BD%AE%E4%BF%A1%E6%81%AF--configuration-information"></a>
 ### 配置信息 / Configuration information
 
 在类型名称之后，`=begin` 标记行的其余部分被视为块的配置信息。这些信息被不同类型的块以不同的方式使用，但总是使用 Raku 风格的选项键值对指定。即：
@@ -76,6 +101,7 @@ All option keys and values must, of course, be constants since Pod6 is a specifi
 
 The configuration section may be extended over subsequent lines by starting those lines with an `=` in the first (virtual) column followed by a whitespace character. [[1]](https://docs.raku.org/language/pod#fn-1)
 
+<a id="%E6%AE%B5%E8%90%BD%E5%9D%97--paragraph-blocks"></a>
 ## 段落块 / Paragraph blocks
 
 段落块以 `=for` 标记开头，以下一个 Pod6 指令或第一空行结束。`=for` 标记后面是“块的类型名称”，另外还有上文所述分隔块中的任何配置数据。
@@ -87,6 +113,7 @@ Paragraph blocks begin by a `=for` marker and end by the next Pod6 directive or 
 Top Level Heading
 ```
 
+<a id="%E7%BC%A9%E5%86%99%E5%9D%97--abbreviated-blocks"></a>
 ## 缩写块 / Abbreviated blocks
 
 缩写块的开头是一个 `'='` 符号，紧接着是块的类型名称。以下所有数据都是块内容的一部分，因此无法为*缩写*块指定配置数据。块结束于下一个 Pod6 指令或第一个空行。
@@ -97,6 +124,7 @@ Abbreviated blocks begin by an `'='` sign, which is followed immediately by the 
 =head1 Top level heading 
 ```
 
+<a id="%E5%A3%B0%E6%98%8E%E5%9D%97--declarator-blocks"></a>
 ## 声明块 / Declarator blocks
 
 声明块与其他块不同之处在于没有特定类型，而是附加到某些源代码中。
@@ -161,12 +189,14 @@ sub search-in-seq( Int $end, Int $number ) {
 
 By using a matched pair of parenthesis constructs such as `()` or `«»` the comments can extend multiple lines. This format, however, will not translate to a multi-line display by `raku -doc`.
 
+<a id="%E5%9D%97%E7%B1%BB%E5%9E%8B--block-types"></a>
 # 块类型 / Block types
 
 Pod6 提供广泛的标准块类型。
 
 Pod6 offers a wide range of standard block types.
 
+<a id="%E6%A0%87%E9%A2%98--headings"></a>
 ## 标题 / Headings
 
 标题可以使用 `=headN` 定义，其中 N 大于零（例如，`=head1`、`=head2`。。。）。
@@ -181,6 +211,7 @@ Headings can be defined using `=headN`, where N is greater than zero (e.g., `=he
 =head3 A third level heading 
 ```
 
+<a id="%E6%99%AE%E9%80%9A%E6%AE%B5%E8%90%BD--ordinary-paragraphs"></a>
 ## 普通段落 / Ordinary paragraphs
 
 一个普通段落由文本组成，这些文本将在当前嵌套级别被格式化为文档，空格被压缩，行被填充，以及任何特殊的内联标记应用。
@@ -253,6 +284,7 @@ which continues until an...
 
 As demonstrated by the previous example, within a delimited `=begin para` and `=end para` block, any blank lines are preserved.
 
+<a id="%E4%BB%A3%E7%A0%81%E5%9D%97--code-blocks"></a>
 ## 代码块 / Code blocks
 
 代码块用于指定源代码，这些代码应该在没有重新说明理由、没有空格挤压和没有识别任何内联格式代码的情况下呈现。通常，这些块用于显示代码、标记或其他文本规范的示例，并使用固定宽度字体进行呈现。
@@ -285,6 +317,7 @@ Code blocks can also be explicitly defined by enclosing them in `=begin code` an
     =end code
 ```
 
+<a id="%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E5%9D%97---io-blocks"></a>
 ## 输入输出块 - I/O blocks
 
 Pod6 提供了用于指定程序输入和输出的块。
@@ -299,8 +332,10 @@ The `=input` block is used to specify pre-formatted keyboard input, which should
 
 The `=output` block is used to specify pre-formatted terminal or file output, which should also be rendered without re-justification or whitespace-squeezing.
 
+<a id="%E5%88%97%E8%A1%A8--lists"></a>
 ## 列表 / Lists
 
+<a id="%E6%97%A0%E5%BA%8F%E5%88%97%E8%A1%A8--unordered-lists"></a>
 ### 无序列表 / Unordered lists
 
 Pod6 中的列表被指定为一系列 `=item` 块。
@@ -327,6 +362,7 @@ The three suspects are:
 - Sleepy
 - Grumpy
 
+<a id="%E5%AE%9A%E4%B9%89%E5%88%97%E8%A1%A8--definition-lists"></a>
 ### 定义列表 / Definition lists
 
 定义术语或命令的列表使用 `=defn`，相当于 HTML中 的 `DL` 列表
@@ -353,6 +389,7 @@ will be rendered as
 
   When you're not happy.
 
+<a id="%E5%A4%9A%E5%B1%82%E5%88%97%E8%A1%A8--multi-level-lists"></a>
 ### 多层列表 / Multi-level lists
 
 列表可能是多层的，每一层的条目使用 `=item1`、`=item2`、`=item3` 等块指定。
@@ -391,9 +428,8 @@ For example:
   - Gas
 ```
 
+<a id="%E5%A4%9A%E6%AE%B5%E8%90%BD%E5%88%97%E8%A1%A8--multi-paragraph-lists"></a>
 ### 多段落列表 / Multi-paragraph lists
-
-### 多段列表 / Multi-paragraph lists
 
 使用 `=item` 块的分隔形式（`=begin item` 和 `=end item`），我们可以指定包含多个段落的条目。
 
@@ -585,6 +621,8 @@ Structure [/language/about#Structure](https://docs.raku.org/language/about#Struc
 
 [Structure](https://docs.raku.org/language/about#Structure)
 
+为同一文件中的一个章节创建一个链接：
+
 To create a link to a section in the same document:
 
 ```Raku
@@ -596,13 +634,21 @@ Comments [Comments](https://docs.raku.org/language/pod#Comments)
 
 [Comments](https://docs.raku.org/language/pod#Comments)
 
-## Placement links
+## 位置链接 / Placement links
+
+此代码不是在 `Pod::To::HTML` 中实现的，而是在 `Pod::To::BigPage` 中部分实现的。
 
 This code is not implemented in `Pod::To::HTML`, but is partially implemented in `Pod::To::BigPage`.
 
+第二类链接 — `P<>` 或**位置链接** — 的工作方向相反。它不是将焦点指向另一个文档，而是允许您将另一个文档的内容吸收到自己的文档中。
+
 A second kind of link — the `P<>` or **placement link** — works in the opposite direction. Instead of directing focus out to another document, it allows you to assimilate the contents of another document into your own.
 
+换句话说，`P<>` 格式化里放置了一个 URI，并（在可能的情况下）插入相应文档的内容，以取代代码本身。
+
 In other words, the `P<>` formatting code takes a URI and (where possible) inserts the contents of the corresponding document inline in place of the code itself.
+
+`P<>` 代码可以方便地将文档的标准元素分解成可重用的组件，然后直接合并到多个文档中。例如：
 
 `P<>` codes are handy for breaking out standard elements of your documentation set into reusable components that can then be incorporated directly into multiple documents. For example:
 
@@ -614,8 +660,11 @@ P<file:/shared/docs/std_copyright.pod>
 P<http://www.MegaGigaTeraPetaCorp.com/std/disclaimer.txt>
 ```
 
+可能输出：
+
 might produce:
 
+```
 **Copyright**
 
 This document is copyright (c) MegaGigaTeraPetaCorp, 2006. All rights reserved.
@@ -623,6 +672,9 @@ This document is copyright (c) MegaGigaTeraPetaCorp, 2006. All rights reserved.
 **Disclaimer**
 
 ABSOLUTELY NO WARRANTY IS IMPLIED. NOT EVEN OF ANY KIND. WE HAVE SOLD YOU THIS SOFTWARE WITH NO HINT OF A SUGGESTION THAT IT IS EITHER USEFUL OR USABLE. AS FOR GUARANTEES OF CORRECTNESS...DON'T MAKE US LAUGH! AT SOME TIME IN THE FUTURE WE MIGHT DEIGN TO SELL YOU UPGRADES THAT PURPORT TO ADDRESS SOME OF THE APPLICATION'S MANY DEFICIENCIES, BUT NO PROMISES THERE EITHER. WE HAVE MORE LAWYERS ON STAFF THAN YOU HAVE TOTAL EMPLOYEES, SO DON'T EVEN *THINK* ABOUT SUING US. HAVE A NICE DAY.
+```
+
+如果渲染器无法为位置链接找到或访问外部数据源，则必须发出警告并以某种形式直接呈现 URI，可能是作为向外链接。例如：
 
 If a renderer cannot find or access the external data source for a placement link, it must issue a warning and render the URI directly in some form, possibly as an outwards link. For example:
 
@@ -634,11 +686,17 @@ See: `file:/shared/docs/std_copyright.pod`
 
 See: `http://www.MegaGigaTeraPetaCorp.com/std/disclaimer.txt`
 
+您可以在位置链接中使用以下任何 URI 表单（参见[链接](https://docs.raku.org/language/pod#Links)）。
+
 You can use any of the following URI forms (see [Links](https://docs.raku.org/language/pod#Links)) in a placement link.
 
-## Comments
+## 注释 / Comments
+
+注释是不会被渲染的文本。
 
 A comment is text that is never rendered.
+
+要创建注释，请将其放置在 `Z< >` 中。
 
 To create a comment enclose it in `Z< >`
 
@@ -650,7 +708,11 @@ Raku is awesome
 
 ## Notes
 
+笔记会被渲染为脚注。
+
 Notes are rendered as footnotes.
+
+要创建笔记，请将其放置在 `N< >` 中。
 
 To create a note enclose it in `N< >`
 
@@ -658,7 +720,9 @@ To create a note enclose it in `N< >`
 Raku is multi-paradigmatic N<Supporting Procedural, Object Oriented, and Functional programming>
 ```
 
-## Keyboard input
+## 键盘输入 / Keyboard input
+
+要标记文本为键盘输入，请将其放置在 `K< >` 中。
 
 To flag text as keyboard input enclose it in `K< >`
 
@@ -666,11 +730,17 @@ To flag text as keyboard input enclose it in `K< >`
 Enter your name K<John Doe>
 ```
 
-## Replaceable
+## 可替换项 / Replaceable
+
+`R<>` 格式化代码指定所包含的文本是一个**可替换项**、占位符或元句法变量。它用于指示句法或规范的组件，这些组件最终应该被实际值替换。例如：
 
 The `R<>` formatting code specifies that the contained text is a **replaceable item**, a placeholder, or a metasyntactic variable. It is used to indicate a component of a syntax or specification that should eventually be replaced by an actual value. For example:
 
+```
 The basic `ln` command is: `ln` source_file target_file
+```
+
+或者：
 
 or:
 
@@ -683,7 +753,9 @@ Then enter your details at the prompt:
     Pass: your 36-letter password
 ```
 
-## Terminal output
+## 终端输出 / Terminal output
+
+要标记文本为终端输出，请将其放置在 `T< >` 中。
 
 To flag text as terminal output enclose it in `T< >`
 
@@ -691,9 +763,13 @@ To flag text as terminal output enclose it in `T< >`
 Hello T<John Doe>
 ```
 
-## Unicode
+## 万国码 / Unicode
+
+若要在 Pod6 文档中包含 Unicode 代码点或 HTML5 字符引用，请将它们封装在 `E< >` 中。
 
 To include Unicode code points or HTML5 character references in a Pod6 document, enclose them in `E< >`
+
+`E< >` 可以包含一个数字，该数字被视为所需码点的十进制 Unicode 值。它还可以将显式二进制、八进制、十进制或十六进制数字封装起来，使用 Raku 符号表示显式基于的数字。
 
 `E< >` can enclose a number, which is treated as the decimal Unicode value for the desired code point. It can also enclose explicit binary, octal, decimal, or hexadecimal numbers using the Raku notations for explicitly based numbers.
 
@@ -711,11 +787,17 @@ Raku makes considerable use of the E<0d171> and E<0d187> characters.
 Raku makes considerable use of the E<0xAB> and E<0xBB> characters.
 ```
 
+Raku 相当多地使用了 « 和 » 字符。
+
 Raku makes considerable use of the « and » characters.
 
-## Verbatim text
+## 逐字文本 / Verbatim text
+
+此代码不是由 `Pod::To::HTML` 实现的，而是在 `Pod::To::BigPage` 中实现的。
 
 This code is not implemented by `Pod::To::HTML`, but is implemented in `Pod::To::BigPage`.
+
+`V<>` 格式化代码将其全部内容视为**逐字**，而忽略了其中的每一个明显的格式代码。例如：
 
 The `V<>` formatting code treats its entire contents as being **verbatim**, disregarding every apparent formatting code within it. For example:
 
@@ -724,11 +806,17 @@ The B<V< V<> >> formatting code disarms other codes
 such as V< I<>, C<>, B<>, and M<> >.
 ```
 
+但请注意，`V<>` 代码只改变其内容的解析方式，*而不是*它们的呈现方式。也就是说，内容仍然像纯文本一样被包装和格式化，围绕 `V<>` 代码的任何格式代码的影响仍然适用于其内容。例如，前一个例子呈现为：
+
 Note, however that the `V<>` code only changes the way its contents are parsed, *not* the way they are rendered. That is, the contents are still wrapped and formatted like plain text, and the effects of any formatting codes surrounding the `V<>` code are still applied to its contents. For example the previous example is rendered as:
 
+```
 The **V<>** formatting code disarms other codes such as I<>, C<>, B<>, and M<> .
+```
 
-## Indexing terms
+## 索引术语 / Indexing terms
+
+在 `X<>` 代码中包含的任何内容都是**索引条目**。代码的内容都被格式化到文档中，并用作（不区分大小写的）索引项：
 
 Anything enclosed in an `X<>` code is an **index entry**. The contents of the code are both formatted into the document and used as the (case-insensitive) index entry:
 
@@ -738,6 +826,8 @@ starting with 0. A X<hash> is an unordered collection of scalar
 values indexed by their associated string key.
 ```
 
+您可以指定一个索引条目，其中索引文本和索引条目是不同的，方法是用竖线分隔两者：
+
 You can specify an index entry in which the indexed text and the index entry are different, by separating the two with a vertical bar:
 
 ```Raku
@@ -746,7 +836,11 @@ starting with 0. A X<hash|hashes> is an unordered collection of
 scalar values indexed by their associated string key.
 ```
 
+在两部分形式中，索引条目位于条后面，并且区分大小写。
+
 In the two-part form, the index entry comes after the bar and is case-sensitive.
+
+可以通过用逗号分隔索引级别来指定分级索引条目：
 
 You can specify hierarchical index entries by separating indexing levels with commas:
 
@@ -757,6 +851,8 @@ is an unordered collection of scalar values indexed by their
 associated string key.
 ```
 
+您可以为单个索引文本指定两个或多个条目，方法是用分号分隔条目：
+
 You can specify two or more entries for a single indexed text, by separating the entries with semicolons:
 
 ```Raku
@@ -765,6 +861,8 @@ is an unordered collection of scalar values indexed by their
 associated string key.
 ```
 
+索引文本可以为空，创建“零宽度”索引条目：
+
 The indexed text can be empty, creating a "zero-width" index entry:
 
 ```Raku
@@ -772,13 +870,19 @@ X<|puns, deliberate>This is called the "Orcish Maneuver"
 because you "OR" the "cache".
 ```
 
-# Rendering Pod
+# Pod 格式转换 / Rendering Pod
 
 ## HTML
 
+为了将 Pod 转成 HTML，您需要 [Pod::To::HTML 模组](https://github.com/perl6/Pod-To-HTML).
+
 In order to generate HTML from Pod, you need the [Pod::To::HTML module](https://github.com/perl6/Pod-To-HTML).
 
+如果尚未安装，请运行以下命令进行安装：`zef install Pod::To::HTML`
+
 If it is not already installed, install it by running the following command: `zef install Pod::To::HTML`
+
+安装完毕后，在终端中运行以下命令：
 
 Once installed, run the following command in the terminal:
 
@@ -788,9 +892,15 @@ perl6 --doc=HTML input.pod6 > output.html
 
 ## Markdown
 
+为了将 Pod 转成 HTML，您需要 [Pod::To::Markdown 模组](https://github.com/softmoth/perl6-pod-to-markdown).
+
 In order to generate Markdown from Pod, you need the [Pod::To::Markdown module](https://github.com/softmoth/perl6-pod-to-markdown).
 
+如果尚未安装，请运行以下命令安装它：`zef install Pod::To::Markdown`
+
 If it is not already installed, install it by running the following command: `zef install Pod::To::Markdown`
+
+安装完毕后，在终端中运行以下命令：
 
 Once installed, run the following command in the terminal:
 
@@ -800,7 +910,11 @@ perl6 --doc=Markdown input.pod6 > output.md
 
 ## Text
 
+为了将 Pod 转成文本，您可以使用默认的 `Pod::To::Text` 模块。
+
 In order to generate text from Pod, you can use the default `Pod::To::Text` module.
+
+使用终端，运行以下命令：
 
 Using the terminal, run the following command:
 
@@ -808,11 +922,15 @@ Using the terminal, run the following command:
 perl6 --doc=Text input.pod6 > output.txt
 ```
 
+您可以省略 `=Text`：
+
 You can omit the `=Text` portion:
 
 ```Raku
 perl6 --doc input.pod6 > output.txt
 ```
+
+您甚至可以在程序中直接嵌入 Pod6，并在程序中添加传统的 Unix 命令行 “--man” 选项，其多个主程序如下：
 
 You can even embed Pod6 directly in your program and add the traditional Unix command line "--man" option to your program with a multi MAIN subroutine like this:
 
@@ -822,13 +940,23 @@ multi MAIN(Bool :$man) {
 }
 ```
 
+现在 `myprogram --man` 将输出您的 Pod6 呈现为一个帮助手册页面。
+
 Now `myprogram --man` will output your Pod6 rendered as a man page.
 
-# Accessing Pod
+# 访问 Pod / Accessing Pod
+
+为了从 Raku 程序中访问 Pod6 文档，必须使用[变量章节](https://docs.raku.org/language/variables#The_=_twigil)文档中记录的特殊 `=` 符号。
 
 In order to access Pod6 documentation from within a Raku program the special `=` twigil, as documented in the [variables section](https://docs.raku.org/language/variables#The_=_twigil), must be used.
 
+该https://docs.raku.org/type/Pod：：Block提供了对Pod6结构的内省，提供了一个[Pod：Block]（https://docs.raku.org/type/Pod：：Block）树根，从中可以访问Pod6文档的整个结构。
+
+`=` 符号提供了对 Pod6 结构的内省，提供了一个 [Pod::Block](https://docs.raku.org/type/Pod::Block) 树根，从那可以访问整个 Pod6 文档的结构。
+
 The `=` twigil provides the introspection over the Pod6 structure, providing a [Pod::Block](https://docs.raku.org/type/Pod::Block) tree root from which it is possible to access the whole structure of the Pod6 document.
+
+作为一个例子，下面的代码回顾了它自己的 Pod6 文档：
 
 As an example, the following piece of code introspects its own Pod6 documentation:
 
@@ -852,6 +980,8 @@ for $=pod -> $pod-item {
 }
 ```
 
+生产下列输出：
+
 producing the following output:
 
 ```Raku
@@ -861,4 +991,6 @@ Pod::Heading.new(level => 2, config => {}, contents => [Pod::Block::Para.new(con
 Pod::Block::Para.new(config => {}, contents => ["Here some text for the subsection."]);
 ```
 
-[[↑]](https://docs.raku.org/language/pod#fn-ref-1) This feature is not yet completely implemented. All configuration information currently must be provided on the same line as the `=begin` marker line or `=for name` for paragraph blocks.
+[[1]](https://docs.raku.org/language/pod#fn-ref-1)这个特性还没有完全实现。当前的所有配置信息必须与标记行的 `=begin` 或段落块的 `=forname` 在同一行上提供。
+
+[[1]](https://docs.raku.org/language/pod#fn-ref-1) This feature is not yet completely implemented. All configuration information currently must be provided on the same line as the `=begin` marker line or `=for name` for paragraph blocks.
