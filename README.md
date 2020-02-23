@@ -63,6 +63,7 @@ IT 类翻译往往中文太生硬，英文太难懂。中英对照更方便也�
     - [哈希和映射 - Hashes and maps](https://github.com/sztanyi/English-Chinese-Rakudocs/blob/master/%E5%9F%BA%E7%A1%80%E4%B8%BB%E9%A2%98%20-%20Fundamental%20topics/%E5%93%88%E5%B8%8C%E5%92%8C%E6%98%A0%E5%B0%84%20-%20Hashes%20and%20maps.md)
 - [通用参考 - General reference](https://github.com/sztanyi/English-Chinese-Rakudocs/tree/master/%E9%80%9A%E7%94%A8%E5%8F%82%E8%80%83%20-%20General%20reference)
     - [开字素 - Opener graphemes](https://github.com/sztanyi/English-Chinese-Rakudocs/blob/master/%E9%80%9A%E7%94%A8%E5%8F%82%E8%80%83%20-%20General%20reference/%E5%BC%80%E5%AD%97%E7%B4%A0%20-%20Opener%20graphemes.md)
+    - [关于文档 - About the docs](https://github.com/sztanyi/English-Chinese-Rakudocs/blob/master/%E9%80%9A%E7%94%A8%E5%8F%82%E8%80%83%20-%20General%20reference/%E5%85%B3%E4%BA%8E%E6%96%87%E6%A1%A3%20-%20About%20the%20docs.md)
     - [避坑指南 - Traps to avoid](https://github.com/sztanyi/English-Chinese-Rakudocs/blob/master/%E9%80%9A%E7%94%A8%E5%8F%82%E8%80%83%20-%20General%20reference/%E9%81%BF%E5%9D%91%E6%8C%87%E5%8D%97%20-%20Traps%20to%20avoid.md)
     - [Pod6](https://github.com/sztanyi/English-Chinese-Rakudocs/blob/master/%E9%80%9A%E7%94%A8%E5%8F%82%E8%80%83%20-%20General%20reference/Pod6.md)
 - [类型 - Type](https://github.com/sztanyi/English-Chinese-Rakudocs/tree/master/%E7%B1%BB%E5%9E%8B%20-%20Type)
