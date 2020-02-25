@@ -292,7 +292,7 @@ Variables are discussed in the [variable language docs](https://docs.raku.org/la
 <a id="%E5%B8%B8%E9%87%8F--constants"></a>
 # 常量 / Constants
 
-常量类似于[变量](https://docs.raku.org/language/variables)，没有[容器](https://docs.raku.org/language/containers)，因此不能绑定。然而，它们的初始化式在[BEGIN]（https://docs.raku.org/syntax/BEGIN）时间进行评估：
+常量类似于[变量](https://docs.raku.org/language/variables)，没有[容器](https://docs.raku.org/language/containers)，因此不能绑定。然而，它们的初始化式在 [BEGIN]（https://docs.raku.org/syntax/BEGIN）时进行求值：
 
 Constants are similar to [variables](https://docs.raku.org/language/variables) without a [container](https://docs.raku.org/language/containers), and thus cannot be rebound. However, their initializers are evaluated at [BEGIN](https://docs.raku.org/syntax/BEGIN) time:
 
@@ -347,6 +347,8 @@ Int constant bar = 42;
 our Int constant bar = 42;
 ```
 
+与[变量](https://docs.raku.org/language/variables)不同，你不能在声明带 `@`、 `%` 和 `&` 标记的常量时指定类型：
+
 Unlike [variables](https://docs.raku.org/language/variables), you cannot parameterize `@`-, `%`-, and `&`-sigiled constants by specifying the parameterization type in the declarator itself:
 
 ```Raku
@@ -357,7 +359,11 @@ our Int constant @foo = 42;
 constant @foo = Array[Int].new: 42;
 ```
 
+限制的原因是，带有 `@` 和 `%` 标记的常量默认为 [List](https://docs.raku.org/type/List) 和 [Map](https://docs.raku.org/type/Map) 类型，不支持参数形式。为了保持事物的简单性和一致性，参数形式指定类型在这些构造中被禁止。
+
 The reason for the restriction is that constants with `@` and `%` sigils default to [List](https://docs.raku.org/type/List) and [Map](https://docs.raku.org/type/Map) types, which cannot be parameterized. To keep things simple and consistent, parameterization was simply disallowed in these constructs.
+
+带 `@`、 `%` 和 `&` 标记的常量分别为 [Positional](https://docs.raku.org/type/Positional)、 [Associative](https://docs.raku.org/type/Associative) 和 [Callable](https://docs.raku.org/type/Callable) 角色指定给定值的隐含类型检查。带 `@` 标记的常量以及在 `6.d` 版本中带 `%` 标记的常量-如果它无法通过隐含的类型检查，则执行自动强制类型转换。
 
 The `@`-, `%`-, and `&`-sigiled constants specify implied typecheck of the given value for [Positional](https://docs.raku.org/type/Positional), [Associative](https://docs.raku.org/type/Associative), and [Callable](https://docs.raku.org/type/Callable) roles respectively. The `@`-sigiled constants—and as of `6.d` language version, the `%`-sigiled constants as well—perform auto-coercion of the value if it does not pass the implied typecheck. The `@`-sigiled constants will coerce using method [cache](https://docs.raku.org/routine/cache) and `%`-sigiled constants coerce using method [Map](https://docs.raku.org/type/Map).
 
@@ -378,6 +384,8 @@ constant %bar = {:10foo, :72bar};
 constant %baz = :72baz;
 %baz.perl.say; # OUTPUT: «:baz(72)» 
 ```
+
+出于方便和一致性的原因，您可以使用[绑定运算符(`:=`)](https://docs.raku.org/routine/:=)而不是赋值运算符，在无标记的常量名称之前使用反斜杠（与[无标记变量](https://docs.raku.org/language/variables#Sigilless_variables)相同），甚至可以完全省略常量名称来得到匿名常量。由于您不能引用匿名实体，因此您最好使用 [`BEGIN`相位器](https://docs.raku.org/language/phasers#BEGIN)，这样更清晰。
 
 For convenience and consistency reasons, you can use the [binding operator (`:=`)](https://docs.raku.org/routine/:=) instead of the assignment operator, use backslash before sigilless name of the constant variable (same as with [sigilless variables](https://docs.raku.org/language/variables#Sigilless_variables)), and even omit the name of the constant entirely to have an anonymous constant. Since you can't refer to anonymous entities, you may be better off using a [`BEGIN` phaser](https://docs.raku.org/language/phasers#BEGIN) instead, for clarity.
 
