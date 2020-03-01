@@ -143,33 +143,47 @@ So `6.c-errata` is a released language version we don't change other than to fix
 
 Yes, see [glossary](https://docs.raku.org/language/glossary).
 
-## I'm a Perl 5 programmer. Where is a list of differences between Perl 5 and Raku?
+## 我是 Perl 5 程序员。哪里有 Perl 5 与 Raku 的不同点的清单？ / I'm a Perl 5 programmer. Where is a list of differences between Perl 5 and Raku?
+
+在[文档的语言部分](https://docs.raku.org/language)中有几个 *Perl 5 到 Raku* 指南，其中最值得注意的是[概述](https://docs.raku.org/language/5to6-nutshell)。
 
 There are several *Perl 5 to Raku* guides in the [Language section of the documentation](https://docs.raku.org/language), most notable of which is the [Overview](https://docs.raku.org/language/5to6-nutshell).
 
-## I'm a Ruby programmer looking for quickstart type docs?
+## I'm a Ruby programmer looking for quickstart type docs? / 我是一个 Ruby 程序员在寻找快速启动类型的文档
+
+请参阅 [rb-nutshell](https://docs.raku.org/language/rb-nutshell) 指南。
 
 See the [rb-nutshell](https://docs.raku.org/language/rb-nutshell) guide.
 
-# Modules
+# 模组 / Modules
 
-## Is there a CPAN (repository of third party library modules) for Raku?
+## 是否有一个 CPAN（第三方库模块存储库）供 Raku 使用？ / Is there a CPAN (repository of third party library modules) for Raku?
+
+是的，它和 Perl5 是一个 [CPAN](https://cpan.org/) ！唯一的区别是当使用 [PAUSE](https://pause.perl.org/) 上传模块时，上传的模块显示在 [modules.raku.org](https://modules.raku.org/) 上，而不是 [MetaCPAN](https://metacpan.org/)。[`App::Mi6` 工具](https://modules.raku.org/l/App::Mi6)可以简化上传过程.[`zef` 模块安装程序](https://github.com/ugexe/zef)自动检查 CPAN 上一个模块的最新版本以及我们的[基于 GitHub 的生态系统](https://github.com/perl6/ecosystem/)。
 
 Yes, it's the same [CPAN](https://cpan.org/) as for Perl 5! The only difference is when using [PAUSE](https://pause.perl.org/) to upload the module, the uploaded modules shows up on [modules.raku.org](https://modules.raku.org/) instead of [MetaCPAN](https://metacpan.org/). The [`App::Mi6` tool](https://modules.raku.org/l/App::Mi6) can simplify the uploading process. The [`zef` module installer](https://github.com/ugexe/zef) automatically check for latest versions of a module on CPAN as well as our [GitHub-based ecosystem](https://github.com/perl6/ecosystem/).
 
-## Is there a perldoc (command line documentation viewer) for Raku?
+## 是否有用于 Raku 的 Perldoc（命令行文档查看器）？ / Is there a perldoc (command line documentation viewer) for Raku?
+
+是的，它被称为 `p6doc`，并以这个名字存在于生态系统中。它与 Rakudo Star 捆绑在一起，但如果您正在使用 Rakudo 每月发布，则需要手动安装 `zef`。
 
 Yes, it's called `p6doc` and is present in the ecosystem under that name. It comes bundled in with Rakudo Star but needs to be manually installed with `zef` if you are using a Rakudo monthly release.
 
-## Can I use Perl 5 modules from Raku?
+## 我可以使用来自 Raku 的 Perl 5 模块吗？ / Can I use Perl 5 modules from Raku?
+
+是的，有 [Inline::Perl5](https://github.com/niner/Inline-Perl5/)，它能使用大多数 Perl 5 模块。它甚至可以运行 Perl 5 Catalyst 和 DBI 模组。
 
 Yes, with [Inline::Perl5](https://github.com/niner/Inline-Perl5/), which works well with most Perl 5 modules. It can even run Perl 5 Catalyst and DBI.
 
-## Can I use C and C++ from Raku?
+## 我可以在 Raku 中使用 C 和 C++ 吗？ / Can I use C and C++ from Raku?
+
+[Nativecall](https://docs.raku.org/language/nativecall) 让这个变得特别简单。
 
 [Nativecall](https://docs.raku.org/language/nativecall) makes this particularly easy.
 
-## Nativecall can't find `libfoo.so` and I only have `libfoo.so.1.2`!
+## nativecall 找不到 `libfoo.so`，而我只有 `libfoo.so.1.2`！ / Nativecall can't find `libfoo.so` and I only have `libfoo.so.1.2`!
+
+在大多数 Linux 系统中，共享库的安装方式是，对于一个特定的 `libfoo`，将有一个 `libfoo.so.x.y.z` 的真实文件，然后是一组软连接 `libfoo.so` 和 `libfoo.so.x`。例如，`ls /usr/local/lib/libxxhash.so*` 返回：
 
 In most Linux systems, shared libraries will be installed in such a way that, for a specific `libfoo`, there will be a `libfoo.so.x.y.z` real file, and then a set of symlinks `libfoo.so` and `libfoo.so.x`. for instance, `ls /usr/local/lib/libxxhash.so*` returns:
 
@@ -179,7 +193,11 @@ In most Linux systems, shared libraries will be installed in such a way that, fo
 /usr/local/lib/libxxhash.so.0.6.5
 ```
 
+一般而言，在 Linux 中安装 `libfo-dev` 或 `libfo-devel`（取决于发行版）将安装共享库*并*为您设置这些软连接。但在某些情况下，你只会有，就像在问题中一样，`libfo.so.1.2`.
+
 In general, installing a `libfoo-dev` or `libfoo-devel` (depending on the distro) in Linux will install the shared library *and* set up those symlinks for you. But in some cases, you will only have, as in the question, `libfoo.so.1.2`.
+
+在这种情况下，只需使用显式设置 ABI/API 版本的 `is native` 版本，如[手册](https://docs.raku.org/language/nativecall#ABI/API_version)所示：
 
 In that case, just use the version of `is native` that explicitly sets the ABI/API version, as indicated in [the manual](https://docs.raku.org/language/nativecall#ABI/API_version):
 
@@ -187,47 +205,77 @@ In that case, just use the version of `is native` that explicitly sets the ABI/A
 sub call-foo() is native('foo',v1.2);
 ```
 
-## Where have all the traditional UNIX library functions gone?
+## 所有传统的 UNIX 库函数都去了哪里？ / Where have all the traditional UNIX library functions gone?
+
+使用 [NativeCall](https://docs.raku.org/language/nativecall) 访问它们是相当容易的。
 
 It's fairly easy to use [NativeCall](https://docs.raku.org/language/nativecall) to access them.
 
+生态系统模块 [POSIX](https://github.com/cspencer/perl6-posix) 也可用.
+
 An ecosystem module [POSIX](https://github.com/cspencer/perl6-posix) is also available.
 
-## Does Rakudo have a core standard library?
+## Rakudo 有核心标准库吗？ / Does Rakudo have a core standard library?
+
+[Rakudo Star distribution](https://rakudo.raku.org/downloads/) 确实有[许多有用的模组](https://github.com/rakudo/star/tree/master/modules)。
 
 [Rakudo Star distribution](https://rakudo.raku.org/downloads/) does come with [many useful modules](https://github.com/rakudo/star/tree/master/modules).
 
+只有 Rakudo 编译器的版本包括[几个最基本的模块](https://docs.raku.org/language/modules-core)。
+
 Rakudo compiler-only release includes [only a couple of the most basic modules](https://docs.raku.org/language/modules-core).
+
+在[生态系统](https://modules.raku.org/)中可以找到更多的模块。
 
 Many more modules can be found in the [ecosystem](https://modules.raku.org/).
 
-## Is there something like `B::Deparse`/How can I get hold of the AST?
+## 是否有类似 `B::Deparse` 的东西/我怎样才能得到 AST？ / Is there something like `B::Deparse`/How can I get hold of the AST?
+
+使用 `--target=optimize` 命令行选项查看程序的 AST，例如，`perl6 --target=optimize -e 'say "hi"'`。
 
 Use `--target=optimize` command line option to view the AST of your program, e.g., `perl6 --target=optimize -e 'say "hi"'`
 
+目标 `optimize` 在静态优化器完成工作后给出 AST，而目标 `ast` 在该步骤之前给出 AST。要获取可用目标的完整列表，请运行 `perl6 --stagestats -e ""`
+
 The target `optimize` gives the AST after the static optimizer does its job, while target `ast` gives the AST before that step. To get the full list of available targets, run `perl6 --stagestats -e ""`
 
-## What is precompilation?
+## 什么是预编译？ / What is precompilation?
+
+当您第一次加载模块时，Rakudo 将其编译为字节码。然后，Rakudo 都将编译后的字节码存储在磁盘上并使用它，因为这往往要快得多。
 
 When you load a module for the first time, Rakudo compiles it into bytecode. Then, Rakudo both stores the compiled bytecode on disk and uses it, because that tends to be significantly faster.
 
-## Can I have circular dependencies between modules?
+## 我能在模块之间有循环依赖关系吗？ / Can I have circular dependencies between modules?
+
+不，你不能有循环依赖，你应该得到一个 `Circular module loading detected` 错误，如果你的模块之间有这种情况的话。
 
 No, you can't have circular dependencies, and you should get a `Circular module loading detected` error if you have them between your modules.
 
+很可能您可以使用[角色](https://docs.raku.org/language/objects#Roles)完成您正在尝试的任务。而不是 `A.pm6` 依赖 `B.pm6` 并且 `B.pm6` 依赖 `A.pm6`，您可以使用 `A-Role.pm6` 和 `B-Role.pm6`，以及 `A.pm6` 和 `B.pm6` 中的类分别实现这些角色。然后，您可以依赖 `A-Role.pm6` 和 `B-Role.pm6` 而没有循环依赖。
+
 Very likely you can accomplish what you are trying to do using [roles](https://docs.raku.org/language/objects#Roles). Instead of `A.pm6` depending on `B.pm6` and `B.pm6` depending on `A.pm6`, you can have `A-Role.pm6` and `B-Role.pm6` and classes in `A.pm6` and `B.pm6` implementing these roles respectively. Then you can depend on `A-Role.pm6` and `B-Role.pm6` without the need for the circular dependency.
+
+循环依赖在 Raku 中不起作用的原因之一是一个传递解析。解析 B 的时候我们要知道 A 是什么意思，解析 A 的时候我们要知道 B 是什么意思，这显然是一个无限循环。
 
 One of the reasons why circular dependencies do not work in Raku is one pass parsing. We have to know what A means when we parse B, and we have to know what B means when we parse A, which is clearly an infinite loop.
 
+请注意，Raku 没有一个文件一个类的限制，单个编译单元（例如文件）中的循环依赖是可能的。因此，另一种可能的解决方案是将类移动到同一个编译单元中。
+
 Note that Raku has no “1 file = 1 class” limitation, and circular dependencies within a single compilation unit (e.g., file) are possible through stubbing. Therefore another possible solution is to move classes into the same compilation unit.
 
-# Language features
+# 语言特性 / Language features
 
-## How can I dump Raku data structures (like Perl 5 Data::Dumper and similar)?
+## 如何打印 Raku 数据结构（与 Perl5 的 Data::Dumper 或者其他模块类似） / How can I dump Raku data structures (like Perl 5 Data::Dumper and similar)?
+
+典型的选项是使用 [say](https://docs.raku.org/routine/say) 例程，该例程使用 [gist](https://docs.raku.org/routine/gist) 方法，该方法给出了被打印对象的“要点”。更详细的输出可以通过调用 [perl](https://docs.raku.org/routine/perl) 方法（很快就会被弃用，改为 `$obj.raku`，自 Rakudo2019.11 发布以来可用）来获得，该方法通常返回在 [EVAL](https://docs.raku.org/routine/EVAL) 中可用的对象的表示。
 
 Typical options are to use the [say](https://docs.raku.org/routine/say) routine that uses the [gist](https://docs.raku.org/routine/gist) method which gives the "gist" of the object being dumped. More detailed output can be obtained by calling the [perl](https://docs.raku.org/routine/perl) method (soon to be deprecated in favor of `$obj.raku`, available since the Rakudo 2019.11 release) that typically returns an object's representation in [EVAL](https://docs.raku.org/routine/EVAL)-able code.
 
+如果您正在使用 [rakudo](https://rakudo.org/) 实现，您可以使用 [rakudo 指定的 `dd` 例程](https://docs.raku.org/programs/01-debugging#Dumper_function_dd) 进行打印，其输出类似于 [perl](https://docs.raku.org/routine/perl) 方法，但具有更多信息。
+
 If you're using the [rakudo](https://rakudo.org/) implementation, you can use the [rakudo-specific `dd` routine](https://docs.raku.org/programs/01-debugging#Dumper_function_dd) for dumping, whose output is similar to [perl](https://docs.raku.org/routine/perl), but with more information.
+
+例如：
 
 Examples:
 
@@ -240,11 +288,17 @@ say $foo;        # OUTPUT: «{foo => bar}␤»
 dd $foo;         # OUTPUT: «Hash $foo = ${:foo("bar")}␤» 
 ```
 
+还有[几个生态系统模块](https://modules.raku.org/s/dump)提供了对数据结构如何打印的更多控制，包括对彩色输出的支持。
+
 There are also [several ecosystem modules](https://modules.raku.org/s/dump) that provide more control over how data structures are dumped, including support for colored output.
 
-## How can I get command line history in the Raku prompt (REPL)?
+## 如何在 Raku 提示符（REPL）中获取命令行历史记录？ / How can I get command line history in the Raku prompt (REPL)?
+
+从生态系统中安装 [Linenoise](https://github.com/hoelzro/p6-linenoise/).
 
 Install [Linenoise](https://github.com/hoelzro/p6-linenoise/) from the ecosystem.
+
+类 UNIX 的系统的另一个选择是安装 `rlwrap`。在 Debian 系统上可以通过运行：
 
 An alternative for UNIX-like systems is to install `rlwrap`. This can be done on Debian-ish systems by running:
 
@@ -252,7 +306,9 @@ An alternative for UNIX-like systems is to install `rlwrap`. This can be done on
 sudo apt-get install rlwrap
 ```
 
-## Why is the Rakudo compiler so apologetic?
+## 为什么 Rakudo 编译器如此多抱歉？ / Why is the Rakudo compiler so apologetic?
+
+如果在输出中输出 SORRY！错误是编译时间错误。否则，这是运行时错误。
 
 If SORRY! is present in the output, the error is a compile time error. Otherwise, it's a runtime error.
 
@@ -264,7 +320,9 @@ foo(1)     # ===SORRY!=== Error while compiling ...
 say 1/0;   # Attempt to divide 1 by zero using div 
 ```
 
-## What is `(Any)`?
+## 什么是 `(Any)`？ / What is `(Any)`?
+
+[`Any`](https://docs.raku.org/type/Any) 是大多数对象所继承的顶级类。在没有显式类型约束的变量和参数上，任何类型的对象都是[默认值](https://docs.raku.org/type/Attribute#Trait_is_default)，这意味着当您使用 [`say` 例程](https://docs.raku.org/routine/say)等方法输出一个没有任何值的变量时，您可能会看到 `(Any)` 打印出来：
 
 [`Any`](https://docs.raku.org/type/Any) is a top level class most objects inherit from. The `Any` type object is [the default value](https://docs.raku.org/type/Attribute#Trait_is_default) on variables and parameters without an explicit type constraint, which means you'll likely see `(Any)` printed when you output a [gist](https://docs.raku.org/routine/gist) of a variable without any value by using, for instance, the [`say` routine](https://docs.raku.org/routine/say):
 
@@ -279,13 +337,21 @@ my $bar = 70;
 say $bar; # OUTPUT: «70␤» 
 ```
 
+若要测试变量是否有任何定义值，请参见 [DEFINITE](https://docs.raku.org/language/classtut#index-entry-.DEFINITE) 和 [defined](https://docs.raku.org/routine/defined) 例程。还有其他几个关于确定性的检验，例如 [`with`、 `orwith` 和 `without`](https://docs.raku.org/syntax/with%20orwith%20without) 语句，[`//`](https://docs.raku.org/routine/$SOLIDUS$SOLIDUS)、 [andthen](https://docs.raku.org/routine/andthen)、 [notandthen](https://docs.raku.org/routine/notandthen) 和 [orelse](https://docs.raku.org/routine/orelse) 运算符，以及[类型约束微笑表情符](https://docs.raku.org/type/Signature#Constraining_defined_and_undefined_values)。
+
 To test whether a variable has any defined values, see [DEFINITE](https://docs.raku.org/language/classtut#index-entry-.DEFINITE) and [defined](https://docs.raku.org/routine/defined) routines. Several other constructs exist that test for definiteness, such as [`with`, `orwith`, and `without`](https://docs.raku.org/syntax/with%20orwith%20without) statements, [`//`](https://docs.raku.org/routine/$SOLIDUS$SOLIDUS), [andthen](https://docs.raku.org/routine/andthen), [notandthen](https://docs.raku.org/routine/notandthen), and [orelse](https://docs.raku.org/routine/orelse) operators, as well as [type constraint smileys](https://docs.raku.org/type/Signature#Constraining_defined_and_undefined_values).
 
-## What is `so`?
+## `so` 是什么？ / What is `so`?
+
+`so` 是一个松散的优先操作符，强制类型转换为 [Bool](https://docs.raku.org/type/Bool)。
 
 `so` is a loose precedence operator that coerces to [Bool](https://docs.raku.org/type/Bool).
 
+它与 `?` 前缀运算符具有相同的语义，就像 `and` 是 `&&` 的低优先级版本一样。
+
 It has the same semantics as the `?` prefix operator, just like `and` is the low-precedence version of `&&`.
+
+例如：
 
 Example:
 
@@ -293,11 +359,17 @@ Example:
 say so 1|2 == 2;    # OUTPUT: «True␤» 
 ```
 
+在这个例子中，比较的结果（这是一个 [Junction](https://docs.raku.org/type/Junction)，在打印之前转换为 Bool。
+
 In this example, the result of the comparison (which is a [Junction](https://docs.raku.org/type/Junction)), is converted to Bool before being printed.
 
-## What are those `:D` and `:U` things in signatures?
+## 在函数签名中的 `:D` 和 `:U` 是什么？ / What are those `:D` and `:U` things in signatures?
+
+在 Raku 中，类和其他类型是对象，并通过自己类型的类型检查。
 
 In Raku, classes and other types are objects and pass type checks of their own type.
+
+例如，如果你声明一个变量
 
 For example, if you declare a variable
 
@@ -305,11 +377,15 @@ For example, if you declare a variable
 my Int $x = 42;
 ```
 
+然后，不仅可以将整数（即 Int 类的实例）赋值给它，而且还可以将 `Int` 类型对象本身赋值：
+
 then not only can you assign integers (that is, instances of class Int) to it, but the `Int` type object itself:
 
 ```Raku
 $x = Int
 ```
+
+如果你想排除类型对象，你可以附加 `:D`，它代表“确定的”：
 
 If you want to exclude type objects, you can append the `:D` type smiley, which stands for "definite":
 
@@ -322,13 +398,19 @@ $x = Int;
 # expected Int:D but got Int 
 ```
 
+同样，`:U` 约束为未定义的值，即类型对象。
+
 Likewise, `:U` constrains to undefined values, that is, type objects.
 
 To explicitly allow either type objects or instances, you can use `:_`.
 
-## What is the `-->` thing in the signature?
+## 在函数签名中的 `-->` 是什么？ / What is the `-->` thing in the signature?
+
+[-->](https://docs.raku.org/type/Signature#Constraining_return_types) 是返回值约束，是一个类型或者一个确定的值。
 
 [-->](https://docs.raku.org/type/Signature#Constraining_return_types) is a return constraint, either a type or a definite value.
+
+类型约束的例子：
 
 Example of a type constraint:
 
@@ -341,6 +423,8 @@ divide-to-int(3, 2)
 # Type check failed for return value; expected Int but got Rat 
 ```
 
+返回确定值的例子：
+
 Example of a definite return value:
 
 ```Raku
@@ -349,13 +433,21 @@ say discard-random-number;
 # OUTPUT: «42␤» 
 ```
 
+在这种情况下，由于签名中已经指定了返回值，最终值将被丢弃。
+
 In this case, the final value is thrown away because the return value is already specified in the signature.
 
-## How can I extract the values from a Junction?
+## 我怎样才能从 Junction 中提取值？ / How can I extract the values from a Junction?
+
+如果您想从 [Junction](https://docs.raku.org/type/Junction) 中提取值（本征态），您可能做错了什么，应该使用 [Set](https://docs.raku.org/type/Set)。
 
 If you want to extract the values (eigenstates) from a [Junction](https://docs.raku.org/type/Junction), you are probably doing something wrong and should be using a [Set](https://docs.raku.org/type/Set) instead.
 
+Junction 的意思是作为匹配者，而不是进行代数计算。
+
 Junctions are meant as matchers, not for doing algebra with them.
+
+如果你确实想这样做，你可以滥用自动线程：
 
 If you want to do it anyway, you can abuse autothreading for that:
 
@@ -370,9 +462,13 @@ say eigenstates(1|2|3).join(', ');
 # prints 1, 2, 3 or a permutation thereof 
 ```
 
-## If Str is immutable, how does `s///` work? If Int is immutable, how does `$i++` work?
+## 如果 Str 是不可变的，`s///` 是怎样工作的？ 如果 Int 是不可变的，`$i++` 是怎样工作的？ / If Str is immutable, how does `s///` work? If Int is immutable, how does `$i++` work?
+
+在 Raku 中，许多基本类型的值是不可变的，但持有它们的变量不是。`s///` 运算符在一个变量上工作，它将一个新创建的字符串对象放入其中。同样，`$i++` 工作在 `$i` 变量上，而不仅仅是它的值。
 
 In Raku, values of many basic types are immutable, but the variables holding them are not. The `s///` operator works on a variable, into which it puts a newly created string object. Likewise, `$i++` works on the `$i` variable, not just on the value in it.
+
+知道这一点，您就不会尝试更改文字字符串（例如 `'hello' ~~ s/h/H/;`），但你可能会不小心用 `map` 做了一些等效的事情，如下所示。
 
 Knowing this, you would not try to change a literal string (e.g. like `'hello' ~~ s/h/H/;`), but you might accidentally do something equivalent using `map` as follows.
 
@@ -390,6 +486,8 @@ my @bar = <hello world>».subst-mutate: 'h', 'H';
 # mutable arguments: ... 
 ```
 
+使用返回新值的例程或运算符，而不是修改原来的值：
+
 Instead of modifying the original value in place, use a routine or operator that returns a new value:
 
 ```Raku
@@ -397,9 +495,13 @@ my @foo = <hello world>.map: { S/h/H/ };  # ['Hello','world']
 my @bar = <hello world>».subst: 'h', 'H'; # ['Hello','world'] 
 ```
 
+有关更多信息，请参见 [containers](https://docs.raku.org/language/containers) 上的文档。
+
 See the documentation on [containers](https://docs.raku.org/language/containers) for more information.
 
-## What's up with array references and automatic dereferencing? Do I need the `@` sigil?
+## 数组引用和自动取消引用是怎么回事？ 我需要 `@` 标记吗？ / What's up with array references and automatic dereferencing? Do I need the `@` sigil?
+
+在 Raku 中，几乎所有内容都是引用，因此谈论获取引用没有多大意义。 标量变量也可以直接包含数组：
 
 In Raku, nearly everything is a reference, so talking about taking references doesn't make much sense. Scalar variables can also contain arrays directly:
 
@@ -412,6 +514,8 @@ my $scalar = @a;
 say $scalar;            # OUTPUT: «[1 2 3]␤» 
 say $scalar.^name;      # OUTPUT: «Array␤» 
 ```
+
+最大的区别是标量内部的数组在列表上下文中充当一个值，而数组将很高兴地迭代。
 
 The big difference is that arrays inside a scalar act as one value in list context, whereas arrays will be happily iterated over.
 
@@ -429,11 +533,23 @@ my @nested = flat $s, $s;
 say @nested.elems;          # OUTPUT: «2␤» 
 ```
 
+您可以使用  `@( ... )` 或通过在表达式上调用 `.list` 来强制列表上下文，而可以使用 `$( ... )` 或对表达式调用 `.item` 方法来强制单条目上下文。
+
 You can force list context with `@( ... )` or by calling the `.list` method on an expression, and item context with `$( ... )` or by calling the `.item` method on an expression.
+
+请参阅 [*Perl 6：符号、变量和容器*](https://perl6advent.wordpress.com/2017/12/02/)文章以了解更多信息。
 
 See the [*Perl 6: Sigils, Variables, and Containers*](https://perl6advent.wordpress.com/2017/12/02/) article to learn more.
 
-## Why sigils? Couldn't you do without them?
+## 为什么要用标记符？ 你不能没有他们吗？ / Why sigils? Couldn't you do without them?
+
+有以下几个原因：
+
+- 它们使将变量插值到字符串变得容易
+- 它们为不同的变量和标记符形成了微命名空间，从而避免了名称冲突
+- 它们可以轻松区分单数/复数
+- 它们像使用强制性名词标记的自然语言一样工作，因此我们的大脑可以处理它
+- 它们不是强制性的，因为您可以声明无名字的名称（如果您不介意歧义的话）
 
 There are several reasons:
 
@@ -443,7 +559,9 @@ There are several reasons:
 - they work like natural languages that use mandatory noun markers, so our brains are built to handle it
 - they aren't mandatory, since you can declare sigilless names (if you don't mind the ambiguity)
 
-## "Type Str does not support associative indexing."
+## “类型 Str 不支持关联索引。” / "Type Str does not support associative indexing."
+
+您可能试图混合使用字符串插值和关键字符，例如 HTML 标签：
 
 You likely tried to mix string interpolation and key characters, like HTML tags:
 
@@ -452,6 +570,8 @@ my $foo = "abc";
 say "$foo<html-tag>";
 ```
 
+Raku 认为 `$foo` 是哈希，而 `<html-tag>` 是字符串文本哈希键。 使用闭包帮助它了解您。
+
 Raku thinks `$foo` is a Hash and `<html-tag>` is a string literal hash key. Use a closure to help it to understand you.
 
 ```Raku
@@ -459,7 +579,9 @@ my $foo = "abc";
 say "{$foo}<html-tag>";
 ```
 
-## Does Raku have coroutines? What about `yield`?
+## Raku 有协程吗？ 那 `yield` 呢？ / Does Raku have coroutines? What about `yield`?
+
+Raku 没有像 Python 那样的 `yield` 语句，但是它通过惰性列表提供了类似的功能。 有两种流行的方法可以编写返回延迟列表的例程：
 
 Raku has no `yield` statement like Python does, but it does offer similar functionality through lazy lists. There are two popular ways to write routines that return lazy lists:
 
@@ -476,7 +598,9 @@ my @values = gather while have_data() {
 my @squares = (1..*).map(-> \x { x² });
 ```
 
-## Why can't I initialize private attributes from the new method, and how can I fix this?
+## 为什么不能通过新方法初始化私有属性，如何解决此问题？ / Why can't I initialize private attributes from the new method, and how can I fix this?
+
+以下代码示例中的 `say` 语句
 
 The `say` statement in the following code sample
 
@@ -490,7 +614,11 @@ class A {
 say A.new(x => 5).show-x;
 ```
 
+不会打印 5。私有属性是*私有的*，这意味着外界看不见。 如果默认构造函数可以初始化它们，则它们将泄漏到公共 API 中。 因此，在此特定代码示例中，默认构造函数未在对象构造期间初始化属性 `$!x`。
+
 does not print 5. Private attributes are *private*, which means invisible to the outside world. If the default constructor could initialize them, they would leak into the public API. Thus, in this particular code sample the attribute `$!x` isn't initialized during object construction by the default constructor.
+
+如果您仍想使用默认构造函数初始化私有属性，则可以添加一个 `submethod BUILD` 来实现此任务：
 
 If you still want to initialize private attributes with the default constructor, you can add a `submethod BUILD` to achieve such task:
 
@@ -505,17 +633,29 @@ class B {
 say B.new(x => 5).show-x;
 ```
 
+`BUILD` 由默认构造函数调用（有关更多详细信息，请间接参见[对象创建](https://docs.raku.org/language/objects#Object_construction)），其中包含用户传递给构造函数的所有命名参数 。 `:$!x` 是名为 `x` 的命名参数，当使用名为 `x` 的命名参数调用时，其值绑定到属性 `$!x`。
+
 `BUILD` is called by the default constructor (indirectly, see [Object Construction](https://docs.raku.org/language/objects#Object_construction) for more details) with all the named arguments that the user passes to the constructor. `:$!x` is a named parameter with name `x`, and when called with a named argument of name `x`, its value is bound to the attribute `$!x`.
+
+但是，您不应该这样做。 如果属性被声明为私有，则不应将其暴露于类之外的环境中（例如，在对象构建期间）。 另一方面，如果该属性是公共属性，则使用 `$ .x` 声明它没有任何缺点，因为默认情况下外部视图是只读的，并且您仍然可以使用 `$!x` 在内部访问它。 。
 
 However, you shouldn't do that. If the attribute is declared as private, then it shouldn't be exposed to the environment outside the class (e.g., during object construction). On the other hand, if the attribute is public, there is no downside to declaring it that way with `$.x` since the external view is read-only by default, and you can still access it internally with `$!x`.
 
-## How and why do `say`, `put` and `print` differ?
+## `say`、 `put` 和 `print` 有何区别？ / How and why do `say`, `put` and `print` differ?
+
+最明显的区别是 `say `和 `put` 在输出的末尾添加了换行符，而 `print` 则不会。
 
 The most obvious difference is that `say` and `put` append a newline at the end of the output, and `print` does not.
 
+但是还有另一个区别：`print` 和 `put` 通过传递给它们的每个项目调用 `Str` 方法将其参数转换为字符串，而`say`使用`gist`方法。 您也可以为自己的类创建的`gist`方法旨在创建用于人类解释的`Str`。 因此，可以自由地忽略有关对象的信息，这些信息对于理解对象的本质不重要。
+
 But there's another difference: `print` and `put` convert their arguments to a string by calling the `Str` method on each item passed to them while `say` uses the `gist` method. The `gist` method, which you can also create for your own classes, is intended to create a `Str` for human interpretation. So it is free to leave out information about the object deemed unimportant to understanding the essence of the object.
 
+换句话说，`$obj.Str` 提供了字符串表示形式，`$obj.gist` 提供了适合于人类快速识别的对象的简短摘要，以及 `$obj.perl`（$obj.raku`）给出了 Raku 式的表示形式，可以从中重新创建对象。
+
 Or phrased differently, `$obj.Str` gives a string representation, `$obj.gist` provides a short summary of that object suitable for fast recognition by a human, and `$obj.perl` (`$obj.raku`) gives a Raku-ish representation from which the object could be re-created.
+
+例如，当在类型对象（也称为“未定义值”）上调用 `Str` 方法时，该类型将被字符串化为一个空字符串，并引发警告。 另一方面，`gist` 方法在括号之间返回类型的名称（以表明该值中除了类型之外没有任何内容）。
 
 For example, when the `Str` method is invoked on a type object, also known as an "undefined value", the type is stringified to an empty string and a `warn`ing is thrown. On the other hand, the `gist` method returns the name of the type between parentheses (to indicate there's nothing in that value except the type).
 
@@ -525,29 +665,51 @@ print $x;       # empty string plus warning
 say $x;         # OUTPUT: «(Date)␤» 
 ```
 
+如果要显示对象的调试版本，则最好使用[特定于 rakudo 的 `dd` 例程](https://docs.raku.org/programs/01-debugging#Dumper_function_dd)。 它本质上执行 `$obj.perl`（`$obj.raku`）并在 STDERR 而非 STDOUT 上显示，因此不会干扰程序的任何“正常”输出。
+
 If you'd like to show a debugging version of an object, it is probably better to use the [rakudo-specific `dd` routine](https://docs.raku.org/programs/01-debugging#Dumper_function_dd). It essentially does a `$obj.perl` (`$obj.raku`) and shows that on STDERR rather than STDOUT, so it won't interfere with any "normal" output of your program.
+
+简而言之，`say` 是针对偶然的人类解释而优化的，`dd 是针对偶然的调试输出而优化的，而 `print` 和 `put` 更普遍地适合于产生输出。
 
 In short, `say` is optimized for casual human interpretation, `dd` is optimized for casual debugging output and `print` and `put` are more generally suitable for producing output.
 
+因此，`put` 是 `print` 和 `say` 的混合体； 像 `print` 一样，它会在对象上调用 `Str` 方法。 和 `say` 一样，它在输出的末尾添加一个换行符。
+
 `put` is thus a hybrid of `print` and `say`; like `print`, it calls the `Str` method on the object. And like `say`, it adds a newline at the end of the output.
 
-## What's the difference between `token` and `rule` ?
+## `token` 和 `rule` 的区别是什么？ / What's the difference between `token` and `rule` ?
+
+`regex`、 `token` 和 `rule` 引入了正则，但语义略有不同。
 
 `regex`, `token` and `rule` introduce regexes, but with slightly different semantics.
 
+`token` 意味着启用 `:ratchet` 或 `:r` 修饰符，这防止了规则的回溯。
+
 `token` implies the `:ratchet` or `:r` modifier, which prevents the rule from backtracking.
+
+`rule` 意味着启用 `:ratchet` 和 `:sigspace`（简称 `:s`）修饰符，这意味着规则不会回溯，它将正则文本中的空格视为 `<.ws>` 调用（即匹配空格，除两个字符间外，空格是可选的）。在正则的开始和每个分支的开始的空白被忽略。
 
 `rule` implies both the `:ratchet` and `:sigspace` (short `:s`) modifier, which means a rule doesn't backtrace, and it treats whitespace in the text of the regex as `<.ws>` calls (i.e., matches whitespace, which is optional except between two word characters). Whitespace at the start of the regex and at the start of each branch of an alternation is ignored.
 
+`regex` 声明一个普通的正则，没有任何隐含的修饰符。
+
 `regex` declares a plain regex without any implied modifiers.
 
-## What's the difference between `die` and `fail`?
+## `die` 和 `fail` 有什么区别？ / What's the difference between `die` and `fail`?
+
+`die` 抛出异常。
 
 `die` throws an exception.
 
+`fail` 返回 `Failure` 对象。（如果调用方声明 `use fatal;` 在调用词法作用域中 `fail` 引发异常而不是返回异常）
+
 `fail` returns a `Failure` object. (If the caller has declared `use fatal;` in the calling lexical scope, `fail` throws an exception instead of returning it.)
 
+`Failure` 是“未被抛出的”或“懒惰”的异常。它是一个包含异常的对象，如果尝试将 `Failure` 用作普通对象或在 sink 上下文中忽略它，则抛出异常。
+
 A `Failure` is an "unthrown" or "lazy" exception. It's an object that contains the exception, and throws the exception if you try to use the `Failure` as an ordinary object or ignore it in sink context.
+
+`Failure` 从 `defined` 检查中返回 `False`，您可以使用 `exception` 方法提取异常。
 
 A `Failure` returns `False` from a `defined` check, and you can extract the exception with the `exception` method.
 
