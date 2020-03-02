@@ -713,69 +713,145 @@ A `Failure` is an "unthrown" or "lazy" exception. It's an object that contains t
 
 A `Failure` returns `False` from a `defined` check, and you can extract the exception with the `exception` method.
 
-## What's the difference between `Pointer` and `OpaquePointer`?
+## `Pointer` 和 `OpaquePointer` 有什么区别？ / What's the difference between `Pointer` and `OpaquePointer`?
+
+`OpaquePointer` 不推荐使用并被 `Pointer` 替换了。
 
 `OpaquePointer` is deprecated and has been replaced with `Pointer`.
 
-## You can have colonpairs in identifiers. What's the justification?
+## 您可以在标识符中有冒号对。理由是什么？ / You can have colonpairs in identifiers. What's the justification?
+
+[标识符可以包括冒号对，这些对成为其名称的一部分](https://docs.raku.org/language/syntax#Identifiers)。根据[拉里沃尔对这个问题的回答](https://github.com/perl6/doc/issues/1753#issuecomment-362875676)，*我们已经有了冒号对机制，所以使用它来扩展任何需要引用唯一但非标准字符的名称（或其他信息，并对这些字符进行独特的字符串）是一种不费吹灰之力的方法。
 
 [Identifiers can include colon pairs, which become part of their name](https://docs.raku.org/language/syntax#Identifiers). According to [Larry Wall's answer to the issue](https://github.com/perl6/doc/issues/1753#issuecomment-362875676), *We already had the colon pair mechanism available, so it was a no-brainer to use that to extend any name that needs to be able to quote uniquefying but non-standard characters (or other information with a unique stringification to such characters)*.
 
-## How do most people enter unicode characters?
+## 大多数人是如何输入 Unicode 字符的？ / How do most people enter unicode characters?
+
+它取决于操作系统、窗口环境和/或编辑器。[输入 Unicode 字符的页面](https://docs.raku.org/language/unicode_entry)指定如何在最流行的操作系统和编辑器中完成。
 
 It depends on the operating system, windowing environment and/or editors. [This page on entering Unicode characters](https://docs.raku.org/language/unicode_entry) specifies how it is done in the most popular operating systems and editors.
 
-# Raku implementation
+# Raku 实现 / Raku implementation
 
-## What Raku implementations are available?
+## 有哪些 Raku 实现可用？ / What Raku implementations are available?
+
+目前最好的开发是乐天多（使用多个虚拟机后端）。历史上的实现包括 Niecza (用 .NET 写成) 和 Pugs（用 Haskell 写成）。其他名单列于 [Raku 编译器](https://www.raku.org/compilers/)
 
 Currently the best developed is Rakudo (using multiple Virtual Machine backends). Historic implementations include Niecza (.NET) and Pugs (Haskell). Others are listed at [Raku Compilers](https://www.raku.org/compilers/)
 
-## What language is Rakudo written in?
+## Rakudo 用什么语言写的？ / What language is Rakudo written in?
+
+一个简短的回答是，Rakudo 几乎完全是用 Raku 写的。一个更详细的答案是，Rakudo 是用 Raku 和 NQP（“Not Quite Perl”）的混合体写成的。对于虚拟机来说，NQP 是一个轻量级的类 Raku 环境；它被设计成一种使用 Raku 语法为虚拟机（如 MoarVM 和 JVM）创建编译器和库的高级方法。
 
 A short answer is that Rakudo is written almost entirely in Raku. A more detailed answer is that Rakudo is written in a mixture of Raku and NQP ("Not Quite Perl"). NQP is a lightweight Raku-like environment for virtual machines; it's designed to be a high-level way to create compilers and libraries for virtual machines (such as MoarVM and JVM) using Raku syntax.
 
-## What language is NQP written in?
+## NQP 是用什么语言写的？ / What language is NQP written in?
+
+NQP 是（1）NQP 代码的混合，（2）底层虚拟机使用的任何语言，（3）一些第三方 C 和 Java 库，（4）一些由构建过程的早期运行创建的引导文件。
 
 NQP is a mixture of (1) NQP code, (2) whatever language the underlying virtual machine is using, (3) some third-party C and Java libraries, and (4) some bootstrapping files created by earlier runs of the build process.
 
-## Is Raku Lisp?
+## Raku 是 Lisp 吗？ / Is Raku Lisp?
 
 ```Raku
 (not (not Nil))
 ```
 
-## Can I compile my script to a standalone executable?
+## 我能把我的脚本编译成一个独立的可执行文件吗？ / Can I compile my script to a standalone executable?
+
+像 [`App::InstallerMaker::WiX`](https://modules.raku.org/dist/App::InstallerMaker::WiX) 这样的工具允许您创建一个安装程序来打包编译器和脚本。但是，当前可用的编译器还不支持创建独立的可执行文件。
 
 Tools like [`App::InstallerMaker::WiX`](https://modules.raku.org/dist/App::InstallerMaker::WiX) allow you to create an installer that will package the compiler and your script. However, the currently available compilers do not support creating a standalone executable yet.
 
+如果你想帮忙，*MoarVM* 后端的 *Rakudo* 编译器在 <https://github.com/MoarVM/MoarVM/issues/875> 已经开了 issue，作为讨论的地方。
+
 If you wish to help out, the *Rakudo* compiler on *MoarVM* backend has <https://github.com/MoarVM/MoarVM/issues/875> issue opened as a place to discuss this problem.
 
-# Raku distribution
+# Raku 发布 / Raku distribution
 
-## When will the next version of Rakudo Star be released?
+## 下一个版本的 Rakudo Star 什么时候发布？ / When will the next version of Rakudo Star be released?
+
+Rakudo Star 通常每季度发布一次，发布公告张贴在 [rakudo.org](https://rakudo.org/posts) 上。
 
 A Rakudo Star release is typically produced quarterly, with release announcements [posted on rakudo.org](https://rakudo.org/posts).
 
-# Metaquestions and advocacy
+# 元问题和宣传 / Metaquestions and advocacy
 
-## Why was Raku originally called Perl 6?
+## 为什么 Raku 最初被称为 Perl 6？ / Why was Raku originally called Perl 6?
+
+...与其他名字不一样的是，它并不意味着在其他语言中较大的数字的全部含义。
 
 … As opposed to some other name that didn't imply all the things that the higher number might indicate on other languages.
 
+简短的回答是，这是拉里在[规则 1](https://perldoc.perl.org/5.12.4/perlhack.html#DESCRIPTION) 下的选择。
+
 The short answer is that it was Larry's choice under [Rule 1](https://perldoc.perl.org/5.12.4/perlhack.html#DESCRIPTION).
+
+社区将 Perl 5 和 Raku 视为姐妹语言 - 他们有很多共同点，解决许多相同的问题空间，但 Raku 并不打算取代 Perl 5。事实上，这两种语言是相互配合的。
 
 The community considers Perl 5 and Raku sister languages - they have a lot in common, address many of the same problem spaces, but Raku is not intended to replace Perl 5. In fact, both languages interoperate with each other.
 
-## When will Raku be ready? Is it ready now?
+## Raku 什么时候准备好？现在准备好了吗？ / When will Raku be ready? Is it ready now?
+
+编程语言及其编译器的准备与否不是一个非黑即白的决定。随着语言和实现的发展，它们越来越可用。根据您的需要，Raku 及其编译器对你而言可能准备好了，也可能没有准备好。
 
 Readiness of programming languages and their compilers is not a binary decision. As the language and the implementations evolve, they grow steadily more usable. Depending on your needs, Raku and its compilers may or may not be ready for you.
 
+也就是说，6.c 版本（2015 年圣诞节）是作为一种语言的 Raku 的第一个正式版本，以及一个验证套件和一个通过验证的编译器。
+
 That said, version 6.c (Christmas 2015) is the first official release of Raku as a language, along with a validation suite and a compiler that passes it.
 
-## Why should I learn Raku? What's so great about it?
+## 我为什么要学 Raku？它有什么好的？ / Why should I learn Raku? What's so great about it?
+
+Raku 将许多伟大的思想结合起来，这些思想通常在其他编程语言中找不到。虽然其他几种语言提供了其中的一些功能，但没有一种提供所有这些功能。
 
 Raku unifies many great ideas that aren't usually found in other programming languages. While several other languages offer some of these features, none of them offer all of them.
+
+- Raku 提供过程式、 面向对象和函数式的编程方法。
+- 易于使用的一致语法，对数据结构使用不变的标记。 
+- 基于全字素的 Unicode 支持，包括 Annex #29。
+- 干净的，更可读的正则表达式；可用性提升一个级别，具有更多的功能。命名正则表达式提高了易用性。
+- Junction 便于检查多种可能性；例如，`$a == 1|3|42`（`$a` 是否等于 1 或 3 或 42？）。
+- 动态变量提供了全局变量的词法作用域替代方案。
+- 强调可组成性和词汇范围界定，以防止“远距离行动”；例如，导入总是以词汇为范围。
+- 易于理解的一致的作用域的规则和闭包。
+- 强大的面向对象编程，具有类和角色（一切都可以看作是一个对象）。继承。子类。代码重用。
+- 对物体和元物体的反省（海龟一直向下）。
+- 允许元编程而不需要生成/解析代码的元对象协议。
+- 子程序和方法签名，以便于解压缩位置参数和命名参数。
+- 对具有不同签名的相同名称的子程序/方法进行多次调度，其依据是参数的个数、类型和可选的附加代码。
+- 对未知子程序/不可能的调度的编译时错误报告。
+- 可选的渐进式类型检查，无需额外的运行时费用。带有可选的类型注释。
+- 基于编译器/运行时状态内省的高级错误报告。这意味着更有用、更精确的错误消息。
+- 相位器（如 `BEGIN` / `END`）允许在进入/退出、第一次/最后一次/下一次遍历时和更多特殊上下文中执行代码。
+- 用于隐式和显式并发处理的高级并发模型，远远超过原始线程和锁。Raku 的并发提供了一组丰富的（可组合的）工具。
+- 多核计算机的使用越来越多，Raku 可以使用这些计算机要归功于并行性，隐式（例如，`>>`. 方法）和显式（`start { code }`）的。这一点很重要，因为摩尔定律即将结束..
+- 提供结构化语言支持，以便为异步执行代码进行编程。
+- Supply 使得在某件事发生时（如定时器、信号或文件系统事件）执行代码。
+- `react` / `whenever` / `supply` 关键字允许方便地构建交互式、 事件驱动的应用程序.
+- 在可能的情况下进行惰性求值，在需要或必要时进行急切的求值。这意味着，例如，存在懒惰列表，甚至无限懒惰列表，如 Fibonacci 序列，或所有素数。
+- 原生数据类型可以更快地加工，更接近硬件速度。
+- 使用 [NativeCall](https://docs.raku.org/language/nativecall) 使与 C / C++ 中的外部库交互变得相当容易。
+- 使用 [Inline::Perl5](https://modules.raku.org/dist/Inline::Perl5:cpan:NINE) 和 [Inline::Python](https://modules.raku.org/dist/Inline::Python) 使得与 Perl 5 (CPAN) / Python 模组交互变得相当容易。 
+- 可以同时安装和加载多个版本的模块。
+- 由于更简单的更新/升级政策，简化了系统管理。
+- 更简单的数值计算，不会因 [Rat](https://docs.raku.org/type/Rat) 而造成精度损失。
+- 用于解析数据或代码的可扩展 grammar（Raku 用来解析自己）。
+- Raku 是一种非常易变的语言（定义自己的功能、 操作符、 特性和数据类型，为您修改解析器）。
+- 大量可供选择的数据类型，加上创建自己类型的可能性。
+- 具有适当边界检查的多维形状和/或原生数组。
+- 在语法解析过程中的任何时候执行代码，或在发生某种匹配时执行代码。
+- 添加自定义运算符或添加特征就像编写子程序一样简单。
+- 在任何操作符上自动生成超操作符（系统或自定义添加）。
+- 在各种后端运行。目前为 MoarVM 与 JVM， JavaScript 正在开发中，更多的可能随之而来。
+- 执行过程中热码路径的运行时优化（JIT）。
+- 运行在小型（例如 RaspberryPi）和大型多处理器硬件上。
+- 垃圾收集基础：没有及时销毁，所以没有必要重新计算。使用相位器及时采取行动。
+- 方法可以在运行时混合到任何实例化对象中；例如，允许添加带外数据。
+- `MAIN` 子程序可使用的简易命令行接口，具有多重分派函数和自动生成使用信息。
+- 较少的代码行允许更紧凑的程序创建。哈夫曼编码命名允许更好的可读性。
+- 用简单的迭代器接口定义的惰性列表，任何类都可以通过提供最简的一个方法来提供。
+- Raku 的座右铭始终与 Perl 的口号相同：“Perl 是与众不同的。简而言之，Perl 是为了让轻松的工作变得容易，而不是让艰难的工作变得不可能” 和 “不止一种方法”。现在有了更多 - Ofun 加入进来。
 
 - Raku offers procedural, object-oriented AND functional programming methodologies.
 - Easy to use consistent syntax, using invariable sigils for data-structures.
