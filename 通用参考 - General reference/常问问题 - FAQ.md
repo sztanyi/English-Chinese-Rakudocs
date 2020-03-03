@@ -6,20 +6,88 @@
 
 Frequently asked questions about Raku
 
+<!-- MarkdownTOC -->
+
+- [一般问题 / General](#%E4%B8%80%E8%88%AC%E9%97%AE%E9%A2%98--general)
+    - [Raku、 Rakudo 和 Perl 6 的区别是什么? / What's the difference between Raku, Rakudo and Perl 6?](#raku%E3%80%81-rakudo-%E5%92%8C-perl-6-%E7%9A%84%E5%8C%BA%E5%88%AB%E6%98%AF%E4%BB%80%E4%B9%88--whats-the-difference-between-raku-rakudo-and-perl-6)
+    - [Raku 是什么时候发布的？ / 发布时间 When was Raku released?](#raku-%E6%98%AF%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E5%8F%91%E5%B8%83%E7%9A%84%EF%BC%9F--%E5%8F%91%E5%B8%83%E6%97%B6%E9%97%B4-when-was-raku-released)
+    - [是否有 Raku 版本 6.0.0？ / Is there a Raku version 6.0.0?](#%E6%98%AF%E5%90%A6%E6%9C%89-raku-%E7%89%88%E6%9C%AC-600%EF%BC%9F--is-there-a-raku-version-600)
+    - [v6.d 是在什么时候发布的？ / When was v6.d released?](#v6d-%E6%98%AF%E5%9C%A8%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E5%8F%91%E5%B8%83%E7%9A%84%EF%BC%9F--when-was-v6d-released)
+    - [作为一个 Raku 用户，我应该安装什么？ / As a Raku user, what should I install?](#%E4%BD%9C%E4%B8%BA%E4%B8%80%E4%B8%AA-raku-%E7%94%A8%E6%88%B7%EF%BC%8C%E6%88%91%E5%BA%94%E8%AF%A5%E5%AE%89%E8%A3%85%E4%BB%80%E4%B9%88%EF%BC%9F--as-a-raku-user-what-should-i-install)
+    - [作为一个高级用户，我想跟踪 Rakudo 的发展。 / As an advanced user I want to track Rakudo development.](#%E4%BD%9C%E4%B8%BA%E4%B8%80%E4%B8%AA%E9%AB%98%E7%BA%A7%E7%94%A8%E6%88%B7%EF%BC%8C%E6%88%91%E6%83%B3%E8%B7%9F%E8%B8%AA-rakudo-%E7%9A%84%E5%8F%91%E5%B1%95%E3%80%82--as-an-advanced-user-i-want-to-track-rakudo-development)
+    - [哪里可以找到有关 Raku 的好文档？ / Where can I find good documentation on Raku?](#%E5%93%AA%E9%87%8C%E5%8F%AF%E4%BB%A5%E6%89%BE%E5%88%B0%E6%9C%89%E5%85%B3-raku-%E7%9A%84%E5%A5%BD%E6%96%87%E6%A1%A3%EF%BC%9F--where-can-i-find-good-documentation-on-raku)
+    - [我能买些关于 Raku 的书吗 / Can I get some books about Raku?](#%E6%88%91%E8%83%BD%E4%B9%B0%E4%BA%9B%E5%85%B3%E4%BA%8E-raku-%E7%9A%84%E4%B9%A6%E5%90%97--can-i-get-some-books-about-raku)
+    - [Raku 的技术规范是什么？ / What is the Raku specification?](#raku-%E7%9A%84%E6%8A%80%E6%9C%AF%E8%A7%84%E8%8C%83%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F--what-is-the-raku-specification)
+    - [Is there a glossary of Raku related terms? / 是否有与 Raku 相关的术语表？](#is-there-a-glossary-of-raku-related-terms--%E6%98%AF%E5%90%A6%E6%9C%89%E4%B8%8E-raku-%E7%9B%B8%E5%85%B3%E7%9A%84%E6%9C%AF%E8%AF%AD%E8%A1%A8%EF%BC%9F)
+    - [我是 Perl 5 程序员。哪里有 Perl 5 与 Raku 的不同点的清单？ / I'm a Perl 5 programmer. Where is a list of differences between Perl 5 and Raku?](#%E6%88%91%E6%98%AF-perl-5-%E7%A8%8B%E5%BA%8F%E5%91%98%E3%80%82%E5%93%AA%E9%87%8C%E6%9C%89-perl-5-%E4%B8%8E-raku-%E7%9A%84%E4%B8%8D%E5%90%8C%E7%82%B9%E7%9A%84%E6%B8%85%E5%8D%95%EF%BC%9F--im-a-perl-5-programmer-where-is-a-list-of-differences-between-perl-5-and-raku)
+    - [I'm a Ruby programmer looking for quickstart type docs? / 我是一个 Ruby 程序员在寻找快速启动类型的文档](#im-a-ruby-programmer-looking-for-quickstart-type-docs--%E6%88%91%E6%98%AF%E4%B8%80%E4%B8%AA-ruby-%E7%A8%8B%E5%BA%8F%E5%91%98%E5%9C%A8%E5%AF%BB%E6%89%BE%E5%BF%AB%E9%80%9F%E5%90%AF%E5%8A%A8%E7%B1%BB%E5%9E%8B%E7%9A%84%E6%96%87%E6%A1%A3)
+- [模组 / Modules](#%E6%A8%A1%E7%BB%84--modules)
+    - [是否有一个 CPAN（第三方库模块存储库）供 Raku 使用？ / Is there a CPAN \(repository of third party library modules\) for Raku?](#%E6%98%AF%E5%90%A6%E6%9C%89%E4%B8%80%E4%B8%AA-cpan%EF%BC%88%E7%AC%AC%E4%B8%89%E6%96%B9%E5%BA%93%E6%A8%A1%E5%9D%97%E5%AD%98%E5%82%A8%E5%BA%93%EF%BC%89%E4%BE%9B-raku-%E4%BD%BF%E7%94%A8%EF%BC%9F--is-there-a-cpan-repository-of-third-party-library-modules-for-raku)
+    - [是否有用于 Raku 的 Perldoc（命令行文档查看器）？ / Is there a perldoc \(command line documentation viewer\) for Raku?](#%E6%98%AF%E5%90%A6%E6%9C%89%E7%94%A8%E4%BA%8E-raku-%E7%9A%84-perldoc%EF%BC%88%E5%91%BD%E4%BB%A4%E8%A1%8C%E6%96%87%E6%A1%A3%E6%9F%A5%E7%9C%8B%E5%99%A8%EF%BC%89%EF%BC%9F--is-there-a-perldoc-command-line-documentation-viewer-for-raku)
+    - [我可以使用来自 Raku 的 Perl 5 模块吗？ / Can I use Perl 5 modules from Raku?](#%E6%88%91%E5%8F%AF%E4%BB%A5%E4%BD%BF%E7%94%A8%E6%9D%A5%E8%87%AA-raku-%E7%9A%84-perl-5-%E6%A8%A1%E5%9D%97%E5%90%97%EF%BC%9F--can-i-use-perl-5-modules-from-raku)
+    - [我可以在 Raku 中使用 C 和 C++ 吗？ / Can I use C and C++ from Raku?](#%E6%88%91%E5%8F%AF%E4%BB%A5%E5%9C%A8-raku-%E4%B8%AD%E4%BD%BF%E7%94%A8-c-%E5%92%8C-c-%E5%90%97%EF%BC%9F--can-i-use-c-and-c-from-raku)
+    - [nativecall 找不到 `libfoo.so`，而我只有 `libfoo.so.1.2`！ / Nativecall can't find `libfoo.so` and I only have `libfoo.so.1.2`!](#nativecall-%E6%89%BE%E4%B8%8D%E5%88%B0-libfooso%EF%BC%8C%E8%80%8C%E6%88%91%E5%8F%AA%E6%9C%89-libfooso12%EF%BC%81--nativecall-cant-find-libfooso-and-i-only-have-libfooso12)
+    - [所有传统的 UNIX 库函数都去了哪里？ / Where have all the traditional UNIX library functions gone?](#%E6%89%80%E6%9C%89%E4%BC%A0%E7%BB%9F%E7%9A%84-unix-%E5%BA%93%E5%87%BD%E6%95%B0%E9%83%BD%E5%8E%BB%E4%BA%86%E5%93%AA%E9%87%8C%EF%BC%9F--where-have-all-the-traditional-unix-library-functions-gone)
+    - [Rakudo 有核心标准库吗？ / Does Rakudo have a core standard library?](#rakudo-%E6%9C%89%E6%A0%B8%E5%BF%83%E6%A0%87%E5%87%86%E5%BA%93%E5%90%97%EF%BC%9F--does-rakudo-have-a-core-standard-library)
+    - [是否有类似 `B::Deparse` 的东西/我怎样才能得到 AST？ / Is there something like `B::Deparse`/How can I get hold of the AST?](#%E6%98%AF%E5%90%A6%E6%9C%89%E7%B1%BB%E4%BC%BC-bdeparse-%E7%9A%84%E4%B8%9C%E8%A5%BF%E6%88%91%E6%80%8E%E6%A0%B7%E6%89%8D%E8%83%BD%E5%BE%97%E5%88%B0-ast%EF%BC%9F--is-there-something-like-bdeparsehow-can-i-get-hold-of-the-ast)
+    - [什么是预编译？ / What is precompilation?](#%E4%BB%80%E4%B9%88%E6%98%AF%E9%A2%84%E7%BC%96%E8%AF%91%EF%BC%9F--what-is-precompilation)
+    - [我能在模块之间有循环依赖关系吗？ / Can I have circular dependencies between modules?](#%E6%88%91%E8%83%BD%E5%9C%A8%E6%A8%A1%E5%9D%97%E4%B9%8B%E9%97%B4%E6%9C%89%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96%E5%85%B3%E7%B3%BB%E5%90%97%EF%BC%9F--can-i-have-circular-dependencies-between-modules)
+- [语言特性 / Language features](#%E8%AF%AD%E8%A8%80%E7%89%B9%E6%80%A7--language-features)
+    - [如何打印 Raku 数据结构（与 Perl5 的 Data::Dumper 或者其他模块类似） / How can I dump Raku data structures \(like Perl 5 Data::Dumper and similar\)?](#%E5%A6%82%E4%BD%95%E6%89%93%E5%8D%B0-raku-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%88%E4%B8%8E-perl5-%E7%9A%84-datadumper-%E6%88%96%E8%80%85%E5%85%B6%E4%BB%96%E6%A8%A1%E5%9D%97%E7%B1%BB%E4%BC%BC%EF%BC%89--how-can-i-dump-raku-data-structures-like-perl-5-datadumper-and-similar)
+    - [如何在 Raku 提示符（REPL）中获取命令行历史记录？ / How can I get command line history in the Raku prompt \(REPL\)?](#%E5%A6%82%E4%BD%95%E5%9C%A8-raku-%E6%8F%90%E7%A4%BA%E7%AC%A6%EF%BC%88repl%EF%BC%89%E4%B8%AD%E8%8E%B7%E5%8F%96%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%8E%86%E5%8F%B2%E8%AE%B0%E5%BD%95%EF%BC%9F--how-can-i-get-command-line-history-in-the-raku-prompt-repl)
+    - [为什么 Rakudo 编译器如此多抱歉？ / Why is the Rakudo compiler so apologetic?](#%E4%B8%BA%E4%BB%80%E4%B9%88-rakudo-%E7%BC%96%E8%AF%91%E5%99%A8%E5%A6%82%E6%AD%A4%E5%A4%9A%E6%8A%B1%E6%AD%89%EF%BC%9F--why-is-the-rakudo-compiler-so-apologetic)
+    - [什么是 `(Any)`？ / What is `(Any)`?](#%E4%BB%80%E4%B9%88%E6%98%AF-any%EF%BC%9F--what-is-any)
+    - [`so` 是什么？ / What is `so`?](#so-%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F--what-is-so)
+    - [在函数签名中的 `:D` 和 `:U` 是什么？ / What are those `:D` and `:U` things in signatures?](#%E5%9C%A8%E5%87%BD%E6%95%B0%E7%AD%BE%E5%90%8D%E4%B8%AD%E7%9A%84-d-%E5%92%8C-u-%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F--what-are-those-d-and-u-things-in-signatures)
+    - [在函数签名中的 `-->` 是什么？ / What is the `-->` thing in the signature?](#%E5%9C%A8%E5%87%BD%E6%95%B0%E7%AD%BE%E5%90%8D%E4%B8%AD%E7%9A%84----%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F--what-is-the----thing-in-the-signature)
+    - [我怎样才能从 Junction 中提取值？ / How can I extract the values from a Junction?](#%E6%88%91%E6%80%8E%E6%A0%B7%E6%89%8D%E8%83%BD%E4%BB%8E-junction-%E4%B8%AD%E6%8F%90%E5%8F%96%E5%80%BC%EF%BC%9F--how-can-i-extract-the-values-from-a-junction)
+    - [如果 Str 是不可变的，`s///` 是怎样工作的？ 如果 Int 是不可变的，`$i++` 是怎样工作的？ / If Str is immutable, how does `s///` work? If Int is immutable, how does `$i++` work?](#%E5%A6%82%E6%9E%9C-str-%E6%98%AF%E4%B8%8D%E5%8F%AF%E5%8F%98%E7%9A%84%EF%BC%8Cs-%E6%98%AF%E6%80%8E%E6%A0%B7%E5%B7%A5%E4%BD%9C%E7%9A%84%EF%BC%9F-%E5%A6%82%E6%9E%9C-int-%E6%98%AF%E4%B8%8D%E5%8F%AF%E5%8F%98%E7%9A%84%EF%BC%8C%24i-%E6%98%AF%E6%80%8E%E6%A0%B7%E5%B7%A5%E4%BD%9C%E7%9A%84%EF%BC%9F--if-str-is-immutable-how-does-s-work-if-int-is-immutable-how-does-%24i-work)
+    - [数组引用和自动取消引用是怎么回事？ 我需要 `@` 标记吗？ / What's up with array references and automatic dereferencing? Do I need the `@` sigil?](#%E6%95%B0%E7%BB%84%E5%BC%95%E7%94%A8%E5%92%8C%E8%87%AA%E5%8A%A8%E5%8F%96%E6%B6%88%E5%BC%95%E7%94%A8%E6%98%AF%E6%80%8E%E4%B9%88%E5%9B%9E%E4%BA%8B%EF%BC%9F-%E6%88%91%E9%9C%80%E8%A6%81--%E6%A0%87%E8%AE%B0%E5%90%97%EF%BC%9F--whats-up-with-array-references-and-automatic-dereferencing-do-i-need-the--sigil)
+    - [为什么要用标记符？ 你不能没有他们吗？ / Why sigils? Couldn't you do without them?](#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E7%94%A8%E6%A0%87%E8%AE%B0%E7%AC%A6%EF%BC%9F-%E4%BD%A0%E4%B8%8D%E8%83%BD%E6%B2%A1%E6%9C%89%E4%BB%96%E4%BB%AC%E5%90%97%EF%BC%9F--why-sigils-couldnt-you-do-without-them)
+    - [“类型 Str 不支持关联索引。” / "Type Str does not support associative indexing."](#%E2%80%9C%E7%B1%BB%E5%9E%8B-str-%E4%B8%8D%E6%94%AF%E6%8C%81%E5%85%B3%E8%81%94%E7%B4%A2%E5%BC%95%E3%80%82%E2%80%9D--type-str-does-not-support-associative-indexing)
+    - [Raku 有协程吗？ 那 `yield` 呢？ / Does Raku have coroutines? What about `yield`?](#raku-%E6%9C%89%E5%8D%8F%E7%A8%8B%E5%90%97%EF%BC%9F-%E9%82%A3-yield-%E5%91%A2%EF%BC%9F--does-raku-have-coroutines-what-about-yield)
+    - [为什么不能通过新方法初始化私有属性，如何解决此问题？ / Why can't I initialize private attributes from the new method, and how can I fix this?](#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E8%83%BD%E9%80%9A%E8%BF%87%E6%96%B0%E6%96%B9%E6%B3%95%E5%88%9D%E5%A7%8B%E5%8C%96%E7%A7%81%E6%9C%89%E5%B1%9E%E6%80%A7%EF%BC%8C%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3%E6%AD%A4%E9%97%AE%E9%A2%98%EF%BC%9F--why-cant-i-initialize-private-attributes-from-the-new-method-and-how-can-i-fix-this)
+    - [`say`、 `put` 和 `print` 有何区别？ / How and why do `say`, `put` and `print` differ?](#say%E3%80%81-put-%E5%92%8C-print-%E6%9C%89%E4%BD%95%E5%8C%BA%E5%88%AB%EF%BC%9F--how-and-why-do-say-put-and-print-differ)
+    - [`token` 和 `rule` 的区别是什么？ / What's the difference between `token` and `rule` ?](#token-%E5%92%8C-rule-%E7%9A%84%E5%8C%BA%E5%88%AB%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F--whats-the-difference-between-token-and-rule-)
+    - [`die` 和 `fail` 有什么区别？ / What's the difference between `die` and `fail`?](#die-%E5%92%8C-fail-%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F--whats-the-difference-between-die-and-fail)
+    - [`Pointer` 和 `OpaquePointer` 有什么区别？ / What's the difference between `Pointer` and `OpaquePointer`?](#pointer-%E5%92%8C-opaquepointer-%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F--whats-the-difference-between-pointer-and-opaquepointer)
+    - [您可以在标识符中有冒号对。理由是什么？ / You can have colonpairs in identifiers. What's the justification?](#%E6%82%A8%E5%8F%AF%E4%BB%A5%E5%9C%A8%E6%A0%87%E8%AF%86%E7%AC%A6%E4%B8%AD%E6%9C%89%E5%86%92%E5%8F%B7%E5%AF%B9%E3%80%82%E7%90%86%E7%94%B1%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F--you-can-have-colonpairs-in-identifiers-whats-the-justification)
+    - [大多数人是如何输入 Unicode 字符的？ / How do most people enter unicode characters?](#%E5%A4%A7%E5%A4%9A%E6%95%B0%E4%BA%BA%E6%98%AF%E5%A6%82%E4%BD%95%E8%BE%93%E5%85%A5-unicode-%E5%AD%97%E7%AC%A6%E7%9A%84%EF%BC%9F--how-do-most-people-enter-unicode-characters)
+- [Raku 实现 / Raku implementation](#raku-%E5%AE%9E%E7%8E%B0--raku-implementation)
+    - [有哪些 Raku 实现可用？ / What Raku implementations are available?](#%E6%9C%89%E5%93%AA%E4%BA%9B-raku-%E5%AE%9E%E7%8E%B0%E5%8F%AF%E7%94%A8%EF%BC%9F--what-raku-implementations-are-available)
+    - [Rakudo 用什么语言写的？ / What language is Rakudo written in?](#rakudo-%E7%94%A8%E4%BB%80%E4%B9%88%E8%AF%AD%E8%A8%80%E5%86%99%E7%9A%84%EF%BC%9F--what-language-is-rakudo-written-in)
+    - [NQP 是用什么语言写的？ / What language is NQP written in?](#nqp-%E6%98%AF%E7%94%A8%E4%BB%80%E4%B9%88%E8%AF%AD%E8%A8%80%E5%86%99%E7%9A%84%EF%BC%9F--what-language-is-nqp-written-in)
+    - [Raku 是 Lisp 吗？ / Is Raku Lisp?](#raku-%E6%98%AF-lisp-%E5%90%97%EF%BC%9F--is-raku-lisp)
+    - [我能把我的脚本编译成一个独立的可执行文件吗？ / Can I compile my script to a standalone executable?](#%E6%88%91%E8%83%BD%E6%8A%8A%E6%88%91%E7%9A%84%E8%84%9A%E6%9C%AC%E7%BC%96%E8%AF%91%E6%88%90%E4%B8%80%E4%B8%AA%E7%8B%AC%E7%AB%8B%E7%9A%84%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%90%97%EF%BC%9F--can-i-compile-my-script-to-a-standalone-executable)
+- [Raku 发布 / Raku distribution](#raku-%E5%8F%91%E5%B8%83--raku-distribution)
+    - [下一个版本的 Rakudo Star 什么时候发布？ / When will the next version of Rakudo Star be released?](#%E4%B8%8B%E4%B8%80%E4%B8%AA%E7%89%88%E6%9C%AC%E7%9A%84-rakudo-star-%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E5%8F%91%E5%B8%83%EF%BC%9F--when-will-the-next-version-of-rakudo-star-be-released)
+- [元问题和宣传 / Metaquestions and advocacy](#%E5%85%83%E9%97%AE%E9%A2%98%E5%92%8C%E5%AE%A3%E4%BC%A0--metaquestions-and-advocacy)
+    - [为什么 Raku 最初被称为 Perl 6？ / Why was Raku originally called Perl 6?](#%E4%B8%BA%E4%BB%80%E4%B9%88-raku-%E6%9C%80%E5%88%9D%E8%A2%AB%E7%A7%B0%E4%B8%BA-perl-6%EF%BC%9F--why-was-raku-originally-called-perl-6)
+    - [Raku 什么时候准备好？现在准备好了吗？ / When will Raku be ready? Is it ready now?](#raku-%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E5%87%86%E5%A4%87%E5%A5%BD%EF%BC%9F%E7%8E%B0%E5%9C%A8%E5%87%86%E5%A4%87%E5%A5%BD%E4%BA%86%E5%90%97%EF%BC%9F--when-will-raku-be-ready-is-it-ready-now)
+    - [我为什么要学 Raku？它有什么好的？ / Why should I learn Raku? What's so great about it?](#%E6%88%91%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%AD%A6-raku%EF%BC%9F%E5%AE%83%E6%9C%89%E4%BB%80%E4%B9%88%E5%A5%BD%E7%9A%84%EF%BC%9F--why-should-i-learn-raku-whats-so-great-about-it)
+    - [Raku 对我来说够快吗？ / Is Raku fast enough for me?](#raku-%E5%AF%B9%E6%88%91%E6%9D%A5%E8%AF%B4%E5%A4%9F%E5%BF%AB%E5%90%97%EF%BC%9F--is-raku-fast-enough-for-me)
+
+<!-- /MarkdownTOC -->
+
+
+<a id="%E4%B8%80%E8%88%AC%E9%97%AE%E9%A2%98--general"></a>
 # 一般问题 / General
 
+<a id="raku%E3%80%81-rakudo-%E5%92%8C-perl-6-%E7%9A%84%E5%8C%BA%E5%88%AB%E6%98%AF%E4%BB%80%E4%B9%88--whats-the-difference-between-raku-rakudo-and-perl-6"></a>
 ## Raku、 Rakudo 和 Perl 6 的区别是什么? / What's the difference between Raku, Rakudo and Perl 6?
 
 正确地说，[Rakudo](https://rakudo.org/) 是 Raku 的一种实现.它是目前正在开发的，但是过去已经有了其他的实现，将来可能还会有其他的实现。Raku 是语言的定义。在谈论当前的解释器时，Rakudo 和 Raku 可以互换使用。“Perl6” 是 2019 年 10 月前用于 “Raku” 的名称。
 
 Properly speaking, [Rakudo](https://rakudo.org/) is an implementation of Raku. It's currently the one that's being developed, but there have been other implementations in the past and there will likely be others in the future. Raku is the definition of the language. When talking about the current interpreter, Rakudo and Raku can be used interchangeably. "Perl 6" is the name that was used for "Raku" before October 2019.
 
+<a id="raku-%E6%98%AF%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E5%8F%91%E5%B8%83%E7%9A%84%EF%BC%9F--%E5%8F%91%E5%B8%83%E6%97%B6%E9%97%B4-when-was-raku-released"></a>
 ## Raku 是什么时候发布的？ / 发布时间 When was Raku released?
 
 Rakudo 2015.12 实现版本于 2015 年 12 月 25 日发布。
 
 The Rakudo 2015.12 implementation version was released on December 25th 2015.
 
+<a id="%E6%98%AF%E5%90%A6%E6%9C%89-raku-%E7%89%88%E6%9C%AC-600%EF%BC%9F--is-there-a-raku-version-600"></a>
 ## 是否有 Raku 版本 6.0.0？ / Is there a Raku version 6.0.0?
 
 没有。第一个稳定的语言规范版本是 v6.c（“Christmas”）。语言规范的未来版本可能有小版本（例如，v6.d.2）或主版本（例如，v6.e）。
@@ -36,6 +104,7 @@ This is Rakudo version 2017.07 built on MoarVM version 2017.07
 implementing Raku.c.
 ```
 
+<a id="v6d-%E6%98%AF%E5%9C%A8%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E5%8F%91%E5%B8%83%E7%9A%84%EF%BC%9F--when-was-v6d-released"></a>
 ## v6.d 是在什么时候发布的？ / When was v6.d released?
 
 该 v6.d 规范是在[排灯节 2018](https://en.wikipedia.org/wiki/Diwali)上发布的，这是 2018 年 11 月 6 日至 7 日，在一个方便的时区。在 2018.11 的 Rakudo 编译器版本中默认启用了 6.d。
@@ -46,6 +115,7 @@ The v6.d Specification was released on [Diwali 2018](https://en.wikipedia.org/wi
 
 The vast majority of 6.d features were already implemented and available in the Rakudo compiler without requiring any special pragmas, as they did not conflict with the 6.c specification. A smaller set of features and behaviors is available automatically if you have the `use v6.d` pragma at the top of the file. The rest of about 3100 new commits to the language specification simply clarify previously undefined behavior.
 
+<a id="%E4%BD%9C%E4%B8%BA%E4%B8%80%E4%B8%AA-raku-%E7%94%A8%E6%88%B7%EF%BC%8C%E6%88%91%E5%BA%94%E8%AF%A5%E5%AE%89%E8%A3%85%E4%BB%80%E4%B9%88%EF%BC%9F--as-a-raku-user-what-should-i-install"></a>
 ## 作为一个 Raku 用户，我应该安装什么？ / As a Raku user, what should I install?
 
 Mac 用户可以从 <https://rakudo.org/downloads/star> 下载使用在最新的 Rakudo Star DMG 二进制安装器
@@ -68,6 +138,7 @@ There should be Linux and Mac binaries available from vendors and third parties,
 
 There's an official Rakudo Star docker image at <https://hub.docker.com/_/rakudo-star/>
 
+<a id="%E4%BD%9C%E4%B8%BA%E4%B8%80%E4%B8%AA%E9%AB%98%E7%BA%A7%E7%94%A8%E6%88%B7%EF%BC%8C%E6%88%91%E6%83%B3%E8%B7%9F%E8%B8%AA-rakudo-%E7%9A%84%E5%8F%91%E5%B1%95%E3%80%82--as-an-advanced-user-i-want-to-track-rakudo-development"></a>
 ## 作为一个高级用户，我想跟踪 Rakudo 的发展。 / As an advanced user I want to track Rakudo development.
 
 一种选择是克隆[存储库](https://github.com/rakudo/rakudo)并构建它。这将安装正在进行的工作，这是最小的测试，并可能包含严重的错误。如果您有兴趣为 Rakudo Raku 编译器做贡献，您可能会发现 [Z-Script 帮助工具](https://github.com/zoffixznet/z)很有用。
@@ -86,6 +157,7 @@ Some users choose to use [rakudobrew](https://github.com/tadzik/rakudobrew), whi
 
 In either case you will probably need to also install [`zef`](https://modules.raku.org/dist/zef:github) and [`p6doc`](https://modules.raku.org/dist/p6doc:github) from the [ecosystem](https://modules.raku.org/).
 
+<a id="%E5%93%AA%E9%87%8C%E5%8F%AF%E4%BB%A5%E6%89%BE%E5%88%B0%E6%9C%89%E5%85%B3-raku-%E7%9A%84%E5%A5%BD%E6%96%87%E6%A1%A3%EF%BC%9F--where-can-i-find-good-documentation-on-raku"></a>
 ## 哪里可以找到有关 Raku 的好文档？ / Where can I find good documentation on Raku?
 
 请参阅[官方文献网站](https://docs.raku.org/)（特别是其[“语言”部分](https://docs.raku.org/language)）以及[参考资料页](https://raku.org/resources/)。你也可以参考这个[备忘单]（https://htmlpreview.github.io/?https://github.com/perl6/mu/blob/master/docs/Perl6/Cheatsheet/cheatsheet.html）.
@@ -104,6 +176,7 @@ Be mindful of publication dates when reading third-party articles. Anything publ
 
 You can always [get help from a live human in our help chat](https://webchat.freenode.net/?channels=#raku) or [search the chat logs](https://colabti.org/irclogger/irclogger_log_search/raku) to find previous conversations and discussions.
 
+<a id="%E6%88%91%E8%83%BD%E4%B9%B0%E4%BA%9B%E5%85%B3%E4%BA%8E-raku-%E7%9A%84%E4%B9%A6%E5%90%97--can-i-get-some-books-about-raku"></a>
 ## 我能买些关于 Raku 的书吗 / Can I get some books about Raku?
 
 这里有一些书，按字母顺序排列：
@@ -123,6 +196,7 @@ Here are some available books, in alphabetical order:
 
 A list of books published or in progress is maintained in [`raku.org`](https://raku.org/resources/).
 
+<a id="raku-%E7%9A%84%E6%8A%80%E6%9C%AF%E8%A7%84%E8%8C%83%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F--what-is-the-raku-specification"></a>
 ## Raku 的技术规范是什么？ / What is the Raku specification?
 
 规范中指的是 Raku 的官方测试套件。它被称为 [`roast`](https://github.com/perl6/roast)，并在 GitHub 上托管。任何通过测试的编译器都被认为实现了那个版本的 Raku 规范。
@@ -137,50 +211,59 @@ Roast's `master` branch corresponds to the latest development that isn't necessa
 
 So `6.c-errata` is a released language version we don't change other than to fix errors in tests (the "errata") whereas master is the unreleased work-in-progress that may become the next language version. Its current state is not necessarily prescriptive of the next language version's behavior since new additions will be reviewed for inclusion into the release.
 
+<a id="is-there-a-glossary-of-raku-related-terms--%E6%98%AF%E5%90%A6%E6%9C%89%E4%B8%8E-raku-%E7%9B%B8%E5%85%B3%E7%9A%84%E6%9C%AF%E8%AF%AD%E8%A1%A8%EF%BC%9F"></a>
 ## Is there a glossary of Raku related terms? / 是否有与 Raku 相关的术语表？
 
 有，见 [glossary](https://docs.raku.org/language/glossary)。
 
 Yes, see [glossary](https://docs.raku.org/language/glossary).
 
+<a id="%E6%88%91%E6%98%AF-perl-5-%E7%A8%8B%E5%BA%8F%E5%91%98%E3%80%82%E5%93%AA%E9%87%8C%E6%9C%89-perl-5-%E4%B8%8E-raku-%E7%9A%84%E4%B8%8D%E5%90%8C%E7%82%B9%E7%9A%84%E6%B8%85%E5%8D%95%EF%BC%9F--im-a-perl-5-programmer-where-is-a-list-of-differences-between-perl-5-and-raku"></a>
 ## 我是 Perl 5 程序员。哪里有 Perl 5 与 Raku 的不同点的清单？ / I'm a Perl 5 programmer. Where is a list of differences between Perl 5 and Raku?
 
 在[文档的语言部分](https://docs.raku.org/language)中有几个 *Perl 5 到 Raku* 指南，其中最值得注意的是[概述](https://docs.raku.org/language/5to6-nutshell)。
 
 There are several *Perl 5 to Raku* guides in the [Language section of the documentation](https://docs.raku.org/language), most notable of which is the [Overview](https://docs.raku.org/language/5to6-nutshell).
 
+<a id="im-a-ruby-programmer-looking-for-quickstart-type-docs--%E6%88%91%E6%98%AF%E4%B8%80%E4%B8%AA-ruby-%E7%A8%8B%E5%BA%8F%E5%91%98%E5%9C%A8%E5%AF%BB%E6%89%BE%E5%BF%AB%E9%80%9F%E5%90%AF%E5%8A%A8%E7%B1%BB%E5%9E%8B%E7%9A%84%E6%96%87%E6%A1%A3"></a>
 ## I'm a Ruby programmer looking for quickstart type docs? / 我是一个 Ruby 程序员在寻找快速启动类型的文档
 
 请参阅 [rb-nutshell](https://docs.raku.org/language/rb-nutshell) 指南。
 
 See the [rb-nutshell](https://docs.raku.org/language/rb-nutshell) guide.
 
+<a id="%E6%A8%A1%E7%BB%84--modules"></a>
 # 模组 / Modules
 
+<a id="%E6%98%AF%E5%90%A6%E6%9C%89%E4%B8%80%E4%B8%AA-cpan%EF%BC%88%E7%AC%AC%E4%B8%89%E6%96%B9%E5%BA%93%E6%A8%A1%E5%9D%97%E5%AD%98%E5%82%A8%E5%BA%93%EF%BC%89%E4%BE%9B-raku-%E4%BD%BF%E7%94%A8%EF%BC%9F--is-there-a-cpan-repository-of-third-party-library-modules-for-raku"></a>
 ## 是否有一个 CPAN（第三方库模块存储库）供 Raku 使用？ / Is there a CPAN (repository of third party library modules) for Raku?
 
 是的，它和 Perl5 是一个 [CPAN](https://cpan.org/) ！唯一的区别是当使用 [PAUSE](https://pause.perl.org/) 上传模块时，上传的模块显示在 [modules.raku.org](https://modules.raku.org/) 上，而不是 [MetaCPAN](https://metacpan.org/)。[`App::Mi6` 工具](https://modules.raku.org/l/App::Mi6)可以简化上传过程.[`zef` 模块安装程序](https://github.com/ugexe/zef)自动检查 CPAN 上一个模块的最新版本以及我们的[基于 GitHub 的生态系统](https://github.com/perl6/ecosystem/)。
 
 Yes, it's the same [CPAN](https://cpan.org/) as for Perl 5! The only difference is when using [PAUSE](https://pause.perl.org/) to upload the module, the uploaded modules shows up on [modules.raku.org](https://modules.raku.org/) instead of [MetaCPAN](https://metacpan.org/). The [`App::Mi6` tool](https://modules.raku.org/l/App::Mi6) can simplify the uploading process. The [`zef` module installer](https://github.com/ugexe/zef) automatically check for latest versions of a module on CPAN as well as our [GitHub-based ecosystem](https://github.com/perl6/ecosystem/).
 
+<a id="%E6%98%AF%E5%90%A6%E6%9C%89%E7%94%A8%E4%BA%8E-raku-%E7%9A%84-perldoc%EF%BC%88%E5%91%BD%E4%BB%A4%E8%A1%8C%E6%96%87%E6%A1%A3%E6%9F%A5%E7%9C%8B%E5%99%A8%EF%BC%89%EF%BC%9F--is-there-a-perldoc-command-line-documentation-viewer-for-raku"></a>
 ## 是否有用于 Raku 的 Perldoc（命令行文档查看器）？ / Is there a perldoc (command line documentation viewer) for Raku?
 
 是的，它被称为 `p6doc`，并以这个名字存在于生态系统中。它与 Rakudo Star 捆绑在一起，但如果您正在使用 Rakudo 每月发布，则需要手动安装 `zef`。
 
 Yes, it's called `p6doc` and is present in the ecosystem under that name. It comes bundled in with Rakudo Star but needs to be manually installed with `zef` if you are using a Rakudo monthly release.
 
+<a id="%E6%88%91%E5%8F%AF%E4%BB%A5%E4%BD%BF%E7%94%A8%E6%9D%A5%E8%87%AA-raku-%E7%9A%84-perl-5-%E6%A8%A1%E5%9D%97%E5%90%97%EF%BC%9F--can-i-use-perl-5-modules-from-raku"></a>
 ## 我可以使用来自 Raku 的 Perl 5 模块吗？ / Can I use Perl 5 modules from Raku?
 
 是的，有 [Inline::Perl5](https://github.com/niner/Inline-Perl5/)，它能使用大多数 Perl 5 模块。它甚至可以运行 Perl 5 Catalyst 和 DBI 模组。
 
 Yes, with [Inline::Perl5](https://github.com/niner/Inline-Perl5/), which works well with most Perl 5 modules. It can even run Perl 5 Catalyst and DBI.
 
+<a id="%E6%88%91%E5%8F%AF%E4%BB%A5%E5%9C%A8-raku-%E4%B8%AD%E4%BD%BF%E7%94%A8-c-%E5%92%8C-c-%E5%90%97%EF%BC%9F--can-i-use-c-and-c-from-raku"></a>
 ## 我可以在 Raku 中使用 C 和 C++ 吗？ / Can I use C and C++ from Raku?
 
 [Nativecall](https://docs.raku.org/language/nativecall) 让这个变得特别简单。
 
 [Nativecall](https://docs.raku.org/language/nativecall) makes this particularly easy.
 
+<a id="nativecall-%E6%89%BE%E4%B8%8D%E5%88%B0-libfooso%EF%BC%8C%E8%80%8C%E6%88%91%E5%8F%AA%E6%9C%89-libfooso12%EF%BC%81--nativecall-cant-find-libfooso-and-i-only-have-libfooso12"></a>
 ## nativecall 找不到 `libfoo.so`，而我只有 `libfoo.so.1.2`！ / Nativecall can't find `libfoo.so` and I only have `libfoo.so.1.2`!
 
 在大多数 Linux 系统中，共享库的安装方式是，对于一个特定的 `libfoo`，将有一个 `libfoo.so.x.y.z` 的真实文件，然后是一组软连接 `libfoo.so` 和 `libfoo.so.x`。例如，`ls /usr/local/lib/libxxhash.so*` 返回：
@@ -205,6 +288,7 @@ In that case, just use the version of `is native` that explicitly sets the ABI/A
 sub call-foo() is native('foo',v1.2);
 ```
 
+<a id="%E6%89%80%E6%9C%89%E4%BC%A0%E7%BB%9F%E7%9A%84-unix-%E5%BA%93%E5%87%BD%E6%95%B0%E9%83%BD%E5%8E%BB%E4%BA%86%E5%93%AA%E9%87%8C%EF%BC%9F--where-have-all-the-traditional-unix-library-functions-gone"></a>
 ## 所有传统的 UNIX 库函数都去了哪里？ / Where have all the traditional UNIX library functions gone?
 
 使用 [NativeCall](https://docs.raku.org/language/nativecall) 访问它们是相当容易的。
@@ -215,6 +299,7 @@ It's fairly easy to use [NativeCall](https://docs.raku.org/language/nativecall) 
 
 An ecosystem module [POSIX](https://github.com/cspencer/perl6-posix) is also available.
 
+<a id="rakudo-%E6%9C%89%E6%A0%B8%E5%BF%83%E6%A0%87%E5%87%86%E5%BA%93%E5%90%97%EF%BC%9F--does-rakudo-have-a-core-standard-library"></a>
 ## Rakudo 有核心标准库吗？ / Does Rakudo have a core standard library?
 
 [Rakudo Star distribution](https://rakudo.raku.org/downloads/) 确实有[许多有用的模组](https://github.com/rakudo/star/tree/master/modules)。
@@ -229,6 +314,7 @@ Rakudo compiler-only release includes [only a couple of the most basic modules](
 
 Many more modules can be found in the [ecosystem](https://modules.raku.org/).
 
+<a id="%E6%98%AF%E5%90%A6%E6%9C%89%E7%B1%BB%E4%BC%BC-bdeparse-%E7%9A%84%E4%B8%9C%E8%A5%BF%E6%88%91%E6%80%8E%E6%A0%B7%E6%89%8D%E8%83%BD%E5%BE%97%E5%88%B0-ast%EF%BC%9F--is-there-something-like-bdeparsehow-can-i-get-hold-of-the-ast"></a>
 ## 是否有类似 `B::Deparse` 的东西/我怎样才能得到 AST？ / Is there something like `B::Deparse`/How can I get hold of the AST?
 
 使用 `--target=optimize` 命令行选项查看程序的 AST，例如，`perl6 --target=optimize -e 'say "hi"'`。
@@ -239,12 +325,14 @@ Use `--target=optimize` command line option to view the AST of your program, e.g
 
 The target `optimize` gives the AST after the static optimizer does its job, while target `ast` gives the AST before that step. To get the full list of available targets, run `perl6 --stagestats -e ""`
 
+<a id="%E4%BB%80%E4%B9%88%E6%98%AF%E9%A2%84%E7%BC%96%E8%AF%91%EF%BC%9F--what-is-precompilation"></a>
 ## 什么是预编译？ / What is precompilation?
 
 当您第一次加载模块时，Rakudo 将其编译为字节码。然后，Rakudo 都将编译后的字节码存储在磁盘上并使用它，因为这往往要快得多。
 
 When you load a module for the first time, Rakudo compiles it into bytecode. Then, Rakudo both stores the compiled bytecode on disk and uses it, because that tends to be significantly faster.
 
+<a id="%E6%88%91%E8%83%BD%E5%9C%A8%E6%A8%A1%E5%9D%97%E4%B9%8B%E9%97%B4%E6%9C%89%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96%E5%85%B3%E7%B3%BB%E5%90%97%EF%BC%9F--can-i-have-circular-dependencies-between-modules"></a>
 ## 我能在模块之间有循环依赖关系吗？ / Can I have circular dependencies between modules?
 
 不，你不能有循环依赖，你应该得到一个 `Circular module loading detected` 错误，如果你的模块之间有这种情况的话。
@@ -263,8 +351,10 @@ One of the reasons why circular dependencies do not work in Raku is one pass par
 
 Note that Raku has no “1 file = 1 class” limitation, and circular dependencies within a single compilation unit (e.g., file) are possible through stubbing. Therefore another possible solution is to move classes into the same compilation unit.
 
+<a id="%E8%AF%AD%E8%A8%80%E7%89%B9%E6%80%A7--language-features"></a>
 # 语言特性 / Language features
 
+<a id="%E5%A6%82%E4%BD%95%E6%89%93%E5%8D%B0-raku-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%88%E4%B8%8E-perl5-%E7%9A%84-datadumper-%E6%88%96%E8%80%85%E5%85%B6%E4%BB%96%E6%A8%A1%E5%9D%97%E7%B1%BB%E4%BC%BC%EF%BC%89--how-can-i-dump-raku-data-structures-like-perl-5-datadumper-and-similar"></a>
 ## 如何打印 Raku 数据结构（与 Perl5 的 Data::Dumper 或者其他模块类似） / How can I dump Raku data structures (like Perl 5 Data::Dumper and similar)?
 
 典型的选项是使用 [say](https://docs.raku.org/routine/say) 例程，该例程使用 [gist](https://docs.raku.org/routine/gist) 方法，该方法给出了被打印对象的“要点”。更详细的输出可以通过调用 [perl](https://docs.raku.org/routine/perl) 方法（很快就会被弃用，改为 `$obj.raku`，自 Rakudo2019.11 发布以来可用）来获得，该方法通常返回在 [EVAL](https://docs.raku.org/routine/EVAL) 中可用的对象的表示。
@@ -292,6 +382,7 @@ dd $foo;         # OUTPUT: «Hash $foo = ${:foo("bar")}␤»
 
 There are also [several ecosystem modules](https://modules.raku.org/s/dump) that provide more control over how data structures are dumped, including support for colored output.
 
+<a id="%E5%A6%82%E4%BD%95%E5%9C%A8-raku-%E6%8F%90%E7%A4%BA%E7%AC%A6%EF%BC%88repl%EF%BC%89%E4%B8%AD%E8%8E%B7%E5%8F%96%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%8E%86%E5%8F%B2%E8%AE%B0%E5%BD%95%EF%BC%9F--how-can-i-get-command-line-history-in-the-raku-prompt-repl"></a>
 ## 如何在 Raku 提示符（REPL）中获取命令行历史记录？ / How can I get command line history in the Raku prompt (REPL)?
 
 从生态系统中安装 [Linenoise](https://github.com/hoelzro/p6-linenoise/).
@@ -306,6 +397,7 @@ An alternative for UNIX-like systems is to install `rlwrap`. This can be done on
 sudo apt-get install rlwrap
 ```
 
+<a id="%E4%B8%BA%E4%BB%80%E4%B9%88-rakudo-%E7%BC%96%E8%AF%91%E5%99%A8%E5%A6%82%E6%AD%A4%E5%A4%9A%E6%8A%B1%E6%AD%89%EF%BC%9F--why-is-the-rakudo-compiler-so-apologetic"></a>
 ## 为什么 Rakudo 编译器如此多抱歉？ / Why is the Rakudo compiler so apologetic?
 
 如果在输出中输出 SORRY！错误是编译时间错误。否则，这是运行时错误。
@@ -320,6 +412,7 @@ foo(1)     # ===SORRY!=== Error while compiling ...
 say 1/0;   # Attempt to divide 1 by zero using div 
 ```
 
+<a id="%E4%BB%80%E4%B9%88%E6%98%AF-any%EF%BC%9F--what-is-any"></a>
 ## 什么是 `(Any)`？ / What is `(Any)`?
 
 [`Any`](https://docs.raku.org/type/Any) 是大多数对象所继承的顶级类。在没有显式类型约束的变量和参数上，任何类型的对象都是[默认值](https://docs.raku.org/type/Attribute#Trait_is_default)，这意味着当您使用 [`say` 例程](https://docs.raku.org/routine/say)等方法输出一个没有任何值的变量时，您可能会看到 `(Any)` 打印出来：
@@ -341,6 +434,7 @@ say $bar; # OUTPUT: «70␤»
 
 To test whether a variable has any defined values, see [DEFINITE](https://docs.raku.org/language/classtut#index-entry-.DEFINITE) and [defined](https://docs.raku.org/routine/defined) routines. Several other constructs exist that test for definiteness, such as [`with`, `orwith`, and `without`](https://docs.raku.org/syntax/with%20orwith%20without) statements, [`//`](https://docs.raku.org/routine/$SOLIDUS$SOLIDUS), [andthen](https://docs.raku.org/routine/andthen), [notandthen](https://docs.raku.org/routine/notandthen), and [orelse](https://docs.raku.org/routine/orelse) operators, as well as [type constraint smileys](https://docs.raku.org/type/Signature#Constraining_defined_and_undefined_values).
 
+<a id="so-%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F--what-is-so"></a>
 ## `so` 是什么？ / What is `so`?
 
 `so` 是一个松散的优先操作符，强制类型转换为 [Bool](https://docs.raku.org/type/Bool)。
@@ -363,6 +457,7 @@ say so 1|2 == 2;    # OUTPUT: «True␤»
 
 In this example, the result of the comparison (which is a [Junction](https://docs.raku.org/type/Junction)), is converted to Bool before being printed.
 
+<a id="%E5%9C%A8%E5%87%BD%E6%95%B0%E7%AD%BE%E5%90%8D%E4%B8%AD%E7%9A%84-d-%E5%92%8C-u-%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F--what-are-those-d-and-u-things-in-signatures"></a>
 ## 在函数签名中的 `:D` 和 `:U` 是什么？ / What are those `:D` and `:U` things in signatures?
 
 在 Raku 中，类和其他类型是对象，并通过自己类型的类型检查。
@@ -404,6 +499,7 @@ Likewise, `:U` constrains to undefined values, that is, type objects.
 
 To explicitly allow either type objects or instances, you can use `:_`.
 
+<a id="%E5%9C%A8%E5%87%BD%E6%95%B0%E7%AD%BE%E5%90%8D%E4%B8%AD%E7%9A%84----%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F--what-is-the----thing-in-the-signature"></a>
 ## 在函数签名中的 `-->` 是什么？ / What is the `-->` thing in the signature?
 
 [-->](https://docs.raku.org/type/Signature#Constraining_return_types) 是返回值约束，是一个类型或者一个确定的值。
@@ -437,6 +533,7 @@ say discard-random-number;
 
 In this case, the final value is thrown away because the return value is already specified in the signature.
 
+<a id="%E6%88%91%E6%80%8E%E6%A0%B7%E6%89%8D%E8%83%BD%E4%BB%8E-junction-%E4%B8%AD%E6%8F%90%E5%8F%96%E5%80%BC%EF%BC%9F--how-can-i-extract-the-values-from-a-junction"></a>
 ## 我怎样才能从 Junction 中提取值？ / How can I extract the values from a Junction?
 
 如果您想从 [Junction](https://docs.raku.org/type/Junction) 中提取值（本征态），您可能做错了什么，应该使用 [Set](https://docs.raku.org/type/Set)。
@@ -462,6 +559,7 @@ say eigenstates(1|2|3).join(', ');
 # prints 1, 2, 3 or a permutation thereof 
 ```
 
+<a id="%E5%A6%82%E6%9E%9C-str-%E6%98%AF%E4%B8%8D%E5%8F%AF%E5%8F%98%E7%9A%84%EF%BC%8Cs-%E6%98%AF%E6%80%8E%E6%A0%B7%E5%B7%A5%E4%BD%9C%E7%9A%84%EF%BC%9F-%E5%A6%82%E6%9E%9C-int-%E6%98%AF%E4%B8%8D%E5%8F%AF%E5%8F%98%E7%9A%84%EF%BC%8C%24i-%E6%98%AF%E6%80%8E%E6%A0%B7%E5%B7%A5%E4%BD%9C%E7%9A%84%EF%BC%9F--if-str-is-immutable-how-does-s-work-if-int-is-immutable-how-does-%24i-work"></a>
 ## 如果 Str 是不可变的，`s///` 是怎样工作的？ 如果 Int 是不可变的，`$i++` 是怎样工作的？ / If Str is immutable, how does `s///` work? If Int is immutable, how does `$i++` work?
 
 在 Raku 中，许多基本类型的值是不可变的，但持有它们的变量不是。`s///` 运算符在一个变量上工作，它将一个新创建的字符串对象放入其中。同样，`$i++` 工作在 `$i` 变量上，而不仅仅是它的值。
@@ -499,6 +597,7 @@ my @bar = <hello world>».subst: 'h', 'H'; # ['Hello','world']
 
 See the documentation on [containers](https://docs.raku.org/language/containers) for more information.
 
+<a id="%E6%95%B0%E7%BB%84%E5%BC%95%E7%94%A8%E5%92%8C%E8%87%AA%E5%8A%A8%E5%8F%96%E6%B6%88%E5%BC%95%E7%94%A8%E6%98%AF%E6%80%8E%E4%B9%88%E5%9B%9E%E4%BA%8B%EF%BC%9F-%E6%88%91%E9%9C%80%E8%A6%81--%E6%A0%87%E8%AE%B0%E5%90%97%EF%BC%9F--whats-up-with-array-references-and-automatic-dereferencing-do-i-need-the--sigil"></a>
 ## 数组引用和自动取消引用是怎么回事？ 我需要 `@` 标记吗？ / What's up with array references and automatic dereferencing? Do I need the `@` sigil?
 
 在 Raku 中，几乎所有内容都是引用，因此谈论获取引用没有多大意义。 标量变量也可以直接包含数组：
@@ -541,6 +640,7 @@ You can force list context with `@( ... )` or by calling the `.list` method on a
 
 See the [*Perl 6: Sigils, Variables, and Containers*](https://perl6advent.wordpress.com/2017/12/02/) article to learn more.
 
+<a id="%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E7%94%A8%E6%A0%87%E8%AE%B0%E7%AC%A6%EF%BC%9F-%E4%BD%A0%E4%B8%8D%E8%83%BD%E6%B2%A1%E6%9C%89%E4%BB%96%E4%BB%AC%E5%90%97%EF%BC%9F--why-sigils-couldnt-you-do-without-them"></a>
 ## 为什么要用标记符？ 你不能没有他们吗？ / Why sigils? Couldn't you do without them?
 
 有以下几个原因：
@@ -559,6 +659,7 @@ There are several reasons:
 - they work like natural languages that use mandatory noun markers, so our brains are built to handle it
 - they aren't mandatory, since you can declare sigilless names (if you don't mind the ambiguity)
 
+<a id="%E2%80%9C%E7%B1%BB%E5%9E%8B-str-%E4%B8%8D%E6%94%AF%E6%8C%81%E5%85%B3%E8%81%94%E7%B4%A2%E5%BC%95%E3%80%82%E2%80%9D--type-str-does-not-support-associative-indexing"></a>
 ## “类型 Str 不支持关联索引。” / "Type Str does not support associative indexing."
 
 您可能试图混合使用字符串插值和关键字符，例如 HTML 标签：
@@ -579,6 +680,7 @@ my $foo = "abc";
 say "{$foo}<html-tag>";
 ```
 
+<a id="raku-%E6%9C%89%E5%8D%8F%E7%A8%8B%E5%90%97%EF%BC%9F-%E9%82%A3-yield-%E5%91%A2%EF%BC%9F--does-raku-have-coroutines-what-about-yield"></a>
 ## Raku 有协程吗？ 那 `yield` 呢？ / Does Raku have coroutines? What about `yield`?
 
 Raku 没有像 Python 那样的 `yield` 语句，但是它通过惰性列表提供了类似的功能。 有两种流行的方法可以编写返回延迟列表的例程：
@@ -598,6 +700,7 @@ my @values = gather while have_data() {
 my @squares = (1..*).map(-> \x { x² });
 ```
 
+<a id="%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E8%83%BD%E9%80%9A%E8%BF%87%E6%96%B0%E6%96%B9%E6%B3%95%E5%88%9D%E5%A7%8B%E5%8C%96%E7%A7%81%E6%9C%89%E5%B1%9E%E6%80%A7%EF%BC%8C%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3%E6%AD%A4%E9%97%AE%E9%A2%98%EF%BC%9F--why-cant-i-initialize-private-attributes-from-the-new-method-and-how-can-i-fix-this"></a>
 ## 为什么不能通过新方法初始化私有属性，如何解决此问题？ / Why can't I initialize private attributes from the new method, and how can I fix this?
 
 以下代码示例中的 `say` 语句
@@ -641,6 +744,7 @@ say B.new(x => 5).show-x;
 
 However, you shouldn't do that. If the attribute is declared as private, then it shouldn't be exposed to the environment outside the class (e.g., during object construction). On the other hand, if the attribute is public, there is no downside to declaring it that way with `$.x` since the external view is read-only by default, and you can still access it internally with `$!x`.
 
+<a id="say%E3%80%81-put-%E5%92%8C-print-%E6%9C%89%E4%BD%95%E5%8C%BA%E5%88%AB%EF%BC%9F--how-and-why-do-say-put-and-print-differ"></a>
 ## `say`、 `put` 和 `print` 有何区别？ / How and why do `say`, `put` and `print` differ?
 
 最明显的区别是 `say `和 `put` 在输出的末尾添加了换行符，而 `print` 则不会。
@@ -677,6 +781,7 @@ In short, `say` is optimized for casual human interpretation, `dd` is optimized 
 
 `put` is thus a hybrid of `print` and `say`; like `print`, it calls the `Str` method on the object. And like `say`, it adds a newline at the end of the output.
 
+<a id="token-%E5%92%8C-rule-%E7%9A%84%E5%8C%BA%E5%88%AB%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F--whats-the-difference-between-token-and-rule-"></a>
 ## `token` 和 `rule` 的区别是什么？ / What's the difference between `token` and `rule` ?
 
 `regex`、 `token` 和 `rule` 引入了正则，但语义略有不同。
@@ -695,6 +800,7 @@ In short, `say` is optimized for casual human interpretation, `dd` is optimized 
 
 `regex` declares a plain regex without any implied modifiers.
 
+<a id="die-%E5%92%8C-fail-%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F--whats-the-difference-between-die-and-fail"></a>
 ## `die` 和 `fail` 有什么区别？ / What's the difference between `die` and `fail`?
 
 `die` 抛出异常。
@@ -713,50 +819,59 @@ A `Failure` is an "unthrown" or "lazy" exception. It's an object that contains t
 
 A `Failure` returns `False` from a `defined` check, and you can extract the exception with the `exception` method.
 
+<a id="pointer-%E5%92%8C-opaquepointer-%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F--whats-the-difference-between-pointer-and-opaquepointer"></a>
 ## `Pointer` 和 `OpaquePointer` 有什么区别？ / What's the difference between `Pointer` and `OpaquePointer`?
 
 `OpaquePointer` 不推荐使用并被 `Pointer` 替换了。
 
 `OpaquePointer` is deprecated and has been replaced with `Pointer`.
 
+<a id="%E6%82%A8%E5%8F%AF%E4%BB%A5%E5%9C%A8%E6%A0%87%E8%AF%86%E7%AC%A6%E4%B8%AD%E6%9C%89%E5%86%92%E5%8F%B7%E5%AF%B9%E3%80%82%E7%90%86%E7%94%B1%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F--you-can-have-colonpairs-in-identifiers-whats-the-justification"></a>
 ## 您可以在标识符中有冒号对。理由是什么？ / You can have colonpairs in identifiers. What's the justification?
 
 [标识符可以包括冒号对，这些对成为其名称的一部分](https://docs.raku.org/language/syntax#Identifiers)。根据[拉里沃尔对这个问题的回答](https://github.com/perl6/doc/issues/1753#issuecomment-362875676)，*我们已经有了冒号对机制，所以使用它来扩展任何需要引用唯一但非标准字符的名称（或其他信息，并对这些字符进行独特的字符串）是一种不费吹灰之力的方法。
 
 [Identifiers can include colon pairs, which become part of their name](https://docs.raku.org/language/syntax#Identifiers). According to [Larry Wall's answer to the issue](https://github.com/perl6/doc/issues/1753#issuecomment-362875676), *We already had the colon pair mechanism available, so it was a no-brainer to use that to extend any name that needs to be able to quote uniquefying but non-standard characters (or other information with a unique stringification to such characters)*.
 
+<a id="%E5%A4%A7%E5%A4%9A%E6%95%B0%E4%BA%BA%E6%98%AF%E5%A6%82%E4%BD%95%E8%BE%93%E5%85%A5-unicode-%E5%AD%97%E7%AC%A6%E7%9A%84%EF%BC%9F--how-do-most-people-enter-unicode-characters"></a>
 ## 大多数人是如何输入 Unicode 字符的？ / How do most people enter unicode characters?
 
 它取决于操作系统、窗口环境和/或编辑器。[输入 Unicode 字符的页面](https://docs.raku.org/language/unicode_entry)指定如何在最流行的操作系统和编辑器中完成。
 
 It depends on the operating system, windowing environment and/or editors. [This page on entering Unicode characters](https://docs.raku.org/language/unicode_entry) specifies how it is done in the most popular operating systems and editors.
 
+<a id="raku-%E5%AE%9E%E7%8E%B0--raku-implementation"></a>
 # Raku 实现 / Raku implementation
 
+<a id="%E6%9C%89%E5%93%AA%E4%BA%9B-raku-%E5%AE%9E%E7%8E%B0%E5%8F%AF%E7%94%A8%EF%BC%9F--what-raku-implementations-are-available"></a>
 ## 有哪些 Raku 实现可用？ / What Raku implementations are available?
 
 目前最好的开发是乐天多（使用多个虚拟机后端）。历史上的实现包括 Niecza (用 .NET 写成) 和 Pugs（用 Haskell 写成）。其他名单列于 [Raku 编译器](https://www.raku.org/compilers/)
 
 Currently the best developed is Rakudo (using multiple Virtual Machine backends). Historic implementations include Niecza (.NET) and Pugs (Haskell). Others are listed at [Raku Compilers](https://www.raku.org/compilers/)
 
+<a id="rakudo-%E7%94%A8%E4%BB%80%E4%B9%88%E8%AF%AD%E8%A8%80%E5%86%99%E7%9A%84%EF%BC%9F--what-language-is-rakudo-written-in"></a>
 ## Rakudo 用什么语言写的？ / What language is Rakudo written in?
 
 一个简短的回答是，Rakudo 几乎完全是用 Raku 写的。一个更详细的答案是，Rakudo 是用 Raku 和 NQP（“Not Quite Perl”）的混合体写成的。对于虚拟机来说，NQP 是一个轻量级的类 Raku 环境；它被设计成一种使用 Raku 语法为虚拟机（如 MoarVM 和 JVM）创建编译器和库的高级方法。
 
 A short answer is that Rakudo is written almost entirely in Raku. A more detailed answer is that Rakudo is written in a mixture of Raku and NQP ("Not Quite Perl"). NQP is a lightweight Raku-like environment for virtual machines; it's designed to be a high-level way to create compilers and libraries for virtual machines (such as MoarVM and JVM) using Raku syntax.
 
+<a id="nqp-%E6%98%AF%E7%94%A8%E4%BB%80%E4%B9%88%E8%AF%AD%E8%A8%80%E5%86%99%E7%9A%84%EF%BC%9F--what-language-is-nqp-written-in"></a>
 ## NQP 是用什么语言写的？ / What language is NQP written in?
 
 NQP 是（1）NQP 代码的混合，（2）底层虚拟机使用的任何语言，（3）一些第三方 C 和 Java 库，（4）一些由构建过程的早期运行创建的引导文件。
 
 NQP is a mixture of (1) NQP code, (2) whatever language the underlying virtual machine is using, (3) some third-party C and Java libraries, and (4) some bootstrapping files created by earlier runs of the build process.
 
+<a id="raku-%E6%98%AF-lisp-%E5%90%97%EF%BC%9F--is-raku-lisp"></a>
 ## Raku 是 Lisp 吗？ / Is Raku Lisp?
 
 ```Raku
 (not (not Nil))
 ```
 
+<a id="%E6%88%91%E8%83%BD%E6%8A%8A%E6%88%91%E7%9A%84%E8%84%9A%E6%9C%AC%E7%BC%96%E8%AF%91%E6%88%90%E4%B8%80%E4%B8%AA%E7%8B%AC%E7%AB%8B%E7%9A%84%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%90%97%EF%BC%9F--can-i-compile-my-script-to-a-standalone-executable"></a>
 ## 我能把我的脚本编译成一个独立的可执行文件吗？ / Can I compile my script to a standalone executable?
 
 像 [`App::InstallerMaker::WiX`](https://modules.raku.org/dist/App::InstallerMaker::WiX) 这样的工具允许您创建一个安装程序来打包编译器和脚本。但是，当前可用的编译器还不支持创建独立的可执行文件。
@@ -767,16 +882,20 @@ Tools like [`App::InstallerMaker::WiX`](https://modules.raku.org/dist/App::Insta
 
 If you wish to help out, the *Rakudo* compiler on *MoarVM* backend has <https://github.com/MoarVM/MoarVM/issues/875> issue opened as a place to discuss this problem.
 
+<a id="raku-%E5%8F%91%E5%B8%83--raku-distribution"></a>
 # Raku 发布 / Raku distribution
 
+<a id="%E4%B8%8B%E4%B8%80%E4%B8%AA%E7%89%88%E6%9C%AC%E7%9A%84-rakudo-star-%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E5%8F%91%E5%B8%83%EF%BC%9F--when-will-the-next-version-of-rakudo-star-be-released"></a>
 ## 下一个版本的 Rakudo Star 什么时候发布？ / When will the next version of Rakudo Star be released?
 
 Rakudo Star 通常每季度发布一次，发布公告张贴在 [rakudo.org](https://rakudo.org/posts) 上。
 
 A Rakudo Star release is typically produced quarterly, with release announcements [posted on rakudo.org](https://rakudo.org/posts).
 
+<a id="%E5%85%83%E9%97%AE%E9%A2%98%E5%92%8C%E5%AE%A3%E4%BC%A0--metaquestions-and-advocacy"></a>
 # 元问题和宣传 / Metaquestions and advocacy
 
+<a id="%E4%B8%BA%E4%BB%80%E4%B9%88-raku-%E6%9C%80%E5%88%9D%E8%A2%AB%E7%A7%B0%E4%B8%BA-perl-6%EF%BC%9F--why-was-raku-originally-called-perl-6"></a>
 ## 为什么 Raku 最初被称为 Perl 6？ / Why was Raku originally called Perl 6?
 
 ...与其他名字不一样的是，它并不意味着在其他语言中较大的数字的全部含义。
@@ -791,6 +910,7 @@ The short answer is that it was Larry's choice under [Rule 1](https://perldoc.pe
 
 The community considers Perl 5 and Raku sister languages - they have a lot in common, address many of the same problem spaces, but Raku is not intended to replace Perl 5. In fact, both languages interoperate with each other.
 
+<a id="raku-%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E5%87%86%E5%A4%87%E5%A5%BD%EF%BC%9F%E7%8E%B0%E5%9C%A8%E5%87%86%E5%A4%87%E5%A5%BD%E4%BA%86%E5%90%97%EF%BC%9F--when-will-raku-be-ready-is-it-ready-now"></a>
 ## Raku 什么时候准备好？现在准备好了吗？ / When will Raku be ready? Is it ready now?
 
 编程语言及其编译器的准备与否不是一个非黑即白的决定。随着语言和实现的发展，它们越来越可用。根据您的需要，Raku 及其编译器对你而言可能准备好了，也可能没有准备好。
@@ -801,6 +921,7 @@ Readiness of programming languages and their compilers is not a binary decision.
 
 That said, version 6.c (Christmas 2015) is the first official release of Raku as a language, along with a validation suite and a compiler that passes it.
 
+<a id="%E6%88%91%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%AD%A6-raku%EF%BC%9F%E5%AE%83%E6%9C%89%E4%BB%80%E4%B9%88%E5%A5%BD%E7%9A%84%EF%BC%9F--why-should-i-learn-raku-whats-so-great-about-it"></a>
 ## 我为什么要学 Raku？它有什么好的？ / Why should I learn Raku? What's so great about it?
 
 Raku 将许多伟大的思想结合起来，这些思想通常在其他编程语言中找不到。虽然其他几种语言提供了其中的一些功能，但没有一种提供所有这些功能。
@@ -899,13 +1020,22 @@ Raku unifies many great ideas that aren't usually found in other programming lan
 - Lazy lists defined with a simple iterator interface, which any class can supply by minimally supplying a single method.
 - Raku's mottos remain the same as they have been for Perl all along: “Perl is different. In a nutshell, Perl is designed to make the easy jobs easy, without making the hard jobs impossible.” and “There Is More Than One Way To Do It”. Now with even more -Ofun added.
 
-## Is Raku fast enough for me?
+<a id="raku-%E5%AF%B9%E6%88%91%E6%9D%A5%E8%AF%B4%E5%A4%9F%E5%BF%AB%E5%90%97%EF%BC%9F--is-raku-fast-enough-for-me"></a>
+## Raku 对我来说够快吗？ / Is Raku fast enough for me?
+
+这取决于你在做什么。Rakudo 的发展理念是“让它工作起来，然后让它快速工作。”对某些事情来说已经很快了，但需要为其他人工作。由于 Raku 为 JIT 提供了很多其他动态语言所没有的线索，我们认为我们将有很多改进性能的空间。
 
 That depends on what you are doing. Rakudo has been developed with the philosophy of "make it work right then make it work fast." It's fast for some things already but needs work for others. Since Raku provides lots of clues to the JIT that other dynamic languages don't, we think we'll have a lot of headroom for performance improvements.
 
+以下粗略的基准，加上所有关于这些事情的通常警告，表明如果包括大武器，即如果充分使用 Raku 特性，Raku 可以比 Perl 5 更快；同时，如果只使用一般的特性，Perl 5 可以更快。在将 Raku 语言与其他语言进行比较时，也可以观察到类似的情况。 
+
 The following crude benchmarks, with all the usual caveats about such things, show that Raku can be faster than Perl 5 for similar tasks if the big weaponry is included, that is, if Raku features are used to its full extent; at the same time, Perl 5 can be faster if only the bare bones are included. Similar situation can be observed when comparing Raku to other languages.
 
+在你的系统上试试。你可能会感到惊喜！
+
 Try it on your system. You may be pleasantly surprised!
+
+例如：
 
 Examples:
 
@@ -950,6 +1080,8 @@ for my $i (1..1_000_000) {
 1;
 ```
 
+您可能也想使用这个程序来比较性能。它在两种语言下工作，只要 `perl -Mbigint` 被用于调用 Perl 5。
+
 You might want to use this program for comparing performance, too. It works under both languages, as long as `perl -Mbigint` is used for invocation for Perl 5.
 
 ```Raku
@@ -961,10 +1093,18 @@ for (0..100_000) {
 print $current;
 ```
 
+从 [/language/faq](https://github.com/perl6/doc/blob/master/doc/Language/faq.pod6) 中生成. [Debug: 关闭]
+
 Generated from [/language/faq](https://github.com/perl6/doc/blob/master/doc/Language/faq.pod6). [Debug: off]
+
+这是一项正在进行的工作，记录 Raku 的文档（以前称为 Perl 6），并已知是不完整的。
 
 This is a work in progress to document Raku (formerly known as Perl 6), and known to be incomplete.
 
+[请报告任何问题](https://github.com/Raku/doc/blob/master/CONTRIBUTING.md#reporting-bugs)。感谢你的贡献。
+
 [Please report any issues](https://github.com/Raku/doc/blob/master/CONTRIBUTING.md#reporting-bugs).Your contribution is appreciated.
+
+本文件是根据 [Artistic License 2.0](https://raw.githubusercontent.com/Raku/doc/master/LICENSE) 的条款提供的。Camelia 图像是[版权 2009 年拉里沃尔]。](https://raw.githubusercontent.com/perl6/mu/master/misc/camelia.txt)
 
 This documentation is provided under the terms of the [Artistic License 2.0](https://raw.githubusercontent.com/Raku/doc/master/LICENSE). The Camelia image is [copyright © 2009 by Larry Wall.](https://raw.githubusercontent.com/perl6/mu/master/misc/camelia.txt)
