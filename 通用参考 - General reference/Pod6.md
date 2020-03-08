@@ -47,7 +47,7 @@ A very simple Pod6 document
 <a id="%E4%BB%A3%E7%A0%81%E5%9D%97%E7%BB%93%E6%9E%84--block-structure"></a>
 # 代码块结构 / Block structure
 
-一个 Pod6 文档可以由多个 Pod6 块组成。定义块有四种方法：分隔、段落、缩写和声明；前三种方法产生相同的结果，但第四种方法不同。您可以使用哪种形式最方便您的特定文档任务。
+一个 Pod6 文档可以由多个 Pod6 块组成。定义块有四种方法：分隔、段落、缩写和声明；前三种方法产生相同的结果，但第四种方法不同。你可以使用哪种形式最方便你的特定文档任务。
 
 A Pod6 document may consist of multiple Pod6 blocks. There are four ways to define a block: delimited, paragraph, abbreviated, and declarator; the first three yield the same result but the fourth differs. You can use whichever form is most convenient for your particular documentation task.
 
@@ -640,7 +640,7 @@ Comments [Comments](https://docs.raku.org/language/pod#Comments)
 
 This code is not implemented in `Pod::To::HTML`, but is partially implemented in `Pod::To::BigPage`.
 
-第二类链接 — `P<>` 或**位置链接** — 的工作方向相反。它不是将焦点指向另一个文档，而是允许您将另一个文档的内容吸收到自己的文档中。
+第二类链接 — `P<>` 或**位置链接** — 的工作方向相反。它不是将焦点指向另一个文档，而是允许你将另一个文档的内容吸收到自己的文档中。
 
 A second kind of link — the `P<>` or **placement link** — works in the opposite direction. Instead of directing focus out to another document, it allows you to assimilate the contents of another document into your own.
 
@@ -686,7 +686,7 @@ See: `file:/shared/docs/std_copyright.pod`
 
 See: `http://www.MegaGigaTeraPetaCorp.com/std/disclaimer.txt`
 
-您可以在位置链接中使用以下任何 URI 表单（参见[链接](https://docs.raku.org/language/pod#Links)）。
+你可以在位置链接中使用以下任何 URI 表单（参见[链接](https://docs.raku.org/language/pod#Links)）。
 
 You can use any of the following URI forms (see [Links](https://docs.raku.org/language/pod#Links)) in a placement link.
 
@@ -826,7 +826,7 @@ starting with 0. A X<hash> is an unordered collection of scalar
 values indexed by their associated string key.
 ```
 
-您可以指定一个索引条目，其中索引文本和索引条目是不同的，方法是用竖线分隔两者：
+你可以指定一个索引条目，其中索引文本和索引条目是不同的，方法是用竖线分隔两者：
 
 You can specify an index entry in which the indexed text and the index entry are different, by separating the two with a vertical bar:
 
@@ -851,7 +851,7 @@ is an unordered collection of scalar values indexed by their
 associated string key.
 ```
 
-您可以为单个索引文本指定两个或多个条目，方法是用分号分隔条目：
+你可以为单个索引文本指定两个或多个条目，方法是用分号分隔条目：
 
 You can specify two or more entries for a single indexed text, by separating the entries with semicolons:
 
@@ -874,7 +874,7 @@ because you "OR" the "cache".
 
 ## HTML
 
-为了将 Pod 转成 HTML，您需要 [Pod::To::HTML 模组](https://github.com/perl6/Pod-To-HTML).
+为了将 Pod 转成 HTML，你需要 [Pod::To::HTML 模组](https://github.com/perl6/Pod-To-HTML).
 
 In order to generate HTML from Pod, you need the [Pod::To::HTML module](https://github.com/perl6/Pod-To-HTML).
 
@@ -892,7 +892,7 @@ perl6 --doc=HTML input.pod6 > output.html
 
 ## Markdown
 
-为了将 Pod 转成 HTML，您需要 [Pod::To::Markdown 模组](https://github.com/softmoth/perl6-pod-to-markdown).
+为了将 Pod 转成 HTML，你需要 [Pod::To::Markdown 模组](https://github.com/softmoth/perl6-pod-to-markdown).
 
 In order to generate Markdown from Pod, you need the [Pod::To::Markdown module](https://github.com/softmoth/perl6-pod-to-markdown).
 
@@ -910,7 +910,7 @@ perl6 --doc=Markdown input.pod6 > output.md
 
 ## Text
 
-为了将 Pod 转成文本，您可以使用默认的 `Pod::To::Text` 模块。
+为了将 Pod 转成文本，你可以使用默认的 `Pod::To::Text` 模块。
 
 In order to generate text from Pod, you can use the default `Pod::To::Text` module.
 
@@ -922,7 +922,7 @@ Using the terminal, run the following command:
 perl6 --doc=Text input.pod6 > output.txt
 ```
 
-您可以省略 `=Text`：
+你可以省略 `=Text`：
 
 You can omit the `=Text` portion:
 
@@ -930,7 +930,7 @@ You can omit the `=Text` portion:
 perl6 --doc input.pod6 > output.txt
 ```
 
-您甚至可以在程序中直接嵌入 Pod6，并在程序中添加传统的 Unix 命令行 “--man” 选项，其多个主程序如下：
+你甚至可以在程序中直接嵌入 Pod6，并在程序中添加传统的 Unix 命令行 “--man” 选项，其多个主程序如下：
 
 You can even embed Pod6 directly in your program and add the traditional Unix command line "--man" option to your program with a multi MAIN subroutine like this:
 
@@ -940,7 +940,7 @@ multi MAIN(Bool :$man) {
 }
 ```
 
-现在 `myprogram --man` 将输出您的 Pod6 呈现为一个帮助手册页面。
+现在 `myprogram --man` 将输出你的 Pod6 呈现为一个帮助手册页面。
 
 Now `myprogram --man` will output your Pod6 rendered as a man page.
 

@@ -23,7 +23,7 @@ Information about the people working on and using Raku
 <a id="%E6%A6%82%E8%BF%B0--overview"></a>
 # 概述 / Overview
 
-“Perl 5 是我对 Perl 的改写。我希望 Perl 6 是社区对 Perl 的改写，并且是属于社区的。”-Larry Wall（2000 年左右）
+“Perl 5 是我对 Perl 的改写。我希望 Perl 6 是社区对 Perl 的改写，并且是属于社区的。” - Larry Wall（2000 年左右）
 
 "Perl 5 was my rewrite of Perl. I want Perl 6 to be the community's rewrite of Perl and of the community." - Larry Wall (circa 2000)
 
@@ -56,7 +56,7 @@ The IRC channel has some very interesting bots. This is a full list with the nam
 
 - **bisectable** ([details](https://github.com/Raku/whateverable/wiki/Bisectable))
 
-  这个机器人是为了帮助你找到什么东西坏了。如果您想知道某件事是否曾经工作过，请使用 Committable 代替。
+  这个机器人是为了帮助你找到什么东西坏了。如果你想知道某件事是否曾经工作过，请使用 Committable 代替。
 
   This bot is meant to help you find when something got broken. If you want to know if something has ever worked use Committable instead.
 
@@ -86,7 +86,7 @@ The IRC channel has some very interesting bots. This is a full list with the nam
 
 - **coverable** ([details](https://github.com/Raku/whateverable/wiki/Coverable))
   
-  用于创建在运行您给它的代码时被击中的 Rakudo（和 NQP）源代码的覆盖报告。第一个选项是提交，第二个（可选）选项是筛选您想要的 MoarVM 生成的覆盖日志的行，第三个是要运行的代码。
+  用于创建在运行你给它的代码时被击中的 Rakudo（和 NQP）源代码的覆盖报告。第一个选项是提交，第二个（可选）选项是筛选你想要的 MoarVM 生成的覆盖日志的行，第三个是要运行的代码。
 
   An IRC bot for creating a coverage report of the Rakudo (and NQP) source lines that were hit while running the code you give it. The first option is the commit, the second (optional) option is the filter for what lines of the MoarVM-generated coverage log you want, the third is the code to run.
 
@@ -144,13 +144,13 @@ The IRC channel has some very interesting bots. This is a full list with the nam
 
   An IRC bot for getting information about the upcoming release. It can be addressed by its full name ('releasable6') or its short name ('release').
 
-  作为一个用户，您可能只对它唯一的命令 “status” 感兴趣。它告诉你下一个版本将在什么时候发生，以及有多少个拦截器。
+  作为一个用户，你可能只对它唯一的命令 “status” 感兴趣。它告诉你下一个版本将在什么时候发生，以及有多少个拦截器。
 
   As a user, you are probably only interested in its only command “status”. It tells when the next release is going to happen and how many blockers are there.
 
 - **reportable** ([details](https://github.com/Raku/whateverable/wiki/Reportable))
   
-  用于生成关于 Rakudo RT 和 GitHub 问题跟踪器变化的报告（这些问题被解决、更新、拒绝等）。它可以用它的全名（‘reportable6’）或它的短名（‘report’）来称呼。它定期获取问题跟踪器的快照，然后您可以要求它为两个给定的快照生成报告。
+  用于生成关于 Rakudo RT 和 GitHub 问题跟踪器变化的报告（这些问题被解决、更新、拒绝等）。它可以用它的全名（‘reportable6’）或它的短名（‘report’）来称呼。它定期获取问题跟踪器的快照，然后你可以要求它为两个给定的快照生成报告。
 
   An IRC bot for generating reports of changes in rakudo RT and GitHub issue trackers (which issues were resolved, updated, rejected, etc.). It can be addressed by its full name ('reportable6') or its short name ('report'). It takes snapshots of issue trackers periodically, and then you can ask it to generate a report for two given snapshots.
 
@@ -164,7 +164,7 @@ The IRC channel has some very interesting bots. This is a full list with the nam
 
   An IRC bot for making rakudo builds produced by Whateverable publicly available. It can be addressed by its full name ('shareable6').
 
-  请注意，构建将位于 `/tmp/everyable/rakudo-moar/SOME-SHA/`。而且，从今天起，这些文件只有在 linux x86_64 上才对您有用。
+  请注意，构建将位于 `/tmp/everyable/rakudo-moar/SOME-SHA/`。而且，从今天起，这些文件只有在 linux x86_64 上才对你有用。
 
   Note that the build will be located in `/tmp/whateverable/rakudo-moar/SOME-SHA/`. Also, as of today these files are only useful for you if you're on linux x86_64.
 
@@ -245,7 +245,7 @@ Raku is also a common topic at [Perl conferences](https://www.perl.org/events.ht
 <a id="raku-%E5%91%A8%E5%88%8A--raku-weekly"></a>
 # Raku 周刊 / Raku Weekly
 
-伊丽莎白·马蒂杰森通常在 [“Raku 周刊”博客](https://p6weekly.wordpress.com/)上发表文章，总结 Raku 的帖子、推特、评论和其他有趣的花絮。如果您想让一个资源知道 Raku 社区现在发生了什么，这是您最好的资源。
+伊丽莎白·马蒂杰森通常在 [“Raku 周刊”博客](https://p6weekly.wordpress.com/)上发表文章，总结 Raku 的帖子、推特、评论和其他有趣的花絮。如果你想让一个资源知道 Raku 社区现在发生了什么，这是你最好的资源。
 
 Elizabeth Mattijsen usually posts in [the "Raku Weekly" blog](https://p6weekly.wordpress.com/), a summary of Raku posts, tweets, comments and other interesting tidbits. If you want a single resource to know what is going on in the Raku community now, this is your best resource.
 

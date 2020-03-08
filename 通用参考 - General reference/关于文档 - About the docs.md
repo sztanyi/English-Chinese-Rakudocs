@@ -42,7 +42,7 @@ All of the documentation is written in Raku Pod and kept in the `doc/` directory
 <a id="pod-%E8%BD%AC%E4%B8%BA-html--generating-html-from-pod"></a>
 # Pod 转为 HTML / Generating HTML from Pod
 
-要从 Pod 文件生成 HTML，您需要：
+要从 Pod 文件生成 HTML，你需要：
 
 To generate HTML from the Pod files, you'll need:
 
@@ -171,7 +171,7 @@ Then the results on the rendered page:
 
 These items should now be searchable by using the search field in the HTML docs.
 
-您可以添加粗体（**B<>**）或斜体（**I<>**）的强调，有或没有代码格式（**C<>**）。由于目前的解析器的局限性，必须采取特别步骤，将 **X<>** 与其他格式代码一起使用；例如：
+你可以添加粗体（**B<>**）或斜体（**I<>**）的强调，有或没有代码格式（**C<>**）。由于目前的解析器的局限性，必须采取特别步骤，将 **X<>** 与其他格式代码一起使用；例如：
 
 You can add emphasis with bold ( **B<>** ) or italicized ( **I<>** ), with or without code formatting ( **C<>** ). Due to current parser limitations, special steps have to be taken to use **X<>** with other formatting codes; for example:
 

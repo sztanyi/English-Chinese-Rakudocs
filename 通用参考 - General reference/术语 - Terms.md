@@ -10,7 +10,7 @@ Raku 的大多数句法结构可以分为*术语*和[运算符](https://docs.rak
 
 Most syntactic constructs in Raku can be categorized in *terms* and [operators](https://docs.raku.org/language/operators).
 
-在这里，您可以找到不同类型术语的概述。
+在这里，你可以找到不同类型术语的概述。
 
 Here you can find an overview of different kinds of terms.
 
@@ -76,7 +76,7 @@ To specify a base other than ten, use the colonpair form `:radix<number> `.
 
 [Rat](https://docs.raku.org/type/Rat) literals (rational numbers) contain two integer parts joined by a dot.
 
-请注意，末尾不允许有点，因此您必须写 `1.0` 而不是 `1.`（这一规则很重要，因为有以点开头的固定运算符，例如 `..` [范围](https://docs.raku.org/type/Range)运算符）。
+请注意，末尾不允许有点，因此你必须写 `1.0` 而不是 `1.`（这一规则很重要，因为有以点开头的固定运算符，例如 `..` [范围](https://docs.raku.org/type/Range)运算符）。
 
 Note that trailing dots are not allowed, so you have to write `1.0` instead of `1.` (this rule is important because there are infix operators starting with a dot, for example the `..` [Range](https://docs.raku.org/type/Range) operator).
 
@@ -304,7 +304,7 @@ talk speed-of-light²; # OUTPUT: «89875517873681764␤»
 talk @foo;            # OUTPUT: «(1 2 3)␤»
 ```
 
-编译时求值意味着[您应该小心](https://docs.raku.org/language/traps#Constants_are_Compile_Time)在模块内部使用常量，这些常量会自动预编译，因此即使在程序的多次执行之间，常量的值也不会改变：
+编译时求值意味着[你应该小心](https://docs.raku.org/language/traps#Constants_are_Compile_Time)在模块内部使用常量，这些常量会自动预编译，因此即使在程序的多次执行之间，常量的值也不会改变：
 
 Compile-time evaluation means [you should be careful](https://docs.raku.org/language/traps#Constants_are_Compile_Time) with using constants inside modules, which get automatically precompiled, and so the value of the constant would not change even between multiple executions of the program:
 
@@ -331,7 +331,7 @@ our constant @foo = 1, 2, 3;
     constant %bar = %(:42foo, :100bar);
 ```
 
-*注意：如果您正在使用 Rakudo 编译器，您需要 2018.08 以上的版本才有类型约束和自动类型强制转换的常量。对带 % 符号的常数的自动类型转换需要 6.d* 以上的版本。
+*注意：如果你正在使用 Rakudo 编译器，你需要 2018.08 以上的版本才有类型约束和自动类型强制转换的常量。对带 % 符号的常数的自动类型转换需要 6.d* 以上的版本。
 
 *NOTE: if you're using the Rakudo compiler, you need version 2018.08 or newer for type constraints and auto-coercion on constants to be available. Auto-coercion on %-sigiled constants requires 6.d*.
 
@@ -385,7 +385,7 @@ constant %baz = :72baz;
 %baz.perl.say; # OUTPUT: «:baz(72)» 
 ```
 
-出于方便和一致性的原因，您可以使用[绑定运算符(`:=`)](https://docs.raku.org/routine/:=)而不是赋值运算符，在无标记的常量名称之前使用反斜杠（与[无标记变量](https://docs.raku.org/language/variables#Sigilless_variables)相同），甚至可以完全省略常量名称来得到匿名常量。由于您不能引用匿名实体，因此您最好使用 [`BEGIN`相位器](https://docs.raku.org/language/phasers#BEGIN)，这样更清晰。
+出于方便和一致性的原因，你可以使用[绑定运算符(`:=`)](https://docs.raku.org/routine/:=)而不是赋值运算符，在无标记的常量名称之前使用反斜杠（与[无标记变量](https://docs.raku.org/language/variables#Sigilless_variables)相同），甚至可以完全省略常量名称来得到匿名常量。由于你不能引用匿名实体，因此你最好使用 [`BEGIN`相位器](https://docs.raku.org/language/phasers#BEGIN)，这样更清晰。
 
 For convenience and consistency reasons, you can use the [binding operator (`:=`)](https://docs.raku.org/routine/:=) instead of the assignment operator, use backslash before sigilless name of the constant variable (same as with [sigilless variables](https://docs.raku.org/language/variables#Sigilless_variables)), and even omit the name of the constant entirely to have an anonymous constant. Since you can't refer to anonymous entities, you may be better off using a [`BEGIN` phaser](https://docs.raku.org/language/phasers#BEGIN) instead, for clarity.
 

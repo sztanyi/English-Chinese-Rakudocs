@@ -51,7 +51,7 @@ Frequently asked questions about Raku
     - [`token` 和 `rule` 的区别是什么？ / What's the difference between `token` and `rule` ?](#token-%E5%92%8C-rule-%E7%9A%84%E5%8C%BA%E5%88%AB%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F--whats-the-difference-between-token-and-rule-)
     - [`die` 和 `fail` 有什么区别？ / What's the difference between `die` and `fail`?](#die-%E5%92%8C-fail-%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F--whats-the-difference-between-die-and-fail)
     - [`Pointer` 和 `OpaquePointer` 有什么区别？ / What's the difference between `Pointer` and `OpaquePointer`?](#pointer-%E5%92%8C-opaquepointer-%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F--whats-the-difference-between-pointer-and-opaquepointer)
-    - [您可以在标识符中有冒号对。理由是什么？ / You can have colonpairs in identifiers. What's the justification?](#%E6%82%A8%E5%8F%AF%E4%BB%A5%E5%9C%A8%E6%A0%87%E8%AF%86%E7%AC%A6%E4%B8%AD%E6%9C%89%E5%86%92%E5%8F%B7%E5%AF%B9%E3%80%82%E7%90%86%E7%94%B1%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F--you-can-have-colonpairs-in-identifiers-whats-the-justification)
+    - [你可以在标识符中有冒号对。理由是什么？ / You can have colonpairs in identifiers. What's the justification?](#%E4%BD%A0%E5%8F%AF%E4%BB%A5%E5%9C%A8%E6%A0%87%E8%AF%86%E7%AC%A6%E4%B8%AD%E6%9C%89%E5%86%92%E5%8F%B7%E5%AF%B9%E3%80%82%E7%90%86%E7%94%B1%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F--you-can-have-colonpairs-in-identifiers-whats-the-justification)
     - [大多数人是如何输入 Unicode 字符的？ / How do most people enter unicode characters?](#%E5%A4%A7%E5%A4%9A%E6%95%B0%E4%BA%BA%E6%98%AF%E5%A6%82%E4%BD%95%E8%BE%93%E5%85%A5-unicode-%E5%AD%97%E7%AC%A6%E7%9A%84%EF%BC%9F--how-do-most-people-enter-unicode-characters)
 - [Raku 实现 / Raku implementation](#raku-%E5%AE%9E%E7%8E%B0--raku-implementation)
     - [有哪些 Raku 实现可用？ / What Raku implementations are available?](#%E6%9C%89%E5%93%AA%E4%BA%9B-raku-%E5%AE%9E%E7%8E%B0%E5%8F%AF%E7%94%A8%EF%BC%9F--what-raku-implementations-are-available)
@@ -122,7 +122,7 @@ Mac 用户可以从 <https://rakudo.org/downloads/star> 下载使用在最新的
 
 Mac users can use the latest Rakudo Star DMG binary installer at <https://rakudo.org/downloads/star>
 
-Windows 用户可以使用 Rakudo Star MSI 二进制安装程序.您将需要 Windows Git 和 Strawberry Perl 5 使用 zef 安装库模块。
+Windows 用户可以使用 Rakudo Star MSI 二进制安装程序.你将需要 Windows Git 和 Strawberry Perl 5 使用 zef 安装库模块。
 
 Windows users can use the Rakudo Star MSI binary installer. You will need Windows Git and Strawberry Perl 5 to use zef to install library modules.
 
@@ -141,7 +141,7 @@ There's an official Rakudo Star docker image at <https://hub.docker.com/_/rakudo
 <a id="%E4%BD%9C%E4%B8%BA%E4%B8%80%E4%B8%AA%E9%AB%98%E7%BA%A7%E7%94%A8%E6%88%B7%EF%BC%8C%E6%88%91%E6%83%B3%E8%B7%9F%E8%B8%AA-rakudo-%E7%9A%84%E5%8F%91%E5%B1%95%E3%80%82--as-an-advanced-user-i-want-to-track-rakudo-development"></a>
 ## 作为一个高级用户，我想跟踪 Rakudo 的发展。 / As an advanced user I want to track Rakudo development.
 
-一种选择是克隆[存储库](https://github.com/rakudo/rakudo)并构建它。这将安装正在进行的工作，这是最小的测试，并可能包含严重的错误。如果您有兴趣为 Rakudo Raku 编译器做贡献，您可能会发现 [Z-Script 帮助工具](https://github.com/zoffixznet/z)很有用。
+一种选择是克隆[存储库](https://github.com/rakudo/rakudo)并构建它。这将安装正在进行的工作，这是最小的测试，并可能包含严重的错误。如果你有兴趣为 Rakudo Raku 编译器做贡献，你可能会发现 [Z-Script 帮助工具](https://github.com/zoffixznet/z)很有用。
 
 An option is to clone [the repository](https://github.com/rakudo/rakudo) and build it. This will install work in progress which is minimally-tested and may contain severe bugs. If you're interested in contributing to the Rakudo Raku compiler, you may find the [Z-Script helper tool](https://github.com/zoffixznet/z) useful.
 
@@ -153,7 +153,7 @@ To install the last official monthly release, check out the tag visible at <http
 
 Some users choose to use [rakudobrew](https://github.com/tadzik/rakudobrew), which allows installation of multiple versions of rakudo. Be sure to [read its documentation](https://github.com/tadzik/rakudobrew#making-new-scripts-available).
 
-在这两种情况下，您可能还需要从[生态系统](https://modules.raku.org/) 中安装 [`zef`](https://modules.raku.org/dist/zef:github) 和 [`p6doc`](https://modules.raku.org/dist/p6doc:github)。
+在这两种情况下，你可能还需要从[生态系统](https://modules.raku.org/) 中安装 [`zef`](https://modules.raku.org/dist/zef:github) 和 [`p6doc`](https://modules.raku.org/dist/p6doc:github)。
 
 In either case you will probably need to also install [`zef`](https://modules.raku.org/dist/zef:github) and [`p6doc`](https://modules.raku.org/dist/p6doc:github) from the [ecosystem](https://modules.raku.org/).
 
@@ -245,7 +245,7 @@ Yes, it's the same [CPAN](https://cpan.org/) as for Perl 5! The only difference 
 <a id="%E6%98%AF%E5%90%A6%E6%9C%89%E7%94%A8%E4%BA%8E-raku-%E7%9A%84-perldoc%EF%BC%88%E5%91%BD%E4%BB%A4%E8%A1%8C%E6%96%87%E6%A1%A3%E6%9F%A5%E7%9C%8B%E5%99%A8%EF%BC%89%EF%BC%9F--is-there-a-perldoc-command-line-documentation-viewer-for-raku"></a>
 ## 是否有用于 Raku 的 Perldoc（命令行文档查看器）？ / Is there a perldoc (command line documentation viewer) for Raku?
 
-是的，它被称为 `p6doc`，并以这个名字存在于生态系统中。它与 Rakudo Star 捆绑在一起，但如果您正在使用 Rakudo 每月发布，则需要手动安装 `zef`。
+是的，它被称为 `p6doc`，并以这个名字存在于生态系统中。它与 Rakudo Star 捆绑在一起，但如果你正在使用 Rakudo 每月发布，则需要手动安装 `zef`。
 
 Yes, it's called `p6doc` and is present in the ecosystem under that name. It comes bundled in with Rakudo Star but needs to be manually installed with `zef` if you are using a Rakudo monthly release.
 
@@ -276,7 +276,7 @@ In most Linux systems, shared libraries will be installed in such a way that, fo
 /usr/local/lib/libxxhash.so.0.6.5
 ```
 
-一般而言，在 Linux 中安装 `libfo-dev` 或 `libfo-devel`（取决于发行版）将安装共享库*并*为您设置这些软连接。但在某些情况下，你只会有，就像在问题中一样，`libfo.so.1.2`.
+一般而言，在 Linux 中安装 `libfo-dev` 或 `libfo-devel`（取决于发行版）将安装共享库*并*为你设置这些软连接。但在某些情况下，你只会有，就像在问题中一样，`libfo.so.1.2`.
 
 In general, installing a `libfoo-dev` or `libfoo-devel` (depending on the distro) in Linux will install the shared library *and* set up those symlinks for you. But in some cases, you will only have, as in the question, `libfoo.so.1.2`.
 
@@ -328,7 +328,7 @@ The target `optimize` gives the AST after the static optimizer does its job, whi
 <a id="%E4%BB%80%E4%B9%88%E6%98%AF%E9%A2%84%E7%BC%96%E8%AF%91%EF%BC%9F--what-is-precompilation"></a>
 ## 什么是预编译？ / What is precompilation?
 
-当您第一次加载模块时，Rakudo 将其编译为字节码。然后，Rakudo 都将编译后的字节码存储在磁盘上并使用它，因为这往往要快得多。
+当你第一次加载模块时，Rakudo 将其编译为字节码。然后，Rakudo 都将编译后的字节码存储在磁盘上并使用它，因为这往往要快得多。
 
 When you load a module for the first time, Rakudo compiles it into bytecode. Then, Rakudo both stores the compiled bytecode on disk and uses it, because that tends to be significantly faster.
 
@@ -339,7 +339,7 @@ When you load a module for the first time, Rakudo compiles it into bytecode. The
 
 No, you can't have circular dependencies, and you should get a `Circular module loading detected` error if you have them between your modules.
 
-很可能您可以使用[角色](https://docs.raku.org/language/objects#Roles)完成您正在尝试的任务。而不是 `A.pm6` 依赖 `B.pm6` 并且 `B.pm6` 依赖 `A.pm6`，您可以使用 `A-Role.pm6` 和 `B-Role.pm6`，以及 `A.pm6` 和 `B.pm6` 中的类分别实现这些角色。然后，您可以依赖 `A-Role.pm6` 和 `B-Role.pm6` 而没有循环依赖。
+很可能你可以使用[角色](https://docs.raku.org/language/objects#Roles)完成你正在尝试的任务。而不是 `A.pm6` 依赖 `B.pm6` 并且 `B.pm6` 依赖 `A.pm6`，你可以使用 `A-Role.pm6` 和 `B-Role.pm6`，以及 `A.pm6` 和 `B.pm6` 中的类分别实现这些角色。然后，你可以依赖 `A-Role.pm6` 和 `B-Role.pm6` 而没有循环依赖。
 
 Very likely you can accomplish what you are trying to do using [roles](https://docs.raku.org/language/objects#Roles). Instead of `A.pm6` depending on `B.pm6` and `B.pm6` depending on `A.pm6`, you can have `A-Role.pm6` and `B-Role.pm6` and classes in `A.pm6` and `B.pm6` implementing these roles respectively. Then you can depend on `A-Role.pm6` and `B-Role.pm6` without the need for the circular dependency.
 
@@ -361,7 +361,7 @@ Note that Raku has no “1 file = 1 class” limitation, and circular dependenci
 
 Typical options are to use the [say](https://docs.raku.org/routine/say) routine that uses the [gist](https://docs.raku.org/routine/gist) method which gives the "gist" of the object being dumped. More detailed output can be obtained by calling the [perl](https://docs.raku.org/routine/perl) method (soon to be deprecated in favor of `$obj.raku`, available since the Rakudo 2019.11 release) that typically returns an object's representation in [EVAL](https://docs.raku.org/routine/EVAL)-able code.
 
-如果您正在使用 [rakudo](https://rakudo.org/) 实现，您可以使用 [rakudo 指定的 `dd` 例程](https://docs.raku.org/programs/01-debugging#Dumper_function_dd) 进行打印，其输出类似于 [perl](https://docs.raku.org/routine/perl) 方法，但具有更多信息。
+如果你正在使用 [rakudo](https://rakudo.org/) 实现，你可以使用 [rakudo 指定的 `dd` 例程](https://docs.raku.org/programs/01-debugging#Dumper_function_dd) 进行打印，其输出类似于 [perl](https://docs.raku.org/routine/perl) 方法，但具有更多信息。
 
 If you're using the [rakudo](https://rakudo.org/) implementation, you can use the [rakudo-specific `dd` routine](https://docs.raku.org/programs/01-debugging#Dumper_function_dd) for dumping, whose output is similar to [perl](https://docs.raku.org/routine/perl), but with more information.
 
@@ -415,7 +415,7 @@ say 1/0;   # Attempt to divide 1 by zero using div
 <a id="%E4%BB%80%E4%B9%88%E6%98%AF-any%EF%BC%9F--what-is-any"></a>
 ## 什么是 `(Any)`？ / What is `(Any)`?
 
-[`Any`](https://docs.raku.org/type/Any) 是大多数对象所继承的顶级类。在没有显式类型约束的变量和参数上，任何类型的对象都是[默认值](https://docs.raku.org/type/Attribute#Trait_is_default)，这意味着当您使用 [`say` 例程](https://docs.raku.org/routine/say)等方法输出一个没有任何值的变量时，您可能会看到 `(Any)` 打印出来：
+[`Any`](https://docs.raku.org/type/Any) 是大多数对象所继承的顶级类。在没有显式类型约束的变量和参数上，任何类型的对象都是[默认值](https://docs.raku.org/type/Attribute#Trait_is_default)，这意味着当你使用 [`say` 例程](https://docs.raku.org/routine/say)等方法输出一个没有任何值的变量时，你可能会看到 `(Any)` 打印出来：
 
 [`Any`](https://docs.raku.org/type/Any) is a top level class most objects inherit from. The `Any` type object is [the default value](https://docs.raku.org/type/Attribute#Trait_is_default) on variables and parameters without an explicit type constraint, which means you'll likely see `(Any)` printed when you output a [gist](https://docs.raku.org/routine/gist) of a variable without any value by using, for instance, the [`say` routine](https://docs.raku.org/routine/say):
 
@@ -536,7 +536,7 @@ In this case, the final value is thrown away because the return value is already
 <a id="%E6%88%91%E6%80%8E%E6%A0%B7%E6%89%8D%E8%83%BD%E4%BB%8E-junction-%E4%B8%AD%E6%8F%90%E5%8F%96%E5%80%BC%EF%BC%9F--how-can-i-extract-the-values-from-a-junction"></a>
 ## 我怎样才能从 Junction 中提取值？ / How can I extract the values from a Junction?
 
-如果您想从 [Junction](https://docs.raku.org/type/Junction) 中提取值（本征态），您可能做错了什么，应该使用 [Set](https://docs.raku.org/type/Set)。
+如果你想从 [Junction](https://docs.raku.org/type/Junction) 中提取值（本征态），你可能做错了什么，应该使用 [Set](https://docs.raku.org/type/Set)。
 
 If you want to extract the values (eigenstates) from a [Junction](https://docs.raku.org/type/Junction), you are probably doing something wrong and should be using a [Set](https://docs.raku.org/type/Set) instead.
 
@@ -566,7 +566,7 @@ say eigenstates(1|2|3).join(', ');
 
 In Raku, values of many basic types are immutable, but the variables holding them are not. The `s///` operator works on a variable, into which it puts a newly created string object. Likewise, `$i++` works on the `$i` variable, not just on the value in it.
 
-知道这一点，您就不会尝试更改文字字符串（例如 `'hello' ~~ s/h/H/;`），但你可能会不小心用 `map` 做了一些等效的事情，如下所示。
+知道这一点，你就不会尝试更改文字字符串（例如 `'hello' ~~ s/h/H/;`），但你可能会不小心用 `map` 做了一些等效的事情，如下所示。
 
 Knowing this, you would not try to change a literal string (e.g. like `'hello' ~~ s/h/H/;`), but you might accidentally do something equivalent using `map` as follows.
 
@@ -632,7 +632,7 @@ my @nested = flat $s, $s;
 say @nested.elems;          # OUTPUT: «2␤» 
 ```
 
-您可以使用  `@( ... )` 或通过在表达式上调用 `.list` 来强制列表上下文，而可以使用 `$( ... )` 或对表达式调用 `.item` 方法来强制单条目上下文。
+你可以使用  `@( ... )` 或通过在表达式上调用 `.list` 来强制列表上下文，而可以使用 `$( ... )` 或对表达式调用 `.item` 方法来强制单条目上下文。
 
 You can force list context with `@( ... )` or by calling the `.list` method on an expression, and item context with `$( ... )` or by calling the `.item` method on an expression.
 
@@ -649,7 +649,7 @@ See the [*Perl 6: Sigils, Variables, and Containers*](https://perl6advent.wordpr
 - 它们为不同的变量和标记符形成了微命名空间，从而避免了名称冲突
 - 它们可以轻松区分单数/复数
 - 它们像使用强制性名词标记的自然语言一样工作，因此我们的大脑可以处理它
-- 它们不是强制性的，因为您可以声明无名字的名称（如果您不介意歧义的话）
+- 它们不是强制性的，因为你可以声明无名字的名称（如果你不介意歧义的话）
 
 There are several reasons:
 
@@ -662,7 +662,7 @@ There are several reasons:
 <a id="%E2%80%9C%E7%B1%BB%E5%9E%8B-str-%E4%B8%8D%E6%94%AF%E6%8C%81%E5%85%B3%E8%81%94%E7%B4%A2%E5%BC%95%E3%80%82%E2%80%9D--type-str-does-not-support-associative-indexing"></a>
 ## “类型 Str 不支持关联索引。” / "Type Str does not support associative indexing."
 
-您可能试图混合使用字符串插值和关键字符，例如 HTML 标签：
+你可能试图混合使用字符串插值和关键字符，例如 HTML 标签：
 
 You likely tried to mix string interpolation and key characters, like HTML tags:
 
@@ -671,7 +671,7 @@ my $foo = "abc";
 say "$foo<html-tag>";
 ```
 
-Raku 认为 `$foo` 是哈希，而 `<html-tag>` 是字符串文本哈希键。 使用闭包帮助它了解您。
+Raku 认为 `$foo` 是哈希，而 `<html-tag>` 是字符串文本哈希键。 使用闭包帮助它了解你。
 
 Raku thinks `$foo` is a Hash and `<html-tag>` is a string literal hash key. Use a closure to help it to understand you.
 
@@ -721,7 +721,7 @@ say A.new(x => 5).show-x;
 
 does not print 5. Private attributes are *private*, which means invisible to the outside world. If the default constructor could initialize them, they would leak into the public API. Thus, in this particular code sample the attribute `$!x` isn't initialized during object construction by the default constructor.
 
-如果您仍想使用默认构造函数初始化私有属性，则可以添加一个 `submethod BUILD` 来实现此任务：
+如果你仍想使用默认构造函数初始化私有属性，则可以添加一个 `submethod BUILD` 来实现此任务：
 
 If you still want to initialize private attributes with the default constructor, you can add a `submethod BUILD` to achieve such task:
 
@@ -740,7 +740,7 @@ say B.new(x => 5).show-x;
 
 `BUILD` is called by the default constructor (indirectly, see [Object Construction](https://docs.raku.org/language/objects#Object_construction) for more details) with all the named arguments that the user passes to the constructor. `:$!x` is a named parameter with name `x`, and when called with a named argument of name `x`, its value is bound to the attribute `$!x`.
 
-但是，您不应该这样做。 如果属性被声明为私有，则不应将其暴露于类之外的环境中（例如，在对象构建期间）。 另一方面，如果该属性是公共属性，则使用 `$ .x` 声明它没有任何缺点，因为默认情况下外部视图是只读的，并且您仍然可以使用 `$!x` 在内部访问它。 。
+但是，你不应该这样做。 如果属性被声明为私有，则不应将其暴露于类之外的环境中（例如，在对象构建期间）。 另一方面，如果该属性是公共属性，则使用 `$ .x` 声明它没有任何缺点，因为默认情况下外部视图是只读的，并且你仍然可以使用 `$!x` 在内部访问它。 。
 
 However, you shouldn't do that. If the attribute is declared as private, then it shouldn't be exposed to the environment outside the class (e.g., during object construction). On the other hand, if the attribute is public, there is no downside to declaring it that way with `$.x` since the external view is read-only by default, and you can still access it internally with `$!x`.
 
@@ -751,7 +751,7 @@ However, you shouldn't do that. If the attribute is declared as private, then it
 
 The most obvious difference is that `say` and `put` append a newline at the end of the output, and `print` does not.
 
-但是还有另一个区别：`print` 和 `put` 通过传递给它们的每个项目调用 `Str` 方法将其参数转换为字符串，而`say`使用`gist`方法。 您也可以为自己的类创建的`gist`方法旨在创建用于人类解释的`Str`。 因此，可以自由地忽略有关对象的信息，这些信息对于理解对象的本质不重要。
+但是还有另一个区别：`print` 和 `put` 通过传递给它们的每个项目调用 `Str` 方法将其参数转换为字符串，而`say`使用`gist`方法。 你也可以为自己的类创建的`gist`方法旨在创建用于人类解释的`Str`。 因此，可以自由地忽略有关对象的信息，这些信息对于理解对象的本质不重要。
 
 But there's another difference: `print` and `put` convert their arguments to a string by calling the `Str` method on each item passed to them while `say` uses the `gist` method. The `gist` method, which you can also create for your own classes, is intended to create a `Str` for human interpretation. So it is free to leave out information about the object deemed unimportant to understanding the essence of the object.
 
@@ -815,7 +815,7 @@ In short, `say` is optimized for casual human interpretation, `dd` is optimized 
 
 A `Failure` is an "unthrown" or "lazy" exception. It's an object that contains the exception, and throws the exception if you try to use the `Failure` as an ordinary object or ignore it in sink context.
 
-`Failure` 从 `defined` 检查中返回 `False`，您可以使用 `exception` 方法提取异常。
+`Failure` 从 `defined` 检查中返回 `False`，你可以使用 `exception` 方法提取异常。
 
 A `Failure` returns `False` from a `defined` check, and you can extract the exception with the `exception` method.
 
@@ -826,8 +826,8 @@ A `Failure` returns `False` from a `defined` check, and you can extract the exce
 
 `OpaquePointer` is deprecated and has been replaced with `Pointer`.
 
-<a id="%E6%82%A8%E5%8F%AF%E4%BB%A5%E5%9C%A8%E6%A0%87%E8%AF%86%E7%AC%A6%E4%B8%AD%E6%9C%89%E5%86%92%E5%8F%B7%E5%AF%B9%E3%80%82%E7%90%86%E7%94%B1%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F--you-can-have-colonpairs-in-identifiers-whats-the-justification"></a>
-## 您可以在标识符中有冒号对。理由是什么？ / You can have colonpairs in identifiers. What's the justification?
+<a id="%E4%BD%A0%E5%8F%AF%E4%BB%A5%E5%9C%A8%E6%A0%87%E8%AF%86%E7%AC%A6%E4%B8%AD%E6%9C%89%E5%86%92%E5%8F%B7%E5%AF%B9%E3%80%82%E7%90%86%E7%94%B1%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F--you-can-have-colonpairs-in-identifiers-whats-the-justification"></a>
+## 你可以在标识符中有冒号对。理由是什么？ / You can have colonpairs in identifiers. What's the justification?
 
 [标识符可以包括冒号对，这些对成为其名称的一部分](https://docs.raku.org/language/syntax#Identifiers)。根据[拉里沃尔对这个问题的回答](https://github.com/perl6/doc/issues/1753#issuecomment-362875676)，*我们已经有了冒号对机制，所以使用它来扩展任何需要引用唯一但非标准字符的名称（或其他信息，并对这些字符进行独特的字符串）是一种不费吹灰之力的方法。
 
@@ -874,7 +874,7 @@ NQP is a mixture of (1) NQP code, (2) whatever language the underlying virtual m
 <a id="%E6%88%91%E8%83%BD%E6%8A%8A%E6%88%91%E7%9A%84%E8%84%9A%E6%9C%AC%E7%BC%96%E8%AF%91%E6%88%90%E4%B8%80%E4%B8%AA%E7%8B%AC%E7%AB%8B%E7%9A%84%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%90%97%EF%BC%9F--can-i-compile-my-script-to-a-standalone-executable"></a>
 ## 我能把我的脚本编译成一个独立的可执行文件吗？ / Can I compile my script to a standalone executable?
 
-像 [`App::InstallerMaker::WiX`](https://modules.raku.org/dist/App::InstallerMaker::WiX) 这样的工具允许您创建一个安装程序来打包编译器和脚本。但是，当前可用的编译器还不支持创建独立的可执行文件。
+像 [`App::InstallerMaker::WiX`](https://modules.raku.org/dist/App::InstallerMaker::WiX) 这样的工具允许你创建一个安装程序来打包编译器和脚本。但是，当前可用的编译器还不支持创建独立的可执行文件。
 
 Tools like [`App::InstallerMaker::WiX`](https://modules.raku.org/dist/App::InstallerMaker::WiX) allow you to create an installer that will package the compiler and your script. However, the currently available compilers do not support creating a standalone executable yet.
 
@@ -913,7 +913,7 @@ The community considers Perl 5 and Raku sister languages - they have a lot in co
 <a id="raku-%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E5%87%86%E5%A4%87%E5%A5%BD%EF%BC%9F%E7%8E%B0%E5%9C%A8%E5%87%86%E5%A4%87%E5%A5%BD%E4%BA%86%E5%90%97%EF%BC%9F--when-will-raku-be-ready-is-it-ready-now"></a>
 ## Raku 什么时候准备好？现在准备好了吗？ / When will Raku be ready? Is it ready now?
 
-编程语言及其编译器的准备与否不是一个非黑即白的决定。随着语言和实现的发展，它们越来越可用。根据您的需要，Raku 及其编译器对你而言可能准备好了，也可能没有准备好。
+编程语言及其编译器的准备与否不是一个非黑即白的决定。随着语言和实现的发展，它们越来越可用。根据你的需要，Raku 及其编译器对你而言可能准备好了，也可能没有准备好。
 
 Readiness of programming languages and their compilers is not a binary decision. As the language and the implementations evolve, they grow steadily more usable. Depending on your needs, Raku and its compilers may or may not be ready for you.
 
@@ -958,7 +958,7 @@ Raku unifies many great ideas that aren't usually found in other programming lan
 - 由于更简单的更新/升级政策，简化了系统管理。
 - 更简单的数值计算，不会因 [Rat](https://docs.raku.org/type/Rat) 而造成精度损失。
 - 用于解析数据或代码的可扩展 grammar（Raku 用来解析自己）。
-- Raku 是一种非常易变的语言（定义自己的功能、 操作符、 特性和数据类型，为您修改解析器）。
+- Raku 是一种非常易变的语言（定义自己的功能、 操作符、 特性和数据类型，为你修改解析器）。
 - 大量可供选择的数据类型，加上创建自己类型的可能性。
 - 具有适当边界检查的多维形状和/或原生数组。
 - 在语法解析过程中的任何时候执行代码，或在发生某种匹配时执行代码。
@@ -1080,7 +1080,7 @@ for my $i (1..1_000_000) {
 1;
 ```
 
-您可能也想使用这个程序来比较性能。它在两种语言下工作，只要 `perl -Mbigint` 被用于调用 Perl 5。
+你可能也想使用这个程序来比较性能。它在两种语言下工作，只要 `perl -Mbigint` 被用于调用 Perl 5。
 
 You might want to use this program for comparing performance, too. It works under both languages, as long as `perl -Mbigint` is used for invocation for Perl 5.
 

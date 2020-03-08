@@ -84,11 +84,11 @@ We ensure that we're using Raku, via the `use v6.c` pragma, then we load the `Te
 <a id="%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8--thread-safety"></a>
 ## 线程安全 / Thread safety
 
-请注意，`Test` 模块中的例程*不是*线程安全的。这意味着您不应该尝试在多个线程中同时使用测试例程，因为 [TAP](https://testanything.org/) 输出可能会出现顺序错误，并混淆了解释它的程序。
+请注意，`Test` 模块中的例程*不是*线程安全的。这意味着你不应该尝试在多个线程中同时使用测试例程，因为 [TAP](https://testanything.org/) 输出可能会出现顺序错误，并混淆了解释它的程序。
 
 Note that routines in `Test` module are *not* thread-safe. This means you should not attempt to use the testing routines in multiple threads simultaneously, as the [TAP](https://testanything.org/) output might come out of order and confuse the program interpreting it.
 
-目前没有使其线程安全的计划。如果线程测试对您至关重要，您可能会找到一些合适的[生态系统模块](https://modules.raku.org/search/?q=Test)来使用，而不是使用 `Test` 来满足您的测试需要。
+目前没有使其线程安全的计划。如果线程测试对你至关重要，你可能会找到一些合适的[生态系统模块](https://modules.raku.org/search/?q=Test)来使用，而不是使用 `Test` 来满足你的测试需要。
 
 There are no current plans to make it thread safe. If threaded-testing is crucial to you, you may find some suitable [ecosystem modules](https://modules.raku.org/search/?q=Test) to use instead of `Test` for your testing needs.
 
@@ -107,7 +107,7 @@ $ perl6 t/test-filename.t
 
 To run all tests in the directory recursively, [prove6](https://modules.raku.org/dist/App::Prove6) application can be used.
 
-您必须在使用之前用 zef 安装它：
+你必须在使用之前用 zef 安装它：
 
 You have to install it before using with zef:
 
@@ -115,7 +115,7 @@ You have to install it before using with zef:
 $ zef install App::Prove6
 ```
 
-您可以这样在分发目录中运行 `prove6`：
+你可以这样在分发目录中运行 `prove6`：
 
 You can run `prove6` in a distribution directory this way:
 
@@ -191,7 +191,7 @@ Structures can be also compared using [`is-deeply`](https://docs.raku.org/type/T
 <a id="%E6%8C%89%E4%BB%BB%E6%84%8F%E7%B1%BB%E5%9E%8B%E6%AF%94%E8%BE%83--by-arbitrary-comparison"></a>
 ## 按任意类型比较 / By arbitrary comparison
 
-您可以使用 [`cmp-ok`](https://docs.raku.org/type/Test#cmp-ok) 进行任何类型的比较 ，它将您想要用于比较的函数或运算符作为参数。
+你可以使用 [`cmp-ok`](https://docs.raku.org/type/Test#cmp-ok) 进行任何类型的比较 ，它将你想要用于比较的函数或运算符作为参数。
 
 You can use any kind of comparison with [`cmp-ok`](https://docs.raku.org/type/Test#cmp-ok), which takes as an argument the function or operator that you want to be used for comparing.
 
@@ -256,6 +256,6 @@ Sometimes tests just aren't ready to be run, for instance a feature might not ye
 <a id="%E4%BA%BA%E5%B7%A5%E6%8E%A7%E5%88%B6--manual-control"></a>
 # 人工控制 / Manual control
 
-如果上面记录的方便功能不适合您的需要，您可以使用以下功能手动指导测试线束输出；[`pass`](https://docs.raku.org/type/Test#pass) 将表示测试已经通过，[`diag`](https://docs.raku.org/type/Test#diag) 将打印（可能）通知消息。
+如果上面记录的方便功能不适合你的需要，你可以使用以下功能手动指导测试线束输出；[`pass`](https://docs.raku.org/type/Test#pass) 将表示测试已经通过，[`diag`](https://docs.raku.org/type/Test#diag) 将打印（可能）通知消息。
 
 If the convenience functionality documented above does not suit your needs, you can use the following functions to manually direct the test harness output; [`pass`](https://docs.raku.org/type/Test#pass) will say a test has passed, and [`diag`](https://docs.raku.org/type/Test#diag) will print a (possibly) informative message.
