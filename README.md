@@ -68,6 +68,7 @@ IT 类翻译往往中文太生硬，英文太难懂。中英对照更方便也�
     - [Pod6](https://github.com/sztanyi/English-Chinese-Rakudocs/blob/master/%E9%80%9A%E7%94%A8%E5%8F%82%E8%80%83%20-%20General%20reference/Pod6.md)
     - [社区 - Community](https://github.com/sztanyi/English-Chinese-Rakudocs/blob/master/%E9%80%9A%E7%94%A8%E5%8F%82%E8%80%83%20-%20General%20reference/%E7%A4%BE%E5%8C%BA%20-%20Community.md)
     - [避坑指南 - Traps to avoid](https://github.com/sztanyi/English-Chinese-Rakudocs/blob/master/%E9%80%9A%E7%94%A8%E5%8F%82%E8%80%83%20-%20General%20reference/%E6%9C%AF%E8%AF%AD%20-%20Terms.md)
+    - [测试 - Testing](https://github.com/sztanyi/English-Chinese-Rakudocs/blob/master/%E9%80%9A%E7%94%A8%E5%8F%82%E8%80%83%20-%20General%20reference/%E6%B5%8B%E8%AF%95%20-%20Testing.md)
 - [类型 - Type](https://github.com/sztanyi/English-Chinese-Rakudocs/tree/master/%E7%B1%BB%E5%9E%8B%20-%20Type)
     - [基础 - Basic](https://github.com/sztanyi/English-Chinese-Rakudocs/tree/master/%E7%B1%BB%E5%9E%8B%20-%20Type/%E5%9F%BA%E7%A1%80%20-%20Basic)
         - [签名 - Signature](https://github.com/sztanyi/English-Chinese-Rakudocs/blob/master/%E7%B1%BB%E5%9E%8B%20-%20Type/%E5%9F%BA%E7%A1%80%20-%20Basic/%E7%AD%BE%E5%90%8D%20-%20Signature.md)
