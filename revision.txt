@@ -1,8 +1,3 @@
-输入输出权威指南 - IO the definitive guide
-面向对象编程 - Object orientation.md
-句法 - Syntax
-Raku 中的换行处理 - Newline handling in Raku
-Raku 原生类型 - Raku native types
 Unicode 与 ASCII 符号 - Unicode versus ASCII symbols
 万国码 - Unicode
 上下文以及上下文语境化器 - Contexts and contextualizers
@@ -11,5 +6,12 @@ Unicode 与 ASCII 符号 - Unicode versus ASCII symbols
 函数 - Functions
 列表、序列和数组 - Lists, sequences, and arrays
 包 - Packages
+Raku 原生类型 - Raku native types
 原生调用协议 / Native calling interface
 变量 - Variables
+句法 - Syntax
+哈希和映射 - Hashes and maps
+
+输入输出权威指南 - IO the definitive guide
+换行处理 - Newline handling in Raku
+面向对象编程 - Object orientation.md
