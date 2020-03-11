@@ -11,6 +11,7 @@ Raku 原生类型 - Raku native types
 变量 - Variables
 句法 - Syntax
 哈希和映射 - Hashes and maps
+容器 - Containers
 
 输入输出权威指南 - IO the definitive guide
 换行处理 - Newline handling in Raku

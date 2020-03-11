@@ -6,7 +6,7 @@ Raku 容器的底层解释
 
 A low-level explanation of Raku containers
 
-本节解释处理变量和容器元素所涉及的间接级别。介绍了 Raku 中使用的容器的不同类型，以及适用于这些容器的操作，如分配、绑定和展平。最后讨论了更高级的主题，如自引用数据、类型约束和自定义容器。
+本节将解释与变量和容器元素打交道所涉及的间接级别。介绍 Raku 中使用的容器的不同类型，以及适用于这些容器的操作，如赋值、绑定和展平。最后讨论了更高级的主题，如自引用数据、类型约束和自定义容器。
 
 This section explains the levels of indirection involved in dealing with variables and container elements. The difference types of containers used in Raku are explained and the actions applicable to them like assigning, binding and flattening. More advanced topics like self-referential data, type constraints and custom containers are discussed at the end.
 
@@ -14,7 +14,7 @@ This section explains the levels of indirection involved in dealing with variabl
 
 <!-- MarkdownTOC -->
 
-- [变量是什么 / What is a variable?](#%E5%8F%98%E9%87%8F%E6%98%AF%E4%BB%80%E4%B9%88--what-is-a-variable)
+- [变量是什么？ / What is a variable?](#%E5%8F%98%E9%87%8F%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F--what-is-a-variable)
 - [标量容器 / Scalar containers](#%E6%A0%87%E9%87%8F%E5%AE%B9%E5%99%A8--scalar-containers)
 - [可调用容器 / Callable containers](#%E5%8F%AF%E8%B0%83%E7%94%A8%E5%AE%B9%E5%99%A8--callable-containers)
 - [绑定 / Binding](#%E7%BB%91%E5%AE%9A--binding)
@@ -29,29 +29,29 @@ This section explains the levels of indirection involved in dealing with variabl
 
 <!-- /MarkdownTOC -->
 
-<a id="%E5%8F%98%E9%87%8F%E6%98%AF%E4%BB%80%E4%B9%88--what-is-a-variable"></a>
-# 变量是什么 / What is a variable?
+<a id="%E5%8F%98%E9%87%8F%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F--what-is-a-variable"></a>
+# 变量是什么？ / What is a variable?
 
-有些人喜欢说“一切都是一个对象”，但实际上在 Raku 中，变量不是用户公开的对象。
+有些人喜欢说“一切都是一个对象”，但实际上在 Raku 中，变量不是暴露给用户的对象。
 
 Some people like to say "everything is an object", but in fact a variable is not a user-exposed object in Raku.
 
-当编译器遇到类似 `my $x` 的变量声明时，它会将其注册到一些内部符号表中。此内部符号表用于检测未声明的变量，并将变量的代码生成与正确的范围相关联。
+当编译器遇到类似 `my $x` 的变量声明时，它会将其注册到一些内部符号表中。此内部符号表用于检测未声明的变量，并将变量的代码生成与正确的作用域相关联。
 
 When the compiler encounters a variable declaration like `my $x`, it registers it in some internal symbol table. This internal symbol table is used to detect undeclared variables and to tie the code generation for the variable to the correct scope.
 
-在运行时，变量在*词法板*（或简称 *lexpad*）中显示为条目。这是一个按作用域的数据结构，它为每个变量存储一个指针。
+在运行时，变量在*词法板*（或简称 *lexpad*）中显示为一个条目。这是一个按作用域的数据结构，它为每个变量存储一个指针。
 
 At runtime, a variable appears as an entry in a *lexical pad*, or *lexpad* for short. This is a per-scope data structure that stores a pointer for each variable.
 
-在 `my $x` 的情况下，变量 `$x` 的词法板条目是指向 `Scalar` 类型的对象的指针，通常称为*容器*。
+`my $x` 中，变量 `$x` 的词法板条目是一个指向 `Scalar` 类型的对象的指针，通常称为*容器*。
 
 In the case of `my $x`, the lexpad entry for the variable `$x` is a pointer to an object of type `Scalar`, usually just called *the container*.
 
 <a id="%E6%A0%87%E9%87%8F%E5%AE%B9%E5%99%A8--scalar-containers"></a>
 # 标量容器 / Scalar containers
 
-尽管在 Raku 中，[`Scalar`](https://docs.raku.org/type/scalar) 类型的对象随处可见，但你很少见它们直接作为对象，因为大多数操作时*反容器化*的，这意味着它们作用于 `scalar` 容器的内容，而不是容器本身。
+尽管在 Raku 中，[`Scalar`](https://docs.raku.org/type/scalar) 类型的对象随处可见，但你很少见它们直接作为对象，因为大多数操作是*去容器化*的，这意味着它们作用于 `scalar` 容器的内容，而不是容器本身。
 
 Although objects of type [`Scalar`](https://docs.raku.org/type/Scalar) are everywhere in Raku, you rarely see them directly as objects, because most operations *decontainerize*, which means they act on the `Scalar` container's contents instead of the container itself.
 
