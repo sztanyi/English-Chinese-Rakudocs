@@ -21,7 +21,7 @@ This section explains the levels of indirection involved in dealing with variabl
 - [标量容器和列表 / Scalar containers and listy things](#%E6%A0%87%E9%87%8F%E5%AE%B9%E5%99%A8%E5%92%8C%E5%88%97%E8%A1%A8--scalar-containers-and-listy-things)
 - [赋值及绑定至数组变量 / Assigning and binding to array variables](#%E8%B5%8B%E5%80%BC%E5%8F%8A%E7%BB%91%E5%AE%9A%E8%87%B3%E6%95%B0%E7%BB%84%E5%8F%98%E9%87%8F--assigning-and-binding-to-array-variables)
 - [绑定至数组元素 / Binding to array elements](#%E7%BB%91%E5%AE%9A%E8%87%B3%E6%95%B0%E7%BB%84%E5%85%83%E7%B4%A0--binding-to-array-elements)
-- [扁平化、物品和容器 / Flattening, items and containers](#%E6%89%81%E5%B9%B3%E5%8C%96%E3%80%81%E7%89%A9%E5%93%81%E5%92%8C%E5%AE%B9%E5%99%A8--flattening-items-and-containers)
+- [展开、物品和容器 / Flattening, items and containers](#%E5%B1%95%E5%BC%80%E3%80%81%E7%89%A9%E5%93%81%E5%92%8C%E5%AE%B9%E5%99%A8--flattening-items-and-containers)
 - [自引用数据 / Self-referential data](#%E8%87%AA%E5%BC%95%E7%94%A8%E6%95%B0%E6%8D%AE--self-referential-data)
 - [类型约束 / Type constraints](#%E7%B1%BB%E5%9E%8B%E7%BA%A6%E6%9D%9F--type-constraints)
     - [`已定义`约束 / Definedness constraints](#%E5%B7%B2%E5%AE%9A%E4%B9%89%E7%BA%A6%E6%9D%9F--definedness-constraints)
@@ -86,11 +86,11 @@ say $x;         # OUTPUT: «23
 » 
 ```
 
-在子例程中，`$a` 的词法板条目指向与 `$x` 指向子例程外部的相同容器。这就是为什么赋值给 `$a` 也会修改 `$x` 的内容。
+在子例程中，`$a` 的词法板条目与子例程外部 `$x` 指向同一容器。这就是为什么赋值给 `$a` 也会修改 `$x` 的内容。
 
 Inside the subroutine, the lexpad entry for `$a` points to the same container that `$x` points to outside the subroutine. Which is why assignment to `$a` also modifies the contents of `$x`.
 
-同样，如果标记为 `is rw`，则例程可以返回容器：
+同样，如果例程标记为 `is rw`，则可以返回容器：
 
 Likewise a routine can return a container if it is marked as `is rw`:
 
@@ -102,11 +102,11 @@ say $x;         # OUTPUT: «42
 » 
 ```
 
-对于显式返回，必须使用  `return-rw` 而不是 `return`。
+对于显式返回，必须使用 `return-rw` 而不是 `return`。
 
 For explicit returns, `return-rw` instead of `return` must be used.
 
-返回容器是 `rw` 属性访问器的工作方式。所以
+返回容器就是 `rw` 属性访问器的工作方式。所以
 
 Returning a container is how `is rw` attribute accessors work. So
 
@@ -127,7 +127,7 @@ class A {
 }
 ```
 
-标量容器对于类型检查和大多数只读访问都是透明的。`.var` 使它们可见：
+标量容器对于类型检查和大多数只读访问都是透明的。`.VAR` 使得它们可见：
 
 Scalar containers are transparent to type checks and most kinds of read-only accesses. A `.VAR` makes them visible:
 
@@ -154,7 +154,7 @@ CATCH { default { say .^name, ': ', .Str } };
 <a id="%E5%8F%AF%E8%B0%83%E7%94%A8%E5%AE%B9%E5%99%A8--callable-containers"></a>
 # 可调用容器 / Callable containers
 
-可调用容器在存储在容器中的对象的 [Routine](https://docs.raku.org/type/routine) 调用的语法和方法 [CALL-ME](https://docs.raku.org/type/callable method_call-me) 的实际调用之间提供了一个桥梁。声明容器时需要 `&` 标记并且在执行 `Callable` 时必须省略。默认类型约束为 [Callable](https://docs.raku.org/type/callable)。
+在存储在容器中的对象的 [Routine](https://docs.raku.org/type/routine) 调用语法和 [CALL-ME](https://docs.raku.org/type/callable method_call-me) 方法的实际调用之间，可调用容器提供了一个桥梁。声明容器时需要 `&` 标记并且在执行 `Callable` 时标记必须省略。默认类型约束为 [Callable](https://docs.raku.org/type/callable)。
 
 Callable containers provide a bridge between the syntax of a [Routine](https://docs.raku.org/type/Routine) call and the actual call of the method [CALL-ME](https://docs.raku.org/type/Callable#method_CALL-ME) of the object that is stored in the container. The sigil `&` is required when declaring the container and has to be omitted when executing the `Callable`. The default type constraint is [Callable](https://docs.raku.org/type/Callable).
 
@@ -178,14 +178,16 @@ caller(&f, &g);
 <a id="%E7%BB%91%E5%AE%9A--binding"></a>
 # 绑定 / Binding
 
-除了赋值之外，Raku 还支持带 `：=` 运算符的*绑定*。将值或容器绑定到变量时，将修改变量的词法板条目（而不仅仅是它指向的容器）。如果你写:
+除了赋值之外，Raku 还支持*绑定*，使用 `：=` 运算符。将值或容器绑定到变量时，将修改变量的词法板条目（而不仅仅是它指向的容器）。如果你写:
 
 Next to assignment, Raku also supports *binding* with the `:=` operator. When binding a value or a container to a variable, the lexpad entry of the variable is modified (and not just the container it points to). If you write
 
 ```Raku
 my $x := 42;
 ```
-那么 `$x` 的词法板条目指向 `Int` 42。意味着你无法再给它赋值。
+
+那么 `$x` 的词法板条目指向 `Int` 42。意味着你无法再给它赋值。
+
 then the lexpad entry for `$x` directly points to the `Int` 42. Which means that you cannot assign to it anymore:
 
 ```Raku
@@ -209,7 +211,7 @@ say $a;         # OUTPUT: «42
 » 
 ```
 
-在绑定后，`$a` 和 `$b` 的词法板条目指向相同的标量容器，因此给一个变量赋值也会改变另一个变量的内容。
+在第一绑定后，`$a` 和 `$b` 的词法板条目指向相同的标量容器，因此给一个变量赋值也会改变另一个变量的内容。
 
 Here, after the initial binding, the lexpad entries for `$a` and `$b` both point to the same scalar container, so assigning to one variable also changes the contents of the other.
 
@@ -217,7 +219,7 @@ Here, after the initial binding, the lexpad entries for `$a` and `$b` both point
 
 You've seen this situation before: it is exactly what happened with the signature parameter marked as `is rw`.
 
-无符号变量以及带 `is raw` 特性的参数始终绑定（无论使用 `=` 还是 `:=`）:
+无符号变量以及 `is raw` 特性的参数始终绑定（无论使用 `=` 还是 `:=`）:
 
 Sigilless variables and parameters with the trait `is raw` always bind (whether `=` or `:=` is used):
 
@@ -246,7 +248,7 @@ say (1, 2, 3).^name;    # OUTPUT: «List
 » 
 ```
 
-列表是不可变的，这意味着你不能更改列表中的元素数。但是，如果其中一个元素恰好是一个标量容器，你仍然可以给它赋值：
+列表是不可变的，这意味着你不能更改列表中的元素数。但是，如果其中一个元素恰好是一个标量容器的话，你仍然可以给它赋值：
 
 A list is immutable, which means you cannot change the number of elements in a list. But if one of the elements happens to be a scalar container, you can still assign to it:
 
@@ -269,7 +271,7 @@ So the list doesn't care about whether its elements are values or containers, th
 
 Lists can also be lazy; in that case, elements at the end are generated on demand from an iterator.
 
-`数组` 类似列表，除了它强制其所有元素都时容器，着意味着你可以始终给其中的元素赋值：
+`Array` 类似列表，除了它强制其所有元素都是容器，这意味着你可以始终给其中的元素赋值：
 
 An `Array` is just like a list, except that it forces all its elements to be containers, which means that you can always assign to elements:
 
@@ -280,7 +282,7 @@ say @a;         # OUTPUT: «[42 2 3]
 » 
 ```
 
-`@a` 实际上存储了三个标量变量。`@a[0]` 返回其中的一个，赋值符号将容器内的值替换成新的 `42`。
+`@a` 实际上存储了三个标量变量。`@a[0]` 返回其中的一个，赋值运算符将容器内的值替换成新的值 `42`。
 
 `@a` actually stores three scalar containers. `@a[0]` returns one of them, and the assignment operator replaces the integer value stored in that container with the new one, `42`.
 
@@ -302,11 +304,11 @@ my @a = 42; say @a.^name;   # OUTPUT: «Array
 » 
 ```
 
-这是因为`标量`容器类型很好地隐藏了自己，但是`数组`不这样做。另外，对数组变量的赋值是强制的，因此可以将非数组值赋给数组变量。
+这是因为 `Scalar` 容器类型很好地隐藏了自己，但是 `Array` 不这样做。另外，对数组变量的赋值是强制的，因此可以将非数组值赋给数组变量。
 
 This is because the `Scalar` container type hides itself well, but `Array` makes no such effort. Also assignment to an array variable is coercive, so you can assign a non-array value to an array variable.
 
-要将非`数组`放入数组变量中，使用绑定：
+要将非 `Array` 放入一个数组变量中，使用绑定：
 
 To place a non-`Array` into an array variable, binding works:
 
@@ -319,7 +321,7 @@ say @a.^name;               # OUTPUT: «List
 <a id="%E7%BB%91%E5%AE%9A%E8%87%B3%E6%95%B0%E7%BB%84%E5%85%83%E7%B4%A0--binding-to-array-elements"></a>
 # 绑定至数组元素 / Binding to array elements
 
-奇妙的是，Raku 支持绑定到数组元素：
+作为一个奇怪的侧注，Raku 支持绑定到数组元素：
 
 As a curious side note, Raku supports binding to array elements:
 
@@ -331,11 +333,11 @@ say @a;                     # OUTPUT: «[42 2 3]
 » 
 ```
 
-如果你已经阅读并理解了前面的解释，现在是时候思考一下这是如何工作的了。绑定到变量需要该变量的词法板条目，虽然数组确有一个条目，但是数组里的元素没有词法板条目，因为你不能在运行时扩展词法板。
+如果你已经阅读并理解了前面的解释，现在是时候思考一下这是如何工作的了。绑定到变量需要那个变量的一个词法板条目，虽然数组确有一个词法板条目，但是数组里的元素没有词法板条目，因为你不能在运行时扩展词法板。
 
 If you've read and understood the previous explanations, it is now time to wonder how this can possibly work. After all, binding to a variable requires a lexpad entry for that variable, and while there is one for an array, there aren't lexpad entries for each array element, because you cannot expand the lexpad at runtime.
 
-答案是，在语法级别可以识别到数组元素的绑定，对数组调用一个叫做 `BIND-KEY` 的特殊方法，而不是为寻常的绑定操作发出代码。此方法处理与数组元素的绑定。
+答案是，绑定到数组元素是在语法级别识别的，对数组调用一个叫做 `BIND-KEY` 的特殊方法，而不是为寻常的绑定操作发射代码。此方法处理与数组元素的绑定。
 
 The answer is that binding to array elements is recognized at the syntax level and instead of emitting code for a normal binding operation, a special method (called `BIND-KEY`) is called on the array. This method handles binding to array elements.
 
@@ -359,8 +361,8 @@ CATCH { default { say .^name, ': ', .Str } };
 
 Operations that mix Lists and Arrays generally protect against such a thing happening accidentally.
 
-<a id="%E6%89%81%E5%B9%B3%E5%8C%96%E3%80%81%E7%89%A9%E5%93%81%E5%92%8C%E5%AE%B9%E5%99%A8--flattening-items-and-containers"></a>
-# 扁平化、物品和容器 / Flattening, items and containers
+<a id="%E5%B1%95%E5%BC%80%E3%80%81%E7%89%A9%E5%93%81%E5%92%8C%E5%AE%B9%E5%99%A8--flattening-items-and-containers"></a>
+# 展开、物品和容器 / Flattening, items and containers
 
 `%` 和 `@` 标记在 Raku 中通常代表迭代结构有多个值，而 `$` 标记只表示一个值。
 
@@ -373,7 +375,7 @@ my $a = (1, 2, 3);
 for $a { };         # 1 iteration 
 ```
 
-`@` 标记的变量在列表上下文中不扁平化。
+`@` 标记的变量在列表上下文中不展开。
 
 `@`-sigiled variables do not flatten in list context:
 
@@ -398,7 +400,7 @@ say f @a, 4, 5;             # OUTPUT: «5
 » 
 ```
 
-你也可以使用 `|` 生成一个 [Slip](https://docs.raku.org/type/Slip)，将列表引入另一个列表。
+你也可以使用 `|` 生成一个 [Slip](https://docs.raku.org/type/Slip)，将一个列表引入另一个。
 
 You can also use `|` to create a [Slip](https://docs.raku.org/type/Slip), introducing a list into the other.
 
@@ -411,11 +413,11 @@ say (flat @l, 11, 12) # OUTPUT: «(1 2 3 4 5 6 7 8 (9 10) 11 12)
 ```
 
 在第一种情况下，`@l` 的每个元素都会*滑入*结果列表作为相应的元素。`flat` 函数*扁平化*包括所包含数组元素的所有元素，除了 `(9 10)`。
-`flat` 函数*扁平化*所有元素，包括包含数组的元素，除了 `(9 10)`。
+`flat` 函数*展开*所有元素，包括包含数组的元素，除了 `(9 10)`。
 
 In the first case, every element of `@l` is *slipped* as the corresponding elements of the resulting list. `flat`, in the other hand, *flattens* all elements including the elements of the included array, except for `(9 10)`.
 
-如上所述，标量容器阻止扁平化
+如上所述，标量容器阻止展开
 
 As hinted above, scalar containers prevent that flattening:
 
@@ -475,14 +477,14 @@ put @a.perl;
 » 
 ```
 
-尽管 Raku 不会阻止你创建和使用自引用数据，但是这样做可能会导致你陷入一个试图转储数据的循环中。最后，你可以使用 Promises 来[处理](https://docs.raku.org/type/promise-method-in)超时。
+尽管 Raku 不会阻止你创建和使用自引用数据，但是这样做可能会导致你陷入一个试图转储数据的循环中。万不得已，你可以使用 Promises 来[处理](https://docs.raku.org/type/promise-method-in)超时。
 
 Although Raku does not prevent you from creating and using self-referential data, by doing so you may end up in a loop trying to dump the data. As a last resort, you can use Promises to [handle](https://docs.raku.org/type/Promise#method_in) timeouts.
 
 <a id="%E7%B1%BB%E5%9E%8B%E7%BA%A6%E6%9D%9F--type-constraints"></a>
 # 类型约束 / Type constraints
 
-任何容器都有[类型对象](https://docs.raku.org/language/typesystem#Type_objects)或者[子集](https://docs.raku.org/language/typesystem#subset)形式的类型约束。两者都可以放在声明符合变量名中间或者在特性 [of] (https://docs.raku.org/type/Variable#trait_is_dynamic)之后。约束是变量而非容器的属性。
+任何容器都有[类型对象](https://docs.raku.org/language/typesystem#Type_objects)或者[子集](https://docs.raku.org/language/typesystem#subset)形式的类型约束。两者都可以放在声明符合变量名中间或者在特性 [of] (https://docs.raku.org/type/Variable#trait_is_dynamic) 之后。约束是变量而非容器的属性。
 
 Any container can have a type constraint in the form of a [type object](https://docs.raku.org/language/typesystem#Type_objects) or a [subset](https://docs.raku.org/language/typesystem#subset). Both can be placed between a declarator and the variable name or after the trait [of](https://docs.raku.org/type/Variable#trait_is_dynamic). The constraint is a property of the variable, not the container.
 
@@ -495,7 +497,7 @@ my Three-letter $acronym = "ÞFL";
 
 In this case, the type constraint is the (compile-type defined) subset `Three-letter`.
 
-变量中可能没有容器，但是仍然具有再绑定的能力以及类型检查那个再绑定。因为在那种情况中绑定操作符 [:=](https://docs.raku.org/language/operators#infix_%3A%3D) 执行了类型检查：
+变量中可能没有容器，但是仍然具有再绑定的能力以及对再绑定进行类型检查。因为在那种情况中绑定运算符 [:=](https://docs.raku.org/language/operators#infix_%3A%3D) 执行了类型检查：
 
 Variables may have no container in them, yet still offer the ability to re-bind and typecheck that rebind. The reason for that is in such cases the binding operator [:=](https://docs.raku.org/language/operators#infix_%3A%3D) performs the typecheck:
 
@@ -505,11 +507,11 @@ z := 100; # OK
 z := "x"; # Typecheck failure 
 ```
 
-当绑定至 [Hash] 键时，情况又有所不同，因为绑定是被方法调用处理的（尽管语法仍旧不变，使用 `:=` 操作符）。
+当绑定至 [Hash] 键时，情况又有所不同，因为绑定是被一个方法调用处理的（尽管语法仍旧不变，使用 `:=` 操作符）。
 
 The same isn't the case when, say, binding to a [Hash](https://docs.raku.org/type/Hash) key, as the binding is then handled by a method call (even though the syntax remains the same, using `:=` operator).
 
-`标量`容器的默认类型约束是 [Mu](https://docs.raku.org/type/Mu)。容器的类型约束反省是由 `.VAR.of` 方法提供的，对于 `@` 和 `％` 标记的变量给出了值的约束：
+`Scalar` 容器的默认类型约束是 [Mu](https://docs.raku.org/type/Mu)。容器的类型约束反省是由 `.VAR.of` 方法提供的，对于 `@` 和 `％` 标记的变量给出了值的约束：
 
 The default type constraint of a `Scalar` container is [Mu](https://docs.raku.org/type/Mu). Introspection of type constraints on containers is provided by `.VAR.of` method, which for `@` and `%` sigiled variables gives the constraint for values:
 
@@ -543,15 +545,14 @@ $def = Int; # Typecheck failure
 
 You'll also need to initialize the variable in the declaration, it can't be left undefined after all.
 
-也可以使用[默认已定义变量的
-指令](https://docs.raku.org/language/variables#Default_defined_variables_pragma)在作用域中声明的所有变量中强制实施此约束。来自总是定义变量的其他语言的人会想看看。
+也可以使用[默认已定义变量的指令](https://docs.raku.org/language/variables#Default_defined_variables_pragma)在作用域中声明的所有变量中强制实施此约束。来自其他语言的人会想看看，可能他们的变量总是定义的。
 
 It's also possible to have this constraint enforced in all variables declared in a scope with the [default defined variables pragma](https://docs.raku.org/language/variables#Default_defined_variables_pragma). People coming from other languages where variables are always defined will want to have a look.
 
 <a id="%E8%87%AA%E5%AE%9A%E4%B9%89%E5%AE%B9%E5%99%A8--custom-containers"></a>
 # 自定义容器 / Custom containers
 
-为了提供自定义容器，Raku 提供了类 `Proxy`。它接受两个方法，在存储或从容器中提取值时调用。类型检查不是由容器本身完成的并且其他限制如只读可能会被打破。因此，返回值的类型必须与它绑定到的变量的类型相同。我们可以使用类型捕获来处理 Raku 中的类型。
+为了提供自定义容器，Raku 提供了 `Proxy` 类。它接受两个方法，从容器中提取值或存储到容器时调用。类型检查不是由容器本身完成的并且其他限制如只读可能会被打破。因此，返回值的类型必须与它绑定到的变量的类型相同。我们可以使用类型捕获来处理 Raku 中的类型。
 
 To provide custom containers Raku provides the class `Proxy`. It takes two methods that are called when values are stored or fetched from the container. Type checks are not done by the container itself and other restrictions like readonlyness can be broken. The returned value must therefore be of the same type as the type of the variable it is bound to. We can use type captures to work with types in Raku.
 
