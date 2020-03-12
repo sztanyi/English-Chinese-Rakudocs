@@ -2,11 +2,11 @@
 
 # 包 - Packages
 
-组织和引用命名空间化了的程序元素
+组织和引用命名空间的程序元素
 
 Organizing and referencing namespaced program elements
 
-包是命名程序元素的嵌套命名空间。[模组](https://docs.raku.org/language/module-packages)、类、grammar 等都是包的类型。与目录中的文件一样，如果命名元素是本地的，则通常可以使用它们的短名引用它们，也可以引用包含名称空间的较长名称，只要它们的范围允许，就可以消除歧义。
+包是命名程序元素的嵌套命名空间。[模组](https://docs.raku.org/language/module-packages)、 类、 grammar 等都是包的类型。与目录中的文件一样，如果命名元素是本地的，则通常可以使用它们的短名引用它们，也可以引用包含名称空间的较长名称，只要它们的范围允许，就可以消除歧义。
 
 Packages are nested namespaces of named program elements. [Modules](https://docs.raku.org/language/module-packages), classes, grammars, and others are types of packages. Like files in a directory, you can generally refer to named elements with their short-name if they are local, or with the longer name that includes the namespace to disambiguate as long as their scope allows that.
 

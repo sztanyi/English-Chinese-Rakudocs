@@ -12,6 +12,8 @@ Raku 原生类型 - Raku native types
 句法 - Syntax
 哈希和映射 - Hashes and maps
 容器 - Containers
+异常 - Exceptions
+引文构造 - Quoting constructs
 
 输入输出权威指南 - IO the definitive guide
 换行处理 - Newline handling in Raku

@@ -6,7 +6,11 @@ Raku 中使用异常
 
 Using exceptions in Raku
 
+Raku 中的异常是保存错误信息的对象。 例如，错误可以是意外接收数据或网络连接不再可用，也可以是丢失的文件。 例如，异常对象存储的信息可能是关于错误条件的消息、错误的回溯等等。
+
 Exceptions in Raku are objects that hold information about errors. An error can be, for example, the unexpected receiving of data or a network connection no longer available, or a missing file. The information that an exception objects store is, for instance, a human-readable message about the error condition, the backtrace of the raising of the error, and so on.
+
+所有内置异常都继承自 [Exception](https://docs.raku.org/type/Exception)，它提供了一些基本行为，包括存储回溯和回溯打印机的接口。
 
 All built-in exceptions inherit from [Exception](https://docs.raku.org/type/Exception), which provides some basic behavior, including the storage of a backtrace and an interface for the backtrace printer.
 
@@ -16,7 +20,7 @@ All built-in exceptions inherit from [Exception](https://docs.raku.org/type/Exce
 - [类型化异常 / Typed exceptions](#%E7%B1%BB%E5%9E%8B%E5%8C%96%E5%BC%82%E5%B8%B8--typed-exceptions)
 - [捕获异常 / Catching exceptions](#%E6%8D%95%E8%8E%B7%E5%BC%82%E5%B8%B8--catching-exceptions)
     - [异常处理程序和封闭块 / Exception handlers and enclosing blocks](#%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E7%A8%8B%E5%BA%8F%E5%92%8C%E5%B0%81%E9%97%AD%E5%9D%97--exception-handlers-and-enclosing-blocks)
-- [`tyr` 代码块 / `try` blocks](#tyr-%E4%BB%A3%E7%A0%81%E5%9D%97--try-blocks)
+- [`try` 代码块 / `try` blocks](#try-%E4%BB%A3%E7%A0%81%E5%9D%97--try-blocks)
 - [抛出异常 / Throwing exceptions](#%E6%8A%9B%E5%87%BA%E5%BC%82%E5%B8%B8--throwing-exceptions)
 - [异常恢复 / Resuming of exceptions](#%E5%BC%82%E5%B8%B8%E6%81%A2%E5%A4%8D--resuming-of-exceptions)
 - [未捕获的异常 / Uncaught exceptions](#%E6%9C%AA%E6%8D%95%E8%8E%B7%E7%9A%84%E5%BC%82%E5%B8%B8--uncaught-exceptions)
@@ -48,7 +52,7 @@ It is worth noting that `die` prints the error message to the standard error `$*
 
 Typed exceptions provide more information about the error stored within an exception object.
 
-例如，如果在一个对象上执行 `.zombie copy` 时，需要的文件路径 `foo/bar` 不可用，则 [X::IO::DoesNotExist](https://docs.raku.org/type/X::IO::DoesNotExist) 异常可以被抛出：
+例如，如果在一个对象上执行 `.zombie copy` 时，需要的文件 `foo/bar` 将变得不可用，则 [X::IO::DoesNotExist](https://docs.raku.org/type/X::IO::DoesNotExist) 异常会被抛出：
 
 For example, if while executing `.zombie copy` on an object, a needed path `foo/bar` becomes unavailable, then an [X::IO::DoesNotExist](https://docs.raku.org/type/X::IO::DoesNotExist) exception can be raised:
 
@@ -59,14 +63,14 @@ die X::IO::DoesNotExist.new(:path("foo/bar"), :trying("zombie copy"))
 #          in block <unit> at my-script.p6:1» 
 ```
 
-请注意，对象如何向回溯提供有关出错的信息。代码的用户现在可以更容易地找到和纠正问题。
+请注意对象是如何向回溯提供有关出错的信息。代码的用户现在可以更容易地找到和纠正问题。
 
 Note how the object has provided the backtrace with information about what went wrong. A user of the code can now more easily find and correct the problem.
 
 <a id="%E6%8D%95%E8%8E%B7%E5%BC%82%E5%B8%B8--catching-exceptions"></a>
 # 捕获异常 / Catching exceptions
 
-可以通过提供 `CATCH` 代码块来处理异常情况：
+可以通过 `CATCH` 代码块来处理异常：
 
 It's possible to handle exceptional circumstances by supplying a `CATCH` block:
 
@@ -80,14 +84,13 @@ CATCH {
 # OUTPUT: «some kind of IO exception was caught!» 
 ```
 
-这里，我们要说的是，如果发生了类型为 `X::IO` 的异常，那么消息 `some kind of IO exception was caught!` 将被发送到 *stderr*，这就是 `$*ERR.say` 所做的，在那一刻显示在构成标准错误设备的任何组件上，这可能是默认的控制台。
+这里，我们要说的是，如果发生了类型为 `X::IO` 的异常，那么消息 `some kind of IO exception was caught!` 将被发送到*标准错误输出*，这就是 `$*ERR.say` 所做的，在那一刻显示在构成标准错误设备的任何组件上，这很可能是默认的控制台。
 
 Here, we are saying that if any exception of type `X::IO` occurs, then the message `some kind of IO exception was caught!` will be sent to *stderr*, which is what `$*ERR.say` does, getting displayed on whatever constitutes the standard error device in that moment, which will probably be the console by default.
 
 `CATCH` 代码块使用智能匹配的方式类似 `given/when` 用智能匹配处理选项一样，因此可以在 `when` 代码块中抓取和处理各种类别的异常。
 
 A `CATCH` block uses smartmatching similar to how `given/when` smartmatches on options, thus it's possible to catch and handle various categories of exceptions inside a `when` block.
-
 
 要处理所有异常，使用 `default` 语句。这个例子打印出的信息与普通的回溯打印机几乎相同。
 
@@ -156,8 +159,8 @@ say "Hi! I am at the outer block!"; # OUTPUT: «Hi! I am at the outer block!␤�
 
 See [Resuming of exceptions](https://docs.raku.org/language/exceptions#Resuming_of_exceptions), for how to return control back to where the exception originated.
 
-<a id="tyr-%E4%BB%A3%E7%A0%81%E5%9D%97--try-blocks"></a>
-# `tyr` 代码块 / `try` blocks
+<a id="try-%E4%BB%A3%E7%A0%81%E5%9D%97--try-blocks"></a>
+# `try` 代码块 / `try` blocks
 
 `try` 代码块是一个普通代码块，它隐式使用 [`use fatal` 指令](https://docs.raku.org/language/pragmas#index-entry-fatal-fatal)，并包含一个用来用于舍弃异常的隐式 `CATCH` 代码块，这意味着你可以使用它来包含异常。捕获的异常存储在 `$!` 变量中，它保存 `Exception` 的值。
 
@@ -174,7 +177,7 @@ A normal block like this one will simply fail:
 } # OUTPUT: «Failure␤» 
 ```
 
-但是，`try` 代码块将包含异常并将其放入 `$!` 变量中：
+但是，`try` 代码块将控制异常并将其放入 `$!` 变量中：
 
 However, a `try` block will contain the exception and put it into the `$!` variable:
 
@@ -280,7 +283,7 @@ say try "some-filename.txt".IO.slurp // "sane default";
 # OUTPUT: «sane default␤» 
 ```
 
-`try` 的实际原因是，通过 `use fatal` 指令，立即抛出在其作用域内发生的异常，但通过这样做，`CATCH` 代码块将从引发异常的点（定义其作用域）调用。
+`try` 的实际原因是，通过 `use fatal` 指令，立即抛出在其作用域内发生的异常，但通过这样做，`CATCH` 代码块将从引发异常的点（定义其作用域）被调用。
 
 What `try` actually causes is, via the `use fatal` pragma, an immediate throw of the exceptions that happen within its scope, but by doing so the `CATCH` block is invoked from the point where the exception is thrown, which defines its scope.
 
@@ -362,7 +365,7 @@ This next example doesn't resume from the point of the exception. Instead, it co
 # OUTPUT: «OBAI␤» 
 ```
 
-`throw` 可以看作是 `die` 的方法形式，在这种特殊情况下，例程的 sub 和 method 形式有不同的名称。
+`throw` 可以看作是 `die` 的方法形式，在这种特殊情况下，子例程的 sub 和 method 形式有不同的名称。
 
 `throw` can be viewed as the method form of `die`, just that in this particular case, the sub and method forms of the routine have different names.
 
@@ -415,7 +418,7 @@ In this case, `.resume` is getting to the `return` statement that happens right 
 <a id="%E6%9C%AA%E6%8D%95%E8%8E%B7%E7%9A%84%E5%BC%82%E5%B8%B8--uncaught-exceptions"></a>
 # 未捕获的异常 / Uncaught exceptions
 
-如果一个异常被抛出并且没有被捕获，它会导致程序以非零状态代码退出，并且通常会将一条消息打印到程序的标准错误流。此消息是通过对异常对象调用 `gist` 方法获得的。你可以使用此选项来禁止与消息一起打印回溯的默认行为：
+如果一个异常被抛出并且没有被捕获，它会导致程序以非零状态码退出，并且通常会将一条消息打印到程序的标准错误流。此消息是通过对异常对象调用 `gist` 方法获得的。你可以使用此选项来禁止与消息一起打印回溯的默认行为：
 
 If an exception is thrown and not caught, it causes the program to exit with a non-zero status code, and typically prints a message to the standard error stream of the program. This message is obtained by calling the `gist` method on the exception object. You can use this to suppress the default behavior of printing a backtrace along with the message:
 
@@ -433,7 +436,7 @@ die X::WithoutLineNumber.new(payload => "message")
 <a id="%E6%8E%A7%E5%88%B6%E5%BC%82%E5%B8%B8--control-exceptions"></a>
 # 控制异常 / Control exceptions
 
-当执行 [X::Control](https://docs.raku.org/type/X::Control) 角色（自 Rakudo 2019.03 起）抛出异常时，会引发控制异常。它们通常由特定的[关键字](https://docs.raku.org/language/phasers#CONTROL)抛出，并自动或由相应的[相位器](https://docs.raku.org/language/phasers#Loop_phasers)处理。任何未处理的控件异常都将转换为正常异常。
+有 [X::Control](https://docs.raku.org/type/X::Control) 角色的异常被抛出时（自 Rakudo 2019.03 起），会引发控制异常。它们通常由特定的[关键字](https://docs.raku.org/language/phasers#CONTROL)抛出，并自动或由相应的[相位器](https://docs.raku.org/language/phasers#Loop_phasers)处理。任何未处理的控制异常都将转换为正常异常。
 
 Control exceptions are raised when throwing an Exception which does the [X::Control](https://docs.raku.org/type/X::Control) role (since Rakudo 2019.03). They are usually thrown by certain [keywords](https://docs.raku.org/language/phasers#CONTROL) and are handled either automatically or by the appropriate [phaser](https://docs.raku.org/language/phasers#Loop_phasers). Any unhandled control exception is converted to a normal exception.
 

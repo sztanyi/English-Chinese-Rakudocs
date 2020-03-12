@@ -2,9 +2,10 @@
 
 # 引文构造 / Quoting constructs
 
-在 Raku 中编写字符串、单词列表和正则表达式
+在 Raku 中使用字符串、单词列表和正则表达式
 
 Writing strings, word lists, and regexes in Raku
+
 <!-- MarkdownTOC -->
 
 - [Q 语言 / The Q lang](#q-%E8%AF%AD%E8%A8%80--the-q-lang)
@@ -28,7 +29,7 @@ Writing strings, word lists, and regexes in Raku
 <a id="q-%E8%AF%AD%E8%A8%80--the-q-lang"></a>
 # Q 语言 / The Q lang
 
-字符串通常用某种形式的引用构造在 Raku 代码中表示。其中最简约的是 `Q`，可通过快捷方式 `｢…｣` 使用，或通过 `Q`，后面跟着围绕你的文本的任何一对分隔符。然而，大多数时候，你最需要的是‘…’`或‘’…‘`，下文将更详细地介绍。
+字符串通常用某种形式的引用构造在 Raku 代码中表示。其中最简约的是 `Q`，可通过快捷方式 `｢…｣` 使用，或通过 `Q`，后面跟着围绕你的文本的任何一对分隔符。然而，大多数时候，你最需要的是 `'…'` 或 `"…"`，下文将更详细地介绍。
 
 Strings are usually represented in Raku code using some form of quoting construct. The most minimalistic of these is `Q`, usable via the shortcut `｢…｣`, or via `Q` followed by any pair of delimiters surrounding your text. Most of the time, though, the most you'll need is `'…'` or `"…"`, described in more detail in the following sections.
 
@@ -46,7 +47,7 @@ Q ｢｢Delimiters can be repeated/nested if they are adjacent.｣｣
 
 Delimiters can be nested, but in the plain `Q` form, backslash escapes aren't allowed. In other words, basic `Q` strings are as literal as possible.
 
-在 `Q`、`q` 或 `qq` 之后不允许使用某些分隔符。不允许使用[标识符](https://docs.raku.org/language/syntax#Identifiers)中允许的任何字符，因为在这种情况下，引用构造连同这些字符一起被解释为标识符。此外，`( )` 是不允许的，因为它被解释为函数调用。如果你仍然希望使用这些字符作为分隔符，请用空格将它们与 `Q`、`q` 或 `qq` 分隔开。请注意，一些自然语言在字符串的右侧使用左分隔引号。`Q` 不支持这些，因为它依赖 Unicode 属性区分左分隔符和右分隔符。
+在 `Q`、`q` 或 `qq` 之后不允许使用某些分隔符。不允许使用[标识符](https://docs.raku.org/language/syntax#Identifiers)中允许的字符，因为在这种情况下，引用构造连同这些字符一起被解释为标识符。此外，`( )` 是不允许的，因为它被解释为函数调用。如果你仍然希望使用这些字符作为分隔符，请用空格将它们与 `Q`、`q` 或 `qq` 分隔开。请注意，一些自然语言在字符串的右侧使用左分隔引号。`Q` 不支持这些，因为它依赖 Unicode 属性区分左分隔符和右分隔符。
 
 Some delimiters are not allowed immediately after `Q`, `q`, or `qq`. Any characters that are allowed in [identifiers](https://docs.raku.org/language/syntax#Identifiers) are not allowed to be used, since in such a case, the quoting construct together with such characters are interpreted as an identifier. In addition, `( )` is not allowed because that is interpreted as a function call. If you still wish to use those characters as delimiters, separate them from `Q`, `q`, or `qq` with a space. Please note that some natural languages use a left delimiting quote on the right side of a string. `Q` will not support those as it relies on unicode properties to tell left and right delimiters apart.
 
@@ -55,7 +56,7 @@ Q'this will not work!'
 Q(this won't work either!)
 ```
 
-上面的例子将产生一个错误。不过，这是可行的。
+上面的例子将产生一个错误。不过，可以这样做
 
 The examples above will produce an error. However, this will work
 
