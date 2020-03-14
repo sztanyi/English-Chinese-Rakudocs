@@ -14,6 +14,7 @@ Raku 原生类型 - Raku native types
 容器 - Containers
 异常 - Exceptions
 引文构造 - Quoting constructs
+性能 - Performance
 
 输入输出权威指南 - IO the definitive guide
 换行处理 - Newline handling in Raku

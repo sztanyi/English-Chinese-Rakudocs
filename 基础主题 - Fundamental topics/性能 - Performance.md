@@ -14,7 +14,7 @@ This page is about [computer performance](https://en.wikipedia.org/wiki/Computer
 - [首先，分析你的代码 / First, profile your code](#%E9%A6%96%E5%85%88%EF%BC%8C%E5%88%86%E6%9E%90%E4%BD%A0%E7%9A%84%E4%BB%A3%E7%A0%81--first-profile-your-code)
   - [用 `now - INIT now` 计时 / Time with `now - INIT now`](#%E7%94%A8-now---init-now-%E8%AE%A1%E6%97%B6--time-with-now---init-now)
   - [局部分析 / Profile locally](#%E5%B1%80%E9%83%A8%E5%88%86%E6%9E%90--profile-locally)
-  - [分析编译 / Profile compiling](#%E5%88%86%E6%9E%90%E7%BC%96%E8%AF%91--profile-compiling)
+  - [分析编译过程 / Profile compiling](#%E5%88%86%E6%9E%90%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B--profile-compiling)
   - [创建或查看基准 / Create or view benchmarks](#%E5%88%9B%E5%BB%BA%E6%88%96%E6%9F%A5%E7%9C%8B%E5%9F%BA%E5%87%86--create-or-view-benchmarks)
   - [共享问题 / Share problems](#%E5%85%B1%E4%BA%AB%E9%97%AE%E9%A2%98--share-problems)
 - [解决问题 / Solve problems](#%E8%A7%A3%E5%86%B3%E9%97%AE%E9%A2%98--solve-problems)
@@ -44,7 +44,7 @@ This page is about [computer performance](https://en.wikipedia.org/wiki/Computer
 
 Expressions of the form `now - INIT now`, where `INIT` is a [phase in the running of a Raku program](https://docs.raku.org/language/phasers), provide a great idiom for timing code snippets.
 
-使用 `m: your code goes here` [raku 通道 evalbot](https://docs.raku.org/language/glossary#camelia) 写代码，例如：
+使用 `m: your code goes here` 的格式在 [raku 通道用 evalbot](https://docs.raku.org/language/glossary#camelia) 写代码，例如：
 
 Use the `m: your code goes here` [raku channel evalbot](https://docs.raku.org/language/glossary#camelia) to write lines like:
 
@@ -53,7 +53,7 @@ m: say now - INIT now
 rakudo-moar abc1234: OUTPUT«0.0018558␤»
 ```
 
-`INIT` 左边的 `now` 运行 0.0018558 秒比 `INIT` 右侧的 `now` *晚*，因为后者发生在 [INIT 阶段](https://docs.raku.org/language/phasers#INIT)。
+`INIT` 左边的 `now` 运行 0.0018558 秒比 `INIT` 右侧的 `now` 晚，因为后者发生在 [INIT 阶段](https://docs.raku.org/language/phasers#INIT)。
 
 The `now` to the left of `INIT` runs 0.0018558 seconds *later* than the `now` to the right of the `INIT` because the latter occurs during [the INIT phase](https://docs.raku.org/language/phasers#INIT).
 
@@ -64,19 +64,19 @@ The `now` to the left of `INIT` runs 0.0018558 seconds *later* than the `now` to
 
 When using the [MoarVM](https://moarvm.org/) backend, the [Rakudo](https://rakudo.org/) compiler's `--profile` command line option writes the profile data to an HTML file.
 
-该文件将打开“概述”部分，其中提供了有关程序运行方式的一些总体数据，例如，总运行时、垃圾收集所花费的时间。你将在这里获得的一个重要信息是被解释的调用帧（即代码块）中被解释的百分比（最慢，红色），[spesh](https://docs.raku.org/language/glossary#index-entry-Spesh)（更快，以橙色表示），以及弹跳（以绿色表示最快）。
+该文件将打开 “Overview” 部分，其中提供了有关程序运行方式的一些总体数据，例如，总运行时、垃圾收集所花费的时间。你将在这里获得的一个重要信息是被解释的调用帧（即代码块）中被解释的百分比（最慢，红色），[spesh](https://docs.raku.org/language/glossary#index-entry-Spesh)（更快，以橙色表示），以及弹跳（以绿色表示最快）。
 
 This file will open to the "Overview" section, which gives some overall data about how the program ran, e.g., total runtime, time spent doing garbage collection. One important piece of information you'll get here is percentage of the total call frames (i.e., blocks) that were interpreted (slowest, in red), [speshed](https://docs.raku.org/language/glossary#index-entry-Spesh) (faster, in orange), and jitted (fastest, in green).
 
-下一节，“例程”，可能是你花的时间最多的地方。它有一个可排序和可过滤的例程（或代码块）名称文件行表，它运行的次数，包含的时间（在从它调用的所有例程中花费在该例程中的时间），独占时间（仅用于该例程的时间），以及它是被解释的、spesh 还是 JIT 的（与“概述”页面相同的颜色代码）。按排他性时间排序是知道从哪里开始优化的好方法。以 `SETTING::src/core/` 或 `gen/moar/` 开头的文件名的例程来自编译器，查看自己代码中的内容的一个好方法是将你分析的脚本的文件名放在 "Name" 搜索框中。
+下一节，“Routines”，可能是你花的时间最多的地方。它有一个可排序和可过滤的例程（或代码块）名称+文件+行，它运行的次数，包含的时间（在从它调用的所有例程中花费在该例程中的时间），独占时间（仅用于该例程的时间），以及它是被解释的、 spesh 还是 JIT 的（与 “Overview” 页面相同的颜色代码）。按排他性时间排序是知道从哪里开始优化的好方法。以 `SETTING::src/core/` 或 `gen/moar/` 开头的文件名的例程来自编译器，查看自己代码中的内容的一个好方法是将你分析的脚本的文件名放在 "Name" 搜索框中。
 
 The next section, "Routines", is probably where you'll spend the most time. It has a sortable and filterable table of routine (or block) name+file+line, the number of times it ran, the inclusive time (time spent in that routine + time spent in all routines called from it), exclusive time (just the time spent in that routine), and whether it was interpreted, speshed, or jitted (same color code as the "Overview" page). Sorting by exclusive time is a good way to know where to start optimizing. Routines with a filename that starts like `SETTING::src/core/` or `gen/moar/` are from the compiler, a good way to just see the stuff from your own code is to put the filename of the script you profiled in the "Name" search box.
 
-“调用图”部分给出了与“例程”部分相同的大部分信息的火焰图表示。
+“Call Graph” 部分给出了与 “Routines” 部分相同的大部分信息的火焰图表示。
 
 The "Call Graph" section gives a flame graph representation of much of the same information as the "Routines" section.
 
-“分配”部分为你提供了有关分配的不同类型的数量以及哪个例程在执行分配。
+“Allocations” 部分为你提供了有关分配的不同类型的数量以及哪个例程在执行分配。
 
 The "Allocations" section gives you information about the amount of different types that were allocated, as well as which routines did the allocating.
 
@@ -84,11 +84,11 @@ The "Allocations" section gives you information about the amount of different ty
 
 The "GC" section gives you detailed information about all the garbage collections that occurred.
 
-“OSR / Deopt” 部分为你提供了关于堆栈替换（OSR）的信息，这是例程从解释*升级*到 spesh 或 jit 的时候。Deopt 的情况正好相反，当 spesh 或 jit 代码时，必须将其“降级”为被解释。
+“OSR / Deopt” 部分为你提供了关于堆栈替换（OSR）的信息，这是例程从解释升级到 spesh 或 jit 的时候。Deopt 的情况正好相反，当 spesh 或 jit 代码时，必须将其“降级”为被解释。
 
 The "OSR / Deopt" section gives you information about On Stack Replacements (OSRs), which is when routines are "upgraded" from interpreted to speshed or jitted. Deopts are the opposite, when speshed or jitted code has to be "downgraded" to being interpreted.
 
-如果配置文件数据太大，浏览器打开文件可能需要很长时间。在这种情况下，使用 `--profile=filename` 选项将输出输出到扩展名为 `.json` 的文件，然后使用 [QT查看器](https://github.com/tadzik/p6profiler-qt)打开文件。
+如果分析文件数据太大，浏览器打开文件可能需要很长时间。在这种情况下，使用 `--profile=filename` 选项将输出输出到扩展名为 `.json` 的文件，然后使用 [QT 查看器](https://github.com/tadzik/p6profiler-qt)打开文件。
 
 If the profile data is too big, it could take a long time for a browser to open the file. In that case, output to a file with a `.json` extension using the `--profile=filename` option, then open the file with the [Qt viewer](https://github.com/tadzik/p6profiler-qt).
 
@@ -134,8 +134,8 @@ The in-progress, next-gen profiler is [moarperf](https://github.com/timo/moarper
 
 To learn how to interpret the profile info, use the `prof-m: your code goes here` evalbot (explained above) and ask questions on the IRC channel.
 
-<a id="%E5%88%86%E6%9E%90%E7%BC%96%E8%AF%91--profile-compiling"></a>
-## 分析编译 / Profile compiling
+<a id="%E5%88%86%E6%9E%90%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B--profile-compiling"></a>
+## 分析编译过程 / Profile compiling
 
 如果要分析编译代码所需的时间和内存，请使用 Rakudo 的 `--profile-compile` 或 `--profile-stage` 选项。
 
@@ -148,7 +148,7 @@ If you want to profile the time and memory it takes to compile your code, use Ra
 
 Use [perl6-bench](https://github.com/japhb/perl6-bench).
 
-如果你为多个编译器运行 perl6-bench （通常是 Perl 5、Raku 或 NQP 的版本），则每个编译器的结果都会在相同的图形上可视化地覆盖，以提供快速和容易的比较。
+如果你为多个编译器运行 perl6-bench（通常是 Perl 5、Raku 或 NQP 的版本），则每个编译器的结果都会在相同的图形上可视化地覆盖，以提供快速和容易的比较。
 
 If you run perl6-bench for multiple compilers (typically, versions of Perl 5, Raku, or NQP), results for each are visually overlaid on the same graphs, to provide for quick and easy comparison.
 
@@ -159,7 +159,7 @@ If you run perl6-bench for multiple compilers (typically, versions of Perl 5, Ra
 
 Once you've used the above techniques to identify the code to improve, you can then begin to address (and share) the problem with others:
 
-- 对于每个问题，将其归结为一行代码或 gist，或者提供性能编号，或者使代码片段足够小，以便可以使用 `prof-m: your code or gist URL goes here` 来对其进行分析。
+- 对于每个问题，将其提炼为一行代码或其主旨，或者提供性能编号，或者使代码片段足够小，以便可以使用 `prof-m: your code or gist URL goes here` 来对其进行分析。
 - 考虑一下你所需要/想要的最低提速(或减少内存什么的)，并考虑与实现这个目标相关的成本。就人们的时间和精力而言，改进的价值是什么？
 - 让其他人知道你的 Raku 用例是在生产环境中还是只是为了好玩。
 
@@ -177,7 +177,7 @@ This bears repeating: **make sure you're not wasting time on the wrong code**. S
 <a id="%E9%80%90%E8%A1%8C--line-by-line"></a>
 ## 逐行 / Line by line
 
-一种快速、有趣、高效的尝试逐行改进代码的方法是使用 [raku](https://docs.raku.org/language/glossary#IRC) evalbot [camelia](https://docs.raku.org/language/glossary#camelia) 与其他人协作。
+一种快速、有趣、高效的尝试逐行改进代码的方法是使用 [raku](https://docs.raku.org/language/glossary#IRC) 的 evalbot [camelia](https://docs.raku.org/language/glossary#camelia) 与其他人协作。
 
 A quick, fun, productive way to try improve code line-by-line is to collaborate with others using the [raku](https://docs.raku.org/language/glossary#IRC) evalbot [camelia](https://docs.raku.org/language/glossary#camelia).
 
@@ -203,11 +203,11 @@ The call overhead of having multiple `foo` definitions is generally insignifican
 <a id="%E5%8A%A0%E5%BF%AB%E7%B1%BB%E5%9E%8B%E6%A3%80%E6%9F%A5%E5%92%8C%E8%B0%83%E7%94%A8%E8%A7%A3%E6%9E%90--speed-up-type-checks-and-call-resolution"></a>
 ## 加快类型检查和调用解析 / Speed up type-checks and call resolution
 
-大多数 [`where` 子句](https://docs.raku.org/type/Signature#Type_constraints) - 因此，大多数[子集](https://design.perl6.org/S12.html#Types_and_Subtypes) - 强制动态（运行时）类型检查和对任何调用（它*可能*匹配）的调用解析。这比编译时更慢，或者至少更晚。
+大多数 [`where` 子句](https://docs.raku.org/type/Signature#Type_constraints)、 大多数[子集](https://design.perl6.org/S12.html#Types_and_Subtypes)、 强制动态（运行时）类型检查和对任何*可能*匹配的调用的调用解析。这比编译时更慢，或者至少更晚。
 
 Most [`where` clauses](https://docs.raku.org/type/Signature#Type_constraints) – and thus most [subsets](https://design.perl6.org/S12.html#Types_and_Subtypes) – force dynamic (runtime) type checking and call resolution for any call it *might* match. This is slower, or at least later, than compile-time.
 
-方法调用通常被尽可能晚地解析（在运行时动态地），而子调用通常在编译时被静态解析。
+方法调用通常被尽可能晚地解析（在运行时动态地），而子例程调用通常在编译时被静态解析。
 
 Method calls are generally resolved as late as possible (dynamically at runtime), whereas sub calls are generally resolved statically at compile-time.
 
@@ -218,7 +218,7 @@ Method calls are generally resolved as late as possible (dynamically at runtime)
 
 One of the most reliable techniques for making large performance improvements, regardless of language or compiler, is to pick a more appropriate algorithm.
 
-一个典型的例子是 [Boyer-Moore](https://en.wikipedia.org/wiki/Boyer%E2%80%93Moore_string_search_algorithm) 算法。要匹配大字符串中的一个小字符串，一个明显的方法是比较这两个字符串的第一个字符，然后，如果它们匹配，比较第二个字符，或者，如果它们不匹配，比较小字符串的第一个字符和大字符串中的第二个字符，以此类推。相反，Boyer-Moore 算法首先将小字符串的*最后*字符与大字符串中相应的定位字符进行比较。对于大多数字符串，Boyer-Moore 算法在算法上接近 N 倍的速度，其中 N 是小字符串的长度。
+一个典型的例子是 [Boyer-Moore](https://en.wikipedia.org/wiki/Boyer%E2%80%93Moore_string_search_algorithm) 算法。要匹配大字符串中的一个小字符串，一个明显的方法是比较这两个字符串的第一个字符，然后，如果它们匹配，比较第二个字符，或者，如果它们不匹配，比较小字符串的第一个字符和大字符串中的第二个字符，以此类推。相反，Boyer-Moore 算法首先将小字符串的*最后*字符与大字符串中相应的定位字符进行比较。对于大多数字符串，Boyer-Moore 算法在快了接近 N 倍的速度，其中 N 是小字符串的长度。
 
 A classic example is [Boyer-Moore](https://en.wikipedia.org/wiki/Boyer%E2%80%93Moore_string_search_algorithm). To match a small string in a large string, one obvious way to do it is to compare the first character of the two strings and then, if they match, compare the second characters, or, if they don't match, compare the first character of the small string with the second character in the large string, and so on. In contrast, the Boyer-Moore algorithm starts by comparing the *last* character of the small string with the correspondingly positioned character in the large string. For most strings, the Boyer-Moore algorithm is close to N times faster algorithmically, where N is the length of the small string.
 
@@ -233,22 +233,22 @@ The next couple sections discuss two broad categories for algorithmic improvemen
 
 This is another very important class of algorithmic improvement.
 
-参见 [Raku 中的并行性、并发性和异步](https://jnthn.net/papers/2015-yapcasia-concurrency.pdf#page=17)和/或[匹配视频](https://www.youtube.com/watch?v=JpqnNCx7wVY&list=PLRuESFRW2Fa77XObvk7-BYVFwobZHdXdK&index=8)。
+参见 [Raku 中的并行、并发和异步](https://jnthn.net/papers/2015-yapcasia-concurrency.pdf#page=17)和/或[匹配视频](https://www.youtube.com/watch?v=JpqnNCx7wVY&list=PLRuESFRW2Fa77XObvk7-BYVFwobZHdXdK&index=8)。
 
 See the slides for [Parallelism, Concurrency, and Asynchrony in Raku](https://jnthn.net/papers/2015-yapcasia-concurrency.pdf#page=17) and/or [the matching video](https://www.youtube.com/watch?v=JpqnNCx7wVY&list=PLRuESFRW2Fa77XObvk7-BYVFwobZHdXdK&index=8).
 
 <a id="%E4%BD%BF%E7%94%A8%E7%8E%B0%E6%9C%89%E7%9A%84%E9%AB%98%E6%80%A7%E8%83%BD%E4%BB%A3%E7%A0%81--use-existing-high-performance-code"></a>
 ## 使用现有的高性能代码 / Use existing high performance code
 
-在 Raku 和 [Nativecall](https://docs.raku.org/language/nativecall) 中可以使用大量高性能的 C 库，从而很容易为它们创建包装。对 C 库也有实验支持。
+在 Raku 和 [Nativecall](https://docs.raku.org/language/nativecall) 中可以使用大量高性能的 C 库，从而很容易为它们创建包装。对 C++ 库也有实验性的支持。
 
 There are plenty of high performance C libraries that you can use within Raku and [NativeCall](https://docs.raku.org/language/nativecall) makes it easy to create wrappers for them. There's experimental support for C++ libraries, too.
 
-如果你想[在 Raku 中使用 Perl 5 模组](https://stackoverflow.com/a/27206428/1077672)，可以混合 Raku 类型和 [Metaobject Protocol](https://docs.raku.org/language/mop)。
+如果你想[在 Raku 中使用 Perl 5 模组](https://stackoverflow.com/a/27206428/1077672)，可以混合 Raku 类型和[元对象协议](https://docs.raku.org/language/mop)。
 
 If you want to [use Perl 5 modules in Raku](https://stackoverflow.com/a/27206428/1077672), mix in Raku types and the [Metaobject Protocol](https://docs.raku.org/language/mop).
 
-更广泛地说，Raku 是为了与其他语言顺利地互操作而设计的，并且有许多[模组，旨在帮助使用来自其他语言的 lib](https://modules.perl6.org/#q=inline)。
+更广泛地说，Raku 是为了与其他语言顺利地互操作而设计的，并且有许多[模组，旨在帮助使用来自其他语言的库](https://modules.perl6.org/#q=inline)。
 
 More generally, Raku is designed to smoothly interoperate with other languages and there are a number of [modules aimed at facilitating the use of libs from other langs](https://modules.perl6.org/#q=inline).
 
@@ -259,8 +259,8 @@ More generally, Raku is designed to smoothly interoperate with other languages a
 
 To date, the focus for the compiler has been correctness, not how fast it generates code or how fast or lean the code it generates runs. But that's expected to change, eventually... You can talk to compiler devs on the freenode IRC channels #raku and #moarvm about what to expect. Better still, you can contribute yourself:
 
-- Rakudo 主要 Raku 编写。因此，如果你可以编写 Raku，那么你可以在编译器上 hack，包括优化任何影响代码速度的现有高级代码（以及其他人）的任何大型代码。
-- 大部分编译器是用一种名为 [NQP](https://github.com/perl6/nqp) 的小语言编写的基本上是 Raku 的一个子集。如果你可以编写 Raku，那么你也可以很容易地学习使用和改进中级 NQP 代码，至少从纯语言的角度来看是这样。要深入了解 NQP 和 Rakudo，首先是[NQP 和内部课程](https://edumentab.github.io/rakudo-and-nqp-internals-course/)。
+- Rakudo 主要使用 Raku 编写。因此，如果你可以编写 Raku，那么你可以在编译器上 hack，包括优化任何影响代码速度的现有高级代码（以及其他人）的任何大型代码。
+- 大部分编译器是用一种名为 [NQP](https://github.com/perl6/nqp) 的小语言编写的，它基本上是 Raku 的一个子集。如果你可以编写 Raku，那么你也可以很容易地学习使用和改进中级 NQP 代码，至少从纯语言的角度来看是这样。要深入了解 NQP 和 Rakudo，可以从[NQP 和内部课程](https://edumentab.github.io/rakudo-and-nqp-internals-course/)开始。
 - 如果低级别 C hacking 是你的乐趣，请查看 [MoarVM](https://moarvm.org/) 并访问 freenode IRC 通道 #moarvm ([logs](https://colabti.org/irclogger/irclogger_logs/moarvm))。
 
 - Rakudo is largely written in Raku. So if you can write Raku, then you can hack on the compiler, including optimizing any of the large body of existing high-level code that impacts the speed of your code (and everyone else's).
@@ -281,15 +281,15 @@ If you think some topic needs more coverage on this page, please submit a PR or 
 <a id="%E5%BE%97%E4%B8%8D%E5%88%B0%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E7%BB%93%E6%9E%9C%EF%BC%9F--not-getting-the-results-you-needwant"></a>
 # 得不到你想要的结果？ / Not getting the results you need/want?
 
-如果您在此页面上尝试了所有内容，请考虑在 #raku 于编译器开发者讨论，这样我们就可以从您的用例和迄今为止发现的内容中学习。
+如果你在此页面上尝试了所有内容，请考虑在 #raku 于编译器开发者讨论，这样我们就可以从你的用例和迄今为止发现的内容中学习。
 
 If you've tried everything on this page to no avail, please consider discussing things with a compiler dev on #raku, so we can learn from your use-case and what you've found out about it so far.
 
-一旦开发人员知道了您的困境，就允许有足够的时间进行知情的响应（几天或几周，取决于您问题的确切性质和潜在的解决方案）。
+一旦开发人员知道了你的困境，就允许有足够的时间进行知情的响应（几天或几周，取决于你问题的确切性质和潜在的解决方案）。
 
 Once a dev knows of your plight, allow enough time for an informed response (a few days or weeks, depending on the exact nature of your problem and potential solutions).
 
-如果*那*还没有解决，请考虑在[我们的用户体验 repo](https://github.com/perl6/user-experience/issues) 上提交一个关于您的体验的问题。
+如果*那*还没有解决，请考虑在[我们的用户体验代码库](https://github.com/perl6/user-experience/issues)上提交一个关于你的体验的问题。
 
 If *that* hasn't worked out, please consider filing an issue about your experience at [our user experience repo](https://github.com/perl6/user-experience/issues) before moving on.
 

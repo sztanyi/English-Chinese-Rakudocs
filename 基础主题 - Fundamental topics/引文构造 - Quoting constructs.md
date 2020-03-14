@@ -17,10 +17,10 @@ Writing strings, word lists, and regexes in Raku
   - [引号保护词引文：qww / Word quoting with quote protection: qww](#%E5%BC%95%E5%8F%B7%E4%BF%9D%E6%8A%A4%E8%AF%8D%E5%BC%95%E6%96%87%EF%BC%9Aqww--word-quoting-with-quote-protection-qww)
   - [字符串插值词引文：qqw / Word quoting with interpolation: qqw](#%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%8F%92%E5%80%BC%E8%AF%8D%E5%BC%95%E6%96%87%EF%BC%9Aqqw--word-quoting-with-interpolation-qqw)
   - [字符串插值词以及引号保护词引文：qqww / Word quoting with interpolation and quote protection: qqww](#%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%8F%92%E5%80%BC%E8%AF%8D%E4%BB%A5%E5%8F%8A%E5%BC%95%E5%8F%B7%E4%BF%9D%E6%8A%A4%E8%AF%8D%E5%BC%95%E6%96%87%EF%BC%9Aqqww--word-quoting-with-interpolation-and-quote-protection-qqww)
-  - [字符串插值词以及引号保护词引文：« » / Word quoting with interpolation and quote protection: « »](#%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%8F%92%E5%80%BC%E8%AF%8D%E4%BB%A5%E5%8F%8A%E5%BC%95%E5%8F%B7%E4%BF%9D%E6%8A%A4%E8%AF%8D%E5%BC%95%E6%96%87%EF%BC%9A%C2%AB-%C2%BB--word-quoting-with-interpolation-and-quote-protection-%C2%AB-%C2%BB)
+  - [字符串插值以及引号保护词引文：« » / Word quoting with interpolation and quote protection: « »](#%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%8F%92%E5%80%BC%E4%BB%A5%E5%8F%8A%E5%BC%95%E5%8F%B7%E4%BF%9D%E6%8A%A4%E8%AF%8D%E5%BC%95%E6%96%87%EF%BC%9A%C2%AB-%C2%BB--word-quoting-with-interpolation-and-quote-protection-%C2%AB-%C2%BB)
   - [Shell 引文：qx / Shell quoting: qx](#shell-%E5%BC%95%E6%96%87%EF%BC%9Aqx--shell-quoting-qx)
   - [带字符串插值的 Shell 引文：qqx / Shell quoting with interpolation: qqx](#%E5%B8%A6%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%8F%92%E5%80%BC%E7%9A%84-shell-%E5%BC%95%E6%96%87%EF%BC%9Aqqx--shell-quoting-with-interpolation-qqx)
-  - [Heredocs: :to](#heredocs-to)
+  - [Heredocs::to](#heredocsto)
   - [反引文 / Unquoting](#%E5%8F%8D%E5%BC%95%E6%96%87--unquoting)
 - [正则 / Regexes](#%E6%AD%A3%E5%88%99--regexes)
 
@@ -131,7 +131,7 @@ No $interpolation {here}!
 Just a literal "\n" here
 ```
 
-`\qq[...]` 转义序列为字符串的一部分启用了[`qq` 字符串插值](https://docs.raku.org/language/quoting#Interpolation:_qq)。当字符串中有 HTML 标记时，使用此转义序列非常方便，以避免将尖括号解释为散列键：
+`\qq[...]` 转义序列为字符串的一部分启用了 [`qq` 字符串插值](https://docs.raku.org/language/quoting#Interpolation:_qq)。当字符串中有 HTML 标记时，使用此转义序列非常方便，以避免将尖括号解释为散列键：
 
 The `\qq[...]` escape sequence enables [`qq` interpolation](https://docs.raku.org/language/quoting#Interpolation:_qq) for a portion of the string. Using this escape sequence is handy when you have HTML markup in your strings, to avoid interpretation of angle brackets as hash keys:
 
@@ -150,7 +150,7 @@ say "My favorite color is $color!"
 My favorite color is blue!
 ```
 
-`qq` 形式--通常用双引号写--允许反斜杠序列和变量进行插值，即可以在字符串中写入变量，以便将变量的内容插入到字符串中。还可以在 `qq`-引号字符串中转义变量：
+`qq` 形式 - 通常用双引号写 - 允许反斜杠序列和变量进行插值，即可以在字符串中写入变量，以便将变量的内容插入到字符串中。还可以在 `qq` 引起来的字符串中转义变量：
 
 The `qq` form – usually written using double quotes – allows for interpolation of backslash sequences and variables, i.e., variables can be written within the string so that the content of the variable is inserted into the string. It is also possible to escape variables within a `qq`-quoted string:
 
@@ -171,7 +171,7 @@ This room is 4 m by 3.5 m by 3 m.
 Therefore its volume should be 42 m³!
 ```
 
-默认情况下，只有 `$` 标记的变量才能正常内插。这样，当你编写 `"documentation@perl6.org"` 时，就不会插入 `@perl6` 变量。如果这是你想要做的，那么在变量名后面添加一个 `[]`：
+默认情况下，只有 `$` 标记的变量才能正常插值。这样，当你编写 `"documentation@perl6.org"` 时，就不会将 `@perl6` 变量的值进行字符串插值。如果这是你想要的，那么在变量名后面添加 `[]`：
 
 By default, only variables with the `$` sigil are interpolated normally. This way, when you write `"documentation@perl6.org"`, you aren't interpolating the `@perl6` variable. If that's what you want to do, append a `[]` to the variable name:
 
@@ -181,7 +181,7 @@ say "@neighbors[] and I try our best to coexist peacefully."
 Felix Danielle Lucinda and I try our best to coexist peacefully.
 ```
 
-通常，方法调用更合适。只要它们在调用后有括号，就允许在 `qq` 引号中使用。因此，以下代码将起作用：
+通常，方法调用更合适。只要它们在调用后有括号，就允许在 `qq` 引号中使用。因此，以下代码会正常工作：
 
 Often a method call is more appropriate. These are allowed within `qq` quotes as long as they have parentheses after the call. Thus the following code will work:
 
@@ -212,7 +212,7 @@ my %h = :1st; say "abc%h<st>ghi";
 # OUTPUT: «abc1ghi␤»
 ```
 
-要输入 Unicode 序列，请在字符的十六进制代码或字符列表中使用 `\x` 或 `\x[]`。
+要输入 Unicode 序列，请使用 `\x` 后接一个字符的十六进制码或 `\x[]` 里面放置字符列表的十六进制码。
 
 To enter unicode sequences, use `\x` or `\x[]` with the hex-code of the character or a list of characters.
 
@@ -226,7 +226,7 @@ say $s;
 # OUTPUT: «I really ♡♥❤💕 Raku!␤»
 ```
 
-你也可以在 [\c[]](https://docs.raku.org/language/unicode#Entering_unicode_codepoints_and_codepoint_sequences) 中使用 [unicode](https://docs.raku.org/language/unicode#Entering_unicode_codepoints_and_codepoint_sequences)、[命名序列](https://docs.raku.org/language/unicode#Named_sequences)以及[名称别名](https://docs.raku.org/language/unicode#Name_aliases)。
+你也可以在 [\c[]](https://docs.raku.org/language/unicode#Entering_unicode_codepoints_and_codepoint_sequences) 中使用 [unicode 名字](https://docs.raku.org/language/unicode#Entering_unicode_codepoints_and_codepoint_sequences)、[命名序列](https://docs.raku.org/language/unicode#Named_sequences)以及[别名](https://docs.raku.org/language/unicode#Name_aliases)。
 
 You can also use [unicode names](https://docs.raku.org/language/unicode#Entering_unicode_codepoints_and_codepoint_sequences) , [named sequences](https://docs.raku.org/language/unicode#Named_sequences) and [name aliases](https://docs.raku.org/language/unicode#Name_aliases) with [\c[]](https://docs.raku.org/language/unicode#Entering_unicode_codepoints_and_codepoint_sequences).
 
@@ -236,7 +236,7 @@ say $s;
 # OUTPUT: «Camelia 💔 my ❤!␤»
 ```
 
-字符串插入未定义值将引发一个控制异常，该异常可以在当前块中用 [CONTROL](https://docs.raku.org/language/phasers#CONTROL) 捕获。
+字符串插入未定义的值将引发控制异常，该异常可以在当前块中用 [CONTROL](https://docs.raku.org/language/phasers#CONTROL) 捕获。
 
 Interpolation of undefined values will raise a control exception that can be caught in the current block with [CONTROL](https://docs.raku.org/language/phasers#CONTROL).
 
@@ -257,7 +257,7 @@ q:w { [ ] \{ \} } eqv ('[', ']', '{', '}');
 Q:w | [ ] { } | eqv ('[', ']', '{', '}');
 ```
 
-`:w` 形式通常写成 `qw`，将字符串拆分为"词"。在此背景下，单词被定义为由空格分隔的非空格字符序列.`q:w` 和 `qw` 形式继承 `q`  和单引号字符串分隔符的插值和转义语义，而 `Qw` 和 `Q:w` 继承 `Q` 的非转义语义。
+`:w` 形式通常写成 `qw`，将字符串拆分为词。在此上下文中，单词被定义为由空格分隔的非空格字符序列.`q:w` 和 `qw` 形式继承 `q`  和单引号字符串分隔符的插值和转义语义，而 `Qw` 和 `Q:w` 继承 `Q` 的非转义语义。
 
 The `:w` form, usually written as `qw`, splits the string into "words". In this context, words are defined as sequences of non-whitespace characters separated by whitespace. The `q:w` and `qw` forms inherit the interpolation and escape semantics of the `q` and single quote string delimiters, whereas `Qw` and `Q:w` inherit the non-escaping semantics of the `Q` quoter.
 
@@ -307,7 +307,7 @@ say < 42/10 >.^name; # OUTPUT: «RatStr␤»
 say < 1+42i >.^name; # OUTPUT: «ComplexStr␤»
 ```
 
-与 `42/10` 和 `1+42i` 相比，不会进行除法（或加法）操作。这对于常规签名中的文本很有用，例如：
+与 `42/10` 和 `1+42i` 相比，不会进行除法（或加法）操作。这对于子例程签名中的文本很有用，例如：
 
 Compared to `42/10` and `1+42i`, there's no division (or addition) operation involved. This is useful for literals in routine signatures, for example:
 
@@ -381,7 +381,7 @@ The `qqw` form of word quoting will treat quote characters literally, leaving th
 my $a = 42; say qqw{"$a b" c}.perl;  # OUTPUT: «("\"42", "b\"", "c")␤»
 ```
 
-因此，如果希望将引用的子字符串保留为结果词中的单个项，则需要使用 `qqww` 变体：
+因此，如果希望将引号引起来的子字符串保留为结果词中的单个项，则需要使用 `qqww` 变体：
 
 Thus, if you wish to preserve quoted sub-strings as single items in the resulting words you need to use the `qqww` variant:
 
@@ -400,8 +400,8 @@ my $b = "1 \"2 3\"";
 say qqww{"$b" $b}.perl; # OUTPUT: «("1 \"2 3\"", "1", "\"2", "3\"")␤»
 ```
 
-<a id="%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%8F%92%E5%80%BC%E8%AF%8D%E4%BB%A5%E5%8F%8A%E5%BC%95%E5%8F%B7%E4%BF%9D%E6%8A%A4%E8%AF%8D%E5%BC%95%E6%96%87%EF%BC%9A%C2%AB-%C2%BB--word-quoting-with-interpolation-and-quote-protection-%C2%AB-%C2%BB"></a>
-## 字符串插值词以及引号保护词引文：« » / Word quoting with interpolation and quote protection: « »
+<a id="%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%8F%92%E5%80%BC%E4%BB%A5%E5%8F%8A%E5%BC%95%E5%8F%B7%E4%BF%9D%E6%8A%A4%E8%AF%8D%E5%BC%95%E6%96%87%EF%BC%9A%C2%AB-%C2%BB--word-quoting-with-interpolation-and-quote-protection-%C2%AB-%C2%BB"></a>
+## 字符串插值以及引号保护词引文：« » / Word quoting with interpolation and quote protection: « »
 
 这种方式的引用与 `qqww` 类似，但是有构建[语素变体](https://docs.raku.org/language/glossary#index-entry-Allomorph)的额外好处（使其功能上等价于 [qq:ww:v](https://docs.raku.org/language/quoting#index-entry-%3Aval_%28quoting_adverb%29)）。`« »` 的 ASCII 等价为双尖括号 `<< >>`。
 
@@ -420,7 +420,7 @@ my $a = 42; say << "$a b" c >>.perl;  # OUTPUT: «("42 b", "c")␤»
 <a id="shell-%E5%BC%95%E6%96%87%EF%BC%9Aqx--shell-quoting-qx"></a>
 ## Shell 引文：qx / Shell quoting: qx
 
-要将字符串作为外部程序运行，不仅可以将字符串传递给 `shell` 或 `run` 函数，还可以使用 shell 引文。然而，也有一些微妙之处需要考虑。`qx` *不*插值变量。因此
+要将字符串作为外部程序运行，不仅可以将字符串传递给 `shell` 或 `run` 函数，还可以使用 shell 引文。然而，也有一些细微之处需要考虑。`qx` *不*插值变量。因此
 
 To run a string as an external program, not only is it possible to pass the string to the `shell` or `run` functions but one can also perform shell quoting. There are some subtleties to consider, however. `qx` quotes *don't* interpolate variables. Thus
 
@@ -442,7 +442,7 @@ WORLD="there" perl6
 
 will now print `hello there`.
 
-返回调用 `qx` 的结果，因此可以将此信息赋值给一个变量，供以后使用：
+调用 `qx` 的结果被返回，因此可以将此信息赋值给一个变量，供以后使用：
 
 The result of calling `qx` is returned, so this information can be assigned to a variable for later use:
 
@@ -484,8 +484,8 @@ say $output;      # OUTPUT: «Cooley␤Cooley's␤Coolidge␤Coolidge's␤cool�
 
 See also [run](https://docs.raku.org/routine/run) and [Proc::Async](https://docs.raku.org/type/Proc::Async) for better ways to execute external commands.
 
-<a id="heredocs-to"></a>
-## Heredocs: :to
+<a id="heredocsto"></a>
+## Heredocs::to
 
 编写多行字符串文字的一种方便方法是 *heredocs*，它允许你自己选择分隔符：
 
@@ -584,7 +584,7 @@ my ($first, $second) = qq:to/END1/, qq:to/END2/;
 Literal strings permit interpolation of embedded quoting constructs by using the escape sequences such as these:
 
 ```Raku
-my $animal="quaggas";
+my $animal = "quaggas";
 say 'These animals look like \qq[$animal]'; # OUTPUT: «These animals look like quaggas␤» 
 say 'These animals are \qqw[$animal or zebras]'; # OUTPUT: «These animals are quaggas or zebras␤»
 ```
