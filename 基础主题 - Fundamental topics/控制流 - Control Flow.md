@@ -10,7 +10,7 @@ Statements used to control the flow of execution
 
 <!-- MarkdownTOC -->
 
-- [语句/ statements](#%E8%AF%AD%E5%8F%A5-statements)
+- [语句 / statements](#%E8%AF%AD%E5%8F%A5--statements)
 - [代码块 / blocks](#%E4%BB%A3%E7%A0%81%E5%9D%97--blocks)
 - [do](#do)
 - [if](#if)
@@ -40,10 +40,10 @@ Statements used to control the flow of execution
 
 <!-- /MarkdownTOC -->
 
-<a id="%E8%AF%AD%E5%8F%A5-statements"></a>
-# 语句/ statements
+<a id="%E8%AF%AD%E5%8F%A5--statements"></a>
+# 语句 / statements
 
-Raku 成语由一个或多个语句组成。简单语句由分号分隔。下面的这个程序会打印 ”Hello“ 然后再下一行打印 ”World“。
+Raku 程序由一个或多个语句组成。简单语句由分号分隔。下面的这个程序会打印 “Hello” 然后在下一行打印 “World”。
 
 Raku programs consists of one or more statements. Simple statements are separated by semicolons. The following program will say "Hello" and then say "World" on the next line.
 
@@ -52,7 +52,7 @@ say "Hello";
 say "World";
 ```
 
-大多数情况下出现在分号前面的空格可能被分隔成许多行。而且，多条语句可能出现在同一行上。可能显得有点笨拙，但上面也可以写为：
+大多数情况下出现在分号前面的空格可能被分隔成许多行。而且，多条语句可能出现在同一行上。上面也可以写为这样，虽然显得有点笨拙：
 
 In most places where spaces appear in a statement, and before the semicolon, it may be split up over many lines. Also, multiple statements may appear on the same line. It would be awkward, but the above could also be written as:
 
@@ -64,7 +64,7 @@ say
 <a id="%E4%BB%A3%E7%A0%81%E5%9D%97--blocks"></a>
 # 代码块 / blocks
 
-像许多语言一样，Raku 使用用 `{` 和 `}` 包含的代码块讲多个语句转变为单个语句。 代码块最后一个语句的分号可以省略。
+像许多语言一样，Raku 使用 `{` 和 `}` 包含的代码块将多个语句转变为单个语句。 代码块最后一个语句的分号可以省略。
 
 Like many languages, Raku uses `blocks` enclosed by `{` and `}` to turn multiple statements into a single statement. It is ok to skip the semicolon between the last statement in a block and the closing `}`.
 
@@ -86,7 +86,7 @@ say 4;                    # OUTPUT: «4
 » 
 ```
 
-除非代码块仅作为语句，不然会产一个闭包。代码块里面的语句将不会马上执行。闭包时另外一个话题，它的使用将会在[其他地方](https://docs.raku.org/language/functions#Blocks_and_Lambdas)说明。现在最重要的是要知道代码块什么时候执行以及什么时候不执行。
+除非代码块仅作为语句，不然会产生一个闭包。代码块里面的语句将不会马上执行。闭包是另外一个话题，它的使用将会在[其他地方](https://docs.raku.org/language/functions#Blocks_and_Lambdas)说明。现在最重要的是要知道代码块什么时候执行以及什么时候不执行。
 
 Unless it stands alone as a statement, a block simply creates a closure. The statements inside are not executed immediately. Closures are another topic and how they are used is explained [elsewhere](https://docs.raku.org/language/functions#Blocks_and_Lambdas). For now it is just important to understand when blocks run and when they do not:
 
@@ -100,9 +100,9 @@ In the above example, after running the first statement, the first block stands 
 
 大多数下面提到的控制流讲述了 Raku 什么时候，以什么方式以及几次进入像上面提到的第二段代码块。
 
-Most of the flow control constructs covered below are just ways to tell Perl6 when, how, and how many times, to enter blocks like that second block.
+Most of the flow control constructs covered below are just ways to tell Raku when, how, and how many times, to enter blocks like that second block.
 
-在这之前，说一下语法上的一个注意点：如果在闭大括号之后什么都没有或者只有注释，分号是可以不要的：
+在这之前，说一下语法上的一个重要注意点：如果在闭大括号之后什么都没有或者只有注释，分号是可以不要的：
 
 Before we go into those, an important side-note on syntax: If there is nothing (or nothing but comments) on a line after a closing curly brace where you would normally put semicolon, then you do not need the semicolon:
 
@@ -202,7 +202,7 @@ A `do` may also be used on a bare statement (without curly braces) but this is m
 <a id="if"></a>
 # if
 
-有条件地运行一段代码块，使用 `if` 接一个条件。这个条件是一个表达式，在 `if` 之前的语句结束后立即求值。附加的代码块只有在当条件表达式的值为真并强转为 `Bool` 值时才执行。不像有些语言一样，条件表达式不需要括号，然而代码块中的 `{` 和 `}` 是必须要的：
+有条件地运行一段代码块，使用 `if` 接一个条件。这个条件是一个表达式，在 `if` 语句后求值。附加的代码块只有在当条件表达式的值强转为 `Bool` 值为真时才执行。不像有些语言一样，条件表达式不需要括号，然而代码块中的 `{` 和 `}` 是必须要的：
 
 To conditionally run a block of code, use an `if` followed by a condition. The condition, an expression, will be evaluated immediately after the statement before the `if` finishes. The block attached to the condition will only be evaluated if the condition means True when coerced to `Bool`. Unlike some languages the condition does not have to be parenthesized, instead the `{` and `}` around the block are mandatory:
 
@@ -258,7 +258,7 @@ say (1, (42 if False), 2); # says "(1 2)"
 say (1,  42 if False , 2); # says "(1 42)" because "if False, 2" is true 
 ```
 
-`if` 默认不会改变主题（`$_`)。要访问条件语句产生的值，需要更强力的请求：
+`if` 默认不会改变主题变量（`$_`)。要访问条件语句产生的值，需要更强力的请求：
 
 The `if` does not change the topic (`$_`) by default. In order to access the value which the conditional expression produced, you have to ask for it more strongly:
 
@@ -429,7 +429,7 @@ You may intermix `if`-based and `with`-based clauses.
 if 0 { say "No" } orwith Nil { say "No" } orwith 0 { say "Yes" };
 ```
 
-如 `unless` ，你可以使用 `without` 去检查无定义，但是你无法加 `else` 分句：
+如 `unless`，你可以使用 `without` 去检查无定义，但是你无法加 `else` 分句：
 
 As with `unless`, you may use `without` to check for undefinedness, but you may not add an `else` clause:
 
@@ -471,7 +471,7 @@ The `when` block is similar to an `if` block and either or both can be used in a
 
 Should the `if` and `when` blocks above appear at file scope, following statements would be executed in each case.
 
-另外一个 `when` 有但是 `if` 没有的特性是：`when` 的布尔上下文测试默认为 `$_ ~~` 但是 `if` 的不是。这会影响 `$_` 没有值的 `when` 代码块中 X 条件语句的使用（这时 `$_` 是 `Any` ，它的聪明匹配返回 `True` ：`Any ~~ True` 返回 `True`  ）。请看如下代码：
+另外一个 `when` 有但是 `if` 没有的特性是：`when` 的布尔上下文测试默认为 `$_ ~~` 但是 `if` 的不是。这会影响人们在 `when` 代码块中如何使用 X，当 `$_` 没有值时。这时 `$_` 是 `Any` ，它的智能匹配返回 `True` ：`Any ~~ True` 返回 `True`  ）。请看如下代码：
 
 There is one other feature a `when` has that `if` doesn't: the `when`'s boolean context test defaults to `$_ ~~` while the `if`'s does not. That has an effect on how one uses the X in the `when` block without a value for `$_` (it's `Any` in that case and `Any` smart matches on `True`: `Any ~~ True` yields `True`). Consider the following:
 
@@ -747,6 +747,8 @@ given 42 {
 # OUTPUT: «42» 
 ```
 
+`when` 语句可以智能匹配 [Signatures](https://docs.raku.org/language/syntax#Signature_literals)。
+
 `when` statements can smart match against [Signatures](https://docs.raku.org/language/syntax#Signature_literals).
 
 <a id="proceed"></a>
@@ -773,7 +775,7 @@ given * {
 "This says".say;
 ```
 
-这通常用于输入多个 `when` 块。`继续`将在成功匹配后恢复匹配，如下所示：
+这通常用于输入多个 `when` 块。`proceed` 将在成功匹配后恢复匹配，如下所示：
 
 This is most often used to enter multiple `when` blocks. `proceed` will resume matching after a successful match, like so:
 
@@ -873,7 +875,7 @@ printf "%s %02i.%02i.%i",
 <a id="loop"></a>
 # loop
 
-`loop` 语句接收三个被`分号`分隔的语句，它们扮演初始化器，条件和增量器。初始化程序执行一次，任何变量声明都将溢出到周围的块中。每次迭代执行一次条件并强制转换为 `Bool`，如果 `False` 则循环停止。每次迭代执行一次增量器。
+`loop` 语句接收三个被 `;` 分隔的语句，它们分别扮演初始化，条件和增量器的角色。初始化程序执行一次，任何变量声明都将溢出到周围的块中。每次迭代执行一次条件语句并强制转换为 `Bool`，如果 `False` 则循环停止。每次迭代执行一次增量器。
 
 The `loop` statement takes three statements in parentheses separated by `;` that take the role of initializer, conditional and incrementer. The initializer is executed once and any variable declaration will spill into the surrounding block. The conditional is executed once per iteration and coerced to `Bool`, if `False` the loop is stopped. The incrementer is executed once per iteration.
 
@@ -903,7 +905,7 @@ my @a = (loop ( my $j = 0; $j++ < 3;) { $j * 2 }); @a.say;   # OUTPUT: «[2 4 6]
 my @b = do loop ( my $k = 0; $k++ < 3;) { $k * 2 }; @b.say;  # same thing 
 ```
 
-与 `for` 循环不同，目前不应该依赖于返回值是否惰性生成。最好使用 `eager` 来保证返回值可能要使用的循环会实际运行：
+与 `for` 循环不同，目前不应该依赖于返回值是否惰性生成。最好使用 `eager` 来保证返回值可能要使用的循环会真的运行：
 
 Unlike a `for` loop, one should not rely on whether returned values are produced lazily, for now. It would probably be best to use `eager` to guarantee that a loop whose return value may be used actually runs:
 
@@ -946,7 +948,7 @@ print "\n";
 » 
 ```
 
- `while` 或 `until` 的条件可以用括号括起来，但是在关键字和条件的左括号之间必须有一个空格。
+`while` 或 `until` 的条件可以用括号括起来，但是在关键字和条件的左括号之间必须有一个空格。
 
 The condition for `while` or `until` can be parenthesized, but there must be a space between the keyword and the opening parenthesis of the condition.
 
@@ -1032,18 +1034,18 @@ All these forms may produce a return value the same way `loop` does.
 <a id="return"></a>
 # return
 
-`return` 将停止执行子程序或方法，运行所有相关的[阶段](https://docs.raku.org/language/phasers#Block_Phasers) 并向调用者提供给定的返回值。默认返回值为 `Nil`。如果提供了返回[类型约束](https://docs.raku.org/type/Signature#Constraining_Return_Types) ，则将检查它，除非返回值为 `Nil`。如果类型检查失败，则抛出异常 [X::TypeCheck::Return](https://docs.raku.org/type/X::TypeCheck::Return)。如果它通过了类型检查，则引发`控制`异常并可以使用 [CONTROL](https://docs.raku.org/language/phasers#CONTROL) 捕获。
+`return` 将停止执行子程序或方法，运行所有相关的[相位器](https://docs.raku.org/language/phasers#Block_Phasers) 并向调用者提供给定的返回值。默认返回值为 `Nil`。如果提供了返回[类型约束](https://docs.raku.org/type/Signature#Constraining_Return_Types) ，则将检查它，除非返回值为 `Nil`。如果类型检查失败，则抛出异常 [X::TypeCheck::Return](https://docs.raku.org/type/X::TypeCheck::Return)。如果它通过了类型检查，则引发`控制`异常并可以使用 [CONTROL](https://docs.raku.org/language/phasers#CONTROL) 捕获。
 
 The sub `return` will stop execution of a subroutine or method, run all relevant [phasers](https://docs.raku.org/language/phasers#Block_Phasers) and provide the given return value to the caller. The default return value is `Nil`. If a return [type constraint](https://docs.raku.org/type/Signature#Constraining_Return_Types) is provided it will be checked unless the return value is `Nil`. If the type check fails the exception [X::TypeCheck::Return](https://docs.raku.org/type/X::TypeCheck::Return) is thrown. If it passes a control exception is raised and can be caught with [CONTROL](https://docs.raku.org/language/phasers#CONTROL).
 
-块中的任何 `return` 都与该块的外部词法范围中的第一个`例程`相关联，无论嵌套有多深。请注意，根包中的 `return` 将在运行时失败。在惰性代码块中的 `return`（例如在 `map` 内部）可能发现在执行块时外部词法例程已经消失。几乎在任何情况下， `last` 都是更好的选择。
+块中的任何 `return` 都与该块的外部词法范围中的第一个`例程`相关联，无论嵌套有多深。请注意，包中最外层的 `return` 将在运行时失败。在惰性代码块中的 `return`（例如在 `map` 内部）可能发现在执行块时外部词法例程已经消失。几乎在任何情况下，`last` 都是更好的选择。
 
 Any `return` in a block is tied to the first `Routine` in the outer lexical scope of that block, no matter how deeply nested. Please note that a `return` in the root of a package will fail at runtime. A `return` in a block that is evaluated lazily (e.g. inside `map`) may find the outer lexical routine gone by the time the block is executed. In almost any case `last` is the better alternative.
 
 <a id="return-rw"></a>
 # return-rw
 
-`return` 将返回值，而不是容器。这些是不可变的，并且在尝试变异时会导致运行时错误。
+`return` 将返回值，而不是容器。这些值是不可变的，并且在尝试修改它们时会导致运行时错误。
 
 The sub `return` will return values, not containers. Those are immutable and will lead to runtime errors when attempted to be mutated.
 
@@ -1065,14 +1067,16 @@ say ++s();
 » 
 ```
 
+同样的规则适用于 `return` 有关相位器和控制异常。
+
 The same rules as for `return` regarding phasers and control exceptions apply.
 
 <a id="fail"></a>
 # fail
 
-离开当前例程并返回提供的 [Exception](https://docs.raku.org/type/Exception) 或包含在 [Failure](https://docs.raku.org/type/Failure) 中的 `Str`，执行所有相关的[阶段](https://docs.raku.org/language/phasers#Block_Phasers)之后。如果调用者通过编译指示 `use fatal;` 激活了致命异常，则抛出异常而不是作为 `Failure` 返回。
+离开当前例程并返回提供的 [Exception](https://docs.raku.org/type/Exception) 或包含在 [Failure](https://docs.raku.org/type/Failure) 中的 `Str`，执行所有相关的[阶段](https://docs.raku.org/language/phasers#Block_Phasers)之后。如果调用者通过指令 `use fatal;` 激活了致命异常，则抛出异常而不是作为 `Failure` 返回。
 
-Leaves the current routine and returns the provided [Exception](https://docs.raku.org/type/Exception) or `Str` wrapped inside a [Failure](https://docs.raku.org/type/Failure), after all relevant [phasers](https://docs.raku.org/language/phasers#Block_Phasers)are executed. If the caller activated fatal exceptions via the pragma `use fatal;`, the exception is thrown instead of being returned as a `Failure`.
+Leaves the current routine and returns the provided [Exception](https://docs.raku.org/type/Exception) or `Str` wrapped inside a [Failure](https://docs.raku.org/type/Failure), after all relevant [phasers](https://docs.raku.org/language/phasers#Block_Phasers) are executed. If the caller activated fatal exceptions via the pragma `use fatal;`, the exception is thrown instead of being returned as a `Failure`.
 
 ```Raku
 sub f { fail "WELP!" };
@@ -1085,7 +1089,7 @@ CATCH { default { say .^name, ': ', .Str } }
 <a id="once"></a>
 # once
 
-带有 `once` 的代码块前缀只执行一次，即使放在循环或递归例程中也是如此。
+带有 `once` 前缀的代码块只执行一次，即使放在循环或递归例程中也是如此。
 
 A block prefix with `once` will be executed exactly once, even if placed inside a loop or a recursive routine.
 
@@ -1099,7 +1103,7 @@ loop {
 manymanymany» 
 ```
 
-这适用于包含代码对象的每个“克隆”，因此：
+代码对象的“克隆”也适用，因此：
 
 This works per "clone" of the containing code object, so:
 
@@ -1107,7 +1111,7 @@ This works per "clone" of the containing code object, so:
 ({ once 42.say } xx 3).map: {$_(), $_()}; # says 42 thrice 
 ```
 
-请注意，当多个线程运行同一块的同一个克隆时，这不是一个线程安全的构造。还要记住，方法每个类只有一个克隆，而不是每个对象。
+请注意，当多个线程运行同一块的同一个克隆时，这不是一个线程安全的构造。还要记住，方法只有一个克隆，是对每个类而言的，而不是每个对象。
 
 Note that this is **not** a thread-safe construct when the same clone of the same block is run by multiple threads. Also remember that methods only have one clone per class, not per object.
 
@@ -1127,6 +1131,8 @@ warn 'still kaput!';
 
 <a id="%E6%A0%87%E7%AD%BE--labels"></a>
 # 标签 / LABELs
+
+`while`、 `until`、 `loop` 和 `for` 循环都可以接受一个标签，`next`、 `last` 和 `redo` 可以使用这些标签。 例如，支持嵌套循环：
 
 `while`, `until`, `loop` and `for` loops can all take a label, which can be used to identify them for `next`, `last`, and `redo`. Nested loops are supported, for instance:
 
@@ -1178,7 +1184,7 @@ prints "1245".
 <a id="last"></a>
 # last
 
-`last`命令立即退出有问题的循环。
+`last` 命令立即退出有关循环。
 
 The `last` command immediately exits the loop in question.
 

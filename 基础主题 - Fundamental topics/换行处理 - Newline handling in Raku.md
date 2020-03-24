@@ -2,21 +2,21 @@
 
 # Raku 中的换行处理 / Newline handling in Raku
 
-如何处理不同的换行符，以及如何更改行为
+不同换行符是如何处理的，以及怎样改变这些处理行为
 
 How the different newline characters are handled, and how to change the behavior
 
-不同的操作系统使用不同的字符或它们的组合来表示到新行的转换。每种语言都有自己的规则来处理这个问题。Raku 具有以下特性：
+不同的操作系统使用不同的字符或它们的组合来表示到新的一行。每种语言都有自己的规则来处理这个问题。Raku 具有以下特性：
 
 Different operating systems use different characters, or combinations of them, to represent the transition to a new line. Every language has its own set of rules to handle this. Raku has the following ones:
 
-- `\n` 在字符串文字中表示 Unicode 码位 10。
-- 通过 say 附加到字符串的默认 [nl-out](https://docs.raku.org/routine/nl-out) 也是 `\n`。
-- 在 Windows 上输出时，编码器将默认地在文件、进程或终端（但在套接字上不会这样做）将 `\n` 转换为 `\r\n`。
-- 在输入时，在任何平台上，解码器默认将文件、进程或终端的 `\r\n` 输入规范化为 `\n`（同样，不适用于 socket）。
-- 以上两点合在一起意味着你可以 - 套接字编程除外 - 期望永远不会看到程序内部的 `\r\n`（这也是许多其他语言中的工作方式）。
+- `\n` 在字符串字面中表示 Unicode 码位 10。
+- 通过 say 附加到字符串末尾的默认 [nl-out](https://docs.raku.org/routine/nl-out) 也是 `\n`。
+- 在 Windows 上输出时，编码器将默认地在文件、进程或终端（但在 socket 上不会这样做）将 `\n` 转换为 `\r\n`。
+- 在输入时，在任何平台上，解码器默认将文件、进程或终端的 `\r\n` 输入格式化为 `\n`（同样，不适用于 socket）。
+- 以上两点合在一起意味着你可以期望 - 套接字编程除外 - 永远不会看到程序内部的 `\r\n`（这也是许多其他语言中的工作方式）。
 - [`:$translate-nl`](https://docs.raku.org/type/Encoding#method_decoder) 命名参数存在于不同的地方用来控制此转换，例如，在 [`Proc::Async.new`](https://docs.raku.org/type/Proc::Async#method_new) 和 [`Proc::Async.Supply`](https://docs.raku.org/type/Proc::Async#method_Supply) 中。
-- [正则](https://docs.raku.org/language/regexes)语言中的 `\n` 是逻辑上的，将与 `\r\n` 匹配。
+- [正则](https://docs.raku.org/language/regexes)中的 `\n` 是逻辑上的，可以匹配 `\r\n`。
 
 - `\n` in a string literal means Unicode codepoint 10.
 - The default [nl-out](https://docs.raku.org/routine/nl-out) that is appended to a string by say is also `\n`.

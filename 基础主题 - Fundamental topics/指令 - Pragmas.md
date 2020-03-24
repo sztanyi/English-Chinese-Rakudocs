@@ -6,7 +6,7 @@
 
 Special modules that define certain aspects of the behavior of the code
 
-在 Raku 中，**指令**是用于标识要使用的 Raku 的特定版本或以某种方式修改编译器的正常行为的指令。`use` 关键字启用了一个实用程序(类似于你如何 `use` 一个模组)。若要禁用实用程序，请使用 `no` 关键字：
+在 Raku 中，**指令**是用于标识要使用的 Raku 的特定版本或以某种方式修改编译器的正常行为的指令。`use` 关键字启用了一个指令（类似于你如何 `use` 一个模组）。若要禁用指令，请使用 `no` 关键字：
 
 In Raku, **pragmas** are directive used to either identify a specific version of Raku to be used or to modify the compiler's normal behavior in some way. The `use` keyword enables a pragma (similar to how you can `use` a module). To disable a pragma, use the `no` keyword:
 
@@ -15,7 +15,7 @@ use v6.c;   # use 6.c language version
 no worries; # don't issue compile time warnings 
 ```
 
-以下是一份指令清单，并简要描述每一种指令的用途，或链接到更多关于其使用的细节。(注：标有 "[NYI]" 的指令尚未实现，标记为 "[TBD]" 的将在以后定义)。
+以下是一份指令清单，并简要描述每一种指令的用途，或链接到更多关于其使用的细节。(注：标有 “[NYI]” 的指令尚未实现，标记为 “[TBD]” 的将在以后定义)。
 
 Following is a list of pragmas with a short description of each pragma's purpose or a link to more details about its use. (Note: Pragmas marked "[NYI]" are not yet implemented, and those marked "[TBD]" are to be defined later.)
 
@@ -62,7 +62,7 @@ use v6.c;         # Use the "Christmas" version of Raku
 use v6.d;         # Use the "Diwali" version of Raku 
 ```
 
-在 2018.11 实现了 6.d 版本，这个指令什么也不做。
+因为在 2018.11 实现了 6.d 版本，这之后这个指令什么也不做。
 
 From 2018.11, which implemented 6.d, this pragma does not do anything.
 
@@ -264,7 +264,7 @@ This will search the directories passed in a list. Please check [the modules doc
 <a id="newline"></a>
 ## newline
 
-在调用的作用域中设置 [$?NL](https://docs.raku.org/language/variables#Compile-time_variables)常量的值。可能的值是 `:lf`（这是默认的，表示 Line Feed），`:crlf`（表示回车，line Feed）和 `:cr`（表示 Carriage Return）。
+在调用的作用域中设置 [$?NL](https://docs.raku.org/language/variables#Compile-time_variables) 常量的值。可能的值是 `:lf`（这是默认的，表示 Line Feed），`:crlf`（表示回车，line Feed）和 `:cr`（表示 Carriage Return）。
 
 Set the value of the [$?NL](https://docs.raku.org/language/variables#Compile-time_variables) constant in the scope it is called. Possible values are `:lf` (which is the default, indicating Line Feed), `:crlf` (indicating Carriage Return, Line Feed) and `:cr` (indicating Carriage Return).
 
