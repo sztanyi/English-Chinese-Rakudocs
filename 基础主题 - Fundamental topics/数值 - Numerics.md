@@ -91,7 +91,7 @@ Raku has a [FatRat](https://docs.raku.org/type/FatRat) type that offers arbitrar
 <a id="num"></a>
 # `Num`
 
-[Num](https://docs.raku.org/type/Num) 类型提供 [双精度浮点](https://en.wikipedia.org/wiki/Double-precision_floating-point_format)十进制数，在其他语言中有时称为 "doubles"。
+[Num](https://docs.raku.org/type/Num) 类型提供 [双精度浮点](https://en.wikipedia.org/wiki/Double-precision_floating-point_format)十进制数，在其他语言中有时称为 “doubles”。
 
 The [Num](https://docs.raku.org/type/Num) type offers [double-precision floating-point](https://en.wikipedia.org/wiki/Double-precision_floating-point_format) decimal numbers, sometimes called "doubles" in other languages.
 
@@ -110,29 +110,29 @@ say 42.0.^name; # OUTPUT: «Rat
 
 Case-sensitive words [Inf](https://docs.raku.org/type/Num#Inf) and [NaN](https://docs.raku.org/type/Num#NaN) represent the special values infinity and not-a-number respectively. The U+221E INFINITY (`∞`) character can be used instead of [Inf](https://docs.raku.org/type/Num#Inf):
 
-Raku 尽可能遵循 [IEEE 754-2008 浮点算术标准](https://en.wikipedia.org/wiki/IEEE_754)，计划在以后的语言版本中实现更多的一致性。该语言保证为任何给定的 [Num](https://docs.raku.org/type/Num) 文本选择最接近的可表示数字，并支持负零和[非规格化数字](https://en.wikipedia.org/wiki/Denormal_number)（也称为 "subnormals"）。
+Raku 尽可能遵循 [IEEE 754-2008 浮点算术标准](https://en.wikipedia.org/wiki/IEEE_754)，计划在以后的语言版本中实现更多的一致性。该语言保证为任何给定的 [Num](https://docs.raku.org/type/Num) 文本选择最接近的可表示数字，并支持负零和[非规格化数字](https://en.wikipedia.org/wiki/Denormal_number)（也称为 “subnormals”）。
 
 Raku follows the [IEEE 754-2008 Standard for Floating-Point Arithmetic](https://en.wikipedia.org/wiki/IEEE_754) as much as possible, with more conformance planned to be implemented in later language versions. The language guarantees the closest representable number is chosen for any given [Num](https://docs.raku.org/type/Num) literal and does offer support for negative zero and [denormals](https://en.wikipedia.org/wiki/Denormal_number) (also known as "subnormals").
 
-请记住，输出例程（如 [say](https://docs.raku.org/routine/say) 或 [put](https://docs.raku.org/routine/put) 不会很难区分 [Numeric](https://docs.raku.org/type/Numeric) 类型是如何输出的，并且可以选择显示 [Num](https://docs.raku.org/type/Num) 作为 [Int](https://docs.raku.org/type/Int) 或 [Rat](https://docs.raku.org/type/Rat) 编号。要输出更明确的字符串，请使用 [perl](https://docs.raku.org/routine/perl) 方法：
+请记住，输出例程（如 [say](https://docs.raku.org/routine/say) 或 [put](https://docs.raku.org/routine/put) 不会很难区分 [Numeric](https://docs.raku.org/type/Numeric) 类型是如何输出的，并且可以选择显示 [Num](https://docs.raku.org/type/Num) 作为 [Int](https://docs.raku.org/type/Int) 或 [Rat](https://docs.raku.org/type/Rat)。要输出更明确的字符串，请使用 [raku](https://docs.raku.org/routine/raku) 方法：
 
-Keep in mind that output routines like [say](https://docs.raku.org/routine/say) or [put](https://docs.raku.org/routine/put) do not try very hard to distinguish between how [Numeric](https://docs.raku.org/type/Numeric) types are output and may choose to display a [Num](https://docs.raku.org/type/Num) as an [Int](https://docs.raku.org/type/Int) or a [Rat](https://docs.raku.org/type/Rat) number. For a more definitive string to output, use the [perl](https://docs.raku.org/routine/perl) method:
+Keep in mind that output routines like [say](https://docs.raku.org/routine/say) or [put](https://docs.raku.org/routine/put) do not try very hard to distinguish between how [Numeric](https://docs.raku.org/type/Numeric) types are output and may choose to display a [Num](https://docs.raku.org/type/Num) as an [Int](https://docs.raku.org/type/Int) or a [Rat](https://docs.raku.org/type/Rat) number. For a more definitive string to output, use the [raku](https://docs.raku.org/routine/raku) method:
 
 ```Raku
 say  1e0;      # OUTPUT: «1
 » 
 say .5e0;      # OUTPUT: «0.5
 » 
-say  1e0.perl; # OUTPUT: «1e0
+say  1e0.raku; # OUTPUT: «1e0
 » 
-say .5e0.perl; # OUTPUT: «0.5e0
+say .5e0.raku; # OUTPUT: «0.5e0
 » 
 ```
 
 <a id="complex"></a>
 # `Complex`
 
-[复平面](https://en.wikipedia.org/wiki/Complex_plane)的[复数](https://docs.raku.org/type/Complex)型数值。[复数](https://docs.raku.org/type/Complex) 对象由两个 [Num](https://docs.raku.org/type/Num) 对象组成，表示复数的[实部](https://docs.raku.org/routine/re)和[虚部](https://docs.raku.org/routine/im)部分。
+[复平面](https://en.wikipedia.org/wiki/Complex_plane)的[复数](https://docs.raku.org/type/Complex)型数值。[复数](https://docs.raku.org/type/Complex)对象由两个 [Num](https://docs.raku.org/type/Num) 对象组成，表示复数的[实部](https://docs.raku.org/routine/re)和[虚部](https://docs.raku.org/routine/im)部分。
 
 The [Complex](https://docs.raku.org/type/Complex) type numerics of the [complex plane](https://en.wikipedia.org/wiki/Complex_plane). The [Complex](https://docs.raku.org/type/Complex) objects consist of two [Num](https://docs.raku.org/type/Num) objects representing the [real](https://docs.raku.org/routine/re) and [imaginary](https://docs.raku.org/routine/im) portions of the complex number.
 
