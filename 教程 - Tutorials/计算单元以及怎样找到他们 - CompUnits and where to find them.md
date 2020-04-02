@@ -10,7 +10,7 @@ How and when Raku modules are compiled, where they are stored, and how to access
 
 - [概述 / Overview](#%E6%A6%82%E8%BF%B0--overview)
 - [介绍 / Introduction](#%E4%BB%8B%E7%BB%8D--introduction)
-    - [Why change?](#why-change)
+    - [为什么改变？ / Why change?](#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%94%B9%E5%8F%98%EF%BC%9F--why-change)
     - [Long names](#long-names)
     - [$*REPO](#%24repo)
     - [Repositories](#repositories)
@@ -25,7 +25,7 @@ How and when Raku modules are compiled, where they are stored, and how to access
 <a id="%E6%A6%82%E8%BF%B0--overview"></a>
 # 概述 / Overview
 
-作为 Perl 语系的一员，Raku 的程序往往更多地处于解释-编译频谱的解释端上层。 在本教程中，一个被“解释”的程序意味着源代码，即人类可读的文本，如 `say 'hello world';`，立即被 `Raku` 程序处理成可以由计算机执行的代码，任何中间阶段都存储在内存中。
+作为 Perl 语系的一员，Raku 的程序往往更多地处于解释 - 编译频谱的解释端。 在本教程中，一个被“解释”的程序意味着源代码，即人类可读的文本，如 `say 'hello world';`，立即被 `Raku` 程序处理成可以由计算机执行的代码，任何中间阶段都存储在内存中。
 
 Programs in Raku, as a member of the Perl language family, tend at the top level to be more at the interpreted end of the interpreted-compiled spectrum. In this tutorial, an 'interpreted' program means that the source code, namely the human-readable text such as `say 'hello world';`, is immediately processed by the `Raku` program into code that can be executed by the computer, with any intermediate stages being stored in memory.
 
@@ -33,11 +33,11 @@ Programs in Raku, as a member of the Perl language family, tend at the top level
 
 A compiled program, by contrast, is one where the human readable source is first processed into machine-executable code and some form of this code is stored 'on disc'. In order to execute the program, the machine-readable version is loaded into memory and then run by the computer.
 
-汇编和解释形式都有优点。 简单地说，被解释的程序可以很快地“加速”，源码也会很快改变。 编译程序可能是复杂的，需要很长时间才能预处理成机器可读代码，但对用户来说，它们运行时要快得多，用户只能看到加载和运行时间，看不到编译时间。
+汇编和解释形式各有优点。 简单地说，解释型的程序可以很快地准备好，源码也会很快改变。 编译程序可能是复杂的，需要很长时间才能预处理成机器可读代码，但对用户来说，它们运行时要快得多，用户只能看到加载和运行时间，看不到编译时间。
 
 Both compiled and interpreted forms have advantages. Briefly, interpreted programs can be 'whipped up' quickly and the source changed quickly. Compiled programs can be complex and take a significant time to pre-process into machine-readable code, but then running them is much faster for a user, who only 'sees' the loading and running time, not the compilation time.
 
-`Raku` 有两种范式。 在上层 Raku 程序被解释执行，但如果将代码分离成模块，它将被编译，然后在必要时加载预处理版本。 在实践中，由社区编写的模块只需要由用户在“安装”时预先编译一次，例如由模块管理器（如 `Zef`）安装。 然后，开发人员可以在自己的程序中使用。 其效果是使 `Raku` 上层程序快速运行。
+`Raku` 有两种范式。 Raku 程序被解释执行，但如果将代码分离成模块，模块将被编译，然后在必要时加载模块的预处理版本。 在实践中，由社区编写的模块只需要由用户在“安装”时预先编译一次，例如由模块管理器（如 `Zef`）安装。 然后，开发人员可以在自己的程序中使用。 其效果是使 `Raku` 上层程序快速运行。
 
 `Raku` has both paradigms. At the **top level** a Raku program is interpreted, but if code that is separated out into a Module will be compiled and the preprocessed version is then loaded when necessary. In practice, Modules that have been written by the community will only need to be precompiled once by a user when they are 'installed', for example by a Module manager such as `zef`. Then they can be `use`d by a developer in her own program. The effect is to make `Raku` top level programs run quickly.
 
@@ -75,7 +75,11 @@ ACME::Foo::Bar -> ACME/Foo/Bar.pm
 os.path -> os/path.py
 ```
 
+在这些语言中，模块名称与文件系统路径有 1：1 的关系。 我们只需用斜杠替换双冒号或句号，并添加 `.pm` 或 `.py`。
+
 In those languages, module names have a 1:1 relation with filesystem paths. We simply replace the double colons or periods with slashes and add a `.pm` or `.py`.
+
+请注意，这些是相对路径。`Python` 和 `Perl` 都使用包含路径的列表来完成这些路径。 在 `Perl` 中它们可在全局 `@INC` 数组中使用。
 
 Note that these are relative paths. Both `Python` and `Perl` use a list of include paths, to complete these paths. In `Perl` they are available in the global `@INC` array.
 
@@ -90,32 +94,58 @@ Note that these are relative paths. Both `Python` and `Perl` use a list of inclu
 /usr/lib/perl5/5.22.1/
 ```
 
+其中每个包含目录都要检查它是否包含从模块名称确定的相对路径。 如果合适，文件就会被加载。
+
 Each of these include directories is checked for whether it contains a relative path determined from the module name. If the shoe fits, the file is loaded.
+
+当然，这有点简化了。 两种语言都支持缓存模块的编译版本。 因此，不仅仅是 `.pm` 文件 `Perl` 首先查找一个 `.pmc` 文件。 `Python`首先查找 `.pyc` 文件。
 
 Of course that's a bit of a simplified version. Both languages support caching compiled versions of modules. So instead of just the `.pm` file `Perl` first looks for a `.pmc` file. And `Python` first looks for `.pyc` files.
 
+在这两种情况下，模块安装主要意味着将文件复制到由相同的简单映射确定的位置。 该系统易于解释、易于理解并且简单健壮。
+
 Module installation in both cases means mostly copying files into locations determined by the same simple mapping. The system is easy to explain, easy to understand, simple and robust.
 
-<a id="why-change"></a>
-## Why change?
+<a id="%E4%B8%BA%E4%BB%80%E4%B9%88%E6%94%B9%E5%8F%98%EF%BC%9F--why-change"></a>
+## 为什么改变？ / Why change?
+
+为什么 `Raku` 需要另一个框架？ 原因是这些语言缺乏以下特点：
 
 Why would `Raku` need another framework? The reason is there are features that those languages lack, namely:
+
+- Unicode 模组名称
+- 不同作者以相同名称发布的模组
+- 安装了多个版本的模块
 
 - Unicode module names
 - Modules published under the same names by different authors
 - Having multiple versions of a module installed
 
+这套 26 个拉丁字对几乎所有真正的现代语言，包括英语，都有太多的限制，因为英语对许多常用的单词有变音符。
+
 The set of 26 Latin characters is too restrictive for virtually all real modern languages, including English, which have diacritics for many commonly-used words.
+
+使用模块名称和文件系统路径之间的 1：1 关系，一旦尝试在多个平台和文件系统上支持 Unicode，您将进入一个痛苦的世界。
 
 With a 1:1 relation between module names and filesystem paths, you enter a world of pain once you try to support Unicode on multiple platforms and filesystems.
 
+然后在多个作者之间共享模块名称。 这种方法在实践中可能很好，也可能不好。 我可以想象使用它来发布一个带有某种修复的模块，直到原始作者在“官方”版本中包含修复。
+
 Then there's sharing module names between multiple authors. This one may or may not work out well in practice. I can imagine using it for example for publishing a module with some fix until the original author includes the fix in the "official" version.
+
+最后有多个版本。 通常需要特定版本模块的人可以使用 local::lib 或容器或一些自己的绕过方式。 他们都有自己的缺点。 如果应用程序只能说，嘿，我需要一个旧的、 可信的 2.9 版本，或者可能是该分支的 bug 修复版本，那么这些都是不必要的。
 
 Finally there's multiple versions. Usually people who need certain versions of modules reach for local::lib or containers or some home grown workarounds. They all have their own disadvantages. None of them would be necessary if applications could just say, hey I need good old, trusty version 2.9 or maybe a bug fix release of that branch.
 
+如果您有任何希望继续使用简单的名称映射解决方案，您可能会放弃版本控制要求。 因为，在寻找 2.9 或更高版本时，您将如何找到模块的版本 3.2？
+
 If you had any hopes of continuing using the simple name mapping solution, you probably gave up at the versioning requirement. Because, how would you find version 3.2 of a module when looking for a 2.9 or higher?
 
+流行的想法包括在 JSON 文件中收集有关已安装模块的信息，但当这些模块最终发展缓慢时，文本文件被替换为将元数据放入 SQLite 数据库。 然而，这些想法可以很容易地通过引入另一个要求：分发包。
+
 Popular ideas included collecting information about installed modules in JSON files but when those turned out to be toe-nail growing slow, text files were replace by putting the metadata into SQLite databases. However, these ideas can be easily shot down by introducing another requirement: distribution packages.
+
+Linux 发行版的包主要是包含一些文件和一些元数据的档案。 理想情况下，安装这样一个包的过程只意味着解压文件和更新中央包数据库。 卸载意味着删除以这种方式安装的文件，并再次更新包数据库。 在安装和卸载过程中更改现有文件会使打包机的寿命更加困难，所以我们真的想避免这种情况。 此外，已安装文件的名称可能不取决于以前安装的文件。 我们必须在包装时知道名字将是什么。
 
 Packages for Linux distributions are mostly just archives containing some files plus some metadata. Ideally the process of installing such a package means just unpacking the files and updating the central package database. Uninstalling means deleting the files installed this way and again updating the package database. Changing existing files on install and uninstall makes packagers' lives much harder, so we really want to avoid that. Also the names of the installed files may not depend on what was previously installed. We must know at the time of packaging what the names are going to be.
 
@@ -126,14 +156,22 @@ Packages for Linux distributions are mostly just archives containing some files 
 Foo::Bar:auth<cpan:nine>:ver<0.3>:api<1>
 ```
 
+让我们摆脱这种混乱的第 0 步是定义一个长名字。`Raku` 中的一个完整模块名由短名、 作者、 版本和 API 组成。
+
 Step 0 in getting us back out of this mess is to define a long name. A full module name in `Raku` consists of the short-name, auth, version and API
 
-At the same time, the thing you install is usually not a single module but a distribution which probably contains one or more modules. Distribution names work just the same way as module names. Indeed, distributions often will just be called after their main module. An important property of distributions is that they are immutable. `Foo:auth<cpan:nine>:ver<0.3>:api<1> `will always be the name for exactly the same code.
+同时，您安装的东西通常不是一个模块，而是一个可能包含一个或多个模块的分发。分发名称的工作方式与模块名称相同。 事实上，发行版通常只会在它们的主模块之后调用。 分布的一个重要特性是它们是不可变的。 `Foo:auth<cpan:nine>:ver<0.3>:api<1>` 将始终是完全相同代码的名称。
+
+At the same time, the thing you install is usually not a single module but a distribution which probably contains one or more modules. Distribution names work just the same way as module names. Indeed, distributions often will just be called after their main module. An important property of distributions is that they are immutable. `Foo:auth<cpan:nine>:ver<0.3>:api<1>` will always be the name for exactly the same code.
 
 <a id="%24repo"></a>
 ## $*REPO
 
+在 `Perl` 和 `Python` 中您处理的包括指向文件系统目录的路径。 在 `Raku` 中我们将这些目录称为“存储库”，其中每个存储库都由一个对象管理，该对象执行 `CompUnit::Repository` 角色。 而不是 `B<@INC>` 数组，有 `$*REPO` 变量。 它包含一个存储库对象。 此对象具有 **next-repo** 属性，该属性可能包含另一个存储库。 换句话说：存储库被管理为*链接列表*。 与传统数组的重要区别在于，在遍历列表时，每个对象都有权决定是否将请求传递给下一个存储库。 `Raku` 建立了一套标准的存储库，即。 “perl”、 “供应商”和“站点”存储库，就像您从 `Perl` 了解它们一样。 此外，我们还为当前用户建立了一个“家”存储库。
+
 In `Perl` and `Python` you deal with include paths pointing to filesystem directories. In `Raku` we call such directories "repositories" and each of these repositories is governed by an object that does the `CompUnit::Repository` role. Instead of an `B<@INC>` array, there's the `$*REPO` variable. It contains a single repository object. This object has a **next-repo** attribute that may contain another repository. In other words: repositories are managed as a *linked list*. The important difference to the traditional array is, that when going through the list, each object has a say in whether to pass along a request to the next-repo or not. `Raku` sets up a standard set of repositories, i.e. the "perl", "vendor" and "site" repositories, just like you know them from `Perl`. In addition, we set up a "home" repository for the current user.
+
+存储库必须实现 `need` 方法。`Raku` 代码中的 `use` 或 `require` 语句基本上被转换为 `B<$*REPO>` 的调用。 此方法可以将请求委托给下一个存储库。此方法可以将请求委托给下一个存储库。
 
 Repositories must implement the `need` method. A `use` or `require` statement in `Raku` code is basically translated to a call to `B<$*REPO>`'s `need` method. This method may in turn delegate the request to the next-repo.
 
