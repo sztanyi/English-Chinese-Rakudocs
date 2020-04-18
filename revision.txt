@@ -18,8 +18,8 @@ Raku 原生类型 - Raku native types
 指令 - Pragmas
 换行处理 - Newline handling in Raku
 控制流 - Control Flow
-    数值 - Numerics
-    
+数值 - Numerics
+    数据结构 - Data Structures
 输入输出权威指南 - IO the definitive guide
 换行处理 - Newline handling in Raku
 面向对象编程 - Object orientation.md

@@ -7,7 +7,7 @@ Raku 中提供的数字类型
 Numeric types available in Raku
 <!-- MarkdownTOC -->
 
-- [整数 / `Int`](#%E6%95%B4%E6%95%B0--int)
+- [`Int`](#int)
 - [`Num`](#num)
 - [`Complex`](#complex)
 - [`Rational`](#rational)
@@ -17,14 +17,14 @@ Numeric types available in Raku
             - [打印 rationals / Printing rationals](#%E6%89%93%E5%8D%B0-rationals--printing-rationals)
 - [除 0 / Division by zero](#%E9%99%A4-0--division-by-zero)
     - [零分母有理数 / Zero-denominator rationals](#%E9%9B%B6%E5%88%86%E6%AF%8D%E6%9C%89%E7%90%86%E6%95%B0--zero-denominator-rationals)
-- [同质异性 / Allomorphs](#%E5%90%8C%E8%B4%A8%E5%BC%82%E6%80%A7--allomorphs)
-    - [可用的同质异性 / Available allomorphs](#%E5%8F%AF%E7%94%A8%E7%9A%84%E5%90%8C%E8%B4%A8%E5%BC%82%E6%80%A7--available-allomorphs)
-    - [同质异性的强制类型转换 / Coercion of allomorphs](#%E5%90%8C%E8%B4%A8%E5%BC%82%E6%80%A7%E7%9A%84%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2--coercion-of-allomorphs)
+- [语素变体 / Allomorphs](#%E8%AF%AD%E7%B4%A0%E5%8F%98%E4%BD%93--allomorphs)
+    - [可用的语素变体 / Available allomorphs](#%E5%8F%AF%E7%94%A8%E7%9A%84%E8%AF%AD%E7%B4%A0%E5%8F%98%E4%BD%93--available-allomorphs)
+    - [语素变体的强制类型转换 / Coercion of allomorphs](#%E8%AF%AD%E7%B4%A0%E5%8F%98%E4%BD%93%E7%9A%84%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2--coercion-of-allomorphs)
     - [对象标识 / Object identity](#%E5%AF%B9%E8%B1%A1%E6%A0%87%E8%AF%86--object-identity)
 - [原生数字 / Native numerics](#%E5%8E%9F%E7%94%9F%E6%95%B0%E5%AD%97--native-numerics)
     - [可用的原生数字 / Available native numerics](#%E5%8F%AF%E7%94%A8%E7%9A%84%E5%8E%9F%E7%94%9F%E6%95%B0%E5%AD%97--available-native-numerics)
-    - [创建原生数字 /Creating native numerics](#%E5%88%9B%E5%BB%BA%E5%8E%9F%E7%94%9F%E6%95%B0%E5%AD%97-creating-native-numerics)
-    - [溢出/下溢 / Overflow/Underflow](#%E6%BA%A2%E5%87%BA%E4%B8%8B%E6%BA%A2--overflowunderflow)
+    - [创建原生数字 / Creating native numerics](#%E5%88%9B%E5%BB%BA%E5%8E%9F%E7%94%9F%E6%95%B0%E5%AD%97--creating-native-numerics)
+    - [溢出/下溢 - Overflow/Underflow](#%E6%BA%A2%E5%87%BA%E4%B8%8B%E6%BA%A2---overflowunderflow)
     - [自动装箱 / Auto-boxing](#%E8%87%AA%E5%8A%A8%E8%A3%85%E7%AE%B1--auto-boxing)
     - [默认值 / Default values](#%E9%BB%98%E8%AE%A4%E5%80%BC--default-values)
     - [原生分派 / Native dispatch](#%E5%8E%9F%E7%94%9F%E5%88%86%E6%B4%BE--native-dispatch)
@@ -33,8 +33,8 @@ Numeric types available in Raku
 
 <!-- /MarkdownTOC -->
 
-<a id="%E6%95%B4%E6%95%B0--int"></a>
-# 整数 / `Int`
+<a id="int"></a>
+# `Int`
 
 `Int` 类型提供任意大小的整数。它们可以像计算机内存允许的那样大，虽然有些实现在被要求生成真正惊人大小的整数时会选择抛出数字溢出错误：
 
@@ -46,7 +46,7 @@ say 10**600**600
 » 
 ```
 
-与某些语言不同，当两个操作数都是 [Int](https://docs.raku.org/type/Int) 类型时，使用 [`/` 操作符](https://docs.raku.org/routine/$SOLIDUS)执行的除法将产生一个分数，而不执行任何取整。
+与某些语言不同，当两个操作数都是 [Int](https://docs.raku.org/type/Int) 类型时，使用 [`/` 运算符](https://docs.raku.org/routine/$SOLIDUS)执行的除法将产生一个分数，而不是取整。
 
 Unlike some languages, division performed using [`/` operator](https://docs.raku.org/routine/$SOLIDUS) when both operands are of [Int](https://docs.raku.org/type/Int) type, would produce a fractional number, without any rounding performed.
 
@@ -293,7 +293,7 @@ say $c.Num;               # OUTPUT: «5.421010862427522e-20
 
 最后一个 [Rational](https://docs.raku.org/type/Rational) 类型 - [FatRat](https://docs.raku.org/type/FatRat) - 保留你所要求的所有精度，将分子和分母存储为两个 [Int](https://docs.raku.org/type/Int) 对象。[FatRat](https://docs.raku.org/type/FatRat) 比 [Rat](https://docs.raku.org/type/Rat) 更具传染性，有这么多的 [FatRat](https://docs.raku.org/type/FatRat) 数学运算会产生另一个 [FatRat](https://docs.raku.org/type/FatRat)，保留所有可用的精度。当 [Rat](https://docs.raku.org/type/Rat) 退化为 [Num](https://docs.raku.org/type/Num) 时，使用 [FatRat ](https://docs.raku.org/type/FatRat)的数学运算会持续不断：
 
-The last [Rational](https://docs.raku.org/type/Rational) type—[FatRat](https://docs.raku.org/type/FatRat)—keeps all of the precision you ask of it, storing the numerator and denominator as two [Int](https://docs.raku.org/type/Int)objects. A [FatRat](https://docs.raku.org/type/FatRat) is more infectious than a [Rat](https://docs.raku.org/type/Rat), so many math operations with a [FatRat](https://docs.raku.org/type/FatRat) will produce another [FatRat](https://docs.raku.org/type/FatRat), preserving all of the available precision. Where a [Rat](https://docs.raku.org/type/Rat) degrades to a [Num](https://docs.raku.org/type/Num), math with a [FatRat](https://docs.raku.org/type/FatRat) keeps chugging along:
+The last [Rational](https://docs.raku.org/type/Rational) type—[FatRat](https://docs.raku.org/type/FatRat)—keeps all of the precision you ask of it, storing the numerator and denominator as two [Int](https://docs.raku.org/type/Int) objects. A [FatRat](https://docs.raku.org/type/FatRat) is more infectious than a [Rat](https://docs.raku.org/type/Rat), so many math operations with a [FatRat](https://docs.raku.org/type/FatRat) will produce another [FatRat](https://docs.raku.org/type/FatRat), preserving all of the available precision. Where a [Rat](https://docs.raku.org/type/Rat) degrades to a [Num](https://docs.raku.org/type/Num), math with a [FatRat](https://docs.raku.org/type/FatRat) keeps chugging along:
 
 ```Raku
 say ((42 + Rat.new(1,2))/999999999999999999).^name;         # OUTPUT: «Rat
@@ -316,29 +316,29 @@ If your program requires a significant amount of [FatRat](https://docs.raku.org/
 
 ```Raku
 sub infix:<🙼> { FatRat.new: $^a, $^b }
-say (1🙼3).perl; # OUTPUT: «FatRat.new(1, 3)
+say (1🙼3).raku; # OUTPUT: «FatRat.new(1, 3)
 » 
 ```
 
 <a id="%E6%89%93%E5%8D%B0-rationals--printing-rationals"></a>
 #### 打印 rationals / Printing rationals
 
-请记住，像 [say](https://docs.raku.org/routine/say) 或 [put](https://docs.raku.org/routine/put) 这样的输出例程不会力图区分[数字](https://docs.raku.org/type/Numeric)类型如何输出，并且可能选择将 [Num](https://docs.raku.org/type/Num) 显示为 [Int](https://docs.raku.org/type/Int) 或 [Rat](https://docs.raku.org/type/Rat) 数字。要获得更明确的输出字符串，请使用 [perl](https://docs.raku.org/routine/perl) 方法：
+请记住，像 [say](https://docs.raku.org/routine/say) 或 [put](https://docs.raku.org/routine/put) 这样的输出例程不会力图区分[数字](https://docs.raku.org/type/Numeric)类型如何输出，并且可能选择将 [Num](https://docs.raku.org/type/Num) 显示为 [Int](https://docs.raku.org/type/Int) 或 [Rat](https://docs.raku.org/type/Rat) 数字。要获得更明确的输出字符串，请使用 [raku](https://docs.raku.org/routine/raku) 方法：
 
-Keep in mind that output routines like [say](https://docs.raku.org/routine/say) or [put](https://docs.raku.org/routine/put) do not try very hard to distinguish between how [Numeric](https://docs.raku.org/type/Numeric) types are output and may choose to display a [Num](https://docs.raku.org/type/Num) as an [Int](https://docs.raku.org/type/Int) or a [Rat](https://docs.raku.org/type/Rat) number. For a more definitive string to output, use the [perl](https://docs.raku.org/routine/perl) method:
+Keep in mind that output routines like [say](https://docs.raku.org/routine/say) or [put](https://docs.raku.org/routine/put) do not try very hard to distinguish between how [Numeric](https://docs.raku.org/type/Numeric) types are output and may choose to display a [Num](https://docs.raku.org/type/Num) as an [Int](https://docs.raku.org/type/Int) or a [Rat](https://docs.raku.org/type/Rat) number. For a more definitive string to output, use the [raku](https://docs.raku.org/routine/raku) method:
 
 ```Raku
 say 1.0;        # OUTPUT: «1
 » 
 say ⅓;          # OUTPUT: «0.333333
 » 
-say 1.0.perl;   # OUTPUT: «1.0
+say 1.0.raku;   # OUTPUT: «1.0
 » 
-say ⅓.perl;     # OUTPUT: «<1/3>
+say ⅓.raku;     # OUTPUT: «<1/3>
 » 
 ```
 
-有关更多信息，你可以选择在 [nude](https://docs.raku.org/routine/nude) 中查看 [Rational](https://docs.raku.org/type/Rational) 对象，显示其分子和分母：
+有关更多信息，你可以选择用 [nude](https://docs.raku.org/routine/nude) 方法查看 [Rational](https://docs.raku.org/type/Rational) 对象，显示其分子和分母：
 
 For even more information, you may choose to see the [Rational](https://docs.raku.org/type/Rational) object in the [nude](https://docs.raku.org/routine/nude), displaying its **nu**merator and **de**nominator:
 
@@ -347,7 +347,7 @@ say ⅓;          # OUTPUT: «0.333333
 » 
 say 4/2;        # OUTPUT: «2
 » 
-say ⅓.perl;     # OUTPUT: «<1/3>
+say ⅓.raku;     # OUTPUT: «<1/3>
 » 
 say <4/2>.nude; # OUTPUT: «(2 1)
 » 
@@ -360,26 +360,26 @@ say <4/2>.nude; # OUTPUT: «(2 1)
 
 In many languages division by zero is an immediate exception. In Raku, what happens depends on what you're dividing and how you use the result.
 
-Raku 遵循 [IEEE 754-2008 浮点运算标准](https://en.wikipedia.org/wiki/IEEE_754)，但由于历史原因，6.c 和 6.d 语言版本不完全符合。[Num](https://docs.raku.org/type/Num) 被零除产生 [Failure](https://docs.raku.org/type/Failure)，而[复数](https://docs.raku.org/type/Complex)被零除产生 `NaN` 部件, 无论分子是什么。
+Raku 遵循 [IEEE 754-2008 浮点运算标准](https://en.wikipedia.org/wiki/IEEE_754)，但由于历史原因，6.c 和 6.d 语言版本不完全符合。[Num](https://docs.raku.org/type/Num) 被零除产生 [Failure](https://docs.raku.org/type/Failure)，而[复数](https://docs.raku.org/type/Complex)被零除产生 `NaN`, 无论分子是什么。
 
 Raku follows [IEEE 754-2008 Standard for Floating-Point Arithmetic](https://en.wikipedia.org/wiki/IEEE_754), but for historical reasons 6.c and 6.d language versions do not comply fully. [Num](https://docs.raku.org/type/Num) division by zero produces a [Failure](https://docs.raku.org/type/Failure), while [Complex](https://docs.raku.org/type/Complex) division by zero produces `NaN`components, regardless of what the numerator is.
 
-从 6.e 语言开始，[Num](https://docs.raku.org/type/Num) 和 [Complex](https://docs.raku.org/type/Complex) 除以零将产生[-Inf](https://docs.raku.org/type/Num#Inf)，`+Inf` 或 [NaN](https://docs.raku.org/type/Num#NaN), 这取决于分子分别是负数，正数还是零（对于[复数](https://docs.raku.org/type/Complex)，实部和虚部是 [Num](https://docs.raku.org/type/Num) 并且被分别考虑）。
+从 6.e 语言开始，[Num](https://docs.raku.org/type/Num) 和 [Complex](https://docs.raku.org/type/Complex) 除以零将产生[-Inf](https://docs.raku.org/type/Num#Inf)，`+Inf` 或 [NaN](https://docs.raku.org/type/Num#NaN), 这取决于分子是负数，正数还是零（对于[复数](https://docs.raku.org/type/Complex)，实部和虚部是 [Num](https://docs.raku.org/type/Num) 并且被分别考虑）。
 
 As of 6.e language, both [Num](https://docs.raku.org/type/Num) and [Complex](https://docs.raku.org/type/Complex) division by zero will produce a -[Inf](https://docs.raku.org/type/Num#Inf), `+Inf`, or [NaN](https://docs.raku.org/type/Num#NaN) depending on whether the numerator was negative, positive, or zero, respectively (for [Complex](https://docs.raku.org/type/Complex) the real and imaginary components are [Num](https://docs.raku.org/type/Num) and are considered separately).
 
-[Int](https://docs.raku.org/type/Int) 数字的除法产生一个 [Rat](https://docs.raku.org/type/Rat) 对象（或 [Num](https://docs.raku.org/type/Num)，如果在换算之后分母大于64位，当你除以零时就不是这种情况）。这意味着这种除法永远不会产生[异常](https://docs.raku.org/type/Exception)或[失败](https://docs.raku.org/type/Failure)。结果是零分母有理数，这可能是爆炸性的。
+[Int](https://docs.raku.org/type/Int) 相除产生 [Rat](https://docs.raku.org/type/Rat) 对象（或 [Num](https://docs.raku.org/type/Num)，如果在换算之后分母大于 64 位，当你除以零时就不是这种情况）。这意味着这种除法永远不会产生 [Exception](https://docs.raku.org/type/Exception) 或 [Failure](https://docs.raku.org/type/Failure)。结果是零分母有理数，这可能是爆炸性的。
 
 Division of [Int](https://docs.raku.org/type/Int) numerics produces a [Rat](https://docs.raku.org/type/Rat) object (or a [Num](https://docs.raku.org/type/Num), if after reduction the denominator is larger than 64-bits, which isn't the case when you're dividing by zero). This means such division never produces an [Exception](https://docs.raku.org/type/Exception) or a [Failure](https://docs.raku.org/type/Failure). The result is a Zero-Denominator Rational, which can be explosive.
 
 <a id="%E9%9B%B6%E5%88%86%E6%AF%8D%E6%9C%89%E7%90%86%E6%95%B0--zero-denominator-rationals"></a>
 ## 零分母有理数 / Zero-denominator rationals
 
-[零分母](https://docs.raku.org/type/FatRat) 有理数是一个扮演 [Rational](https://docs.raku.org/type/Rational) 角色的数字，它在核心数字中将是 [Rat](https://docs.raku.org/type/Rat) 和 [FatRat](https://docs.raku.org/type/FatRat) 对象，其分母为零。这样根据原始分子是否为负，分别为零或正数, 有理数的分子被归一化到 `-1`、`0` 或 `1`。
+[零分母](https://docs.raku.org/type/FatRat) 有理数是一个扮演 [Rational](https://docs.raku.org/type/Rational) 角色的数字，它在核心数字中将是 [Rat](https://docs.raku.org/type/Rat) 和 [FatRat](https://docs.raku.org/type/FatRat) 对象，其分母为零。这样根据原始分子是否为负，零或正数, 有理数的分子被归为 `-1`、`0` 或 `1`。
 
 A Zero-Denominator Rational is a numeric that does role [Rational](https://docs.raku.org/type/Rational), which among core numerics would be [Rat](https://docs.raku.org/type/Rat) and [FatRat](https://docs.raku.org/type/FatRat)objects, which has denominator of zero. The numerator of such Rationals is normalized to `-1`, `0`, or `1` depending on whether the original numerator is negative, zero or positive, respectively.
 
-可以在不需要实际除法的情况下执行的操作是非爆炸性的。例如，你可以单独检查 [nude](https://docs.raku.org/routine/nude) 中的[分子](https://docs.raku.org/routine/numerator)和[分母](https://docs.raku.org/routine/denominator)，或执行数学运算，而不会出现任何异常或失败。
+可以在不需要实际除法的情况下执行的操作是非爆炸性的。例如，你可以单独检查 [nude](https://docs.raku.org/routine/nude) 方法结果中的[分子](https://docs.raku.org/routine/numerator)和[分母](https://docs.raku.org/routine/denominator)，或执行数学运算，而不会出现任何异常或失败。
 
 Operations that can be performed without requiring actual division to occur are non-explosive. For example, you can separately examine [numerator](https://docs.raku.org/routine/numerator) and [denominator](https://docs.raku.org/routine/denominator) in the [nude](https://docs.raku.org/routine/nude) or perform mathematical operations without any exceptions or failures popping up.
 
@@ -409,14 +409,14 @@ say 0/0;
 #  in block <unit> at -e line 1 
 ```
 
-<a id="%E5%90%8C%E8%B4%A8%E5%BC%82%E6%80%A7--allomorphs"></a>
-# 同质异性 / Allomorphs
+<a id="%E8%AF%AD%E7%B4%A0%E5%8F%98%E4%BD%93--allomorphs"></a>
+# 语素变体 / Allomorphs
 
-[Allomorphs](https://docs.raku.org/language/glossary#index-entry-Allomorph) 是两种类型的子类，可以表现为它们中的任何一种。例如，同质异形 [IntStr](https://docs.raku.org/type/IntStr) 是 [Int](https://docs.raku.org/type/Int) 和 [Str](https://docs.raku.org/type/Str) 类型的子类，并且将被需要 [Int](https://docs.raku.org/type/Int) 或 [Str](https://docs.raku.org/type/Str) 对象的任何类型约束所接受。
+[Allomorphs](https://docs.raku.org/language/glossary#index-entry-Allomorph) 是两种类型的子类，可以表现为它们中的任何一种。例如，[IntStr](https://docs.raku.org/type/IntStr) 是 [Int](https://docs.raku.org/type/Int) 和 [Str](https://docs.raku.org/type/Str) 类型的子类，并且将被需要 [Int](https://docs.raku.org/type/Int) 或 [Str](https://docs.raku.org/type/Str) 对象的任何类型约束所接受。
 
 [Allomorphs](https://docs.raku.org/language/glossary#index-entry-Allomorph) are subclasses of two types that can behave as either of them. For example, the allomorph [IntStr](https://docs.raku.org/type/IntStr) is the subclass of [Int](https://docs.raku.org/type/Int) and [Str](https://docs.raku.org/type/Str) types and will be accepted by any type constraint that requires an [Int](https://docs.raku.org/type/Int) or [Str](https://docs.raku.org/type/Str) object.
 
-同质异形可以使用[尖括号](https://docs.raku.org/language/quoting#Word_quoting%3A_%3C_%3E)创建，可以单独使用或作为散列键查找的一部分使用; 直接使用方法 `.new`，也由一些结构提供，如 [`sub MAIN`](https://docs.raku.org/language/functions#sub_MAIN) 的参数。
+语素变体可以使用[尖括号](https://docs.raku.org/language/quoting#Word_quoting%3A_%3C_%3E)创建，可以单独使用或作为散列键查找的一部分使用; 直接使用方法 `.new` 生成，也可以由一些结构提供，如 [`sub MAIN`](https://docs.raku.org/language/functions#sub_MAIN) 的参数。
 
 Allomorphs can be created using [angle brackets](https://docs.raku.org/language/quoting#Word_quoting%3A_%3C_%3E), either used standalone or as part of a hash key lookup; directly using method `.new` and are also provided by some constructs such as parameters of [`sub MAIN`](https://docs.raku.org/language/functions#sub_MAIN).
 
@@ -440,18 +440,18 @@ say IntStr.new(42, "42").^name; # OUTPUT: «IntStr
 » 
 ```
 
-上面的几个结构在打开角括号之后有一个空格。那个空格不是故意的。通常使用运算符编写的数字，例如`1/2`（[Rat](https://docs.raku.org/type/Rat)，除法运算符）和 `1+2i`（[复数](https://docs.raku.org/type/Complex)，加法）可以写成不涉及使用运算符的字面值：在尖括号和尖括号里面的字符之间*没有*任何空格。通过在尖括号中添加空格，我们告诉编译器我们不仅需要 [Rat](https://docs.raku.org/type/Rat) 或 [Complex](https://docs.raku.org/type/Complex) 字面量，而且我们还希望它是一个allomorph：在这种情况下是 [RatStr](https://docs.raku.org/type/RatStr) 或 [ComplexStr](https://docs.raku.org/type/ComplexStr)。
+上面的几个结构在开角括号之后有一个空格。那个空格不是意外。通常含运算符的数字，例如 `1/2`（[Rat](https://docs.raku.org/type/Rat)，除法运算）和 `1+2i`（[复数](https://docs.raku.org/type/Complex)，加法运算）可以写成不使用运算符的字面值：在尖括号和尖括号里面的字符之间*没有*任何空格。通过在尖括号中添加空格，我们告诉编译器我们不仅需要 [Rat](https://docs.raku.org/type/Rat) 或 [Complex](https://docs.raku.org/type/Complex) 字面量，而且我们还希望它是一个语素变体：是 [RatStr](https://docs.raku.org/type/RatStr) 或 [ComplexStr](https://docs.raku.org/type/ComplexStr)。
 
 A couple of constructs above have a space after the opening angle bracket. That space isn't accidental. Numerics that are often written using an operator, such as `1/2` ([Rat](https://docs.raku.org/type/Rat), division operator) and `1+2i` ([Complex](https://docs.raku.org/type/Complex), addition) can be written as a literal that doesn't involve the use of an operator: angle brackets *without* any spaces between the angle brackets and the characters inside. By adding spaces within the angle brackets, we tell the compiler that not only we want a [Rat](https://docs.raku.org/type/Rat) or [Complex](https://docs.raku.org/type/Complex)literal, but we also want it to be an allomorph: the [RatStr](https://docs.raku.org/type/RatStr) or [ComplexStr](https://docs.raku.org/type/ComplexStr), in this case.
 
-如果数字字面量不使用任何运算符，则将其写入尖括号内，即使不包含任何空格，也会产生同形异形体。（逻辑：如果你不想要同质异形，你就不会使用尖括号。对于使用运算符的数字也是如此，因为某些结构，例如签名字面量，不允许你使用运算符，所以你不能只为这些数字字面量省略尖括号）。
+如果数字字面量不使用任何运算符，则将其写入尖括号内，即使不包含任何空格，也会产生语素变体。（逻辑：如果你不想要语素变体，别使用尖括号。对于使用运算符的数字也是如此，因为某些结构，例如函数签名字面量，不允许你使用运算符，所以你不能只为这些数字字面量省略尖括号）。
 
 If the numeric literal doesn't use any operators, then writing it inside the angle brackets, even without including any spaces within, would produce the allomorph. (Logic: if you didn't want the allomorph, you wouldn't use the angle brackets. The same isn't true for operator-using numbers as some constructs, such as signature literals, do not let you use operators, so you can't just omit angle brackets for such numeric literals).
 
-<a id="%E5%8F%AF%E7%94%A8%E7%9A%84%E5%90%8C%E8%B4%A8%E5%BC%82%E6%80%A7--available-allomorphs"></a>
-## 可用的同质异性 / Available allomorphs
+<a id="%E5%8F%AF%E7%94%A8%E7%9A%84%E8%AF%AD%E7%B4%A0%E5%8F%98%E4%BD%93--available-allomorphs"></a>
+## 可用的语素变体 / Available allomorphs
 
-核心语言提供以下同质异形：
+核心语言提供以下语素变体：
 
 The core language offers the following allomorphs:
 
@@ -462,14 +462,14 @@ The core language offers the following allomorphs:
 | ComplexStr | Complex and Str | < 1+2i> |
 | RatStr     | Rat and Str     | <1.5>   |
 
-注意：没有 `FatRatStr` 类型。
+注意：没有 `FatRatStr` 这种类型。
 
 Note: there is no `FatRatStr` type.
 
-<a id="%E5%90%8C%E8%B4%A8%E5%BC%82%E6%80%A7%E7%9A%84%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2--coercion-of-allomorphs"></a>
-## 同质异性的强制类型转换 / Coercion of allomorphs
+<a id="%E8%AF%AD%E7%B4%A0%E5%8F%98%E4%BD%93%E7%9A%84%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2--coercion-of-allomorphs"></a>
+## 语素变体的强制类型转换 / Coercion of allomorphs
 
-请记住，同质异形只是它们所代表的两种（或三种）类型的子类。正如变量或参数类型约束为 `Foo` 可以接受任何 `Foo` 子类一样，所以变量或参数类型约束为 [Int](https://docs.raku.org/type/Int) 的将接受 [IntStr](https://docs.raku.org/type/IntStr) 同质异形：
+请记住，语素变体只是它们所代表的两种（或三种）类型的子类。正如变量或参数类型约束为 `Foo` 可以接受任何 `Foo` 子类一样，所以变量或参数类型约束为 [Int](https://docs.raku.org/type/Int) 的将接受 [IntStr](https://docs.raku.org/type/IntStr) 语素变体：
 
 Keep in mind that allomorphs are simply subclasses of the two (or three) types they represent. Just as a variable or parameter type-constrained to `Foo` can accept any subclass of `Foo`, so will a variable or parameter type-constrained to [Int](https://docs.raku.org/type/Int) will accept an [IntStr](https://docs.raku.org/type/IntStr) allomorph:
 
@@ -492,13 +492,13 @@ foo <42>;  # OUTPUT: «IntStr
 » 
 ```
 
-给定的同质异形*已经*是 [Int](https://docs.raku.org/type/Int) 类型的对象，因此在这种情况下它不会转换为“普通的” [Int](https://docs.raku.org/type/Int)。
+给定的语素变体*已经*是 [Int](https://docs.raku.org/type/Int) 类型的对象，因此在这种情况下它不会转换为“普通的” [Int](https://docs.raku.org/type/Int)。
 
 The given allomorph is *already* an object of type [Int](https://docs.raku.org/type/Int), so it does not get converted to a "plain" [Int](https://docs.raku.org/type/Int) in this case.
 
-当然，如果没有办法将它们“折叠”到其中一个组件，那么同质异形体的力量将会严重减弱。因此，如果你使用所要强制到的类型的名字显式调用方法，那么你将获得该组件。这同样适用于任何代理方法，例如调用方法 [`.Numeric`](https://docs.raku.org/routine/Numeric) 而不是 [`.Int`](https://docs.raku.org/routine/Int) 或使用 [`prefix:<~> `operator](https://docs.raku.org/routine/~) 运算符而不是 `[.Str`](https://docs.raku.org/routine/Str) 方法调用。
+当然，如果没有办法将它们“折叠”到其中一个组件，那么同质异形体的力量将会严重减弱。因此，如果你使用所要强制到的类型的名字显式调用方法，那么你将获得该组件。这同样适用于任何代理方法，例如调用方法 [`.Numeric`](https://docs.raku.org/routine/Numeric) 而不是 [`.Int`](https://docs.raku.org/routine/Int) 或使用 [`prefix:<~>` 运算符](https://docs.raku.org/routine/~) 而不是 [`.Str`](https://docs.raku.org/routine/Str) 方法调用。
 
-Of course, the power of allomorphs would be severely diminished if there were no way to "collapse" them to one of their components. Thus, if you explicitly call a method with the name of the type to coerce to, you'll get just that component. The same applies to any proxy methods, such as calling method [`.Numeric`](https://docs.raku.org/routine/Numeric) instead of [`.Int`](https://docs.raku.org/routine/Int) or using the [`prefix:<~> `operator](https://docs.raku.org/routine/~) instead of [`.Str`](https://docs.raku.org/routine/Str) method call.
+Of course, the power of allomorphs would be severely diminished if there were no way to "collapse" them to one of their components. Thus, if you explicitly call a method with the name of the type to coerce to, you'll get just that component. The same applies to any proxy methods, such as calling method [`.Numeric`](https://docs.raku.org/routine/Numeric) instead of [`.Int`](https://docs.raku.org/routine/Int) or using the [`prefix:<~>` operator](https://docs.raku.org/routine/~) instead of [`.Str`](https://docs.raku.org/routine/Str) method call.
 
 ```Raku
 my $al := IntStr.new: 42, "forty two";
@@ -513,7 +513,7 @@ say <1/99999999999999999999>.FatRat.^name; # OUTPUT: «FatRat
 » 
 ```
 
-强制整个同质异形体列表的一种方便方法是将 [hyper](https://docs.raku.org/language/operators#Hyper_operators) 运算符应用于适当的前缀：
+强制整个语素变体列表的一种方便方法是将[超运算符](https://docs.raku.org/language/operators#Hyper_operators)应用于适当的前缀：
 
 A handy way to coerce a whole list of allomorphs is by applying the [hyper operator](https://docs.raku.org/language/operators#Hyper_operators) to the appropriate prefix:
 
@@ -529,7 +529,7 @@ say map *.^name, ~«<42 50e0 100>;  # OUTPUT: «(Str Str Str)
 <a id="%E5%AF%B9%E8%B1%A1%E6%A0%87%E8%AF%86--object-identity"></a>
 ## 对象标识 / Object identity
 
-当我们考虑对象一致性时，上面关于强制同形异形的讨论变得更加重要。一些构造利用它来确定两个对象是否“相同”。而对于人类而言，同质异形 `42` 和常规的 `42` 可能看起来“相同”，对于那些构造，它们是完全不同的对象：
+当我们考虑对象一致性时，上面关于强制类型转换为语素变体的讨论变得更加重要。一些构造利用它来确定两个对象是否“相同”。而对于人类而言，语素变体 `42` 和常规的 `42` 可能看起来“相同”，对于那些构造，它们是完全不同的对象：
 
 The above discussion on coercing allomorphs becomes more important when we consider object identity. Some constructs utilize it to ascertain whether two objects are "the same". And while to humans an allomorphic `42` and regular `42` might appear "the same", to those constructs, they're entirely different objects:
 
@@ -566,7 +566,7 @@ say 42 ∈ +«<42 100 200>; # OUTPUT: «True
 » 
 ```
 
-注意这些对象一致性的差异，并根据需要强制你的同形异形体。
+注意这些对象一致性的差异，并根据需要强制类型转换你的语素变体。
 
 Be mindful of these object identity differences and coerce your allomorphs as needed.
 
@@ -577,7 +577,7 @@ Be mindful of these object identity differences and coerce your allomorphs as ne
 
 As the name suggests, native numerics offer access to native numerics—i.e. those offered directly by your hardware. This in turn offers two features: overflow/underflow and better performance.
 
-**注意：**在撰写本文时（2018.05），某些实现（例如 Rakudo）提供了有关原生类型的一些细节，例如 `int64` 是否可用且在32位计算机上具有 64 位大小，以及如何检测何时你的程序正在这样的硬件上运行。
+**注意：**在撰写本文时（2018.05），某些实现（例如 Rakudo）提供了有关原生类型的一些细节，例如 `int64` 是否可用且在 32 位计算机上具有 64 位大小，以及如何检测何时你的程序正在这样的硬件上运行。
 
 **NOTE:** at the time of this writing (2018.05), certain implementations (such as Rakudo) offer somewhat spotty details on native types, such as whether `int64` is available and is of 64-bit size on 32-bit machines, and how to detect when your program is running on such hardware.
 
@@ -601,8 +601,8 @@ As the name suggests, native numerics offer access to native numerics—i.e. tho
 | uint64      | unsigned integer | 64-bits                                                      |
 | uint8       | unsigned integer | 8-bits                                                       |
 
-<a id="%E5%88%9B%E5%BB%BA%E5%8E%9F%E7%94%9F%E6%95%B0%E5%AD%97-creating-native-numerics"></a>
-## 创建原生数字 /Creating native numerics
+<a id="%E5%88%9B%E5%BB%BA%E5%8E%9F%E7%94%9F%E6%95%B0%E5%AD%97--creating-native-numerics"></a>
+## 创建原生数字 / Creating native numerics
 
 要创建原生类型的变量或参数，只需使用其中一个可用数字的名称作为类型约束：
 
@@ -622,10 +622,10 @@ At times, you may wish to coerce some value to a native type without creating an
 some-native-taking-sub (my int $ = $y), (my int32 $ = $z)
 ```
 
-<a id="%E6%BA%A2%E5%87%BA%E4%B8%8B%E6%BA%A2--overflowunderflow"></a>
-## 溢出/下溢 / Overflow/Underflow
+<a id="%E6%BA%A2%E5%87%BA%E4%B8%8B%E6%BA%A2---overflowunderflow"></a>
+## 溢出/下溢 - Overflow/Underflow
 
-尝试**分配**不适合特定原生类型的值会产生异常。这包括尝试为原生参数提供过大的参数：
+尝试**赋值**不适合特定原生类型的值会产生异常。这包括尝试为原生参数提供过大的参数：
 
 Trying to **assign** a value that does not fit into a particular native type, produces an exception. This includes attempting to give too large an argument to a native parameter:
 
@@ -660,7 +660,7 @@ say $x -= 100;      # OUTPUT: «156
 » 
 ```
 
-创建使用原生类型的对象不涉及程序员的直接分配; 这就是为什么这些构造提供溢出/下溢行为而不是抛出异常。
+创建使用原生类型的对象不涉及直接赋值; 这就是为什么这些构造提供溢出/下溢行为而不是抛出异常。
 
 Creating objects that utilize native types does not involve direct assignment by the programmer; that is why these constructs offer overflow/underflow behavior instead of throwing exceptions.
 
@@ -688,7 +688,7 @@ say $x.abs; # OUTPUT: «42
 
 This behavior is known as "auto-boxing". The compiler automatically "boxes" the native type into a full-featured higher-level type with all the methods. In other words, the `int8` above was automatically converted to an [Int](https://docs.raku.org/type/Int) and it's the [Int](https://docs.raku.org/type/Int) class that then provided the [abs](https://docs.raku.org/routine/abs) method that was called.
 
-当你使用原生类型获得性能提升时，此详细信息非常重要。如果你正在使用的代码导致执行大量自动装箱，那么使用原生类型的性能可能会比使用非原生类型时*更差*：
+当你使用原生类型获得性能提升时，此细节非常重要。如果你正在使用的代码导致执行大量自动装箱，那么使用原生类型的性能可能会比使用非原生类型时*更差*：
 
 This detail is significant when you're using native types for performance gains. If the code you're using results in a lot of auto-boxing being performed you might get *worse* performance with native types than you would with non-natives:
 
@@ -701,11 +701,11 @@ my int $a-native = -42;
 » 
 ```
 
-如你所见，原生变体的速度慢了两倍多。原因是方法调用需要将原生类型装箱，而非原生变体不需要这样的东西，因此性能损失。
+如你所见，原生变体的执行时间是两倍多。原因是方法调用需要将原生类型装箱，而非原生变体不需要这样的东西，因此性能损失。
 
 As you can see above, the native variant is more than twice slower. The reason is the method call requires the native type to be boxed, while no such thing is needed in the non-native variant, hence the performance loss.
 
-在这种特殊情况下，我们可以简单地切换到[abs](https://docs.raku.org/routine/abs)的子程序形式，它可以使用原生类型而无需装箱。在其他情况下，你可能需要寻找其他解决方案以避免过多的自动装箱，包括切换到部分代码的非原生类型。
+在这种特殊情况下，我们可以简单地切换到 [abs](https://docs.raku.org/routine/abs) 的子程序形式，它可以使用原生类型而无需装箱。在其他情况下，你可能需要寻找其他解决方案以避免过多的自动装箱，包括切换到部分代码的非原生类型。
 
 In this particular case, we can simply switch to a subroutine form of [abs](https://docs.raku.org/routine/abs), which can work with native types without boxing them. In other cases, you may need to seek out other solutions to avoid excessive autoboxing, including switching to non-native types for a portion of the code.
 
@@ -721,14 +721,14 @@ my int $a-native = -42;
 <a id="%E9%BB%98%E8%AE%A4%E5%80%BC--default-values"></a>
 ## 默认值 / Default values
 
-由于原生类型后面没有类，因此通常没有使用尚未初始化的变量获得的类型对象。因此，原生类型自动初始化为零。在6.c语言，原生的浮点类型（`num`，`num32`，和`num64`）被初始化为值 `NaN`; 在 6.d 语言中默认为 `0e0`。
+由于原生类型没有类，因此通常没有使用尚未初始化的变量获得的类型对象。因此，原生类型自动初始化为零。在 6.c 语言版本，原生的浮点类型（`num`、 `num32` 和 `num64`）被初始化为值 `NaN`; 在 6.d 语言版本中默认为 `0e0`。
 
 Since there are no classes behind native types, there are no type objects you'd normally get with variables that haven't been initialized. Thus, native types are automatically initialized to zero. In 6.c language, native floating point types (`num`, `num32`, and `num64`) were initialized to value `NaN`; in 6.d language the default is `0e0`.
 
 <a id="%E5%8E%9F%E7%94%9F%E5%88%86%E6%B4%BE--native-dispatch"></a>
 ## 原生分派 / Native dispatch
 
-例如，当大小可预测时，可以使原生候选者与非原生候选者一起提供具有原生候选者的更快算法，但是否则回退到较慢的非原生候选者。以下是涉及原生候选人的多重分派的规则。
+例如，当大小可预测时，可以使用原生候选者提供更快算法，否则回退到较慢的非原生候选者。以下是涉及原生候选者的多重分派的规则。
 
 It is possible to have native candidates alongside non-native candidates to, for example, offer faster algorithms with native candidates when sizes are predictable, but to fallback to slower non-native alternatives otherwise. The following are the rules concerning multi-dispatch involving native candidates.
 
@@ -746,7 +746,7 @@ foo my int $x = 42;
 # :(int32 $x) 
 ```
 
-其次，如果例程是一个 `only`-也就是说，它不是一个接受非原生类型的 [`multi`](https://docs.raku.org/language/functions#Multi-dispatch) 例程，但是在调用期间给了例程一个原生类型，反之亦然，那么参数将被自动装箱或自动取消装箱以使可以被调用。如果给定的参数太大而无法放入原生参数，则会抛出异常：
+其次，如果例程是一个 `only` - 也就是说，它不是一个接受非原生类型的 [`multi`](https://docs.raku.org/language/functions#Multi-dispatch) 例程，但是在调用期间给了例程一个原生类型，反之亦然，那么参数将被自动装箱或自动取消装箱以使可以被调用。如果给定的参数太大而无法放入原生参数，则会抛出异常：
 
 Second, if a routine is an `only`—i.e. it is not a [`multi`](https://docs.raku.org/language/functions#Multi-dispatch)—that takes a non-native type but a native one was given during the call, or vice-versa, then the argument will be auto-boxed or auto-unboxed to make the call possible. If the given argument is too large to fit into the native parameter, an exception will be thrown:
 
@@ -757,6 +757,8 @@ Second, if a routine is an `only`—i.e. it is not a [`multi`](https://docs.raku
 -> Int {}( my int $ = 42 ); # OK; auto-boxing 
 ```
 
+当涉及到 [`multi`](https://docs.raku.org/language/functions#Multi-dispatch) 例程，如果没有原生类型候选，原生类型的参数将始终自动装箱。
+
 When it comes to [`multi`](https://docs.raku.org/language/functions#Multi-dispatch) routines, native arguments will always be auto-boxed if no native candidates are available to take them:
 
 ```Raku
@@ -765,7 +767,7 @@ say foo my int $ = 42; # OUTPUT: «42
 » 
 ```
 
-走另一条路时，同样的奢侈是无法承受的。如果只有原生候选对象可用，则非原生参数将*不*自动取消装箱，而将引发一个异常，指示不会引发任何匹配的候选对象（这种不对称的原因是原生类型始终可以装箱，但非原生类型可能太大，不适合原生类型）：
+反过来，同样的奢侈却是无法承受的。如果只有原生候选对象可用，则非原生参数将*不*自动取消装箱，而将引发一个异常，指示不会引发任何匹配的候选对象（这种不对称的原因是原生类型始终可以装箱，但非原生类型可能太大，不适合原生类型）：
 
 The same luxury is not afforded when going the other way. If only a native candidate is available, a non-native argument will *not* be auto-unboxed and instead an exception indicating no candidates matched will be thrown (the reason for this asymmetry is a native type can always be boxed, but a non-native may be too large to fit into a native):
 
@@ -817,7 +819,7 @@ say $x; # OUTPUT: «100
 » 
 ```
 
-`int` 相似性也存在于多重分派中： `atomicint`，普通的 `int` 和固定大小的 `int` 变量都是相同的，并且不能通过多重分派来区分。
+`int` 相似性也存在于多重分派中： `atomicint`、 普通的 `int` 和固定大小的 `int` 变量都是相同的，并且不能通过多重分派来区分。
 
 The similarity to `int` is present in multi dispatch as well: an `atomicint`, plain `int`, and the sized `int` variants are all considered to be the same by the dispatcher and cannot be differentiated through multi-dispatch.
 
@@ -847,6 +849,6 @@ say (FatRat.new(1,2) + ½).^name; # FatRat + Rat => OUTPUT: «FatRat
 » 
 ```
 
-同质异形体具有与其数字成分相同的传递性。原生类型获得自动装箱，并具有与其盒装变体相同的传递性。
+语素变体具有与其数字成分相同的传递性。原生类型获得自动装箱，并具有与其盒装变体相同的传递性。
 
 The allomorphs have the same infectiousness as their numeric component. Native types get autoboxed and have the same infectiousness as their boxed variant.
