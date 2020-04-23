@@ -42,3 +42,11 @@ https://exercism.io/tracks/raku
 
 # Andrew Shitov’s Blog
 https://andrewshitov.com/
+
+# Rosetta Code for Raku
+https://rosettacode.org/wiki/Category:Raku
+
+# Raku by Example
+https://uzluisf.gitlab.io/raku-by-example/
+
+
