@@ -85,7 +85,7 @@ In this case, `$list` is using the Scalar sigil and thus will be a `Scalar`. Any
 <a id="%E5%A4%8D%E6%9D%82%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84--complex-data-structures"></a>
 # 复杂数据结构 / Complex data structures
 
-根据你访问其第一级元素的方式，复杂数据结构分为两大类：[位置](https://docs.raku.org/type/Positional)，或类似列表和[关联](https://docs.raku.org/type/Associative)或键值对。通常，复杂的数据结构（包括对象）将是两者的组合，其中对象属性被同化为键值对。虽然所有对象都是 [Mu](https://docs.raku.org/type/Mu)的子类，但一般来说复杂对象是 [Any](https://docs.raku.org/type/Any) 的子类实例 。虽然理论上可以在没有这样做的情况下混合使用`位置`或`关联`，但是大多数适用于复杂数据结构的方法都是在 `Any` 中实现的。
+根据你访问其第一级元素的方式，复杂数据结构分为两大类：[Positional](https://docs.raku.org/type/Positional)，或类似列表和 [Associative](https://docs.raku.org/type/Associative) 或键值对。通常，复杂的数据结构（包括对象）将是两者的组合，其中对象属性被同化为键值对。虽然所有对象都是 [Mu](https://docs.raku.org/type/Mu) 的子类，但一般来说复杂对象是 [Any](https://docs.raku.org/type/Any) 的子类实例 。虽然理论上可以在没有这样做的情况下混合使用 `Positional` 或 `Associative`，但是大多数适用于复杂数据结构的方法都是在 `Any` 中实现的。
 
 Complex data structures fall in two different broad categories: [Positional](https://docs.raku.org/type/Positional), or list-like and [Associative](https://docs.raku.org/type/Associative), or key-value pair like, according to how you access its first-level elements. In general, complex data structures, including objects, will be a combination of both, with object properties assimilated to key-value pairs. While all objects subclass [Mu](https://docs.raku.org/type/Mu), in general complex objects are instances of subclasses of [Any](https://docs.raku.org/type/Any). While it is theoretically possible to mix in `Positional` or `Associative` without doing so, most methods applicable to complex data structures are implemented in `Any`.
 
@@ -108,11 +108,11 @@ say [[1, 2, [3, 4]], [[5, 6, [7, 8]]]].duckmap:
 # OUTPUT: «[[1 2 2] [5 6 2]]␤» 
 ```
 
-在本例中，它深入到结构中，但如果元素不满足块中的条件（`1，2`），则返回元素本身；如果满足条件，则返回数组的元素数（每个子数组末尾的两个'2`）。
+在本例中，它深入到结构中，但如果元素不满足块中的条件（`1，2`），则返回元素本身；如果满足条件，则返回数组的元素数（每个子数组末尾的两个 `2`）。
 
 In this case, it dives into the structure, but returns the element itself if it does not meet the condition in the block (`1, 2`), returning the number of elements of the array if it does (the two `2`s at the end of each subarray).
 
-因为 `deepmap` 和 `duckmap` 是 `Any` 的方法，他们也可用于关联数组：
+因为 `deepmap` 和 `duckmap` 是 `Any` 类的方法，他们也可用于关联数组：
 
 Since `deepmap` and `duckmap` are `Any` methods, they also apply to Associative arrays:
 
@@ -125,7 +125,7 @@ say %( first => [1, 2], second => [3,4] ).deepmap( *.elems );
 
 Only in this case, they will be applied to every list or array that is a value, leaving the keys alone.
 
-`位置`和`关联`数据结构可以互相转换。
+`Positional` 和 `Associative` 数据结构可以互相转换。
 
 `Positional` and `Associative` can be turned into each other.
 
@@ -134,7 +134,7 @@ say %( first => [1, 2], second => [3,4] ).list[0];
 # OUTPUT: «second => [3 4]␤» 
 ```
 
-在这个例子中，2018.05 之后的 Rakudo 版本每次运行都会返回不同的值。哈希会转变为键值对的乱序数组。也可以反着操作，只要只要数组有偶数个元素（奇数个元素会报错）：
+在这个例子中，2018.05 之后的 Rakudo 版本每次运行都会返回不同的值。哈希会转变为键值对的乱序数组。也可以反着操作，只要数组有偶数个元素（奇数个元素会报错）：
 
 However, in this case, and for Rakudo >= 2018.05, it will return a different value every time it runs. A hash will be turned into a list of the key-value pairs, but it is guaranteed to be disordered. You can also do the operation in the opposite direction, as long as the list has an even number of elements (odd number will result in an error):
 
@@ -150,7 +150,7 @@ But
 say <a b c d>.Hash.kv # OUTPUT: «(c d a b)␤» 
 ```
 
-每次运行都是不同的结果，[`kv`](https://docs.raku.org/type/Pair#method_kv) 将每个 `键值对` 转换为列表。
+每次运行都是不同的结果，[`kv`](https://docs.raku.org/type/Pair#method_kv) 将每个 `Pair` 转换为列表。
 
 will obtain a different value every time you run it; [`kv`](https://docs.raku.org/type/Pair#method_kv) turns every `Pair` into a list.
 
@@ -162,7 +162,7 @@ Complex data structures are also generally [Iterable](https://docs.raku.org/type
 .say for 'א'..'ס'; # OUTPUT: «א␤ב␤ג␤ד␤ה␤ו␤ז␤ח␤ט␤י␤ך␤כ␤ל␤ם␤מ␤ן␤נ␤ס␤» 
 ```
 
-'א'..'ס' 是一个 [Range](https://docs.raku.org/type/Range) 复杂数据结构，在前面加上 `for`，它将迭代直到列表耗尽。通过重写[迭代器](https://docs.raku.org/routine/iterator)，可以对复杂的数据结构使用 `for`：
+`'א'..'ס'` 是一个 [Range](https://docs.raku.org/type/Range)，一个复杂的数据结构，在前面加上 `for`，它将迭代直到列表耗尽。通过重写[迭代器](https://docs.raku.org/routine/iterator)，可以对复杂的数据结构使用 `for`：
 
 `'א'..'ס'` is a [Range](https://docs.raku.org/type/Range), a complex data structure, and with `for` in front it will iterate until the list is exhausted. You can use `for`on your complex data structures by overriding the [iterator](https://docs.raku.org/routine/iterator) method (from role `Iterable`):
 
@@ -185,7 +185,7 @@ my @thing := SortedArray.new([3,2,1,4]);
 
 Raku 是一种函数式语言，因此，函数是第一等的*数据*结构。函数有 [Callable](https://docs.raku.org/type/Callable) 角色，这是基本角色四件套中的第四个元素。[Callable](https://docs.raku.org/type/Callable) 与 `&` 标记一起使用，尽管在大多数情况下，为了简单起见省略了它；在 `Callables` 的情况下可以总是省略这标记。
 
-Raku is a functional language and, as such, functions are first-class *data* structures. Functions follow the [Callable](https://docs.raku.org/type/Callable) role, which is the 4th element in the quartet of fundamental roles. [Callable](https://docs.raku.org/type/Callable) goes with the `&` sigil, although in most cases it is elided for the sake of simplicity; this sigil elimination is always allowed in the case of `Callables`.
+Raku is a functional language and, as such, functions are first-class *data* structures.Functions follow the [Callable](https://docs.raku.org/type/Callable) role, which is the 4th element in the quartet of fundamental roles. [Callable](https://docs.raku.org/type/Callable) goes with the `&` sigil, although in most cases it is elided for the sake of simplicity; this sigil elimination is always allowed in the case of `Callables`.
 
 ```Raku
 my &a-func= { (^($^þ)).Seq };
@@ -210,7 +210,7 @@ $logger( "More stuff" );
 say $logger( Nil, "2018-05-28" ); # OUTPUT: «(Stuff More stuff)␤» 
 ```
 
-`Block` 是有[签名](https://docs.raku.org/type/Signature)的。在这个例子中，有2个参数。第一个参数是需要记录的事件，第二个参数是获取事件的键。他们将会被独立地使用，意图是展示 [状态变量](https://docs.raku.org/syntax/state)的用法，该变量从每次调用到下一次调用时都会被保留。此状态变量封装在代码块中，除非使用代码块提供的简单 API，否则无法从外部访问：带第二个参数调用代码块。头两次调用记录了两个事件，示例底部的调用使用第二种调用来检索存储的值。`代码块`可以克隆：
+`Block` 是有 [Signature](https://docs.raku.org/type/Signature)的。在这个例子中，有二个参数。第一个参数是需要记录的事件，第二个参数是获取事件的键。他们将会被独立地使用，意图是展示 [状态变量](https://docs.raku.org/syntax/state)的用法，该变量从每次调用到下一次调用时都会被保留。此状态变量封装在代码块中，除非使用代码块提供的简单 API，否则无法从外部访问：带第二个参数调用代码块。头两次调用记录了两个事件，示例底部的调用使用第二种调用来检索存储的值。`Block` 可以被克隆：
 
 A `Block` has a [Signature](https://docs.raku.org/type/Signature), in this case two arguments, the first of which is the event that is going to be logged, and the second is the key to retrieve the events. They will be used in an independent way, but its intention is to showcase the use of a [state variable](https://docs.raku.org/syntax/state) that is kept from every invocation to the next. This state variable is encapsulated within the block, and cannot be accessed from outside except by using the simple API the block provides: calling the block with a second argument. The two first invocations log two events, the third invocation at the bottom of the example use this second type of call to retrieve the stored values. `Block`s can be cloned:
 
@@ -222,7 +222,7 @@ say $clogger( Nil, "2018-05-28" );
 # OUTPUT: «(Clone stuff More clone stuff)␤» 
 ```
 
-克隆将重置而非克隆状态变量，我们可以创建改变 API 的*外立面*。例如，无需使用 `Nil` 作为第一个参数来检索特定日期的日志：
+任何克隆都将重置而非克隆状态变量，我们可以创建改变 API 的*外立面*。例如，无需使用 `Nil` 作为第一个参数来检索特定日期的日志：
 
 And cloning will reset the state variable; instead of cloning, we can create *façades* that change the API. For instance, eliminate the need to use `Nil` as first argument to retrieve the log for a certain date:
 
@@ -269,7 +269,7 @@ Regexes are actually a type of callable:
 say /regex/.does( Callable ); # OUTPUT: «True␤» 
 ```
 
-在上面的示例中，我们调用存储在数组中的正则表达式，并将它们应用于字符串文字。
+在上面的示例中，我们调用存储在数组中的正则表达式，并将它们应用于字符串文本。
 
 And in the example above we are calling regexes stored in an array, and applying them to a string literal.
 
@@ -286,14 +286,14 @@ say $Logger::get( "2018-05-28" );
 # OUTPUT: «(Pair → left right Rat → 0.75)␤» 
 ```
 
-我们使用上面定义的 `$Logger::logs` 函数与 `$typer` 组合，获得另外一个函数。这个函数记录一个对象及其类型，这非常有用，例如作为过滤。`$Logger::withtype` 实际上是一个复杂的数据结构，由两个以串行方式应用的函数组成，但每一个组合的可调用数据结构都可以保持状态，从而创建复杂的变换可调用数据结构，其设计模式是：类似于面向对象领域中的对象组合。在每种特定情况下，你都必须选择最适合你的问题的编程风格。
+我们将上面定义的 `$Logger::logs` 与 `$typer` 函数组合，获得另外一个函数。这个函数记录一个对象及其类型，这非常有用，例如用来过滤。`$Logger::withtype` 实际上是一个复杂的数据结构，由两个以串行方式应用的函数组成，但每一个组合的可调用数据结构都可以保持状态，从而创建复杂的可变换的可调用数据结构，其设计模式是：类似于面向对象领域中的对象组合。在每种特定情况下，你都必须选择最适合你的问题的编程风格。
 
 We are composing `$typer` with the `$Logger::logs` function defined above, obtaining a function that logs an object preceded by its type, which can be useful for filtering, for instance. `$Logger::withtype` is, in fact, a complex data structure composed of two functions which are applied in a serial way, but every one of the callables composed can keep state, thus creating complex transformative callables, in a design pattern that is similar to object composition in the object oriented realm. You will have to choose, in every particular case, what is the programming style which is most suitable for your problem.
 
 <a id="%E5%AE%9A%E4%B9%89%E5%92%8C%E7%BA%A6%E6%9D%9F%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84--defining-and-constraining-data-structures"></a>
 # 定义和约束数据结构 / Defining and constraining data structures
 
-Raku 有不同的定义数据结构的方法，但也有许多方法来约束它们，这样你就可以为每个问题域创建最合适的数据结构。例如 [`but`](https://docs.raku.org/routine/but)，将角色或值混合到值或变量中：
+Raku 有不同的定义数据结构的方法，但也有许多方法来约束它们，这样你就可以为每个问题域创建最合适的数据结构。例如 [`but`](https://docs.raku.org/routine/but)，将角色或值混合到一个值或一个变量中：
 
 Raku has different ways of defining data structures, but also many ways to constrain them so that you can create the most adequate data structure for every problem domain. [`but`](https://docs.raku.org/routine/but), for example, mixes roles or values into a value or a variable:
 
@@ -306,7 +306,7 @@ say %not-scalar.of;    # OUTPUT: «Associative[Int, Int]␤»
 say %not-scalar;       # OUTPUT: «{2 => 3, 3 => 4, thing => 3}␤» 
 ```
 
-在这种情况下，`but` 混合在 `Associative[Int, Int]` 角色中；请注意，我们使用的是绑定，这样变量的类型就是定义的类型，而不是由 `%` 标记强加的类型；这种混合的角色显示在用大括号括起来的 `name` 中。这到底是什么意思？该角色包含两个方法： `of` 和 `keyof`；通过混合中的角色，将调用新的 `of`（旧的 `of` 将返回 `Mu`，这是哈希的默认值类型）。然而，这就是它所做的一切。它并没有真正改变变量的类型，正如你所看到的，因为我们在接下来的几条语句中使用了任何类型的键和值。
+在这种情况下，`but` 混合在 `Associative[Int, Int]` 角色中；请注意，我们使用的是绑定，这样定义的就是变量的类型，而不是由 `%` 标记强加的类型；这种混合的角色显示在用大括号括起来的 `name` 中。这到底是什么意思？该角色包含两个方法： `of` 和 `keyof`；通过混进角色，将调用新的 `of`（旧的 `of` 将返回 `Mu`，这是哈希的默认值类型）。然而，这就是它所做的一切。它并没有真正改变变量的类型，正如你所看到的，因为我们在接下来的几条语句中使用了任何类型的键和值。
 
 In this case, `but` is mixing in the `Associative[Int, Int]` role; please note that we are using binding so that the type of the variable is the one defined, and not the one imposed by the `%` sigil; this mixed-in role shows in the `name` surrounded by curly braces. What does that really mean? That role includes two methods, `of` and `keyof`; by mixing the role in, the new `of` will be called (the old `of` would return `Mu`, which is the default value type for Hashes). However, that is all it does. It is not really changing the type of the variable, as you can see since we are using any kind of key and values in the next few statements.
 
