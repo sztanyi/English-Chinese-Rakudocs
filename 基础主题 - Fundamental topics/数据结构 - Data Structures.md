@@ -63,8 +63,8 @@ An interesting side effect, or maybe intended feature, is that scalarization con
 
 ```Raku
 for ^2 {
-     my @list = (1, 1);
-     say @list.WHICH;
+    my @list = (1, 1);
+    say @list.WHICH;
 } # OUTPUT: «Array|93947995146096␤Array|93947995700032␤» 
 ```
 每次分配 `(1,1)` 时，创建的变量将会是不同的, `===` 对比的结果也显示是不同的变量;如图所示，打印内部指针表示的不同值。然而
@@ -89,7 +89,7 @@ In this case, `$list` is using the Scalar sigil and thus will be a `Scalar`. Any
 
 Complex data structures fall in two different broad categories: [Positional](https://docs.raku.org/type/Positional), or list-like and [Associative](https://docs.raku.org/type/Associative), or key-value pair like, according to how you access its first-level elements. In general, complex data structures, including objects, will be a combination of both, with object properties assimilated to key-value pairs. While all objects subclass [Mu](https://docs.raku.org/type/Mu), in general complex objects are instances of subclasses of [Any](https://docs.raku.org/type/Any). While it is theoretically possible to mix in `Positional` or `Associative` without doing so, most methods applicable to complex data structures are implemented in `Any`.
 
-浏览这些复杂的数据结构是一项挑战，但 Raku 提供了一些可用于它们的函数：[`deepmap`](https://docs.raku.org/routine/deepmap) 和 [`duckmap`] (https://docs.raku.org/routine/duckmap)。虽然前者将按顺序转到每个元素，并且执行传递的代码块的。
+浏览这些复杂的数据结构是一项挑战，但 Raku 提供了一些可用于它们的函数：[`deepmap`](https://docs.raku.org/routine/deepmap) 和 [`duckmap`](https://docs.raku.org/routine/duckmap)。虽然前者将按顺序转到每个元素，并且执行传递的代码块的。
 
 Navigating these complex data structures is a challenge, but Raku provides a couple of functions that can be used on them: [`deepmap`](https://docs.raku.org/routine/deepmap) and [`duckmap`](https://docs.raku.org/routine/duckmap). While the former will go to every single element, in order, and do whatever the block passed requires,
 
@@ -361,7 +361,7 @@ say @fibonacci[^10]; # OUTPUT: «(1 1 2 3 5 8 13 21 34 55)␤»
 say @fibonacci[14]; # OUTPUT: «987␤» 
 ```
 
-上面我们正在使用 [序列操作符](https://docs.raku.org/language/operators#index-entry-%25E2%2580%25A6_operators) 重新定义一个[序列](https://docs.raku.org/type/Seq)，但是其他数据结构也使用这个概念。例如，一个未具体化的 [范围 / Range](https://docs.raku.org/type/Range)只是两个端点。在某些语言中，计算一个巨大范围的和是一个耗时且耗内存的过程，但是 Raku 可以立即算出它：
+上面我们正在使用[序列操作符](https://docs.raku.org/language/operators#index-entry-%25E2%2580%25A6_operators)重新定义一个[序列](https://docs.raku.org/type/Seq)，但是其他数据结构也使用这个概念。例如，一个未具体化的[范围 / Range](https://docs.raku.org/type/Range) 只是两个端点。在某些语言中，计算一个巨大范围的和是一个耗时且耗内存的过程，但是 Raku 可以立即算出它：
 
 Above we were reifying a [Seq](https://docs.raku.org/type/Seq) we created with the [sequence operator](https://docs.raku.org/language/operators#index-entry-%25E2%2580%25A6_operators), but other data structures use the concept as well. For example, an un-reified [Range](https://docs.raku.org/type/Range) is just the two end points. In some languages, calculating the sum of a huge range is a lengthy and memory-consuming process, but Raku calculates it instantly:
 
@@ -400,7 +400,7 @@ say $seq[^2];
 
 Following the output above, you can see the print statements *inside* the `gather` got executed only when we reified the individual elements while looking up an element. Also note that the elements got reified just once. When we printed the same elements again on the last line of the example, the messages inside `gather` was no longer printed. This is because the construct used already-reified elements from the [Seq](https://docs.raku.org/type/Seq)'s cache.
 
-请注意，上面我们将 `gather` 赋值给 [标量](https://docs.raku.org/type/Scalar)容器(带 `$` 标记)而非[位置](https://docs.raku.org/type/Positional)容器。这是因为 `@` 标记的变量 *大多是贪婪的*。这意味着他们*绝大多数时间*会立刻*具体化赋值给他们的东西*。唯一一次他们不这么做的是当物品被知道是 [`is-lazy`](https://docs.raku.org/routine/is-lazy) 的时候，例如以无穷大为终点的序列。如果我们将 `gather` 分配给一个 `@` 变量，其中的 `say` 语句将立即打印出来。
+请注意，上面我们将 `gather` 赋值给 [标量](https://docs.raku.org/type/Scalar)容器(带 `$` 标记)而非[位置](https://docs.raku.org/type/Positional)容器。这是因为 `@` 标记的变量*大多是贪婪的*。这意味着他们*绝大多数时间*会立刻*具体化赋值给他们的东西*。唯一一次他们不这么做的是当物品被知道是 [`is-lazy`](https://docs.raku.org/routine/is-lazy) 的时候，例如以无穷大为终点的序列。如果我们将 `gather` 分配给一个 `@` 变量，其中的 `say` 语句将立即打印出来。
 
 Note that above we assigned the `gather` to a [Scalar](https://docs.raku.org/type/Scalar) container (the `$` sigil), not the [Positional](https://docs.raku.org/type/Positional) one (the `@` sigil). The reason is that the `@`-sigiled variables are *mostly eager*. What this means is they *reify the stuff assigned to them* right away *most of the time*. The only time they don't do it is when the items are known to be [`is-lazy`](https://docs.raku.org/routine/is-lazy), like our sequence generated with infinity as the end point. Were we to assign the `gather` to a `@`-variable, the `say` statements inside of it would've been printed right away.
 
@@ -460,7 +460,7 @@ say $lines[0];
 <a id="%E5%86%85%E7%9C%81--introspection"></a>
 # 内省 / Introspection
 
-允许像 Raku 这样的[自省](https://en.wikipedia.org/wiki/Type_introspection)的语言具有附加到类型系统的功能，允许开发人员访问容器和值元数据。此元数据可用于程序中，根据其值执行不同的操作。从名称中可以明显看出，元数据是通过元类从值或容器中提取的。
+像 Raku 这样允许[自省](https://en.wikipedia.org/wiki/Type_introspection)的语言具有附加到类型系统的功能，允许开发人员访问容器和值元数据。此元数据可用于程序中，根据其值执行不同的操作。从名称中可以明显看出，元数据是通过元类从值或容器中提取的。
 
 Languages that allow [introspection](https://en.wikipedia.org/wiki/Type_introspection) like Raku have functionalities attached to the type system that let the developer access container and value metadata. This metadata can be used in a program to carry out different actions depending on their value. As it is obvious from the name, metadata are extracted from a value or container via the metaclass.
 
@@ -471,7 +471,7 @@ say $metadata.^mro;                   # OUTPUT: «((ClassHOW) (Any) (Mu))␤»
 say $metadata.can( $metadata, "uc" ); # OUTPUT: «(uc uc)␤» 
 ```
 
-在第一个 `say` 中，我们显示了元模型类的类层次结构，在本例中是 [Metamodel::ClassHOW](https://docs.raku.org/type/Metamodel::ClassHOW)。它直接从 `Any` 继承，这意味着可以使用任何方法；它还混合了几个角色，可以为你提供有关类结构和函数的信息。但是，这个特定类的方法之一是[`can`](https://docs.raku.org/type/Metamodel::ClassHOW#method_can)，我们可以使用它来查找对象是否可以使用 `uc` （大写）方法，这显然是可以的。然而，在其他一些情况下，当角色直接混合到变量中时，可能就不那么明显了。例如，在[上面定义的 `%hash plus` 的情况下](https://docs.raku.org/language/structures#Defining_and_constraining_data_structures)：
+在第一个 `say` 中，我们显示了元模型类的类层次结构，在本例中是 [Metamodel::ClassHOW](https://docs.raku.org/type/Metamodel::ClassHOW)。它直接从 `Any` 继承，这意味着可以使用任何方法；它还混合了几个角色，可以为你提供有关类结构和函数的信息。但是，这个特定类的方法之一是[`can`](https://docs.raku.org/type/Metamodel::ClassHOW#method_can)，我们可以使用它来查找对象是否可以使用 `uc` （大写）方法，这显然是可以的。然而，在其他一些情况下，当角色直接混合到变量中时，可能就不那么明显了。例如，在[上面定义的 `%hash-plus` 的情况下](https://docs.raku.org/language/structures#Defining_and_constraining_data_structures)：
 
 With the first `say` we show the class hierarchy of the metamodel class, which in this case is [Metamodel::ClassHOW](https://docs.raku.org/type/Metamodel::ClassHOW). It inherits directly from `Any`, meaning any method there can be used; it also mixes in several roles which can give you information about the class structure and functions. But one of the methods of that particular class is [`can`](https://docs.raku.org/type/Metamodel::ClassHOW#method_can), which we can use to look up whether the object can use the `uc` (uppercase) method, which it obviously can. However, it might not be so obvious in some other cases, when roles are mixed in directly into a variable. For instance, in the [case of `%hash-plus` defined above](https://docs.raku.org/language/structures#Defining_and_constraining_data_structures):
 

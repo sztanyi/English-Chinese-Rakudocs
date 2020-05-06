@@ -31,6 +31,9 @@ https://learnxinyminutes.com/docs/perl6/
 # Raku Musings
 https://raku-musings.com/
 
+# Install Neovim
+https://github.com/neovim/neovim/wiki/Installing-Neovim#install-from-download
+
 # Vim-Raku
 https://github.com/Raku/vim-raku
 
@@ -48,5 +51,4 @@ https://rosettacode.org/wiki/Category:Raku
 
 # Raku by Example
 https://uzluisf.gitlab.io/raku-by-example/
-
 

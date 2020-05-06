@@ -10,7 +10,7 @@ An example using the enum type
 
 The `enum` type is much more complex in Raku than in some other languages, and the details are found in [its type description](https://docs.raku.org/language/typesystem#enum).
 
-这个简短的文档将给出一个简单的例子，说明它的用法，就像类 C 语言中通常的做法一样。
+这个简短的文档将给出一个说明它的用法的简单例子，就像类 C 语言中通常的做法一样。
 
 This short document will give a simple example of its use as is the usual practice in C-like languages.
 

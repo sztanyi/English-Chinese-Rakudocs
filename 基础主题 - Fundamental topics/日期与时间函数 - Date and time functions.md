@@ -6,7 +6,7 @@
 
 Processing date and time in Raku
 
-Raku 包含几个处理时间信息的类： [Date](https://docs.raku.org/type/Date), [DateTime](https://docs.raku.org/type/DateTime), [Instant](https://docs.raku.org/type/Instant) 和 [Duration](https://docs.raku.org/type/Duration)。前三个是 *dateish*，因此它们混合在 [Dateish](https://docs.raku.org/type/Dateish) 角色中，该角色定义了处理日期的类应有的所有方法和属性。它还包括以 [X::Temporal](https://docs.raku.org/type/X::Temporal) 为根的异常类层次结构。
+Raku 包含几个处理时间信息的类： [Date](https://docs.raku.org/type/Date)、 [DateTime](https://docs.raku.org/type/DateTime)、 [Instant](https://docs.raku.org/type/Instant) 和 [Duration](https://docs.raku.org/type/Duration)。它们具有 [Dateish](https://docs.raku.org/type/Dateish) 角色，该角色定义了处理日期的类应有的所有方法和属性。它还包括以 [X::Temporal](https://docs.raku.org/type/X::Temporal) 为根的异常类层次结构。
 
 Raku includes several classes that deal with temporal information: [Date](https://docs.raku.org/type/Date), [DateTime](https://docs.raku.org/type/DateTime), [Instant](https://docs.raku.org/type/Instant) and [Duration](https://docs.raku.org/type/Duration). The three first are *dateish*, so they mix in the [Dateish](https://docs.raku.org/type/Dateish) role, which defines all methods and properties that classes that deal with date should assume. It also includes a class hierarchy of exceptions rooted in [X::Temporal](https://docs.raku.org/type/X::Temporal).
 
@@ -60,15 +60,15 @@ sub MAIN( $path = ".", $extension = "p6" ) {
 }
 ```
 
-`DateTime` 在第 6 行中用于包含由 [`now`](https://docs.raku.org/routine/now) 返回的当前日期和时间。
+`DateTime` 在第 2 行中用于包含由 [`now`](https://docs.raku.org/routine/now) 返回的当前日期和时间。
 
-`DateTime` is used in line 6 to contain the current date and time returned by [`now`](https://docs.raku.org/routine/now).
+`DateTime` is used in line 2 to contain the current date and time returned by [`now`](https://docs.raku.org/routine/now).
 
-在第 11 到 15 行中声明了一个 CATCH 相量。它的主要任务是区分 `DateTime` 相关的异常和其他类型的异常。这些异常可能来自 [invalid formats](https://docs.raku.org/type/X::Temporal::InvalidFormat) 或 [timezone clashes](https://docs.raku.org/type/X::DateTime::TimezoneClash)。除非文件属性出现某些损坏，否则这两者都是不可能的，但无论如何，它们都应该被捕获并与其他类型的异常分开。
+在第 7 到 11 行中声明了一个 CATCH 相量。它的主要任务是区分 `DateTime` 相关的异常和其他类型的异常。这些异常可能来自 [invalid formats](https://docs.raku.org/type/X::Temporal::InvalidFormat) 或 [timezone clashes](https://docs.raku.org/type/X::DateTime::TimezoneClash)。除非文件属性出现某些损坏，否则这两者都是不可能的，但无论如何，它们都应该被捕获并与其他类型的异常分开。
 
 A CATCH phaser is declared in lines 11 to 15. Its main mission is to distinguish between `DateTime`-related exceptions and other types. These kind of exception can arise from [invalid formats](https://docs.raku.org/type/X::Temporal::InvalidFormat) or [timezone clashes](https://docs.raku.org/type/X::DateTime::TimezoneClash). Barring some corruption of the file attributes, both are impossible, but in any case they should be caught and separated from other types of exceptions.
 
-我们在 16-17 行使用 [Instant](https://docs.raku.org/type/Instant) 代表文件访问和修改的时刻。Instant 通过原子秒来衡量，是时间事件非常底层的描述；然而，在第 18 行 [Duration](https://docs.raku.org/type/Duration) 表示两个不同 `Instant` 之间的时间，我们将使用它代表年龄。
+我们在 12-13 行使用 [Instant](https://docs.raku.org/type/Instant) 代表文件访问和修改的时刻。Instant 通过原子秒来衡量，是时间事件非常底层的描述；然而，在第 14 行 [Duration](https://docs.raku.org/type/Duration) 表示两个不同 `Instant` 之间的时间，我们将使用它代表年龄。
 
 We use [Instant](https://docs.raku.org/type/Instant)s in lines 16-17 to represent the moment in which the files where accessed and modified. An Instant is measured in atomic seconds, and is a very low-level description of a time event; however, the [Duration](https://docs.raku.org/type/Duration) declared in line 18 represent the time transcurred among two different `Instant`s, and we will be using it to represent the age.
 
@@ -92,7 +92,7 @@ creates a date [Range](https://docs.raku.org/type/Range) and `$file-changed-date
 
 This very variable is also used to compute the month of the year when the file was modified. [Date](https://docs.raku.org/type/Date) is obviously `Dateish` and then has the `month` method to extract that property from it.
 
-`Duration` 对象可以被比对。在代码
+`Duration` 对象可以被比对。在下面代码
 
 `Duration` objects can be compared. This is used in
 
