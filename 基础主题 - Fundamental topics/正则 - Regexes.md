@@ -6,7 +6,7 @@
 
 Pattern matching against strings
 
-正则表达式，简称为 *regexes*，是一组描述文本模式的字符。模式匹配是将这些模式与实际文本匹配的过程。
+正则表达式，简称*正则*，是一组描述文本模式的字符。模式匹配是将这些模式与实际文本匹配的过程。
 
 Regular expressions, *regexes* for short, are a sequence of characters that describe a pattern of text. Pattern matching is the process of matching those patterns to actual text.
 
@@ -32,7 +32,7 @@ Regular expressions, *regexes* for short, are a sequence of characters that desc
   - [零个或多个: `*` / Zero or more: `*`](#%E9%9B%B6%E4%B8%AA%E6%88%96%E5%A4%9A%E4%B8%AA---zero-or-more-)
   - [零个或一个: `?` / Zero or one: `?`](#%E9%9B%B6%E4%B8%AA%E6%88%96%E4%B8%80%E4%B8%AA---zero-or-one-)
   - [通用量词: `** min..max` / General quantifier: `** min..max`](#%E9%80%9A%E7%94%A8%E9%87%8F%E8%AF%8D--minmax--general-quantifier--minmax)
-  - [分隔修饰的量词：`%`, `%%` / Modified quantifier: `%`, `%%`](#%E5%88%86%E9%9A%94%E4%BF%AE%E9%A5%B0%E7%9A%84%E9%87%8F%E8%AF%8D%EF%BC%9A%25-%25%25--modified-quantifier-%25-%25%25)
+  - [分隔修饰的量词：`%`, `%%` / Modified quantifier: `%`, `%%`](#%E5%88%86%E9%9A%94%E4%BF%AE%E9%A5%B0%E7%9A%84%E9%87%8F%E8%AF%8D%EF%BC%9A---modified-quantifier--)
   - [阻止回溯: `:` / Preventing backtracking: `:`](#%E9%98%BB%E6%AD%A2%E5%9B%9E%E6%BA%AF---preventing-backtracking-)
   - [贪婪对比节俭量词： `?` / Greedy versus frugal quantifiers: `?`](#%E8%B4%AA%E5%A9%AA%E5%AF%B9%E6%AF%94%E8%8A%82%E4%BF%AD%E9%87%8F%E8%AF%8D%EF%BC%9A---greedy-versus-frugal-quantifiers-)
 - [备选项: `||` / Alternation: `||`](#%E5%A4%87%E9%80%89%E9%A1%B9-%7C%7C--alternation-%7C%7C)
@@ -109,7 +109,7 @@ m{abc};
 rx{abc};
 ```
 
-请注意，冒号和圆括号不能作为分隔符；分号与副词冲突，例如 `rx:i/abc/`（大小写不敏感正则），圆括号会被当做函数调用。
+请注意，冒号和圆括号不能作为分隔符；冒号与副词冲突，例如 `rx:i/abc/`（大小写不敏感正则），圆括号会被当做函数调用。
 
 Note that neither the colon nor round parentheses can be delimiters; the colon is forbidden because it clashes with adverbs, such as `rx:i/abc/` (case insensitive regexes), and round parentheses indicate a function call instead.
 
@@ -128,7 +128,7 @@ $match =  /.+/; say $match; say $match.^name; # OUTPUT: «/.+/␤Regex␤»
 
 Whitespace in regexes is generally ignored (except with the `:s` or, completely, `:sigspace` adverb).
 
-正则表达式里的正则是生效的：
+正则表达式里可以有注释：
 
 Comments work within a regular expression:
 
@@ -207,7 +207,7 @@ This doesn't match:
 
 because there's no character to match before `per` in the target string.
 
-请注意现在 `.` 确实匹配*任一*字符，有就是说，它匹配 `\n`。所以下面的文本是匹配的：
+请注意现在 `.` 确实匹配*任一*字符，也就是说，它匹配 `\n`。所以下面的文本是匹配的：
 
 Note that `.` now does match **any** single character, that is, it matches `\n`. So the text below match:
 
@@ -230,14 +230,18 @@ say $text ~~ / .* /;
 <a id="%E5%8F%8D%E6%96%9C%E6%9D%A0%E5%AD%97%E7%AC%A6%E7%B1%BB--backslashed-character-classes"></a>
 ## 反斜杠字符类 / Backslashed character classes
 
-存在类似 `\w` 形式的字符类。其否定为大写形式字符 `\W`。
+存在预定义的字符类 `\w`。其否定为大写形式字符 `\W`。
 
 There are predefined character classes of the form `\w`. Its negation is written with an upper-case letter, `\W`.
 
 <a id="n-%E5%92%8C-n"></a>
 ### `\n` 和 `\N`
 
+`\n` 匹配一个逻辑换行符。`\N` 匹配一个不是换行符的字符。
+
 `\n` matches a single, logical newline character. `\N` matches a single character that's not a logical newline.
+
+换行符的是通过编译时变量 [`$?NL`](https://docs.raku.org/language/variables#index-entry-%24%3FNL) 以及 [newline 指令](https://docs.raku.org/language/pragmas) 来定义的；因此 `\n` 能够匹配类 Unix 系统的换行符 `"\n"`、微软 Windows 风格的换行符 `"\r\n"` 或者 Mac 风格的 `"\r"`。
 
 What is considered as a single newline character is defined via the compile time variable [`$?NL`](https://docs.raku.org/language/variables#index-entry-%24%3FNL), and the [newline pragma](https://docs.raku.org/language/pragmas); therefore, `\n` is supposed to be able to match either a Unix-like newline `"\n"`, a Microsoft Windows style one `"\r\n"`, or one in the Mac style `"\r"`.
 
@@ -302,6 +306,8 @@ Use `\s` to match any kind of whitespace, not just vertical whitespace.
 <a id="s-%E5%92%8C-s"></a>
 ### `\s` 和 `\S`
 
+`\s` 匹配一个空白符。`\S` 匹配一个非空白符。
+
 `\s` matches a single whitespace character. `\S` matches a single character that is not whitespace.
 
 ```Raku
@@ -358,6 +364,7 @@ Examples of word characters:
 <a id="%E9%A2%84%E5%AE%9A%E4%B9%89%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%B1%BB--predefined-character-classes"></a>
 ## 预定义的字符串类 / Predefined character classes
 
+```Raku
 | Class    | Shorthand | Description                                       |
 | -------- | --------- | ------------------------------------------------- |
 | <alnum>  | \w        | <alpha> plus <digit>                              |
@@ -377,6 +384,7 @@ Examples of word characters:
 | <ws>     |           | Whitespace. This is actually a default rule.      |
 | <ww>     |           | Within word                                       |
 | <xdigit> |           | Hexadecimal digit [0-9A-Fa-f]                     |
+```
 
 注意字符类 `<same>`、 `<wb>` 以及 `<ww>` 也称作零长度断言，他们不会真的匹配某个字符。
 
@@ -445,7 +453,7 @@ These are the Unicode general categories used for matching:
 | Zp    | Paragraph_Separator     |
 | Zs    | Space_Separator         |
 
-例如， `<:Lu>` 匹配一个大写字母。
+例如，`<:Lu>` 匹配一个大写字母。
 
 For example, `<:Lu>` matches a single, upper-case letter.
 
@@ -664,7 +672,7 @@ If then, the resultant value is `Inf` or `NaN` or the resultant [Range](https://
     # OUTPUT: «(X::Syntax::Regex::QuantifierValue True)␤» 
 ```
 
-<a id="%E5%88%86%E9%9A%94%E4%BF%AE%E9%A5%B0%E7%9A%84%E9%87%8F%E8%AF%8D%EF%BC%9A%25-%25%25--modified-quantifier-%25-%25%25"></a>
+<a id="%E5%88%86%E9%9A%94%E4%BF%AE%E9%A5%B0%E7%9A%84%E9%87%8F%E8%AF%8D%EF%BC%9A---modified-quantifier--"></a>
 ## 分隔修饰的量词：`%`, `%%` / Modified quantifier: `%`, `%%`
 
 为了更容易地匹配逗号分割那样的值, 你可以在以上任何一个量词后面加上一个 `%` 修饰符以指定某个修饰符必须出现在每一次匹配之间。例如, `a+ % ','` 会匹配 `a` 、`a,a` 或 `a,a,a` 等等。如果还要匹配末尾的分隔符（ `a,` 或者 `a,a,` ）, 那么使用 %% 代替 %。
