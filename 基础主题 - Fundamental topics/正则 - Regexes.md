@@ -925,7 +925,7 @@ This is documented further under [Regex Interpolation](https://docs.raku.org/lan
 
 Matches successfully if all `&&`-delimited segments match the same substring of the target string. The segments are evaluated left to right.
 
-这对于扩充现有的正则很有用。例如，如果有一个与带引号的字符串匹配的 regex `quoted`，则 `/ <quoted> && <-[x]>* /` 与不包含字符 `x` 的带引号的字符串匹配。
+这对于扩充现有的正则很有用。例如，如果有一个与引起来的字符串匹配的正则 `quoted`，则 `/ <quoted> && <-[x]>* /` 与不包含字符 `x` 的引起来的字符串匹配。
 
 This can be useful for augmenting an existing regex. For example if you have a regex `quoted` that matches a quoted string, then `/ <quoted> && <-[x]>* /` matches a quoted string that does not contain the character `x`.
 
@@ -1214,7 +1214,7 @@ In the following example, all occurrences of `foo` which is not before `bar` wou
 say "foobaz" ~~ / foo <!before bar> /;  # OUTPUT: «foo␤» 
 ```
 
-向前看断言也可以用于其他模式，如字符范围、内插变量、下标等。在这种情况下，使用 `？` 或者 `！` 对于否定形式就够用了。例如，以下各行产生的结果完全相同：
+向前看断言也可以用于其他模式，如字符范围、内插变量、下标等。在这种情况下，使用 `？` 或者其否定形式 `！` 就够用了。例如，以下各行产生的结果完全相同：
 
 Lookahead assertions can be used also with other patterns, like characters ranges, interpolated variables, subscripts and so on. In such cases it does suffice to use a `?`, or a `!` for the negate form. For instance, the following lines all produce the very same result:
 
@@ -1486,7 +1486,7 @@ This code block publishes the capture inside the regex, so that it can be assign
 say "11" ~~ /(\d) {} $0/; # OUTPUT: «｢11｣␤ 0 => ｢1｣␤» 
 ```
 
-`:my` 使 `$c` 变量确定在正则之内以及正则所在的范围。在这种情况下，我们可以在下一句话中使用它来显示正则中匹配的内容。这可用于在正则表达式内部进行调试，例如：
+`:my` 使 `$c` 作用域在正则之内以及正则所在的范围。在这种情况下，我们可以在下一句话中使用它来显示正则中匹配的内容。这可用于在正则表达式内部进行调试，例如：
 
 `:my` helps scoping the `$c` variable within the regex and beyond; in this case we can use it in the next sentence to show what has been matched inside the regex. This can be used for debugging inside regular expressions, for instance:
 
@@ -1552,7 +1552,7 @@ if 'abc' ~~ / $<myname> = [ \w+ ] / {
 
 The square brackets in the above example, which don't usually capture, will now capture its grouping with the given name.
 
-对命名捕获的访问 `$<myname>`，是将匹配对象索引为哈希的简写，换句话说，它可以是：`$/{ 'myname' }` 或 `$/<myname>`。
+对命名捕获的访问 `$<myname>`，是将匹配对象作为哈希求其索引为的简写，换句话说，它可以是：`$/{ 'myname' }` 或 `$/<myname>`。
 
 The access to the named capture, `$<myname>`, is a shorthand for indexing the match object as a hash, in other words: `$/{ 'myname' }` or `$/<myname>`.
 
@@ -1590,7 +1590,7 @@ if 'count=23' ~~ / $<variable>=\w+ '=' $<value>=\w+ / {
 }
 ```
 
-获取命名捕获的一个更方便的方法是使用命名正则，如 [子规则](https://docs.raku.org/language/regexes#Subrules) 部分所述。
+获取命名捕获的一个更方便的方法是使用命名正则，如[子规则](https://docs.raku.org/language/regexes#Subrules)部分所述。
 
 A more convenient way to get named captures is by using named regex as discussed in the [Subrules](https://docs.raku.org/language/regexes#Subrules) section.
 
