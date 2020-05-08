@@ -1672,7 +1672,7 @@ Like the `m//` operator, whitespace is ignored in the regex part of a substituti
 <a id="%E6%9B%BF%E6%8D%A2%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%96%87%E5%AD%97--replacing-string-literals"></a>
 ## 替换字符串文字 / Replacing string literals
 
-最简单的替换是字符串文字。要替换的字符串位于替换运算符的左侧，要替换的字符串位于右侧；例如：
+最简单的替换是字符串文字。被替换的字符串位于替换运算符的左侧，用来替换的字符串位于右侧；例如：
 
 The simplest thing to replace is a string literal. The string you want to replace goes on the left-hand side of the substitution operator, and the string you want to replace it with goes on the right-hand side; for example:
 
