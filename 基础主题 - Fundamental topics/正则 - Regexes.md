@@ -1665,7 +1665,7 @@ s:g[ \d+ ] =  2 * $/;
 .say;                    # OUTPUT: «some 22 words 42␤» 
 ```
 
-与 `m//` 运算符类似，替换的正则部分忽略空白。注释，就像在Perl6中一般一样，从散列字符开始，转到当前行的末尾。
+与 `m//` 运算符类似，替换的正则部分忽略空白。注释，就像在 Raku 中一般一样，从 `#` 字符开始，转到当前行的末尾。
 
 Like the `m//` operator, whitespace is ignored in the regex part of a substitution. Comments, as in Raku in general, start with the hash character `#` and go to the end of the current line.
 
