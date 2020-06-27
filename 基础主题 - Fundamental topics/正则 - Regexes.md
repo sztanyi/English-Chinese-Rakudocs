@@ -37,7 +37,7 @@ Regular expressions, *regexes* for short, are a sequence of characters that desc
   - [贪婪对比节俭量词： `?` / Greedy versus frugal quantifiers: `?`](#%E8%B4%AA%E5%A9%AA%E5%AF%B9%E6%AF%94%E8%8A%82%E4%BF%AD%E9%87%8F%E8%AF%8D%EF%BC%9A---greedy-versus-frugal-quantifiers-)
 - [备选项: `||` / Alternation: `||`](#%E5%A4%87%E9%80%89%E9%A1%B9-%7C%7C--alternation-%7C%7C)
 - [最长的备选项： `|` / Longest alternation: `|`](#%E6%9C%80%E9%95%BF%E7%9A%84%E5%A4%87%E9%80%89%E9%A1%B9%EF%BC%9A-%7C--longest-alternation-%7C)
-  - [引用的列表是 LTM 匹配项 / Quoted lists are LTM matches](#%E5%BC%95%E7%94%A8%E7%9A%84%E5%88%97%E8%A1%A8%E6%98%AF-ltm-%E5%8C%B9%E9%85%8D%E9%A1%B9--quoted-lists-are-ltm-matches)
+  - [引文列表是 LTM 匹配项 / Quoted lists are LTM matches](#%E5%BC%95%E7%94%A8%E7%9A%84%E5%88%97%E8%A1%A8%E6%98%AF-ltm-%E5%8C%B9%E9%85%8D%E9%A1%B9--quoted-lists-are-ltm-matches)
 - [合取： `&&` / Conjunction: `&&`](#%E5%90%88%E5%8F%96%EF%BC%9A---conjunction-)
 - [合取： `&` / Conjunction: `&`](#%E5%90%88%E5%8F%96%EF%BC%9A---conjunction--1)
 - [定位符 / Anchors](#%E5%AE%9A%E4%BD%8D%E7%AC%A6--anchors)
@@ -362,7 +362,7 @@ Examples of word characters:
 ```
 
 <a id="%E9%A2%84%E5%AE%9A%E4%B9%89%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%B1%BB--predefined-character-classes"></a>
-## 预定义的字符串类 / Predefined character classes
+## 预定义的字符类 / Predefined character classes
 
 ```Raku
 | Class    | Shorthand | Description                                       |
@@ -525,7 +525,7 @@ You can use `\` to escape characters that would have some meaning in the regular
 say "[ hey ]" ~~ /<-[ \] \[ \s ]>+/; # OUTPUT: «｢hey｣␤» 
 ```
 
-否定一个字符类，请在左尖括号后加一个 `-` 号：
+排除一个字符类，请在左尖括号后加一个 `-` 号：
 
 To negate a character class, put a `-` after the opening angle bracket:
 
@@ -560,7 +560,7 @@ Just as you can use the `-` for both set difference and negation of a single val
 
 A quantifier makes the preceding atom match a variable number of times. For example, `a+` matches one or more `a` characters.
 
-量词比连接更紧密，因此 `ab+` 匹配一个 `a`，后跟一个或多个 `b`。这与引号括起来的引用不同，`'ab'+` 匹配 `ab`、 `abab` 和 `ababab` 等字符。
+量词比连接更紧密，因此 `ab+` 匹配一个 `a`，后跟一个或多个 `b`。有引号的情况则不同，`'ab'+` 匹配 `ab`、 `abab` 和 `ababab` 等字符。
 
 Quantifiers bind tighter than concatenation, so `ab+` matches one `a` followed by one or more `b`s. This is different for quotes, so `'ab'+` matches the strings `ab`, `abab`, `ababab` etc.
 
@@ -626,7 +626,7 @@ say 'abcdefg' ~~ /\w ** ^3/;     # OUTPUT: «｢ab｣␤»
 say 'abcdefg' ~~ /\w ** 1..*/;   # OUTPUT: «｢abcdefg｣␤» 
 ```
 
-只支持量词右侧的基本字面量语法，以避免与其他正则构造混淆。如果需要使用更复杂的表达式，例如由变量构成的 [Range](https://docs.raku.org/type/Range)，请将 [Range](https://docs.raku.org/type/Range) 括在大括号中：
+为避免与其他正则构造混淆，只支持量词右侧的基本字面量语法。如果需要使用更复杂的表达式，例如由变量构成的 [Range](https://docs.raku.org/type/Range)，请将 [Range](https://docs.raku.org/type/Range) 括在大括号中：
 
 Only basic literal syntax for the right-hand side of the quantifier is supported, to avoid ambiguities with other regex constructs. If you need to use a more complex expression, for example, a [Range](https://docs.raku.org/type/Range) made from variables, enclose the [Range](https://docs.raku.org/type/Range) into curly braces:
 
@@ -673,7 +673,7 @@ If then, the resultant value is `Inf` or `NaN` or the resultant [Range](https://
 ```
 
 <a id="%E5%88%86%E9%9A%94%E4%BF%AE%E9%A5%B0%E7%9A%84%E9%87%8F%E8%AF%8D%EF%BC%9A---modified-quantifier--"></a>
-## 分隔修饰的量词：`%`, `%%` / Modified quantifier: `%`, `%%`
+## 分隔修饰量词：`%`, `%%` / Modified quantifier: `%`, `%%`
 
 为了更容易地匹配逗号分割那样的值, 你可以在以上任何一个量词后面加上一个 `%` 修饰符以指定某个修饰符必须出现在每一次匹配之间。例如, `a+ % ','` 会匹配 `a` 、`a,a` 或 `a,a,a` 等等。如果还要匹配末尾的分隔符（ `a,` 或者 `a,a,` ）, 那么使用 %% 代替 %。
 
@@ -788,7 +788,7 @@ For example, `ini` files have the following form:
 key = value
 ```
 
-因此，如果你分析一行 `ini` 文件，它可能是一个章节名或者键值对，其正则可能是（近似地）：
+因此，如果你分析一行 `ini` 文件，它可能是一个章节名或者键值对，其正则可能是：
 
 Hence, if you parse a single line of an `ini` file, it can be either a section or a key-value pair and the regex would be (to a first approximation):
 
@@ -796,7 +796,7 @@ Hence, if you parse a single line of an `ini` file, it can be either a section o
 / '[' \w+ ']' || \S+ \s* '=' \s* \S* /
 ```
 
-也就是说，要么是由方括号包围的单词，要么是由非空格字符组成的字符串，后面是零个或多个空格，后面是等号 `=`，后面是可选空格，后面是另一个非空格字符字符串。
+也就是说，要么是由方括号包围的单词，或者是由非空格字符组成的字符串，后面是零个或多个空格，后面是等号 `=`，后面是可选空格，后面是另一个非空格字符字符串。
 
 That is, either a word surrounded by square brackets, or a string of non-whitespace characters, followed by zero or more spaces, followed by the equals sign `=`, followed again by optional whitespace, followed by another string of non-whitespace characters.
 
@@ -826,7 +826,7 @@ In short, in regex branches separated by `|`, the longest token match wins, inde
 
 Briefly, what `|` does is this:
 
--首先，选择具有最长声明性前缀的分支。
+- 首先，选择具有最长声明性前缀的分支。
 
 - First, select the branch which has the longest declarative prefix.
 
@@ -841,7 +841,7 @@ say "if else" ~~ / if | if \s+   else /;  # Output: ｢if else｣
 
 As is shown above, `a.*` is a declarative prefix, while `a {} .*` terminates at `{}`, then its declarative prefix is `a`. Note that non-declarative atoms terminate declarative prefix. This is quite important if you want to apply `|` in a `rule`, which automatically enables `:s`, and `<.ws>` accidentally terminates declarative prefix.
 
--如果是平局，选择具有最高精度的匹配。
+- 如果是平局，选择具有最高精度的匹配。
 
 - If it's a tie, select the match with the highest specificity.
 
@@ -853,7 +853,7 @@ say "abc" ~~ /a. | ab { print "win" } /;  # Output: win｢ab｣
 
 When two alternatives match at the same length, the tie is broken by specificity. That is, `ab`, as an exact match, counts as closer than `a.`, which uses character classes.
 
--如果仍然是平局，使用额外的平局打破者。
+- 如果仍然是平局，使用额外的平局打破者。
 
 - If it's still a tie, use additional tie-breakers.
 
@@ -870,9 +870,9 @@ If the tie breaker above doesn't work, then the textually earlier alternative ta
 For more details, see [the LTM strategy](https://design.perl6.org/S05.html#Longest-token_matching).
 
 <a id="%E5%BC%95%E7%94%A8%E7%9A%84%E5%88%97%E8%A1%A8%E6%98%AF-ltm-%E5%8C%B9%E9%85%8D%E9%A1%B9--quoted-lists-are-ltm-matches"></a>
-## 引用的列表是 LTM 匹配项 / Quoted lists are LTM matches
+## 引文列表是 LTM 匹配项 / Quoted lists are LTM matches
 
-在正则中使用引用列表等同于指定列表元素的最长匹配备选项。因此，以下匹配：
+在正则中使用引文列表等同于指定列表元素的最长匹配备选项。因此，以下匹配：
 
 Using a quoted list in a regex is equivalent to specifying the longest-match alternation of the list's elements. So, the following match:
 
@@ -888,7 +888,7 @@ is equivalent to:
 say 'food' ~~ / f | fo | foo | food /;  # OUTPUT: «｢food｣␤» 
 ```
 
-注意，第一个 `<` 后面的空格在这里很重要： 无空格的 `<food>` 意为调用命名 rule `food` 而 `< food >` 和 `< food>` 是引用列表，包含一个元素 `'food'`。
+注意，第一个 `<` 后面的空格在这里很重要： 无空格的 `<food>` 意为调用命名 rule `food` 而 `< food >` 和 `< food>` 是引文列表，包含一个元素 `'food'`。
 
 Note that the space after the first `<` is significant here: `<food>` calls the named rule `food` while `< food >` and `< food>` specify quoted lists with a single element, `'food'`.
 
