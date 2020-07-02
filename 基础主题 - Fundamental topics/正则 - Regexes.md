@@ -173,7 +173,7 @@ if 'Life, the Universe and Everything' ~~ / and / {
 };
 ```
 
-匹配结果存储在 `$/` 变量中并且也从匹配中返回。如果匹配成功, 那么返回结果是 [Match](https://docs.raku.org/type/Match) 类型, 否则它就是 [Nil](https://docs.raku.org/type/Nil)。
+匹配结果存储在 `$/` 变量中，也可以从匹配的返回值中获取。如果匹配成功, 那么返回结果是 [Match](https://docs.raku.org/type/Match) 类型, 否则它就是 [Nil](https://docs.raku.org/type/Nil)。
 
 Match results are stored in the `$/` variable and are also returned from the match. The result is of type [Match](https://docs.raku.org/type/Match) if the match was successful; otherwise it is [Nil](https://docs.raku.org/type/Nil).
 
