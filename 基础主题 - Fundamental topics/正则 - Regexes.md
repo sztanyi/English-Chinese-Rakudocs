@@ -1655,7 +1655,7 @@ If you use balancing curly braces, square brackets, or parentheses, the substitu
 s[replace] = 'with';
 ```
 
-右侧现在是一个（未引用）Raku 表达式，其中 `$/` 作为当前匹配项可用：
+右侧是一个 Raku 表达式，其中 `$/` 为当前匹配项：
 
 The right-hand side is now a (not quoted) Raku expression, in which `$/` is available as the current match:
 
@@ -1665,7 +1665,7 @@ s:g[ \d+ ] =  2 * $/;
 .say;                    # OUTPUT: «some 22 words 42␤» 
 ```
 
-与 `m//` 运算符类似，替换的正则部分忽略空白。注释，就像在 Raku 中一般一样，从 `#` 字符开始，转到当前行的末尾。
+与 `m//` 运算符类似，替换的正则部分忽略空白。上文的注释，就像在一般的 Raku 代码中一样，从 `#` 字符开始，直到当前行的末尾。
 
 Like the `m//` operator, whitespace is ignored in the regex part of a substitution. Comments, as in Raku in general, start with the hash character `#` and go to the end of the current line.
 
