@@ -1946,7 +1946,7 @@ if $contents ~~ /<section>*/ {
         %config{ $section<header>[0] } = %section;
     }
 }
-say %config.perl;
+say %config.raku;
  
 # OUTPUT: «{:passwords(${:jack("password1"), :joy("muchmoresecure123")}), 
 #           :quotas(${:jack("123"), :joy("42")})}» 

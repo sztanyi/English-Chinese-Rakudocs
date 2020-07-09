@@ -52,3 +52,8 @@ https://rosettacode.org/wiki/Category:Raku
 # Raku by Example
 https://uzluisf.gitlab.io/raku-by-example/
 
+# Raku Design Documents
+https://design.raku.org/
+
+# The Home of Vrurg
+https://vrurg.github.io/
