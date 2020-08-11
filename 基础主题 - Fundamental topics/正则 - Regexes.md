@@ -14,7 +14,7 @@ A *regular expression* is a sequence of characters that defines a certain text p
 
 In theoretical computer science and formal language theory, regular expressions are used to describe so-called [*regular languages*](https://en.wikipedia.org/wiki/Regular_language). Since their inception in the 1950's, practical implementations of regular expressions, for instance in the text search and replace functions of text editors, have outgrown their strict scientific definition. In acknowledgement of this, and in an attempt to disambiguate, a regular expression in Raku is normally referred to as a *regex* (from: *reg*ular *ex*pression), a term that is also in common use in other programming languages.
 
-在 Raku 中，regex 是用[*领域特定语言*](https://en.wikipedia.org/wiki/Domain-specific_language)编写的，即一种子语言。本页介绍这种语言，并解释如何使用正则表达式在名为*模式匹配*的进程中搜索字符串中的文本模式。
+在 Raku 中，正则是用[*领域特定语言*](https://en.wikipedia.org/wiki/Domain-specific_language)编写的，即一种子语言。本页介绍这种语言，并解释如何使用正则表达式在名为*模式匹配*的进程中搜索字符串中的文本模式。
 
 In Raku, regexes are written in a [*domain-specific language*](https://en.wikipedia.org/wiki/Domain-specific_language), i.e. a sublanguage or *slang*. This page describes this language, and explains how regexes can be used to search for text patterns in strings in a process called *pattern matching*.
 
