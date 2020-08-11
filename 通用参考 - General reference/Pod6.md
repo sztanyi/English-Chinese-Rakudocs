@@ -24,34 +24,34 @@ A very simple Pod6 document
 
 <!-- MarkdownTOC -->
 
-- [代码块结构 / Block structure](#%E4%BB%A3%E7%A0%81%E5%9D%97%E7%BB%93%E6%9E%84--block-structure)
-  - [分隔块 / Delimited blocks](#%E5%88%86%E9%9A%94%E5%9D%97--delimited-blocks)
-    - [配置信息 / Configuration information](#%E9%85%8D%E7%BD%AE%E4%BF%A1%E6%81%AF--configuration-information)
-  - [段落块 / Paragraph blocks](#%E6%AE%B5%E8%90%BD%E5%9D%97--paragraph-blocks)
-  - [缩写块 / Abbreviated blocks](#%E7%BC%A9%E5%86%99%E5%9D%97--abbreviated-blocks)
-  - [声明块 / Declarator blocks](#%E5%A3%B0%E6%98%8E%E5%9D%97--declarator-blocks)
-- [块类型 / Block types](#%E5%9D%97%E7%B1%BB%E5%9E%8B--block-types)
-  - [标题 / Headings](#%E6%A0%87%E9%A2%98--headings)
-  - [普通段落 / Ordinary paragraphs](#%E6%99%AE%E9%80%9A%E6%AE%B5%E8%90%BD--ordinary-paragraphs)
-  - [代码块 / Code blocks](#%E4%BB%A3%E7%A0%81%E5%9D%97--code-blocks)
-  - [输入输出块 - I/O blocks](#%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E5%9D%97---io-blocks)
-  - [列表 / Lists](#%E5%88%97%E8%A1%A8--lists)
-    - [无序列表 / Unordered lists](#%E6%97%A0%E5%BA%8F%E5%88%97%E8%A1%A8--unordered-lists)
-    - [定义列表 / Definition lists](#%E5%AE%9A%E4%B9%89%E5%88%97%E8%A1%A8--definition-lists)
-    - [多层列表 / Multi-level lists](#%E5%A4%9A%E5%B1%82%E5%88%97%E8%A1%A8--multi-level-lists)
-    - [多段落列表 / Multi-paragraph lists](#%E5%A4%9A%E6%AE%B5%E8%90%BD%E5%88%97%E8%A1%A8--multi-paragraph-lists)
+- [代码块结构 / Block structure](#代码块结构--block-structure)
+  - [分隔块 / Delimited blocks](#分隔块--delimited-blocks)
+    - [配置信息 / Configuration information](#配置信息--configuration-information)
+  - [段落块 / Paragraph blocks](#段落块--paragraph-blocks)
+  - [缩写块 / Abbreviated blocks](#缩写块--abbreviated-blocks)
+  - [声明块 / Declarator blocks](#声明块--declarator-blocks)
+- [块类型 / Block types](#块类型--block-types)
+  - [标题 / Headings](#标题--headings)
+  - [普通段落 / Ordinary paragraphs](#普通段落--ordinary-paragraphs)
+  - [代码块 / Code blocks](#代码块--code-blocks)
+  - [输入输出块 - I/O blocks](#输入输出块---io-blocks)
+  - [列表 / Lists](#列表--lists)
+    - [无序列表 / Unordered lists](#无序列表--unordered-lists)
+    - [定义列表 / Definition lists](#定义列表--definition-lists)
+    - [多层列表 / Multi-level lists](#多层列表--multi-level-lists)
+    - [多段落列表 / Multi-paragraph lists](#多段落列表--multi-paragraph-lists)
 
 <!-- /MarkdownTOC -->
 
 
-<a id="%E4%BB%A3%E7%A0%81%E5%9D%97%E7%BB%93%E6%9E%84--block-structure"></a>
+<a id="代码块结构--block-structure"></a>
 # 代码块结构 / Block structure
 
 一个 Pod6 文档可以由多个 Pod6 块组成。定义块有四种方法：分隔、段落、缩写和声明；前三种方法产生相同的结果，但第四种方法不同。你可以使用哪种形式最方便你的特定文档任务。
 
 A Pod6 document may consist of multiple Pod6 blocks. There are four ways to define a block: delimited, paragraph, abbreviated, and declarator; the first three yield the same result but the fourth differs. You can use whichever form is most convenient for your particular documentation task.
 
-<a id="%E5%88%86%E9%9A%94%E5%9D%97--delimited-blocks"></a>
+<a id="分隔块--delimited-blocks"></a>
 ## 分隔块 / Delimited blocks
 
 分隔块以 `=begin` 和 `=end` 标记为界，两者后面都有一个有效的 Raku 标识符，即块的 `typename`。保留完全小写（例如：`=begin head1`）或完全大写（例如：`=begin SYNOPSIS`）的类型名称。
@@ -64,7 +64,7 @@ Top Level Heading
 =end head1
 ```
 
-<a id="%E9%85%8D%E7%BD%AE%E4%BF%A1%E6%81%AF--configuration-information"></a>
+<a id="配置信息--configuration-information"></a>
 ### 配置信息 / Configuration information
 
 在类型名称之后，`=begin` 标记行的其余部分被视为块的配置信息。这些信息被不同类型的块以不同的方式使用，但总是使用 Raku 风格的选项键值对指定。即：
@@ -101,7 +101,7 @@ All option keys and values must, of course, be constants since Pod6 is a specifi
 
 The configuration section may be extended over subsequent lines by starting those lines with an `=` in the first (virtual) column followed by a whitespace character. [[1]](https://docs.raku.org/language/pod#fn-1)
 
-<a id="%E6%AE%B5%E8%90%BD%E5%9D%97--paragraph-blocks"></a>
+<a id="段落块--paragraph-blocks"></a>
 ## 段落块 / Paragraph blocks
 
 段落块以 `=for` 标记开头，以下一个 Pod6 指令或第一空行结束。`=for` 标记后面是“块的类型名称”，另外还有上文所述分隔块中的任何配置数据。
@@ -113,7 +113,7 @@ Paragraph blocks begin by a `=for` marker and end by the next Pod6 directive or 
 Top Level Heading
 ```
 
-<a id="%E7%BC%A9%E5%86%99%E5%9D%97--abbreviated-blocks"></a>
+<a id="缩写块--abbreviated-blocks"></a>
 ## 缩写块 / Abbreviated blocks
 
 缩写块的开头是一个 `'='` 符号，紧接着是块的类型名称。以下所有数据都是块内容的一部分，因此无法为*缩写*块指定配置数据。块结束于下一个 Pod6 指令或第一个空行。
@@ -124,7 +124,7 @@ Abbreviated blocks begin by an `'='` sign, which is followed immediately by the 
 =head1 Top level heading 
 ```
 
-<a id="%E5%A3%B0%E6%98%8E%E5%9D%97--declarator-blocks"></a>
+<a id="声明块--declarator-blocks"></a>
 ## 声明块 / Declarator blocks
 
 声明块与其他块不同之处在于没有特定类型，而是附加到某些源代码中。
@@ -189,14 +189,14 @@ sub search-in-seq( Int $end, Int $number ) {
 
 By using a matched pair of parenthesis constructs such as `()` or `«»` the comments can extend multiple lines. This format, however, will not translate to a multi-line display by `raku -doc`.
 
-<a id="%E5%9D%97%E7%B1%BB%E5%9E%8B--block-types"></a>
+<a id="块类型--block-types"></a>
 # 块类型 / Block types
 
 Pod6 提供广泛的标准块类型。
 
 Pod6 offers a wide range of standard block types.
 
-<a id="%E6%A0%87%E9%A2%98--headings"></a>
+<a id="标题--headings"></a>
 ## 标题 / Headings
 
 标题可以使用 `=headN` 定义，其中 N 大于零（例如，`=head1`、`=head2`。。。）。
@@ -211,7 +211,7 @@ Headings can be defined using `=headN`, where N is greater than zero (e.g., `=he
 =head3 A third level heading 
 ```
 
-<a id="%E6%99%AE%E9%80%9A%E6%AE%B5%E8%90%BD--ordinary-paragraphs"></a>
+<a id="普通段落--ordinary-paragraphs"></a>
 ## 普通段落 / Ordinary paragraphs
 
 一个普通段落由文本组成，这些文本将在当前嵌套级别被格式化为文档，空格被压缩，行被填充，以及任何特殊的内联标记应用。
@@ -284,7 +284,7 @@ which continues until an...
 
 As demonstrated by the previous example, within a delimited `=begin para` and `=end para` block, any blank lines are preserved.
 
-<a id="%E4%BB%A3%E7%A0%81%E5%9D%97--code-blocks"></a>
+<a id="代码块--code-blocks"></a>
 ## 代码块 / Code blocks
 
 代码块用于指定源代码，这些代码应该在没有重新说明理由、没有空格挤压和没有识别任何内联格式代码的情况下呈现。通常，这些块用于显示代码、标记或其他文本规范的示例，并使用固定宽度字体进行呈现。
@@ -317,7 +317,7 @@ Code blocks can also be explicitly defined by enclosing them in `=begin code` an
     =end code
 ```
 
-<a id="%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E5%9D%97---io-blocks"></a>
+<a id="输入输出块---io-blocks"></a>
 ## 输入输出块 - I/O blocks
 
 Pod6 提供了用于指定程序输入和输出的块。
@@ -332,10 +332,10 @@ The `=input` block is used to specify pre-formatted keyboard input, which should
 
 The `=output` block is used to specify pre-formatted terminal or file output, which should also be rendered without re-justification or whitespace-squeezing.
 
-<a id="%E5%88%97%E8%A1%A8--lists"></a>
+<a id="列表--lists"></a>
 ## 列表 / Lists
 
-<a id="%E6%97%A0%E5%BA%8F%E5%88%97%E8%A1%A8--unordered-lists"></a>
+<a id="无序列表--unordered-lists"></a>
 ### 无序列表 / Unordered lists
 
 Pod6 中的列表被指定为一系列 `=item` 块。
@@ -362,7 +362,7 @@ The three suspects are:
 - Sleepy
 - Grumpy
 
-<a id="%E5%AE%9A%E4%B9%89%E5%88%97%E8%A1%A8--definition-lists"></a>
+<a id="定义列表--definition-lists"></a>
 ### 定义列表 / Definition lists
 
 定义术语或命令的列表使用 `=defn`，相当于 HTML中 的 `DL` 列表
@@ -389,7 +389,7 @@ will be rendered as
 
   When you're not happy.
 
-<a id="%E5%A4%9A%E5%B1%82%E5%88%97%E8%A1%A8--multi-level-lists"></a>
+<a id="多层列表--multi-level-lists"></a>
 ### 多层列表 / Multi-level lists
 
 列表可能是多层的，每一层的条目使用 `=item1`、`=item2`、`=item3` 等块指定。
@@ -428,7 +428,7 @@ For example:
   - Gas
 ```
 
-<a id="%E5%A4%9A%E6%AE%B5%E8%90%BD%E5%88%97%E8%A1%A8--multi-paragraph-lists"></a>
+<a id="多段落列表--multi-paragraph-lists"></a>
 ### 多段落列表 / Multi-paragraph lists
 
 使用 `=item` 块的分隔形式（`=begin item` 和 `=end item`），我们可以指定包含多个段落的条目。

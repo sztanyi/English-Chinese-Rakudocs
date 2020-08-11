@@ -22,31 +22,31 @@ Additionally, certain Perl features may implicitly operate in an asynchronous fa
 
 <!-- MarkdownTOC -->
 
-- [高级接口 / High-level APIs](#%E9%AB%98%E7%BA%A7%E6%8E%A5%E5%8F%A3--high-level-apis)
-    - [承诺 / Promises](#%E6%89%BF%E8%AF%BA--promises)
+- [高级接口 / High-level APIs](#高级接口--high-level-apis)
+    - [承诺 / Promises](#承诺--promises)
     - [Supplies](#supplies)
         - [`whenever`](#whenever)
         - [`react`](#react)
-        - [转换 supply / Transforming supplies](#%E8%BD%AC%E6%8D%A2-supply--transforming-supplies)
-        - [结束一个 supply / Ending a supply](#%E7%BB%93%E6%9D%9F%E4%B8%80%E4%B8%AA-supply--ending-a-supply)
-        - [supply 或者 react 代码块中的相位器 / Phasers in a supply or react block](#supply-%E6%88%96%E8%80%85-react-%E4%BB%A3%E7%A0%81%E5%9D%97%E4%B8%AD%E7%9A%84%E7%9B%B8%E4%BD%8D%E5%99%A8--phasers-in-a-supply-or-react-block)
+        - [转换 supply / Transforming supplies](#转换-supply--transforming-supplies)
+        - [结束一个 supply / Ending a supply](#结束一个-supply--ending-a-supply)
+        - [supply 或者 react 代码块中的相位器 / Phasers in a supply or react block](#supply-或者-react-代码块中的相位器--phasers-in-a-supply-or-react-block)
     - [Channels](#channels)
     - [Proc::Async](#procasync)
-- [低级 API / Low-level APIs](#%E4%BD%8E%E7%BA%A7-api--low-level-apis)
-    - [线程 / Threads](#%E7%BA%BF%E7%A8%8B--threads)
-    - [调度器 / Schedulers](#%E8%B0%83%E5%BA%A6%E5%99%A8--schedulers)
-        - [线程池调度器 / ThreadPoolScheduler](#%E7%BA%BF%E7%A8%8B%E6%B1%A0%E8%B0%83%E5%BA%A6%E5%99%A8--threadpoolscheduler)
-        - [当前线程调度器 / CurrentThreadScheduler](#%E5%BD%93%E5%89%8D%E7%BA%BF%E7%A8%8B%E8%B0%83%E5%BA%A6%E5%99%A8--currentthreadscheduler)
-    - [锁 / Locks](#%E9%94%81--locks)
-- [安全考虑 / Safety concerns](#%E5%AE%89%E5%85%A8%E8%80%83%E8%99%91--safety-concerns)
+- [低级 API / Low-level APIs](#低级-api--low-level-apis)
+    - [线程 / Threads](#线程--threads)
+    - [调度器 / Schedulers](#调度器--schedulers)
+        - [线程池调度器 / ThreadPoolScheduler](#线程池调度器--threadpoolscheduler)
+        - [当前线程调度器 / CurrentThreadScheduler](#当前线程调度器--currentthreadscheduler)
+    - [锁 / Locks](#锁--locks)
+- [安全考虑 / Safety concerns](#安全考虑--safety-concerns)
 
 <!-- /MarkdownTOC -->
 
 
-<a id="%E9%AB%98%E7%BA%A7%E6%8E%A5%E5%8F%A3--high-level-apis"></a>
+<a id="高级接口--high-level-apis"></a>
 # 高级接口 / High-level APIs
 
-<a id="%E6%89%BF%E8%AF%BA--promises"></a>
+<a id="承诺--promises"></a>
 ## 承诺 / Promises
 
 [Promise](https://docs.raku.org/type/Promise)（在其他编程环境中也叫做 *future*）封装了在获得 promise 时可能尚未完成或甚至尚未开始的计算结果。 `Promise` 从 `Planned` 状态开始，结果可能是 `Kept` 状态，意味着该 promise 已成功完成，或者 `Broken` 状态，意味着该 promise 失败。通常，这是用户代码需要以并发或异步方式操作的大部分功能。
@@ -420,7 +420,7 @@ react {
 }
 ```
 
-<a id="%E8%BD%AC%E6%8D%A2-supply--transforming-supplies"></a>
+<a id="转换-supply--transforming-supplies"></a>
 ### 转换 supply / Transforming supplies
 
 可以过滤或者转换现有的 supply 对象，分别使用 `grep` 和 `map` 方法，以类似于命名列表方法的方式创建新 supply： `grep` 返回一个 supply ，以便只有在源流上发出的 `grep` 条件为真的事件才会在第二个 supply 上发出。
@@ -463,7 +463,7 @@ for 0 .. 10 {
 }
 ```
 
-<a id="%E7%BB%93%E6%9D%9F%E4%B8%80%E4%B8%AA-supply--ending-a-supply"></a>
+<a id="结束一个-supply--ending-a-supply"></a>
 ### 结束一个 supply / Ending a supply
 
 如果需要在 supply 结束时执行某个动作，你可以在 `tap` 方法中设置 `done` 和 `quit` 选项：
@@ -482,7 +482,7 @@ $supply.tap: { ... },
 
 The `quit` block works very similar to a `CATCH`. If the exception is marked as seen by a `when` or `default` block, the exception is caught and handled. Otherwise, the exception continues to up the call tree (i.e., the same behavior as when `quit` is not set).
 
-<a id="supply-%E6%88%96%E8%80%85-react-%E4%BB%A3%E7%A0%81%E5%9D%97%E4%B8%AD%E7%9A%84%E7%9B%B8%E4%BD%8D%E5%99%A8--phasers-in-a-supply-or-react-block"></a>
+<a id="supply-或者-react-代码块中的相位器--phasers-in-a-supply-or-react-block"></a>
 ### supply 或者 react 代码块中的相位器 / Phasers in a supply or react block
 
 如果你在 `react` 或者 `supply` 代码块语法中使用 `whenever`，你可以在 `whenever` 代码块中添加相位器处理来自被 tap 过的 supply 的 `done` 和 `quit` 消息：
@@ -722,10 +722,10 @@ say "Done.";
 
 Some programs (such as `grep` without a file argument in this example, ) won't exit until their standard input is closed so [close-stdin](https://docs.raku.org/type/Proc::Async#method_close-stdin) can be called when you are finished writing to allow the [Promise](https://docs.raku.org/type/Promise) returned by `start` to be kept.
 
-<a id="%E4%BD%8E%E7%BA%A7-api--low-level-apis"></a>
+<a id="低级-api--low-level-apis"></a>
 # 低级 API / Low-level APIs
 
-<a id="%E7%BA%BF%E7%A8%8B--threads"></a>
+<a id="线程--threads"></a>
 ## 线程 / Threads
 
 最底层的并发接口由 [Thread](https://docs.raku.org/type/Thread) 提供。一个线程可以认为是一段最终会运行在一个处理器上的代码，它的调度几乎完全由虚拟机和/或操作系统进行安排。线程大都是不受管理的。不管出于什么目的，线程应该考虑避免在用户代码中直接使用线程。
@@ -762,7 +762,7 @@ $thread.finish;
 
 Beyond that there are no further facilities for synchronization or resource sharing which is largely why it should be emphasized that threads are unlikely to be useful directly in user code.
 
-<a id="%E8%B0%83%E5%BA%A6%E5%99%A8--schedulers"></a>
+<a id="调度器--schedulers"></a>
 ## 调度器 / Schedulers
 
 实现了角色 [Scheduler](https://docs.raku.org/type/Scheduler) 中定义的接口的类提供并发 API 的下一个级别。调度器接口的目的是提供一种机制，以确定运行特定任务所需的资源以及何时运行该任务。大多数高级并发 API 都是建立在调度器上的，用户代码可能根本不需要使用它们。尽管有些在 [Proc::Async](https://docs.raku.org/type/Proc::Async)，[Promise](https://docs.raku.org/type/Promise) 以及 [Supply](https://docs.raku.org/type/Supply) 中的方法允许你显式地提供一个调度器。
@@ -815,7 +815,7 @@ Despite the apparent advantage the [Scheduler](https://docs.raku.org/type/Schedu
 
 A library may wish to provide an alternative scheduler implementation if it has special requirements, for instance a UI library may want all code to be run within a single UI thread, or some custom priority mechanism may be required, however the implementations provided as standard and described below should suffice for most user code.
 
-<a id="%E7%BA%BF%E7%A8%8B%E6%B1%A0%E8%B0%83%E5%BA%A6%E5%99%A8--threadpoolscheduler"></a>
+<a id="线程池调度器--threadpoolscheduler"></a>
 ### 线程池调度器 / ThreadPoolScheduler
 
 [ThreadPoolScheduler](https://docs.raku.org/type/ThreadPoolScheduler) 是默认的调度器，它维护一个按需分配的线程池，必要时创造新的线程直到最大值，这个值在调度器创建时作为参数传给调度器对象（默认是 16）。 如果超过了最大线程数，那么 `cue` 方法会将代码排队直到有新线程可用。
@@ -826,14 +826,14 @@ Rakudo 允许默认调度器中允许的最大线程数由程序启动时的环�
 
 Rakudo allows the maximum number of threads allowed in the default scheduler to be set by the environment variable `RAKUDO_MAX_THREADS` at the time the program is started.
 
-<a id="%E5%BD%93%E5%89%8D%E7%BA%BF%E7%A8%8B%E8%B0%83%E5%BA%A6%E5%99%A8--currentthreadscheduler"></a>
+<a id="当前线程调度器--currentthreadscheduler"></a>
 ### 当前线程调度器 / CurrentThreadScheduler
 
 [CurrentThreadScheduler](https://docs.raku.org/type/CurrentThreadScheduler) 是一个非常简单的调度器，调度代码直接运行在当前线程中。对这个调度器调用 `cue` 方法将会阻塞线程直到代码完成，将其效用限制在某些特殊情况下，如测试。
 
 The [CurrentThreadScheduler](https://docs.raku.org/type/CurrentThreadScheduler) is a very simple scheduler that will always schedule code to be run straight away on the current thread. The implication is that `cue` on this scheduler will block until the code finishes execution, limiting its utility to certain special cases such as testing.
 
-<a id="%E9%94%81--locks"></a>
+<a id="锁--locks"></a>
 ## 锁 / Locks
 
 [Lock](https://docs.raku.org/type/Lock) 类提供底层机制，用来在并行环境中保护共享数据，因此在高级 API 中支持线程安全发挥关键作用。在其他编程语言中有时被称为"互斥锁"。因为更高级别类（[Promise](https://docs.raku.org/type/Promise), [Supply](https://docs.raku.org/type/Supply) 以及 [Channel](https://docs.raku.org/type/Channel）在需要时会使用 [Lock](https://docs.raku.org/type/Lock)，用户没必要直接使用 [Lock](https://docs.raku.org/type/Lock)。
@@ -870,7 +870,7 @@ say $a; # OUTPUT: «10␤»
 
 Because `protect` will block any threads that are waiting to execute the critical section the code should be as quick as possible.
 
-<a id="%E5%AE%89%E5%85%A8%E8%80%83%E8%99%91--safety-concerns"></a>
+<a id="安全考虑--safety-concerns"></a>
 # 安全考虑 / Safety concerns
 
 有些共享数据并发问题并不明显。关于这一主题的一般性报道，请参见[博客文章](https://6guts.wordpress.com/2014/04/17/racing-to-writeness-to-wrongness-leads/)。

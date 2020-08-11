@@ -8,25 +8,25 @@ Correctly use Raku IO
 
 <!-- MarkdownTOC -->
 
-- [基础 / The basics](#%E5%9F%BA%E7%A1%80--the-basics)
-- [探索路径 / Navigating paths](#%E6%8E%A2%E7%B4%A2%E8%B7%AF%E5%BE%84--navigating-paths)
-    - [什么是 IO::Path / What's an IO::Path anyway?](#%E4%BB%80%E4%B9%88%E6%98%AF-iopath--whats-an-iopath-anyway)
-    - [操作文件 / Working with files](#%E6%93%8D%E4%BD%9C%E6%96%87%E4%BB%B6--working-with-files)
-        - [写入文件 / Writing into files](#%E5%86%99%E5%85%A5%E6%96%87%E4%BB%B6--writing-into-files)
-            - [写入新内容 / Writing new content](#%E5%86%99%E5%85%A5%E6%96%B0%E5%86%85%E5%AE%B9--writing-new-content)
-            - [追加内容 / Appending content](#%E8%BF%BD%E5%8A%A0%E5%86%85%E5%AE%B9--appending-content)
-        - [从文件读取 / Reading from files](#%E4%BB%8E%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96--reading-from-files)
-            - [使用 IO::Path / Using IO::Path](#%E4%BD%BF%E7%94%A8-iopath--using-iopath)
-            - [使用 IO::Handle / Using IO::Handle](#%E4%BD%BF%E7%94%A8-iohandle--using-iohandle)
-- [错误的做事方式 / The wrong way to do things](#%E9%94%99%E8%AF%AF%E7%9A%84%E5%81%9A%E4%BA%8B%E6%96%B9%E5%BC%8F--the-wrong-way-to-do-things)
-    - [不要碰 $*SPEC / Leave $*SPEC alone](#%E4%B8%8D%E8%A6%81%E7%A2%B0-%24spec--leave-%24spec-alone)
-    - [字符串化 IO::Path / Stringifying IO::Path](#%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8C%96-iopath--stringifying-iopath)
-    - [注意 $*CWD / Be mindful of $*CWD](#%E6%B3%A8%E6%84%8F-%24cwd--be-mindful-of-%24cwd)
-        - [临时化 $*CWD / temp the $*CWD](#%E4%B8%B4%E6%97%B6%E5%8C%96-%24cwd--temp-the-%24cwd)
+- [基础 / The basics](#基础--the-basics)
+- [探索路径 / Navigating paths](#探索路径--navigating-paths)
+    - [什么是 IO::Path / What's an IO::Path anyway?](#什么是-iopath--whats-an-iopath-anyway)
+    - [操作文件 / Working with files](#操作文件--working-with-files)
+        - [写入文件 / Writing into files](#写入文件--writing-into-files)
+            - [写入新内容 / Writing new content](#写入新内容--writing-new-content)
+            - [追加内容 / Appending content](#追加内容--appending-content)
+        - [从文件读取 / Reading from files](#从文件读取--reading-from-files)
+            - [使用 IO::Path / Using IO::Path](#使用-iopath--using-iopath)
+            - [使用 IO::Handle / Using IO::Handle](#使用-iohandle--using-iohandle)
+- [错误的做事方式 / The wrong way to do things](#错误的做事方式--the-wrong-way-to-do-things)
+    - [不要碰 $*SPEC / Leave $*SPEC alone](#不要碰-$spec--leave-$spec-alone)
+    - [字符串化 IO::Path / Stringifying IO::Path](#字符串化-iopath--stringifying-iopath)
+    - [注意 $*CWD / Be mindful of $*CWD](#注意-$cwd--be-mindful-of-$cwd)
+        - [临时化 $*CWD / temp the $*CWD](#临时化-$cwd--temp-the-$cwd)
 
 <!-- /MarkdownTOC -->
 
-<a id="%E5%9F%BA%E7%A1%80--the-basics"></a>
+<a id="基础--the-basics"></a>
 # 基础 / The basics
 
 大多数常见的 IO 工作都是由 [IO::Path](https://docs.raku.org/type/IO::Path) 类型完成的。如果你想以某种形式或形状读取或写入文件，这就是你想要的类。它抽象掉了文件句柄（或“文件描述符”）的细节，因此你几乎不必考虑它们。
@@ -49,10 +49,10 @@ Along with all these classes, Raku provides several subroutines that let you ind
 
 While [IO::Socket](https://docs.raku.org/type/IO::Socket) and its subclasses also have to do with Input and Output, this guide does not cover them.
 
-<a id="%E6%8E%A2%E7%B4%A2%E8%B7%AF%E5%BE%84--navigating-paths"></a>
+<a id="探索路径--navigating-paths"></a>
 # 探索路径 / Navigating paths
 
-<a id="%E4%BB%80%E4%B9%88%E6%98%AF-iopath--whats-an-iopath-anyway"></a>
+<a id="什么是-iopath--whats-an-iopath-anyway"></a>
 ## 什么是 IO::Path / What's an IO::Path anyway?
 
 要将路径表示为文件或目录，请使用 [IO::Path](https://docs.raku.org/type/IO::Path) 类型。获取该类型对象的最简单方法是通过对其调用 [`.IO`](https://docs.raku.org/routine/IO) 方法来强制转换 [Str](https://docs.raku.org/type/Str) 类型：
@@ -84,13 +84,13 @@ This means that regardless of how you made one, an [IO::Path](https://docs.raku.
 
 However, don't be in a rush to stringify anything. Pass paths around as [IO::Path](https://docs.raku.org/type/IO::Path) objects. All the routines that operate on paths can handle them, so there's no need to convert them.
 
-<a id="%E6%93%8D%E4%BD%9C%E6%96%87%E4%BB%B6--working-with-files"></a>
+<a id="操作文件--working-with-files"></a>
 ## 操作文件 / Working with files
 
-<a id="%E5%86%99%E5%85%A5%E6%96%87%E4%BB%B6--writing-into-files"></a>
+<a id="写入文件--writing-into-files"></a>
 ### 写入文件 / Writing into files
 
-<a id="%E5%86%99%E5%85%A5%E6%96%B0%E5%86%85%E5%AE%B9--writing-new-content"></a>
+<a id="写入新内容--writing-new-content"></a>
 #### 写入新内容 / Writing new content
 
 让我们制作一些文件，并从中写入和读取数据！[`spurt`](https://docs.raku.org/routine/spurt) 和 [`slurp`](https://docs.raku.org/routine/slurp) 例程在一个块中写入和读取数据。除非你正在处理非常大的文件，这些文件很难同时完全存储在内存中，否则这两个例程都是为你准备的。
@@ -109,7 +109,7 @@ The code above creates a file named `my-file.txt` in the current directory and t
 
 However, that is all the code you need. The string will be encoded in `utf-8` encoding by default and the errors are handled via the [Failure](https://docs.raku.org/type/Failure) mechanism: these are exceptions you can handle using regular conditionals. In this case, we're letting all potential [Failures](https://docs.raku.org/type/Failure) get sunk after the call and so any [Exceptions](https://docs.raku.org/type/Exception) they contain will be thrown.
 
-<a id="%E8%BF%BD%E5%8A%A0%E5%86%85%E5%AE%B9--appending-content"></a>
+<a id="追加内容--appending-content"></a>
 #### 追加内容 / Appending content
 
 如果你想向上一节中的文件添加更多内容，[`spurt` 文档](https://docs.raku.org/routine/spurt)提到了 `:append` 参数。但是，为了更好地控制，让我们为自己准备一个 [IO::Handle](https://docs.raku.org/type/IO::Handle) 来处理：
@@ -135,10 +135,10 @@ In the next two lines of code, we use the usual [`.print`](https://docs.raku.org
 
 Finally, we close the [IO::Handle](https://docs.raku.org/type/IO::Handle) by calling the [`.close`](https://docs.raku.org/routine/close) method on it. It is *important that you do it*, especially in large programs or ones that deal with a lot of files, as many systems have limits to how many files a program can have open at the same time. If you don't close your handles, eventually you'll reach that limit and the [`.open`](https://docs.raku.org/routine/open) call will fail. Note that unlike some other languages, Raku does not use reference counting, so the filehandles **are NOT closed** when the scope they're defined in is left. They will be closed only when they're garbage collected and failing to close the handles may cause your program to reach the file limit *before* the open handles get a chance to get garbage collected.
 
-<a id="%E4%BB%8E%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96--reading-from-files"></a>
+<a id="从文件读取--reading-from-files"></a>
 ### 从文件读取 / Reading from files
 
-<a id="%E4%BD%BF%E7%94%A8-iopath--using-iopath"></a>
+<a id="使用-iopath--using-iopath"></a>
 #### 使用 IO::Path / Using IO::Path
 
 在前面的部分中，我们已经看到在 Raku 中，将内容写入文件只是一行代码。从他们那里读，同样容易：
@@ -182,7 +182,7 @@ Here's another example that prints the first 100 words from a file, without load
 
 Note that we did this by passing a limit argument to [`.words`](https://docs.raku.org/type/IO::Path#method_words) instead of, say, using [a list indexing operation](https://docs.raku.org/language/operators#index-entry-array_indexing_operator-array_subscript_operator-array_indexing_operator). The reason for that is there's still a filehandle in use under the hood, and until you fully consume the returned [Seq](https://docs.raku.org/type/Seq), the handle will remain open. If nothing references the [Seq](https://docs.raku.org/type/Seq), eventually the handle will get closed, during a garbage collection run, but in large programs that work with a lot of files, it's best to ensure all the handles get closed right away. So, you should always ensure the [Seq](https://docs.raku.org/type/Seq) from [IO::Path](https://docs.raku.org/type/IO::Path)'s [`.words`](https://docs.raku.org/type/IO::Path#method_words) and [`.lines`](https://docs.raku.org/type/IO::Path#method_lines) methods is [fully reified](https://docs.raku.org/language/glossary#index-entry-Reify); and the limit argument is there to help you with that.
 
-<a id="%E4%BD%BF%E7%94%A8-iohandle--using-iohandle"></a>
+<a id="使用-iohandle--using-iohandle"></a>
 #### 使用 IO::Handle / Using IO::Handle
 
 当然，你可以使用 [IO::Handle](https://docs.raku.org/type/IO::Handle) 类型从文件中读取，这样你可以更好地控制正在执行的操作：
@@ -206,14 +206,14 @@ The [IO::Handle](https://docs.raku.org/type/IO::Handle) gives you [.read](https:
 
 Unlike some languages, the handle won't get automatically closed when the scope it's defined in is left. Instead, it'll remain open until it's garbage collected. To make the closing business easier, some of the methods let you specify a `:close` argument, you can also use the [`will leave` trait](https://docs.raku.org/language/phasers#index-entry-will_trait), or the `does auto-close` trait provided by the [`Trait::IO`](https://modules.perl6.org/dist/Trait::IO) module.
 
-<a id="%E9%94%99%E8%AF%AF%E7%9A%84%E5%81%9A%E4%BA%8B%E6%96%B9%E5%BC%8F--the-wrong-way-to-do-things"></a>
+<a id="错误的做事方式--the-wrong-way-to-do-things"></a>
 # 错误的做事方式 / The wrong way to do things
 
 本节介绍 Perl6 IO *不该*做的事情。
 
 This section describes how NOT to do Raku IO.
 
-<a id="%E4%B8%8D%E8%A6%81%E7%A2%B0-%24spec--leave-%24spec-alone"></a>
+<a id="不要碰-$spec--leave-$spec-alone"></a>
 ## 不要碰 $*SPEC / Leave $*SPEC alone
 
 你可能听说过 [`$*SPEC`](https://docs.raku.org/language/variables#Dynamic_variables) 并看到一些代码或书籍展示了它对分割和连接路径片段的用法。它提供的一些例程名称甚至可能看起来与你在其他语言中使用的名称很类似。
@@ -253,7 +253,7 @@ However, it's fine to use it for things not otherwise provided by [IO::Path](htt
 say "Hello";
 ```
 
-<a id="%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8C%96-iopath--stringifying-iopath"></a>
+<a id="字符串化-iopath--stringifying-iopath"></a>
 ## 字符串化 IO::Path / Stringifying IO::Path
 
 不要使用 `.Str` 方法来字符串化 [`IO::Path`](https://docs.raku.org/type/IO::Path) 对象，除非你只想出于信息目的或其他原因将它们显示在某个地方。`.Str` 方法返回 [`IO::Path`](https://docs.raku.org/type/IO::Path) 实例化时用的任何基本路径字符串。它不考虑 [`$.CWD` 属性](https://docs.raku.org/type/IO::Path#attribute_CWD)。例如，此代码是破损的：
@@ -284,14 +284,14 @@ run <tar -cvvf archive.tar>, $path.absolute;
 run <tar -cvvf archive.tar>, $path.relative;
 ```
 
-<a id="%E6%B3%A8%E6%84%8F-%24cwd--be-mindful-of-%24cwd"></a>
+<a id="注意-$cwd--be-mindful-of-$cwd"></a>
 ## 注意 $*CWD / Be mindful of $*CWD
 
 虽然通常不在视图中，但默认情况下，每个 [`IO::Path`](https://docs.raku.org/type/IO::Path) 对象使用 [`$*CWD`](https://docs.raku.org/language/variables#Dynamic_variables) 的当前值来设置其 [`$.CWD` 属性](https://docs.raku.org/type/IO::Path#attribute_CWD)。这意味着有两件事需要注意。
 
 While usually out of view, every [`IO::Path`](https://docs.raku.org/type/IO::Path) object, by default, uses the current value of [`$*CWD`](https://docs.raku.org/language/variables#Dynamic_variables) to set its [`$.CWD` attribute](https://docs.raku.org/type/IO::Path#attribute_CWD). This means there are two things to pay attention to.
 
-<a id="%E4%B8%B4%E6%97%B6%E5%8C%96-%24cwd--temp-the-%24cwd"></a>
+<a id="临时化-$cwd--temp-the-$cwd"></a>
 ### 临时化 $*CWD / temp the $*CWD
 
 此代码是错误的：

@@ -65,7 +65,7 @@ As the example above demonstrates, all object oriented features are available to
 
 <!-- MarkdownTOC -->
 
-- [元方法 / Metamethods](#%E5%85%83%E6%96%B9%E6%B3%95--metamethods)
+- [元方法 / Metamethods](#元方法--metamethods)
     - [WHAT](#what)
     - [WHICH](#which)
     - [WHO](#who)
@@ -74,16 +74,16 @@ As the example above demonstrates, all object oriented features are available to
     - [WHY](#why)
     - [DEFINITE](#definite)
     - [VAR](#var)
-- [元对象系统的结构 / Structure of the meta object system](#%E5%85%83%E5%AF%B9%E8%B1%A1%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%BB%93%E6%9E%84--structure-of-the-meta-object-system)
-    - [引导问题 / Bootstrapping concerns](#%E5%BC%95%E5%AF%BC%E9%97%AE%E9%A2%98--bootstrapping-concerns)
-    - [重组时与静态推理 / Composition time and static reasoning](#%E9%87%8D%E7%BB%84%E6%97%B6%E4%B8%8E%E9%9D%99%E6%80%81%E6%8E%A8%E7%90%86--composition-time-and-static-reasoning)
-    - [权力和责任 / Power and responsibility](#%E6%9D%83%E5%8A%9B%E5%92%8C%E8%B4%A3%E4%BB%BB--power-and-responsibility)
-    - [力量、便利和陷阱 / Power, convenience and pitfalls](#%E5%8A%9B%E9%87%8F%E3%80%81%E4%BE%BF%E5%88%A9%E5%92%8C%E9%99%B7%E9%98%B1--power-convenience-and-pitfalls)
+- [元对象系统的结构 / Structure of the meta object system](#元对象系统的结构--structure-of-the-meta-object-system)
+    - [引导问题 / Bootstrapping concerns](#引导问题--bootstrapping-concerns)
+    - [重组时与静态推理 / Composition time and static reasoning](#重组时与静态推理--composition-time-and-static-reasoning)
+    - [权力和责任 / Power and responsibility](#权力和责任--power-and-responsibility)
+    - [力量、便利和陷阱 / Power, convenience and pitfalls](#力量、便利和陷阱--power-convenience-and-pitfalls)
 
 <!-- /MarkdownTOC -->
 
 
-<a id="%E5%85%83%E6%96%B9%E6%B3%95--metamethods"></a>
+<a id="元方法--metamethods"></a>
 # 元方法 / Metamethods
 
 这些是类似于方法调用的自省宏。
@@ -177,7 +177,7 @@ say (1, 2, 3).VAR ~~ Scalar;  # OUTPUT: «False␤»
 say $(1, 2, 3).VAR ~~ Scalar; # OUTPUT: «True␤» 
 ```
 
-<a id="%E5%85%83%E5%AF%B9%E8%B1%A1%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%BB%93%E6%9E%84--structure-of-the-meta-object-system"></a>
+<a id="元对象系统的结构--structure-of-the-meta-object-system"></a>
 # 元对象系统的结构 / Structure of the meta object system
 
 **注：**本文档主要反映了由 [Rakudo Raku 编译器](https://rakudo.org/)实现的元对象系统，因为 [设计文档](https://design.perl6.org/) 非常详细。
@@ -196,7 +196,7 @@ Many of the these meta classes share common functionality. For example roles, gr
 
 Most meta classes have a `compose` method that you must call when you're done creating or modifying a meta object. It creates method caches, validates things and so on, and weird behavior ensues if you forget to call it, so don't :-).
 
-<a id="%E5%BC%95%E5%AF%BC%E9%97%AE%E9%A2%98--bootstrapping-concerns"></a>
+<a id="引导问题--bootstrapping-concerns"></a>
 ## 引导问题 / Bootstrapping concerns
 
 你可能想知道，当 `Metamodel::ClassHOW` 定义为类时，`Metamodel::ClassHOW` 是如何成为类的，或者负责角色处理的角色是如何成为角色的。答案是*魔法*。
@@ -211,7 +211,7 @@ Just kidding. Bootstrapping is implementation specific. Rakudo does it by using 
 
 Since the object model is bootstrapped in terms of lower-level types, introspection can sometimes return low-level types instead of the ones you expect, like an NQP-level routine instead of a normal [Routine](https://docs.raku.org/type/Routine) object, or a bootstrap-attribute instead of [Attribute](https://docs.raku.org/type/Attribute).
 
-<a id="%E9%87%8D%E7%BB%84%E6%97%B6%E4%B8%8E%E9%9D%99%E6%80%81%E6%8E%A8%E7%90%86--composition-time-and-static-reasoning"></a>
+<a id="重组时与静态推理--composition-time-and-static-reasoning"></a>
 ## 重组时与静态推理 / Composition time and static reasoning
 
 在 Raku 中，类型是在解析时构造的，因此在开始时，它必须是可变的。但是，如果所有类型都是可变的，那么在对类型进行任何修改时，关于它们的所有推理都将失效。例如，父类型的列表，因此类型检查的结果可以在这段时间内更改。
@@ -230,7 +230,7 @@ If you create types through the meta-object system directly, you must call `.^co
 
 Most meta classes also use composition time to calculate some properties like the method resolution order, publish a method cache, and other house-keeping tasks. Meddling with types after they have been composed is sometimes possible, but usually a recipe for disaster. Don't do it.
 
-<a id="%E6%9D%83%E5%8A%9B%E5%92%8C%E8%B4%A3%E4%BB%BB--power-and-responsibility"></a>
+<a id="权力和责任--power-and-responsibility"></a>
 ## 权力和责任 / Power and responsibility
 
 元对象协议提供了常规 Raku 代码有意限制的强大功能，例如在不信任你的类上调用私有方法、窥视私有属性以及其他通常根本不做的事情。
@@ -245,7 +245,7 @@ Regular Raku code has many safety checks in place; not so the meta model. It is 
 
 So be extra careful and thoughtful when writing meta types.
 
-<a id="%E5%8A%9B%E9%87%8F%E3%80%81%E4%BE%BF%E5%88%A9%E5%92%8C%E9%99%B7%E9%98%B1--power-convenience-and-pitfalls"></a>
+<a id="力量、便利和陷阱--power-convenience-and-pitfalls"></a>
 ## 力量、便利和陷阱 / Power, convenience and pitfalls
 
 元对象协议设计得足够强大，可以实现 Raku 对象系统。这种力量有时会以便利为代价。

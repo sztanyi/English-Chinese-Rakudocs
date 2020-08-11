@@ -8,21 +8,21 @@ How and when Raku modules are compiled, where they are stored, and how to access
 
 <!-- MarkdownTOC -->
 
-- [概述 / Overview](#%E6%A6%82%E8%BF%B0--overview)
-- [介绍 / Introduction](#%E4%BB%8B%E7%BB%8D--introduction)
-    - [为什么改变？ / Why change?](#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%94%B9%E5%8F%98%EF%BC%9F--why-change)
-    - [长名 / Long names](#%E9%95%BF%E5%90%8D--long-names)
-    - [$*REPO](#%24repo)
-    - [存储库 / Repositories](#%E5%AD%98%E5%82%A8%E5%BA%93--repositories)
+- [概述 / Overview](#概述--overview)
+- [介绍 / Introduction](#介绍--introduction)
+    - [为什么改变？ / Why change?](#为什么改变？--why-change)
+    - [长名 / Long names](#长名--long-names)
+    - [$*REPO](#$repo)
+    - [存储库 / Repositories](#存储库--repositories)
     - [Resources](#resources)
-    - [依赖 / Dependencies](#%E4%BE%9D%E8%B5%96--dependencies)
-    - [预编译存储区 / Precomp stores](#%E9%A2%84%E7%BC%96%E8%AF%91%E5%AD%98%E5%82%A8%E5%8C%BA--precomp-stores)
+    - [依赖 / Dependencies](#依赖--dependencies)
+    - [预编译存储区 / Precomp stores](#预编译存储区--precomp-stores)
     - [Credit](#credit)
 
 <!-- /MarkdownTOC -->
 
 
-<a id="%E6%A6%82%E8%BF%B0--overview"></a>
+<a id="概述--overview"></a>
 # 概述 / Overview
 
 作为 Perl 语系的一员，Raku 的程序往往更多地处于解释 - 编译频谱的解释端。 在本教程中，一个被“解释”的程序意味着源代码，即人类可读的文本，如 `say 'hello world';`，立即被 `Raku` 程序处理成可以由计算机执行的代码，任何中间阶段都存储在内存中。
@@ -63,7 +63,7 @@ The experience from `Perl` and other languages is that the distributive nature o
 
 `Raku` enables all of these possibilities, allowing for multiple versions, multiple authorities, and multiple APIs to be present, installed, and available locally. The way classes and modules can be accessed with specific attributes is explained [elsewhere](https://docs.raku.org/language/typesystem#Versioning_and_authorship). This tutorial is about how `Raku` handles these possibilities.
 
-<a id="%E4%BB%8B%E7%BB%8D--introduction"></a>
+<a id="介绍--introduction"></a>
 # 介绍 / Introduction
 
 在考虑 `Raku` 框架之前，让我们看看 `Perl` 或 `Python` 语言如何处理模块的安装和加载。
@@ -106,7 +106,7 @@ Of course that's a bit of a simplified version. Both languages support caching c
 
 Module installation in both cases means mostly copying files into locations determined by the same simple mapping. The system is easy to explain, easy to understand, simple and robust.
 
-<a id="%E4%B8%BA%E4%BB%80%E4%B9%88%E6%94%B9%E5%8F%98%EF%BC%9F--why-change"></a>
+<a id="为什么改变？--why-change"></a>
 ## 为什么改变？ / Why change?
 
 为什么 `Raku` 需要另一个框架？ 原因是这些语言缺乏以下特点：
@@ -149,7 +149,7 @@ Linux 发行版的包主要是包含一些文件和一些元数据的档案。 �
 
 Packages for Linux distributions are mostly just archives containing some files plus some metadata. Ideally the process of installing such a package means just unpacking the files and updating the central package database. Uninstalling means deleting the files installed this way and again updating the package database. Changing existing files on install and uninstall makes packagers' lives much harder, so we really want to avoid that. Also the names of the installed files may not depend on what was previously installed. We must know at the time of packaging what the names are going to be.
 
-<a id="%E9%95%BF%E5%90%8D--long-names"></a>
+<a id="长名--long-names"></a>
 ## 长名 / Long names
 
 ```Raku
@@ -164,7 +164,7 @@ Step 0 in getting us back out of this mess is to define a long name. A full modu
 
 At the same time, the thing you install is usually not a single module but a distribution which probably contains one or more modules. Distribution names work just the same way as module names. Indeed, distributions often will just be called after their main module. An important property of distributions is that they are immutable. `Foo:auth<cpan:nine>:ver<0.3>:api<1>` will always be the name for exactly the same code.
 
-<a id="%24repo"></a>
+<a id="$repo"></a>
 ## $*REPO
 
 在 `Perl` 和 `Python` 中你将于指向文件系统目录的路径打交道。 在 `Raku` 中我们将这些目录称为“存储库”，其中每个存储库都由一个对象管理，该对象执行 `CompUnit::Repository` 角色。 而不是 `@INC` 数组，有 `$*REPO` 变量。 它包含一个存储库对象。 此对象具有 **next-repo** 属性，该属性可能包含另一个存储库。 换句话说：存储库被管理为*链接列表*。 与传统数组的重要区别在于，在遍历列表时，每个对象都有权决定是否将请求传递给下一个存储库。 `Raku` 建立了一套标准的存储库，即。 “perl”、 “vendor” 和 “site” 存储库，就像您从 `Perl` 了解它们一样。 此外，我们还为当前用户建立了一个“家”存储库。
@@ -195,7 +195,7 @@ role CompUnit::Repository {
 }
 ```
 
-<a id="%E5%AD%98%E5%82%A8%E5%BA%93--repositories"></a>
+<a id="存储库--repositories"></a>
 ## 存储库 / Repositories
 
 Rakudo 有几个可用于存储库的类。 最重要是 `CompUnit::Repository::FileSystem` 和 `CompUnit::Repository::Installation`。 文件系统存储库是指在模块开发期间使用的，实际上就像 `Perl` 在寻找模块时一样工作。 它不支持版本或 `auth`，只是将短名映射到文件系统路径。
@@ -267,7 +267,7 @@ As long as you stick to the standard layout conventions for distributions, this 
 
 A nice result of this architecture is that it's fairly easy to create special purpose repositories.
 
-<a id="%E4%BE%9D%E8%B5%96--dependencies"></a>
+<a id="依赖--dependencies"></a>
 ## 依赖 / Dependencies
 
 幸运的是，预编译在大多数情况下至少工作得很好。 然而，它也面临着自己的一系列挑战。 加载单个模块很容易。 当一个模块有依赖关系，而这些依赖关系又有自己的依赖关系时，乐趣就开始了。
@@ -290,7 +290,7 @@ All of that would still be quite manageable if it weren't for an additional requ
 
 In other words: if you upgrade a dependency of a precompiled module, we have to detect this and precompile the module again with the new dependency.
 
-<a id="%E9%A2%84%E7%BC%96%E8%AF%91%E5%AD%98%E5%82%A8%E5%8C%BA--precomp-stores"></a>
+<a id="预编译存储区--precomp-stores"></a>
 ## 预编译存储区 / Precomp stores
 
 现在请记住，虽然我们有一个标准的存储库链，用户可以通过 `-I` 在命令行或者在代码中使用 “use lib” 的方式预先发送额外的存储库。

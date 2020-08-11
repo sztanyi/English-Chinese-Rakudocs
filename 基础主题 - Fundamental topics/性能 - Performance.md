@@ -11,33 +11,33 @@ Measuring and improving runtime or compile-time performance
 This page is about [computer performance](https://en.wikipedia.org/wiki/Computer_performance) in the context of Raku.
 <!-- MarkdownTOC -->
 
-- [首先，分析你的代码 / First, profile your code](#%E9%A6%96%E5%85%88%EF%BC%8C%E5%88%86%E6%9E%90%E4%BD%A0%E7%9A%84%E4%BB%A3%E7%A0%81--first-profile-your-code)
-  - [用 `now - INIT now` 计时 / Time with `now - INIT now`](#%E7%94%A8-now---init-now-%E8%AE%A1%E6%97%B6--time-with-now---init-now)
-  - [局部分析 / Profile locally](#%E5%B1%80%E9%83%A8%E5%88%86%E6%9E%90--profile-locally)
-  - [分析编译过程 / Profile compiling](#%E5%88%86%E6%9E%90%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B--profile-compiling)
-  - [创建或查看基准 / Create or view benchmarks](#%E5%88%9B%E5%BB%BA%E6%88%96%E6%9F%A5%E7%9C%8B%E5%9F%BA%E5%87%86--create-or-view-benchmarks)
-  - [共享问题 / Share problems](#%E5%85%B1%E4%BA%AB%E9%97%AE%E9%A2%98--share-problems)
-- [解决问题 / Solve problems](#%E8%A7%A3%E5%86%B3%E9%97%AE%E9%A2%98--solve-problems)
-  - [逐行 / Line by line](#%E9%80%90%E8%A1%8C--line-by-line)
-  - [逐个例程 / Routine by routine](#%E9%80%90%E4%B8%AA%E4%BE%8B%E7%A8%8B--routine-by-routine)
-  - [加快类型检查和调用解析 / Speed up type-checks and call resolution](#%E5%8A%A0%E5%BF%AB%E7%B1%BB%E5%9E%8B%E6%A3%80%E6%9F%A5%E5%92%8C%E8%B0%83%E7%94%A8%E8%A7%A3%E6%9E%90--speed-up-type-checks-and-call-resolution)
-  - [选择更好的算法 / Choose better algorithms](#%E9%80%89%E6%8B%A9%E6%9B%B4%E5%A5%BD%E7%9A%84%E7%AE%97%E6%B3%95--choose-better-algorithms)
-    - [将顺序/阻塞代码改为并行/非阻塞代码 - Change sequential/blocking code to parallel/non-blocking](#%E5%B0%86%E9%A1%BA%E5%BA%8F%E9%98%BB%E5%A1%9E%E4%BB%A3%E7%A0%81%E6%94%B9%E4%B8%BA%E5%B9%B6%E8%A1%8C%E9%9D%9E%E9%98%BB%E5%A1%9E%E4%BB%A3%E7%A0%81---change-sequentialblocking-code-to-parallelnon-blocking)
-  - [使用现有的高性能代码 / Use existing high performance code](#%E4%BD%BF%E7%94%A8%E7%8E%B0%E6%9C%89%E7%9A%84%E9%AB%98%E6%80%A7%E8%83%BD%E4%BB%A3%E7%A0%81--use-existing-high-performance-code)
-  - [使 Rakudo 编译器生成更快的代码 / Make the Rakudo compiler generate faster code](#%E4%BD%BF-rakudo-%E7%BC%96%E8%AF%91%E5%99%A8%E7%94%9F%E6%88%90%E6%9B%B4%E5%BF%AB%E7%9A%84%E4%BB%A3%E7%A0%81--make-the-rakudo-compiler-generate-faster-code)
-  - [还需要更多的想法？ / Still need more ideas?](#%E8%BF%98%E9%9C%80%E8%A6%81%E6%9B%B4%E5%A4%9A%E7%9A%84%E6%83%B3%E6%B3%95%EF%BC%9F--still-need-more-ideas)
-- [得不到你想要的结果？ / Not getting the results you need/want?](#%E5%BE%97%E4%B8%8D%E5%88%B0%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E7%BB%93%E6%9E%9C%EF%BC%9F--not-getting-the-results-you-needwant)
+- [首先，分析你的代码 / First, profile your code](#首先，分析你的代码--first-profile-your-code)
+  - [用 `now - INIT now` 计时 / Time with `now - INIT now`](#用-now---init-now-计时--time-with-now---init-now)
+  - [局部分析 / Profile locally](#局部分析--profile-locally)
+  - [分析编译过程 / Profile compiling](#分析编译过程--profile-compiling)
+  - [创建或查看基准 / Create or view benchmarks](#创建或查看基准--create-or-view-benchmarks)
+  - [共享问题 / Share problems](#共享问题--share-problems)
+- [解决问题 / Solve problems](#解决问题--solve-problems)
+  - [逐行 / Line by line](#逐行--line-by-line)
+  - [逐个例程 / Routine by routine](#逐个例程--routine-by-routine)
+  - [加快类型检查和调用解析 / Speed up type-checks and call resolution](#加快类型检查和调用解析--speed-up-type-checks-and-call-resolution)
+  - [选择更好的算法 / Choose better algorithms](#选择更好的算法--choose-better-algorithms)
+    - [将顺序/阻塞代码改为并行/非阻塞代码 - Change sequential/blocking code to parallel/non-blocking](#将顺序阻塞代码改为并行非阻塞代码---change-sequentialblocking-code-to-parallelnon-blocking)
+  - [使用现有的高性能代码 / Use existing high performance code](#使用现有的高性能代码--use-existing-high-performance-code)
+  - [使 Rakudo 编译器生成更快的代码 / Make the Rakudo compiler generate faster code](#使-rakudo-编译器生成更快的代码--make-the-rakudo-compiler-generate-faster-code)
+  - [还需要更多的想法？ / Still need more ideas?](#还需要更多的想法？--still-need-more-ideas)
+- [得不到你想要的结果？ / Not getting the results you need/want?](#得不到你想要的结果？--not-getting-the-results-you-needwant)
 
 <!-- /MarkdownTOC -->
 
-<a id="%E9%A6%96%E5%85%88%EF%BC%8C%E5%88%86%E6%9E%90%E4%BD%A0%E7%9A%84%E4%BB%A3%E7%A0%81--first-profile-your-code"></a>
+<a id="首先，分析你的代码--first-profile-your-code"></a>
 # 首先，分析你的代码 / First, profile your code
 
 **确保你没有在错误的代码上浪费时间**：通过分析代码的性能来确定你的[“关键的 3%”](https://en.wikiquote.org/wiki/Donald_Knuth)。本文档的其余部分将向你展示如何做到这一点。
 
 **Make sure you're not wasting time on the wrong code**: start by identifying your ["critical 3%"](https://en.wikiquote.org/wiki/Donald_Knuth) by profiling your code's performance. The rest of this document shows you how to do that.
 
-<a id="%E7%94%A8-now---init-now-%E8%AE%A1%E6%97%B6--time-with-now---init-now"></a>
+<a id="用-now---init-now-计时--time-with-now---init-now"></a>
 ## 用 `now - INIT now` 计时 / Time with `now - INIT now`
 
 `now - INIT now` 形式的表达式，其中 `INIT` 是一个 [Raku 程序运行时的相位器](https://docs.raku.org/language/phasers)，为计时代码片段提供了一个很好的习语。
@@ -57,7 +57,7 @@ rakudo-moar abc1234: OUTPUT«0.0018558␤»
 
 The `now` to the left of `INIT` runs 0.0018558 seconds *later* than the `now` to the right of the `INIT` because the latter occurs during [the INIT phase](https://docs.raku.org/language/phasers#INIT).
 
-<a id="%E5%B1%80%E9%83%A8%E5%88%86%E6%9E%90--profile-locally"></a>
+<a id="局部分析--profile-locally"></a>
 ## 局部分析 / Profile locally
 
 当使用 [MoarVM](https://moarvm.org/) 后端时，[Rakudo](https://rakudo.org/) 编译器的 `--profile` 命令行选项将概要文件数据写入到 HTML 文件中。
@@ -134,14 +134,14 @@ The in-progress, next-gen profiler is [moarperf](https://github.com/timo/moarper
 
 To learn how to interpret the profile info, use the `prof-m: your code goes here` evalbot (explained above) and ask questions on the IRC channel.
 
-<a id="%E5%88%86%E6%9E%90%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B--profile-compiling"></a>
+<a id="分析编译过程--profile-compiling"></a>
 ## 分析编译过程 / Profile compiling
 
 如果要分析编译代码所需的时间和内存，请使用 Rakudo 的 `--profile-compile` 或 `--profile-stage` 选项。
 
 If you want to profile the time and memory it takes to compile your code, use Rakudo's `--profile-compile` or `--profile-stage` options.
 
-<a id="%E5%88%9B%E5%BB%BA%E6%88%96%E6%9F%A5%E7%9C%8B%E5%9F%BA%E5%87%86--create-or-view-benchmarks"></a>
+<a id="创建或查看基准--create-or-view-benchmarks"></a>
 ## 创建或查看基准 / Create or view benchmarks
 
 使用 [perl6-bench](https://github.com/japhb/perl6-bench)。
@@ -152,7 +152,7 @@ Use [perl6-bench](https://github.com/japhb/perl6-bench).
 
 If you run perl6-bench for multiple compilers (typically, versions of Perl 5, Raku, or NQP), results for each are visually overlaid on the same graphs, to provide for quick and easy comparison.
 
-<a id="%E5%85%B1%E4%BA%AB%E9%97%AE%E9%A2%98--share-problems"></a>
+<a id="共享问题--share-problems"></a>
 ## 共享问题 / Share problems
 
 一旦你使用了上述技术来识别要改进的代码，你就可以开始解决（并与其他人分享）问题：
@@ -167,21 +167,21 @@ Once you've used the above techniques to identify the code to improve, you can t
 - Think about the minimum speed increase (or ram reduction or whatever) you need/want, and think about the cost associated with achieving that goal. What's the improvement worth in terms of people's time and energy?
 - Let others know if your Raku use-case is in a production setting or just for fun.
 
-<a id="%E8%A7%A3%E5%86%B3%E9%97%AE%E9%A2%98--solve-problems"></a>
+<a id="解决问题--solve-problems"></a>
 # 解决问题 / Solve problems
 
 这是值得重复的：**确保你没有在错误的代码上浪费时间**。首先确定代码的[“关键的 3%”](https://en.wikiquote.org/wiki/Donald_Knuth)。
 
 This bears repeating: **make sure you're not wasting time on the wrong code**. Start by identifying the ["critical 3%"](https://en.wikiquote.org/wiki/Donald_Knuth) of your code.
 
-<a id="%E9%80%90%E8%A1%8C--line-by-line"></a>
+<a id="逐行--line-by-line"></a>
 ## 逐行 / Line by line
 
 一种快速、有趣、高效的尝试逐行改进代码的方法是使用 [raku](https://docs.raku.org/language/glossary#IRC) 的 evalbot [camelia](https://docs.raku.org/language/glossary#camelia) 与其他人协作。
 
 A quick, fun, productive way to try improve code line-by-line is to collaborate with others using the [raku](https://docs.raku.org/language/glossary#IRC) evalbot [camelia](https://docs.raku.org/language/glossary#camelia).
 
-<a id="%E9%80%90%E4%B8%AA%E4%BE%8B%E7%A8%8B--routine-by-routine"></a>
+<a id="逐个例程--routine-by-routine"></a>
 ## 逐个例程 / Routine by routine
 
 使用多分派，你可以在现有例程的“旁边”加入新的变体：
@@ -200,7 +200,7 @@ multi sub foo("quux", Int $b) { ... }
 
 The call overhead of having multiple `foo` definitions is generally insignificant (though see discussion of `where` below), so if your new definition handles its particular case more efficiently than the previously existing set of definitions, then you probably just made your code that much more efficient for that case.
 
-<a id="%E5%8A%A0%E5%BF%AB%E7%B1%BB%E5%9E%8B%E6%A3%80%E6%9F%A5%E5%92%8C%E8%B0%83%E7%94%A8%E8%A7%A3%E6%9E%90--speed-up-type-checks-and-call-resolution"></a>
+<a id="加快类型检查和调用解析--speed-up-type-checks-and-call-resolution"></a>
 ## 加快类型检查和调用解析 / Speed up type-checks and call resolution
 
 大多数 [`where` 子句](https://docs.raku.org/type/Signature#Type_constraints)、 大多数[子集](https://design.perl6.org/S12.html#Types_and_Subtypes)、 强制动态（运行时）类型检查和对任何*可能*匹配的调用的调用解析。这比编译时更慢，或者至少更晚。
@@ -211,7 +211,7 @@ Most [`where` clauses](https://docs.raku.org/type/Signature#Type_constraints) �
 
 Method calls are generally resolved as late as possible (dynamically at runtime), whereas sub calls are generally resolved statically at compile-time.
 
-<a id="%E9%80%89%E6%8B%A9%E6%9B%B4%E5%A5%BD%E7%9A%84%E7%AE%97%E6%B3%95--choose-better-algorithms"></a>
+<a id="选择更好的算法--choose-better-algorithms"></a>
 ## 选择更好的算法 / Choose better algorithms
 
 做出大性能改进最可靠的技术，无论是语言或编译器，是选择一个更合适的算法。
@@ -226,7 +226,7 @@ A classic example is [Boyer-Moore](https://en.wikipedia.org/wiki/Boyer%E2%80%93M
 
 The next couple sections discuss two broad categories for algorithmic improvement that are especially easy to accomplish in Raku. For more on this general topic, read the wikipedia page on [algorithmic efficiency](https://en.wikipedia.org/wiki/Algorithmic_efficiency), especially the 'See also' section near the end.
 
-<a id="%E5%B0%86%E9%A1%BA%E5%BA%8F%E9%98%BB%E5%A1%9E%E4%BB%A3%E7%A0%81%E6%94%B9%E4%B8%BA%E5%B9%B6%E8%A1%8C%E9%9D%9E%E9%98%BB%E5%A1%9E%E4%BB%A3%E7%A0%81---change-sequentialblocking-code-to-parallelnon-blocking"></a>
+<a id="将顺序阻塞代码改为并行非阻塞代码---change-sequentialblocking-code-to-parallelnon-blocking"></a>
 ### 将顺序/阻塞代码改为并行/非阻塞代码 - Change sequential/blocking code to parallel/non-blocking
 
 这是另一种非常重要的算法改进。
@@ -237,7 +237,7 @@ This is another very important class of algorithmic improvement.
 
 See the slides for [Parallelism, Concurrency, and Asynchrony in Raku](https://jnthn.net/papers/2015-yapcasia-concurrency.pdf#page=17) and/or [the matching video](https://www.youtube.com/watch?v=JpqnNCx7wVY&list=PLRuESFRW2Fa77XObvk7-BYVFwobZHdXdK&index=8).
 
-<a id="%E4%BD%BF%E7%94%A8%E7%8E%B0%E6%9C%89%E7%9A%84%E9%AB%98%E6%80%A7%E8%83%BD%E4%BB%A3%E7%A0%81--use-existing-high-performance-code"></a>
+<a id="使用现有的高性能代码--use-existing-high-performance-code"></a>
 ## 使用现有的高性能代码 / Use existing high performance code
 
 在 Raku 和 [Nativecall](https://docs.raku.org/language/nativecall) 中可以使用大量高性能的 C 库，从而很容易为它们创建包装。对 C++ 库也有实验性的支持。
@@ -252,7 +252,7 @@ If you want to [use Perl 5 modules in Raku](https://stackoverflow.com/a/27206428
 
 More generally, Raku is designed to smoothly interoperate with other languages and there are a number of [modules aimed at facilitating the use of libs from other langs](https://modules.perl6.org/#q=inline).
 
-<a id="%E4%BD%BF-rakudo-%E7%BC%96%E8%AF%91%E5%99%A8%E7%94%9F%E6%88%90%E6%9B%B4%E5%BF%AB%E7%9A%84%E4%BB%A3%E7%A0%81--make-the-rakudo-compiler-generate-faster-code"></a>
+<a id="使-rakudo-编译器生成更快的代码--make-the-rakudo-compiler-generate-faster-code"></a>
 ## 使 Rakudo 编译器生成更快的代码 / Make the Rakudo compiler generate faster code
 
 到目前为止，编译器关注的焦点一直是正确性，而不是它生成代码的速度，也不是它生成的代码运行的速度或倾斜速度。但这会最终改变。你可以在 freenode IRC 通道 #raku 和 #moarvm 上与编译器开发人员讨论预期的内容。更好的是，你可以自己贡献：
@@ -267,7 +267,7 @@ To date, the focus for the compiler has been correctness, not how fast it genera
 - Most of the rest of the compiler is written in a small language called [NQP](https://github.com/perl6/nqp) that's basically a subset of Raku. If you can write Raku, you can fairly easily learn to use and improve the mid-level NQP code too, at least from a pure language point of view. To dig into NQP and Rakudo's guts, start with [NQP and internals course](https://edumentab.github.io/rakudo-and-nqp-internals-course/).
 - If low-level C hacking is your idea of fun, checkout [MoarVM](https://moarvm.org/) and visit the freenode IRC channel #moarvm ([logs](https://colabti.org/irclogger/irclogger_logs/moarvm)).
 
-<a id="%E8%BF%98%E9%9C%80%E8%A6%81%E6%9B%B4%E5%A4%9A%E7%9A%84%E6%83%B3%E6%B3%95%EF%BC%9F--still-need-more-ideas"></a>
+<a id="还需要更多的想法？--still-need-more-ideas"></a>
 ## 还需要更多的想法？ / Still need more ideas?
 
 目前一些已知的 Rakudo 性能弱点还没有在本页面中讨论过，包括一般地使用 gather/take、junction、正则表达式和字符串处理。
@@ -278,7 +278,7 @@ Some known current Rakudo performance weaknesses not yet covered in this page in
 
 If you think some topic needs more coverage on this page, please submit a PR or tell someone your idea. Thanks. :)
 
-<a id="%E5%BE%97%E4%B8%8D%E5%88%B0%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E7%BB%93%E6%9E%9C%EF%BC%9F--not-getting-the-results-you-needwant"></a>
+<a id="得不到你想要的结果？--not-getting-the-results-you-needwant"></a>
 # 得不到你想要的结果？ / Not getting the results you need/want?
 
 如果你在此页面上尝试了所有内容，请考虑在 #raku 于编译器开发者讨论，这样我们就可以从你的用例和迄今为止发现的内容中学习。

@@ -24,22 +24,22 @@ This particular document is a quick overview of the process described in more de
 
 <!-- MarkdownTOC -->
 
-- [结构 / Structure](#%E7%BB%93%E6%9E%84--structure)
-- [Pod 转为 HTML / Generating HTML from Pod](#pod-%E8%BD%AC%E4%B8%BA-html--generating-html-from-pod)
-- [贡献 / Contributing](#%E8%B4%A1%E7%8C%AE--contributing)
-    - [添加定义 / Adding definitions](#%E6%B7%BB%E5%8A%A0%E5%AE%9A%E4%B9%89--adding-definitions)
+- [结构 / Structure](#结构--structure)
+- [Pod 转为 HTML / Generating HTML from Pod](#pod-转为-html--generating-html-from-pod)
+- [贡献 / Contributing](#贡献--contributing)
+    - [添加定义 / Adding definitions](#添加定义--adding-definitions)
 
 <!-- /MarkdownTOC -->
 
 
-<a id="%E7%BB%93%E6%9E%84--structure"></a>
+<a id="结构--structure"></a>
 # 结构 / Structure
 
 所有文件都写在 Raku Pod 中，并保存在 `doc/` 目录”和 `doc/Language/` 和 `doc/Type/` 子目录中。这些文件作为定义或“可记录文件”的集合处理，然后将其后处理和链接在一起。
 
 All of the documentation is written in Raku Pod and kept in the `doc/` directory, and the `doc/Language/` and `doc/Type/` sub-directories. These files are processed as collections of definitions or "documentables", which are then post-processed and linked together.
 
-<a id="pod-%E8%BD%AC%E4%B8%BA-html--generating-html-from-pod"></a>
+<a id="pod-转为-html--generating-html-from-pod"></a>
 # Pod 转为 HTML / Generating HTML from Pod
 
 要从 Pod 文件生成 HTML，你需要：
@@ -82,7 +82,7 @@ and then run:
 perl app.pl daemon
 ```
 
-<a id="%E8%B4%A1%E7%8C%AE--contributing"></a>
+<a id="贡献--contributing"></a>
 # 贡献 / Contributing
 
 文档使用 Raku Pod 写成。
@@ -97,7 +97,7 @@ For a quick introduction to Raku Pod, see [Raku Pod](https://docs.raku.org/langu
 
 For full details about the Raku Pod specification, see [Synopsis 26, Documentation](https://design.raku.org/S26.html).
 
-<a id="%E6%B7%BB%E5%8A%A0%E5%AE%9A%E4%B9%89--adding-definitions"></a>
+<a id="添加定义--adding-definitions"></a>
 ## 添加定义 / Adding definitions
 
 可使用 `=headN` Pod 指令定义 documentable，其中 `N` 大于零（例如 `=head1`、`=head2` 。。。）。

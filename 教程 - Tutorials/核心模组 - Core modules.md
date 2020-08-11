@@ -12,13 +12,13 @@ The Rakudo implementation has a few modules included you may want to use. The fo
 
 <!-- MarkdownTOC -->
 
-- [`CompUnit::*` 模块和角色 / `CompUnit::*` modules and roles](#compunit-%E6%A8%A1%E5%9D%97%E5%92%8C%E8%A7%92%E8%89%B2--compunit-modules-and-roles)
-- [`NativeCall` 模块 / `NativeCall` modules](#nativecall-%E6%A8%A1%E5%9D%97--nativecall-modules)
-- [其他模块 / Other modules](#%E5%85%B6%E4%BB%96%E6%A8%A1%E5%9D%97--other-modules)
+- [`CompUnit::*` 模块和角色 / `CompUnit::*` modules and roles](#compunit-模块和角色--compunit-modules-and-roles)
+- [`NativeCall` 模块 / `NativeCall` modules](#nativecall-模块--nativecall-modules)
+- [其他模块 / Other modules](#其他模块--other-modules)
 
 <!-- /MarkdownTOC -->
 
-<a id="compunit-%E6%A8%A1%E5%9D%97%E5%92%8C%E8%A7%92%E8%89%B2--compunit-modules-and-roles"></a>
+<a id="compunit-模块和角色--compunit-modules-and-roles"></a>
 ## `CompUnit::*` 模块和角色 / `CompUnit::*` modules and roles 
 
 这些模块主要由发行版构建工具使用，不是给最终用户使用的（至少在 6.c 版本之前）。
@@ -28,7 +28,7 @@ These modules are mostly used by distribution build tools, and are not intended 
 - [`CompUnit::Repository::Staging`](https://github.com/rakudo/rakudo/blob/master/lib/CompUnit/Repository/Staging.pm6).
 - [`CompUnit::Repository::(FileSystem|Installation|AbsolutePath|Unknown|NQP|Perl6|RepositoryRegistry)`](https://github.com/rakudo/rakudo/blob/master/src/core/CompUnit/RepositoryRegistry.pm6).
 
-<a id="nativecall-%E6%A8%A1%E5%9D%97--nativecall-modules"></a>
+<a id="nativecall-模块--nativecall-modules"></a>
 ## `NativeCall` 模块 / `NativeCall` modules
 
 - [`NativeCall`](https://github.com/rakudo/rakudo/blob/master/lib/NativeCall.pm6) Native Calling Interface ([docs](https://docs.raku.org/language/nativecall.html))
@@ -36,7 +36,7 @@ These modules are mostly used by distribution build tools, and are not intended 
 - [`NativeCall::Compiler::GNU`](https://github.com/rakudo/rakudo/blob/master/lib/NativeCall/Compiler/GNU.pm6) Used by `NativeCall`
 - [`NativeCall::Compiler::MSVC`](https://github.com/rakudo/rakudo/blob/master/lib/NativeCall/Compiler/MSVC.pm6) Used by `NativeCall`
 
-<a id="%E5%85%B6%E4%BB%96%E6%A8%A1%E5%9D%97--other-modules"></a>
+<a id="其他模块--other-modules"></a>
 ## 其他模块 / Other modules
 
 - [`Pod::To::Text`](https://github.com/rakudo/rakudo/blob/master/lib/Pod/To/Text.pm6) Used by several external modules

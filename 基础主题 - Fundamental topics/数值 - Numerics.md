@@ -12,24 +12,24 @@ Numeric types available in Raku
 - [`Complex`](#complex)
 - [`Rational`](#rational)
     - [`Rat`](#rat)
-        - [降级为 `Num` / Degradation to `Num`](#%E9%99%8D%E7%BA%A7%E4%B8%BA-num--degradation-to-num)
+        - [降级为 `Num` / Degradation to `Num`](#降级为-num--degradation-to-num)
     - [`FatRat`](#fatrat)
-            - [打印 rationals / Printing rationals](#%E6%89%93%E5%8D%B0-rationals--printing-rationals)
-- [除 0 / Division by zero](#%E9%99%A4-0--division-by-zero)
-    - [零分母有理数 / Zero-denominator rationals](#%E9%9B%B6%E5%88%86%E6%AF%8D%E6%9C%89%E7%90%86%E6%95%B0--zero-denominator-rationals)
-- [语素变体 / Allomorphs](#%E8%AF%AD%E7%B4%A0%E5%8F%98%E4%BD%93--allomorphs)
-    - [可用的语素变体 / Available allomorphs](#%E5%8F%AF%E7%94%A8%E7%9A%84%E8%AF%AD%E7%B4%A0%E5%8F%98%E4%BD%93--available-allomorphs)
-    - [语素变体的强制类型转换 / Coercion of allomorphs](#%E8%AF%AD%E7%B4%A0%E5%8F%98%E4%BD%93%E7%9A%84%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2--coercion-of-allomorphs)
-    - [对象标识 / Object identity](#%E5%AF%B9%E8%B1%A1%E6%A0%87%E8%AF%86--object-identity)
-- [原生数字 / Native numerics](#%E5%8E%9F%E7%94%9F%E6%95%B0%E5%AD%97--native-numerics)
-    - [可用的原生数字 / Available native numerics](#%E5%8F%AF%E7%94%A8%E7%9A%84%E5%8E%9F%E7%94%9F%E6%95%B0%E5%AD%97--available-native-numerics)
-    - [创建原生数字 / Creating native numerics](#%E5%88%9B%E5%BB%BA%E5%8E%9F%E7%94%9F%E6%95%B0%E5%AD%97--creating-native-numerics)
-    - [溢出/下溢 - Overflow/Underflow](#%E6%BA%A2%E5%87%BA%E4%B8%8B%E6%BA%A2---overflowunderflow)
-    - [自动装箱 / Auto-boxing](#%E8%87%AA%E5%8A%A8%E8%A3%85%E7%AE%B1--auto-boxing)
-    - [默认值 / Default values](#%E9%BB%98%E8%AE%A4%E5%80%BC--default-values)
-    - [原生分派 / Native dispatch](#%E5%8E%9F%E7%94%9F%E5%88%86%E6%B4%BE--native-dispatch)
-    - [原子操作 / Atomic operations](#%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C--atomic-operations)
-- [数字传染性 / Numeric infectiousness](#%E6%95%B0%E5%AD%97%E4%BC%A0%E6%9F%93%E6%80%A7--numeric-infectiousness)
+            - [打印 rationals / Printing rationals](#打印-rationals--printing-rationals)
+- [除 0 / Division by zero](#除-0--division-by-zero)
+    - [零分母有理数 / Zero-denominator rationals](#零分母有理数--zero-denominator-rationals)
+- [语素变体 / Allomorphs](#语素变体--allomorphs)
+    - [可用的语素变体 / Available allomorphs](#可用的语素变体--available-allomorphs)
+    - [语素变体的强制类型转换 / Coercion of allomorphs](#语素变体的强制类型转换--coercion-of-allomorphs)
+    - [对象标识 / Object identity](#对象标识--object-identity)
+- [原生数字 / Native numerics](#原生数字--native-numerics)
+    - [可用的原生数字 / Available native numerics](#可用的原生数字--available-native-numerics)
+    - [创建原生数字 / Creating native numerics](#创建原生数字--creating-native-numerics)
+    - [溢出/下溢 - Overflow/Underflow](#溢出下溢---overflowunderflow)
+    - [自动装箱 / Auto-boxing](#自动装箱--auto-boxing)
+    - [默认值 / Default values](#默认值--default-values)
+    - [原生分派 / Native dispatch](#原生分派--native-dispatch)
+    - [原子操作 / Atomic operations](#原子操作--atomic-operations)
+- [数字传染性 / Numeric infectiousness](#数字传染性--numeric-infectiousness)
 
 <!-- /MarkdownTOC -->
 
@@ -255,7 +255,7 @@ say ½ + ⅓ + ⅝ + ⅙; # OUTPUT: «1.625
 » 
 ```
 
-<a id="%E9%99%8D%E7%BA%A7%E4%B8%BA-num--degradation-to-num"></a>
+<a id="降级为-num--degradation-to-num"></a>
 ### 降级为 `Num` / Degradation to `Num`
 
 如果产生 [Rat](https://docs.raku.org/type/Rat) 答案的*数学运算*会产生分母大于 64 位的 [Rat](https://docs.raku.org/type/Rat)，则该操作将返回 [Num](https://docs.raku.org/type/Num) 对象。当*构建*一个[Rat](https://docs.raku.org/type/Rat)（即，当它不是一些数学表达式的结果）时，但是，可以使用更大的分母：
@@ -320,7 +320,7 @@ say (1🙼3).raku; # OUTPUT: «FatRat.new(1, 3)
 » 
 ```
 
-<a id="%E6%89%93%E5%8D%B0-rationals--printing-rationals"></a>
+<a id="打印-rationals--printing-rationals"></a>
 #### 打印 rationals / Printing rationals
 
 请记住，像 [say](https://docs.raku.org/routine/say) 或 [put](https://docs.raku.org/routine/put) 这样的输出例程不会力图区分[数字](https://docs.raku.org/type/Numeric)类型如何输出，并且可能选择将 [Num](https://docs.raku.org/type/Num) 显示为 [Int](https://docs.raku.org/type/Int) 或 [Rat](https://docs.raku.org/type/Rat) 数字。要获得更明确的输出字符串，请使用 [raku](https://docs.raku.org/routine/raku) 方法：
@@ -353,7 +353,7 @@ say <4/2>.nude; # OUTPUT: «(2 1)
 » 
 ```
 
-<a id="%E9%99%A4-0--division-by-zero"></a>
+<a id="除-0--division-by-zero"></a>
 # 除 0 / Division by zero
 
 在许多语言中，除以零立马会抛出一个异常。在 Raku 中，会发生什么取决于你要除的东西以及你如何使用结果。
@@ -372,7 +372,7 @@ As of 6.e language, both [Num](https://docs.raku.org/type/Num) and [Complex](htt
 
 Division of [Int](https://docs.raku.org/type/Int) numerics produces a [Rat](https://docs.raku.org/type/Rat) object (or a [Num](https://docs.raku.org/type/Num), if after reduction the denominator is larger than 64-bits, which isn't the case when you're dividing by zero). This means such division never produces an [Exception](https://docs.raku.org/type/Exception) or a [Failure](https://docs.raku.org/type/Failure). The result is a Zero-Denominator Rational, which can be explosive.
 
-<a id="%E9%9B%B6%E5%88%86%E6%AF%8D%E6%9C%89%E7%90%86%E6%95%B0--zero-denominator-rationals"></a>
+<a id="零分母有理数--zero-denominator-rationals"></a>
 ## 零分母有理数 / Zero-denominator rationals
 
 [零分母](https://docs.raku.org/type/FatRat) 有理数是一个扮演 [Rational](https://docs.raku.org/type/Rational) 角色的数字，它在核心数字中将是 [Rat](https://docs.raku.org/type/Rat) 和 [FatRat](https://docs.raku.org/type/FatRat) 对象，其分母为零。这样根据原始分子是否为负，零或正数, 有理数的分子被归为 `-1`、`0` 或 `1`。
@@ -409,7 +409,7 @@ say 0/0;
 #  in block <unit> at -e line 1 
 ```
 
-<a id="%E8%AF%AD%E7%B4%A0%E5%8F%98%E4%BD%93--allomorphs"></a>
+<a id="语素变体--allomorphs"></a>
 # 语素变体 / Allomorphs
 
 [Allomorphs](https://docs.raku.org/language/glossary#index-entry-Allomorph) 是两种类型的子类，可以表现为它们中的任何一种。例如，[IntStr](https://docs.raku.org/type/IntStr) 是 [Int](https://docs.raku.org/type/Int) 和 [Str](https://docs.raku.org/type/Str) 类型的子类，并且将被需要 [Int](https://docs.raku.org/type/Int) 或 [Str](https://docs.raku.org/type/Str) 对象的任何类型约束所接受。
@@ -448,7 +448,7 @@ A couple of constructs above have a space after the opening angle bracket. That 
 
 If the numeric literal doesn't use any operators, then writing it inside the angle brackets, even without including any spaces within, would produce the allomorph. (Logic: if you didn't want the allomorph, you wouldn't use the angle brackets. The same isn't true for operator-using numbers as some constructs, such as signature literals, do not let you use operators, so you can't just omit angle brackets for such numeric literals).
 
-<a id="%E5%8F%AF%E7%94%A8%E7%9A%84%E8%AF%AD%E7%B4%A0%E5%8F%98%E4%BD%93--available-allomorphs"></a>
+<a id="可用的语素变体--available-allomorphs"></a>
 ## 可用的语素变体 / Available allomorphs
 
 核心语言提供以下语素变体：
@@ -466,7 +466,7 @@ The core language offers the following allomorphs:
 
 Note: there is no `FatRatStr` type.
 
-<a id="%E8%AF%AD%E7%B4%A0%E5%8F%98%E4%BD%93%E7%9A%84%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2--coercion-of-allomorphs"></a>
+<a id="语素变体的强制类型转换--coercion-of-allomorphs"></a>
 ## 语素变体的强制类型转换 / Coercion of allomorphs
 
 请记住，语素变体只是它们所代表的两种（或三种）类型的子类。正如变量或参数类型约束为 `Foo` 可以接受任何 `Foo` 子类一样，所以变量或参数类型约束为 [Int](https://docs.raku.org/type/Int) 的将接受 [IntStr](https://docs.raku.org/type/IntStr) 语素变体：
@@ -526,7 +526,7 @@ say map *.^name, ~«<42 50e0 100>;  # OUTPUT: «(Str Str Str)
 » 
 ```
 
-<a id="%E5%AF%B9%E8%B1%A1%E6%A0%87%E8%AF%86--object-identity"></a>
+<a id="对象标识--object-identity"></a>
 ## 对象标识 / Object identity
 
 当我们考虑对象一致性时，上面关于强制类型转换为语素变体的讨论变得更加重要。一些构造利用它来确定两个对象是否“相同”。而对于人类而言，语素变体 `42` 和常规的 `42` 可能看起来“相同”，对于那些构造，它们是完全不同的对象：
@@ -570,7 +570,7 @@ say 42 ∈ +«<42 100 200>; # OUTPUT: «True
 
 Be mindful of these object identity differences and coerce your allomorphs as needed.
 
-<a id="%E5%8E%9F%E7%94%9F%E6%95%B0%E5%AD%97--native-numerics"></a>
+<a id="原生数字--native-numerics"></a>
 # 原生数字 / Native numerics
 
 顾名思义，原生数字可以访问原生数字 - 即由硬件直接提供的数字。这反过来又提供两个功能：溢出/下溢和更好的性能。
@@ -581,7 +581,7 @@ As the name suggests, native numerics offer access to native numerics—i.e. tho
 
 **NOTE:** at the time of this writing (2018.05), certain implementations (such as Rakudo) offer somewhat spotty details on native types, such as whether `int64` is available and is of 64-bit size on 32-bit machines, and how to detect when your program is running on such hardware.
 
-<a id="%E5%8F%AF%E7%94%A8%E7%9A%84%E5%8E%9F%E7%94%9F%E6%95%B0%E5%AD%97--available-native-numerics"></a>
+<a id="可用的原生数字--available-native-numerics"></a>
 ## 可用的原生数字 / Available native numerics
 
 | Native type | Base numeric     | Size                                                         |
@@ -601,7 +601,7 @@ As the name suggests, native numerics offer access to native numerics—i.e. tho
 | uint64      | unsigned integer | 64-bits                                                      |
 | uint8       | unsigned integer | 8-bits                                                       |
 
-<a id="%E5%88%9B%E5%BB%BA%E5%8E%9F%E7%94%9F%E6%95%B0%E5%AD%97--creating-native-numerics"></a>
+<a id="创建原生数字--creating-native-numerics"></a>
 ## 创建原生数字 / Creating native numerics
 
 要创建原生类型的变量或参数，只需使用其中一个可用数字的名称作为类型约束：
@@ -622,7 +622,7 @@ At times, you may wish to coerce some value to a native type without creating an
 some-native-taking-sub (my int $ = $y), (my int32 $ = $z)
 ```
 
-<a id="%E6%BA%A2%E5%87%BA%E4%B8%8B%E6%BA%A2---overflowunderflow"></a>
+<a id="溢出下溢---overflowunderflow"></a>
 ## 溢出/下溢 - Overflow/Underflow
 
 尝试**赋值**不适合特定原生类型的值会产生异常。这包括尝试为原生参数提供过大的参数：
@@ -671,7 +671,7 @@ say my uint8 @a = 1000, 2000, 3000; # OUTPUT: «232 208 184
 » 
 ```
 
-<a id="%E8%87%AA%E5%8A%A8%E8%A3%85%E7%AE%B1--auto-boxing"></a>
+<a id="自动装箱--auto-boxing"></a>
 ## 自动装箱 / Auto-boxing
 
 虽然它们可以被称为“**原生类型** ”，但原生数字实际上并不是具有任何可用方法的类。但是，你*可以*调用这些数字的非原生版本上可用的任何方法。这是怎么回事？
@@ -718,14 +718,14 @@ my int $a-native = -42;
 » 
 ```
 
-<a id="%E9%BB%98%E8%AE%A4%E5%80%BC--default-values"></a>
+<a id="默认值--default-values"></a>
 ## 默认值 / Default values
 
 由于原生类型没有类，因此通常没有使用尚未初始化的变量获得的类型对象。因此，原生类型自动初始化为零。在 6.c 语言版本，原生的浮点类型（`num`、 `num32` 和 `num64`）被初始化为值 `NaN`; 在 6.d 语言版本中默认为 `0e0`。
 
 Since there are no classes behind native types, there are no type objects you'd normally get with variables that haven't been initialized. Thus, native types are automatically initialized to zero. In 6.c language, native floating point types (`num`, `num32`, and `num64`) were initialized to value `NaN`; in 6.d language the default is `0e0`.
 
-<a id="%E5%8E%9F%E7%94%9F%E5%88%86%E6%B4%BE--native-dispatch"></a>
+<a id="原生分派--native-dispatch"></a>
 ## 原生分派 / Native dispatch
 
 例如，当大小可预测时，可以使用原生候选者提供更快算法，否则回退到较慢的非原生候选者。以下是涉及原生候选者的多重分派的规则。
@@ -794,7 +794,7 @@ f 42, my int $x; # Successful call
 
 This way you do not have to constantly write, for example, `$n +> 2` as `$n +> (my int $ = 2)`. The compiler knows the literal is small enough to fit to a native type and converts it to a native.
 
-<a id="%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C--atomic-operations"></a>
+<a id="原子操作--atomic-operations"></a>
 ## 原子操作 / Atomic operations
 
 该语言提供了保证以原子方式执行的[一些操作](https://docs.raku.org/type/atomicint)，即安全地由多个线程执行而无需锁定而没有数据争用的风险。
@@ -823,7 +823,7 @@ say $x; # OUTPUT: «100
 
 The similarity to `int` is present in multi dispatch as well: an `atomicint`, plain `int`, and the sized `int` variants are all considered to be the same by the dispatcher and cannot be differentiated through multi-dispatch.
 
-<a id="%E6%95%B0%E5%AD%97%E4%BC%A0%E6%9F%93%E6%80%A7--numeric-infectiousness"></a>
+<a id="数字传染性--numeric-infectiousness"></a>
 # 数字传染性 / Numeric infectiousness
 
 当一些数学运算中涉及两个不同类型的数字时，数字“传染性”决定了结果类型。如果结果是该类型而不是其他操作数的类型，则认为类型比其他类型更具传染性。例如，[Num](https://docs.raku.org/type/Num) 类型比 [Int](https://docs.raku.org/type/Int) 更具传染性，因此我们可以期望 `42e0 + 42` 产生 [Num](https://docs.raku.org/type/Num) 作为结果。

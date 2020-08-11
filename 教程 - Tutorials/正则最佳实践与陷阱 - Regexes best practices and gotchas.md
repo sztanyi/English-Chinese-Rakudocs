@@ -12,14 +12,14 @@ To help with robust regexes and grammars, here are some best practices for code 
 
 <!-- MarkdownTOC -->
 
-- [代码布局 / Code layout](#%E4%BB%A3%E7%A0%81%E5%B8%83%E5%B1%80--code-layout)
-- [小一点 / Keep it small](#%E4%BF%9D%E6%8C%81%E5%B0%8F%E4%B8%80%E7%82%B9--keep-it-small)
-- [匹配什么 / What to match](#%E5%8C%B9%E9%85%8D%E4%BB%80%E4%B9%88--what-to-match)
-- [匹配空格 / Matching whitespace](#%E5%8C%B9%E9%85%8D%E7%A9%BA%E6%A0%BC--matching-whitespace)
+- [代码布局 / Code layout](#代码布局--code-layout)
+- [保持小一点 / Keep it small](#保持小一点--keep-it-small)
+- [匹配什么 / What to match](#匹配什么--what-to-match)
+- [匹配空格 / Matching whitespace](#匹配空格--matching-whitespace)
 
 <!-- /MarkdownTOC -->
 
-<a id="%E4%BB%A3%E7%A0%81%E5%B8%83%E5%B1%80--code-layout"></a>
+<a id="代码布局--code-layout"></a>
 # 代码布局 / Code layout
 
 如果没有 `:sigspace` 副词，Raku 正则表达式中的空白就没有意义。利用这个优势，在增加可读性的地方插入空白。此外，必要时插入注释。
@@ -70,7 +70,7 @@ my regex example {
 }
 ```
 
-<a id="%E4%BF%9D%E6%8C%81%E5%B0%8F%E4%B8%80%E7%82%B9--keep-it-small"></a>
+<a id="保持小一点--keep-it-small"></a>
 # 保持小一点 / Keep it small
 
 正则表达式通常比常规代码更紧凑因为它们用这么少的资源做了这么多，所以保持正则简短。
@@ -128,7 +128,7 @@ my regex float {
 }
 ```
 
-<a id="%E5%8C%B9%E9%85%8D%E4%BB%80%E4%B9%88--what-to-match"></a>
+<a id="匹配什么--what-to-match"></a>
 # 匹配什么 / What to match
 
 通常输入数据格式没有明确的规范，或者程序员不知道该规范那么，在你期望的事情上保持自由是件好事，但前提是不存在任何可能的歧义。
@@ -177,7 +177,7 @@ token header { '[' <-[ \[\] \n ]>+ ']' }
 
 and then, in the post-processing, strip leading and trailing spaces and tabs from the section header.
 
-<a id="%E5%8C%B9%E9%85%8D%E7%A9%BA%E6%A0%BC--matching-whitespace"></a>
+<a id="匹配空格--matching-whitespace"></a>
 # 匹配空格 / Matching whitespace
 
 `:sigspace` 副词（或者使用 `rule` 声明符而不是 `token` 或 `regex`）对于隐式解析可能出现在许多地方的空白非常方便。

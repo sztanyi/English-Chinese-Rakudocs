@@ -12,20 +12,20 @@ Packages are nested namespaces of named program elements. [Modules](https://docs
 
 <!-- MarkdownTOC -->
 
-- [名字 / Names](#%E5%90%8D%E5%AD%97--names)
-    - [包限定名 / Package-qualified names](#%E5%8C%85%E9%99%90%E5%AE%9A%E5%90%8D--package-qualified-names)
-- [伪包 / Pseudo-packages](#%E4%BC%AA%E5%8C%85--pseudo-packages)
-- [查名字 / Looking up names](#%E6%9F%A5%E5%90%8D%E5%AD%97--looking-up-names)
-    - [名称插值 / Interpolating into names](#%E5%90%8D%E7%A7%B0%E6%8F%92%E5%80%BC--interpolating-into-names)
-    - [直接查找 / Direct lookup](#%E7%9B%B4%E6%8E%A5%E6%9F%A5%E6%89%BE--direct-lookup)
-    - [包查找 / Package lookup](#%E5%8C%85%E6%9F%A5%E6%89%BE--package-lookup)
-    - [类成员查找 / Class member lookup](#%E7%B1%BB%E6%88%90%E5%91%98%E6%9F%A5%E6%89%BE--class-member-lookup)
+- [名字 / Names](#名字--names)
+    - [包限定名 / Package-qualified names](#包限定名--package-qualified-names)
+- [伪包 / Pseudo-packages](#伪包--pseudo-packages)
+- [查名字 / Looking up names](#查名字--looking-up-names)
+    - [名称插值 / Interpolating into names](#名称插值--interpolating-into-names)
+    - [直接查找 / Direct lookup](#直接查找--direct-lookup)
+    - [包查找 / Package lookup](#包查找--package-lookup)
+    - [类成员查找 / Class member lookup](#类成员查找--class-member-lookup)
 - [Globals](#globals)
 
 <!-- /MarkdownTOC -->
 
 
-<a id="%E5%90%8D%E5%AD%97--names"></a>
+<a id="名字--names"></a>
 # 名字 / Names
 
 包*名*与变量名的合法部分（不包括标记）一样。这包括：
@@ -69,7 +69,7 @@ say Foo.^ver; # OUTPUT: «1␤»
 
 The syntax allows the declared package to use a version, but as a matter of fact, it's dismissed; only modules and classes have an identity that might include `auth` and `ver`.
 
-<a id="%E5%8C%85%E9%99%90%E5%AE%9A%E5%90%8D--package-qualified-names"></a>
+<a id="包限定名--package-qualified-names"></a>
 ## 包限定名 / Package-qualified names
 
 普通的包限定名看起来像这样： `$Foo::Bar::quux`，它将是包 `Foo::Bar` 中的 `$quux` 变量；`Foo::Bar::zape` 将代表在同一包内的 `&zape` 变量。
@@ -92,7 +92,7 @@ This does not work with the `Foo«&zape»` variable, since `sub`s, by default, h
 
 If the name part before `::` is null, it means the package is unspecified and must be searched for. Generally this means that an initial `::` following the main sigil is a no-op on names that are known at compile time, though `::()` can also be used to introduce an interpolation. Also, in the absence of another sigil, `::` can serve as its own sigil indicating intentional use of a not-yet-declared package name.
 
-<a id="%E4%BC%AA%E5%8C%85--pseudo-packages"></a>
+<a id="伪包--pseudo-packages"></a>
 # 伪包 / Pseudo-packages
 
 下列伪包名称是名称的前面部分的保留字：
@@ -127,10 +127,10 @@ The following relative names are also reserved but may be used anywhere in a nam
 
 The file's scope is known as `UNIT`, but there are one or more lexical scopes outside of that corresponding to the linguistic setting (often known as the prelude in other cultures). Hence, the `SETTING` scope is equivalent to `UNIT::OUTERS`. For a standard Raku program `SETTING` is the same as `CORE`, but various startup options (such as `-n` or `-p`) can put you into a domain specific language, in which case `CORE` remains the scope of the standard language, while `SETTING` represents the scope defining the DSL that functions as the setting of the current file. When used as a search term in the middle of a name, `SETTING` includes all its outer scopes up to `CORE`. To get *only* the setting's outermost scope, use `UNIT::OUTER` instead.
 
-<a id="%E6%9F%A5%E5%90%8D%E5%AD%97--looking-up-names"></a>
+<a id="查名字--looking-up-names"></a>
 # 查名字 / Looking up names
 
-<a id="%E5%90%8D%E7%A7%B0%E6%8F%92%E5%80%BC--interpolating-into-names"></a>
+<a id="名称插值--interpolating-into-names"></a>
 ## 名称插值 / Interpolating into names
 
 你可以使用 `::($expr)` 将字符串[插值](https://docs.raku.org/language/packages#Interpolating)到包或变量名中，那个位置通常放置包或变量名。字符串允许包含 `::` 的其他实例，这将被解释为包嵌套。你只能插值全名，因为构造以 `::` 开头，或者直接结束，或者在括号外用另一个 `::` 继续。大多数符号引用都是用这个符号来完成的：
@@ -189,7 +189,7 @@ $what-method = 'another-method';
 say a-class."$what-method"(); # OUTPUT: «in-another-method␤»
 ```
 
-<a id="%E7%9B%B4%E6%8E%A5%E6%9F%A5%E6%89%BE--direct-lookup"></a>
+<a id="直接查找--direct-lookup"></a>
 ## 直接查找 / Direct lookup
 
 要在不扫描的程序包的符号表中执行直接查找，请将包名视为哈希：
@@ -220,7 +220,7 @@ $foo
 
 Each of them scans the lexical scopes outward, and then the current package scope (though the package scope is then disallowed when "strict" is in effect).
 
-<a id="%E5%8C%85%E6%9F%A5%E6%89%BE--package-lookup"></a>
+<a id="包查找--package-lookup"></a>
 ## 包查找 / Package lookup
 
 将包对象本身下标为散列对象，其键为变量名，包括任何标记。包对象可以通过使用 `::` 后缀从类型名称派生出来：
@@ -231,7 +231,7 @@ Subscript the package object itself as a hash object, the key of which is the va
 MyType::<$foo>
 ```
 
-<a id="%E7%B1%BB%E6%88%90%E5%91%98%E6%9F%A5%E6%89%BE--class-member-lookup"></a>
+<a id="类成员查找--class-member-lookup"></a>
 ## 类成员查找 / Class member lookup
 
 方法-包括自动生成的方法，例如公共属性的访问器-存储在类元对象中，并可以通过 [lookup](https://docs.raku.org/routine/lookup) 方法进行查找。

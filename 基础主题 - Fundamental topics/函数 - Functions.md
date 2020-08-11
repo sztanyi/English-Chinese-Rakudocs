@@ -24,46 +24,46 @@ Introspection on subroutines is provided via [`Routine`](https://docs.raku.org/t
 
 <!-- MarkdownTOC -->
 
-- [定义/创建/使用函数 - Defining/Creating/Using functions](#%E5%AE%9A%E4%B9%89%E5%88%9B%E5%BB%BA%E4%BD%BF%E7%94%A8%E5%87%BD%E6%95%B0---definingcreatingusing-functions)
-  - [子例程 Subroutines](#%E5%AD%90%E4%BE%8B%E7%A8%8B-subroutines)
-  - [代码块和拉姆达 / Blocks and lambdas](#%E4%BB%A3%E7%A0%81%E5%9D%97%E5%92%8C%E6%8B%89%E5%A7%86%E8%BE%BE--blocks-and-lambdas)
-  - [签名 / Signatures](#%E7%AD%BE%E5%90%8D--signatures)
-    - [自动签名 / Automatic signatures](#%E8%87%AA%E5%8A%A8%E7%AD%BE%E5%90%8D--automatic-signatures)
-  - [参数 / Arguments](#%E5%8F%82%E6%95%B0--arguments)
-  - [返回值 / Return values](#%E8%BF%94%E5%9B%9E%E5%80%BC--return-values)
-  - [返回类型约束 / Return type constraints](#%E8%BF%94%E5%9B%9E%E7%B1%BB%E5%9E%8B%E7%BA%A6%E6%9D%9F--return-type-constraints)
-  - [多分派 / Multi-dispatch](#%E5%A4%9A%E5%88%86%E6%B4%BE--multi-dispatch)
+- [定义/创建/使用函数 - Defining/Creating/Using functions](#定义创建使用函数---definingcreatingusing-functions)
+  - [子例程 Subroutines](#子例程-subroutines)
+  - [代码块和拉姆达 / Blocks and lambdas](#代码块和拉姆达--blocks-and-lambdas)
+  - [签名 / Signatures](#签名--signatures)
+    - [自动签名 / Automatic signatures](#自动签名--automatic-signatures)
+  - [参数 / Arguments](#参数--arguments)
+  - [返回值 / Return values](#返回值--return-values)
+  - [返回类型约束 / Return type constraints](#返回类型约束--return-type-constraints)
+  - [多分派 / Multi-dispatch](#多分派--multi-dispatch)
     - [proto](#proto)
   - [only](#only)
-- [习惯用法和习语 / Conventions and idioms](#%E4%B9%A0%E6%83%AF%E7%94%A8%E6%B3%95%E5%92%8C%E4%B9%A0%E8%AF%AD--conventions-and-idioms)
-  - [Slurpy 约定 / Slurpy conventions](#slurpy-%E7%BA%A6%E5%AE%9A--slurpy-conventions)
-- [函数是第一等对象 / Functions are first-class objects](#%E5%87%BD%E6%95%B0%E6%98%AF%E7%AC%AC%E4%B8%80%E7%AD%89%E5%AF%B9%E8%B1%A1--functions-are-first-class-objects)
-  - [中缀形式 / Infix form](#%E4%B8%AD%E7%BC%80%E5%BD%A2%E5%BC%8F--infix-form)
-  - [闭包 / Closures](#%E9%97%AD%E5%8C%85--closures)
-  - [例程 / Routines](#%E4%BE%8B%E7%A8%8B--routines)
-- [定义运算符 / Defining operators](#%E5%AE%9A%E4%B9%89%E8%BF%90%E7%AE%97%E7%AC%A6--defining-operators)
-  - [优先级 / Precedence](#%E4%BC%98%E5%85%88%E7%BA%A7--precedence)
-  - [结合性 / Associativity](#%E7%BB%93%E5%90%88%E6%80%A7--associativity)
-- [特征 / Traits](#%E7%89%B9%E5%BE%81--traits)
-- [重新分派 / Re-dispatching](#%E9%87%8D%E6%96%B0%E5%88%86%E6%B4%BE--re-dispatching)
-  - [callsame 函数 / sub callsame](#callsame-%E5%87%BD%E6%95%B0--sub-callsame)
-  - [callwith 函数 / sub callwith](#callwith-%E5%87%BD%E6%95%B0--sub-callwith)
-  - [nextsame 函数 / sub nextsame](#nextsame-%E5%87%BD%E6%95%B0--sub-nextsame)
-  - [nextwith 函数 / sub nextwith](#nextwith-%E5%87%BD%E6%95%B0--sub-nextwith)
-  - [samewith 函数 / sub samewith](#samewith-%E5%87%BD%E6%95%B0--sub-samewith)
-  - [nextcallee 函数 / sub nextcallee](#nextcallee-%E5%87%BD%E6%95%B0--sub-nextcallee)
-  - [包装的例程 / Wrapped routines](#%E5%8C%85%E8%A3%85%E7%9A%84%E4%BE%8B%E7%A8%8B--wrapped-routines)
-  - [父类例程 / Routines of parent class](#%E7%88%B6%E7%B1%BB%E4%BE%8B%E7%A8%8B--routines-of-parent-class)
-- [强制类型转换的类型 / Coercion types](#%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E7%9A%84%E7%B1%BB%E5%9E%8B--coercion-types)
-- [Main 函数 / sub MAIN](#main-%E5%87%BD%E6%95%B0--sub-main)
+- [习惯用法和习语 / Conventions and idioms](#习惯用法和习语--conventions-and-idioms)
+  - [Slurpy 约定 / Slurpy conventions](#slurpy-约定--slurpy-conventions)
+- [函数是第一等对象 / Functions are first-class objects](#函数是第一等对象--functions-are-first-class-objects)
+  - [中缀形式 / Infix form](#中缀形式--infix-form)
+  - [闭包 / Closures](#闭包--closures)
+  - [例程 / Routines](#例程--routines)
+- [定义运算符 / Defining operators](#定义运算符--defining-operators)
+  - [优先级 / Precedence](#优先级--precedence)
+  - [结合性 / Associativity](#结合性--associativity)
+- [特征 / Traits](#特征--traits)
+- [重新分派 / Re-dispatching](#重新分派--re-dispatching)
+  - [callsame 函数 / sub callsame](#callsame-函数--sub-callsame)
+  - [callwith 函数 / sub callwith](#callwith-函数--sub-callwith)
+  - [nextsame 函数 / sub nextsame](#nextsame-函数--sub-nextsame)
+  - [nextwith 函数 / sub nextwith](#nextwith-函数--sub-nextwith)
+  - [samewith 函数 / sub samewith](#samewith-函数--sub-samewith)
+  - [nextcallee 函数 / sub nextcallee](#nextcallee-函数--sub-nextcallee)
+  - [包装的例程 / Wrapped routines](#包装的例程--wrapped-routines)
+  - [父类例程 / Routines of parent class](#父类例程--routines-of-parent-class)
+- [强制类型转换的类型 / Coercion types](#强制类型转换的类型--coercion-types)
+- [Main 函数 / sub MAIN](#main-函数--sub-main)
 
 <!-- /MarkdownTOC -->
 
 
-<a id="%E5%AE%9A%E4%B9%89%E5%88%9B%E5%BB%BA%E4%BD%BF%E7%94%A8%E5%87%BD%E6%95%B0---definingcreatingusing-functions"></a>
+<a id="定义创建使用函数---definingcreatingusing-functions"></a>
 # 定义/创建/使用函数 - Defining/Creating/Using functions
 
-<a id="%E5%AD%90%E4%BE%8B%E7%A8%8B-subroutines"></a>
+<a id="子例程-subroutines"></a>
 ## 子例程 Subroutines
 
 创建子例程的基本方法是使用 `sub` 声明符，后跟可选的[标识符](https://docs.raku.org/language/syntax#Identifiers)：
@@ -164,7 +164,7 @@ Or even
 say { $^a ** 2 + $^b ** 2 }(3, 4)            # OUTPUT: «25␤» 
 ```
 
-<a id="%E4%BB%A3%E7%A0%81%E5%9D%97%E5%92%8C%E6%8B%89%E5%A7%86%E8%BE%BE--blocks-and-lambdas"></a>
+<a id="代码块和拉姆达--blocks-and-lambdas"></a>
 ## 代码块和拉姆达 / Blocks and lambdas
 
 每当你看到类似于 `{ $_ + 42 }`、 `-> $a, $b { $a ** $b }`，或 `{ $^text.indent($:spaces) }`，那就是 [Block](https://docs.raku.org/type/Block) 语法。它在 `if`、 `for` 和 `while` 等后面使用。
@@ -190,7 +190,7 @@ say { $^a ** 2 + $^b ** 2}(3, 4) # OUTPUT: «25␤»
 
 For block syntax details, see the documentation for the [Block](https://docs.raku.org/type/Block) type.
 
-<a id="%E7%AD%BE%E5%90%8D--signatures"></a>
+<a id="签名--signatures"></a>
 ## 签名 / Signatures
 
 函数接受的参数在其*签名*中描述。
@@ -206,7 +206,7 @@ sub format(Str $s) { ... }
 
 Details about the syntax and use of signatures can be found in the [documentation on the `Signature` class](https://docs.raku.org/type/Signature).
 
-<a id="%E8%87%AA%E5%8A%A8%E7%AD%BE%E5%90%8D--automatic-signatures"></a>
+<a id="自动签名--automatic-signatures"></a>
 ### 自动签名 / Automatic signatures
 
 如果没有提供签名，但函数体中使用了两个自动变量 `@_` 或 `%_` ，则将生成带有 `*@_` 或 `*%_` 的签名。两个自动变量可以同时使用。
@@ -218,7 +218,7 @@ sub s { say @_, %_ };
 say &s.signature # OUTPUT: «(*@_, *%_)␤» 
 ```
 
-<a id="%E5%8F%82%E6%95%B0--arguments"></a>
+<a id="参数--arguments"></a>
 ## 参数 / Arguments
 
 参数以逗号分隔的列表形式提供。要消除嵌套调用的歧义，请使用括号：
@@ -260,7 +260,7 @@ f :32x :50y :110z;   # This flavor of "adverb" works, too
 f :a:b:c;            # The spaces are also optional. 
 ```
 
-<a id="%E8%BF%94%E5%9B%9E%E5%80%BC--return-values"></a>
+<a id="返回值--return-values"></a>
 ## 返回值 / Return values
 
 任何 `Block` 或 `Routine` 都会将其最后一个表达式的值作为返回值提供给调用方。如果调用了 [return](https://docs.raku.org/language/control#return) 或 [return-rw](https://docs.raku.org/language/control#return-rw) ，则其参数（如果有）将成为返回值。默认返回值为 [Nil](https://docs.raku.org/type/Nil)。
@@ -293,7 +293,7 @@ put b.perl;
 # OUTPUT: «\("a", "b", "c")␤» 
 ```
 
-<a id="%E8%BF%94%E5%9B%9E%E7%B1%BB%E5%9E%8B%E7%BA%A6%E6%9D%9F--return-type-constraints"></a>
+<a id="返回类型约束--return-type-constraints"></a>
 ## 返回类型约束 / Return type constraints
 
 Raku 有许多方法可以指定函数的返回类型：
@@ -328,7 +328,7 @@ sub foo() returns Int { fail   }; foo; # Failure returned
 sub bar() returns Int { return }; bar; # Nil returned 
 ```
 
-<a id="%E5%A4%9A%E5%88%86%E6%B4%BE--multi-dispatch"></a>
+<a id="多分派--multi-dispatch"></a>
 ## 多分派 / Multi-dispatch
 
 Raku 允许使用相同的名称但不同的签名编写多个例程。当以名称调用例程时，运行时环境将确定正确的*候选例程*并调用它。
@@ -538,14 +538,14 @@ at /tmp/only-redeclaration.p6:3
 
 Anonymous sub cannot be declared `only`. `only sub {}'` will throw an error of type, surprisingly, `X::Anon::Multi`.
 
-<a id="%E4%B9%A0%E6%83%AF%E7%94%A8%E6%B3%95%E5%92%8C%E4%B9%A0%E8%AF%AD--conventions-and-idioms"></a>
+<a id="习惯用法和习语--conventions-and-idioms"></a>
 # 习惯用法和习语 / Conventions and idioms
 
 虽然上面描述的调度系统提供了很大的灵活性，但是大多数内部函数和许多模组中的函数都会遵循一些约定。
 
 While the dispatch system described above provides a lot of flexibility, there are some conventions that most internal functions, and those in many modules, will follow.
 
-<a id="slurpy-%E7%BA%A6%E5%AE%9A--slurpy-conventions"></a>
+<a id="slurpy-约定--slurpy-conventions"></a>
 ## Slurpy 约定 / Slurpy conventions
 
 也许这些约定中最重要的一个就是处理 slurpy 列表参数的方式。大多数情况下，函数不会自动压扁 slurpy 列表。罕见的例外是那些在列表的列表上没有合理行为的函数（例如，[chrs](https://docs.raku.org/routine/chrs)），或者与已建立的习惯用法（例如，[pop](https://docs.raku.org/routine/pop) 作为 [push](https://docs.raku.org/routine/push) 的逆函数 ）。
@@ -616,7 +616,7 @@ my \c = (1, 2);  # Sigilless variables always bind, even with '='
 grab(c);         # OUTPUT: «grab 1␤grab 2␤» 
 ```
 
-<a id="%E5%87%BD%E6%95%B0%E6%98%AF%E7%AC%AC%E4%B8%80%E7%AD%89%E5%AF%B9%E8%B1%A1--functions-are-first-class-objects"></a>
+<a id="函数是第一等对象--functions-are-first-class-objects"></a>
 # 函数是第一等对象 / Functions are first-class objects
 
 函数和其他代码对象可以作为值传递，就像其他任何对象一样。
@@ -654,7 +654,7 @@ my @squared = map &square,  1..5;
 say join ', ', @squared;        # OUTPUT: «1, 4, 9, 16, 25␤» 
 ```
 
-<a id="%E4%B8%AD%E7%BC%80%E5%BD%A2%E5%BC%8F--infix-form"></a>
+<a id="中缀形式--infix-form"></a>
 ## 中缀形式 / Infix form
 
 要使用 2 个参数（如中缀运算符）调用子例程，使用由 `[` 和 `]` 包围的子例程引用。
@@ -667,7 +667,7 @@ say 21 [&plus] 21;
 # OUTPUT: «42␤» 
 ```
 
-<a id="%E9%97%AD%E5%8C%85--closures"></a>
+<a id="闭包--closures"></a>
 ## 闭包 / Closures
 
 Raku 中的所有代码对象都是*闭包*，这意味着它们可以从外部范围引用词法变量。
@@ -705,7 +705,7 @@ Here, the block passed to `map` references the variable `$multiply-by` from the 
 
 Languages without closures cannot easily provide higher-order functions that are as easy to use and powerful as `map`.
 
-<a id="%E4%BE%8B%E7%A8%8B--routines"></a>
+<a id="例程--routines"></a>
 ## 例程 / Routines
 
 例程是符合 [类型 `Routine`](https://docs.raku.org/type/Routine) 的代码对象，最显著的是 [`Sub`](https://docs.raku.org/type/Sub)、[`Method`](https://docs.raku.org/type/Method)、[`Regex`](https://docs.raku.org/type/Regex) 和 [`Submethod`](https://docs.raku.org/type/Submethod)。
@@ -763,7 +763,7 @@ say testee(10, "ten");
 # OUTPUT: «6.151190ten␤» 
 ```
 
-<a id="%E5%AE%9A%E4%B9%89%E8%BF%90%E7%AE%97%E7%AC%A6--defining-operators"></a>
+<a id="定义运算符--defining-operators"></a>
 # 定义运算符 / Defining operators
 
 运算符只是具有有趣名称的子例程。有趣的名称由类别名称（`infix`、`prefix`、`postfix`、`circufix`、`postcircumfix`）和其后的冒号以及一个或多个运算符名称列表（ circufix 和 postcircumfix 有两个组件）组成。
@@ -828,7 +828,7 @@ say "abc" ieq "Abc";
 # OUTPUT: «True␤» 
 ```
 
-<a id="%E4%BC%98%E5%85%88%E7%BA%A7--precedence"></a>
+<a id="优先级--precedence"></a>
 ## 优先级 / Precedence
 
 Raku 中的运算符优先级是相对于现有运算符指定的。特征 `is tighter`、`is equiv` 和 `is looser`，可以提供一个运算符来指示新运算符的优先级如何与其他现有运算符相关。可以应用多个特性。
@@ -863,7 +863,7 @@ sub infix:<!!>($a, $b) is looser(&infix:<*>) { ... }
 
 To put a new operator on the same precedence level as an existing operator, use `is equiv(&other-operator)` instead.
 
-<a id="%E7%BB%93%E5%90%88%E6%80%A7--associativity"></a>
+<a id="结合性--associativity"></a>
 ## 结合性 / Associativity
 
 当同一个运算符在一行中出现多次时，可能会有多种解释。例如：
@@ -927,7 +927,7 @@ sub infix:<§>(*@a) is assoc<list> {
 say 1 § 2 § 3;      # OUTPUT: «(1|2|3)␤» 
 ```
 
-<a id="%E7%89%B9%E5%BE%81--traits"></a>
+<a id="特征--traits"></a>
 # 特征 / Traits
 
 *Traits* 是在编译时运行并修改类型、变量、例程、属性或其他语言对象行为的子例程。
@@ -975,7 +975,7 @@ say square 3;       # OUTPUT: «18␤»
 
 See [type Routine](https://docs.raku.org/type/Routine) for the documentation of built-in routine traits.
 
-<a id="%E9%87%8D%E6%96%B0%E5%88%86%E6%B4%BE--re-dispatching"></a>
+<a id="重新分派--re-dispatching"></a>
 # 重新分派 / Re-dispatching
 
 在某些情况下，例程可能希望从链调用下一个方法。这个链可以是类层次结构中父类的列表，也可以是来自多个分派的不太具体的多个候选，或者是来自 `wrap` 的内部例程。
@@ -986,7 +986,7 @@ There are cases in which a routine might want to call the next method from a cha
 
 Fortunately, we have a series of re-dispatching tools that help us to make it easy.
 
-<a id="callsame-%E5%87%BD%E6%95%B0--sub-callsame"></a>
+<a id="callsame-函数--sub-callsame"></a>
 ## callsame 函数 / sub callsame
 
 `callsame` 使用当前候选的相同参数调用下一个匹配的候选，并返回该候选的返回值。
@@ -1010,7 +1010,7 @@ multi a(Int $x) {
 a 1;        # OUTPUT: «Int 1␤Any 1␤Back in Int with 5␤» 
 ```
 
-<a id="callwith-%E5%87%BD%E6%95%B0--sub-callwith"></a>
+<a id="callwith-函数--sub-callwith"></a>
 ## callwith 函数 / sub callwith
 
 `callWith` 调用与原始签名匹配的下一个候选函数，也就是可能与用户提供的参数一起使用的下一个函数，并返回该候选函数的返回值。
@@ -1080,7 +1080,7 @@ say :( Pair ) ~~ :( Hash );        # OUTPUT: «False␤»
 
 The arguments provided by us are a `Pair`. It does not match a `Hash`, so the corresponding function is thus not included in the list of candidates, as can be seen by the output of `&how-many.cando( \( $little-piggy ));`.
 
-<a id="nextsame-%E5%87%BD%E6%95%B0--sub-nextsame"></a>
+<a id="nextsame-函数--sub-nextsame"></a>
 ## nextsame 函数 / sub nextsame
 
 `nextsame` 使用与当前候选函数相同的参数调用下一个匹配的候选函数，并且**不**返回原函数继续执行。
@@ -1103,7 +1103,7 @@ multi a(Int $x) {
 a 1;        # OUTPUT: «Int 1␤Any 1␤» 
 ```
 
-<a id="nextwith-%E5%87%BD%E6%95%B0--sub-nextwith"></a>
+<a id="nextwith-函数--sub-nextwith"></a>
 ## nextwith 函数 / sub nextwith
 
 `nextwith` 使用用户提供的参数调用下一个匹配的候选函数，并且**不**返回原函数继续执行。
@@ -1126,7 +1126,7 @@ multi a(Int $x) {
 a 1;        # OUTPUT: «Int 1␤Any 2␤» 
 ```
 
-<a id="samewith-%E5%87%BD%E6%95%B0--sub-samewith"></a>
+<a id="samewith-函数--sub-samewith"></a>
 ## samewith 函数 / sub samewith
 
 `samewith` 使用用户提供的参数再次调用当前候选，并返回当前候选的新实例的返回值。
@@ -1144,7 +1144,7 @@ multi a(Int $x) {
 say (a 10); # OUTPUT: «36288002␤»
 ```
 
-<a id="nextcallee-%E5%87%BD%E6%95%B0--sub-nextcallee"></a>
+<a id="nextcallee-函数--sub-nextcallee"></a>
 ## nextcallee 函数 / sub nextcallee
 
 可能需要重新分配来调用一个不是当前作用域代码块，它提供了 `nextsame` 与其朋友们在引用错误作用域时遇到的问题。使用 `nextcallee` 捕获正确的候选对象并调用它。
@@ -1174,7 +1174,7 @@ Int 参数的候选函数调用 `nextcallee`，然后在超时后触发一个并
 
 The Int candidate takes the `nextcallee` and then fires up a Promise to be executed in parallel, after some timeout, and then returns. We can't use `nextsame` here, because it'd be trying to `nextsame` the Promise's block instead of our original routine.
 
-<a id="%E5%8C%85%E8%A3%85%E7%9A%84%E4%BE%8B%E7%A8%8B--wrapped-routines"></a>
+<a id="包装的例程--wrapped-routines"></a>
 ## 包装的例程 / Wrapped routines
 
 除上述情况外，在更多情况下，重新调度也很有帮助。分派到被包装的例程：
@@ -1197,7 +1197,7 @@ say square-root(4);     # OUTPUT: «2␤»
 say square-root(-4);    # OUTPUT: «0+2i␤» 
 ```
 
-<a id="%E7%88%B6%E7%B1%BB%E4%BE%8B%E7%A8%8B--routines-of-parent-class"></a>
+<a id="父类例程--routines-of-parent-class"></a>
 ## 父类例程 / Routines of parent class
 
 另一个用例是从父类重新分派到方法。
@@ -1220,7 +1220,7 @@ say LoggedVersion.new('1.0.2');
 # v1.0.2 
 ```
 
-<a id="%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E7%9A%84%E7%B1%BB%E5%9E%8B--coercion-types"></a>
+<a id="强制类型转换的类型--coercion-types"></a>
 # 强制类型转换的类型 / Coercion types
 
 强制类型转换类型强制例程参数为特定类型，同时允许例程本身接受更广泛的输入。调用时，参数会自动缩小到更严格的类型，因此在例程中，参数始终具有所需的类型。
@@ -1300,7 +1300,7 @@ for (2,4) X (1,2) -> ($a,$b) {
 
 In this case, we are coercing an `Int` to a `Bool`, which is then printed (put into a string context) in the `for` loop that calls the function.
 
-<a id="main-%E5%87%BD%E6%95%B0--sub-main"></a>
+<a id="main-函数--sub-main"></a>
 # Main 函数 / sub MAIN
 
 在 Raku 脚本中声明 `sub MAIN` 不是强制的，但是你可以提供一个[命令行接口](https://docs.raku.org/language/create-cli)来为你的脚本创建一个。

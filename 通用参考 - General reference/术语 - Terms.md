@@ -16,38 +16,38 @@ Here you can find an overview of different kinds of terms.
 
 <!-- MarkdownTOC -->
 
-- [字面量 / Literals](#%E5%AD%97%E9%9D%A2%E9%87%8F--literals)
-    - [整数 / Int](#%E6%95%B4%E6%95%B0--int)
-    - [有理数 / Rat](#%E6%9C%89%E7%90%86%E6%95%B0--rat)
-    - [浮点数 / Num](#%E6%B5%AE%E7%82%B9%E6%95%B0--num)
-    - [字符串 / Str](#%E5%AD%97%E7%AC%A6%E4%B8%B2--str)
-    - [正则 / Regex](#%E6%AD%A3%E5%88%99--regex)
-    - [键值对 / Pair](#%E9%94%AE%E5%80%BC%E5%AF%B9--pair)
-    - [列表 / List](#%E5%88%97%E8%A1%A8--list)
-    - [术语 * / term *](#%E6%9C%AF%E8%AF%AD---term-)
-- [标识符术语 / Identifier terms](#%E6%A0%87%E8%AF%86%E7%AC%A6%E6%9C%AF%E8%AF%AD--identifier-terms)
-    - [术语 self / term self](#%E6%9C%AF%E8%AF%AD-self--term-self)
-    - [术语 now / term now](#%E6%9C%AF%E8%AF%AD-now--term-now)
-    - [术语 time / term time](#%E6%9C%AF%E8%AF%AD-time--term-time)
-    - [术语 rand / term rand](#%E6%9C%AF%E8%AF%AD-rand--term-rand)
-    - [术语 π / term π](#%E6%9C%AF%E8%AF%AD-%CF%80--term-%CF%80)
-    - [术语 pi / term pi](#%E6%9C%AF%E8%AF%AD-pi--term-pi)
-    - [术语 τ / term τ](#%E6%9C%AF%E8%AF%AD-%CF%84--term-%CF%84)
-    - [术语 tau / term tau](#%E6%9C%AF%E8%AF%AD-tau--term-tau)
-    - [术语 𝑒 / term 𝑒](#%E6%9C%AF%E8%AF%AD-%F0%9D%91%92--term-%F0%9D%91%92)
-    - [术语 e / term e](#%E6%9C%AF%E8%AF%AD-e--term-e)
-    - [术语 i / term i](#%E6%9C%AF%E8%AF%AD-i--term-i)
-    - [术语 ∅ / term ∅](#%E6%9C%AF%E8%AF%AD-%E2%88%85--term-%E2%88%85)
-- [变量 / Variables](#%E5%8F%98%E9%87%8F--variables)
-- [常量 / Constants](#%E5%B8%B8%E9%87%8F--constants)
+- [字面量 / Literals](#字面量--literals)
+    - [整数 / Int](#整数--int)
+    - [有理数 / Rat](#有理数--rat)
+    - [浮点数 / Num](#浮点数--num)
+    - [字符串 / Str](#字符串--str)
+    - [正则 / Regex](#正则--regex)
+    - [键值对 / Pair](#键值对--pair)
+    - [列表 / List](#列表--list)
+    - [术语 * / term *](#术语---term-)
+- [标识符术语 / Identifier terms](#标识符术语--identifier-terms)
+    - [术语 self / term self](#术语-self--term-self)
+    - [术语 now / term now](#术语-now--term-now)
+    - [术语 time / term time](#术语-time--term-time)
+    - [术语 rand / term rand](#术语-rand--term-rand)
+    - [术语 π / term π](#术语-π--term-π)
+    - [术语 pi / term pi](#术语-pi--term-pi)
+    - [术语 τ / term τ](#术语-τ--term-τ)
+    - [术语 tau / term tau](#术语-tau--term-tau)
+    - [术语 𝑒 / term 𝑒](#术语-𝑒--term-𝑒)
+    - [术语 e / term e](#术语-e--term-e)
+    - [术语 i / term i](#术语-i--term-i)
+    - [术语 ∅ / term ∅](#术语-∅--term-∅)
+- [变量 / Variables](#变量--variables)
+- [常量 / Constants](#常量--constants)
 
 <!-- /MarkdownTOC -->
 
 
-<a id="%E5%AD%97%E9%9D%A2%E9%87%8F--literals"></a>
+<a id="字面量--literals"></a>
 # 字面量 / Literals
 
-<a id="%E6%95%B4%E6%95%B0--int"></a>
+<a id="整数--int"></a>
 ## 整数 / Int
 
 ```Raku
@@ -64,7 +64,7 @@ Here you can find an overview of different kinds of terms.
 
 To specify a base other than ten, use the colonpair form `:radix<number> `.
 
-<a id="%E6%9C%89%E7%90%86%E6%95%B0--rat"></a>
+<a id="有理数--rat"></a>
 ## 有理数 / Rat
 
 ```Raku
@@ -80,7 +80,7 @@ To specify a base other than ten, use the colonpair form `:radix<number> `.
 
 Note that trailing dots are not allowed, so you have to write `1.0` instead of `1.` (this rule is important because there are infix operators starting with a dot, for example the `..` [Range](https://docs.raku.org/type/Range) operator).
 
-<a id="%E6%B5%AE%E7%82%B9%E6%95%B0--num"></a>
+<a id="浮点数--num"></a>
 ## 浮点数 / Num
 
 ```Raku
@@ -92,7 +92,7 @@ Note that trailing dots are not allowed, so you have to write `1.0` instead of `
 
 [Num](https://docs.raku.org/type/Num) literals (floating point numbers) consist of [Rat](https://docs.raku.org/type/Rat) or [Int](https://docs.raku.org/type/Int) literals followed by an `e` and a (possibly negative) exponent. `3e8` constructs a [Num](https://docs.raku.org/type/Num) with value `3 * 10**8`.
 
-<a id="%E5%AD%97%E7%AC%A6%E4%B8%B2--str"></a>
+<a id="字符串--str"></a>
 ## 字符串 / Str
 
 ```Raku
@@ -107,7 +107,7 @@ q|Other delimiters can be used too!|
 
 String literals are most often created with `'` or `"`, however strings are actually a powerful sub-language of Raku. See [Quoting Constructs](https://docs.raku.org/language/quoting).
 
-<a id="%E6%AD%A3%E5%88%99--regex"></a>
+<a id="正则--regex"></a>
 ## 正则 / Regex
 
 ```Raku
@@ -119,7 +119,7 @@ rx/slurp \s rest (.*) $/
 
 These forms produce regex literals. See [quoting constructs](https://docs.raku.org/language/quoting).
 
-<a id="%E9%94%AE%E5%80%BC%E5%AF%B9--pair"></a>
+<a id="键值对--pair"></a>
 ## 键值对 / Pair
 
 ```Raku
@@ -151,7 +151,7 @@ In the identifier form of a colon-pair, the optional value can be any circumfix.
 
 If used in an argument list, all of these forms count as named arguments, with the exception of `'quoted string' => $value`.
 
-<a id="%E5%88%97%E8%A1%A8--list"></a>
+<a id="列表--list"></a>
 ## 列表 / List
 
 ```Raku
@@ -166,14 +166,14 @@ qw/a b c/
 
 [List](https://docs.raku.org/type/List) literals are: the empty pair of parentheses `()`, a comma-separated list, or several quoting constructs.
 
-<a id="%E6%9C%AF%E8%AF%AD---term-"></a>
+<a id="术语---term-"></a>
 ## 术语 * / term *
 
 创建一个 `Whatever` 类型的对象。有关更多细节，请参见 [Whatever](https://docs.raku.org/type/Whatever) 文档。
 
 Creates an object of type `Whatever`. See [Whatever](https://docs.raku.org/type/Whatever) documentation for more details.
 
-<a id="%E6%A0%87%E8%AF%86%E7%AC%A6%E6%9C%AF%E8%AF%AD--identifier-terms"></a>
+<a id="标识符术语--identifier-terms"></a>
 # 标识符术语 / Identifier terms
 
 在 Raku 中有内置的标识符术语，如下所示。此外，还可以使用这样的句法添加新的标识符术语：
@@ -194,14 +194,14 @@ constant forty-two = 42;
 say forty-two;
 ```
 
-<a id="%E6%9C%AF%E8%AF%AD-self--term-self"></a>
+<a id="术语-self--term-self"></a>
 ## 术语 self / term self
 
 在一个方法中，`self` 指的是调用者（即方法被调用的对象）。如果在没有意义的上下文中使用，则会引发 [X::Syntax::NoSelf](https://docs.raku.org/type/X::Syntax::NoSelf) 类型的编译时异常。
 
 Inside a method, `self` refers to the invocant (i.e. the object the method was called on). If used in a context where it doesn't make sense, a compile-time exception of type [X::Syntax::NoSelf](https://docs.raku.org/type/X::Syntax::NoSelf) is thrown.
 
-<a id="%E6%9C%AF%E8%AF%AD-now--term-now"></a>
+<a id="术语-now--term-now"></a>
 ## 术语 now / term now
 
 返回表示当前时间的 [Instant](https://docs.raku.org/type/Instant) 对象.它包括[闰秒](https://en.wikipedia.org/wiki/Leap_second)，因此比 [time](https://docs.raku.org/language/terms#term_time) 大几十秒：
@@ -212,84 +212,84 @@ Returns an [Instant](https://docs.raku.org/type/Instant) object representing the
 say (now - time).Int; # OUTPUT: «37␤»
 ```
 
-<a id="%E6%9C%AF%E8%AF%AD-time--term-time"></a>
+<a id="术语-time--term-time"></a>
 ## 术语 time / term time
 
 将当前 POSIX 时间作为 [Int](https://docs.raku.org/type/Int) 返回。有关包含[闰秒](https://en.wikipedia.org/wiki/Leap_second)的高精度时间戳，请参见 [now](https://docs.raku.org/language/terms#term_now)。
 
 Returns the current POSIX time as an [Int](https://docs.raku.org/type/Int). See [now](https://docs.raku.org/language/terms#term_now) for high-resolution timestamp that includes [leap seconds](https://en.wikipedia.org/wiki/Leap_second).
 
-<a id="%E6%9C%AF%E8%AF%AD-rand--term-rand"></a>
+<a id="术语-rand--term-rand"></a>
 ## 术语 rand / term rand
 
 返回范围 `0..^1` 中的一个随机数 [Num](https://docs.raku.org/type/Num)。
 
 Returns a pseudo-random [Num](https://docs.raku.org/type/Num) in the range `0..^1`.
 
-<a id="%E6%9C%AF%E8%AF%AD-%CF%80--term-%CF%80"></a>
+<a id="术语-π--term-π"></a>
 ## 术语 π / term π
 
 返回码点 U+03C0（GREEK SMALL Letter PI）的数字 `π`，即圆的周长和直径之间的比率。`π` 的 ASCII 等价物是 `pi`。
 
 Returns the number `π` at codepoint U+03C0 (GREEK SMALL LETTER PI), i.e. the ratio between circumference and diameter of a circle. The ASCII equivalent of `π` is `pi`.
 
-<a id="%E6%9C%AF%E8%AF%AD-pi--term-pi"></a>
+<a id="术语-pi--term-pi"></a>
 ## 术语 pi / term pi
 
 返回数字 `π`，即圆的周长与直径之比。`pi` 是 `π` 的 ASCII 等价物。
 
 Returns the number `π`, i.e., the ratio between circumference and diameter of a circle. `pi` is the ASCII equivalent of `π`.
 
-<a id="%E6%9C%AF%E8%AF%AD-%CF%84--term-%CF%84"></a>
+<a id="术语-τ--term-τ"></a>
 ## 术语 τ / term τ
 
 返回 U+03C4 码点（GREEK SMALL Letter TAU）的数字 `τ`，即圆的周长和半径之间的比率。`τ` 的 ASCII 等价物是 `tau`。
 
 Returns the number `τ` at codepoint U+03C4 (GREEK SMALL LETTER TAU), i.e. the ratio between circumference and radius of a circle. The ASCII equivalent of `τ` is `tau`.
 
-<a id="%E6%9C%AF%E8%AF%AD-tau--term-tau"></a>
+<a id="术语-tau--term-tau"></a>
 ## 术语 tau / term tau
 
 返回数字 `τ`，即圆的周长和半径之间的比率。`tau` 是 `τ` 的 ASCII 等价物。
 
 Returns the number `τ`, i.e. the ratio between circumference and radius of a circle. `tau` is the ASCII equivalent of `τ`.
 
-<a id="%E6%9C%AF%E8%AF%AD-%F0%9D%91%92--term-%F0%9D%91%92"></a>
+<a id="术语-𝑒--term-𝑒"></a>
 ## 术语 𝑒 / term 𝑒
 
 返回 U+1D452 码点处的欧拉数（MATHEMATICAL ITALIC SMALL E）。`𝑒` 的 ASCII 等价物是 `e`。
 
 Returns Euler's number at codepoint U+1D452 (MATHEMATICAL ITALIC SMALL E). The ASCII equivalent of `𝑒` is `e`.
 
-<a id="%E6%9C%AF%E8%AF%AD-e--term-e"></a>
+<a id="术语-e--term-e"></a>
 ## 术语 e / term e
 
 返回欧拉数。`e` 就是 `𝑒` 的 ASCII 等价物。
 
 Returns Euler's number. `e` is the ASCII equivalent of `𝑒`.
 
-<a id="%E6%9C%AF%E8%AF%AD-i--term-i"></a>
+<a id="术语-i--term-i"></a>
 ## 术语 i / term i
 
 返回虚数单位（用于[复数](https://docs.raku.org/type/Complex)）。
 
 Returns the imaginary unit (for [Complex](https://docs.raku.org/type/Complex) numbers).
 
-<a id="%E6%9C%AF%E8%AF%AD-%E2%88%85--term-%E2%88%85"></a>
+<a id="术语-∅--term-∅"></a>
 ## 术语 ∅ / term ∅
 
 返回 `set()`，也就是空集，在 U+2205 码点（EMPTY SET）。
 
 Returns `set()`, aka the empty set, at codepoint U+2205 (EMPTY SET).
 
-<a id="%E5%8F%98%E9%87%8F--variables"></a>
+<a id="变量--variables"></a>
 # 变量 / Variables
 
 变量将在[变量语言文档](https://docs.raku.org/language/variables)中讨论。
 
 Variables are discussed in the [variable language docs](https://docs.raku.org/language/variables).
 
-<a id="%E5%B8%B8%E9%87%8F--constants"></a>
+<a id="常量--constants"></a>
 # 常量 / Constants
 
 常量类似于[变量](https://docs.raku.org/language/variables)，没有[容器](https://docs.raku.org/language/containers)，因此不能绑定。然而，它们的初始化式在 [BEGIN]（https://docs.raku.org/syntax/BEGIN）时进行求值：

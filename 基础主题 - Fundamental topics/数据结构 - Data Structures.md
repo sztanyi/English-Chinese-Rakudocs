@@ -10,17 +10,17 @@ How Raku deals with data structures and what we can expect from them
 
 <!-- MarkdownTOC -->
 
-- [标量结构 / Scalar structures](#%E6%A0%87%E9%87%8F%E7%BB%93%E6%9E%84--scalar-structures)
-- [复杂数据结构 / Complex data structures](#%E5%A4%8D%E6%9D%82%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84--complex-data-structures)
-- [函数式结构 / Functional structures](#%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BB%93%E6%9E%84--functional-structures)
-- [定义和约束数据结构 / Defining and constraining data structures](#%E5%AE%9A%E4%B9%89%E5%92%8C%E7%BA%A6%E6%9D%9F%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84--defining-and-constraining-data-structures)
-- [无限数据结构以及惰性 / Infinite structures and laziness](#%E6%97%A0%E9%99%90%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%BB%A5%E5%8F%8A%E6%83%B0%E6%80%A7--infinite-structures-and-laziness)
-- [内省 / Introspection](#%E5%86%85%E7%9C%81--introspection)
+- [标量结构 / Scalar structures](#标量结构--scalar-structures)
+- [复杂数据结构 / Complex data structures](#复杂数据结构--complex-data-structures)
+- [函数式结构 / Functional structures](#函数式结构--functional-structures)
+- [定义和约束数据结构 / Defining and constraining data structures](#定义和约束数据结构--defining-and-constraining-data-structures)
+- [无限数据结构以及惰性 / Infinite structures and laziness](#无限数据结构以及惰性--infinite-structures-and-laziness)
+- [内省 / Introspection](#内省--introspection)
 
 <!-- /MarkdownTOC -->
 
 
-<a id="%E6%A0%87%E9%87%8F%E7%BB%93%E6%9E%84--scalar-structures"></a>
+<a id="标量结构--scalar-structures"></a>
 # 标量结构 / Scalar structures
 
 有些类没有任何*内部*结构，要访问其中的某些部分，必须使用特定的方法。数字、字符串和一些其他单体类都包含在这个类中。它们使用的是 `$` 标记，尽管复杂的数据结构也可以使用它。
@@ -82,7 +82,7 @@ for ^2 {
 
 In this case, `$list` is using the Scalar sigil and thus will be a `Scalar`. Any scalar with the same value will be exactly the same, as shown when printing the pointers.
 
-<a id="%E5%A4%8D%E6%9D%82%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84--complex-data-structures"></a>
+<a id="复杂数据结构--complex-data-structures"></a>
 # 复杂数据结构 / Complex data structures
 
 根据你访问其第一级元素的方式，复杂数据结构分为两大类：[Positional](https://docs.raku.org/type/Positional)，或类似列表和 [Associative](https://docs.raku.org/type/Associative) 或键值对。通常，复杂的数据结构（包括对象）将是两者的组合，其中对象属性被同化为键值对。虽然所有对象都是 [Mu](https://docs.raku.org/type/Mu) 的子类，但一般来说复杂对象是 [Any](https://docs.raku.org/type/Any) 的子类实例 。虽然理论上可以在没有这样做的情况下混合使用 `Positional` 或 `Associative`，但是大多数适用于复杂数据结构的方法都是在 `Any` 中实现的。
@@ -180,7 +180,7 @@ my @thing := SortedArray.new([3,2,1,4]);
 
 `for` calls directly the `iterator` method on `@thing` making it return the elements of the array in order. Much more on [iterating on the page devoted to it](https://docs.raku.org/language/iterating).
 
-<a id="%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BB%93%E6%9E%84--functional-structures"></a>
+<a id="函数式结构--functional-structures"></a>
 # 函数式结构 / Functional structures
 
 Raku 是一种函数式语言，因此，函数是第一等的*数据*结构。函数有 [Callable](https://docs.raku.org/type/Callable) 角色，这是基本角色四件套中的第四个元素。[Callable](https://docs.raku.org/type/Callable) 与 `&` 标记一起使用，尽管在大多数情况下，为了简单起见省略了它；在 `Callables` 的情况下可以总是省略这标记。
@@ -290,7 +290,7 @@ say $Logger::get( "2018-05-28" );
 
 We are composing `$typer` with the `$Logger::logs` function defined above, obtaining a function that logs an object preceded by its type, which can be useful for filtering, for instance. `$Logger::withtype` is, in fact, a complex data structure composed of two functions which are applied in a serial way, but every one of the callables composed can keep state, thus creating complex transformative callables, in a design pattern that is similar to object composition in the object oriented realm. You will have to choose, in every particular case, what is the programming style which is most suitable for your problem.
 
-<a id="%E5%AE%9A%E4%B9%89%E5%92%8C%E7%BA%A6%E6%9D%9F%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84--defining-and-constraining-data-structures"></a>
+<a id="定义和约束数据结构--defining-and-constraining-data-structures"></a>
 # 定义和约束数据结构 / Defining and constraining data structures
 
 Raku 有不同的定义数据结构的方法，但也有许多方法来约束它们，这样你就可以为每个问题域创建最合适的数据结构。例如 [`but`](https://docs.raku.org/routine/but)，将角色或值混合到一个值或一个变量中：
@@ -341,7 +341,7 @@ say $one-fraction; # OUTPUT: «0.333333␤»
 
 On the other hand, `my OneOver $ = ⅔;` will cause a type-check error. Subsets can use `Whatever`, that is, `*`, to refer to the argument; but this will be instantiated every time you use it to a different argument, so if we use it twice in the definition we would get an error. In this case we are using the topic single variable, `$_`, to check the instantiation. Subsetting can be done directly, without the need of declaring it, in [signatures](https://docs.raku.org/language/typesystem#subset).
 
-<a id="%E6%97%A0%E9%99%90%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%BB%A5%E5%8F%8A%E6%83%B0%E6%80%A7--infinite-structures-and-laziness"></a>
+<a id="无限数据结构以及惰性--infinite-structures-and-laziness"></a>
 # 无限数据结构以及惰性 / Infinite structures and laziness
 
 通常认为所有包含在数据结构中的数据都是实际*存在*的。这不一定是这样的：在许多情况下，由于效率的原因或仅仅因为不可能，数据结构中包含的元素只有在实际需要时才会出现。按需计算的项目称为 [具体化](https://docs.raku.org/language/glossary#Reify)
@@ -457,7 +457,7 @@ close $fh;
 say $lines[0];
 ```
 
-<a id="%E5%86%85%E7%9C%81--introspection"></a>
+<a id="内省--introspection"></a>
 # 内省 / Introspection
 
 像 Raku 这样允许[自省](https://en.wikipedia.org/wiki/Type_introspection)的语言具有附加到类型系统的功能，允许开发人员访问容器和值元数据。此元数据可用于程序中，根据其值执行不同的操作。从名称中可以明显看出，元数据是通过元类从值或容器中提取的。

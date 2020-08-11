@@ -11,216 +11,216 @@ Common Raku infixes, prefixes, postfixes, and more!
 See [creating operators](https://docs.raku.org/language/optut) on how to define new operators.
 <!-- MarkdownTOC -->
 
-- [运算符优先级 / Operator precedence](#%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--operator-precedence)
-- [运算符分类 / Operator classification](#%E8%BF%90%E7%AE%97%E7%AC%A6%E5%88%86%E7%B1%BB--operator-classification)
-- [元运算符 / Metaoperators](#%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6--metaoperators)
-- [替换运算符 / Substitution operators](#%E6%9B%BF%E6%8D%A2%E8%BF%90%E7%AE%97%E7%AC%A6--substitution-operators)
-    - [`s///` 就地替换 - `s///` in-place substitution](#s-%E5%B0%B1%E5%9C%B0%E6%9B%BF%E6%8D%A2---s-in-place-substitution)
-    - [`S///` 非破坏性替换 - `S///` non-destructive substitution](#s-%E9%9D%9E%E7%A0%B4%E5%9D%8F%E6%80%A7%E6%9B%BF%E6%8D%A2---s-non-destructive-substitution)
-    - [`tr///` 就地转写 - `tr///` in-place transliteration](#tr-%E5%B0%B1%E5%9C%B0%E8%BD%AC%E5%86%99---tr-in-place-transliteration)
-    - [`TR///` 非破坏性转写 - `TR///` non-destructive transliteration](#tr-%E9%9D%9E%E7%A0%B4%E5%9D%8F%E6%80%A7%E8%BD%AC%E5%86%99---tr-non-destructive-transliteration)
-- [赋值运算符 / Assignment operators](#%E8%B5%8B%E5%80%BC%E8%BF%90%E7%AE%97%E7%AC%A6--assignment-operators)
-- [否定关系型运算符 / Negated relational operators](#%E5%90%A6%E5%AE%9A%E5%85%B3%E7%B3%BB%E5%9E%8B%E8%BF%90%E7%AE%97%E7%AC%A6--negated-relational-operators)
-- [反转运算符 / Reversed operators](#%E5%8F%8D%E8%BD%AC%E8%BF%90%E7%AE%97%E7%AC%A6--reversed-operators)
-- [超运算符 / Hyper operators](#%E8%B6%85%E8%BF%90%E7%AE%97%E7%AC%A6--hyper-operators)
-- [归约元运算符 / Reduction metaoperators](#%E5%BD%92%E7%BA%A6%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6--reduction-metaoperators)
-- [交叉运算符 / Cross operators](#%E4%BA%A4%E5%8F%89%E8%BF%90%E7%AE%97%E7%AC%A6--cross-operators)
-- [Zip 元运算符 / Zip metaoperator](#zip-%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6--zip-metaoperator)
-- [序列运算符 / Sequential operators](#%E5%BA%8F%E5%88%97%E8%BF%90%E7%AE%97%E7%AC%A6--sequential-operators)
-- [元运算符的嵌套 / Nesting of metaoperators](#%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6%E7%9A%84%E5%B5%8C%E5%A5%97--nesting-of-metaoperators)
-- [术语优先级 / Term precedence](#%E6%9C%AF%E8%AF%AD%E4%BC%98%E5%85%88%E7%BA%A7--term-precedence)
-    - [术语 `` / term ``](#%E6%9C%AF%E8%AF%AD--term-)
-    - [术语 `( )` / term `( )`](#%E6%9C%AF%E8%AF%AD----term--)
-    - [术语 `{ }` term `{ }`](#%E6%9C%AF%E8%AF%AD---term--)
-    - [环缀运算符 `[ ]` / circumfix `[ ]`](#%E7%8E%AF%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6----circumfix--)
-- [术语 / Terms](#%E6%9C%AF%E8%AF%AD--terms)
-- [方法后缀优先级 / Method postfix precedence](#%E6%96%B9%E6%B3%95%E5%90%8E%E7%BC%80%E4%BC%98%E5%85%88%E7%BA%A7--method-postfix-precedence)
-    - [后环缀运算符 `[ ]` / postcircumfix `[ ]`](#%E5%90%8E%E7%8E%AF%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6----postcircumfix--)
-    - [后环缀运算符 `{ }` / postcircumfix `{ }`](#%E5%90%8E%E7%8E%AF%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6----postcircumfix---1)
-    - [后环缀运算符 `` / postcircumfix ``](#%E5%90%8E%E7%8E%AF%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6--postcircumfix-)
-    - [后环缀运算符 `` / postcircumfix ``](#%E5%90%8E%E7%8E%AF%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6--postcircumfix--1)
-    - [后环缀运算符 `« »` / postcircumfix `« »`](#%E5%90%8E%E7%8E%AF%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%C2%AB-%C2%BB--postcircumfix-%C2%AB-%C2%BB)
-    - [后环缀运算符 `( )` / postcircumfix `( )`](#%E5%90%8E%E7%8E%AF%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6----postcircumfix---2)
-    - [方法运算符 `.` / methodop `.`](#%E6%96%B9%E6%B3%95%E8%BF%90%E7%AE%97%E7%AC%A6---methodop-)
-    - [方法运算符 `.&` / methodop `.&`](#%E6%96%B9%E6%B3%95%E8%BF%90%E7%AE%97%E7%AC%A6---methodop--1)
-    - [方法运算符 `.=` / methodop `.=`](#%E6%96%B9%E6%B3%95%E8%BF%90%E7%AE%97%E7%AC%A6---methodop--2)
-    - [方法运算符 `.^` / methodop `.^`](#%E6%96%B9%E6%B3%95%E8%BF%90%E7%AE%97%E7%AC%A6-%5E--methodop-%5E)
-    - [方法运算符 `.?` / methodop `.?`](#%E6%96%B9%E6%B3%95%E8%BF%90%E7%AE%97%E7%AC%A6---methodop--3)
-    - [方法运算符 `.+` / methodop `.+`](#%E6%96%B9%E6%B3%95%E8%BF%90%E7%AE%97%E7%AC%A6---methodop--4)
-    - [方法运算符 `.*` / methodop `.*`](#%E6%96%B9%E6%B3%95%E8%BF%90%E7%AE%97%E7%AC%A6---methodop--5)
-    - [方法运算符 `».` / `>>.` - methodop `».` / methodop `>>.`](#%E6%96%B9%E6%B3%95%E8%BF%90%E7%AE%97%E7%AC%A6-%C2%BB-----methodop-%C2%BB--methodop-)
-    - [方法运算符 `.postfix` / `.postcircumfix` - methodop `.postfix` / `.postcircumfix`](#%E6%96%B9%E6%B3%95%E8%BF%90%E7%AE%97%E7%AC%A6-postfix--postcircumfix---methodop-postfix--postcircumfix)
-    - [方法运算符 `.:` / methodop `.:`](#%E6%96%B9%E6%B3%95%E8%BF%90%E7%AE%97%E7%AC%A6---methodop--6)
-    - [方法运算符 `.::` / methodop `.::`](#%E6%96%B9%E6%B3%95%E8%BF%90%E7%AE%97%E7%AC%A6---methodop--7)
-    - [方法运算符 `,=` / postfix `,=`](#%E6%96%B9%E6%B3%95%E8%BF%90%E7%AE%97%E7%AC%A6---postfix-)
-- [自增运算符优先级 / Autoincrement precedence](#%E8%87%AA%E5%A2%9E%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--autoincrement-precedence)
-    - [前缀运算符 `++` / prefix `++`](#%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---prefix-)
-    - [前缀运算符 `--` / prefix `--`](#%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-----prefix---)
-    - [前缀运算符 `++` / prefix `++`](#%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---prefix--1)
-    - [后缀运算符 `--` / postfix `--`](#%E5%90%8E%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-----postfix---)
-- [指数优先级 / Exponentiation precedence](#%E6%8C%87%E6%95%B0%E4%BC%98%E5%85%88%E7%BA%A7--exponentiation-precedence)
-    - [中缀运算符 `**` / infix `**`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix-)
-- [一元运算符优先级 / Symbolic unary precedence](#%E4%B8%80%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--symbolic-unary-precedence)
-    - [前缀运算符 `?` / prefix `?`](#%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---prefix--2)
-    - [前缀运算符 `!` / prefix `!`](#%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---prefix--3)
-    - [前缀运算符 `+` / prefix `+`](#%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---prefix--4)
-    - [前缀运算符 `-` / prefix `-`](#%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6----prefix--)
-    - [前缀运算符 `~` / prefix `~`](#%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7E--prefix-%7E)
-    - [前缀运算符 `|` / prefix `|`](#%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7C--prefix-%7C)
-    - [前缀运算符 `+^` / prefix `+^`](#%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5E--prefix-%5E)
-    - [前缀运算符 `~^` / prefix `~^`](#%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7E%5E--prefix-%7E%5E)
-    - [前缀运算符 `?^` / prefix `?^`](#%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5E--prefix-%5E-1)
-    - [前缀运算符 `^` / prefix `^`](#%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5E--prefix-%5E-2)
-- [带点中缀运算符优先级 / Dotty infix precedence](#%E5%B8%A6%E7%82%B9%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--dotty-infix-precedence)
-    - [中缀运算符 `.=` / infix `.=`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--1)
-    - [中缀运算符 `.` / infix `.`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--2)
-- [乘法优先级 / Multiplicative precedence](#%E4%B9%98%E6%B3%95%E4%BC%98%E5%85%88%E7%BA%A7--multiplicative-precedence)
-    - [中缀运算符 `*` / infix `*`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--3)
-    - [中缀运算符 `/` - infix `/`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6----infix-)
-    - [中缀运算符 `div` / infix `div`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-div--infix-div)
-    - [中缀运算符 `%` / infix `%`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%25--infix-%25)
-    - [中缀运算符 `%%` / infix `%%`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%25%25--infix-%25%25)
-    - [中缀运算符 `mod` / infix `mod`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-mod--infix-mod)
-    - [中缀运算符 `+&` / infix `+&`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--4)
-    - [中缀运算符 `+<` / infix `+<`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--5)
-    - [中缀运算符 `+>` / infix `+>`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--6)
-    - [中缀运算符 `~&` / infix `~&`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7E--infix-%7E)
-    - [中缀运算符 `~<` / infix `~<`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7E--infix-%7E-1)
-    - [中缀运算符 `~>` / infix `~>`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7E--infix-%7E-2)
-    - [中缀运算符 `gcd` / infix `gcd`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-gcd--infix-gcd)
-    - [中缀运算符 `lcm` / infix `lcm`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-lcm--infix-lcm)
-- [加法优先级 / Additive precedence](#%E5%8A%A0%E6%B3%95%E4%BC%98%E5%85%88%E7%BA%A7--additive-precedence)
-    - [中缀运算符 `+` / infix `+`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--7)
-    - [中缀运算符 `-` / infix `-`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6----infix--)
-    - [中缀运算符 `+|` / infix `+|`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7C--infix-%7C)
-    - [中缀运算符 `+^` / infix `+^`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5E--infix-%5E)
-    - [中缀运算符 `~|` / infix `~|`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7E%7C--infix-%7E%7C)
-    - [中缀运算符 `~^` / infix `~^`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7E%5E--infix-%7E%5E)
-    - [中缀运算符 `?^` / infix `?^`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5E--infix-%5E-1)
-    - [中缀运算符 `?|` / infix `?|`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7C--infix-%7C-1)
-- [复制运算符优先级 / Replication precedence](#%E5%A4%8D%E5%88%B6%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--replication-precedence)
-    - [中缀运算符 `x` / infix `x`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-x--infix-x)
-    - [中缀运算符 `xx` / infix `xx`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-xx--infix-xx)
-- [连接操作符 / Concatenation](#%E8%BF%9E%E6%8E%A5%E6%93%8D%E4%BD%9C%E7%AC%A6--concatenation)
-    - [中缀运算符 `~` / infix `~`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7E--infix-%7E-3)
-    - [中缀运算符 `∘` / infix `∘`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%88%98--infix-%E2%88%98)
-- [Junction 与运算符优先级 / Junctive AND \(all\) precedence](#junction-%E4%B8%8E%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--junctive-and-all-precedence)
-    - [中缀运算符 `&` / infix `&`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--8)
-    - [中缀运算符 `(&)`, 中缀运算符 `∩` / infix `(&)`, infix `∩`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6--%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%88%A9--infix--infix-%E2%88%A9)
-    - [中缀运算符 `(.)`， 中缀运算符 `⊍` / infix `(.)`, infix `⊍`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%EF%BC%8C-%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%8D--infix--infix-%E2%8A%8D)
-- [Junction 或运算符优先级 / Junctive OR \(any\) precedence](#junction-%E6%88%96%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--junctive-or-any-precedence)
-    - [中缀运算符 `|` / infix `|`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7C--infix-%7C-2)
-    - [中缀运算符 `(|)`，中缀运算符 `∪` / infix `(|)`, infix `∪`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7C%EF%BC%8C%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%88%AA--infix-%7C-infix-%E2%88%AA)
-    - [中缀运算符 `(+)`，中缀运算符 `⊎` / infix `(+)`, infix `⊎`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%EF%BC%8C%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%8E--infix--infix-%E2%8A%8E)
-    - [中缀运算符 `(-)`，中缀运算符 `∖` / infix `(-)`, infix `∖`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6--%EF%BC%8C%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%88%96--infix---infix-%E2%88%96)
-    - [中缀运算符 `(^)` / infix `^`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5E--infix-%5E-2)
-    - [中缀运算符 `(^)`，中缀运算符 `⊖` / infix `(^)`, infix `⊖`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5E%EF%BC%8C%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%96--infix-%5E-infix-%E2%8A%96)
-- [命名一元运算符优先级 / Named unary precedence](#%E5%91%BD%E5%90%8D%E4%B8%80%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--named-unary-precedence)
-    - [前缀运算符 `temp` / prefix `temp`](#%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-temp--prefix-temp)
-    - [前缀运算符 `let` / prefix `let`](#%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-let--prefix-let)
-- [非链式二元运算符优先级 / Nonchaining binary precedence](#%E9%9D%9E%E9%93%BE%E5%BC%8F%E4%BA%8C%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--nonchaining-binary-precedence)
-    - [中缀运算符 `does` / infix `does`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-does--infix-does)
-    - [中缀运算符 `but` / infix `but`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-but--infix-but)
-    - [中缀运算符 `cmp` / infix `cmp`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-cmp--infix-cmp)
-    - [中缀运算符 `coll` / infix `coll`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-coll--infix-coll)
-    - [中缀运算符 `unicmp` / infix `unicmp`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-unicmp--infix-unicmp)
-    - [中缀运算符 `leg` / infix `leg`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-leg--infix-leg)
-    - [中缀运算符 `` / infix ``](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6--infix-)
-    - [中缀运算符 `..` / infix `..`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--9)
-    - [中缀运算符 `..^` / infix `..^`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5E--infix-%5E-3)
-    - [中缀运算符 `^..` / infix `^..`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5E--infix-%5E-4)
-    - [中缀运算符 `^..^` / infix `^..^`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5E%5E--infix-%5E%5E)
-- [链式二元运算符优先级 / Chaining binary precedence](#%E9%93%BE%E5%BC%8F%E4%BA%8C%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--chaining-binary-precedence)
-    - [中缀运算符 `==` / infix `==`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--10)
-    - [中缀运算符 `!=` / infix `!=`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--11)
-    - [中缀运算符 `≠` / infix `≠`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%89%A0--infix-%E2%89%A0)
-    - [中缀运算符 `<` / infix `<`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--12)
-    - [中缀运算符 `<=` / infix `<=`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--13)
-    - [中缀运算符 `≤` / infix `≤`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%89%A4--infix-%E2%89%A4)
-    - [中缀运算符 `>` / infix `>`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--14)
-    - [中缀运算符 `>=` / infix `>=`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--15)
-    - [中缀运算符 `≥` / infix `≥`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%89%A5--infix-%E2%89%A5)
-    - [中缀运算符 `eq` / infix `eq`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-eq--infix-eq)
-    - [中缀运算符 `ne` / infix `ne`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-ne--infix-ne)
-    - [中缀运算符 `gt` / infix `gt`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-gt--infix-gt)
-    - [中缀运算符 `ge` / infix `ge`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-ge--infix-ge)
-    - [中缀运算符 `lt` / infix `lt`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-lt--infix-lt)
-    - [中缀运算符 `le` / infix `le`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-le--infix-le)
-    - [中缀运算符 `before` / infix `before`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-before--infix-before)
-    - [中缀运算符 `after` / infix `after`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-after--infix-after)
-    - [中缀运算符 `eqv` / infix `eqv`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-eqv--infix-eqv)
-    - [中缀运算符 `===` / infix `===`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--16)
-    - [中缀运算符 `=:=` / infix `=:=`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--17)
-    - [中缀运算符 `~~` / infix `~~`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7E%7E--infix-%7E%7E)
-    - [中缀运算符 `=~=` / infix `=~=`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7E--infix-%7E-4)
-    - [中缀运算符 \(elem\)，中缀运算符 ∈» / infix \(elem\), infix ∈»](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-elem%EF%BC%8C%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%88%88%C2%BB--infix-elem-infix-%E2%88%88%C2%BB)
-    - [中缀运算符 `∉` / infix `∉`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%88%89--infix-%E2%88%89)
-    - [中缀运算符 \(cont\)，中缀运算符 ∋» / infix \(cont\), infix ∋»](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-cont%EF%BC%8C%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%88%8B%C2%BB--infix-cont-infix-%E2%88%8B%C2%BB)
-    - [中缀运算符 `∌` / infix `∌`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%88%8C--infix-%E2%88%8C)
-    - [中缀运算符 `(<)`, 中缀运算符 `⊂` / infix `(<)`, infix `⊂`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6--%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%82--infix--infix-%E2%8A%82)
-    - [中缀运算符 `⊄` / infix `⊄`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%84--infix-%E2%8A%84)
-    - [中缀运算符 `(<=)`, 中缀运算符 `⊆` / infix `(<=)`, infix `⊆`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6--%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%86--infix--infix-%E2%8A%86)
-    - [中缀运算符 `⊈` / infix `⊈`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%88--infix-%E2%8A%88)
-    - [中缀运算符 `(>)`, 中缀运算符  `⊃` / infix `(>)`, infix `⊃`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6--%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%83--infix--infix-%E2%8A%83)
-    - [中缀运算符 `⊅` / infix `⊅`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%85--infix-%E2%8A%85)
-    - [中缀运算符 `(>=)`，中缀运算符 `⊇` / infix `(>=)`, infix `⊇`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%EF%BC%8C%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%87--infix--infix-%E2%8A%87)
-    - [中缀运算符 `⊉` / infix `⊉`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%89--infix-%E2%8A%89)
-- [逻辑与操作符优先级 / Tight AND precedence](#%E9%80%BB%E8%BE%91%E4%B8%8E%E6%93%8D%E4%BD%9C%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--tight-and-precedence)
-    - [中缀运算符 `&&` / infix `&&`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--18)
-- [逻辑或操作符优先级 / Tight OR precedence](#%E9%80%BB%E8%BE%91%E6%88%96%E6%93%8D%E4%BD%9C%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--tight-or-precedence)
-    - [中缀运算符 `||` / infix `||`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7C%7C--infix-%7C%7C)
-    - [中缀运算符 `^^` / infix `^^`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5E%5E--infix-%5E%5E-1)
-    - [中缀运算符 `//` / infix `//`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--19)
-    - [中缀运算符 `min` / infix `min`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-min--infix-min)
-    - [中缀运算符 `max` / infix `max`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-max--infix-max)
-    - [中缀运算符 `minmax` / infix `minmax`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-minmax--infix-minmax)
-- [条件运算符优先级 / Conditional operator precedence](#%E6%9D%A1%E4%BB%B6%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--conditional-operator-precedence)
-    - [中缀运算符  `?? !!` / infix `?? !!`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6----infix---1)
-    - [中缀运算符  `ff` / infix `ff`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-ff--infix-ff)
-    - [中缀运算符  `^ff` / infix `^ff`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5Eff--infix-%5Eff)
-    - [中缀运算符  `ff^` / infix `ff^`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-ff%5E--infix-ff%5E)
-    - [中缀运算符  `^ff^` / infix `^ff^`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5Eff%5E--infix-%5Eff%5E)
-    - [中缀运算符  `fff` / infix `fff`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-fff--infix-fff)
-    - [中缀运算符  `^fff` / infix `^fff`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5Efff--infix-%5Efff)
-    - [中缀运算符 `fff^` / infix `fff^`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-fff%5E--infix-fff%5E)
-    - [中缀运算符  `^fff^` / infix `^fff^`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5Efff%5E--infix-%5Efff%5E)
-- [项目赋值运算符优先级 / Item assignment precedence](#%E9%A1%B9%E7%9B%AE%E8%B5%8B%E5%80%BC%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--item-assignment-precedence)
-    - [中缀运算符 `=` / infix `=`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--20)
-    - [中缀运算符 `=>` / infix `=>`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--21)
-- [松散的一元运算符优先权 / Loose unary precedence](#%E6%9D%BE%E6%95%A3%E7%9A%84%E4%B8%80%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E6%9D%83--loose-unary-precedence)
-    - [前缀运算符 `not` / prefix `not`](#%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-not--prefix-not)
-    - [前缀运算符 `so` / prefix `so`](#%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-so--prefix-so)
-- [逗号运算符优先级 / Comma operator precedence](#%E9%80%97%E5%8F%B7%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--comma-operator-precedence)
-    - [中缀运算符 `,` / infix `,`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--22)
-    - [中缀运算符 `:` / infix `:`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--23)
-- [列表中缀运算符优先级 / List infix precedence](#%E5%88%97%E8%A1%A8%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--list-infix-precedence)
-    - [中缀运算符 `Z` / infix `Z`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-z--infix-z)
-    - [中缀运算符 `X` / infix `X`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-x--infix-x-1)
-    - [中缀运算符 `...` / infix `...`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--24)
-- [列表前缀优先级 / List prefix precedence](#%E5%88%97%E8%A1%A8%E5%89%8D%E7%BC%80%E4%BC%98%E5%85%88%E7%BA%A7--list-prefix-precedence)
-    - [中缀运算符 `=` / infix `=`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--25)
-    - [中缀运算符 `:=` / infix `:=`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--26)
-    - [中缀运算符 `::=` / infix `::=`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--27)
-    - [列表运算符 `...` / listop `...`](#%E5%88%97%E8%A1%A8%E8%BF%90%E7%AE%97%E7%AC%A6---listop-)
-    - [列表运算符 `!!!` / listop `!!!`](#%E5%88%97%E8%A1%A8%E8%BF%90%E7%AE%97%E7%AC%A6---listop--1)
-    - [列表运算符 `???` / listop `???`](#%E5%88%97%E8%A1%A8%E8%BF%90%E7%AE%97%E7%AC%A6---listop--2)
-    - [归约运算符 / Reduction operators](#%E5%BD%92%E7%BA%A6%E8%BF%90%E7%AE%97%E7%AC%A6--reduction-operators)
-- [宽松的与运算符优先级 / Loose AND precedence](#%E5%AE%BD%E6%9D%BE%E7%9A%84%E4%B8%8E%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--loose-and-precedence)
-    - [中缀运算符 `and` / infix `and`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-and--infix-and)
-    - [中缀运算符 `andthen` / infix `andthen`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-andthen--infix-andthen)
-    - [中缀运算符 `notandthen` / infix `notandthen`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-notandthen--infix-notandthen)
-- [宽松的或运算符优先级 / Loose OR precedence](#%E5%AE%BD%E6%9D%BE%E7%9A%84%E6%88%96%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--loose-or-precedence)
-    - [中缀运算符 `or` / infix `or`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-or--infix-or)
-    - [中缀运算符 `orelse` / infix `orelse`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-orelse--infix-orelse)
-    - [中缀运算符 `xor` / infix `xor`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-xor--infix-xor)
-- [序列器优先级 / Sequencer precedence](#%E5%BA%8F%E5%88%97%E5%99%A8%E4%BC%98%E5%85%88%E7%BA%A7--sequencer-precedence)
-    - [中缀运算符 `==>` / infix `==>`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--28)
-    - [中缀运算符 `<==` / infix `<==`](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--29)
-- [标识 / Identity](#%E6%A0%87%E8%AF%86--identity)
+- [运算符优先级 / Operator precedence](#运算符优先级--operator-precedence)
+- [运算符分类 / Operator classification](#运算符分类--operator-classification)
+- [元运算符 / Metaoperators](#元运算符--metaoperators)
+- [替换运算符 / Substitution operators](#替换运算符--substitution-operators)
+    - [`s///` 就地替换 - `s///` in-place substitution](#s-就地替换---s-in-place-substitution)
+    - [`S///` 非破坏性替换 - `S///` non-destructive substitution](#s-非破坏性替换---s-non-destructive-substitution)
+    - [`tr///` 就地转写 - `tr///` in-place transliteration](#tr-就地转写---tr-in-place-transliteration)
+    - [`TR///` 非破坏性转写 - `TR///` non-destructive transliteration](#tr-非破坏性转写---tr-non-destructive-transliteration)
+- [赋值运算符 / Assignment operators](#赋值运算符--assignment-operators)
+- [否定关系型运算符 / Negated relational operators](#否定关系型运算符--negated-relational-operators)
+- [反转运算符 / Reversed operators](#反转运算符--reversed-operators)
+- [超运算符 / Hyper operators](#超运算符--hyper-operators)
+- [归约元运算符 / Reduction metaoperators](#归约元运算符--reduction-metaoperators)
+- [交叉运算符 / Cross operators](#交叉运算符--cross-operators)
+- [Zip 元运算符 / Zip metaoperator](#zip-元运算符--zip-metaoperator)
+- [序列运算符 / Sequential operators](#序列运算符--sequential-operators)
+- [元运算符的嵌套 / Nesting of metaoperators](#元运算符的嵌套--nesting-of-metaoperators)
+- [术语优先级 / Term precedence](#术语优先级--term-precedence)
+    - [术语 `` / term ``](#术语--term-)
+    - [术语 `( )` / term `( )`](#术语----term--)
+    - [术语 `{ }` term `{ }`](#术语---term--)
+    - [环缀运算符 `[ ]` / circumfix `[ ]`](#环缀运算符----circumfix--)
+- [术语 / Terms](#术语--terms)
+- [方法后缀优先级 / Method postfix precedence](#方法后缀优先级--method-postfix-precedence)
+    - [后环缀运算符 `[ ]` / postcircumfix `[ ]`](#后环缀运算符----postcircumfix--)
+    - [后环缀运算符 `{ }` / postcircumfix `{ }`](#后环缀运算符----postcircumfix---1)
+    - [后环缀运算符 `` / postcircumfix ``](#后环缀运算符--postcircumfix-)
+    - [后环缀运算符 `` / postcircumfix ``](#后环缀运算符--postcircumfix--1)
+    - [后环缀运算符 `« »` / postcircumfix `« »`](#后环缀运算符-«-»--postcircumfix-«-»)
+    - [后环缀运算符 `( )` / postcircumfix `( )`](#后环缀运算符----postcircumfix---2)
+    - [方法运算符 `.` / methodop `.`](#方法运算符---methodop-)
+    - [方法运算符 `.&` / methodop `.&`](#方法运算符---methodop--1)
+    - [方法运算符 `.=` / methodop `.=`](#方法运算符---methodop--2)
+    - [方法运算符 `.^` / methodop `.^`](#方法运算符-^--methodop-^)
+    - [方法运算符 `.?` / methodop `.?`](#方法运算符---methodop--3)
+    - [方法运算符 `.+` / methodop `.+`](#方法运算符---methodop--4)
+    - [方法运算符 `.*` / methodop `.*`](#方法运算符---methodop--5)
+    - [方法运算符 `».` / `>>.` - methodop `».` / methodop `>>.`](#方法运算符-»-----methodop-»--methodop-)
+    - [方法运算符 `.postfix` / `.postcircumfix` - methodop `.postfix` / `.postcircumfix`](#方法运算符-postfix--postcircumfix---methodop-postfix--postcircumfix)
+    - [方法运算符 `.:` / methodop `.:`](#方法运算符---methodop--6)
+    - [方法运算符 `.::` / methodop `.::`](#方法运算符---methodop--7)
+    - [方法运算符 `,=` / postfix `,=`](#方法运算符---postfix-)
+- [自增运算符优先级 / Autoincrement precedence](#自增运算符优先级--autoincrement-precedence)
+    - [前缀运算符 `++` / prefix `++`](#前缀运算符---prefix-)
+    - [前缀运算符 `--` / prefix `--`](#前缀运算符-----prefix---)
+    - [前缀运算符 `++` / prefix `++`](#前缀运算符---prefix--1)
+    - [后缀运算符 `--` / postfix `--`](#后缀运算符-----postfix---)
+- [指数优先级 / Exponentiation precedence](#指数优先级--exponentiation-precedence)
+    - [中缀运算符 `**` / infix `**`](#中缀运算符---infix-)
+- [一元运算符优先级 / Symbolic unary precedence](#一元运算符优先级--symbolic-unary-precedence)
+    - [前缀运算符 `?` / prefix `?`](#前缀运算符---prefix--2)
+    - [前缀运算符 `!` / prefix `!`](#前缀运算符---prefix--3)
+    - [前缀运算符 `+` / prefix `+`](#前缀运算符---prefix--4)
+    - [前缀运算符 `-` / prefix `-`](#前缀运算符----prefix--)
+    - [前缀运算符 `~` / prefix `~`](#前缀运算符-~--prefix-~)
+    - [前缀运算符 `|` / prefix `|`](#前缀运算符-|--prefix-|)
+    - [前缀运算符 `+^` / prefix `+^`](#前缀运算符-^--prefix-^)
+    - [前缀运算符 `~^` / prefix `~^`](#前缀运算符-~^--prefix-~^)
+    - [前缀运算符 `?^` / prefix `?^`](#前缀运算符-^--prefix-^-1)
+    - [前缀运算符 `^` / prefix `^`](#前缀运算符-^--prefix-^-2)
+- [带点中缀运算符优先级 / Dotty infix precedence](#带点中缀运算符优先级--dotty-infix-precedence)
+    - [中缀运算符 `.=` / infix `.=`](#中缀运算符---infix--1)
+    - [中缀运算符 `.` / infix `.`](#中缀运算符---infix--2)
+- [乘法优先级 / Multiplicative precedence](#乘法优先级--multiplicative-precedence)
+    - [中缀运算符 `*` / infix `*`](#中缀运算符---infix--3)
+    - [中缀运算符 `/` - infix `/`](#中缀运算符----infix-)
+    - [中缀运算符 `div` / infix `div`](#中缀运算符-div--infix-div)
+    - [中缀运算符 `%` / infix `%`](#中缀运算符---infix--4)
+    - [中缀运算符 `%%` / infix `%%`](#中缀运算符---infix--5)
+    - [中缀运算符 `mod` / infix `mod`](#中缀运算符-mod--infix-mod)
+    - [中缀运算符 `+&` / infix `+&`](#中缀运算符---infix--6)
+    - [中缀运算符 `+<` / infix `+<`](#中缀运算符---infix--7)
+    - [中缀运算符 `+>` / infix `+>`](#中缀运算符---infix--8)
+    - [中缀运算符 `~&` / infix `~&`](#中缀运算符-~--infix-~)
+    - [中缀运算符 `~<` / infix `~<`](#中缀运算符-~--infix-~-1)
+    - [中缀运算符 `~>` / infix `~>`](#中缀运算符-~--infix-~-2)
+    - [中缀运算符 `gcd` / infix `gcd`](#中缀运算符-gcd--infix-gcd)
+    - [中缀运算符 `lcm` / infix `lcm`](#中缀运算符-lcm--infix-lcm)
+- [加法优先级 / Additive precedence](#加法优先级--additive-precedence)
+    - [中缀运算符 `+` / infix `+`](#中缀运算符---infix--9)
+    - [中缀运算符 `-` / infix `-`](#中缀运算符----infix--)
+    - [中缀运算符 `+|` / infix `+|`](#中缀运算符-|--infix-|)
+    - [中缀运算符 `+^` / infix `+^`](#中缀运算符-^--infix-^)
+    - [中缀运算符 `~|` / infix `~|`](#中缀运算符-~|--infix-~|)
+    - [中缀运算符 `~^` / infix `~^`](#中缀运算符-~^--infix-~^)
+    - [中缀运算符 `?^` / infix `?^`](#中缀运算符-^--infix-^-1)
+    - [中缀运算符 `?|` / infix `?|`](#中缀运算符-|--infix-|-1)
+- [复制运算符优先级 / Replication precedence](#复制运算符优先级--replication-precedence)
+    - [中缀运算符 `x` / infix `x`](#中缀运算符-x--infix-x)
+    - [中缀运算符 `xx` / infix `xx`](#中缀运算符-xx--infix-xx)
+- [连接操作符 / Concatenation](#连接操作符--concatenation)
+    - [中缀运算符 `~` / infix `~`](#中缀运算符-~--infix-~-3)
+    - [中缀运算符 `∘` / infix `∘`](#中缀运算符-∘--infix-∘)
+- [Junction 与运算符优先级 / Junctive AND \(all\) precedence](#junction-与运算符优先级--junctive-and-all-precedence)
+    - [中缀运算符 `&` / infix `&`](#中缀运算符---infix--10)
+    - [中缀运算符 `(&)`, 中缀运算符 `∩` / infix `(&)`, infix `∩`](#中缀运算符--中缀运算符-∩--infix--infix-∩)
+    - [中缀运算符 `(.)`， 中缀运算符 `⊍` / infix `(.)`, infix `⊍`](#中缀运算符-，-中缀运算符-⊍--infix--infix-⊍)
+- [Junction 或运算符优先级 / Junctive OR \(any\) precedence](#junction-或运算符优先级--junctive-or-any-precedence)
+    - [中缀运算符 `|` / infix `|`](#中缀运算符-|--infix-|-2)
+    - [中缀运算符 `(|)`，中缀运算符 `∪` / infix `(|)`, infix `∪`](#中缀运算符-|，中缀运算符-∪--infix-|-infix-∪)
+    - [中缀运算符 `(+)`，中缀运算符 `⊎` / infix `(+)`, infix `⊎`](#中缀运算符-，中缀运算符-⊎--infix--infix-⊎)
+    - [中缀运算符 `(-)`，中缀运算符 `∖` / infix `(-)`, infix `∖`](#中缀运算符--，中缀运算符-∖--infix---infix-∖)
+    - [中缀运算符 `(^)` / infix `^`](#中缀运算符-^--infix-^-2)
+    - [中缀运算符 `(^)`，中缀运算符 `⊖` / infix `(^)`, infix `⊖`](#中缀运算符-^，中缀运算符-⊖--infix-^-infix-⊖)
+- [命名一元运算符优先级 / Named unary precedence](#命名一元运算符优先级--named-unary-precedence)
+    - [前缀运算符 `temp` / prefix `temp`](#前缀运算符-temp--prefix-temp)
+    - [前缀运算符 `let` / prefix `let`](#前缀运算符-let--prefix-let)
+- [非链式二元运算符优先级 / Nonchaining binary precedence](#非链式二元运算符优先级--nonchaining-binary-precedence)
+    - [中缀运算符 `does` / infix `does`](#中缀运算符-does--infix-does)
+    - [中缀运算符 `but` / infix `but`](#中缀运算符-but--infix-but)
+    - [中缀运算符 `cmp` / infix `cmp`](#中缀运算符-cmp--infix-cmp)
+    - [中缀运算符 `coll` / infix `coll`](#中缀运算符-coll--infix-coll)
+    - [中缀运算符 `unicmp` / infix `unicmp`](#中缀运算符-unicmp--infix-unicmp)
+    - [中缀运算符 `leg` / infix `leg`](#中缀运算符-leg--infix-leg)
+    - [中缀运算符 `` / infix ``](#中缀运算符--infix-)
+    - [中缀运算符 `..` / infix `..`](#中缀运算符---infix--11)
+    - [中缀运算符 `..^` / infix `..^`](#中缀运算符-^--infix-^-3)
+    - [中缀运算符 `^..` / infix `^..`](#中缀运算符-^--infix-^-4)
+    - [中缀运算符 `^..^` / infix `^..^`](#中缀运算符-^^--infix-^^)
+- [链式二元运算符优先级 / Chaining binary precedence](#链式二元运算符优先级--chaining-binary-precedence)
+    - [中缀运算符 `==` / infix `==`](#中缀运算符---infix--12)
+    - [中缀运算符 `!=` / infix `!=`](#中缀运算符---infix--13)
+    - [中缀运算符 `≠` / infix `≠`](#中缀运算符-≠--infix-≠)
+    - [中缀运算符 `<` / infix `<`](#中缀运算符---infix--14)
+    - [中缀运算符 `<=` / infix `<=`](#中缀运算符---infix--15)
+    - [中缀运算符 `≤` / infix `≤`](#中缀运算符-≤--infix-≤)
+    - [中缀运算符 `>` / infix `>`](#中缀运算符---infix--16)
+    - [中缀运算符 `>=` / infix `>=`](#中缀运算符---infix--17)
+    - [中缀运算符 `≥` / infix `≥`](#中缀运算符-≥--infix-≥)
+    - [中缀运算符 `eq` / infix `eq`](#中缀运算符-eq--infix-eq)
+    - [中缀运算符 `ne` / infix `ne`](#中缀运算符-ne--infix-ne)
+    - [中缀运算符 `gt` / infix `gt`](#中缀运算符-gt--infix-gt)
+    - [中缀运算符 `ge` / infix `ge`](#中缀运算符-ge--infix-ge)
+    - [中缀运算符 `lt` / infix `lt`](#中缀运算符-lt--infix-lt)
+    - [中缀运算符 `le` / infix `le`](#中缀运算符-le--infix-le)
+    - [中缀运算符 `before` / infix `before`](#中缀运算符-before--infix-before)
+    - [中缀运算符 `after` / infix `after`](#中缀运算符-after--infix-after)
+    - [中缀运算符 `eqv` / infix `eqv`](#中缀运算符-eqv--infix-eqv)
+    - [中缀运算符 `===` / infix `===`](#中缀运算符---infix--18)
+    - [中缀运算符 `=:=` / infix `=:=`](#中缀运算符---infix--19)
+    - [中缀运算符 `~~` / infix `~~`](#中缀运算符-~~--infix-~~)
+    - [中缀运算符 `=~=` / infix `=~=`](#中缀运算符-~--infix-~-4)
+    - [中缀运算符 \(elem\)，中缀运算符 ∈» / infix \(elem\), infix ∈»](#中缀运算符-elem，中缀运算符-∈»--infix-elem-infix-∈»)
+    - [中缀运算符 `∉` / infix `∉`](#中缀运算符-∉--infix-∉)
+    - [中缀运算符 \(cont\)，中缀运算符 ∋» / infix \(cont\), infix ∋»](#中缀运算符-cont，中缀运算符-∋»--infix-cont-infix-∋»)
+    - [中缀运算符 `∌` / infix `∌`](#中缀运算符-∌--infix-∌)
+    - [中缀运算符 `(<)`, 中缀运算符 `⊂` / infix `(<)`, infix `⊂`](#中缀运算符--中缀运算符-⊂--infix--infix-⊂)
+    - [中缀运算符 `⊄` / infix `⊄`](#中缀运算符-⊄--infix-⊄)
+    - [中缀运算符 `(<=)`, 中缀运算符 `⊆` / infix `(<=)`, infix `⊆`](#中缀运算符--中缀运算符-⊆--infix--infix-⊆)
+    - [中缀运算符 `⊈` / infix `⊈`](#中缀运算符-⊈--infix-⊈)
+    - [中缀运算符 `(>)`, 中缀运算符  `⊃` / infix `(>)`, infix `⊃`](#中缀运算符--中缀运算符-⊃--infix--infix-⊃)
+    - [中缀运算符 `⊅` / infix `⊅`](#中缀运算符-⊅--infix-⊅)
+    - [中缀运算符 `(>=)`，中缀运算符 `⊇` / infix `(>=)`, infix `⊇`](#中缀运算符-，中缀运算符-⊇--infix--infix-⊇)
+    - [中缀运算符 `⊉` / infix `⊉`](#中缀运算符-⊉--infix-⊉)
+- [逻辑与操作符优先级 / Tight AND precedence](#逻辑与操作符优先级--tight-and-precedence)
+    - [中缀运算符 `&&` / infix `&&`](#中缀运算符---infix--20)
+- [逻辑或操作符优先级 / Tight OR precedence](#逻辑或操作符优先级--tight-or-precedence)
+    - [中缀运算符 `||` / infix `||`](#中缀运算符-||--infix-||)
+    - [中缀运算符 `^^` / infix `^^`](#中缀运算符-^^--infix-^^-1)
+    - [中缀运算符 `//` / infix `//`](#中缀运算符---infix--21)
+    - [中缀运算符 `min` / infix `min`](#中缀运算符-min--infix-min)
+    - [中缀运算符 `max` / infix `max`](#中缀运算符-max--infix-max)
+    - [中缀运算符 `minmax` / infix `minmax`](#中缀运算符-minmax--infix-minmax)
+- [条件运算符优先级 / Conditional operator precedence](#条件运算符优先级--conditional-operator-precedence)
+    - [中缀运算符  `?? !!` / infix `?? !!`](#中缀运算符----infix---1)
+    - [中缀运算符  `ff` / infix `ff`](#中缀运算符-ff--infix-ff)
+    - [中缀运算符  `^ff` / infix `^ff`](#中缀运算符-^ff--infix-^ff)
+    - [中缀运算符  `ff^` / infix `ff^`](#中缀运算符-ff^--infix-ff^)
+    - [中缀运算符  `^ff^` / infix `^ff^`](#中缀运算符-^ff^--infix-^ff^)
+    - [中缀运算符  `fff` / infix `fff`](#中缀运算符-fff--infix-fff)
+    - [中缀运算符  `^fff` / infix `^fff`](#中缀运算符-^fff--infix-^fff)
+    - [中缀运算符 `fff^` / infix `fff^`](#中缀运算符-fff^--infix-fff^)
+    - [中缀运算符  `^fff^` / infix `^fff^`](#中缀运算符-^fff^--infix-^fff^)
+- [项目赋值运算符优先级 / Item assignment precedence](#项目赋值运算符优先级--item-assignment-precedence)
+    - [中缀运算符 `=` / infix `=`](#中缀运算符---infix--22)
+    - [中缀运算符 `=>` / infix `=>`](#中缀运算符---infix--23)
+- [松散的一元运算符优先权 / Loose unary precedence](#松散的一元运算符优先权--loose-unary-precedence)
+    - [前缀运算符 `not` / prefix `not`](#前缀运算符-not--prefix-not)
+    - [前缀运算符 `so` / prefix `so`](#前缀运算符-so--prefix-so)
+- [逗号运算符优先级 / Comma operator precedence](#逗号运算符优先级--comma-operator-precedence)
+    - [中缀运算符 `,` / infix `,`](#中缀运算符---infix--24)
+    - [中缀运算符 `:` / infix `:`](#中缀运算符---infix--25)
+- [列表中缀运算符优先级 / List infix precedence](#列表中缀运算符优先级--list-infix-precedence)
+    - [中缀运算符 `Z` / infix `Z`](#中缀运算符-z--infix-z)
+    - [中缀运算符 `X` / infix `X`](#中缀运算符-x--infix-x-1)
+    - [中缀运算符 `...` / infix `...`](#中缀运算符---infix--26)
+- [列表前缀优先级 / List prefix precedence](#列表前缀优先级--list-prefix-precedence)
+    - [中缀运算符 `=` / infix `=`](#中缀运算符---infix--27)
+    - [中缀运算符 `:=` / infix `:=`](#中缀运算符---infix--28)
+    - [中缀运算符 `::=` / infix `::=`](#中缀运算符---infix--29)
+    - [列表运算符 `...` / listop `...`](#列表运算符---listop-)
+    - [列表运算符 `!!!` / listop `!!!`](#列表运算符---listop--1)
+    - [列表运算符 `???` / listop `???`](#列表运算符---listop--2)
+    - [归约运算符 / Reduction operators](#归约运算符--reduction-operators)
+- [宽松的与运算符优先级 / Loose AND precedence](#宽松的与运算符优先级--loose-and-precedence)
+    - [中缀运算符 `and` / infix `and`](#中缀运算符-and--infix-and)
+    - [中缀运算符 `andthen` / infix `andthen`](#中缀运算符-andthen--infix-andthen)
+    - [中缀运算符 `notandthen` / infix `notandthen`](#中缀运算符-notandthen--infix-notandthen)
+- [宽松的或运算符优先级 / Loose OR precedence](#宽松的或运算符优先级--loose-or-precedence)
+    - [中缀运算符 `or` / infix `or`](#中缀运算符-or--infix-or)
+    - [中缀运算符 `orelse` / infix `orelse`](#中缀运算符-orelse--infix-orelse)
+    - [中缀运算符 `xor` / infix `xor`](#中缀运算符-xor--infix-xor)
+- [序列器优先级 / Sequencer precedence](#序列器优先级--sequencer-precedence)
+    - [中缀运算符 `==>` / infix `==>`](#中缀运算符---infix--30)
+    - [中缀运算符 `<==` / infix `<==`](#中缀运算符---infix--31)
+- [标识 / Identity](#标识--identity)
 
 <!-- /MarkdownTOC -->
 
-<a id="%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--operator-precedence"></a>
+<a id="运算符优先级--operator-precedence"></a>
 # 运算符优先级 / Operator precedence
 
 在像 `1 + 2 * 3` 这样的表达式中，首先计算 `2 * 3`，因为中缀运算符 `*` 比 `+` 具有更高的**优先级**。
@@ -287,7 +287,7 @@ For unary operators this is interpreted as:
 
 In the operator descriptions below, a default associativity of *left* is assumed.
 
-<a id="%E8%BF%90%E7%AE%97%E7%AC%A6%E5%88%86%E7%B1%BB--operator-classification"></a>
+<a id="运算符分类--operator-classification"></a>
 # 运算符分类 / Operator classification
 
 运算符可以出现在与术语相关的几个位置：
@@ -319,21 +319,21 @@ As a special case, a *listop* (list operator) can stand either as a term or as a
 
 Defining custom operators is covered in [Defining operators functions](https://docs.raku.org/language/functions#Defining_operators).
 
-<a id="%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6--metaoperators"></a>
+<a id="元运算符--metaoperators"></a>
 # 元运算符 / Metaoperators
 
 元运算符可以与其他运算符或子例程一起参数化，就像函数可以将函数作为参数一样。要使用子例程作为参数，请在其名称前加上 `&`。Raku 将在后台生成实际的组合运算符，允许将该机制应用于用户定义的运算符。要消除链式元运算符的歧义，请将内部运算符括在方括号中。接下来，我们将介绍一些具有不同语义的元运算符。
 
 Metaoperators can be parameterized with other operators or subroutines in the same way as functions can take functions as parameters. To use a subroutine as a parameter, prefix its name with a `&`. Raku will generate the actual combined operator in the background, allowing the mechanism to be applied to user defined operators. To disambiguate chained metaoperators, enclose the inner operator in square brackets. There are quite a few metaoperators with different semantics as explained, next.
 
-<a id="%E6%9B%BF%E6%8D%A2%E8%BF%90%E7%AE%97%E7%AC%A6--substitution-operators"></a>
+<a id="替换运算符--substitution-operators"></a>
 # 替换运算符 / Substitution operators
 
 每个替换运算符分为两种主要形式：小写形式（例如，`s///`）执行*就地*（即*破坏性*）替换行为；大写形式（例如，`S///`）提供*非破坏性*行为。
 
 Each substitution operator comes into two main forms: a lowercase one (e.g., `s///`) that performs *in-place* (i.e., *destructive* behavior; and an uppercase form (e.g., `S///`) that provides a *non-destructive* behavior.
 
-<a id="s-%E5%B0%B1%E5%9C%B0%E6%9B%BF%E6%8D%A2---s-in-place-substitution"></a>
+<a id="s-就地替换---s-in-place-substitution"></a>
 ## `s///` 就地替换 - `s///` in-place substitution
 
 ```Raku
@@ -382,7 +382,7 @@ say $str; # OUTPUT: «fox den␤»
 
 Non-paired characters can simply replace the original slashes. Paired characters, like curly braces, are used only on the match portion, with the substitution given by assignment (of anything: a string, a routine call, etc.).
 
-<a id="s-%E9%9D%9E%E7%A0%B4%E5%9D%8F%E6%80%A7%E6%9B%BF%E6%8D%A2---s-non-destructive-substitution"></a>
+<a id="s-非破坏性替换---s-non-destructive-substitution"></a>
 ## `S///` 非破坏性替换 - `S///` non-destructive substitution
 
 ```Raku
@@ -398,7 +398,7 @@ S:g/« (.)/$0.uc()/.say for <foo bar ber>; # OUTPUT: «Foo␤Bar␤Ber␤»
 
 **Note:** since the result is obtained as a return value, using this operator with the `~~` smartmatch operator is a mistake and will issue a warning. To execute the substitution on a variable that isn't the `$_` this operator uses, alias it to `$_` with `given`, `with`, or any other way. Alternatively, use the [`.subst` method](https://docs.raku.org/routine/subst).
 
-<a id="tr-%E5%B0%B1%E5%9C%B0%E8%BD%AC%E5%86%99---tr-in-place-transliteration"></a>
+<a id="tr-就地转写---tr-in-place-transliteration"></a>
 ## `tr///` 就地转写 - `tr///` in-place transliteration
 
 ```Raku
@@ -417,7 +417,7 @@ $str ~~ tr:c:d/dol st//;
 say $str; # OUTPUT: «ring␤»
 ```
 
-<a id="tr-%E9%9D%9E%E7%A0%B4%E5%9D%8F%E6%80%A7%E8%BD%AC%E5%86%99---tr-non-destructive-transliteration"></a>
+<a id="tr-非破坏性转写---tr-non-destructive-transliteration"></a>
 ## `TR///` 非破坏性转写 - `TR///` non-destructive transliteration
 
 ```Raku
@@ -434,7 +434,7 @@ with 'old string' {
 say TR:d/dol // with 'old string'; # OUTPUT: «string␤»
 ```
 
-<a id="%E8%B5%8B%E5%80%BC%E8%BF%90%E7%AE%97%E7%AC%A6--assignment-operators"></a>
+<a id="赋值运算符--assignment-operators"></a>
 # 赋值运算符 / Assignment operators
 
 中缀运算符可以与赋值运算符组合，以修改值并一次性将结果应用于容器。如果可能的话，容器将被自动生动化。一些例子：
@@ -474,7 +474,7 @@ $a = 3.14;
 $a .= round;      # RESULT: «3»
 ```
 
-<a id="%E5%90%A6%E5%AE%9A%E5%85%B3%E7%B3%BB%E5%9E%8B%E8%BF%90%E7%AE%97%E7%AC%A6--negated-relational-operators"></a>
+<a id="否定关系型运算符--negated-relational-operators"></a>
 # 否定关系型运算符 / Negated relational operators 
 
 返回 `Bool` 的关系运算符的结果可以用前缀 `!` 否定。为避免与 `!!` 运算符的视觉混淆，不能修改已经以 `!` 开头的任何运算符.
@@ -495,7 +495,7 @@ my $today = Date.today;
 say so $release !before $today;     # OUTPUT: «False␤»
 ```
 
-<a id="%E5%8F%8D%E8%BD%AC%E8%BF%90%E7%AE%97%E7%AC%A6--reversed-operators"></a>
+<a id="反转运算符--reversed-operators"></a>
 # 反转运算符 / Reversed operators 
 
 任何中缀运算符将它的两个参数用前缀 `R` 反转调用。操作数的关联性也会反转。
@@ -508,7 +508,7 @@ say [R/] 2, 4, 16;         # OUTPUT: «2␤»
 say [RZ~] <1 2 3>,<4 5 6>  # OUTPUT: «(41 52 63)␤»
 ```
 
-<a id="%E8%B6%85%E8%BF%90%E7%AE%97%E7%AC%A6--hyper-operators"></a>
+<a id="超运算符--hyper-operators"></a>
 # 超运算符 / Hyper operators
 
 超运算符包括 `«` 和 `»`，以及它们的 ASCII 变体 `<<` 和 `>>`。它们对一个或两个列表应用由 `«` 和/或 `»` 括起来的给定运算符（对于一元运算符，在运算符前面或后面），返回结果列表，其中 `«` 或 `»` 的箭头部分指向较短的列表。单个元素会被转换为列表，因此也可以使用它们。如果其中一个列表短于另一个列表，则操作员将在较短列表上循环，直到处理完较长列表中的所有元素。
@@ -646,7 +646,7 @@ my $p = (2, 3);
 say $neighbors »>>+<<» ($p, *);   # OUTPUT: «((1 3) (2 2) (2 4) (3 3))␤»
 ```
 
-<a id="%E5%BD%92%E7%BA%A6%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6--reduction-metaoperators"></a>
+<a id="归约元运算符--reduction-metaoperators"></a>
 # 归约元运算符 / Reduction metaoperators
 
 归约元运算符 `[]`，使用给定的中缀运算符归约一个列表。它给出的结果与 [reduce](https://docs.raku.org/routine/reduce) 例程相同-有关详细信息，请参见此处。
@@ -689,7 +689,7 @@ my @n = [\~] 1..*;
 say @n[^5];         # OUTPUT: «(1 12 123 1234 12345)␤»
 ```
 
-<a id="%E4%BA%A4%E5%8F%89%E8%BF%90%E7%AE%97%E7%AC%A6--cross-operators"></a>
+<a id="交叉运算符--cross-operators"></a>
 # 交叉运算符 / Cross operators
 
 交叉元运算符 `X` 将按交叉积的顺序对所有列表应用给定的中缀运算符，以便最右边的运算符变化最快。
@@ -700,7 +700,7 @@ The cross metaoperator, `X`, will apply a given infix operator in order of cross
 1..3 X~ <a b> # RESULT: «<1a, 1b, 2a, 2b, 3a, 3b>␤»
 ```
 
-<a id="zip-%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6--zip-metaoperator"></a>
+<a id="zip-元运算符--zip-metaoperator"></a>
 # Zip 元运算符 / Zip metaoperator 
 
 zip 元运算符（它与 [Z](https://docs.raku.org/language/operators#infix_Z) 不同）将对从其参数中左、右各取一个元素组成的键值对应用给定的中缀运算符。返回结果列表。
@@ -728,7 +728,7 @@ If an infix operator is not given, the `,` (comma operator) will be used by defa
 my @l = 1 Z 2;  # RESULT: «[(1 2)]»
 ```
 
-<a id="%E5%BA%8F%E5%88%97%E8%BF%90%E7%AE%97%E7%AC%A6--sequential-operators"></a>
+<a id="序列运算符--sequential-operators"></a>
 # 序列运算符 / Sequential operators 
 
 序列元运算符 `S` 将禁止优化器执行任何并发或重新排序。支持大多数简单的中缀运算符。
@@ -739,7 +739,7 @@ The sequential metaoperator, `S`, will suppress any concurrency or reordering do
 say so 1 S& 2 S& 3;  # OUTPUT: «True␤»
 ```
 
-<a id="%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6%E7%9A%84%E5%B5%8C%E5%A5%97--nesting-of-metaoperators"></a>
+<a id="元运算符的嵌套--nesting-of-metaoperators"></a>
 # 元运算符的嵌套 / Nesting of metaoperators
 
 为了避免在链接元运算符时出现歧义，请使用方括号帮助编译器理解你。
@@ -753,10 +753,10 @@ my @b = 5, 6, 7;
 say @a;         # OUTPUT: «[19 20 21]␤»
 ```
 
-<a id="%E6%9C%AF%E8%AF%AD%E4%BC%98%E5%85%88%E7%BA%A7--term-precedence"></a>
+<a id="术语优先级--term-precedence"></a>
 # 术语优先级 / Term precedence
 
-<a id="%E6%9C%AF%E8%AF%AD--term-"></a>
+<a id="术语--term-"></a>
 ## 术语 `< >` / term `< >`
 
 引用词语构造将内容按空白分解，并返回单词的[列表](https://docs.raku.org/type/List)。如果一个单词看起来像数字字面量或键值对字面量，它将被转换为适当的数字。
@@ -767,7 +767,7 @@ The quote-words construct breaks up the contents on whitespace and returns a [Li
 say <a b c>[1];   # OUTPUT: «b␤»
 ```
 
-<a id="%E6%9C%AF%E8%AF%AD----term--"></a>
+<a id="术语----term--"></a>
 ## 术语 `( )` / term `( )`
 
 分组运算符。
@@ -789,7 +789,7 @@ p a => 1;           # OUTPUT: «named␤»
 p (a => 1);         # OUTPUT: «positional␤»
 ```
 
-<a id="%E6%9C%AF%E8%AF%AD---term--"></a>
+<a id="术语---term--"></a>
 ## 术语 `{ }` term `{ }`
 
 [代码块](https://docs.raku.org/type/Block) 或者[哈希](https://docs.raku.org/type/Hash)的构造器。
@@ -813,7 +813,7 @@ To force construction of a [Block](https://docs.raku.org/type/Block), follow the
 hash(:$_).^name.say; # OUTPUT: «Hash␤»
 ```
 
-<a id="%E7%8E%AF%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6----circumfix--"></a>
+<a id="环缀运算符----circumfix--"></a>
 ## 环缀运算符 `[ ]` / circumfix `[ ]`
 
 [数组](https://docs.raku.org/type/Array)构造器返回一个在列表上下文中不展平的逐项[数组](https://docs.raku.org/type/Array)。看这个：
@@ -828,17 +828,17 @@ say .perl for [3,2,[1,0]]; # OUTPUT: «3␤2␤$[1, 0]␤»
 
 This array is itemized, in the sense that every element constitutes an item, as shown by the `$` preceding the last element of the array, the [(list) item contextualizer](https://docs.raku.org/type/Any#index-entry-%24_%28item_contextualizer%29).
 
-<a id="%E6%9C%AF%E8%AF%AD--terms"></a>
+<a id="术语--terms"></a>
 # 术语 / Terms
 
 术语有自己的[扩展文档](https://docs.raku.org/language/terms)。
 
 Terms have their [own extended documentation](https://docs.raku.org/language/terms).
 
-<a id="%E6%96%B9%E6%B3%95%E5%90%8E%E7%BC%80%E4%BC%98%E5%85%88%E7%BA%A7--method-postfix-precedence"></a>
+<a id="方法后缀优先级--method-postfix-precedence"></a>
 # 方法后缀优先级 / Method postfix precedence
 
-<a id="%E5%90%8E%E7%8E%AF%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6----postcircumfix--"></a>
+<a id="后环缀运算符----postcircumfix--"></a>
 ## 后环缀运算符 `[ ]` / postcircumfix `[ ]`
 
 ```Raku
@@ -867,7 +867,7 @@ say @alphabet[0..3].perl            # OUTPUT: «("a", "B", "C", "d")␤»
 
 See [Subscripts](https://docs.raku.org/language/subscripts), for a more detailed explanation of this operator's behavior and for how to implement support for it in custom types.
 
-<a id="%E5%90%8E%E7%8E%AF%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6----postcircumfix---1"></a>
+<a id="后环缀运算符----postcircumfix---1"></a>
 ## 后环缀运算符 `{ }` / postcircumfix `{ }`
 
 ```Raku
@@ -894,7 +894,7 @@ say %color;             # OUTPUT: «banana => yellowish, kiwi => green, lime => 
 
 See [`postcircumfix < >`](https://docs.raku.org/routine/%3C%20%3E#(Operators)_postcircumfix_%3C_%3E) and [`postcircumfix « »`](https://docs.raku.org/routine/%C2%AB%20%C2%BB#(Operators)_postcircumfix_%C2%AB_%C2%BB) for convenient shortcuts, and [Subscripts](https://docs.raku.org/language/subscripts) for a more detailed explanation of this operator's behavior and how to implement support for it in custom types.
 
-<a id="%E5%90%8E%E7%8E%AF%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6--postcircumfix-"></a>
+<a id="后环缀运算符--postcircumfix-"></a>
 ## 后环缀运算符 `<>` / postcircumfix `<>`
 
 反容器化运算符，它从容器中提取值并使其独立于容器类型。
@@ -914,7 +914,7 @@ say %config-hash.perl; # OUTPUT: «{:files(3), :path("/home/perl6/perl6.pod6")}�
 
 It's a `Hash` in both cases, and it can be used like that; however, in the first case it was in item context, and in the second case it has been extracted to its proper context.
 
-<a id="%E5%90%8E%E7%8E%AF%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6--postcircumfix--1"></a>
+<a id="后环缀运算符--postcircumfix--1"></a>
 ## 后环缀运算符 `< >` / postcircumfix `< >`
 
 [后环缀 `{ }`](https://docs.raku.org/routine/%7B%20%7D#(Operators)_postcircumfix_{_}) 的快捷方式，该快捷方式使用与同名的[引用词运算符](https://docs.raku.org/routine/%3C%20%3E#circumfix_%3C_%3E)相同的规则引用其参数。
@@ -932,7 +932,7 @@ say %color<strawberry>:exists;    # OUTPUT: «False␤»
 
 Technically, not a real operator; it's syntactic sugar that's turned into the `{ }` postcircumfix operator at compile-time.
 
-<a id="%E5%90%8E%E7%8E%AF%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%C2%AB-%C2%BB--postcircumfix-%C2%AB-%C2%BB"></a>
+<a id="后环缀运算符-«-»--postcircumfix-«-»"></a>
 ## 后环缀运算符 `« »` / postcircumfix `« »`
 
 [后环缀 `{ }`](https://docs.raku.org/routine/%7B%20%7D#(Operators)_postcircumfix_{_})的快捷方式，该快捷方式使用与同名的[引用词插值运算符](https://docs.raku.org/language/quoting#Word_quoting_with_interpolation_and_quote_protection:_%C2%AB_%C2%BB)相同的规则引用其参数。
@@ -949,7 +949,7 @@ say %color«cherry "$fruit"».perl;   # OUTPUT: «("red", "green")␤»
 
 Technically, not a real operator; it's syntactic sugar that's turned into the `{ }` postcircumfix operator at compile-time.
 
-<a id="%E5%90%8E%E7%8E%AF%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6----postcircumfix---2"></a>
+<a id="后环缀运算符----postcircumfix---2"></a>
 ## 后环缀运算符 `( )` / postcircumfix `( )`
 
 函数调用运算符将调用者视为[可调用的](https://docs.raku.org/type/Callable)并使用括号之间的表达式作为参数调用它。
@@ -964,7 +964,7 @@ Note that an identifier followed by a pair of parentheses is always parsed as a 
 
 If you want your objects to respond to the call operator, implement a `method CALL-ME`.
 
-<a id="%E6%96%B9%E6%B3%95%E8%BF%90%E7%AE%97%E7%AC%A6---methodop-"></a>
+<a id="方法运算符---methodop-"></a>
 ## 方法运算符 `.` / methodop `.`
 
 用于调用一个方法的运算符，格式为 `$invocant.method`。
@@ -975,7 +975,7 @@ The operator for calling one method, `$invocant.method`.
 
 Technically, not a real operator; it's syntax special-cased in the compiler.
 
-<a id="%E6%96%B9%E6%B3%95%E8%BF%90%E7%AE%97%E7%AC%A6---methodop--1"></a>
+<a id="方法运算符---methodop--1"></a>
 ## 方法运算符 `.&` / methodop `.&`
 
 调用子例程（至少有一个位置参数）的运算符，如方法。调用者将绑定到第一个位置参数。
@@ -995,7 +995,7 @@ my sub f($invocant){ "The arg has a value of $invocant" }
 # OUTPUT: «The arg has a value of 42␤»
 ```
 
-<a id="%E6%96%B9%E6%B3%95%E8%BF%90%E7%AE%97%E7%AC%A6---methodop--2"></a>
+<a id="方法运算符---methodop--2"></a>
 ## 方法运算符 `.=` / methodop `.=`
 
 一个变异的方法调用。`$invocant.=method` 是 `$invocant = $invocant.method` 的语法糖，类似于 [=](https://docs.raku.org/routine/=)。
@@ -1006,7 +1006,7 @@ A mutating method call. `$invocant.=method` desugars to `$invocant = $invocant.m
 
 Technically, not a real operator; it's syntax special-cased in the compiler.
 
-<a id="%E6%96%B9%E6%B3%95%E8%BF%90%E7%AE%97%E7%AC%A6-%5E--methodop-%5E"></a>
+<a id="方法运算符-^--methodop-^"></a>
 ## 方法运算符 `.^` / methodop `.^`
 
 元方法调用。`$invocant.^method` 对调用者 `$invocant` 的元类调用方法 `method`。为 `$invocant.HOW.method($invocant, ...)` 的语法糖。有关详细信息，请参阅[元对象协议文档](https://docs.raku.org/language/mop)。
@@ -1017,7 +1017,7 @@ A meta-method call. `$invocant.^method` calls `method` on `$invocant`'s metaclas
 
 Technically, not a real operator; it's syntax special-cased in the compiler.
 
-<a id="%E6%96%B9%E6%B3%95%E8%BF%90%E7%AE%97%E7%AC%A6---methodop--3"></a>
+<a id="方法运算符---methodop--3"></a>
 ## 方法运算符 `.?` / methodop `.?`
 
 安全调用运算符。`$invocant.?method` 对调用者 `$invocant` 调用方法 `method` 如果它有这样一个名称的方法。否则返回 [Nil](https://docs.raku.org/type/Nil)。
@@ -1028,7 +1028,7 @@ Safe call operator. `$invocant.?method` calls method `method` on `$invocant` if 
 
 Technically, not a real operator; it's syntax special-cased in the compiler.
 
-<a id="%E6%96%B9%E6%B3%95%E8%BF%90%E7%AE%97%E7%AC%A6---methodop--4"></a>
+<a id="方法运算符---methodop--4"></a>
 ## 方法运算符 `.+` / methodop `.+`
 
 `$foo.+meth` 遍历方法解析顺序并调用所有名为 `meth` 的方法，如果类型与 `$foo` 的类型相同，则调用名为 `meth` 的子方法。这些可能是多分派方法，在这种情况下，将调用匹配的候选者。
@@ -1055,7 +1055,7 @@ class C is B is A {
 say C.+foo; # OUTPUT: «from C␤from B␤from A␤(True True True)␤»
 ```
 
-<a id="%E6%96%B9%E6%B3%95%E8%BF%90%E7%AE%97%E7%AC%A6---methodop--5"></a>
+<a id="方法运算符---methodop--5"></a>
 ## 方法运算符 `.*` / methodop `.*`
 
 `$foo.*meth` 遍历方法解析顺序并调用所有名为 `meth` 的方法，如果类型与 `$foo` 的类型相同，则调用名为 `meth` 的子方法。这些可能是多分派方法，在这种情况下，将调用匹配的候选者。
@@ -1070,7 +1070,7 @@ After that, a [List](https://docs.raku.org/type/List) of the results are returne
 
 Technically, postfix `.+` calls `.*` at first. Read postfix `.+` section to see examples.
 
-<a id="%E6%96%B9%E6%B3%95%E8%BF%90%E7%AE%97%E7%AC%A6-%C2%BB-----methodop-%C2%BB--methodop-"></a>
+<a id="方法运算符-»-----methodop-»--methodop-"></a>
 ## 方法运算符 `».` / `>>.` - methodop `».` / methodop `>>.`
 
 这是超级方法调用运算符。将对列表中的所有元素无序地调用方法但是有序地返回返回值列表。
@@ -1112,7 +1112,7 @@ Take care to avoid a [common mistake](https://docs.raku.org/language/traps#Using
 @a».say;  # WRONG! Could produce a␤b␤c␤ or c␤b␤a␤ or any other order 
 ```
 
-<a id="%E6%96%B9%E6%B3%95%E8%BF%90%E7%AE%97%E7%AC%A6-postfix--postcircumfix---methodop-postfix--postcircumfix"></a>
+<a id="方法运算符-postfix--postcircumfix---methodop-postfix--postcircumfix"></a>
 ## 方法运算符 `.postfix` / `.postcircumfix` - methodop `.postfix` / `.postcircumfix`
 
 在大多数情况下，点号可以放在后缀或后环缀：
@@ -1152,7 +1152,7 @@ If the postfix is an identifier, however, it will be interpreted as a normal met
 
 Technically, not a real operator; it's syntax special-cased in the compiler.
 
-<a id="%E6%96%B9%E6%B3%95%E8%BF%90%E7%AE%97%E7%AC%A6---methodop--6"></a>
+<a id="方法运算符---methodop--6"></a>
 ## 方法运算符 `.:` / methodop `.:`
 
 前缀形式的运算符仍然可以像方法一样调用，即使用 `.` 方法运算符符号，在它前面加一个冒号。例如：
@@ -1169,7 +1169,7 @@ say $a.:<++>;   # OUTPUT: «3␤»
 
 Technically, not a real operator; it's syntax special-cased in the compiler, that is why it's classified as a *methodop*.
 
-<a id="%E6%96%B9%E6%B3%95%E8%BF%90%E7%AE%97%E7%AC%A6---methodop--7"></a>
+<a id="方法运算符---methodop--7"></a>
 ## 方法运算符 `.::` / methodop `.::`
 
 类限定的方法调用，用于调用在父类或角色中定义的方法，即使在子类中重新定义了该方法。
@@ -1186,7 +1186,7 @@ class Foo is Bar {
 say Foo.Bar::baz;       # OUTPUT: «42␤»
 ```
 
-<a id="%E6%96%B9%E6%B3%95%E8%BF%90%E7%AE%97%E7%AC%A6---postfix-"></a>
+<a id="方法运算符---postfix-"></a>
 ## 方法运算符 `,=` / postfix `,=`
 
 创建一个对象，该对象以依赖于类的方式连接左侧变量和右侧表达式的内容：
@@ -1199,10 +1199,10 @@ my %a = :11a, :22b;
 say %a # OUTPUT: «{a => 11, b => 22, x => 33}␤»
 ```
 
-<a id="%E8%87%AA%E5%A2%9E%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--autoincrement-precedence"></a>
+<a id="自增运算符优先级--autoincrement-precedence"></a>
 # 自增运算符优先级 / Autoincrement precedence
 
-<a id="%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---prefix-"></a>
+<a id="前缀运算符---prefix-"></a>
 ## 前缀运算符 `++` / prefix `++`
 
 ```Raku
@@ -1223,7 +1223,7 @@ say $x;     # OUTPUT: «4␤»
 
 It works by calling the [succ](https://docs.raku.org/routine/succ) method (for *successor*) on its argument, which gives custom types the freedom to implement their own increment semantics.
 
-<a id="%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-----prefix---"></a>
+<a id="前缀运算符-----prefix---"></a>
 ## 前缀运算符 `--` / prefix `--`
 
 ```Raku
@@ -1244,7 +1244,7 @@ say $x;     # OUTPUT: «2␤»
 
 It works by calling the [pred](https://docs.raku.org/routine/pred) method (for *predecessor*) on its argument, which gives custom types the freedom to implement their own decrement semantics.
 
-<a id="%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---prefix--1"></a>
+<a id="前缀运算符---prefix--1"></a>
 ## 前缀运算符 `++` / prefix `++`
 
 ```Raku
@@ -1285,7 +1285,7 @@ say $filename++ for 1..3;
 # OUTPUT: «somefile-001.txt␤somefile-002.txt␤somefile-003.txt␤»
 ```
 
-<a id="%E5%90%8E%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-----postfix---"></a>
+<a id="后缀运算符-----postfix---"></a>
 ## 后缀运算符 `--` / postfix `--` 
 
 ```Raku
@@ -1326,10 +1326,10 @@ say $filename-- for 1..3;
 # OUTPUT: «somefile-003.txt␤somefile-002.txt␤somefile-001.txt␤»
 ```
 
-<a id="%E6%8C%87%E6%95%B0%E4%BC%98%E5%85%88%E7%BA%A7--exponentiation-precedence"></a>
+<a id="指数优先级--exponentiation-precedence"></a>
 # 指数优先级 / Exponentiation precedence
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix-"></a>
+<a id="中缀运算符---infix-"></a>
 ## 中缀运算符 `**` / infix `**`
 
 ```Raku
@@ -1362,10 +1362,10 @@ sub twenty-second-power( Int $num ) { $num²² };
 say twenty-second-power($_) for ^5; # OUTPUT: «0␤1␤4194304␤31381059609␤17592186044416␤»
 ```
 
-<a id="%E4%B8%80%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--symbolic-unary-precedence"></a>
+<a id="一元运算符优先级--symbolic-unary-precedence"></a>
 # 一元运算符优先级 / Symbolic unary precedence
 
-<a id="%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---prefix--2"></a>
+<a id="前缀运算符---prefix--2"></a>
 ## 前缀运算符 `?` / prefix `?`
 
 ```Raku
@@ -1380,7 +1380,7 @@ Boolean context operator.
 
 Coerces the argument to [Bool](https://docs.raku.org/type/Bool) by calling the `Bool` method on it. Note that this collapses [Junction](https://docs.raku.org/type/Junction)s.
 
-<a id="%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---prefix--3"></a>
+<a id="前缀运算符---prefix--3"></a>
 ## 前缀运算符 `!` / prefix `!`
 
 ```Raku
@@ -1397,7 +1397,7 @@ Negated boolean context operator.
 
 Coerces the argument to [Bool](https://docs.raku.org/type/Bool) by calling the `Bool` method on it, and returns the negation of the result. Note that this collapses [Junction](https://docs.raku.org/type/Junction)s.
 
-<a id="%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---prefix--4"></a>
+<a id="前缀运算符---prefix--4"></a>
 ## 前缀运算符 `+` / prefix `+`
 
 ```Raku
@@ -1412,7 +1412,7 @@ Numeric context operator.
 
 Coerces the argument to [Numeric](https://docs.raku.org/type/Numeric) by calling the `Numeric` method on it.
 
-<a id="%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6----prefix--"></a>
+<a id="前缀运算符----prefix--"></a>
 ## 前缀运算符 `-` / prefix `-`
 
 ```Raku
@@ -1427,7 +1427,7 @@ Negative numeric context operator.
 
 Coerces the argument to [Numeric](https://docs.raku.org/type/Numeric) by calling the `Numeric` method on it, and then negates the result.
 
-<a id="%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7E--prefix-%7E"></a>
+<a id="前缀运算符-~--prefix-~"></a>
 ## 前缀运算符 `~` / prefix `~`
 
 ```Raku
@@ -1442,7 +1442,7 @@ String context operator.
 
 Coerces the argument to [Str](https://docs.raku.org/type/Str) by calling the [Str](https://docs.raku.org/type/List#method_Str) method on it.
 
-<a id="%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7C--prefix-%7C"></a>
+<a id="前缀运算符-|--prefix-|"></a>
 ## 前缀运算符 `|` / prefix `|`
 
 将类型为 [Capture](https://docs.raku.org/type/Capture)、[Pair](https://docs.raku.org/type/Pair)、[List](https://docs.raku.org/type/List)、[Map](https://docs.raku.org/type/Map) 和 [Hash](https://docs.raku.org/type/Hash) 的对象展平成参数列表。
@@ -1465,7 +1465,7 @@ Please see the [`Signature` page, specially the section on Captures](https://doc
 
 Outside of argument lists, it returns a [Slip](https://docs.raku.org/type/Slip), which makes it flatten into the outer list. Inside [argument list](https://docs.raku.org/language/list#Argument_list_(Capture)_context) [`Positional`s](https://docs.raku.org/type/Positional) are turned into positional arguments and [`Associative`s](https://docs.raku.org/type/Associative) are turned into named arguments.
 
-<a id="%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5E--prefix-%5E"></a>
+<a id="前缀运算符-^--prefix-^"></a>
 ## 前缀运算符 `+^` / prefix `+^`
 
 ```Raku
@@ -1476,7 +1476,7 @@ multi sub prefix:<+^>(Any --> Int:D)
 
 Integer bitwise negation operator: Coerces the argument to [Int](https://docs.raku.org/type/Int) and does a bitwise negation on the result, assuming [two's complement](https://en.wikipedia.org/wiki/Two%27s_complement).
 
-<a id="%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7E%5E--prefix-%7E%5E"></a>
+<a id="前缀运算符-~^--prefix-~^"></a>
 ## 前缀运算符 `~^` / prefix `~^`
 
 将参数强制为非变量编码字符串缓冲区类型（例如 `buf8`、`buf16`、`buf32`），然后翻转该缓冲区中的每个位。
@@ -1487,7 +1487,7 @@ Coerces the argument to a non-variable-encoding string buffer type (e.g. `buf8`,
 
 Please note that this has not yet been implemented.
 
-<a id="%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5E--prefix-%5E-1"></a>
+<a id="前缀运算符-^--prefix-^-1"></a>
 ## 前缀运算符 `?^` / prefix `?^`
 
 ```Raku
@@ -1498,7 +1498,7 @@ multi sub prefix:<?^>(Mu --> Bool:D)
 
 Boolean bitwise negation operator: Coerces the argument to [Bool](https://docs.raku.org/type/Bool) and then does a bit flip, which makes it the same as `prefix:<!>`.
 
-<a id="%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5E--prefix-%5E-2"></a>
+<a id="前缀运算符-^--prefix-^-2"></a>
 ## 前缀运算符 `^` / prefix `^`
 
 ```Raku
@@ -1518,14 +1518,14 @@ say ^5;         # OUTPUT: «0..^5␤»
 for ^5 { }      # 5 iterations
 ```
 
-<a id="%E5%B8%A6%E7%82%B9%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--dotty-infix-precedence"></a>
+<a id="带点中缀运算符优先级--dotty-infix-precedence"></a>
 # 带点中缀运算符优先级 / Dotty infix precedence
 
 这些运算符与它们的方法后缀对应项类似，但需要周围的空白（在和/或之后）来区分它们。
 
 These operators are like their Method Postfix counterparts, but require surrounding whitespace (before and/or after) to distinguish them.
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--1"></a>
+<a id="中缀运算符---infix--1"></a>
 ## 中缀运算符 `.=` / infix `.=`
 
 对左侧容器中的值调用右侧方法，替换左侧容器中的结果值。
@@ -1545,7 +1545,7 @@ say ++$a .= abs;
 #           in block <unit> at <tmp> line 1␤␤» 
 ```
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--2"></a>
+<a id="中缀运算符---infix--2"></a>
 ## 中缀运算符 `.` / infix `.`
 
 调用左侧调用者右侧的方法（其名称必须是字母）。
@@ -1565,10 +1565,10 @@ say -5 .abs;     # following whitespace is optional
 # OUTPUT: «5␤»
 ```
 
-<a id="%E4%B9%98%E6%B3%95%E4%BC%98%E5%85%88%E7%BA%A7--multiplicative-precedence"></a>
+<a id="乘法优先级--multiplicative-precedence"></a>
 # 乘法优先级 / Multiplicative precedence
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--3"></a>
+<a id="中缀运算符---infix--3"></a>
 ## 中缀运算符 `*` / infix `*`
 
 ```Raku
@@ -1583,7 +1583,7 @@ Multiplication operator.
 
 Coerces both arguments to [Numeric](https://docs.raku.org/type/Numeric) and multiplies them. The result is of the wider type. See [Numeric](https://docs.raku.org/type/Numeric) for details.
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6----infix-"></a>
+<a id="中缀运算符----infix-"></a>
 ## 中缀运算符 `/` - infix `/`
 
 ```Raku
@@ -1598,7 +1598,7 @@ Division operator.
 
 Coerces both argument to [Numeric](https://docs.raku.org/type/Numeric) and divides the left through the right number. Division of [Int](https://docs.raku.org/type/Int) values returns [Rat](https://docs.raku.org/type/Rat), otherwise the "wider type" rule described in [Numeric](https://docs.raku.org/type/Numeric) holds.
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-div--infix-div"></a>
+<a id="中缀运算符-div--infix-div"></a>
 ## 中缀运算符 `div` / infix `div`
 
 ```Raku
@@ -1609,7 +1609,7 @@ multi sub infix:<div>(Int:D, Int:D --> Int:D)
 
 Integer division operator. Rounds down.
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%25--infix-%25"></a>
+<a id="中缀运算符---infix--4"></a>
 ## 中缀运算符 `%` / infix `%`
 
 ```Raku
@@ -1629,7 +1629,7 @@ my ($x, $y) = 1,2;
 $x % $y == $x - floor($x / $y) * $y
 ```
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%25%25--infix-%25%25"></a>
+<a id="中缀运算符---infix--5"></a>
 ## 中缀运算符 `%%` / infix `%%`
 
 ```Raku
@@ -1640,7 +1640,7 @@ multi sub infix:<%%>($a, $b --> Bool:D)
 
 Divisibility operator. Returns `True` if `$a % $b == 0`.
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-mod--infix-mod"></a>
+<a id="中缀运算符-mod--infix-mod"></a>
 ## 中缀运算符 `mod` / infix `mod`
 
 ```Raku
@@ -1651,7 +1651,7 @@ multi sub infix:<mod>(Int:D $a, Int:D $b --> Int:D)
 
 Integer modulo operator. Returns the remainder of an integer modulo operation.
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--4"></a>
+<a id="中缀运算符---infix--6"></a>
 ## 中缀运算符 `+&` / infix `+&`
 
 ```Raku
@@ -1662,7 +1662,7 @@ multi sub infix:<+&>($a, $b --> Int:D)
 
 Numeric bitwise *AND* operator. Coerces both arguments to [Int](https://docs.raku.org/type/Int) and does a bitwise *AND* operation assuming two's complement.
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--5"></a>
+<a id="中缀运算符---infix--7"></a>
 ## 中缀运算符 `+<` / infix `+<`
 
 ```Raku
@@ -1673,7 +1673,7 @@ multi sub infix:<< +< >>($a, $b --> Int:D)
 
 Integer bit shift to the left.
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--6"></a>
+<a id="中缀运算符---infix--8"></a>
 ## 中缀运算符 `+>` / infix `+>`
 
 ```Raku
@@ -1684,13 +1684,13 @@ multi sub infix:<< +> >>($a, $b --> Int:D)
 
 Integer bit shift to the right.
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7E--infix-%7E"></a>
+<a id="中缀运算符-~--infix-~"></a>
 ## 中缀运算符 `~&` / infix `~&`
 
 将每个参数强制为非变量编码字符串缓冲区类型（例如 `buf8`、`buf16`、`buf32`），然后对两个缓冲区的相应整数执行逐位与运算，用零填充较短的缓冲区。
 Coerces each argument to a non-variable-encoding string buffer type (e.g. `buf8`, `buf16`, `buf32`) and then performs a numeric bitwise AND on corresponding integers of the two buffers, padding the shorter buffer with zeroes.
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7E--infix-%7E-1"></a>
+<a id="中缀运算符-~--infix-~-1"></a>
 ## 中缀运算符 `~<` / infix `~<`
 
 将左参数强制为非变量编码字符串缓冲区类型（例如 `buf8`、`buf16`、`buf32`），然后对缓冲区的位执行数值按位左移。
@@ -1701,7 +1701,7 @@ Coerces the left argument to a non-variable-encoding string buffer type (e.g. `b
 
 Please note that this has not yet been implemented.
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7E--infix-%7E-2"></a>
+<a id="中缀运算符-~--infix-~-2"></a>
 ## 中缀运算符 `~>` / infix `~>`
 
 将左参数强制为非变量编码字符串缓冲区类型（例如 `buf8`、`buf16`、`buf32`），然后对缓冲区的位执行数字按位左移。
@@ -1712,7 +1712,7 @@ Coerces the left argument to a non-variable-encoding string buffer type (e.g. `b
 
 Please note that this has not yet been implemented.
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-gcd--infix-gcd"></a>
+<a id="中缀运算符-gcd--infix-gcd"></a>
 ## 中缀运算符 `gcd` / infix `gcd`
 
 ```Raku
@@ -1723,7 +1723,7 @@ multi sub infix:<gcd>($a, $b --> Int:D)
 
 Coerces both arguments to [Int](https://docs.raku.org/type/Int) and returns the greatest common divisor. If one of its arguments is 0, the other is returned (when both arguments are 0, the operator returns 0).
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-lcm--infix-lcm"></a>
+<a id="中缀运算符-lcm--infix-lcm"></a>
 ## 中缀运算符 `lcm` / infix `lcm`
 
 ```Raku
@@ -1734,10 +1734,10 @@ multi sub infix:<lcm>($a, $b --> Int:D)
 
 Coerces both arguments to [Int](https://docs.raku.org/type/Int) and returns the least common multiple; that is, the smallest integer that is evenly divisible by both arguments.
 
-<a id="%E5%8A%A0%E6%B3%95%E4%BC%98%E5%85%88%E7%BA%A7--additive-precedence"></a>
+<a id="加法优先级--additive-precedence"></a>
 # 加法优先级 / Additive precedence
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--7"></a>
+<a id="中缀运算符---infix--9"></a>
 ## 中缀运算符 `+` / infix `+`
 
 ```Raku
@@ -1752,7 +1752,7 @@ Addition operator.
 
 Coerces both arguments to [Numeric](https://docs.raku.org/type/Numeric) and adds them.
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6----infix--"></a>
+<a id="中缀运算符----infix--"></a>
 ## 中缀运算符 `-` / infix `-`
 
 ```Raku
@@ -1767,7 +1767,7 @@ Subtraction operator.
 
 Coerces both arguments to [Numeric](https://docs.raku.org/type/Numeric) and subtracts the second from the first.
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7C--infix-%7C"></a>
+<a id="中缀运算符-|--infix-|"></a>
 ## 中缀运算符 `+|` / infix `+|`
 
 ```Raku
@@ -1778,7 +1778,7 @@ multi sub infix:<+|>($a, $b --> Int:D)
 
 Integer bitwise OR operator: Coerces both arguments to [Int](https://docs.raku.org/type/Int) and does a bitwise *OR* (inclusive OR) operation.
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5E--infix-%5E"></a>
+<a id="中缀运算符-^--infix-^"></a>
 ## 中缀运算符 `+^` / infix `+^`
 
 ```Raku
@@ -1789,21 +1789,21 @@ multi sub infix:<+^>($a, $b --> Int:D)
 
 Integer bitwise XOR operator: Coerces both arguments to [Int](https://docs.raku.org/type/Int) and does a bitwise *XOR* (exclusive OR) operation.
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7E%7C--infix-%7E%7C"></a>
+<a id="中缀运算符-~|--infix-~|"></a>
 ## 中缀运算符 `~|` / infix `~|`
 
 将每个参数强制为非变量编码字符串缓冲区类型（例如 `buf8`、`buf16`、`buf32`），然后对两个缓冲区的相应整数执行逐位或数字运算，用零填充较短的缓冲区。
 
 Coerces each argument to a non-variable-encoding string buffer type (e.g. `buf8`, `buf16`, `buf32`) and then performs a numeric bitwise OR on corresponding integers of the two buffers, padding the shorter buffer with zeroes.
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7E%5E--infix-%7E%5E"></a>
+<a id="中缀运算符-~^--infix-~^"></a>
 ## 中缀运算符 `~^` / infix `~^`
 
 将每个参数强制为非变量编码字符串缓冲区类型（例如 `buf8`、`buf16`、`buf32`），然后对两个缓冲区的相应整数执行数字位异或，用零填充较短的缓冲区。
 
 Coerces each argument to a non-variable-encoding string buffer type (e.g. `buf8`, `buf16`, `buf32`) and then performs a numeric bitwise XOR on corresponding integers of the two buffers, padding the shorter buffer with zeroes.
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5E--infix-%5E-1"></a>
+<a id="中缀运算符-^--infix-^-1"></a>
 ## 中缀运算符 `?^` / infix `?^`
 
 ```Raku
@@ -1815,7 +1815,7 @@ multi sub infix:<?^>(Mu \a, Mu \b)
 
 Boolean bitwise XOR operator: Coerces the argument(s) to [Bool](https://docs.raku.org/type/Bool) and performs logical XOR on them: it will return True if and only if just one of the argument is true. It returns identity on a single argument.
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7C--infix-%7C-1"></a>
+<a id="中缀运算符-|--infix-|-1"></a>
 ## 中缀运算符 `?|` / infix `?|`
 
 ```Raku
@@ -1830,10 +1830,10 @@ Boolean logical OR operator.
 
 Coerces both arguments to [Bool](https://docs.raku.org/type/Bool) and does a logical *OR* (inclusive OR) operation.
 
-<a id="%E5%A4%8D%E5%88%B6%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--replication-precedence"></a>
+<a id="复制运算符优先级--replication-precedence"></a>
 # 复制运算符优先级 / Replication precedence
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-x--infix-x"></a>
+<a id="中缀运算符-x--infix-x"></a>
 ## 中缀运算符 `x` / infix `x`
 
 ```Raku
@@ -1857,7 +1857,7 @@ my $b = 3.5;
 say $a x $b;            # OUTPUT: «aaa␤»
 ```
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-xx--infix-xx"></a>
+<a id="中缀运算符-xx--infix-xx"></a>
 ## 中缀运算符 `xx` / infix `xx`
 
 列表重复运算符
@@ -1910,14 +1910,14 @@ returns three pseudo random numbers that are determined independently.
 
 The right-hand side can be `*`, in which case a lazy, infinite list is returned. If it's a `Bool`, a `Seq` with a single element is returned if it's `True`.
 
-<a id="%E8%BF%9E%E6%8E%A5%E6%93%8D%E4%BD%9C%E7%AC%A6--concatenation"></a>
+<a id="连接操作符--concatenation"></a>
 # 连接操作符 / Concatenation
 
 与其他中缀运算符一样，这些运算符可以与元运算符组合，例如[赋值运算符](https://docs.raku.org/language/operators#Assignment_operators)。
 
 Same as the rest of the infix operators, these can be combined with metaoperators such as [assignment](https://docs.raku.org/language/operators#Assignment_operators), for instance.
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7E--infix-%7E-3"></a>
+<a id="中缀运算符-~--infix-~-3"></a>
 ## 中缀运算符 `~` / infix `~`
 
 ```Raku
@@ -1934,7 +1934,7 @@ This is the string concatenation operator, which coerces both arguments to [Str]
 say 'ab' ~ 'c';     # OUTPUT: «abc␤»
 ```
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%88%98--infix-%E2%88%98"></a>
+<a id="中缀运算符-∘--infix-∘"></a>
 ## 中缀运算符 `∘` / infix `∘`
 
 ```Raku
@@ -1984,10 +1984,10 @@ my &composed = [∘];
 say composed 'foo'; # OUTPUT: «foo␤»
 ```
 
-<a id="junction-%E4%B8%8E%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--junctive-and-all-precedence"></a>
+<a id="junction-与运算符优先级--junctive-and-all-precedence"></a>
 # Junction 与运算符优先级 / Junctive AND (all) precedence
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--8"></a>
+<a id="中缀运算符---infix--10"></a>
 ## 中缀运算符 `&` / infix `&`
 
 ```Raku
@@ -2002,7 +2002,7 @@ All junction operator.
 
 Creates an *all* [Junction](https://docs.raku.org/type/Junction) from its arguments. See [Junction](https://docs.raku.org/type/Junction) for more details.
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6--%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%88%A9--infix--infix-%E2%88%A9"></a>
+<a id="中缀运算符--中缀运算符-∩--infix--infix-∩"></a>
 ## 中缀运算符 `(&)`, 中缀运算符 `∩` / infix `(&)`, infix `∩`
 
 ```Raku
@@ -2035,7 +2035,7 @@ say <a a b c a> (&) bag(<a a b c c>); # OUTPUT: «Bag(a(2), b, c)␤»
 
 `∩` is equivalent to `(&)`, at codepoint U+2229 (INTERSECTION).
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%EF%BC%8C-%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%8D--infix--infix-%E2%8A%8D"></a>
+<a id="中缀运算符-，-中缀运算符-⊍--infix--infix-⊍"></a>
 ## 中缀运算符 `(.)`， 中缀运算符 `⊍` / infix `(.)`, infix `⊍`
 
 ```Raku
@@ -2061,10 +2061,10 @@ say <a a b c a d> ⊍ bag(<a a b c c>); # OUTPUT: «Bag(a(6), b, c(2))␤»
 
 `⊍` is equivalent to `(.)`, at codepoint U+228D (MULTISET MULTIPLICATION).
 
-<a id="junction-%E6%88%96%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--junctive-or-any-precedence"></a>
+<a id="junction-或运算符优先级--junctive-or-any-precedence"></a>
 # Junction 或运算符优先级 / Junctive OR (any) precedence
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7C--infix-%7C-2"></a>
+<a id="中缀运算符-|--infix-|-2"></a>
 ## 中缀运算符 `|` / infix `|`
 
 ```Raku
@@ -2085,7 +2085,7 @@ say 'b' ~~ $three-letters; # OUTPUT: «True␤»
 
 This first creates an `any` `Junction` of three regular expressions (every one of them matching any of 3 letters), and then uses smartmatching to check whether the letter `b` matches any of them, resulting in a positive match. See also [Junction](https://docs.raku.org/type/Junction) for more details.
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7C%EF%BC%8C%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%88%AA--infix-%7C-infix-%E2%88%AA"></a>
+<a id="中缀运算符-|，中缀运算符-∪--infix-|-infix-∪"></a>
 ## 中缀运算符 `(|)`，中缀运算符 `∪` / infix `(|)`, infix `∪`
 
 ```Raku
@@ -2117,7 +2117,7 @@ say <a b d> ∪ bag(<a a b c>); # OUTPUT: «Bag(a(2), b, c, d)␤»
 
 `∪` is equivalent to `(|)`, at codepoint U+222A (UNION).
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%EF%BC%8C%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%8E--infix--infix-%E2%8A%8E"></a>
+<a id="中缀运算符-，中缀运算符-⊎--infix--infix-⊎"></a>
 ## 中缀运算符 `(+)`，中缀运算符 `⊎` / infix `(+)`, infix `⊎`
 
 ```Raku
@@ -2149,7 +2149,7 @@ say <a b c> (+) (a => 2.5, b => 3.14).Mix; # OUTPUT: «Mix(a(3.5), b(4.14), c)�
 
 `⊎` is equivalent to `(+)`, at codepoint U+228E (MULTISET UNION).
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6--%EF%BC%8C%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%88%96--infix---infix-%E2%88%96"></a>
+<a id="中缀运算符--，中缀运算符-∖--infix---infix-∖"></a>
 ## 中缀运算符 `(-)`，中缀运算符 `∖` / infix `(-)`, infix `∖`
 
 ```Raku
@@ -2183,7 +2183,7 @@ say <a a b c a d>  ∖  mix(<a b c c>); # OUTPUT: «Mix(a(2), c(-1), d)␤»
 
 `∖` is equivalent to `(-)`, at codepoint U+2216 (SET MINUS).
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5E--infix-%5E-2"></a>
+<a id="中缀运算符-^--infix-^-2"></a>
 ## 中缀运算符 `(^)` / infix `^`
 
 ```Raku
@@ -2198,7 +2198,7 @@ One junction operator.
 
 Creates a *one* [Junction](https://docs.raku.org/type/Junction) from its arguments. See [Junction](https://docs.raku.org/type/Junction) for more details.
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5E%EF%BC%8C%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%96--infix-%5E-infix-%E2%8A%96"></a>
+<a id="中缀运算符-^，中缀运算符-⊖--infix-^-infix-⊖"></a>
 ## 中缀运算符 `(^)`，中缀运算符 `⊖` / infix `(^)`, infix `⊖`
 
 ```Raku
@@ -2233,10 +2233,10 @@ say <a b> ⊖ bag(<b c>); # OUTPUT: «Bag(a, c)␤»
 
 `⊖` is equivalent to `(^)`, at codepoint U+2296 (CIRCLED MINUS).
 
-<a id="%E5%91%BD%E5%90%8D%E4%B8%80%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--named-unary-precedence"></a>
+<a id="命名一元运算符优先级--named-unary-precedence"></a>
 # 命名一元运算符优先级 / Named unary precedence
 
-<a id="%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-temp--prefix-temp"></a>
+<a id="前缀运算符-temp--prefix-temp"></a>
 ## 前缀运算符 `temp` / prefix `temp`
 
 ```Raku
@@ -2293,7 +2293,7 @@ sleep 2;
 # PROMISE
 ```
 
-<a id="%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-let--prefix-let"></a>
+<a id="前缀运算符-let--prefix-let"></a>
 ## 前缀运算符 `let` / prefix `let`
 
 ```Raku
@@ -2323,10 +2323,10 @@ say "We got $name";
 
 This code provides a default name for `$name`. If the user exits from the prompt or simply does not provide a valid input for `$name`; `let` will restore the default value provided at the top. If user input is valid, it will keep that.
 
-<a id="%E9%9D%9E%E9%93%BE%E5%BC%8F%E4%BA%8C%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--nonchaining-binary-precedence"></a>
+<a id="非链式二元运算符优先级--nonchaining-binary-precedence"></a>
 # 非链式二元运算符优先级 / Nonchaining binary precedence
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-does--infix-does"></a>
+<a id="中缀运算符-does--infix-does"></a>
 ## 中缀运算符 `does` / infix `does`
 
 ```Raku
@@ -2352,7 +2352,7 @@ put $o;            # OUTPUT: «modded␤»
 
 If methods of the same name are present already, the last mixed in role takes precedence.
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-but--infix-but"></a>
+<a id="中缀运算符-but--infix-but"></a>
 ## 中缀运算符 `but` / infix `but`
 
 ```Raku
@@ -2393,7 +2393,7 @@ say $s + 42;          # OUTPUT: «54␤»
 
 To access the mixed-in class, as above, we use the class name as is shown in the second sentence. If methods of the same name are present already, the last mixed in role takes precedence. A list of methods can be provided in parentheses separated by comma. In this case conflicts will be reported at runtime.
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-cmp--infix-cmp"></a>
+<a id="中缀运算符-cmp--infix-cmp"></a>
 ## 中缀运算符 `cmp` / infix `cmp`
 
 ```Raku
@@ -2421,7 +2421,7 @@ say 4        cmp 4.0;        # OUTPUT: «Same␤»
 say 'b'      cmp 'a';        # OUTPUT: «More␤»
 ```
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-coll--infix-coll"></a>
+<a id="中缀运算符-coll--infix-coll"></a>
 ## 中缀运算符 `coll` / infix `coll`
 
 定义：
@@ -2451,7 +2451,7 @@ In the first case, lexicographic or codepoint order is taken into account. In th
 
 **NOTE:** These are not yet implemented in the JVM.
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-unicmp--infix-unicmp"></a>
+<a id="中缀运算符-unicmp--infix-unicmp"></a>
 ## 中缀运算符 `unicmp` / infix `unicmp`
 
 定义：
@@ -2482,7 +2482,7 @@ The main difference between `coll` and `unicmp` is that the behavior of the form
 
 **NOTE:** These are not yet implemented in the JVM.
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-leg--infix-leg"></a>
+<a id="中缀运算符-leg--infix-leg"></a>
 ## 中缀运算符 `leg` / infix `leg`
 
 ```Raku
@@ -2504,7 +2504,7 @@ say 'a' leg 'a';       # OUTPUT: «Same␤»
 say 'b' leg 'a';       # OUTPUT: «More␤»
 ```
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6--infix-"></a>
+<a id="中缀运算符--infix-"></a>
 ## 中缀运算符 `<=>` / infix `<=>`
 
 ```Raku
@@ -2519,7 +2519,7 @@ Numeric three-way comparator.
 
 Coerces both arguments to [Real](https://docs.raku.org/type/Real) and then does a numeric comparison.
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--9"></a>
+<a id="中缀运算符---infix--11"></a>
 ## 中缀运算符 `..` / infix `..`
 
 ```Raku
@@ -2534,7 +2534,7 @@ Range operator
 
 Constructs a [Range](https://docs.raku.org/type/Range) from the arguments.
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5E--infix-%5E-3"></a>
+<a id="中缀运算符-^--infix-^-3"></a>
 ## 中缀运算符 `..^` / infix `..^`
 
 ```Raku
@@ -2549,7 +2549,7 @@ Right-open range operator.
 
 Constructs a [Range](https://docs.raku.org/type/Range) from the arguments, excluding the end point.
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5E--infix-%5E-4"></a>
+<a id="中缀运算符-^--infix-^-4"></a>
 ## 中缀运算符 `^..` / infix `^..`
 
 ```Raku
@@ -2564,7 +2564,7 @@ Left-open range operator.
 
 Constructs a [Range](https://docs.raku.org/type/Range) from the arguments, excluding the start point.
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5E%5E--infix-%5E%5E"></a>
+<a id="中缀运算符-^^--infix-^^"></a>
 ## 中缀运算符 `^..^` / infix `^..^`
 
 ```Raku
@@ -2579,10 +2579,10 @@ Open range operator
 
 Constructs a [Range](https://docs.raku.org/type/Range) from the arguments, excluding both start and end point.
 
-<a id="%E9%93%BE%E5%BC%8F%E4%BA%8C%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--chaining-binary-precedence"></a>
+<a id="链式二元运算符优先级--chaining-binary-precedence"></a>
 # 链式二元运算符优先级 / Chaining binary precedence
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--10"></a>
+<a id="中缀运算符---infix--12"></a>
 ## 中缀运算符 `==` / infix `==`
 
 ```Raku
@@ -2603,7 +2603,7 @@ Numeric equality operator.
 
 Coerces both arguments to [Numeric](https://docs.raku.org/type/Numeric) (if necessary); returns `True` if they are equal.
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--11"></a>
+<a id="中缀运算符---infix--13"></a>
 ## 中缀运算符 `!=` / infix `!=`
 
 ```Raku
@@ -2622,7 +2622,7 @@ Coerces both arguments to [Numeric](https://docs.raku.org/type/Numeric) (if nece
 
 Is an alias to `!==`.
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%89%A0--infix-%E2%89%A0"></a>
+<a id="中缀运算符-≠--infix-≠"></a>
 ## 中缀运算符 `≠` / infix `≠`
 
 数值不相等运算符。
@@ -2633,7 +2633,7 @@ Numeric inequality operator.
 
 Equivalent to [!=](https://docs.raku.org/routine/!=), at codepoint U+2260 (NOT EQUAL TO).
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--12"></a>
+<a id="中缀运算符---infix--14"></a>
 ## 中缀运算符 `<` / infix `<`
 
 ```Raku
@@ -2650,7 +2650,7 @@ Numeric less than operator.
 
 Coerces both arguments to [Real](https://docs.raku.org/type/Real) (if necessary); returns `True` if the first argument is smaller than the second.
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--13"></a>
+<a id="中缀运算符---infix--15"></a>
 ## 中缀运算符 `<=` / infix `<=`
 
 ```Raku
@@ -2667,7 +2667,7 @@ Numeric less than or equal to operator.
 
 Coerces both arguments to [Real](https://docs.raku.org/type/Real) (if necessary); returns `True` if the first argument is smaller than or equal to the second.
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%89%A4--infix-%E2%89%A4"></a>
+<a id="中缀运算符-≤--infix-≤"></a>
 ## 中缀运算符 `≤` / infix `≤`
 
 数值小于或等于运算符。
@@ -2678,7 +2678,7 @@ Numeric less than or equal to operator.
 
 Equivalent to [<=](https://docs.raku.org/language/routine/%3C=), at codepoint U+2264 (LESS-THAN OR EQUAL TO).
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--14"></a>
+<a id="中缀运算符---infix--16"></a>
 ## 中缀运算符 `>` / infix `>`
 
 ```Raku
@@ -2695,7 +2695,7 @@ Numeric greater than operator.
 
 Coerces both arguments to [Real](https://docs.raku.org/type/Real) (if necessary); returns `True` if the first argument is larger than the second.
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--15"></a>
+<a id="中缀运算符---infix--17"></a>
 ## 中缀运算符 `>=` / infix `>=`
 
 ```Raku
@@ -2712,7 +2712,7 @@ Numeric greater than or equal to operator.
 
 Coerces both arguments to [Real](https://docs.raku.org/type/Real) (if necessary); returns `True` if the first argument is larger than or equal to the second.
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%89%A5--infix-%E2%89%A5"></a>
+<a id="中缀运算符-≥--infix-≥"></a>
 ## 中缀运算符 `≥` / infix `≥`
 
 数值大于或等于运算符。
@@ -2723,7 +2723,7 @@ Numeric greater than or equal to operator.
 
 Equivalent to [>=](https://docs.raku.org/routine/%3E=), at codepoint U+2265 (GREATER-THAN OR EQUAL TO).
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-eq--infix-eq"></a>
+<a id="中缀运算符-eq--infix-eq"></a>
 ## 中缀运算符 `eq` / infix `eq`
 
 ```Raku
@@ -2743,7 +2743,7 @@ Coerces both arguments to [Str](https://docs.raku.org/type/Str) (if necessary); 
 
 Mnemonic: *equal*
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-ne--infix-ne"></a>
+<a id="中缀运算符-ne--infix-ne"></a>
 ## 中缀运算符 `ne` / infix `ne`
 
 ```Raku
@@ -2763,7 +2763,7 @@ Coerces both arguments to [Str](https://docs.raku.org/type/Str) (if necessary); 
 
 Mnemonic: *not equal*
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-gt--infix-gt"></a>
+<a id="中缀运算符-gt--infix-gt"></a>
 ## 中缀运算符 `gt` / infix `gt`
 
 ```Raku
@@ -2783,7 +2783,7 @@ Coerces both arguments to [Str](https://docs.raku.org/type/Str) (if necessary); 
 
 Mnemonic: *greater than*
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-ge--infix-ge"></a>
+<a id="中缀运算符-ge--infix-ge"></a>
 ## 中缀运算符 `ge` / infix `ge`
 
 ```Raku
@@ -2803,7 +2803,7 @@ Coerces both arguments to [Str](https://docs.raku.org/type/Str) (if necessary); 
 
 Mnemonic: *greater or equal*
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-lt--infix-lt"></a>
+<a id="中缀运算符-lt--infix-lt"></a>
 ## 中缀运算符 `lt` / infix `lt`
 
 ```Raku
@@ -2823,7 +2823,7 @@ Coerces both arguments to [Str](https://docs.raku.org/type/Str) (if necessary); 
 
 Mnemonic: *less than*
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-le--infix-le"></a>
+<a id="中缀运算符-le--infix-le"></a>
 ## 中缀运算符 `le` / infix `le`
 
 ```Raku
@@ -2843,7 +2843,7 @@ Coerces both arguments to [Str](https://docs.raku.org/type/Str) (if necessary); 
 
 Mnemonic: *less or equal*
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-before--infix-before"></a>
+<a id="中缀运算符-before--infix-before"></a>
 ## 中缀运算符 `before` / infix `before`
 
 ```Raku
@@ -2857,7 +2857,7 @@ multi sub infix:<before>(Version:D, Version:D)
 
 Generic ordering, uses the same semantics as [cmp](https://docs.raku.org/routine/cmp). Returns `True` if the first argument is smaller than the second.
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-after--infix-after"></a>
+<a id="中缀运算符-after--infix-after"></a>
 ## 中缀运算符 `after` / infix `after`
 
 ```Raku
@@ -2871,7 +2871,7 @@ multi sub infix:<after>(Version:D, Version:D)
 
 Generic ordering, uses the same semantics as [cmp](https://docs.raku.org/routine/cmp). Returns `True` if the first argument is larger than the second.
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-eqv--infix-eqv"></a>
+<a id="中缀运算符-eqv--infix-eqv"></a>
 ## 中缀运算符 `eqv` / infix `eqv`
 
 ```Raku
@@ -2948,7 +2948,7 @@ my class A {
 say Set(A.new(a => 5)) eqv Set(A.new(a => 5));  # OUTPUT: «True␤»
 ```
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--16"></a>
+<a id="中缀运算符---infix--18"></a>
 ## 中缀运算符 `===` / infix `===`
 
 ```Raku
@@ -2990,7 +2990,7 @@ say 1 === 1.0;              # OUTPUT: «False␤»
 
 If you want to create a class that should act as a value type, then that class must create an instance method `WHICH`, that should return a [ValueObjAt](https://docs.raku.org/type/ValueObjAt) object that won't change for the lifetime of the object.
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--17"></a>
+<a id="中缀运算符---infix--19"></a>
 ## 中缀运算符 `=:=` / infix `=:=`
 
 ```Raku
@@ -3012,7 +3012,7 @@ $a = 5;
 say $b;             # OUTPUT: «5␤»
 ```
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7E%7E--infix-%7E%7E"></a>
+<a id="中缀运算符-~~--infix-~~"></a>
 ## 中缀运算符 `~~` / infix `~~`
 
 智能匹配运算符将左边的别名设为 `$_`，然后对右边求值并调用 `.ACCEPTS($_)`。语义留给右侧操作数的类型。
@@ -3033,7 +3033,7 @@ Here is a partial list of some of the built-in smartmatching functionality. For 
 | Set/Bag         | equal element values         |
 | Any:D           | object identity              |
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7E--infix-%7E-4"></a>
+<a id="中缀运算符-~--infix-~-4"></a>
 ## 中缀运算符 `=~=` / infix `=~=`
 
 ```Raku
@@ -3087,7 +3087,7 @@ Note that setting $*TOLERANCE = 0 will cause all comparisons to fail.
 }
 ```
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-elem%EF%BC%8C%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%88%88%C2%BB--infix-elem-infix-%E2%88%88%C2%BB"></a>
+<a id="中缀运算符-elem，中缀运算符-∈»--infix-elem-infix-∈»"></a>
 ## 中缀运算符 (elem)，中缀运算符 ∈» / infix (elem), infix ∈»
 
 ```Raku
@@ -3112,7 +3112,7 @@ say 4 ∈ (1, 2, 3); # OUTPUT: «False␤»
 
 `∈` is equivalent to `(elem)`, at codepoint U+2208 (ELEMENT OF).
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%88%89--infix-%E2%88%89"></a>
+<a id="中缀运算符-∉--infix-∉"></a>
 ## 中缀运算符 `∉` / infix `∉`
 
 ```Raku
@@ -3136,7 +3136,7 @@ say 2 !(elem) (1, 2, 3); # OUTPUT: «False␤»
 
 `∉` is codepoint U+2209 (NOT AN ELEMENT OF).
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-cont%EF%BC%8C%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%88%8B%C2%BB--infix-cont-infix-%E2%88%8B%C2%BB"></a>
+<a id="中缀运算符-cont，中缀运算符-∋»--infix-cont-infix-∋»"></a>
 ## 中缀运算符 (cont)，中缀运算符 ∋» / infix (cont), infix ∋»
 
 ```Raku
@@ -3161,7 +3161,7 @@ say (1, 2, 3) ∋ 4; # OUTPUT: «False␤»
 
 `∋` is equivalent to `(cont)`, at codepoint U+220B (CONTAINS AS MEMBER).
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%88%8C--infix-%E2%88%8C"></a>
+<a id="中缀运算符-∌--infix-∌"></a>
 ## 中缀运算符 `∌` / infix `∌`
 
 ```Raku
@@ -3185,7 +3185,7 @@ say (1,2,3) !(cont) 2; # OUTPUT: «False␤»
 
 `∉` is codepoint U+220C (DOES NOT CONTAIN AS MEMBER).
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6--%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%82--infix--infix-%E2%8A%82"></a>
+<a id="中缀运算符--中缀运算符-⊂--infix--infix-⊂"></a>
 ## 中缀运算符 `(<)`, 中缀运算符 `⊂` / infix `(<)`, infix `⊂`
 
 ```Raku
@@ -3211,7 +3211,7 @@ say 4 ⊂ (1,2,3); # OUTPUT: «False␤»
 
 `⊂` is equivalent to `(<)`, at codepoint U+2282 (SUBSET OF).
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%84--infix-%E2%8A%84"></a>
+<a id="中缀运算符-⊄--infix-⊄"></a>
 ## 中缀运算符 `⊄` / infix `⊄`
 
 ```Raku
@@ -3236,7 +3236,7 @@ say 4 !(<) (1,2,3); # OUTPUT: «True␤»
 
 `⊄` is codepoint U+2284 (NOT A SUBSET OF).
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6--%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%86--infix--infix-%E2%8A%86"></a>
+<a id="中缀运算符--中缀运算符-⊆--infix--infix-⊆"></a>
 ## 中缀运算符 `(<=)`, 中缀运算符 `⊆` / infix `(<=)`, infix `⊆`
 
 ```Raku
@@ -3262,7 +3262,7 @@ say 4 ⊆ (1,2,3); # OUTPUT: «False␤»
 
 `⊆` is equivalent to `(<=)`, at codepoint U+2286 (SUBSET OF OR EQUAL TO).
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%88--infix-%E2%8A%88"></a>
+<a id="中缀运算符-⊈--infix-⊈"></a>
 ## 中缀运算符 `⊈` / infix `⊈`
 
 ```Raku
@@ -3287,7 +3287,7 @@ say 4 !(<=) (1,2,3); # OUTPUT: «True␤»
 
 `⊈` is codepoint U+2288 (NEITHER A SUBSET OF NOR EQUAL TO).
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6--%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%83--infix--infix-%E2%8A%83"></a>
+<a id="中缀运算符--中缀运算符-⊃--infix--infix-⊃"></a>
 ## 中缀运算符 `(>)`, 中缀运算符  `⊃` / infix `(>)`, infix `⊃`
 
 ```Raku
@@ -3313,7 +3313,7 @@ say 4 ⊃ (1,2,3); # OUTPUT: «False␤»
 
 `⊃` is equivalent to `(>)`, at codepoint U+2283 (SUPERSET OF).
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%85--infix-%E2%8A%85"></a>
+<a id="中缀运算符-⊅--infix-⊅"></a>
 ## 中缀运算符 `⊅` / infix `⊅`
 
 ```Raku
@@ -3338,7 +3338,7 @@ say 4 !(>) (1,2,3); # OUTPUT: «True␤»
 
 `⊅` is codepoint U+2285 (NOT A SUPERSET OF).
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%EF%BC%8C%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%87--infix--infix-%E2%8A%87"></a>
+<a id="中缀运算符-，中缀运算符-⊇--infix--infix-⊇"></a>
 ## 中缀运算符 `(>=)`，中缀运算符 `⊇` / infix `(>=)`, infix `⊇`
 
 ```Raku
@@ -3364,7 +3364,7 @@ say 4 ⊇ (1,2,3); # OUTPUT: «False␤»
 
 `⊇` is equivalent to `(>=)`, at codepoint U+2287 (SUPERSET OF OR EQUAL TO).
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%89--infix-%E2%8A%89"></a>
+<a id="中缀运算符-⊉--infix-⊉"></a>
 ## 中缀运算符 `⊉` / infix `⊉`
 
 ```Raku
@@ -3389,10 +3389,10 @@ say 4 !(>=) (1,2,3); # OUTPUT: «True␤»
 
 `⊉` is codepoint U+2289 (NEITHER A SUPERSET OF OR EQUAL TO).
 
-<a id="%E9%80%BB%E8%BE%91%E4%B8%8E%E6%93%8D%E4%BD%9C%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--tight-and-precedence"></a>
+<a id="逻辑与操作符优先级--tight-and-precedence"></a>
 # 逻辑与操作符优先级 / Tight AND precedence
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--18"></a>
+<a id="中缀运算符---infix--20"></a>
 ## 中缀运算符 `&&` / infix `&&`
 
 返回在布尔上下文中计算结果为假值的第一个参数，否则返回最后一个参数。
@@ -3410,10 +3410,10 @@ sub c { die "never called" };
 say a() && b() && c();      # OUTPUT: «0␤»
 ```
 
-<a id="%E9%80%BB%E8%BE%91%E6%88%96%E6%93%8D%E4%BD%9C%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--tight-or-precedence"></a>
+<a id="逻辑或操作符优先级--tight-or-precedence"></a>
 # 逻辑或操作符优先级 / Tight OR precedence
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7C%7C--infix-%7C%7C"></a>
+<a id="中缀运算符-||--infix-||"></a>
 ## 中缀运算符 `||` / infix `||`
 
 返回在布尔上下文中计算结果为真值的第一个参数，否则返回最后一个参数。
@@ -3431,7 +3431,7 @@ sub c { die "never called" };
 say a() || b() || c();      # OUTPUT: «1␤»
 ```
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5E%5E--infix-%5E%5E-1"></a>
+<a id="中缀运算符-^^--infix-^^-1"></a>
 ## 中缀运算符 `^^` / infix `^^`
 
 短路异或。如果有一个（并且只有一个）真值，则返回真值参数。如果所有参数都为假值，则返回最后一个参数。当多个参数为真值时返回 `Nil`。
@@ -3452,7 +3452,7 @@ say 0 ^^ 42 ^^ 1 ^^ die "never called";  # OUTPUT: «Nil␤»
 
 Note that the semantics of this operator may not be what you assume: infix `^^` flips to the first true value it finds and then flips to Nil *forever* after the second, no matter how many more true values there are. (In other words, it has "find the one true value" semantics, not "boolean parity" semantics.)
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--19"></a>
+<a id="中缀运算符---infix--21"></a>
 ## 中缀运算符 `//` / infix `//`
 
 已定义否则运算符或中缀运算符 // 返回第一个定义的操作数，否则返回最后一个操作数。有短路计算效果。
@@ -3463,7 +3463,7 @@ The defined-or operator or infix // returns the first defined operand, or else t
 say Any // 0 // 42;         # OUTPUT: «0␤»
 ```
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-min--infix-min"></a>
+<a id="中缀运算符-min--infix-min"></a>
 ## 中缀运算符 `min` / infix `min`
 
 返回由 [cmp](https://docs.raku.org/routine/cmp) 语义确定的最小参数。
@@ -3475,7 +3475,7 @@ my $foo = 42;
 $foo min= 0   # read as: $foo decreases to 0
 ```
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-max--infix-max"></a>
+<a id="中缀运算符-max--infix-max"></a>
 ## 中缀运算符 `max` / infix `max`
 
 返回由 [cmp](https://docs.raku.org/routine/cmp) 语义确定的最大参数。
@@ -3487,7 +3487,7 @@ my $foo = -42;
 $foo max= 0   # read as: $foo increases to 0
 ```
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-minmax--infix-minmax"></a>
+<a id="中缀运算符-minmax--infix-minmax"></a>
 ## 中缀运算符 `minmax` / infix `minmax`
 
 返回 [Range](https://docs.raku.org/type/Range) 从值的最低到最高，由 [cmp](https://docs.raku.org/routine/cmp) 语义决定。例如：
@@ -3532,17 +3532,17 @@ my %loser = points => 20, misses => 10;
 # ${:misses(10), :points(20)}..${:misses(10), :points(30)} 
 ```
 
-<a id="%E6%9D%A1%E4%BB%B6%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--conditional-operator-precedence"></a>
+<a id="条件运算符优先级--conditional-operator-precedence"></a>
 # 条件运算符优先级 / Conditional operator precedence
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6----infix---1"></a>
+<a id="中缀运算符----infix---1"></a>
 ## 中缀运算符  `?? !!` / infix `?? !!`
 
 也称为*三元*或*条件*运算符，`$condition ?? $true !! $false` 计算 `$condition` 并返回 ?? 后面的表达式，在本例中，返回 `$true` 如果是 `$condition` 为真值，否则求值并返回 !! 后面的表达式，在本例中返回 `$false`。
 
 Also called *ternary* or *conditional* operator, `$condition ?? $true !! $false` evaluates `$condition` and returns the expression right behind ??, in this case `$true` if it is `True`, otherwise evaluates and returns the expression behind !!, `$false` in this case.
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-ff--infix-ff"></a>
+<a id="中缀运算符-ff--infix-ff"></a>
 ## 中缀运算符  `ff` / infix `ff`
 
 ```Raku
@@ -3603,7 +3603,7 @@ For the `sed`-like version, which does *not* try `$_` on the stop condition afte
 
 This operator cannot be overloaded, as it's handled specially by the compiler.
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5Eff--infix-%5Eff"></a>
+<a id="中缀运算符-^ff--infix-^ff"></a>
 ## 中缀运算符  `^ff` / infix `^ff`
 
 ```Raku
@@ -3632,7 +3632,7 @@ The sed-like version can be found in [`^fff`](https://docs.raku.org/routine/$CIR
 
 This operator cannot be overloaded, as it's handled specially by the compiler.
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-ff%5E--infix-ff%5E"></a>
+<a id="中缀运算符-ff^--infix-ff^"></a>
 ## 中缀运算符  `ff^` / infix `ff^`
 
 ```Raku
@@ -3657,7 +3657,7 @@ The sed-like version can be found in [fff^](https://docs.raku.org/routine/fff$CI
 
 This operator cannot be overloaded, as it's handled specially by the compiler.
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5Eff%5E--infix-%5Eff%5E"></a>
+<a id="中缀运算符-^ff^--infix-^ff^"></a>
 ## 中缀运算符  `^ff^` / infix `^ff^`
 
 ```Raku
@@ -3682,7 +3682,7 @@ The sed-like version can be found in [`^fff^`](https://docs.raku.org/routine/$CI
 
 This operator cannot be overloaded, as it's handled specially by the compiler.
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-fff--infix-fff"></a>
+<a id="中缀运算符-fff--infix-fff"></a>
 ## 中缀运算符  `fff` / infix `fff`
 
 ```Raku
@@ -3711,7 +3711,7 @@ The non-sed-like flipflop (which after successfully matching the left argument a
 
 This operator cannot be overloaded, as it's handled specially by the compiler.
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5Efff--infix-%5Efff"></a>
+<a id="中缀运算符-^fff--infix-^fff"></a>
 ## 中缀运算符  `^fff` / infix `^fff`
 
 ```Raku
@@ -3736,7 +3736,7 @@ For the non-sed version, see [`^ff`](https://docs.raku.org/routine/$CIRCUMFLEX_A
 
 This operator cannot be overloaded, as it's handled specially by the compiler.
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-fff%5E--infix-fff%5E"></a>
+<a id="中缀运算符-fff^--infix-fff^"></a>
 ## 中缀运算符 `fff^` / infix `fff^`
 
 ```Raku
@@ -3761,7 +3761,7 @@ For the non-sed version, see [ff^](https://docs.raku.org/routine/ff$CIRCUMFLEX_A
 
 This operator cannot be overloaded, as it's handled specially by the compiler.
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5Efff%5E--infix-%5Efff%5E"></a>
+<a id="中缀运算符-^fff^--infix-^fff^"></a>
 ## 中缀运算符  `^fff^` / infix `^fff^`
 
 ```Raku
@@ -3786,10 +3786,10 @@ For the non-sed version, see [`^ff^`](https://docs.raku.org/routine/$CIRCUMFLEX_
 
 This operator cannot be overloaded, as it's handled specially by the compiler.
 
-<a id="%E9%A1%B9%E7%9B%AE%E8%B5%8B%E5%80%BC%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--item-assignment-precedence"></a>
+<a id="项目赋值运算符优先级--item-assignment-precedence"></a>
 # 项目赋值运算符优先级 / Item assignment precedence
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--20"></a>
+<a id="中缀运算符---infix--22"></a>
 ## 中缀运算符 `=` / infix `=`
 
 ```Raku
@@ -3804,7 +3804,7 @@ Called the *item assignment operator*, it Places the value of the right-hand sid
 
 (Note that item assignment and list assignment have different precedence levels, and the syntax of the left-hand side decides whether an equal sign `=` is parsed as item assignment or list assignment operator).
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--21"></a>
+<a id="中缀运算符---infix--23"></a>
 ## 中缀运算符 `=>` / infix `=>`
 
 ```Raku
@@ -3837,10 +3837,10 @@ A [Pair](https://docs.raku.org/type/Pair) within an argument list with an unquot
 
 See [the Terms language documentation](https://docs.raku.org/language/terms#Pair) for more ways to create `Pair` objects.
 
-<a id="%E6%9D%BE%E6%95%A3%E7%9A%84%E4%B8%80%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E6%9D%83--loose-unary-precedence"></a>
+<a id="松散的一元运算符优先权--loose-unary-precedence"></a>
 # 松散的一元运算符优先权 / Loose unary precedence
 
-<a id="%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-not--prefix-not"></a>
+<a id="前缀运算符-not--prefix-not"></a>
 ## 前缀运算符 `not` / prefix `not`
 
 ```Raku
@@ -3851,7 +3851,7 @@ multi sub prefix:<not>(Mu $x --> Bool:D)
 
 Evaluates its argument in boolean context (and thus collapses [Junction](https://docs.raku.org/type/Junction)s), and negates the result. Please note that `not` is easy to misuse. See [traps](https://docs.raku.org/language/traps#Loose_boolean_operators).
 
-<a id="%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-so--prefix-so"></a>
+<a id="前缀运算符-so--prefix-so"></a>
 ## 前缀运算符 `so` / prefix `so`
 
 ```Raku
@@ -3862,10 +3862,10 @@ multi sub prefix:<so>(Mu $x --> Bool:D)
 
 Evaluates its argument in boolean context (and thus collapses [Junction](https://docs.raku.org/type/Junction)s), and returns the result.
 
-<a id="%E9%80%97%E5%8F%B7%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--comma-operator-precedence"></a>
+<a id="逗号运算符优先级--comma-operator-precedence"></a>
 # 逗号运算符优先级 / Comma operator precedence
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--22"></a>
+<a id="中缀运算符---infix--24"></a>
 ## 中缀运算符 `,` / infix `,`
 
 ```Raku
@@ -3902,7 +3902,7 @@ say %features;  # OUTPUT: «{god => Þor, is => mighty, wields => hammer}␤»
 
 The comma is also used syntactically as the separator of arguments in calls.
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--23"></a>
+<a id="中缀运算符---infix--25"></a>
 ## 中缀运算符 `:` / infix `:`
 
 用作参数分隔符，就像中缀运算符 `,` 一样，并将其左侧的参数标记为调用者。这将原本是函数调用的内容转换为方法调用。
@@ -3917,10 +3917,10 @@ substr('abc': 1);       # same as 'abc'.substr(1)
 
 Infix `:` is only allowed after the first argument of a non-method call. In other positions, it's a syntax error.
 
-<a id="%E5%88%97%E8%A1%A8%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--list-infix-precedence"></a>
+<a id="列表中缀运算符优先级--list-infix-precedence"></a>
 # 列表中缀运算符优先级 / List infix precedence
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-z--infix-z"></a>
+<a id="中缀运算符-z--infix-z"></a>
 ## 中缀运算符 `Z` / infix `Z`
 
 ```Raku
@@ -3949,7 +3949,7 @@ say 100, 200 Z+ 42, 23;             # OUTPUT: «(142 223)␤»
 say 1..3 Z~ <a b c> Z~ 'x' xx 3;    # OUTPUT: «(1ax 2bx 3cx)␤»
 ```
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-x--infix-x-1"></a>
+<a id="中缀运算符-x--infix-x-1"></a>
 ## 中缀运算符 `X` / infix `X`
 
 定义为：
@@ -3981,7 +3981,7 @@ The `X` operator also exists as a metaoperator, in which case the inner lists ar
 # produces (1a9 1b9 1c9 2a9 2b9 2c9 3a9 3b9 3c9)
 ```
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--24"></a>
+<a id="中缀运算符---infix--26"></a>
 ## 中缀运算符 `...` / infix `...` 
 
 ```Raku
@@ -4071,10 +4071,10 @@ say 1, 2, 4, 8, 16 ... $end;
 # OUTPUT: «(1 2 4)␤»
 ```
 
-<a id="%E5%88%97%E8%A1%A8%E5%89%8D%E7%BC%80%E4%BC%98%E5%85%88%E7%BA%A7--list-prefix-precedence"></a>
+<a id="列表前缀优先级--list-prefix-precedence"></a>
 # 列表前缀优先级 / List prefix precedence
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--25"></a>
+<a id="中缀运算符---infix--27"></a>
 ## 中缀运算符 `=` / infix `=`
 
 在此上下文中，它充当列表赋值运算符。它的确切语义留给左侧的容器类型。常见情况见[数组](https://docs.raku.org/type/Array)和[散列](https://docs.raku.org/type/Hash)。
@@ -4085,7 +4085,7 @@ In this context, it acts as the list assignment operator. Its exact semantics ar
 
 The distinction between item assignment and list assignment is determined by the parser depending on the syntax of the left-hand side.
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--26"></a>
+<a id="中缀运算符---infix--28"></a>
 ## 中缀运算符 `:=` / infix `:=`
 
 绑定运算符。虽然 `$x = $y`将 `$y` 中的值放入 `$x`，`$x := $y` 使 `$x` 和 `$y` 相同。
@@ -4122,14 +4122,14 @@ If type constrains on variables or containers are present a type check will be p
 
 Please note that `:=` is a compile time operator. As such it can not be referred to at runtime and thus can't be used as an argument to metaoperators.
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--27"></a>
+<a id="中缀运算符---infix--29"></a>
 ## 中缀运算符 `::=` / infix `::=`
 
 只读绑定运算符，尚未在 Rakudo 中实现。请参见 [`infix :=`](https://docs.raku.org/routine/:=)。
 
 Read-only binding operator, not yet implemented in Rakudo. See [`infix :=`](https://docs.raku.org/routine/:=).
 
-<a id="%E5%88%97%E8%A1%A8%E8%BF%90%E7%AE%97%E7%AC%A6---listop-"></a>
+<a id="列表运算符---listop-"></a>
 ## 列表运算符 `...` / listop `...`
 
 称为 *yada, yada, yada* 运算符或 *stub* 运算符，如果它是例程或类型中的唯一语句，则它将该例程或类型标记为 stub（在预声明类型和组合角色的上下文中是重要的）。
@@ -4140,7 +4140,7 @@ Called the *yada, yada, yada* operator or *stub* operator, if it's the only stat
 
 If the `...` statement is executed, it calls [fail](https://docs.raku.org/routine/fail), with the default message `Stub code executed`.
 
-<a id="%E5%88%97%E8%A1%A8%E8%BF%90%E7%AE%97%E7%AC%A6---listop--1"></a>
+<a id="列表运算符---listop--1"></a>
 ## 列表运算符 `!!!` / listop `!!!`
 
 如果它是例程或类型中的唯一语句，它会将该例程或类型标记为 stub（在预声明类型和组合角色的上下文中这是重要的）。
@@ -4151,7 +4151,7 @@ If it's the only statement in a routine or type, it marks that routine or type a
 
 If the `!!!` statement is executed, it calls [die](https://docs.raku.org/routine/die), with the default message `Stub code executed`.
 
-<a id="%E5%88%97%E8%A1%A8%E8%BF%90%E7%AE%97%E7%AC%A6---listop--2"></a>
+<a id="列表运算符---listop--2"></a>
 ## 列表运算符 `???` / listop `???`
 
 如果它是例程或类型中的唯一语句，它会将该例程或类型标记为 stub（在预声明类型和组合角色的上下文中这是重要的）。
@@ -4162,7 +4162,7 @@ If it's the only statement in a routine or type, it marks that routine or type a
 
 If the `???` statement is executed, it calls [warn](https://docs.raku.org/routine/warn), with the default message `Stub code executed`.
 
-<a id="%E5%BD%92%E7%BA%A6%E8%BF%90%E7%AE%97%E7%AC%A6--reduction-operators"></a>
+<a id="归约运算符--reduction-operators"></a>
 ## 归约运算符 / Reduction operators
 
 任何中缀运算符（非关联运算符除外）都可以在术语位置用方括号括起来，以创建一个列表运算符，减少使用该运算符的次数。
@@ -4184,10 +4184,10 @@ say [-] 4, 3, 2;      # 4-3-2 = (4-3)-2 = -1
 say [**] 4, 3, 2;     # 4**3**2 = 4**(3**2) = 262144
 ```
 
-<a id="%E5%AE%BD%E6%9D%BE%E7%9A%84%E4%B8%8E%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--loose-and-precedence"></a>
+<a id="宽松的与运算符优先级--loose-and-precedence"></a>
 # 宽松的与运算符优先级 / Loose AND precedence
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-and--infix-and"></a>
+<a id="中缀运算符-and--infix-and"></a>
 ## 中缀运算符 `and` / infix `and`
 
 与[中缀运算符 &&](https://docs.raku.org/language/operators#infix_%26%26) 相同，但优先级较低。
@@ -4198,7 +4198,7 @@ Same as [infix &&](https://docs.raku.org/language/operators#infix_%26%26), excep
 
 Short-circuits so that it returns the first operand that evaluates to `False`, otherwise returns the last operand. Note that `and` is easy to misuse, see [traps](https://docs.raku.org/language/traps#Loose_boolean_operators).
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-andthen--infix-andthen"></a>
+<a id="中缀运算符-andthen--infix-andthen"></a>
 ## 中缀运算符 `andthen` / infix `andthen`
 
 当遇到第一个[未定义](https://docs.raku.org/routine/defined)参数时，`andthen` 运算符返回 [`Empty`](https://docs.raku.org/type/Slip#index-entry-Empty-Empty)，否则返回最后一个参数。最后一个参数按原样返回，不检查其是否定义。左边的计算结果绑定到右边的 `$_` 上，或者如果右边是一个 [`Callable`](https://docs.raku.org/type/Callable) 作为参数传递，其[函数参数个数](https://docs.raku.org/routine/count) 必须是 `0` 或 `1`。
@@ -4234,7 +4234,7 @@ The `andthen` operator is a close relative of [`with` statement modifier](https:
 42 andthen .say;
 ```
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-notandthen--infix-notandthen"></a>
+<a id="中缀运算符-notandthen--infix-notandthen"></a>
 ## 中缀运算符 `notandthen` / infix `notandthen`
 
 `notandthen` 运算符在遇到第一个[已定义](https://docs.raku.org/routine/defined)参数时返回 [`Empty`](https://docs.raku.org/type/Slip#index-entry-Empty-Empty)，否则返回最后一个参数。最后一个参数按原样返回，不检查其定义。左边的结果绑定到右边的 `$_` 上，或者如果右边是一个 [`Callable`](https://docs.raku.org/type/Callable) 则左边的结果作为参数传递，其[函数参数个数](https://docs.raku.org/routine/count)必须是 `0` 或 `1`。
@@ -4269,10 +4269,10 @@ sub good-things { fail }
 good-things() notandthen 'boo'.say;
 ```
 
-<a id="%E5%AE%BD%E6%9D%BE%E7%9A%84%E6%88%96%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7--loose-or-precedence"></a>
+<a id="宽松的或运算符优先级--loose-or-precedence"></a>
 # 宽松的或运算符优先级 / Loose OR precedence
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-or--infix-or"></a>
+<a id="中缀运算符-or--infix-or"></a>
 ## 中缀运算符 `or` / infix `or`
 
 与 [infix `||`](https://docs.raku.org/routine/%7C%7C) 相同，但优先级较低。
@@ -4283,7 +4283,7 @@ Same as [infix `||`](https://docs.raku.org/routine/%7C%7C), except with looser p
 
 Returns the first argument that evaluates to `True` in boolean context, or otherwise the last argument, it short-circuits. Please note that `or` is easy to misuse. See [traps](https://docs.raku.org/language/traps#Loose_boolean_operators).
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-orelse--infix-orelse"></a>
+<a id="中缀运算符-orelse--infix-orelse"></a>
 ## 中缀运算符 `orelse` / infix `orelse`
 
 `orelse` 操作符类似于 `中缀运算符 //`，除了具有较宽松的优先级和 `$_` 别名。
@@ -4316,7 +4316,7 @@ meows-processor3;           # OUTPUT: «something's wrong␤»
 meows-processor3;           # OUTPUT: «🐱␤»
 ```
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-xor--infix-xor"></a>
+<a id="中缀运算符-xor--infix-xor"></a>
 ## 中缀运算符 `xor` / infix `xor`
 
 与 [infix `^^`](https://docs.raku.org/routine/$CIRCUMFLEX_ACCENT$CIRCUMFLEX_ACCENT) 相同，但优先级较低。
@@ -4331,10 +4331,10 @@ Returns the operand that evaluates to `True` in boolean context, if and only if 
 
 When chaining, returns the operand that evaluates to `True`, if and only if there is one such operand. If more than one operand is true, it short-circuits after evaluating the second and returns `Nil`. If all operands are false, returns the last one.
 
-<a id="%E5%BA%8F%E5%88%97%E5%99%A8%E4%BC%98%E5%85%88%E7%BA%A7--sequencer-precedence"></a>
+<a id="序列器优先级--sequencer-precedence"></a>
 # 序列器优先级 / Sequencer precedence
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--28"></a>
+<a id="中缀运算符---infix--30"></a>
 ## 中缀运算符 `==>` / infix `==>`
 
 这个 feed 操作符从左边取结果，并把它传递给下一个（右）例程作为最后一个参数。
@@ -4440,7 +4440,7 @@ The feed operator lets you construct method-chaining-like patterns out of routin
 
 Note: In the future, this operator will see some change as it gains the ability to run list operations in parallel. It will enforce that the **left** operand is enclosable as a closure (that can be cloned and run in a subthread).
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6---infix--29"></a>
+<a id="中缀运算符---infix--31"></a>
 ## 中缀运算符 `<==` / infix `<==`
 
 这个向左的 feed 运算符从右边取结果，并将其传递给上一个（左）例程作为最后一个参数。这说明了一系列列表操作函数的从右到左的数据流。
@@ -4487,7 +4487,7 @@ Unlike the rightward feed operator, the result is not closely mappable to method
 
 Note: In the future, this operator will see some change as it gains the ability to run list operations in parallel. It will enforce that the **right** operand is enclosable as a closure (that can be cloned and run in a subthread).
 
-<a id="%E6%A0%87%E8%AF%86--identity"></a>
+<a id="标识--identity"></a>
 # 标识 / Identity
 
 一般来说，中缀运算符可以应用于单个元素或空元素，而不会产生错误，通常在 [reduce](https://docs.raku.org/routine/reduce) 操作的上下文中。

@@ -2,43 +2,43 @@
 
 <!-- MarkdownTOC -->
 
-- [集合、背包和混合 / Sets, bags, and mixes](#%E9%9B%86%E5%90%88%E3%80%81%E8%83%8C%E5%8C%85%E5%92%8C%E6%B7%B7%E5%90%88--sets-bags-and-mixes)
-- [介绍 / Introduction](#%E4%BB%8B%E7%BB%8D--introduction)
-- [具有集合语义的运算符 / Operators with Set semantics](#%E5%85%B7%E6%9C%89%E9%9B%86%E5%90%88%E8%AF%AD%E4%B9%89%E7%9A%84%E8%BF%90%E7%AE%97%E7%AC%A6--operators-with-set-semantics)
-    - [返回 `Bool` 的集合运算符 / Set operators that return `Bool`](#%E8%BF%94%E5%9B%9E-bool-%E7%9A%84%E9%9B%86%E5%90%88%E8%BF%90%E7%AE%97%E7%AC%A6--set-operators-that-return-bool)
-        - [中缀运算符 \(elem\)，中缀运算符 ∈ / infix \(elem\), infix ∈](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-elem%EF%BC%8C%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%88%88--infix-elem-infix-%E2%88%88)
-        - [中缀运算符 ∉ / infix ∉](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%88%89--infix-%E2%88%89)
-        - [中缀运算符 \(cont\)，中缀运算符 ∋ / infix \(cont\), infix ∋](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-cont%EF%BC%8C%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%88%8B--infix-cont-infix-%E2%88%8B)
-        - [中缀运算符 ∌ / infix ∌](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%88%8C--infix-%E2%88%8C)
-        - [中缀运算符 \(<=\)，中缀运算符 ⊆ / infix \(<=\), infix ⊆](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%EF%BC%8C%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%86--infix--infix-%E2%8A%86)
-        - [中缀运算符 ⊈ / infix ⊈](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%88--infix-%E2%8A%88)
-        - [中缀运算符 \(<\)，中缀运算符 ⊂ / infix \(<\), infix ⊂](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%EF%BC%8C%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%82--infix--infix-%E2%8A%82)
-        - [中缀运算符 ⊄ / infix ⊄](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%84--infix-%E2%8A%84)
-        - [中缀运算符 \(>=\)，中缀运算符 ⊇ / infix \(>=\), infix ⊇](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%EF%BC%8C%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%87--infix--infix-%E2%8A%87)
-        - [中缀运算符 ⊉ / infix ⊉](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%89--infix-%E2%8A%89)
-        - [中缀运算符 \(>\)，中缀运算符 ⊃ / infix \(>\), infix ⊃](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%EF%BC%8C%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%83--infix--infix-%E2%8A%83)
-        - [中缀运算符 ⊅ / infix ⊅](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%85--infix-%E2%8A%85)
-    - [返回 `QuantHash` 的集合运算符 / Set operators that return a `QuantHash`](#%E8%BF%94%E5%9B%9E-quanthash-%E7%9A%84%E9%9B%86%E5%90%88%E8%BF%90%E7%AE%97%E7%AC%A6--set-operators-that-return-a-quanthash)
-        - [中缀运算符 \(|\)，中缀运算符 ∪ / infix \(|\), infix ∪](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7C%EF%BC%8C%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%88%AA--infix-%7C-infix-%E2%88%AA)
-        - [中缀运算符 \(&\)，中缀运算符 ∩ / infix \(&\), infix ∩](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%EF%BC%8C%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%88%A9--infix--infix-%E2%88%A9)
-        - [中缀运算符 \(-\)，中缀运算符 ∖ / infix \(-\), infix ∖](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6--%EF%BC%8C%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%88%96--infix---infix-%E2%88%96)
-        - [中缀运算符 \(^\)，中缀运算符 ⊖ / infix \(^\), infix ⊖](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5E%EF%BC%8C%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%96--infix-%5E-infix-%E2%8A%96)
-    - [返回 `Baggy` 的集合运算符 / Set operators that return a `Baggy`](#%E8%BF%94%E5%9B%9E-baggy-%E7%9A%84%E9%9B%86%E5%90%88%E8%BF%90%E7%AE%97%E7%AC%A6--set-operators-that-return-a-baggy)
-        - [中缀运算符 \(.\)，中缀运算符 ⊍ / infix \(.\), infix ⊍](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%EF%BC%8C%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%8D--infix--infix-%E2%8A%8D)
-        - [中缀运算符 \(+\)，中缀运算符 ⊎ / infix \(+\), infix ⊎](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%EF%BC%8C%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%8E--infix--infix-%E2%8A%8E)
-    - [与集合运算符有关的术语 / Terms related to set operators](#%E4%B8%8E%E9%9B%86%E5%90%88%E8%BF%90%E7%AE%97%E7%AC%A6%E6%9C%89%E5%85%B3%E7%9A%84%E6%9C%AF%E8%AF%AD--terms-related-to-set-operators)
-        - [术语 ∅ / term ∅](#%E6%9C%AF%E8%AF%AD-%E2%88%85--term-%E2%88%85)
+- [集合、背包和混合 / Sets, bags, and mixes](#集合、背包和混合--sets-bags-and-mixes)
+- [介绍 / Introduction](#介绍--introduction)
+- [具有集合语义的运算符 / Operators with Set semantics](#具有集合语义的运算符--operators-with-set-semantics)
+    - [返回 `Bool` 的集合运算符 / Set operators that return `Bool`](#返回-bool-的集合运算符--set-operators-that-return-bool)
+        - [中缀运算符 \(elem\)，中缀运算符 ∈ / infix \(elem\), infix ∈](#中缀运算符-elem，中缀运算符-∈--infix-elem-infix-∈)
+        - [中缀运算符 ∉ / infix ∉](#中缀运算符-∉--infix-∉)
+        - [中缀运算符 \(cont\)，中缀运算符 ∋ / infix \(cont\), infix ∋](#中缀运算符-cont，中缀运算符-∋--infix-cont-infix-∋)
+        - [中缀运算符 ∌ / infix ∌](#中缀运算符-∌--infix-∌)
+        - [中缀运算符 \(<=\)，中缀运算符 ⊆ / infix \(<=\), infix ⊆](#中缀运算符-，中缀运算符-⊆--infix--infix-⊆)
+        - [中缀运算符 ⊈ / infix ⊈](#中缀运算符-⊈--infix-⊈)
+        - [中缀运算符 \(<\)，中缀运算符 ⊂ / infix \(<\), infix ⊂](#中缀运算符-，中缀运算符-⊂--infix--infix-⊂)
+        - [中缀运算符 ⊄ / infix ⊄](#中缀运算符-⊄--infix-⊄)
+        - [中缀运算符 \(>=\)，中缀运算符 ⊇ / infix \(>=\), infix ⊇](#中缀运算符-，中缀运算符-⊇--infix--infix-⊇)
+        - [中缀运算符 ⊉ / infix ⊉](#中缀运算符-⊉--infix-⊉)
+        - [中缀运算符 \(>\)，中缀运算符 ⊃ / infix \(>\), infix ⊃](#中缀运算符-，中缀运算符-⊃--infix--infix-⊃)
+        - [中缀运算符 ⊅ / infix ⊅](#中缀运算符-⊅--infix-⊅)
+    - [返回 `QuantHash` 的集合运算符 / Set operators that return a `QuantHash`](#返回-quanthash-的集合运算符--set-operators-that-return-a-quanthash)
+        - [中缀运算符 \(|\)，中缀运算符 ∪ / infix \(|\), infix ∪](#中缀运算符-|，中缀运算符-∪--infix-|-infix-∪)
+        - [中缀运算符 \(&\)，中缀运算符 ∩ / infix \(&\), infix ∩](#中缀运算符-，中缀运算符-∩--infix--infix-∩)
+        - [中缀运算符 \(-\)，中缀运算符 ∖ / infix \(-\), infix ∖](#中缀运算符--，中缀运算符-∖--infix---infix-∖)
+        - [中缀运算符 \(^\)，中缀运算符 ⊖ / infix \(^\), infix ⊖](#中缀运算符-^，中缀运算符-⊖--infix-^-infix-⊖)
+    - [返回 `Baggy` 的集合运算符 / Set operators that return a `Baggy`](#返回-baggy-的集合运算符--set-operators-that-return-a-baggy)
+        - [中缀运算符 \(.\)，中缀运算符 ⊍ / infix \(.\), infix ⊍](#中缀运算符-，中缀运算符-⊍--infix--infix-⊍)
+        - [中缀运算符 \(+\)，中缀运算符 ⊎ / infix \(+\), infix ⊎](#中缀运算符-，中缀运算符-⊎--infix--infix-⊎)
+    - [与集合运算符有关的术语 / Terms related to set operators](#与集合运算符有关的术语--terms-related-to-set-operators)
+        - [术语 ∅ / term ∅](#术语-∅--term-∅)
 
 <!-- /MarkdownTOC -->
 
-<a id="%E9%9B%86%E5%90%88%E3%80%81%E8%83%8C%E5%8C%85%E5%92%8C%E6%B7%B7%E5%90%88--sets-bags-and-mixes"></a>
+<a id="集合、背包和混合--sets-bags-and-mixes"></a>
 # 集合、背包和混合 / Sets, bags, and mixes
 
 Raku 中去重和加权对象的无序集合
 
 Unordered collections of unique and weighted objects in Raku
 
-<a id="%E4%BB%8B%E7%BB%8D--introduction"></a>
+<a id="介绍--introduction"></a>
 # 介绍 / Introduction
 
 六个集合类是 [Set](https://docs.raku.org/type/Set)、[SetHash](https://docs.raku.org/type/SetHash)、[Bag](https://docs.raku.org/type/Bag)、[BagHash](https://docs.raku.org/type/BagHash)、[Mix](https://docs.raku.org/type/Mix) 和 [MixHash](https://docs.raku.org/type/MixHash)。它们都有相似的语义。
@@ -95,7 +95,7 @@ Secondly, they provide a Hash-like interface where the actual elements of the co
 | Bag / BagHash | a positive integer                  | 0                                       |
 | Mix / MixHash | a non-zero real number              | 0                                       |
 
-<a id="%E5%85%B7%E6%9C%89%E9%9B%86%E5%90%88%E8%AF%AD%E4%B9%89%E7%9A%84%E8%BF%90%E7%AE%97%E7%AC%A6--operators-with-set-semantics"></a>
+<a id="具有集合语义的运算符--operators-with-set-semantics"></a>
 # 具有集合语义的运算符 / Operators with Set semantics
 
 有几个中缀运算符致力于使用 `QuantHash` 语义执行通用操作。由于这个，这些运算符通常被称为“集合运算符”。
@@ -118,145 +118,145 @@ So explicitly using `Set` (or `Bag` or `Mix`) objects with these infixes is unne
 
 However, if a `Bag` or `Mix` is one of the parameters to these set operators, then the semantics will be upgraded to that type (where `Mix` supersedes `Bag` if both types happen to be used).
 
-<a id="%E8%BF%94%E5%9B%9E-bool-%E7%9A%84%E9%9B%86%E5%90%88%E8%BF%90%E7%AE%97%E7%AC%A6--set-operators-that-return-bool"></a>
+<a id="返回-bool-的集合运算符--set-operators-that-return-bool"></a>
 ## 返回 `Bool` 的集合运算符 / Set operators that return `Bool`
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-elem%EF%BC%8C%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%88%88--infix-elem-infix-%E2%88%88"></a>
+<a id="中缀运算符-elem，中缀运算符-∈--infix-elem-infix-∈"></a>
 ### 中缀运算符 (elem)，中缀运算符 ∈ / infix (elem), infix ∈
 
 如果 `$a` 是 `$b` 的**元素**，则返回 `True`，否则返回 `False`。[更多信息](https://docs.raku.org/language/operators#infix_(elem),_infix_%E2%88%88)，[维基百科定义](https://en.wikipedia.org/wiki/Element_(mathematics)#Notation_and_terminology)。
 
 Returns `True` if `$a` is an **element** of `$b`, else False. [More information](https://docs.raku.org/language/operators#infix_(elem),_infix_%E2%88%88), [Wikipedia definition](https://en.wikipedia.org/wiki/Element_(mathematics)#Notation_and_terminology).
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%88%89--infix-%E2%88%89"></a>
+<a id="中缀运算符-∉--infix-∉"></a>
 ### 中缀运算符 ∉ / infix ∉
 
 如果`$a` 不是 `$b` 的**元素，则返回 `True`，否则返回 `False`。[更多信息](https://docs.raku.org/language/operators#infix_%E2%88%89)，[维基百科定义](https://en.wikipedia.org/wiki/Element_(mathematics)#Notation_and_terminology)。
 
 Returns `True` if `$a` is **not** an element of `$b`, else False. [More information](https://docs.raku.org/language/operators#infix_%E2%88%89), [Wikipedia definition](https://en.wikipedia.org/wiki/Element_(mathematics)#Notation_and_terminology).
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-cont%EF%BC%8C%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%88%8B--infix-cont-infix-%E2%88%8B"></a>
+<a id="中缀运算符-cont，中缀运算符-∋--infix-cont-infix-∋"></a>
 ### 中缀运算符 (cont)，中缀运算符 ∋ / infix (cont), infix ∋
 
 如果 `$a` **包含** `$b` 作为元素，则返回 `True`，否则返回 `False`。[更多信息](https://docs.raku.org/language/operators#infix_(cont),_infix_%E2%88%8B)，[维基百科定义](https://en.wikipedia.org/wiki/Element_(mathematics)#Notation_and_terminology)。
 
 Returns `True` if `$a` **contains** `$b` as an element, else False. [More information](https://docs.raku.org/language/operators#infix_(cont),_infix_%E2%88%8B), [Wikipedia definition](https://en.wikipedia.org/wiki/Element_(mathematics)#Notation_and_terminology).
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%88%8C--infix-%E2%88%8C"></a>
+<a id="中缀运算符-∌--infix-∌"></a>
 ### 中缀运算符 ∌ / infix ∌
 
 如果 `$a` **不包含** `$b` 作为元素，则返回 `True`，否则返回 `False`。[更多信息](https://docs.raku.org/language/operators#infix_%E2%88%8C)，[维基百科定义](https://en.wikipedia.org/wiki/Element_(mathematics)#Notation_and_terminology)。
 
 Returns `True` if `$a` does **not** contain `$b`, else False. [More information](https://docs.raku.org/language/operators#infix_%E2%88%8C), [Wikipedia definition](https://en.wikipedia.org/wiki/Element_(mathematics)#Notation_and_terminology).
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%EF%BC%8C%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%86--infix--infix-%E2%8A%86"></a>
+<a id="中缀运算符-，中缀运算符-⊆--infix--infix-⊆"></a>
 ### 中缀运算符 (<=)，中缀运算符 ⊆ / infix (<=), infix ⊆
 
 如果 `$a` 是**子集**或等于 `$b`，则返回 `True`，否则返回 `False`。[更多信息](https://docs.raku.org/language/operators#infix_(%3C=),_infix_%E2%8A%86)，[维基百科定义](https://en.wikipedia.org/wiki/Subset#Definitions)。
 
 Returns `True` if `$a` is a **subset** or is equal to `$b`, else False. [More information](https://docs.raku.org/language/operators#infix_(%3C=),_infix_%E2%8A%86), [Wikipedia definition](https://en.wikipedia.org/wiki/Subset#Definitions).
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%88--infix-%E2%8A%88"></a>
+<a id="中缀运算符-⊈--infix-⊈"></a>
 ### 中缀运算符 ⊈ / infix ⊈
 
 如果 `$a` 不是 `$b` 的子集也不等于 `$b`，则返回 `True`，否则返回 `False`。[更多信息](https://docs.raku.org/language/operators#infix_%E2%8A%88)，[维基百科定义](https://en.wikipedia.org/wiki/Subset#Definitions)。
 
 Returns `True` if `$a` is **not** a **subset** nor equal to `$b`, else False. [More information](https://docs.raku.org/language/operators#infix_%E2%8A%88), [Wikipedia definition](https://en.wikipedia.org/wiki/Subset#Definitions).
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%EF%BC%8C%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%82--infix--infix-%E2%8A%82"></a>
+<a id="中缀运算符-，中缀运算符-⊂--infix--infix-⊂"></a>
 ### 中缀运算符 (<)，中缀运算符 ⊂ / infix (<), infix ⊂
 
 如果 `$a` 是 `$b` 的**严格子集**，则返回 `True`，否则返回 `False`。[更多信息](https://docs.raku.org/language/operators#infix_(%3C),_infix_%E2%8A%82)，[维基百科定义](https://en.wikipedia.org/wiki/Subset#Definitions)。
 
 Returns `True` if `$a` is a **strict subset** of `$b`, else False. [More information](https://docs.raku.org/language/operators#infix_(%3C),_infix_%E2%8A%82), [Wikipedia definition](https://en.wikipedia.org/wiki/Subset#Definitions).
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%84--infix-%E2%8A%84"></a>
+<a id="中缀运算符-⊄--infix-⊄"></a>
 ### 中缀运算符 ⊄ / infix ⊄
 
 如果 `$a` **不是** `$b` 的**严格子集**，则返回 `True`，否则返回 `False`。[更多信息](https://docs.raku.org/language/operators#infix_%E2%8A%84)，[维基百科定义](https://en.wikipedia.org/wiki/Subset#Definitions)。
 
 Returns `True` if `$a` is **not** a **strict subset** of `$b`, else False. [More information](https://docs.raku.org/language/operators#infix_%E2%8A%84), [Wikipedia definition](https://en.wikipedia.org/wiki/Subset#Definitions).
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%EF%BC%8C%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%87--infix--infix-%E2%8A%87"></a>
+<a id="中缀运算符-，中缀运算符-⊇--infix--infix-⊇"></a>
 ### 中缀运算符 (>=)，中缀运算符 ⊇ / infix (>=), infix ⊇
 
 如果 `$a` 是 `$b` 的**超集**，则返回 `True`，否则返回 `False`。[更多信息](https://docs.raku.org/language/operators#infix_(%3E=),_infix_%E2%8A%87)，[维基百科定义](https://en.wikipedia.org/wiki/Subset#Definitions)。
 
 Returns `True` if `$a` is a **superset** of or equal to `$b`, else False. [More information](https://docs.raku.org/language/operators#infix_(%3E=),_infix_%E2%8A%87), [Wikipedia definition](https://en.wikipedia.org/wiki/Subset#Definitions).
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%89--infix-%E2%8A%89"></a>
+<a id="中缀运算符-⊉--infix-⊉"></a>
 ### 中缀运算符 ⊉ / infix ⊉
 
 如果 `$a` **不是** `$b` 的**超集**，则返回 `True`，否则返回 `False`。[更多信息](https://docs.raku.org/language/operators#infix_%E2%8A%89)，[维基百科定义](https://en.wikipedia.org/wiki/Subset#Definitions)。
 
 Returns `True` if `$a` is **not** a **superset** nor equal to `$b`, else False. [More information](https://docs.raku.org/language/operators#infix_%E2%8A%89), [Wikipedia definition](https://en.wikipedia.org/wiki/Subset#Definitions).
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%EF%BC%8C%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%83--infix--infix-%E2%8A%83"></a>
+<a id="中缀运算符-，中缀运算符-⊃--infix--infix-⊃"></a>
 ### 中缀运算符 (>)，中缀运算符 ⊃ / infix (>), infix ⊃
 
 如果 `$a` 是 `$b` 的**严格超集**，则返回 `True`，否则返回 `False`。[更多信息](https://docs.raku.org/language/operators#infix_(%3E),_infix_%E2%8A%83)，[维基百科定义](https://en.wikipedia.org/wiki/Subset#Definitions)。
 
 Returns `True` if `$a` is a **strict superset** of `$b`, else False. [More information](https://docs.raku.org/language/operators#infix_(%3E),_infix_%E2%8A%83), [Wikipedia definition](https://en.wikipedia.org/wiki/Subset#Definitions).
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%85--infix-%E2%8A%85"></a>
+<a id="中缀运算符-⊅--infix-⊅"></a>
 ### 中缀运算符 ⊅ / infix ⊅
 
 如果 `$a` 不是 `$b` 的**严格超集**，则返回 `True`，否则返回 `False`。[更多信息](https://docs.raku.org/language/operators#infix_%E2%8A%85)，[维基百科定义](https://en.wikipedia.org/wiki/Subset#Definitions)。
 
 Returns `True` if `$a` is **not** a **strict superset** of `$b`, else False. [More information](https://docs.raku.org/language/operators#infix_%E2%8A%85), [Wikipedia definition](https://en.wikipedia.org/wiki/Subset#Definitions).
 
-<a id="%E8%BF%94%E5%9B%9E-quanthash-%E7%9A%84%E9%9B%86%E5%90%88%E8%BF%90%E7%AE%97%E7%AC%A6--set-operators-that-return-a-quanthash"></a>
+<a id="返回-quanthash-的集合运算符--set-operators-that-return-a-quanthash"></a>
 ## 返回 `QuantHash` 的集合运算符 / Set operators that return a `QuantHash`
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%7C%EF%BC%8C%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%88%AA--infix-%7C-infix-%E2%88%AA"></a>
+<a id="中缀运算符-|，中缀运算符-∪--infix-|-infix-∪"></a>
 ### 中缀运算符 (|)，中缀运算符 ∪ / infix (|), infix ∪
 
 返回其所有参数的**合集**。[更多信息](https://docs.raku.org/language/operators#infix_(|),_infix_%E2%88%AA)，[维基百科定义](https://en.wikipedia.org/wiki/Union_(set_theory))。
 
 Returns the **union** of all its arguments. [More information](https://docs.raku.org/language/operators#infix_(|),_infix_%E2%88%AA), [Wikipedia definition](https://en.wikipedia.org/wiki/Union_(set_theory)).
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%EF%BC%8C%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%88%A9--infix--infix-%E2%88%A9"></a>
+<a id="中缀运算符-，中缀运算符-∩--infix--infix-∩"></a>
 ### 中缀运算符 (&)，中缀运算符 ∩ / infix (&), infix ∩
 
 返回其所有参数的**交集**。[更多信息](https://docs.raku.org/language/operators#infix_(&),_infix_%E2%88%A9)，[维基百科定义](https://en.wikipedia.org/wiki/Union_(set_theory))。
 
 Returns the **intersection** of all of its arguments. [More information](https://docs.raku.org/language/operators#infix_(&),_infix_%E2%88%A9), [Wikipedia definition](https://en.wikipedia.org/wiki/Intersection_(set_theory)).
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6--%EF%BC%8C%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%88%96--infix---infix-%E2%88%96"></a>
+<a id="中缀运算符--，中缀运算符-∖--infix---infix-∖"></a>
 ### 中缀运算符 (-)，中缀运算符 ∖ / infix (-), infix ∖
 
 返回其所有参数的**集合差**。[更多信息](https://docs.raku.org/language/operators#infix_(-),_infix_%E2%88%96)，[维基百科定义](https://en.wikipedia.org/wiki/Complement_(set_theory)#Relative_complement)。
 
 Returns the **set difference** of all its arguments. [More information](https://docs.raku.org/language/operators#infix_(-),_infix_%E2%88%96), [Wikipedia definition](https://en.wikipedia.org/wiki/Complement_(set_theory)#Relative_complement).
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%5E%EF%BC%8C%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%96--infix-%5E-infix-%E2%8A%96"></a>
+<a id="中缀运算符-^，中缀运算符-⊖--infix-^-infix-⊖"></a>
 ### 中缀运算符 (^)，中缀运算符 ⊖ / infix (^), infix ⊖
 
 返回其所有参数的**对称差集**。[更多信息](https://docs.raku.org/language/operators#infix_(^),_infix_%E2%8A%96)，[维基百科定义](https://en.wikipedia.org/wiki/Symmetric_difference)。
 
 Returns the **symmetric set difference** of all its arguments. [More information](https://docs.raku.org/language/operators#infix_(^),_infix_%E2%8A%96), [Wikipedia definition](https://en.wikipedia.org/wiki/Symmetric_difference).
 
-<a id="%E8%BF%94%E5%9B%9E-baggy-%E7%9A%84%E9%9B%86%E5%90%88%E8%BF%90%E7%AE%97%E7%AC%A6--set-operators-that-return-a-baggy"></a>
+<a id="返回-baggy-的集合运算符--set-operators-that-return-a-baggy"></a>
 ## 返回 `Baggy` 的集合运算符 / Set operators that return a `Baggy`
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%EF%BC%8C%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%8D--infix--infix-%E2%8A%8D"></a>
+<a id="中缀运算符-，中缀运算符-⊍--infix--infix-⊍"></a>
 ### 中缀运算符 (.)，中缀运算符 ⊍ / infix (.), infix ⊍
 
 返回其参数的 Baggy **乘法**。[更多信息](https://docs.raku.org/language/operators#infix_(.),_infix_%E2%8A%8D)。
 
 Returns the Baggy **multiplication** of its arguments. [More information](https://docs.raku.org/language/operators#infix_(.),_infix_%E2%8A%8D).
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%EF%BC%8C%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6-%E2%8A%8E--infix--infix-%E2%8A%8E"></a>
+<a id="中缀运算符-，中缀运算符-⊎--infix--infix-⊎"></a>
 ### 中缀运算符 (+)，中缀运算符 ⊎ / infix (+), infix ⊎
 
 返回其参数的 Baggy **加法**。[更多信息](https://docs.raku.org/language/operators#infix_(+),_infix_%E2%8A%8E)。
 
 Returns the Baggy **addition** of its arguments. [More information](https://docs.raku.org/language/operators#infix_(+),_infix_%E2%8A%8E).
 
-<a id="%E4%B8%8E%E9%9B%86%E5%90%88%E8%BF%90%E7%AE%97%E7%AC%A6%E6%9C%89%E5%85%B3%E7%9A%84%E6%9C%AF%E8%AF%AD--terms-related-to-set-operators"></a>
+<a id="与集合运算符有关的术语--terms-related-to-set-operators"></a>
 ## 与集合运算符有关的术语 / Terms related to set operators
 
-<a id="%E6%9C%AF%E8%AF%AD-%E2%88%85--term-%E2%88%85"></a>
+<a id="术语-∅--term-∅"></a>
 ### 术语 ∅ / term ∅
 
 空集。[更多信息](https://docs.raku.org/language/terms#term_%E2%88%85)，[维基百科定义](https://en.wikipedia.org/wiki/Empty_set)。

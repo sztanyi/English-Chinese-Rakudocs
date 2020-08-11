@@ -12,15 +12,15 @@ Here is a list of modules that you can find in the Raku ecosystem which aim to m
 
 <!-- MarkdownTOC -->
 
-- [模组构建器和创作工具 / Module builder and authoring tools](#%E6%A8%A1%E7%BB%84%E6%9E%84%E5%BB%BA%E5%99%A8%E5%92%8C%E5%88%9B%E4%BD%9C%E5%B7%A5%E5%85%B7--module-builder-and-authoring-tools)
-- [测试 / Tests](#%E6%B5%8B%E8%AF%95--tests)
+- [模组构建器和创作工具 / Module builder and authoring tools](#模组构建器和创作工具--module-builder-and-authoring-tools)
+- [测试 / Tests](#测试--tests)
 - [NativeCall](#nativecall)
-- [样本模块 / Sample modules](#%E6%A0%B7%E6%9C%AC%E6%A8%A1%E5%9D%97--sample-modules)
+- [样本模块 / Sample modules](#样本模块--sample-modules)
 
 <!-- /MarkdownTOC -->
 
 
-<a id="%E6%A8%A1%E7%BB%84%E6%9E%84%E5%BB%BA%E5%99%A8%E5%92%8C%E5%88%9B%E4%BD%9C%E5%B7%A5%E5%85%B7--module-builder-and-authoring-tools"></a>
+<a id="模组构建器和创作工具--module-builder-and-authoring-tools"></a>
 # 模组构建器和创作工具 / Module builder and authoring tools
 
 一些模组和工具可以帮助你生成作为模组发行版一部分的文件。
@@ -39,7 +39,7 @@ Some modules and tools to help you with generating files that are part of a modu
 - [Module::Skeleton](https://bitbucket.org/rightfold/module-skeleton) Generate a skeleton module
 - [p6doc](https://modules.raku.org/dist/p6doc) Generate documentation end-products
 
-<a id="%E6%B5%8B%E8%AF%95--tests"></a>
+<a id="测试--tests"></a>
 # 测试 / Tests
 
 模组质量测试。
@@ -71,7 +71,7 @@ Here some modules to help you work with NativeCall.
 - [App::GPTrixie](https://modules.raku.org/dist/App::GPTrixie) Generate NativeCall code from C headers file
 - [NativeCall::TypeDiag](https://modules.raku.org/dist/NativeCall::TypeDiag) Provides routines to test your CStruct
 
-<a id="%E6%A0%B7%E6%9C%AC%E6%A8%A1%E5%9D%97--sample-modules"></a>
+<a id="样本模块--sample-modules"></a>
 # 样本模块 / Sample modules
 
 仅作为极简示例、安装程序测试或骨架存在的模块。

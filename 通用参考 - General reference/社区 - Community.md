@@ -8,19 +8,19 @@ Information about the people working on and using Raku
 
 <!-- MarkdownTOC -->
 
-- [概述 / Overview](#%E6%A6%82%E8%BF%B0--overview)
-- [Raku 社区 / The Raku community](#raku-%E7%A4%BE%E5%8C%BA--the-raku-community)
-  - [在线社区 / Online communities](#%E5%9C%A8%E7%BA%BF%E7%A4%BE%E5%8C%BA--online-communities)
-  - [IRC 机器人 / IRC bots](#irc-%E6%9C%BA%E5%99%A8%E4%BA%BA--irc-bots)
-  - [线下社区 / Offline communities](#%E7%BA%BF%E4%B8%8B%E7%A4%BE%E5%8C%BA--offline-communities)
-  - [其他资源 / Other resources](#%E5%85%B6%E4%BB%96%E8%B5%84%E6%BA%90--other-resources)
-- [Raku 周刊 / Raku Weekly](#raku-%E5%91%A8%E5%88%8A--raku-weekly)
-- [Raku Advent 日历 / Raku Advent calendar](#raku-advent-%E6%97%A5%E5%8E%86--raku-advent-calendar)
+- [概述 / Overview](#概述--overview)
+- [Raku 社区 / The Raku community](#raku-社区--the-raku-community)
+  - [在线社区 / Online communities](#在线社区--online-communities)
+  - [IRC 机器人 / IRC bots](#irc-机器人--irc-bots)
+  - [线下社区 / Offline communities](#线下社区--offline-communities)
+  - [其他资源 / Other resources](#其他资源--other-resources)
+- [Raku 周刊 / Raku Weekly](#raku-周刊--raku-weekly)
+- [Raku Advent 日历 / Raku Advent calendar](#raku-advent-日历--raku-advent-calendar)
 
 <!-- /MarkdownTOC -->
 
 
-<a id="%E6%A6%82%E8%BF%B0--overview"></a>
+<a id="概述--overview"></a>
 # 概述 / Overview
 
 “Perl 5 是我对 Perl 的改写。我希望 Perl 6 是社区对 Perl 的改写，并且是属于社区的。” - Larry Wall（2000 年左右）
@@ -31,17 +31,17 @@ Information about the people working on and using Raku
 
 "I am in favor of this change [a community driven renaming from Perl 6 to Raku, because it reflects an ancient wisdom: 'No one sews a patch of unshrunk cloth on an old garment, for the patch will pull away from the garment, making the tear worse. Neither do people pour new wine into old wineskins. If they do, the skins will burst; the wine will run out and the wineskins will be ruined. No, they pour new wine into new wineskins, and both are preserved.'" - Larry Wall ([2019](https://github.com/perl6/problem-solving/pull/89#pullrequestreview-300789072))
 
-<a id="raku-%E7%A4%BE%E5%8C%BA--the-raku-community"></a>
+<a id="raku-社区--the-raku-community"></a>
 # Raku 社区 / The Raku community
 
-<a id="%E5%9C%A8%E7%BA%BF%E7%A4%BE%E5%8C%BA--online-communities"></a>
+<a id="在线社区--online-communities"></a>
 ## 在线社区 / Online communities
 
 `#raku` 频道是在 2019 年 10 月创建的，随着它成为默认频道，它将变得更加活跃。最终，与 `#perl6` 的连接将重定向到 `#raku`，但历史日志将保留在 `#perl6` 频道上。在 `freenode.net` 上的 [`#raku`](https://raku.org/community/irc) 频道一直有很多开发人员，他们乐于提供支持和回答问题，或者只是把它作为一个友好的地方闲逛。请查看此 [IRC lingo](http://www.ircbeginner.com/ircinfo/abbreviations.html) 资源，以了解那里经常使用的缩写。[StackOverflow](https://stackoverflow.com/questions/tagged/raku?tab=Newest) 也是一个很好的资源，可以提出问题，帮助他人解决 Raku 的问题和挑战。更多的资源可以在 [raku.org 社区页面](https://raku.org/community/)找到。
 
 The `#raku` channel was created in October 2019, and will become more active as it becomes the default channel. Eventually, connections to the `#perl6` will be redirected to `#raku`, but the historical logs will remain on the `#perl6` channel. The [`#raku`](https://raku.org/community/irc) channel on `freenode.net` has always had a large presence with many developers, who are happy to provide support and answer questions, or just use it as a friendly place to hang out. Check out this [IRC lingo](http://www.ircbeginner.com/ircinfo/abbreviations.html) resource for the abbreviations frequently used there. [StackOverflow](https://stackoverflow.com/questions/tagged/perl6) is also a great resource for asking questions and helping others with their Raku problems and challenges. More resources can be found in the [raku.org community page](https://raku.org/community/).
 
-<a id="irc-%E6%9C%BA%E5%99%A8%E4%BA%BA--irc-bots"></a>
+<a id="irc-机器人--irc-bots"></a>
 ## IRC 机器人 / IRC bots
 
 IRC 频道有一些非常有趣的机器人。这是一个完整的列表，有机器人的名称，到更多信息的链接和简短的描述。
@@ -228,28 +228,28 @@ The IRC channel has some very interesting bots. This is a full list with the nam
 
   An IRC bot for testing builds of Rakudo on FreeBSD. It can be addressed by its full name ('BeastieBot'). Talks only in [perl6-dev](https://webchat.freenode.net/?channels=#raku-dev).
 
-<a id="%E7%BA%BF%E4%B8%8B%E7%A4%BE%E5%8C%BA--offline-communities"></a>
+<a id="线下社区--offline-communities"></a>
 ## 线下社区 / Offline communities
 
 Raku 也是 [Perl 会议](https://www.perl.org/events.html) 和 [Perl Monger 会议](https://www.pm.org/) 和[其他会议](https://perl.meetup.com/)的共同话题。如果你喜欢面对面的会议，这些都是热情推荐的！
 
 Raku is also a common topic at [Perl conferences](https://www.perl.org/events.html) and [Perl Monger meetings](https://www.pm.org/) and [other meetups](https://perl.meetup.com/). If you prefer in-person meetings, these are warmly recommended!
 
-<a id="%E5%85%B6%E4%BB%96%E8%B5%84%E6%BA%90--other-resources"></a>
+<a id="其他资源--other-resources"></a>
 ## 其他资源 / Other resources
 
 [Camelia](https://raku.org/)，这只翅膀上有 P 和 6 的多色蝴蝶，是这个多元化和欢迎社区的象征。
 
 [Camelia](https://raku.org/), the multi-color butterfly with P 6 in her wings, is the symbol of this diverse and welcoming community.
 
-<a id="raku-%E5%91%A8%E5%88%8A--raku-weekly"></a>
+<a id="raku-周刊--raku-weekly"></a>
 # Raku 周刊 / Raku Weekly
 
 伊丽莎白·马蒂杰森通常在 [“Raku 周刊”博客](https://p6weekly.wordpress.com/)上发表文章，总结 Raku 的帖子、推特、评论和其他有趣的花絮。如果你想让一个资源知道 Raku 社区现在发生了什么，这是你最好的资源。
 
 Elizabeth Mattijsen usually posts in [the "Raku Weekly" blog](https://p6weekly.wordpress.com/), a summary of Raku posts, tweets, comments and other interesting tidbits. If you want a single resource to know what is going on in the Raku community now, this is your best resource.
 
-<a id="raku-advent-%E6%97%A5%E5%8E%86--raku-advent-calendar"></a>
+<a id="raku-advent-日历--raku-advent-calendar"></a>
 # Raku Advent 日历 / Raku Advent calendar
 
 Raku 社区每年 12 月都会出版一本[Advent Calendar](https://perl6advent.wordpress.com/)，每天都有 Raku 教程，直到圣诞节。组织和任务是通过不同的 Raku 频道和 [Perl6/Advent](https://github.com/perl6/advent)存储库完成的。如果你想参加，它的组织在 10 月底开始，所以请查看上面的频道以保持最新。

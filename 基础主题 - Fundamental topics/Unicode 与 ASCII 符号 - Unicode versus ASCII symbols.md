@@ -16,17 +16,17 @@ Reference is made below to various properties of unicode codepoints. The definit
 
 <!-- MarkdownTOC -->
 
-- [字母数字符 / Alphabetic characters](#%E5%AD%97%E6%AF%8D%E6%95%B0%E5%AD%97%E7%AC%A6--alphabetic-characters)
-- [数字字符 / Numeric characters](#%E6%95%B0%E5%AD%97%E5%AD%97%E7%AC%A6--numeric-characters)
-- [数值 / Numeric values](#%E6%95%B0%E5%80%BC--numeric-values)
-- [空白字符 / Whitespace characters](#%E7%A9%BA%E7%99%BD%E5%AD%97%E7%AC%A6--whitespace-characters)
-- [其他可接受的单码点 / Other acceptable single codepoints](#%E5%85%B6%E4%BB%96%E5%8F%AF%E6%8E%A5%E5%8F%97%E7%9A%84%E5%8D%95%E7%A0%81%E7%82%B9--other-acceptable-single-codepoints)
-    - [原子运算符 / Atomic operators](#%E5%8E%9F%E5%AD%90%E8%BF%90%E7%AE%97%E7%AC%A6--atomic-operators)
-- [多码点 / Multiple codepoints](#%E5%A4%9A%E7%A0%81%E7%82%B9--multiple-codepoints)
+- [字母数字符 / Alphabetic characters](#字母数字符--alphabetic-characters)
+- [数字字符 / Numeric characters](#数字字符--numeric-characters)
+- [数值 / Numeric values](#数值--numeric-values)
+- [空白字符 / Whitespace characters](#空白字符--whitespace-characters)
+- [其他可接受的单码点 / Other acceptable single codepoints](#其他可接受的单码点--other-acceptable-single-codepoints)
+	- [原子运算符 / Atomic operators](#原子运算符--atomic-operators)
+- [多码点 / Multiple codepoints](#多码点--multiple-codepoints)
 
 <!-- /MarkdownTOC -->
 
-<a id="%E5%AD%97%E6%AF%8D%E6%95%B0%E5%AD%97%E7%AC%A6--alphabetic-characters"></a>
+<a id="字母数字符--alphabetic-characters"></a>
 # 字母数字符 / Alphabetic characters
 
 任何具有 `Ll`（字母、小写）、`Lu`（字母、大写）、`Lt`（字母、标题）、`Lm`（字母、修饰符）或 `Lo`（字母、其他）属性的代码点，都可以像 ASCII 范围中的任何其他字母字符一样使用。
@@ -39,7 +39,7 @@ $Δ++;
 say $Δ;
 ```
 
-<a id="%E6%95%B0%E5%AD%97%E5%AD%97%E7%AC%A6--numeric-characters"></a>
+<a id="数字字符--numeric-characters"></a>
 # 数字字符 / Numeric characters
 
 任何具有 `Nd`（数字，十进制数字）属性的代码点，都可以用作任何数字中的数字。例如：
@@ -51,7 +51,7 @@ my $var = １９; # U+FF11 U+FF19
 say $var + 2;  # OUTPUT: «21␤»
 ```
 
-<a id="%E6%95%B0%E5%80%BC--numeric-values"></a>
+<a id="数值--numeric-values"></a>
 # 数值 / Numeric values
 
 任何具有 `No`（数字，其他）或 `Nl`（数字，字母）属性的代码点都可以单独用作数值，如 ½ 和 ⅓。（这些不是十进制数字字符，所以不能合并。）例如：
@@ -63,14 +63,14 @@ my $var = ⅒ + 2 + Ⅻ; # here ⅒ is No and Rat and Ⅻ is Nl and Int
 say $var;            # OUTPUT: «14.1␤»
 ```
 
-<a id="%E7%A9%BA%E7%99%BD%E5%AD%97%E7%AC%A6--whitespace-characters"></a>
+<a id="空白字符--whitespace-characters"></a>
 # 空白字符 / Whitespace characters
 
 除了空格和制表符外，你还可以使用任何具有 `Zs`（分隔符，空格）、`Zl`（分隔符，行）或 `Zp`（分隔符，段落）属性的 Unicode 空白字符。
 
 Besides spaces and tabs you can use any other unicode whitespace character that has the `Zs` (Separator, space), `Zl` (Separator, line), or `Zp` (Separator, paragraph) property.
 
-<a id="%E5%85%B6%E4%BB%96%E5%8F%AF%E6%8E%A5%E5%8F%97%E7%9A%84%E5%8D%95%E7%A0%81%E7%82%B9--other-acceptable-single-codepoints"></a>
+<a id="其他可接受的单码点--other-acceptable-single-codepoints"></a>
 # 其他可接受的单码点 / Other acceptable single codepoints
 
 此列表包含在 Raku 中具有特殊意义的单个代码点[及其他们的 ASCII 等效项]。
@@ -135,7 +135,7 @@ This list contains the single codepoints [and their ASCII equivalents] that have
 | ｢      | U+FF62    | Q//     | as part of ｢｣ (Note: Q// variant cannot be used bare in regexes) |
 | ｣      | U+FF63    | Q//     | as part of ｢｣ (Note: Q// variant cannot be used bare in regexes) |
 
-<a id="%E5%8E%9F%E5%AD%90%E8%BF%90%E7%AE%97%E7%AC%A6--atomic-operators"></a>
+<a id="原子运算符--atomic-operators"></a>
 ## 原子运算符 / Atomic operators
 
 原子运算符中含有 `U+269B ⚛ ATOM SYMBOL`。它们的 ASCII 等价物是普通子程序，而不是运算符：
@@ -164,7 +164,7 @@ The ASCII alternatives are as follows:
 | --⚛    | atomic-dec-fetch |                                      |
 | ⚛--    | atomic-fetch-dec |                                      |
 
-<a id="%E5%A4%9A%E7%A0%81%E7%82%B9--multiple-codepoints"></a>
+<a id="多码点--multiple-codepoints"></a>
 # 多码点 / Multiple codepoints
 
 此列表包含需要为其 ASCII 等价物特殊组合的多个代码点运算符。注意，代码点显示为空格分隔，但在使用时应作为相邻的码点输入。

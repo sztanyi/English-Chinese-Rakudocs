@@ -8,31 +8,31 @@ How to create, use, and distribute Raku modules
 
 <!-- MarkdownTOC -->
 
-- [创建和使用模块 / Creating and using modules](#%E5%88%9B%E5%BB%BA%E5%92%8C%E4%BD%BF%E7%94%A8%E6%A8%A1%E5%9D%97--creating-and-using-modules)
-  - [寻找和安装模块 / Looking for and installing modules.](#%E5%AF%BB%E6%89%BE%E5%92%8C%E5%AE%89%E8%A3%85%E6%A8%A1%E5%9D%97--looking-for-and-installing-modules)
-  - [基本结构 / Basic structure](#%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84--basic-structure)
-- [加载与基本引入 / Loading and basic importing](#%E5%8A%A0%E8%BD%BD%E4%B8%8E%E5%9F%BA%E6%9C%AC%E5%BC%95%E5%85%A5--loading-and-basic-importing)
+- [创建和使用模块 / Creating and using modules](#创建和使用模块--creating-and-using-modules)
+  - [寻找和安装模块 / Looking for and installing modules.](#寻找和安装模块--looking-for-and-installing-modules)
+  - [基本结构 / Basic structure](#基本结构--basic-structure)
+- [加载与基本引入 / Loading and basic importing](#加载与基本引入--loading-and-basic-importing)
   - [`need`](#need)
   - [`use`](#use)
   - [`require`](#require)
-  - [词法模块加载 / Lexical module loading](#%E8%AF%8D%E6%B3%95%E6%A8%A1%E5%9D%97%E5%8A%A0%E8%BD%BD--lexical-module-loading)
-  - [导出和选择性导入 / Exporting and selective importing](#%E5%AF%BC%E5%87%BA%E5%92%8C%E9%80%89%E6%8B%A9%E6%80%A7%E5%AF%BC%E5%85%A5--exporting-and-selective-importing)
+  - [词法模块加载 / Lexical module loading](#词法模块加载--lexical-module-loading)
+  - [导出和选择性导入 / Exporting and selective importing](#导出和选择性导入--exporting-and-selective-importing)
     - [is export](#is-export)
     - [UNIT::EXPORT::*](#unitexport)
     - [EXPORT](#export)
-  - [内省 / Introspection](#%E5%86%85%E7%9C%81--introspection)
-  - [查找已安装的模块 / Finding installed modules](#%E6%9F%A5%E6%89%BE%E5%B7%B2%E5%AE%89%E8%A3%85%E7%9A%84%E6%A8%A1%E5%9D%97--finding-installed-modules)
-- [发布模块 / Distributing modules](#%E5%8F%91%E5%B8%83%E6%A8%A1%E5%9D%97--distributing-modules)
-  - [准备模块 / Preparing the module](#%E5%87%86%E5%A4%87%E6%A8%A1%E5%9D%97--preparing-the-module)
-  - [将模块上传到 CPAN / Upload your module to CPAN](#%E5%B0%86%E6%A8%A1%E5%9D%97%E4%B8%8A%E4%BC%A0%E5%88%B0-cpan--upload-your-module-to-cpan)
-  - [将模块上传到 p6c / Upload your module to p6c](#%E5%B0%86%E6%A8%A1%E5%9D%97%E4%B8%8A%E4%BC%A0%E5%88%B0-p6c--upload-your-module-to-p6c)
-- [与模块创作相关的模块和工具 / Modules and tools related to module authoring](#%E4%B8%8E%E6%A8%A1%E5%9D%97%E5%88%9B%E4%BD%9C%E7%9B%B8%E5%85%B3%E7%9A%84%E6%A8%A1%E5%9D%97%E5%92%8C%E5%B7%A5%E5%85%B7--modules-and-tools-related-to-module-authoring)
-  - [联系信息 / Contact information](#%E8%81%94%E7%B3%BB%E4%BF%A1%E6%81%AF--contact-information)
+  - [内省 / Introspection](#内省--introspection)
+  - [查找已安装的模块 / Finding installed modules](#查找已安装的模块--finding-installed-modules)
+- [发布模块 / Distributing modules](#发布模块--distributing-modules)
+  - [准备模块 / Preparing the module](#准备模块--preparing-the-module)
+  - [将模块上传到 CPAN / Upload your module to CPAN](#将模块上传到-cpan--upload-your-module-to-cpan)
+  - [将模块上传到 p6c / Upload your module to p6c](#将模块上传到-p6c--upload-your-module-to-p6c)
+- [与模块创作相关的模块和工具 / Modules and tools related to module authoring](#与模块创作相关的模块和工具--modules-and-tools-related-to-module-authoring)
+  - [联系信息 / Contact information](#联系信息--contact-information)
 
 <!-- /MarkdownTOC -->
 
 
-<a id="%E5%88%9B%E5%BB%BA%E5%92%8C%E4%BD%BF%E7%94%A8%E6%A8%A1%E5%9D%97--creating-and-using-modules"></a>
+<a id="创建和使用模块--creating-and-using-modules"></a>
 # 创建和使用模块 / Creating and using modules
 
 模块通常是一个或一组揭露 Raku 构造的源文件。
@@ -45,7 +45,7 @@ A module is usually a source file or set of source files that expose Raku constr
 
 Modules are typically packages ([classes](https://docs.raku.org/language/objects#Classes), [roles](https://docs.raku.org/language/objects#Roles), [grammars](https://docs.raku.org/type/Grammar)), [subroutines](https://docs.raku.org/language/functions), and sometimes [variables](https://docs.raku.org/language/variables). In Raku *module* can also refer to a type of package declared with the `module` keyword (see [Module Packages](https://docs.raku.org/language/module-packages) and the examples below) but here we mostly mean "module" as a set of source files in a namespace.
 
-<a id="%E5%AF%BB%E6%89%BE%E5%92%8C%E5%AE%89%E8%A3%85%E6%A8%A1%E5%9D%97--looking-for-and-installing-modules"></a>
+<a id="寻找和安装模块--looking-for-and-installing-modules"></a>
 ## 寻找和安装模块 / Looking for and installing modules.
 
 [`zef`](https://github.com/ugexe/zef) 是用于在 Raku 中安装模块的应用程序。模块列在 [Raku 生态系统](https://modules.perl6.org/) 中，可以在那里搜索，也可以从命令行使用 `zef search` 搜索：
@@ -68,7 +68,7 @@ zef install WWW
 
 will install the module with that particular name, if it is not already installed. [[2\]](https://docs.raku.org/language/modules#fn-2)
 
-<a id="%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84--basic-structure"></a>
+<a id="基本结构--basic-structure"></a>
 ## 基本结构 / Basic structure
 
 Raku 中的模块分布（在*关联源码文件集合*的意义上）具有与 Perl 族语言中的任何分布相同的结构：存在一个主项目目录，包含一个 `README` 和一个 `LICENSE` 文件，用于源文件的“lib”目录，这些文件可以单独地称为模块和/或可以自己定义带有 `module` 关键字的模块 [[3]](https://docs.raku.org/language/modules#fn-3)，用于测试的 `t` 目录，以及可执行文件和脚本的 `bin` 目录。
@@ -79,7 +79,7 @@ Module distributions (in the *set of related source files* sense) in Raku have t
 
 Source files generally use the `.pm6` extension, and scripts or executables use the `.p6`. Test files use the `.t` extension. Files which contain documentation use the `.pod6` extension.
 
-<a id="%E5%8A%A0%E8%BD%BD%E4%B8%8E%E5%9F%BA%E6%9C%AC%E5%BC%95%E5%85%A5--loading-and-basic-importing"></a>
+<a id="加载与基本引入--loading-and-basic-importing"></a>
 # 加载与基本引入 / Loading and basic importing
 
 加载模块使在加载程序的文件范围内声明的相同命名空间中的包可用。从模块导入使导出的符号在导入语句的词法范围中可用。
@@ -235,7 +235,7 @@ if ::('Foo') ~~ Failure {
 }
 ```
 
-<a id="%E8%AF%8D%E6%B3%95%E6%A8%A1%E5%9D%97%E5%8A%A0%E8%BD%BD--lexical-module-loading"></a>
+<a id="词法模块加载--lexical-module-loading"></a>
 ## 词法模块加载 / Lexical module loading
 
 Raku 非常注意避免全局状态，即无论你在模块中做什么，它都不应该影响其他代码。例如，这就是为什么默认情况下子例程定义在词法 （`my`）作用域内。如果你希望其他人看到它们，则需要明确地使它们 `our` 作用域或导出它们。
@@ -253,7 +253,7 @@ my $foo = Foo.new;
 my $bar = Bar.new;
 ```
 
-<a id="%E5%AF%BC%E5%87%BA%E5%92%8C%E9%80%89%E6%8B%A9%E6%80%A7%E5%AF%BC%E5%85%A5--exporting-and-selective-importing"></a>
+<a id="导出和选择性导入--exporting-and-selective-importing"></a>
 ## 导出和选择性导入 / Exporting and selective importing
 
 <a id="is-export"></a>
@@ -500,7 +500,7 @@ use MakeQuestionable Cool;
 say ( 0?, 1?, {}?, %( a => "b" )? ).join(' '); # OUTPUT: «False True False True␤» 
 ```
 
-<a id="%E5%86%85%E7%9C%81--introspection"></a>
+<a id="内省--introspection"></a>
 ## 内省 / Introspection
 
 要列出模块导出的符号，首先查询模块支持的导出标记。
@@ -534,7 +534,7 @@ sub EXPORT { %(Foo => &say) } # RIGHT!!! Sub is outside the module
 unit module Bar;
 ```
 
-<a id="%E6%9F%A5%E6%89%BE%E5%B7%B2%E5%AE%89%E8%A3%85%E7%9A%84%E6%A8%A1%E5%9D%97--finding-installed-modules"></a>
+<a id="查找已安装的模块--finding-installed-modules"></a>
 ## 查找已安装的模块 / Finding installed modules
 
 这取决于模块安装程序知道 `compunit` 期望模块放置在哪里。[distribution](https://docs.raku.org/routine/distribution) 将在当前主目录中提供一个位置。无论如何，让模块安装程序处理你的模块是一个安全的选择。
@@ -562,7 +562,7 @@ Note that the comma (',') is used as the directory separator.
 
 The include path will be searched recursively for any modules when Rakudo is started. Directories that start with a dot are ignored and symlinks are followed.
 
-<a id="%E5%8F%91%E5%B8%83%E6%A8%A1%E5%9D%97--distributing-modules"></a>
+<a id="发布模块--distributing-modules"></a>
 # 发布模块 / Distributing modules
 
 如果你编写了一个 Raku 模块并希望与社区共享，我们很高兴将它列在 [Raku modules directory](https://modules.perl6.org/) 中。
@@ -583,7 +583,7 @@ Currently there are two different module ecosystems (module distribution network
 
 The process of sharing your module consists of two steps, preparing the module and uploading the module to one of the ecosystems.
 
-<a id="%E5%87%86%E5%A4%87%E6%A8%A1%E5%9D%97--preparing-the-module"></a>
+<a id="准备模块--preparing-the-module"></a>
 ## 准备模块 / Preparing the module
 
 一个模块要在任何一个生态系统中工作，它都需要遵循一定的结构。这样做：
@@ -831,7 +831,7 @@ zef install ./your-module-folder
 
 Note that doing so precompiles and installs your module. If you make changes to the source, you'll need to re-install the module. (See `use lib` pragma, `-I` command line switch, or `PERL6LIB` env variable, to include a path to your module source while developing it, so you don't have to install it at all).
 
-<a id="%E5%B0%86%E6%A8%A1%E5%9D%97%E4%B8%8A%E4%BC%A0%E5%88%B0-cpan--upload-your-module-to-cpan"></a>
+<a id="将模块上传到-cpan--upload-your-module-to-cpan"></a>
 ## 将模块上传到 CPAN / Upload your module to CPAN
 
 将模块上传到 CPAN 是分发 Raku 模块的首选方式。
@@ -878,7 +878,7 @@ git archive --prefix=Vortex-TotalPerspective-0.0.1/ \
 
 *Make sure you have a META6.json file in your dist and that the dist version you're uploading is higher than the currently uploaded version. Those are the most common upload errors.*
 
-<a id="%E5%B0%86%E6%A8%A1%E5%9D%97%E4%B8%8A%E4%BC%A0%E5%88%B0-p6c--upload-your-module-to-p6c"></a>
+<a id="将模块上传到-p6c--upload-your-module-to-p6c"></a>
 ## 将模块上传到 p6c / Upload your module to p6c
 
 如果要使用 *p6c* 生态系统，则需要使用 git 做为你的模块的版本控制。此处的说明假定你有一个 [GitHub](https://github.com/) 帐户，以便你的模块可以从其 GigThub 存储库中共享，但是，其他的供应商如 [GitLab](https://about.gitlab.com/) 也可以，只要它以类似的方式运作。
@@ -919,14 +919,14 @@ This will download your module to its own working directory (`~/.zef`), build it
 
 To use `Vortex::TotalPerspective` from your scripts, just write `use Vortex::TotalPerspective`, and your Raku implementation will know where to look for the module file(s).
 
-<a id="%E4%B8%8E%E6%A8%A1%E5%9D%97%E5%88%9B%E4%BD%9C%E7%9B%B8%E5%85%B3%E7%9A%84%E6%A8%A1%E5%9D%97%E5%92%8C%E5%B7%A5%E5%85%B7--modules-and-tools-related-to-module-authoring"></a>
+<a id="与模块创作相关的模块和工具--modules-and-tools-related-to-module-authoring"></a>
 # 与模块创作相关的模块和工具 / Modules and tools related to module authoring
 
 你可以在[额外模组](https://docs.raku.org/language/modules-extra)]中找到旨在提高编写/测试模块经验的模块和工具列表。
 
 You can find a list of modules and tools that aim to improve the experience of writing/test modules at [Modules Extra](https://docs.raku.org/language/modules-extra)
 
-<a id="%E8%81%94%E7%B3%BB%E4%BF%A1%E6%81%AF--contact-information"></a>
+<a id="联系信息--contact-information"></a>
 ## 联系信息 / Contact information
 
 要讨论一般的模块开发，或者如果你的模块能够满足生态系统、命名等方面的需求，你可以使用 [irc.freenode.net 的 perl6](irc://irc.freenode.net/#perl6) IRC 频道。
