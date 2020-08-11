@@ -21,7 +21,11 @@ In Raku, regexes are written in a [*domain-specific language*](https://en.wikipe
 <!-- MarkdownTOC -->
 
 - [词法约定 / Lexical conventions](#%E8%AF%8D%E6%B3%95%E7%BA%A6%E5%AE%9A--lexical-conventions)
-- [字面量 / Literals](#%E5%AD%97%E9%9D%A2%E9%87%8F--literals)
+  - [定义匿名正则的语法 / Anonymous regex definition syntax](#%E5%AE%9A%E4%B9%89%E5%8C%BF%E5%90%8D%E6%AD%A3%E5%88%99%E7%9A%84%E8%AF%AD%E6%B3%95--anonymous-regex-definition-syntax)
+  - [定义命名正则的语法 / Named regex definition syntax](#%E5%AE%9A%E4%B9%89%E5%91%BD%E5%90%8D%E6%AD%A3%E5%88%99%E7%9A%84%E8%AF%AD%E6%B3%95--named-regex-definition-syntax)
+  - [正则可读性：空格与注释 / Regex readability: whitespace and comments](#%E6%AD%A3%E5%88%99%E5%8F%AF%E8%AF%BB%E6%80%A7%EF%BC%9A%E7%A9%BA%E6%A0%BC%E4%B8%8E%E6%B3%A8%E9%87%8A--regex-readability-whitespace-and-comments)
+  - [匹配语法 / Match syntax](#%E5%8C%B9%E9%85%8D%E8%AF%AD%E6%B3%95--match-syntax)
+- [字面量与元字符 / Literals and metacharacters](#%E5%AD%97%E9%9D%A2%E9%87%8F%E4%B8%8E%E5%85%83%E5%AD%97%E7%AC%A6--literals-and-metacharacters)
 - [通配符 / Wildcards](#%E9%80%9A%E9%85%8D%E7%AC%A6--wildcards)
 - [字符类 / Character classes](#%E5%AD%97%E7%AC%A6%E7%B1%BB--character-classes)
   - [反斜杠字符类 / Backslashed character classes](#%E5%8F%8D%E6%96%9C%E6%9D%A0%E5%AD%97%E7%AC%A6%E7%B1%BB--backslashed-character-classes)
@@ -100,77 +104,365 @@ In Raku, regexes are written in a [*domain-specific language*](https://en.wikipe
 <a id="%E8%AF%8D%E6%B3%95%E7%BA%A6%E5%AE%9A--lexical-conventions"></a>
 # 词法约定 / Lexical conventions
 
-Raku 编写正则有特殊的语法：
+从根本上讲，Raku 正则表达式非常类似于子例程：两者都是代码对象，就像可以有匿名函数和命名函数一样，也可以有匿名和命名的正则表达式。
 
-Raku has special syntax for writing regexes:
+Fundamentally, Raku regexes are very much like subroutines: both are code objects, and just as you can have anonymous subs and named subs, you can have anonymous and named regexes.
+
+正则表达式，无论是匿名的还是命名的，都由 [`Regex`](https://docs.raku.org/type/Regex) 对象表示。但是，构造匿名和命名的 `Regex` 对象的语法不同。因此，我们将依次讨论这些问题。
+
+A regex, whether anonymous or named, is represented by a [`Regex`](https://docs.raku.org/type/Regex) object. Yet, the syntax for constructing anonymous and named `Regex` objects differs. We will therefore discuss them in turn.
+
+<a id="%E5%AE%9A%E4%B9%89%E5%8C%BF%E5%90%8D%E6%AD%A3%E5%88%99%E7%9A%84%E8%AF%AD%E6%B3%95--anonymous-regex-definition-syntax"></a>
+## 定义匿名正则的语法 / Anonymous regex definition syntax
+
+匿名正则可以以下列方式之一构造：
+
+An anonymous regex may be constructed in one of the following ways:
 
 ```Raku
-m/abc/;         # 对变量 $_ 进行匹配的正则 / a regex that is immediately matched against $_ 
-rx/abc/;        # 一个正则对象，允许在正则前面使用副词 / a Regex object; allow adverbs to be used before regex 
-/abc/;          # 一个正则对象，'rx/ /' 操作符的简写 / a Regex object; shorthand version of 'rx/ /' operator 
+rx/pattern/;          # an anonymous Regex object; 'rx' stands for 'regex'
+/pattern/;            # an anonymous Regex object; shorthand for 'rx/.../' 
+ 
+regex { pattern };    # keyword-declared anonymous regex; this form is 
+                      # intended for defining named regexes and is discussed 
+                      # in that context in the next section
 ```
 
-前两个例子可以不使用斜杠作为分隔符：
+`rx/ /` 形式比单纯的简写形式 `//` 有两个优点。
 
-For the first two examples, delimiters other than the slash can be used:
+The `rx/ /` form has two advantages over the bare shorthand form `/ /`.
 
-```Raku
-m{abc};
-rx{abc};
+首先，它允许使用斜杠以外的分隔符，这可以用来提高正则定义的可读性：
+
+Firstly, it enables the use of delimiters other than the slash, which may be used to improve the readability of the regex definition:
+
+```
+rx{ '/tmp/'.* };      # the use of curly braces as delimiters makes this first 
+rx/ '/tmp/'.* /;      # definition somewhat easier on the eyes than the second
 ```
 
-请注意，冒号和圆括号不能作为分隔符；冒号与副词冲突，例如 `rx:i/abc/`（大小写不敏感正则），圆括号会被当做函数调用。
+虽然选择范围很广，但并非每个字符都可以被选择为一个正则分隔符：
 
-Note that neither the colon nor round parentheses can be delimiters; the colon is forbidden because it clashes with adverbs, such as `rx:i/abc/` (case insensitive regexes), and round parentheses indicate a function call instead.
+Although the choice is vast, not every character may be chosen as an alternative regex delimiter:
 
-`m/ /` 和 `/ /` 分隔符之间差异的例子：
+- 不能使用空格或字母数字字符作为分隔符。 正则定义语法中的空白符通常是可选的，但需要区别于函数调用语法的地方除外（下文将讨论）。
+- 括号可以用作替代正则分隔符，但只有当 `rx` 和开口分隔符之间有空格。 这是因为紧接在括号后面的标识符总是被解析为函数调用。 例如，在 `rx()` 中[调用运算符](https://docs.raku.org/language/operators#postcircumfix_(_)) `()` 调用 `rx` 函数。`rx ( abc )` 形式却定义了一个正则对象。
+- 使用冒号作为分隔符将与[副词](https://docs.raku.org/language/regexes#Adverbs)发生冲突，其形式为 `:adverb`；因此，禁止使用冒号。
+- 散列字符 `#` 不能作为分隔符使用，因为它解析为[注释](https://docs.raku.org/language/syntax#Single-line_comments)的开始知道行尾。
 
-Example of difference between `m/ /` and `/ /` operators:
+- You cannot use whitespace or alphanumeric characters as delimiters. Whitespace in regex definition syntax is generally optional, except where it is required to distinguish from function call syntax (discussed hereafter).
+- Parentheses can be used as alternative regex delimiters, but only with a space between `rx` and the opening delimiter. This is because identifiers that are immediately followed by parentheses are always parsed as a subroutine call. For example, in `rx()` the [call operator](https://docs.raku.org/language/operators#postcircumfix_(_)) `()` invokes the subroutine `rx`. The form `rx ( abc )`, however, *does* define a `Regex` object.
+- Use of a colon as a delimiter would clash with the use of [adverbs](https://docs.raku.org/language/regexes#Adverbs), which take the form `:adverb`; accordingly, such use of the colon is forbidden.
+- The hash character `#` is not available as a delimiter since it is parsed as the start of a [comment](https://docs.raku.org/language/syntax#Single-line_comments) that runs until the end of the line.
+
+其次，`rx` 形式允许使用[正则副词](https://docs.raku.org/language/regexes#Regex_adverbs)，它可以放在 `rx` 和开口分隔符之间，以修改整个正则的定义：
+
+Secondly, the `rx` form enables the use of [regex adverbs](https://docs.raku.org/language/regexes#Regex_adverbs), which may be placed between `rx` and the opening delimiter to modify the definition of the entire regex:
 
 ```Raku
-my $match;
-$_ = "abc";
-$match = m/.+/; say $match; say $match.^name; # OUTPUT: «｢abc｣
+rx:r:s/pattern/;            # :r (:ratchet) and :s (:sigspace) adverbs, defining 
+                            # a ratcheting regex in which whitespace is significant
+```
+
+尽管匿名正则表达式本身并不是*命名*的，但通过将它们放在命名变量中，可以有效地为它们命名，之后可以在嵌入正则表达式外部和通过[插值](https://docs.raku.org/language/regexes#Regex_interpolation)从嵌入正则表达式内部引用它们:
+
+Although anonymous regexes are not, as such, *named*, they may effectively be given a name by putting them inside a named variable, after which they can be referenced, both outside of an embedding regex and from within an embedding regex by means of [interpolation](https://docs.raku.org/language/regexes#Regex_interpolation):
+
+```Raku
+my $regex = / R \w+ /;
+say "Zen Buddhists like Raku too" ~~ $regex; # OUTPUT: «｢Raku｣
+» 
+ 
+my $regex = /pottery/;
+"Japanese pottery rocks!" ~~ / <$regex> /;  # Interpolation of $regex into /.../ 
+say $/;                                     # OUTPUT: «｢pottery｣
+»
+```
+
+<a id="%E5%AE%9A%E4%B9%89%E5%91%BD%E5%90%8D%E6%AD%A3%E5%88%99%E7%9A%84%E8%AF%AD%E6%B3%95--named-regex-definition-syntax"></a>
+## 定义命名正则的语法 / Named regex definition syntax
+
+可以使用 `regex` 声明符构造命名正则表达式，如下所示：
+
+A named regex may be constructed using the `regex` declarator as follows:
+
+```Raku
+regex R { pattern };        # a named Regex object, named 'R'
+```
+
+与 `rx` 格式不同，你不能选择你想要的分隔符：大括号是必需的。在这方面，应该指出，使用 `regex` 形式的命名正则的定义在语法上与函数的定义相似：
+
+Unlike with the `rx` form, you cannot chose your preferred delimiter: curly braces are mandatory. In this regard it should be noted that the definition of a named regex using the `regex` form is syntactically similar to the definition of a subroutine:
+
+```Raku
+my sub   S { /pattern/ };   # definition of Sub object (returning a Regex) 
+my regex R {  pattern  };   # definition of Regex object
+```
+
+它强调了 [`Regex`](https://docs.raku.org/type/Regex) 对象表示代码而不是数据：
+
+which emphasizes the fact that a [`Regex`](https://docs.raku.org/type/Regex) object represents code rather than data:
+
+```Raku
+&S ~~ Code;                 # OUTPUT: «True
+» 
+ 
+&R ~~ Code;                 # OUTPUT: «True
+» 
+&R ~~ Method;               # OUTPUT: «True
+»   (A Regex is really a Method!) 
+```
+
+与定义匿名正则表达式的 `rx` 形式不同，使用 `regex` 关键字的命名正则表达式定义不允许在开头分隔符之前插入副词。相反，用于修改整个正则表达式模式的副词可以首先包含在大括号中：
+
+Also unlike with the `rx` form for defining an anonymous regex, the definition of a named regex using the `regex` keyword does not allow for adverbs to be inserted before the opening delimiter. Instead, adverbs that are to modify the entire regex pattern may be included first thing within the curly braces:
+
+```Raku
+regex R { :i pattern };     # :i (:ignorecase), renders pattern case insensitive
+```
+
+或者，通过简写的方式，也可以（并建议）使用 `regex` 声明符的 `rule` 和 `token` 变体来定义 `regex`，当需要用到 `:ratchet` 和 `:sigspace` 副词时：
+
+Alternatively, by way of shorthand, it is also possible (and recommended) to use the `rule` and `token` variants of the `regex` declarator for defining a `Regex` when the `:ratchet` and `:sigspace` adverbs are of interest:
+
+```Raku
+regex R { :r pattern };     # apply :r (:ratchet) to entire pattern 
+```
+
+或者
+
+and, alternatively
+
+```Raku
+token R { pattern };        # same thing: 'token' implies ':r' 
+```
+
+或
+
+Or
+
+```Raku
+regex R { :r :s pattern };  # apply :r (:ratchet) and :s (:sigspace) to pattern 
+```
+
+等同于：
+
+with this alternative:
+
+```Raku
+rule  R { pattern };        # same thing: 'rule' implies ':r:s' 
+```
+
+命名的正则可以用作其他正则的构建块，因为它们是可以使用 `<正则名>` 语法从其他正则内部调用的方法。当它们以这种方式使用时，它们通常被称为*子规则*；有关其使用的更多详细信息，请参阅[此处](https://docs.raku.org/language/regexes#Subrules). [`Grammars`](https://docs.raku.org/type/Grammar) 是子规则的自然栖息地，但许多常见的预定义字符类也被实现为命名正则。
+
+Named regexes may be used as building blocks for other regexes, as they are methods that may called from within other regexes using the `<regex-name>` syntax. When they are used this way, they are often referred to as *subrules*; see for more details on their use [here](https://docs.raku.org/language/regexes#Subrules). [`Grammars`](https://docs.raku.org/type/Grammar) are the natural habitat of subrules, but many common predefined character classes are also implemented as named regexes.
+
+<a id="%E6%AD%A3%E5%88%99%E5%8F%AF%E8%AF%BB%E6%80%A7%EF%BC%9A%E7%A9%BA%E6%A0%BC%E4%B8%8E%E6%B3%A8%E9%87%8A--regex-readability-whitespace-and-comments"></a>
+## 正则可读性：空格与注释 / Regex readability: whitespace and comments
+
+Whitespace in regexes is ignored unless the [`:sigspace`](https://docs.raku.org/language/regexes#Sigspace) adverb is used to make whitespace syntactically significant.
+
+In addition to whitespace, comments may be used inside of regexes to improve their comprehensibility just as in code in general. This is true for both [single line comments](https://docs.raku.org/language/syntax#Single-line_comments) and [multi line/embedded comments](https://docs.raku.org/language/syntax#Multi-line_/_embedded_comments):
+
+```
+my $regex =  rx/ \d ** 4            #`(match the year YYYY) 
+                 '-'
+                 \d ** 2            # ...the month MM 
+                 '-'
+                 \d ** 2 /;         # ...and the day DD 
+ 
+say '2015-12-25'.match($regex);     # OUTPUT: «｢2015-12-25｣
+»
+```
+
+<a id="%E5%8C%B9%E9%85%8D%E8%AF%AD%E6%B3%95--match-syntax"></a>
+## 匹配语法 / Match syntax
+
+有多种方法可以将字符串与正则表达式匹配。不管选择的语法如何，成功的匹配都会生成 [`Match`](https://docs.raku.org/type/Match)对象。如果匹配不成功，结果是 [`Nil`](https://docs.raku.org/type/Nil). 在任何一种情况下，匹配操作的结果都可以通过特殊的匹配变量 [`$/`](https://docs.raku.org/syntax/$$SOLIDUS)。
+
+There are a variety of ways to match a string against a regex. Irrespective of the syntax chosen, a successful match results in a [`Match`](https://docs.raku.org/type/Match) object. In case the match is unsuccessful, the result is [`Nil`](https://docs.raku.org/type/Nil). In either case, the result of the match operation is available via the special match variable [`$/`](https://docs.raku.org/syntax/$$SOLIDUS).
+
+将字符串与匿名正则表达式 `/pattern/` 或命名正则表达式 `R` 匹配的最常见方法包括：
+
+The most common ways to match a string against an anonymous regex `/pattern/` or against a named regex `R` include the following:
+
+- *智能匹配： "string" ~~ /pattern/ 或 "string" ~~ /<R>/*
+
+- *Smartmatch: "string" ~~ /pattern/, or "string" ~~ /<R>/*
+  
+  对一个字符串进行正则[智能匹配](https://docs.raku.org/language/operators#index-entry-smartmatch_operator)对比一个 `Regex` 对象对字符串执行正则匹配：
+
+  [Smartmatching](https://docs.raku.org/language/operators#index-entry-smartmatch_operator) a string against a `Regex` performs a regex match of the string against the `Regex`:
+
+  ```Raku
+  say "Go ahead, make my day." ~~ / \w+ /;   # OUTPUT: «｢Go｣
+» 
+   
+  my regex R { me|you };
+  say "You talkin' to me?" ~~ / <R> /;       # OUTPUT: «｢me｣
+ R => ｢me｣
+» 
+  say "May the force be with you." ~~ &R ;   # OUTPUT: «｢you｣
+»
+  ```
+  
+  最后两个语句的不同输出表明，这两种针对命名正则表达式的智能匹配方法是不相同的。产生这种差异的原因是匿名正则表达式 `//` 中的方法调用 `<R>`安装了一个所谓的['命名捕获'](https://docs.raku.org/language/regexes#Named_captures)在 `Match` 对象中，而针对命名的 `Regex` 的智能捕获则不会。
+
+  The different outputs of the last two statements show that these two ways of smartmatching against a named regex are not identical. The difference arises because the method call `<R>` from within the anonymous regex `/ /` installs a so-called ['named capture'](https://docs.raku.org/language/regexes#Named_captures) in the `Match` object, while the smartmatch against the named `Regex` as such does not.
+
+- *显示的主题匹配： m/pattern/ 或 m/<R>/*
+
+- *Explicit topic match: m/pattern/, or m/<R>/*
+  
+  匹配运算符 `m/ /` 立即将主题变量 [`$_`](https://docs.raku.org/language/variables#index-entry-topic_variable) 与 `m` 后面的正则进行匹配。
+
+  The match operator `m/ /` immediately matches the topic variable [`$_`](https://docs.raku.org/language/variables#index-entry-topic_variable) against the regex following the `m`.
+
+  与正则表达式定义的 `rx/ /` 语法一样，匹配运算符可以与 `m` 和开头的正则表达式分隔符之间的副词一起使用，也可以与斜杠以外的分隔符一起使用。但是，`rx/ /` 语法只能与[*正则副词*](https://docs.raku.org/language/regexes#Regex_adverbs)一起使用会影响正则表达式的编译，`m/ /` 语法还可以与[*匹配副词*](https://docs.raku.org/language/regexes#Matching_adverbs)一起使用，它决定正则表达式引擎如何执行模式匹配。
+
+  As with the `rx/ /` syntax for regex definitions, the match operator may be used with adverbs in between `m` and the opening regex delimiter, and with delimiters other than the slash. However, while the `rx/ /` syntax may only be used with [*regex adverbs*](https://docs.raku.org/language/regexes#Regex_adverbs) that affect the compilation of the regex, the `m/ /` syntax may additionally be used with [*matching adverbs*](https://docs.raku.org/language/regexes#Matching_adverbs) that determine how the regex engine is to perform pattern matching.
+  
+  下面的示例说明了 `m//` 和 `/ /` 语法之间的主要区别：
+
+  Here's an example that illustrates the primary difference between the `m/ /` and `/ /` syntax:
+
+  ```Raku
+  my $match;
+  $_ = "abc";
+  $match = m/.+/; say $match; say $match.^name; # OUTPUT: «｢abc｣
 Match
 » 
-$match =  /.+/; say $match; say $match.^name; # OUTPUT: «/.+/
+  $match =  /.+/; say $match; say $match.^name; # OUTPUT: «/.+/
 Regex
+»
+  ```
+
+- *sink 和布尔上下文中的隐式主题匹配*
+
+- *Implicit topic match in sink and Boolean contexts*
+  
+  如果在接收器上下文中使用了 `Regex` 对象，或者在强制将其强制为 [`Bool`](https://docs.raku.org/type/Bool) 的上下文中，主题变量 [`$_`](https://docs.raku.org/language/variables#index-entry-topic_variable) 自动与之匹配：
+
+  In case a `Regex` object is used in sink context, or in a context in which it is coerced to [`Bool`](https://docs.raku.org/type/Bool), the topic variable [`$_`](https://docs.raku.org/language/variables#index-entry-topic_variable) is automatically matched against it:
+
+  ```Raku
+  $_ = "dummy string";        # Set the topic explicitly 
+
+  rx/ s.* /;                  # Regex object in sink context matches automatically 
+  say $/;                     # OUTPUT: «｢string｣
 » 
-```
 
-正则里的空格一般是被忽略的（ 除非使用副词 `:s` 或者它的全称 `:sigspace` ）。
+  say $/ if rx/ d.* /;        # Regex object in Boolean context matches automatically 
+                              # OUTPUT: «｢dummy string｣
+»
+  ```
 
-Whitespace in regexes is generally ignored (except with the `:s` or, completely, `:sigspace` adverb).
+- *match 方法： "string".match: /pattern/ 或 "string".match: /<R>/*
 
-正则表达式里可以有注释：
+- *Match method: "string".match: /pattern/, or "string".match: /<R>/*
+  
+  [`match`](https://docs.raku.org/type/Str\method#match) 方法类似于上面讨论的 `m/ /` 运算符。以 `Regex` 作为参数在字符串上调用它，将字符串与 `Regex` 匹配。
 
-Comments work within a regular expression:
+  The [`match`](https://docs.raku.org/type/Str#method_match) method is analogous to the `m/ /` operator discussed above. Invoking it on a string, with a `Regex` as an argument, matches the string against the `Regex`.
+
+- *分析 grammar： grammar-name.parse($string)*
+
+- *Parsing grammars: grammar-name.parse($string)*
+  
+  虽然解析一个[语法](https://docs.raku.org/language/grammars)不仅涉及到字符串与正则表达式的匹配，这个强大的基于正则表达式的文本解构工具在对常见模式匹配方法的概述中不能忽略。
+
+  Although parsing a [Grammar](https://docs.raku.org/language/grammars) involves more than just matching a string against a regex, this powerful regex-based text destructuring tool can't be left out from this overview of common pattern matching methods.
+
+  如果你觉得你的需求超出了简单正则表达式所能提供的，请查看这个[语法教程](https://docs.raku.org/language/grammar_tutorial)将正则表达式提升到下一个级别。
+
+  If you feel that your needs exceed what simple regexes have to offer, check out this [grammar tutorial](https://docs.raku.org/language/grammar_tutorial) to take regexes to the next level.
+
+
+<a id="%E5%AD%97%E9%9D%A2%E9%87%8F%E4%B8%8E%E5%85%83%E5%AD%97%E7%AC%A6--literals-and-metacharacters"></a>
+# 字面量与元字符 / Literals and metacharacters
+
+正则表达式描述要按文本和元字符匹配的模式。字母数字字符和下划线 `_` 构成这样的文本：这些字符本身匹配，其他字符不匹配。其他字符充当元字符，因此可能有一个特殊的含义，或者单独使用（例如作为通配符的点 `.`），或者与更大元语法结构中的其他字符一起使用（例如 `<?before ...>`，它定义了一个向前看断言）。
+
+A regex describes a pattern to be matched in terms of literals and metacharacters. Alphanumeric characters and the underscore `_` constitute the literals: these characters match themselves and nothing else. Other characters act as metacharacters and may, as such, have a special meaning, either by themselves (such as the dot `.`, which serves as a wildcard) or together with other characters in larger metasyntactic constructs (such as `<?before ...>`, which defines a lookahead assertion).
+
+在最简单的形式中，正则表达式只包含文本：
+
+In its simplest form a regex comprises only literals:
 
 ```Raku
-/ word #`(match lexical "word") / 
+/Cześć/;           # "Hello" in Polish 
+/こんばんは/;        # "Good afternoon" in Japanese 
+/Καλησπέρα/;       # "Good evening" in Greek
 ```
 
-<a id="%E5%AD%97%E9%9D%A2%E9%87%8F--literals"></a>
-# 字面量 / Literals
+如果希望正则表达式逐字匹配一个或多个通常充当元字符的字符，则这些字符必须使用反斜杠转义，或者使用单引号或双引号引起来。
 
-正则最简单的情况是匹配一个字符串字面量：
+If you want a regex to literally match one or more characters that normally act as metacharacters, those characters must either be escaped using a backslash, or be quoted using single or double quotes.
 
-The simplest case for a regex is a match against a string literal:
+反斜杠起到开关的作用。它将单个元字符转换为文本，反之亦然：
+
+The backslash serves as a switch. It switches a single metacharacter into a literal, and vice versa:
 
 ```Raku
-if 'properly' ~~ / perl / {
-    say "'properly' contains 'perl'";
-}
+/ \# /;             # matches the hash metacharacter literally 
+/ \w /;             # turns literal 'w' into a character class (see below) 
+/Hallelujah\!/;     # matches string 'Hallelujah!' incl. exclamation mark
 ```
 
-字母数字和下划线 `_` 按字面值匹配。所有其它字符要么使用反斜线转义(例如, `\:` 匹配一个冒号), 要么用引号引起来:
+即使元字符在 Raku 中还没有特殊的含义，转义（或引用）也需要确保正则表达式编译并按字面匹配字符。这样就可以保持文本和元字符之间的明确区分。因此，例如，为了匹配逗号，这样能生效：
 
-Alphanumeric characters and the underscore `_` are matched literally. All other characters must either be escaped with a backslash (for example, `\:` to match a colon), or be within quotes:
+Even if a metacharacter does not (yet) have a special meaning in Raku, escaping (or quoting) it is required to ensure that the regex compiles and matches the character literally. This allows the clear distinction between literals and metacharacters to be maintained. So, for instance, to match a comma this will work:
 
 ```Raku
-/ 'two words' /;     # 匹配包括空格的 'two words' / matches 'two words' including the blank 
-/ "a:b"       /;     # 匹配包括冒号的 'a:b' / matches 'a:b' including the colon 
-/ '#' /;             # 匹配一个井号 / matches a hash character 
+/ \, /;             # matches a literal comma ','
+```
+
+然而这样会失败：
+
+while this will fail:
+
+```Raku
+/ ,  /;             # !! error: an as-yet meaningless/unrecognized metacharacter 
+                    # does not automatically match literally 
+```
+
+当转义反斜杠对下一个单独的字符起作用时，单个元字符和一系列元字符都可以通过单引号或双引号引起来而变成字面上匹配的字符串：
+
+While an escaping backslash exerts its effect on the next individual character, both a single metacharacter and a sequence of metacharacters may be turned into literally matching strings by quoting them in single or double quotes:
+
+```Raku
+/ "abc" /;          # quoting literals does not make them more literal 
+/ "Hallelujah!" /;  # yet, this form is generally preferred over /Hallelujah\!/ 
+ 
+/ "two words" /;    # quoting a space renders it significant, so this matches 
+                    # the string 'two words' including the intermediate space 
+ 
+/ '#!:@' /;         # this regex matches the string of metacharacters '#!:@'
+```
+
+然而，引用并不是简单地将每个元字符转换为字面意思。这是因为引号允许反斜杠转义和插值。特别是：在单引号中，反斜杠可以用来转义单引号和反斜杠本身；双引号还可以插入变量和 `{...}` 形式的代码块。因此，所有这些可以顺利执行：
+
+Quoting does not simply turn every metacharacter into a literal, however. This is because quotes allow for backslash-escapes and interpolation. Specifically: in single quotes, the backslash may be used to escape single quotes and the backslash itself; double quotes additionally enable the interpolation of variables, and of code blocks of the form `{...}`. Hence all of this works:
+
+```Raku
+/ '\\\'' /;          # matches a backslash followed by a single quote: \' 
+ 
+my $x = 'Hi';
+/ "$x there!" /;     # matches the string 'Hi there!' 
+ 
+/ "1 + 1 = {1+1}" /; # matches the string '1 + 1 = 2'
+```
+
+然而这些示例说明了你希望避免的错误：
+
+while these examples illustrate mistakes that you will want to avoid:
+
+```Raku
+/ '\' /;             # !! error: this is NOT the way to literally match a 
+                     # backslash because now it escapes the second quote 
+ 
+/"Price tag $0.50"/; # !! error: "$0" is interpreted as the first positional 
+                     # capture (which is Nil), not as '$0' 
 ```
 
 字符串是从左往右搜索的, 所以如果只有部分字符串匹配正则表达式也足够:
