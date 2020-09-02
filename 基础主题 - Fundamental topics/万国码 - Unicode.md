@@ -16,20 +16,20 @@ For an overview on MoarVM's internal representation of strings, see the [MoarVM 
 
 <!-- MarkdownTOC -->
 
-- [文件句柄和 I/O Filehandles and I/O](#%E6%96%87%E4%BB%B6%E5%8F%A5%E6%9F%84%E5%92%8C-io-filehandles-and-io)
-    - [规范化 / Normalization](#%E8%A7%84%E8%8C%83%E5%8C%96--normalization)
-    - [UTF8-C8](#utf8-c8)
-- [输入 Unicode 码点和码点序列 / Entering unicode codepoints and codepoint sequences](#%E8%BE%93%E5%85%A5-unicode-%E7%A0%81%E7%82%B9%E5%92%8C%E7%A0%81%E7%82%B9%E5%BA%8F%E5%88%97--entering-unicode-codepoints-and-codepoint-sequences)
-    - [名称别名 / Name aliases](#%E5%90%8D%E7%A7%B0%E5%88%AB%E5%90%8D--name-aliases)
-    - [命名序列 / Named sequences](#%E5%91%BD%E5%90%8D%E5%BA%8F%E5%88%97--named-sequences)
-        - [表情序列 / Emoji sequences](#%E8%A1%A8%E6%83%85%E5%BA%8F%E5%88%97--emoji-sequences)
+- [文件句柄和 I/O Filehandles and I/O](#文件句柄和-io-filehandles-and-io)
+	- [规范化 / Normalization](#规范化--normalization)
+	- [UTF8-C8](#utf8-c8)
+- [输入 Unicode 码点和码点序列 / Entering unicode codepoints and codepoint sequences](#输入-unicode-码点和码点序列--entering-unicode-codepoints-and-codepoint-sequences)
+	- [名称别名 / Name aliases](#名称别名--name-aliases)
+	- [命名序列 / Named sequences](#命名序列--named-sequences)
+		- [表情序列 / Emoji sequences](#表情序列--emoji-sequences)
 
 <!-- /MarkdownTOC -->
 
-<a id="%E6%96%87%E4%BB%B6%E5%8F%A5%E6%9F%84%E5%92%8C-io-filehandles-and-io"></a>
+<a id="文件句柄和-io-filehandles-and-io"></a>
 # 文件句柄和 I/O Filehandles and I/O
 
-<a id="%E8%A7%84%E8%8C%83%E5%8C%96--normalization"></a>
+<a id="规范化--normalization"></a>
 ## 规范化 / Normalization
 
 Raku 默认情况下对所有输入和输出应用规范化，但文件名除外，这些文件名被读和写为 [`UTF8-C8`](https://docs.raku.org/language/unicode#UTF8-C8)；字素作为用户可见的字符形式的图形符号将使用规范化表示形式。例如，可以用两种方式表示字形素 `á`，要么使用一个码点：
@@ -113,7 +113,7 @@ Reading with this type of encoding and encoding them back to UTF8-C8 will give y
 
 Please note that this encoding so far is not supported in the JVM implementation of Rakudo.
 
-<a id="%E8%BE%93%E5%85%A5-unicode-%E7%A0%81%E7%82%B9%E5%92%8C%E7%A0%81%E7%82%B9%E5%BA%8F%E5%88%97--entering-unicode-codepoints-and-codepoint-sequences"></a>
+<a id="输入-unicode-码点和码点序列--entering-unicode-codepoints-and-codepoint-sequences"></a>
 # 输入 Unicode 码点和码点序列 / Entering unicode codepoints and codepoint sequences
 
 你可以按数字(十进制和十六进制)输入 Unicode 码点。例如，名为 "latin capital letter ae with macron" 的字符有十进制码点 482 和十六进制码点 0x1E2：
@@ -160,7 +160,7 @@ say "DIGIT ONE".uniparse;  # OUTPUT: «1␤»
 say uniparse("DIGIT ONE"); # OUTPUT: «1␤»
 ```
 
-<a id="%E5%90%8D%E7%A7%B0%E5%88%AB%E5%90%8D--name-aliases"></a>
+<a id="名称别名--name-aliases"></a>
 ## 名称别名 / Name aliases
 
 名称别名主要用于没有正式名称的码点、缩写或更正（Unicode 名称永不更改）。他们的完整名单见[此处](https://www.unicode.org/Public/UCD/latest/ucd/NameAliases.txt)。
@@ -197,7 +197,7 @@ say "\c[ZWJ]".uniname;  # OUTPUT: «ZERO WIDTH JOINER␤»
 say "\c[NBSP]".uniname; # OUTPUT: «NO-BREAK SPACE␤»
 ```
 
-<a id="%E5%91%BD%E5%90%8D%E5%BA%8F%E5%88%97--named-sequences"></a>
+<a id="命名序列--named-sequences"></a>
 ## 命名序列 / Named sequences
 
 你还可以使用任何[命名序列](https://www.unicode.org/Public/UCD/latest/ucd/NamedSequences.txt)，这些不是单个代码点，而是它们的序列。[从 2017.02 Rakudo 开始]
@@ -209,7 +209,7 @@ say "\c[LATIN CAPITAL LETTER E WITH VERTICAL LINE BELOW AND ACUTE]";      # OUTP
 say "\c[LATIN CAPITAL LETTER E WITH VERTICAL LINE BELOW AND ACUTE]".ords; # OUTPUT: «(201 809)␤»
 ```
 
-<a id="%E8%A1%A8%E6%83%85%E5%BA%8F%E5%88%97--emoji-sequences"></a>
+<a id="表情序列--emoji-sequences"></a>
 ### 表情序列 / Emoji sequences
 
 Raku 支持表情序列。所有这些文件见：[Emoji ZWJ 序列](https://www.unicode.org/Public/emoji/4.0/emoji-zwj-sequences.txt) 和 [Emoji 序列](https://www.unicode.org/Public/emoji/4.0/emoji-sequences.txt)。请注意，任何带有逗号的名称都应该删除它们的逗号，因为 Raku 使用逗号来分隔相同 `\c` 序列中的不同代码点/序列。

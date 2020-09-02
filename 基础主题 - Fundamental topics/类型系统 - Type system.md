@@ -8,62 +8,62 @@ Introduction to the type system of Raku
 
 <!-- MarkdownTOC -->
 
-- [Raku 类型的定义 / Definition of a Raku type](#raku-%E7%B1%BB%E5%9E%8B%E7%9A%84%E5%AE%9A%E4%B9%89--definition-of-a-raku-type)
-    - [默认类型 / Default types](#%E9%BB%98%E8%AE%A4%E7%B1%BB%E5%9E%8B--default-types)
-    - [类型对象 / Type objects](#%E7%B1%BB%E5%9E%8B%E5%AF%B9%E8%B1%A1--type-objects)
-        - [未定义 / Undefinedness](#%E6%9C%AA%E5%AE%9A%E4%B9%89--undefinedness)
-        - [强制类型转换 / Coercion](#%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2--coercion)
-- [类型声明符 / Type declarators](#%E7%B1%BB%E5%9E%8B%E5%A3%B0%E6%98%8E%E7%AC%A6--type-declarators)
+- [Raku 类型的定义 / Definition of a Raku type](#raku-类型的定义--definition-of-a-raku-type)
+    - [默认类型 / Default types](#默认类型--default-types)
+    - [类型对象 / Type objects](#类型对象--type-objects)
+        - [未定义 / Undefinedness](#未定义--undefinedness)
+        - [强制类型转换 / Coercion](#强制类型转换--coercion)
+- [类型声明符 / Type declarators](#类型声明符--type-declarators)
     - [`class`](#class)
-        - [混合类 / Mixins](#%E6%B7%B7%E5%90%88%E7%B1%BB--mixins)
-        - [内省 / Introspection](#%E5%86%85%E7%9C%81--introspection)
-            - [元类 / Metaclass](#%E5%85%83%E7%B1%BB--metaclass)
-        - [私有属性 / Private attributes](#%E7%A7%81%E6%9C%89%E5%B1%9E%E6%80%A7--private-attributes)
-        - [方法 / Methods](#%E6%96%B9%E6%B3%95--methods)
-            - [继承与 multi 方法 / Inheritance and multis](#%E7%BB%A7%E6%89%BF%E4%B8%8E-multi-%E6%96%B9%E6%B3%95--inheritance-and-multis)
-            - [Only 方法 / Only method](#only-%E6%96%B9%E6%B3%95--only-method)
-            - [BUILD 子方法 / submethod BUILD](#build-%E5%AD%90%E6%96%B9%E6%B3%95--submethod-build)
-            - [FALLBACK 方法 / Fallback method](#fallback-%E6%96%B9%E6%B3%95--fallback-method)
-            - [保留方法名 / Reserved method names](#%E4%BF%9D%E7%95%99%E6%96%B9%E6%B3%95%E5%90%8D--reserved-method-names)
-            - [包作用域里的方法 / Methods in package scope](#%E5%8C%85%E4%BD%9C%E7%94%A8%E5%9F%9F%E9%87%8C%E7%9A%84%E6%96%B9%E6%B3%95--methods-in-package-scope)
-            - [使用同名变量和方法设置属性 / Setting attributes with namesake variables and methods](#%E4%BD%BF%E7%94%A8%E5%90%8C%E5%90%8D%E5%8F%98%E9%87%8F%E5%92%8C%E6%96%B9%E6%B3%95%E8%AE%BE%E7%BD%AE%E5%B1%9E%E6%80%A7--setting-attributes-with-namesake-variables-and-methods)
-        - [`is nodal` 特性 / trait `is nodal`](#is-nodal-%E7%89%B9%E6%80%A7--trait-is-nodal)
-        - [`handles` 特性 / trait `handles`](#handles-%E7%89%B9%E6%80%A7--trait-handles)
-        - [`is` 特性 / trait `is`](#is-%E7%89%B9%E6%80%A7--trait-is)
-        - [`is rw` 特性 / trait `is rw`](#is-rw-%E7%89%B9%E6%80%A7--trait-is-rw)
-        - [`is required` 特性 / trait `is required`](#is-required-%E7%89%B9%E6%80%A7--trait-is-required)
-        - [`hides` 特性 / trait `hides`](#hides-%E7%89%B9%E6%80%A7--trait-hides)
-        - [`trusts` 特性 / trait `trusts`](#trusts-%E7%89%B9%E6%80%A7--trait-trusts)
-        - [扩充类 / Augmenting a class](#%E6%89%A9%E5%85%85%E7%B1%BB--augmenting-a-class)
-        - [版本控制和作者 / Versioning and authorship](#%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%E5%92%8C%E4%BD%9C%E8%80%85--versioning-and-authorship)
+        - [混合类 / Mixins](#混合类--mixins)
+        - [内省 / Introspection](#内省--introspection)
+            - [元类 / Metaclass](#元类--metaclass)
+        - [私有属性 / Private attributes](#私有属性--private-attributes)
+        - [方法 / Methods](#方法--methods)
+            - [继承与 multi 方法 / Inheritance and multis](#继承与-multi-方法--inheritance-and-multis)
+            - [Only 方法 / Only method](#only-方法--only-method)
+            - [BUILD 子方法 / submethod BUILD](#build-子方法--submethod-build)
+            - [FALLBACK 方法 / Fallback method](#fallback-方法--fallback-method)
+            - [保留方法名 / Reserved method names](#保留方法名--reserved-method-names)
+            - [包作用域里的方法 / Methods in package scope](#包作用域里的方法--methods-in-package-scope)
+            - [使用同名变量和方法设置属性 / Setting attributes with namesake variables and methods](#使用同名变量和方法设置属性--setting-attributes-with-namesake-variables-and-methods)
+        - [`is nodal` 特性 / trait `is nodal`](#is-nodal-特性--trait-is-nodal)
+        - [`handles` 特性 / trait `handles`](#handles-特性--trait-handles)
+        - [`is` 特性 / trait `is`](#is-特性--trait-is)
+        - [`is rw` 特性 / trait `is rw`](#is-rw-特性--trait-is-rw)
+        - [`is required` 特性 / trait `is required`](#is-required-特性--trait-is-required)
+        - [`hides` 特性 / trait `hides`](#hides-特性--trait-hides)
+        - [`trusts` 特性 / trait `trusts`](#trusts-特性--trait-trusts)
+        - [扩充类 / Augmenting a class](#扩充类--augmenting-a-class)
+        - [版本控制和作者 / Versioning and authorship](#版本控制和作者--versioning-and-authorship)
     - [`role`](#role)
-        - [自动双关 / Auto-punning](#%E8%87%AA%E5%8A%A8%E5%8F%8C%E5%85%B3--auto-punning)
-        - [`does` 特性 / trait `does`](#does-%E7%89%B9%E6%80%A7--trait-does)
-        - [参数化 / Parameterized](#%E5%8F%82%E6%95%B0%E5%8C%96--parameterized)
-        - [作为类型约束 / As type constraints](#%E4%BD%9C%E4%B8%BA%E7%B1%BB%E5%9E%8B%E7%BA%A6%E6%9D%9F--as-type-constraints)
-        - [版本控制和作者 / Versioning and authorship](#%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%E5%92%8C%E4%BD%9C%E8%80%85--versioning-and-authorship-1)
+        - [自动双关 / Auto-punning](#自动双关--auto-punning)
+        - [`does` 特性 / trait `does`](#does-特性--trait-does)
+        - [参数化 / Parameterized](#参数化--parameterized)
+        - [作为类型约束 / As type constraints](#作为类型约束--as-type-constraints)
+        - [版本控制和作者 / Versioning and authorship](#版本控制和作者--versioning-and-authorship-1)
     - [`enum`](#enum)
-        - [元类 / Metaclass](#%E5%85%83%E7%B1%BB--metaclass-1)
-        - [方法 / Methods](#%E6%96%B9%E6%B3%95--methods-1)
-            - [enums 方法 / method enums](#enums-%E6%96%B9%E6%B3%95--method-enums)
-        - [强制类型转换 / Coercion](#%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2--coercion-1)
+        - [元类 / Metaclass](#元类--metaclass-1)
+        - [方法 / Methods](#方法--methods-1)
+            - [enums 方法 / method enums](#enums-方法--method-enums)
+        - [强制类型转换 / Coercion](#强制类型转换--coercion-1)
     - [`module`](#module)
-        - [版本控制和作者 / Versioning and authorship](#%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%E5%92%8C%E4%BD%9C%E8%80%85--versioning-and-authorship-2)
+        - [版本控制和作者 / Versioning and authorship](#版本控制和作者--versioning-and-authorship-2)
     - [`package`](#package)
     - [`grammar`](#grammar)
-        - [版本控制和作者 / Versioning and authorship](#%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%E5%92%8C%E4%BD%9C%E8%80%85--versioning-and-authorship-3)
+        - [版本控制和作者 / Versioning and authorship](#版本控制和作者--versioning-and-authorship-3)
     - [`subset`](#subset)
 
 <!-- /MarkdownTOC -->
 
-<a id="raku-%E7%B1%BB%E5%9E%8B%E7%9A%84%E5%AE%9A%E4%B9%89--definition-of-a-raku-type"></a>
+<a id="raku-类型的定义--definition-of-a-raku-type"></a>
 # Raku 类型的定义 / Definition of a Raku type
 
 类型通过创建一个类型对象来定义一个新对象，该对象提供一个接口来创建对象的实例或检查值。任何类型的对象都是 [Any](https://docs.raku.org/type/Any) 或 [Mu](https://docs.raku.org/type/Mu) 的子类。自省方法是通过继承这些基类和内省后缀 [.^](https://docs.raku.org/language/operators#postfix_.^) 提供的。以下类型的声明器在编译时或在运行时使用[元对象协议](https://docs.raku.org/language/mop)将新类型引入当前范围。所有类型名称在其作用域中必须是唯一的。
 
 A type defines a new object by creating a type object that provides an interface to create instances of objects or to check values against. Any type object is a subclass of [Any](https://docs.raku.org/type/Any) or [Mu](https://docs.raku.org/type/Mu). Introspection methods are provided via inheritance from those base classes and the introspection postfix [.^](https://docs.raku.org/language/operators#postfix_.^). A new type is introduced to the current scope by one of the following type declarators at compile time or with the [metaobject protocol](https://docs.raku.org/language/mop) at runtime. All type names must be unique in their scope.
 
-<a id="%E9%BB%98%E8%AE%A4%E7%B1%BB%E5%9E%8B--default-types"></a>
+<a id="默认类型--default-types"></a>
 ## 默认类型 / Default types
 
 如果用户没有提供任何类型，Raku 假设类型为 `Any`。这包括[容器](https://docs.raku.org/language/containers)、基类、[参数](https://docs.raku.org/type/Signature#Type_constraints)和返回类型。
@@ -85,7 +85,7 @@ say C.^parents(:all);
 
 For containers the default type is `Any` but the default type constraint is `Mu`. Please note that binding replaces the container, not just the value. The type constraint may change in this case.
 
-<a id="%E7%B1%BB%E5%9E%8B%E5%AF%B9%E8%B1%A1--type-objects"></a>
+<a id="类型对象--type-objects"></a>
 ## 类型对象 / Type objects
 
 要测试对象是否为类型对象，请使用[智能匹配](https://docs.raku.org/language/operators#index-entry-smartmatch_operator)[类型笑脸符](https://docs.raku.org/type/Signature#Constraining_defined_and_undefined_values)约束的类型或使用 [`.DEFINITE`](https://docs.raku.org/language/mop#index-entry-syntax_DEFINITE-DEFINITE) 方法：
@@ -104,7 +104,7 @@ say not $a.DEFINITE;
 
 `.DEFINITE` will return `True` if the invocant is an instance. If it returns `False`, then the invocant is a type object.
 
-<a id="%E6%9C%AA%E5%AE%9A%E4%B9%89--undefinedness"></a>
+<a id="未定义--undefinedness"></a>
 ### 未定义 / Undefinedness
 
 未定义对象在 Raku 中维护类型信息。类型对象用于表示未定义和未定义值的类型。若要提供通用的未定义值，请使用 [Any](https://docs.raku.org/type/Any)。如果与 `Any`（容器和参数的默认类型）不同，则需要使用 [Mu](https://docs.raku.org/type/Mu)。
@@ -129,7 +129,7 @@ say $i // "undefined";
 
 To test for definedness call `.defined`, use [//](https://docs.raku.org/language/operators#infix_//), [with/without](https://docs.raku.org/language/control#with,_orwith,_without) and [signatures](https://docs.raku.org/type/Signature#Constraining_defined_and_undefined_values).
 
-<a id="%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2--coercion"></a>
+<a id="强制类型转换--coercion"></a>
 ### 强制类型转换 / Coercion
 
 将一种类型转换为另一种类型是使用与目标类型具有相同名称的强制类型转换方法完成的。这个约定是由 [Signatures](https://docs.raku.org/type/Signature#Coercion_type) 强制执行的。源类型必须知道如何将自身转换为目标类型。为了允许内置类型将自身转换为用户定义的类型，可以使用 [augment](https://docs.raku.org/language/variables#The_augment_declarator) 或 [MOP](https://docs.raku.org/language/mop)。
@@ -165,7 +165,7 @@ say <a b c d>.starts-with("ab");
 # OUTPUT: «False␤»
 ```
 
-<a id="%E7%B1%BB%E5%9E%8B%E5%A3%B0%E6%98%8E%E7%AC%A6--type-declarators"></a>
+<a id="类型声明符--type-declarators"></a>
 # 类型声明符 / Type declarators
 
 类型声明器将新类型引入给定范围。嵌套作用域可以用 `::` 分隔。如果尚未存在此类范围，则会自动创建新 [package](https://docs.raku.org/language/packages)。
@@ -199,7 +199,7 @@ The `class` declarator creates a compile time construct that is compiled into a 
 
 For more information how to use classes see the [Classes and objects](https://docs.raku.org/language/classtut) tutorial.
 
-<a id="%E6%B7%B7%E5%90%88%E7%B1%BB--mixins"></a>
+<a id="混合类--mixins"></a>
 ### 混合类 / Mixins
 
 类引入的类型可以在运行时用 [infix:](https://docs.raku.org/language/operators#infix_but) 进行扩展。原始类型不被修改，而是返回一个新类型对象，并且可以存储在一个容器中，该容器可以根据原始类型或混合的角色成功地检查类型。
@@ -216,10 +216,10 @@ say [$A ~~ R, $a1 ~~ R];
 # OUTPUT: «oi‽␤[True True]␤»
 ```
 
-<a id="%E5%86%85%E7%9C%81--introspection"></a>
+<a id="内省--introspection"></a>
 ### 内省 / Introspection
 
-<a id="%E5%85%83%E7%B1%BB--metaclass"></a>
+<a id="元类--metaclass"></a>
 #### 元类 / Metaclass
 
 若要测试给定类型对象是否为类，请针对 [Metamodel::ClassHOW](https://docs.raku.org/type/Metamodel::ClassHOW) 测试元对象方法 `.HOW`。
@@ -232,7 +232,7 @@ say C.HOW ~~ Metamodel::ClassHOW;
 # OUTPUT: «True␤»
 ```
 
-<a id="%E7%A7%81%E6%9C%89%E5%B1%9E%E6%80%A7--private-attributes"></a>
+<a id="私有属性--private-attributes"></a>
 ### 私有属性 / Private attributes
 
 私有的[属性](https：/docs.raku.org/type/properties)的地址是使用任意一标记 `$!`、`@!` 和 `%!`。它们没有自动生成的公共访问器方法。因此，它们不能在定义在其中的类之外被更改。
@@ -249,14 +249,14 @@ say (.name, .package, .has_accessor) for C.new.^attributes;
 # OUTPUT: «($!priv (C) False)␤»
 ```
 
-<a id="%E6%96%B9%E6%B3%95--methods"></a>
+<a id="方法--methods"></a>
 ### 方法 / Methods
 
 `method` 声明器定义类型为 [Method](https://docs.raku.org/type/Method) 的对象并将它们绑定到类的作用域中提供的名称。默认情况下，类中的方法是 `has` 作用域。默认情况下，不将 `our` 作用域的方法添加到方法缓存中，因此不能使用访问器 `$.` 调用。用其完全限定的名称和调用者作为第一个参数来调用它们。
 
 The `method` declarator defines objects of type [Method](https://docs.raku.org/type/Method) and binds them to the provided name in the scope of a class. Methods in a class are `has` scoped by default. Methods that are `our` scoped are not added to the method cache by default and as such can not be called with the accessor sigil `$.`. Call them with their fully qualified name and the invocant as the first argument.
 
-<a id="%E7%BB%A7%E6%89%BF%E4%B8%8E-multi-%E6%96%B9%E6%B3%95--inheritance-and-multis"></a>
+<a id="继承与-multi-方法--inheritance-and-multis"></a>
 #### 继承与 multi 方法 / Inheritance and multis
 
 子类中的正常方法不与父类的 multi 方法竞争。
@@ -278,7 +278,7 @@ B.new.m($i);
 # OUTPUT: «B::Int␤»
 ```
 
-<a id="only-%E6%96%B9%E6%B3%95--only-method"></a>
+<a id="only-方法--only-method"></a>
 #### Only 方法 / Only method
 
 要显式声明一个方法不是 multi 方法，请使用 `only` 方法声明器。
@@ -293,7 +293,7 @@ class C {
 # OUTPUT: «X::Comp::AdHoc: Cannot have a multi candidate for 'm' when an only method is also in the package 'C'␤»
 ```
 
-<a id="build-%E5%AD%90%E6%96%B9%E6%B3%95--submethod-build"></a>
+<a id="build-子方法--submethod-build"></a>
 #### BUILD 子方法 / submethod BUILD
 
 [submethod](https://docs.raku.org/type/Submethod)  `BUILD` 被 [.bless](https://docs.raku.org/type/Mu#method_bless) 间接调用。它的目的是设置类的私有和公共属性，并接收传递给 `.bless` 的所有名称属性。在 `Mu` 中定义的默认构造函数 [.new](https://docs.raku.org/type/Mu#method_new) 是调用它的方法。鉴于 `BUILD` 中没有公共访问器方法，你必须使用私有属性表示法。
@@ -316,7 +316,7 @@ C.new.say; C.new('answer').say;
 #          C.new(attr => "answer")␤»
 ```
 
-<a id="fallback-%E6%96%B9%E6%B3%95--fallback-method"></a>
+<a id="fallback-方法--fallback-method"></a>
 #### FALLBACK 方法 / Fallback method 
 
 当解析名称的其他方法不产生任何结果时，将调用具有特殊名称 `FALLBACK` 的方法。第一个参数保存名称，以下所有参数都是从原始调用中转发的。支持多方法和[子签名](https://docs.raku.org/type/Signature#Destructuring_arguments)。
@@ -334,7 +334,7 @@ Magic.new.simsalabim(42, "answer");
 # OUTPUT: «simsalabim called with parameters ⌈\(42, "answer")⌋␤»
 ```
 
-<a id="%E4%BF%9D%E7%95%99%E6%96%B9%E6%B3%95%E5%90%8D--reserved-method-names"></a>
+<a id="保留方法名--reserved-method-names"></a>
 #### 保留方法名 / Reserved method names
 
 一些内置的内省方法实际上是编译器提供的特殊语法，即 `WHAT`、`WHO`、`HOW` 和 `VAR`。用这些名称声明方法将无声地失败。可以动态调用，允许从外部对象调用方法。
@@ -350,7 +350,7 @@ say A.new.WHAT;    # OUTPUT: «(A)␤»
 say A.new."WHAT"() # OUTPUT: «ain't gonna happen␤»
 ```
 
-<a id="%E5%8C%85%E4%BD%9C%E7%94%A8%E5%9F%9F%E9%87%8C%E7%9A%84%E6%96%B9%E6%B3%95--methods-in-package-scope"></a>
+<a id="包作用域里的方法--methods-in-package-scope"></a>
 #### 包作用域里的方法 / Methods in package scope
 
 在类的包作用域内，任何 `our` 作用域方法都是可见的。
@@ -366,7 +366,7 @@ say C::.keys
 # OUTPUT: «(&packaged)␤»
 ```
 
-<a id="%E4%BD%BF%E7%94%A8%E5%90%8C%E5%90%8D%E5%8F%98%E9%87%8F%E5%92%8C%E6%96%B9%E6%B3%95%E8%AE%BE%E7%BD%AE%E5%B1%9E%E6%80%A7--setting-attributes-with-namesake-variables-and-methods"></a>
+<a id="使用同名变量和方法设置属性--setting-attributes-with-namesake-variables-and-methods"></a>
 #### 使用同名变量和方法设置属性 / Setting attributes with namesake variables and methods
 
 要设置属性时用的变量（或者方法调用）与要设置的属性同名时，除了用 `attr => $attr` 或者 `:attr($attr)` 之外，可以这样简写：
@@ -388,7 +388,7 @@ say $a.i; # OUTPUT: «answer␤»
 
 Since `$.i` method call is named `i` and the attribute is also named `i`, Raku lets us shortcut. The same applies to `:$var`, `:$!private-attribute`, `:&attr-with-code-in-it`, and so on.
 
-<a id="is-nodal-%E7%89%B9%E6%80%A7--trait-is-nodal"></a>
+<a id="is-nodal-特性--trait-is-nodal"></a>
 ### `is nodal` 特性 / trait `is nodal`
 
 标记一个 [List](https://docs.raku.org/type/List) 方法，以指示超级运算符不要下降到内部 [Iterables](https://docs.raku.org/type/Iterable) 来调用此方法。这种特性通常不是最终用户会使用的特性，除非他们正在子类化或增强核心[List](https://docs.raku.org/type/List)类型。
@@ -404,7 +404,7 @@ say ((1.0, "2", 3e0), [^4], '5')».elems; # OUTPUT: «(3, 4, 1)␤»
 say ((1.0, "2", 3e0), [^4], '5')».Int    # OUTPUT: «((1 2 3) [0 1 2 3] 5)␤»
 ```
 
-<a id="handles-%E7%89%B9%E6%80%A7--trait-handles"></a>
+<a id="handles-特性--trait-handles"></a>
 ### `handles` 特性 / trait `handles`
 
 定义为：
@@ -455,7 +455,7 @@ class E {
 E.new.em1;
 ```
 
-<a id="is-%E7%89%B9%E6%80%A7--trait-is"></a>
+<a id="is-特性--trait-is"></a>
 ### `is` 特性 / trait `is`
 
 定义为：
@@ -491,7 +491,7 @@ say C.new.from-a();
 # OUTPUT: «A::from-a␤»
 ```
 
-<a id="is-rw-%E7%89%B9%E6%80%A7--trait-is-rw"></a>
+<a id="is-rw-特性--trait-is-rw"></a>
 ### `is rw` 特性 / trait `is rw`
 
 定义为：
@@ -514,7 +514,7 @@ my $c = C.new.a = 42;
 say $c; # OUTPUT: «42␤»
 ```
 
-<a id="is-required-%E7%89%B9%E6%80%A7--trait-is-required"></a>
+<a id="is-required-特性--trait-is-required"></a>
 ### `is required` 特性 / trait `is required`
 
 定义为：
@@ -558,7 +558,7 @@ say Correct.new();
 # OUTPUT: «The attribute '$!attr' is required because it's so cool,␤but you did not provide a value for it.␤»
 ```
 
-<a id="hides-%E7%89%B9%E6%80%A7--trait-hides"></a>
+<a id="hides-特性--trait-hides"></a>
 ### `hides` 特性 / trait `hides`
 
 `hides` 特性提供继承，而不受[重新调度](https://docs.raku.org/language/functions#Re-dispatching) 的约束。
@@ -597,7 +597,7 @@ B.new.n;
 # OUTPUT: «i am hidden␤»
 ```
 
-<a id="trusts-%E7%89%B9%E6%80%A7--trait-trusts"></a>
+<a id="trusts-特性--trait-trusts"></a>
 ### `trusts` 特性 / trait `trusts`
 
 要允许一个类访问另一个类的私有方法，请使用 `trusts` 这一特性。可能需要可信类的前向声明。
@@ -620,7 +620,7 @@ say B.new.change;
 # OUTPUT: «B.new(a => A.new(foo => 42))␤»
 ```
 
-<a id="%E6%89%A9%E5%85%85%E7%B1%BB--augmenting-a-class"></a>
+<a id="扩充类--augmenting-a-class"></a>
 ### 扩充类 / Augmenting a class
 
 要在编译时将方法和属性添加到类中，请在类定义片段前面使用 `augment`。编译器将在同一范围的早期要求使用指令 `use MONKEY-TYPING` 或 `use MONKEY`。请注意，这可能会对性能产生影响。
@@ -643,7 +643,7 @@ say $s.mark
 
 There are few limitations of what can be done inside the class fragment. One of them is the redeclaration of a method or sub into a multi. Using added attributes is not yet implemented. Please note that adding a multi candidate that differs only in its named parameters will add that candidate behind the already defined one and as such it won't be picked by the dispatcher.
 
-<a id="%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%E5%92%8C%E4%BD%9C%E8%80%85--versioning-and-authorship"></a>
+<a id="版本控制和作者--versioning-and-authorship"></a>
 ### 版本控制和作者 / Versioning and authorship
 
 版本控制和作者可以通过副词 `:ver<>` 和 `:auth<>` 指定。两者都使用一个字符串作为参数，因为 `:ver` 字符串被转换为一个 [Version](https://docs.raku.org/type/Version) 对象。若要查询类的版本和作者使用 `.^ver` 和 `^.auth`。
@@ -690,7 +690,7 @@ CATCH { default { say .^name, ' ', .Str } }
 # OUTPUT: «X::Comp::AdHoc Method 'overload-this' must be implemented by A because it is required by roles: R.␤»
 ```
 
-<a id="%E8%87%AA%E5%8A%A8%E5%8F%8C%E5%85%B3--auto-punning"></a>
+<a id="自动双关--auto-punning"></a>
 ### 自动双关 / Auto-punning
 
 可以使用角色而不是类来创建对象。由于角色不能存在于运行时，因此创建了一个名称相同的类，该类对角色的类型智能匹配返回真。
@@ -707,7 +707,7 @@ say R.new ~~ R;
 # OUTPUT: «True␤»
 ```
 
-<a id="does-%E7%89%B9%E6%80%A7--trait-does"></a>
+<a id="does-特性--trait-does"></a>
 ### `does` 特性 / trait `does`
 
 `does` 特性可应用于提供编译时混合的角色和类。若要引用尚未定义的角色，请使用前向声明。具有混合角色的类的类型名称不反映混入，但是类型检查反映。如果方法在多个混合角色中提供，则首先定义的方法优先。可以提供用逗号分隔的角色列表。在这种情况下，冲突将在编译时报告。
@@ -728,7 +728,7 @@ say [C ~~ R1, C ~~ R2];
 
 For runtime mixins see [but](https://docs.raku.org/language/operators#infix_but) and [does](https://docs.raku.org/language/operators#infix_does).
 
-<a id="%E5%8F%82%E6%95%B0%E5%8C%96--parameterized"></a>
+<a id="参数化--parameterized"></a>
 ### 参数化 / Parameterized
 
 角色的参数可以在角色名称后面 `[]` 之间提供。支持[类型捕获](https://docs.raku.org/type/Signature#Type_captures)。
@@ -767,7 +767,7 @@ CATCH { default { say .^name, ': ', .Str} }
 # OUTPUT: «X::AdHoc: Could not instantiate role 'R':␤Please provide a parameter to role R␤»
 ```
 
-<a id="%E4%BD%9C%E4%B8%BA%E7%B1%BB%E5%9E%8B%E7%BA%A6%E6%9D%9F--as-type-constraints"></a>
+<a id="作为类型约束--as-type-constraints"></a>
 ### 作为类型约束 / As type constraints
 
 角色可以用作类型约束，只要需要的是类型。如果一个角色与 `does` 或 `but` 混合，则将其类型对象添加到所述对象的类型对象列表中。如果使用角色代替类(使用自动双关)，则自动生成的类的类型对象(与角色同名)将被添加到继承链中。
@@ -810,7 +810,7 @@ say [(75kg).^name, N(75kg).^name];
 # OUTPUT: «[Int+{SI-kilogram} Rat+{SI-Newton}]␤»
 ```
 
-<a id="%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%E5%92%8C%E4%BD%9C%E8%80%85--versioning-and-authorship-1"></a>
+<a id="版本控制和作者--versioning-and-authorship-1"></a>
 ### 版本控制和作者 / Versioning and authorship
 
 版本控制和作者可以通过副词 `:ver<>` 和 `:auth<>` 指定。两者都使用一个字符串作为参数，因为 `:ver` 字符串被转换为一个 [Version](https://docs.raku.org/type/Version) 对象。若要查询类的版本和作者使用 `.^ver` 和 `^.auth`。
@@ -974,7 +974,7 @@ We can create an enum using it with this code:
 
 Firstly, we read lines from `config` file, split every line using `words` method and return resulting pair for every line, thus creating a List of Pairs.
 
-<a id="%E5%85%83%E7%B1%BB--metaclass-1"></a>
+<a id="元类--metaclass-1"></a>
 ### 元类 / Metaclass
 
 若要测试给定类型对象是否为 `enum`，请用元对象方法 `.HOW` 正则匹配 [Metamodel::EnumHOW](https://docs.raku.org/type/Metamodel::EnumHOW) 或简单地正则匹配 `Enumeration` 角色。
@@ -987,10 +987,10 @@ say E.HOW ~~ Metamodel::EnumHOW; # OUTPUT: «True␤»
 say E ~~ Enumeration;            # OUTPUT: «True␤»
 ```
 
-<a id="%E6%96%B9%E6%B3%95--methods-1"></a>
+<a id="方法--methods-1"></a>
 ### 方法 / Methods
 
-<a id="enums-%E6%96%B9%E6%B3%95--method-enums"></a>
+<a id="enums-方法--method-enums"></a>
 #### enums 方法 / method enums
 
 定义为：
@@ -1010,7 +1010,7 @@ enum Mass ( mg => 1/1000, g => 1/1, kg => 1000/1 );
 say Mass.enums; # OUTPUT: «{g => 1, kg => 1000, mg => 0.001}␤»
 ```
 
-<a id="%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2--coercion-1"></a>
+<a id="强制类型转换--coercion-1"></a>
 ### 强制类型转换 / Coercion
 
 如果要将枚举元素的值强制类型转换到其适当的枚举对象，请使用具有枚举名称的强制类型转换器：
@@ -1038,7 +1038,7 @@ Modules are usually one or more source files that expose Raku constructs, such a
 
 For a full explanation see [Modules](https://docs.raku.org/language/modules).
 
-<a id="%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%E5%92%8C%E4%BD%9C%E8%80%85--versioning-and-authorship-2"></a>
+<a id="版本控制和作者--versioning-and-authorship-2"></a>
 ### 版本控制和作者 / Versioning and authorship
 
 版本控制和作者可以通过副词 `:ver<>` 和 `:auth<>` 指定。两者都使用一个字符串作为参数，因为 `:ver` 字符串被转换为一个 [Version](https://docs.raku.org/type/Version) 对象。若要查询类的版本和作者使用 `.^ver` 和 `^.auth`。
@@ -1073,7 +1073,7 @@ Grammars are a specific type of class intended for parsing text. Grammars are co
 
 For a full explanation see [Grammars](https://docs.raku.org/language/grammars).
 
-<a id="%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%E5%92%8C%E4%BD%9C%E8%80%85--versioning-and-authorship-3"></a>
+<a id="版本控制和作者--versioning-and-authorship-3"></a>
 ### 版本控制和作者 / Versioning and authorship
 
 版本控制和作者可以通过副词 `:ver<>` 和 `:auth<>` 指定。两者都使用一个字符串作为参数，因为 `:ver` 字符串被转换为一个 [Version](https://docs.raku.org/type/Version) 对象。若要查询类的版本和作者使用 `.^ver` 和 `^.auth`。

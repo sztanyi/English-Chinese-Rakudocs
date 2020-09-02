@@ -8,45 +8,45 @@ Call into dynamic libraries that follow the C calling convention
 
 <!-- MarkdownTOC -->
 
-- [开始 / Getting started](#%E5%BC%80%E5%A7%8B--getting-started)
-- [更名 / Changing names](#%E6%9B%B4%E5%90%8D--changing-names)
-- [传递和返回值 / Passing and returning values](#%E4%BC%A0%E9%80%92%E5%92%8C%E8%BF%94%E5%9B%9E%E5%80%BC--passing-and-returning-values)
-- [详细说明原生表示 / Specifying the native representation](#%E8%AF%A6%E7%BB%86%E8%AF%B4%E6%98%8E%E5%8E%9F%E7%94%9F%E8%A1%A8%E7%A4%BA--specifying-the-native-representation)
-- [指针的基本使用 / Basic use of pointers](#%E6%8C%87%E9%92%88%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8--basic-use-of-pointers)
-- [函数指针 / Function pointers](#%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88--function-pointers)
-- [数组 / Arrays](#%E6%95%B0%E7%BB%84--arrays)
-    - [CArray 方法 / CArray methods](#carray-%E6%96%B9%E6%B3%95--carray-methods)
-- [结构体 / Structs](#%E7%BB%93%E6%9E%84%E4%BD%93--structs)
+- [开始 / Getting started](#开始--getting-started)
+- [更名 / Changing names](#更名--changing-names)
+- [传递和返回值 / Passing and returning values](#传递和返回值--passing-and-returning-values)
+- [详细说明原生表示 / Specifying the native representation](#详细说明原生表示--specifying-the-native-representation)
+- [指针的基本使用 / Basic use of pointers](#指针的基本使用--basic-use-of-pointers)
+- [函数指针 / Function pointers](#函数指针--function-pointers)
+- [数组 / Arrays](#数组--arrays)
+    - [CArray 方法 / CArray methods](#carray-方法--carray-methods)
+- [结构体 / Structs](#结构体--structs)
     - [CUnions](#cunions)
-    - [嵌入 CStruct 和 CUnion / Embedding CStructs and CUnions](#%E5%B5%8C%E5%85%A5-cstruct-%E5%92%8C-cunion--embedding-cstructs-and-cunions)
-    - [内存管理注意事项 / Notes on memory management](#%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9--notes-on-memory-management)
-        - [在你的 Raku 代码中 / In your Raku code...](#%E5%9C%A8%E4%BD%A0%E7%9A%84-raku-%E4%BB%A3%E7%A0%81%E4%B8%AD--in-your-raku-code)
-        - [在你的 C 代码中 / In your C code...](#%E5%9C%A8%E4%BD%A0%E7%9A%84-c-%E4%BB%A3%E7%A0%81%E4%B8%AD--in-your-c-code)
-- [类型化指针 / Typed pointers](#%E7%B1%BB%E5%9E%8B%E5%8C%96%E6%8C%87%E9%92%88--typed-pointers)
-- [字符串 / Strings](#%E5%AD%97%E7%AC%A6%E4%B8%B2--strings)
-    - [显式内存管理 / Explicit memory management](#%E6%98%BE%E5%BC%8F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86--explicit-memory-management)
-    - [缓冲区和二进制大对象 / Buffers and blobs](#%E7%BC%93%E5%86%B2%E5%8C%BA%E5%92%8C%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%A4%A7%E5%AF%B9%E8%B1%A1--buffers-and-blobs)
-- [函数参数 / Function arguments](#%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0--function-arguments)
-- [库路径和名称 / Library paths and names](#%E5%BA%93%E8%B7%AF%E5%BE%84%E5%92%8C%E5%90%8D%E7%A7%B0--library-paths-and-names)
-    - [ABI/API 版本 - ABI/API version](#abiapi-%E7%89%88%E6%9C%AC---abiapi-version)
-    - [例程 / Routine](#%E4%BE%8B%E7%A8%8B--routine)
-    - [调用标准库 / Calling into the standard library](#%E8%B0%83%E7%94%A8%E6%A0%87%E5%87%86%E5%BA%93--calling-into-the-standard-library)
-- [导出的变量 / Exported variables](#%E5%AF%BC%E5%87%BA%E7%9A%84%E5%8F%98%E9%87%8F--exported-variables)
-- [C++ 支持 / C++ support](#c-%E6%94%AF%E6%8C%81--c-support)
-- [帮助程序函数 / Helper functions](#%E5%B8%AE%E5%8A%A9%E7%A8%8B%E5%BA%8F%E5%87%BD%E6%95%B0--helper-functions)
-    - [nativecast 子例程 / sub nativecast](#nativecast-%E5%AD%90%E4%BE%8B%E7%A8%8B--sub-nativecast)
-    - [cglobal 子例程 / sub cglobal](#cglobal-%E5%AD%90%E4%BE%8B%E7%A8%8B--sub-cglobal)
-    - [nativesizeof 子例程 / sub nativesizeof](#nativesizeof-%E5%AD%90%E4%BE%8B%E7%A8%8B--sub-nativesizeof)
-    - [explicitly-manage 子例程 / sub explicitly-manage](#explicitly-manage-%E5%AD%90%E4%BE%8B%E7%A8%8B--sub-explicitly-manage)
-- [例子 / Examples](#%E4%BE%8B%E5%AD%90--examples)
+    - [嵌入 CStruct 和 CUnion / Embedding CStructs and CUnions](#嵌入-cstruct-和-cunion--embedding-cstructs-and-cunions)
+    - [内存管理注意事项 / Notes on memory management](#内存管理注意事项--notes-on-memory-management)
+        - [在你的 Raku 代码中 / In your Raku code...](#在你的-raku-代码中--in-your-raku-code)
+        - [在你的 C 代码中 / In your C code...](#在你的-c-代码中--in-your-c-code)
+- [类型化指针 / Typed pointers](#类型化指针--typed-pointers)
+- [字符串 / Strings](#字符串--strings)
+    - [显式内存管理 / Explicit memory management](#显式内存管理--explicit-memory-management)
+    - [缓冲区和二进制大对象 / Buffers and blobs](#缓冲区和二进制大对象--buffers-and-blobs)
+- [函数参数 / Function arguments](#函数参数--function-arguments)
+- [库路径和名称 / Library paths and names](#库路径和名称--library-paths-and-names)
+    - [ABI/API 版本 - ABI/API version](#abiapi-版本---abiapi-version)
+    - [例程 / Routine](#例程--routine)
+    - [调用标准库 / Calling into the standard library](#调用标准库--calling-into-the-standard-library)
+- [导出的变量 / Exported variables](#导出的变量--exported-variables)
+- [C++ 支持 / C++ support](#c-支持--c-support)
+- [帮助程序函数 / Helper functions](#帮助程序函数--helper-functions)
+    - [nativecast 子例程 / sub nativecast](#nativecast-子例程--sub-nativecast)
+    - [cglobal 子例程 / sub cglobal](#cglobal-子例程--sub-cglobal)
+    - [nativesizeof 子例程 / sub nativesizeof](#nativesizeof-子例程--sub-nativesizeof)
+    - [explicitly-manage 子例程 / sub explicitly-manage](#explicitly-manage-子例程--sub-explicitly-manage)
+- [例子 / Examples](#例子--examples)
     - [PostgreSQL](#postgresql)
     - [MySQL](#mysql)
-    - [微软 Windows 系统 / Microsoft Windows](#%E5%BE%AE%E8%BD%AF-windows-%E7%B3%BB%E7%BB%9F--microsoft-windows)
-    - [调用 C 函数的简短教程 / Short tutorial on calling a C function](#%E8%B0%83%E7%94%A8-c-%E5%87%BD%E6%95%B0%E7%9A%84%E7%AE%80%E7%9F%AD%E6%95%99%E7%A8%8B--short-tutorial-on-calling-a-c-function)
+    - [微软 Windows 系统 / Microsoft Windows](#微软-windows-系统--microsoft-windows)
+    - [调用 C 函数的简短教程 / Short tutorial on calling a C function](#调用-c-函数的简短教程--short-tutorial-on-calling-a-c-function)
 
 <!-- /MarkdownTOC -->
 
-<a id="%E5%BC%80%E5%A7%8B--getting-started"></a>
+<a id="开始--getting-started"></a>
 # 开始 / Getting started
 
 `NativeCall` 最简单的用法如下：
@@ -75,7 +75,7 @@ Of course, most functions take arguments or return values—but everything else 
 
 You will also need to declare and use native types. Please check [the native types page](https://docs.raku.org/language/nativetypes) for more information.
 
-<a id="%E6%9B%B4%E5%90%8D--changing-names"></a>
+<a id="更名--changing-names"></a>
 # 更名 / Changing names
 
 有时，你希望 Raku 子例程的名称与你正在加载的库中使用的名称不同。可能名称很长，或者大小写不同，或者在你试图创建的模组上下文中很麻烦。
@@ -96,7 +96,7 @@ our sub init() is native('foo') is symbol('FOO_INIT') { * }
 
 Inside of `libfoo` there is a routine called `FOO_INIT` but, since we're creating a module called Foo and we'd rather call the routine as `Foo::init`, we use the `symbol` trait to specify the name of the symbol in `libfoo` and call the subroutine whatever we want ("init" in this case).
 
-<a id="%E4%BC%A0%E9%80%92%E5%92%8C%E8%BF%94%E5%9B%9E%E5%80%BC--passing-and-returning-values"></a>
+<a id="传递和返回值--passing-and-returning-values"></a>
 # 传递和返回值 / Passing and returning values
 
 普通的 Raku 签名和 `returns` 特性用于传递原生函数期望的参数类型及其返回的内容。下面是一个例子。
@@ -159,7 +159,7 @@ use_foo();
 # It's fine if $array goes out of scope starting from here.
 ```
 
-<a id="%E8%AF%A6%E7%BB%86%E8%AF%B4%E6%98%8E%E5%8E%9F%E7%94%9F%E8%A1%A8%E7%A4%BA--specifying-the-native-representation"></a>
+<a id="详细说明原生表示--specifying-the-native-representation"></a>
 # 详细说明原生表示 / Specifying the native representation
 
 在使用原生函数时，有时需要指定将使用哪种原生数据结构。使用 `is repr` 来指定。
@@ -187,7 +187,7 @@ say "$result, $this-time"; # OUTPUT: «0, timespec<65385480>␤»
 
 The original function we are calling, [clock_gettime](https://linux.die.net/man/3/clock_gettime), uses a pointer to the `timespec` struct as second argument. We declare it as a [class](https://docs.raku.org/syntax/class) here, but specify its representation as `is repr('CStruct')`, to indicate it corresponds to a C data structure. When we create an object of that class, we are creating exactly the kind of pointer `clock_gettime` expects. This way, data can be transferred seamlessly to and from the native interface.
 
-<a id="%E6%8C%87%E9%92%88%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8--basic-use-of-pointers"></a>
+<a id="指针的基本使用--basic-use-of-pointers"></a>
 # 指针的基本使用 / Basic use of pointers
 
 当原生函数的签名需要指向某个原生类型（`int32`，`uint32`，等等）的指针时，只需声明参数 `is rw`:
@@ -265,7 +265,7 @@ And just use the class as you would use Pointer, but with potential for better t
 
 Once again, type objects are used to represent NULL pointers.
 
-<a id="%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88--function-pointers"></a>
+<a id="函数指针--function-pointers"></a>
 # 函数指针 / Function pointers
 
 C 库可以将指向 C 函数的指针公开为函数的返回值和结构（如结构和联合）的成员。
@@ -285,7 +285,7 @@ my &newfunc = nativecast(:(Str, size_t --> int32), $fptr);
 say newfunc("test", 4);
 ```
 
-<a id="%E6%95%B0%E7%BB%84--arrays"></a>
+<a id="数组--arrays"></a>
 # 数组 / Arrays
 
 NativeCall 对数组有一些支持。它被限制使用机器大小的整数、双精度数和字符串、定长数值类型、指针数组、结构数组和数组的数组。
@@ -366,7 +366,7 @@ The memory management of arrays is important to understand. When you create an a
 
 By contrast, when a C library returns an array to you, then the memory can not be managed by NativeCall, and it doesn't know where the array ends. Presumably, something in the library API tells you this (for example, you know that when you see a null element, you should read no further). Note that NativeCall can offer you no protection whatsoever here - do the wrong thing, and you will get a segfault or cause memory corruption. This isn't a shortcoming of NativeCall, it's the way the big bad native world works. Scared? Here, have a hug. Good luck!
 
-<a id="carray-%E6%96%B9%E6%B3%95--carray-methods"></a>
+<a id="carray-方法--carray-methods"></a>
 ## CArray 方法 / CArray methods
 
 除了每个 Raku 实例上可用的常规方法之外，`CArray` 还提供了以下方法，从 Raku 的角度来看，这些方法可以用来和它进行交互：
@@ -422,7 +422,7 @@ Element at position 3 is 4
 Element at position 4 is 5
 ```
 
-<a id="%E7%BB%93%E6%9E%84%E4%BD%93--structs"></a>
+<a id="结构体--structs"></a>
 # 结构体 / Structs
 
 多亏展示的多态性，可以声明一个外观正常的 Raku 类，该类在底层以 C 编译器将它们放在类似结构定义中的方式存储其属性。只需使用 "repr" 特性：
@@ -488,7 +488,7 @@ say nativesizeof(MyUnion.new);  # OUTPUT: «8␤»
                                 # ie. max(sizeof(MyUnion.flags32), sizeof(MyUnion.flags64)) 
 ```
 
-<a id="%E5%B5%8C%E5%85%A5-cstruct-%E5%92%8C-cunion--embedding-cstructs-and-cunions"></a>
+<a id="嵌入-cstruct-和-cunion--embedding-cstructs-and-cunions"></a>
 ## 嵌入 CStruct 和 CUnion / Embedding CStructs and CUnions
 
 CStruct 和 CUnion 可以依次被周围的 CStruct 和 CUnion 所引用或嵌入。要打印前者，我们像往常一样使用 `has`，而要打印后者，我们得使用 `HAS` 声明符：
@@ -513,14 +513,14 @@ say nativesizeof(MyStruct2.new);  # OUTPUT: «24␤»
                                   # ie. sizeof(struct Point) + sizeof(int32_t) 
 ```
 
-<a id="%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9--notes-on-memory-management"></a>
+<a id="内存管理注意事项--notes-on-memory-management"></a>
 ## 内存管理注意事项 / Notes on memory management
 
 当分配用作结构的结构时，请确保在 C 函数中分配自己的内存。如果要将结构传递到需要提前分配 `Str`/`char*` 的 C 函数中，请确保在将结构传递到函数之前为 `Str` 类型的变量分配一个容器。
 
 When allocating a struct for use as a struct, make sure that you allocate your own memory in your C functions. If you're passing a struct into a C function which needs a `Str`/`char*` allocated ahead of time, be sure to assign a container for a variable of type `Str` prior to passing your struct into the function.
 
-<a id="%E5%9C%A8%E4%BD%A0%E7%9A%84-raku-%E4%BB%A3%E7%A0%81%E4%B8%AD--in-your-raku-code"></a>
+<a id="在你的-raku-代码中--in-your-raku-code"></a>
 ### 在你的 Raku 代码中 / In your Raku code...
 
 ```Raku
@@ -541,7 +541,7 @@ class AStringAndAnInt is repr("CStruct") {
 
 In this code we first set up our members, `$.a_string` and `$.an_int32`. After that we declare our `init_struct()` function for the `init()` method to wrap around; this function is then called from `BUILD` to effectively assign the values before returning the created object.
 
-<a id="%E5%9C%A8%E4%BD%A0%E7%9A%84-c-%E4%BB%A3%E7%A0%81%E4%B8%AD--in-your-c-code"></a>
+<a id="在你的-c-代码中--in-your-c-code"></a>
 ### 在你的 C 代码中 / In your C code...
 
 ```C
@@ -577,7 +577,7 @@ say "foo is {$foo.a_string} and {$foo.an_int32}";
 # OUTPUT: «foo is str and 123␤» 
 ```
 
-<a id="%E7%B1%BB%E5%9E%8B%E5%8C%96%E6%8C%87%E9%92%88--typed-pointers"></a>
+<a id="类型化指针--typed-pointers"></a>
 # 类型化指针 / Typed pointers
 
 你可以通过将类型作为参数传递来键入 `Pointer`。它可以与原生类型一起使用，也可以与 `CArray` 和 `CStruct` 定义的类型一起使用。即使对 NativeCall 调用 `new`，也不会隐式地为其分配内存。对于返回指针的 C 例程，或者是嵌入在 `CStruct` 中的指针，它最有用。
@@ -639,10 +639,10 @@ void 指针也可以通过声明它们为 `Pointer[void]` 来使用。有关主�
 
 Void pointers can also be used by declaring them `Pointer[void]`. Please consult [the native types documentation](https://docs.raku.org/language/nativetypes#The_void_type) for more information on the subject.
 
-<a id="%E5%AD%97%E7%AC%A6%E4%B8%B2--strings"></a>
+<a id="字符串--strings"></a>
 # 字符串 / Strings
 
-<a id="%E6%98%BE%E5%BC%8F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86--explicit-memory-management"></a>
+<a id="显式内存管理--explicit-memory-management"></a>
 ## 显式内存管理 / Explicit memory management
 
 假设有一些 C 代码缓存传递的字符串，比如：
@@ -697,7 +697,7 @@ say get_version;                             # 1.0.1
 
 Bear in mind all memory management for explicitly managed strings must be handled by the C library itself or through the NativeCall API to prevent memory leaks.
 
-<a id="%E7%BC%93%E5%86%B2%E5%8C%BA%E5%92%8C%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%A4%A7%E5%AF%B9%E8%B1%A1--buffers-and-blobs"></a>
+<a id="缓冲区和二进制大对象--buffers-and-blobs"></a>
 ## 缓冲区和二进制大对象 / Buffers and blobs
 
 [Blob](https://docs.raku.org/type/Blob) 和 [Buf](https://docs.raku.org/type/Buf) 是 Raku 存储二进制数据的方法。我们可以使用它们与原生函数和数据结构交换数据，尽管不是直接的。我们必须使用 [`nativecast`](https://docs.raku.org/routine/nativecast)。
@@ -718,7 +718,7 @@ my $esponja = blob-from-pointer( $inter, :2elems, :type(Blob[int8]));
 say $esponja;
 ```
 
-<a id="%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0--function-arguments"></a>
+<a id="函数参数--function-arguments"></a>
 # 函数参数 / Function arguments
 
 NativeCall 还支持将函数作为参数的原生函数。其中一个例子是在事件驱动系统中使用函数指针作为回调。通过 NativeCall 绑定这些函数时，只需提供与[代码参数约束](https://docs.raku.org/type/Signature#Constraining_signatures_of_Callables)相同的签名。但是，对于 NativeCall，从 Rakudo 2019.07 开始，函数参数和签名之间的空格以及普通签名文本的冒号被省略，如下所示：
@@ -735,7 +735,7 @@ my sub SetCallback(&callback (Str --> int32)) is native('mylib') { * }
 
 Note: the native code is responsible for memory management of values passed to Raku callbacks this way. In other words, NativeCall will not free() strings passed to callbacks.
 
-<a id="%E5%BA%93%E8%B7%AF%E5%BE%84%E5%92%8C%E5%90%8D%E7%A7%B0--library-paths-and-names"></a>
+<a id="库路径和名称--library-paths-and-names"></a>
 # 库路径和名称 / Library paths and names
 
 `native` 特性接受库名、完整路径或返回这两者之一的子例程。当使用库名称时，假定名称前面加上 "lib" 和 ".so"（或在 Windows 上加上 ".dll"），并将在 LD_LIBRARY_PATH（Windows 为 PATH）环境变量的路径中进行搜索。
@@ -779,7 +779,7 @@ constant LIBMYSQL = %*ENV<P6LIB_MYSQLCLIENT> || 'mysqlclient';
 
 This will keep the value given at compile time. A module will be precompiled and `LIBMYSQL` will keep the value it acquires when the module gets precompiled.
 
-<a id="abiapi-%E7%89%88%E6%9C%AC---abiapi-version"></a>
+<a id="abiapi-版本---abiapi-version"></a>
 ## ABI/API 版本 - ABI/API version
 
 如果编写 `native('foo')` 原生调用，将在类 Unix 系统下搜索 libfoo.so（OS X 上的 libfoo.dynlib，Win32 上的 foo.dll）。在大多数现代系统中，它将要求你或模组的用户安装开发包，建议始终向共享库提供 API/ABI版本，因此 libfoo.so 结尾通常是开发包提供的符号链接。
@@ -799,7 +799,7 @@ my List $lib = ('foo', 'v1');
 sub foo3 is native($lib) {*}
 ```
 
-<a id="%E4%BE%8B%E7%A8%8B--routine"></a>
+<a id="例程--routine"></a>
 ## 例程 / Routine
 
 `native` 特性还接受 `Callable` 作为参数，允许你提供自己的方法来处理它将查找要加载的库文件的方式。
@@ -815,7 +815,7 @@ sub foo is native(sub {'libfoo.so.42'}) {*}
 
 It will only be called at the first invocation of the sub.
 
-<a id="%E8%B0%83%E7%94%A8%E6%A0%87%E5%87%86%E5%BA%93--calling-into-the-standard-library"></a>
+<a id="调用标准库--calling-into-the-standard-library"></a>
 ## 调用标准库 / Calling into the standard library
 
 如果你想从标准库或你自己的程序调用已经加载的 C 函数，可以省略该值，`is native` 中的值也一样。
@@ -847,7 +847,7 @@ say getpwuid(getuid()).pw_dir;
 
 Though of course `$*HOME` is a much easier way :-)
 
-<a id="%E5%AF%BC%E5%87%BA%E7%9A%84%E5%8F%98%E9%87%8F--exported-variables"></a>
+<a id="导出的变量--exported-variables"></a>
 # 导出的变量 / Exported variables
 
 库导出的变量（也称为“全局”或“外部”变量）可以使用 `cglobal` 访问。例如：
@@ -862,21 +862,21 @@ my $var := cglobal('libc.so.6', 'errno', int32)
 
 This code binds to `$var` a new [Proxy](https://docs.raku.org/type/Proxy) object that redirects all its accesses to the integer variable named "errno" as exported by the "libc.so.6" library.
 
-<a id="c-%E6%94%AF%E6%8C%81--c-support"></a>
+<a id="c-支持--c-support"></a>
 # C++ 支持 / C++ support
 
 NativeCall 支持使用 C++ 类和方法，如在 <https://github.com/rakudo/rakudo/blob/master/t/04-nativecall/13-cpp-mangling.t>（及其关联 C++ 文件）中所示。请注意，目前它还没有 C 支持那样经过测试和开发。
 
 NativeCall offers support to use classes and methods from C++ as shown in <https://github.com/rakudo/rakudo/blob/master/t/04-nativecall/13-cpp-mangling.t> (and its associated C++ file). Note that at the moment it's not as tested and developed as C support.
 
-<a id="%E5%B8%AE%E5%8A%A9%E7%A8%8B%E5%BA%8F%E5%87%BD%E6%95%B0--helper-functions"></a>
+<a id="帮助程序函数--helper-functions"></a>
 # 帮助程序函数 / Helper functions
 
 `NativeCall` 库导出多个子例程以帮助你处理来自本机库的数据。
 
 The `NativeCall` library exports several subroutines to help you work with data from native libraries.
 
-<a id="nativecast-%E5%AD%90%E4%BE%8B%E7%A8%8B--sub-nativecast"></a>
+<a id="nativecast-子例程--sub-nativecast"></a>
 ## nativecast 子例程 / sub nativecast
 
 ```Raku
@@ -891,7 +891,7 @@ This will *cast* the Pointer `$source` to an object of `$target-type`. The sourc
 
 As a special case, if a [Signature](https://docs.raku.org/type/Signature) is supplied as `$target-type` then a `subroutine` will be returned which will call the native function pointed to by `$source` in the same way as a subroutine declared with the `native` trait. This is described in [Function Pointers](https://docs.raku.org/language/nativecall#Function_pointers).
 
-<a id="cglobal-%E5%AD%90%E4%BE%8B%E7%A8%8B--sub-cglobal"></a>
+<a id="cglobal-子例程--sub-cglobal"></a>
 ## cglobal 子例程 / sub cglobal
 
 ```Raku
@@ -902,7 +902,7 @@ sub cglobal($libname, $symbol, $target-type) is export is rw
 
 This returns a [Proxy](https://docs.raku.org/type/Proxy) object that provides access to the `extern` named `$symbol` that is exposed by the specified library. The library can be specified in the same ways that they can be to the `native` trait.
 
-<a id="nativesizeof-%E5%AD%90%E4%BE%8B%E7%A8%8B--sub-nativesizeof"></a>
+<a id="nativesizeof-子例程--sub-nativesizeof"></a>
 ## nativesizeof 子例程 / sub nativesizeof
 
 ```Raku
@@ -913,7 +913,7 @@ sub nativesizeof($obj) is export(:DEFAULT)
 
 This returns the size in bytes of the supplied object, it can be thought of as being equivalent to `sizeof` in **C**. The object can be a builtin native type such as `int64` or `num64`, a `CArray` or a class with the `repr` `CStruct`, `CUnion` or `CPointer`.
 
-<a id="explicitly-manage-%E5%AD%90%E4%BE%8B%E7%A8%8B--sub-explicitly-manage"></a>
+<a id="explicitly-manage-子例程--sub-explicitly-manage"></a>
 ## explicitly-manage 子例程 / sub explicitly-manage
 
 ```Raku
@@ -924,7 +924,7 @@ sub explicitly-manage($str) is export(:DEFAULT)
 
 This returns a `CStr` object for the given `Str`. If the string returned is passed to a NativeCall subroutine, it will not be freed by the runtime's garbage collector.
 
-<a id="%E4%BE%8B%E5%AD%90--examples"></a>
+<a id="例子--examples"></a>
 # 例子 / Examples
 
 一些特定的例子，以及在特定平台中使用上述例子的说明。
@@ -968,7 +968,7 @@ DROP DATABASE test;
 CREATE DATABASE test;
 ```
 
-<a id="%E5%BE%AE%E8%BD%AF-windows-%E7%B3%BB%E7%BB%9F--microsoft-windows"></a>
+<a id="微软-windows-系统--microsoft-windows"></a>
 ## 微软 Windows 系统 / Microsoft Windows
 
 以下是 Windows API 调用的示例：
@@ -986,7 +986,7 @@ sub MessageBoxA(int32, Str, Str, int32)
 MessageBoxA(0, "We have NativeCall", "ohai", 64);
 ```
 
-<a id="%E8%B0%83%E7%94%A8-c-%E5%87%BD%E6%95%B0%E7%9A%84%E7%AE%80%E7%9F%AD%E6%95%99%E7%A8%8B--short-tutorial-on-calling-a-c-function"></a>
+<a id="调用-c-函数的简短教程--short-tutorial-on-calling-a-c-function"></a>
 ## 调用 C 函数的简短教程 / Short tutorial on calling a C function
 
 这是一个调用标准函数并在 Raku 程序中使用返回信息的示例。

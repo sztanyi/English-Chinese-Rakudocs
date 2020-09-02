@@ -8,32 +8,32 @@ Writing strings, word lists, and regexes in Raku
 
 <!-- MarkdownTOC -->
 
-- [Q 语言 / The Q lang](#q-%E8%AF%AD%E8%A8%80--the-q-lang)
-  - [字符串文本：Q / Literal strings: Q](#%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%96%87%E6%9C%AC%EF%BC%9Aq--literal-strings-q)
-  - [转义： q / Escaping: q](#%E8%BD%AC%E4%B9%89%EF%BC%9A-q--escaping-q)
-  - [字符串插值： qq / Interpolation: qq](#%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%8F%92%E5%80%BC%EF%BC%9A-qq--interpolation-qq)
-  - [词引文: qw / Word quoting: qw](#%E8%AF%8D%E5%BC%95%E6%96%87-qw--word-quoting-qw)
-  - [词引文:  / Word quoting:](#%E8%AF%8D%E5%BC%95%E6%96%87--word-quoting)
-  - [引号保护词引文：qww / Word quoting with quote protection: qww](#%E5%BC%95%E5%8F%B7%E4%BF%9D%E6%8A%A4%E8%AF%8D%E5%BC%95%E6%96%87%EF%BC%9Aqww--word-quoting-with-quote-protection-qww)
-  - [字符串插值词引文：qqw / Word quoting with interpolation: qqw](#%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%8F%92%E5%80%BC%E8%AF%8D%E5%BC%95%E6%96%87%EF%BC%9Aqqw--word-quoting-with-interpolation-qqw)
-  - [字符串插值词以及引号保护词引文：qqww / Word quoting with interpolation and quote protection: qqww](#%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%8F%92%E5%80%BC%E8%AF%8D%E4%BB%A5%E5%8F%8A%E5%BC%95%E5%8F%B7%E4%BF%9D%E6%8A%A4%E8%AF%8D%E5%BC%95%E6%96%87%EF%BC%9Aqqww--word-quoting-with-interpolation-and-quote-protection-qqww)
-  - [字符串插值以及引号保护词引文：« » / Word quoting with interpolation and quote protection: « »](#%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%8F%92%E5%80%BC%E4%BB%A5%E5%8F%8A%E5%BC%95%E5%8F%B7%E4%BF%9D%E6%8A%A4%E8%AF%8D%E5%BC%95%E6%96%87%EF%BC%9A%C2%AB-%C2%BB--word-quoting-with-interpolation-and-quote-protection-%C2%AB-%C2%BB)
-  - [Shell 引文：qx / Shell quoting: qx](#shell-%E5%BC%95%E6%96%87%EF%BC%9Aqx--shell-quoting-qx)
-  - [带字符串插值的 Shell 引文：qqx / Shell quoting with interpolation: qqx](#%E5%B8%A6%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%8F%92%E5%80%BC%E7%9A%84-shell-%E5%BC%95%E6%96%87%EF%BC%9Aqqx--shell-quoting-with-interpolation-qqx)
+- [Q 语言 / The Q lang](#q-语言--the-q-lang)
+  - [字符串文本：Q / Literal strings: Q](#字符串文本：q--literal-strings-q)
+  - [转义： q / Escaping: q](#转义：-q--escaping-q)
+  - [字符串插值： qq / Interpolation: qq](#字符串插值：-qq--interpolation-qq)
+  - [词引文: qw / Word quoting: qw](#词引文-qw--word-quoting-qw)
+  - [词引文:  / Word quoting:](#词引文--word-quoting)
+  - [引号保护词引文：qww / Word quoting with quote protection: qww](#引号保护词引文：qww--word-quoting-with-quote-protection-qww)
+  - [字符串插值词引文：qqw / Word quoting with interpolation: qqw](#字符串插值词引文：qqw--word-quoting-with-interpolation-qqw)
+  - [字符串插值词以及引号保护词引文：qqww / Word quoting with interpolation and quote protection: qqww](#字符串插值词以及引号保护词引文：qqww--word-quoting-with-interpolation-and-quote-protection-qqww)
+  - [字符串插值以及引号保护词引文：« » / Word quoting with interpolation and quote protection: « »](#字符串插值以及引号保护词引文：«-»--word-quoting-with-interpolation-and-quote-protection-«-»)
+  - [Shell 引文：qx / Shell quoting: qx](#shell-引文：qx--shell-quoting-qx)
+  - [带字符串插值的 Shell 引文：qqx / Shell quoting with interpolation: qqx](#带字符串插值的-shell-引文：qqx--shell-quoting-with-interpolation-qqx)
   - [Heredocs::to](#heredocsto)
-  - [反引文 / Unquoting](#%E5%8F%8D%E5%BC%95%E6%96%87--unquoting)
-- [正则 / Regexes](#%E6%AD%A3%E5%88%99--regexes)
+  - [反引文 / Unquoting](#反引文--unquoting)
+- [正则 / Regexes](#正则--regexes)
 
 <!-- /MarkdownTOC -->
 
-<a id="q-%E8%AF%AD%E8%A8%80--the-q-lang"></a>
+<a id="q-语言--the-q-lang"></a>
 # Q 语言 / The Q lang
 
 字符串通常用某种形式的引用构造在 Raku 代码中表示。其中最简约的是 `Q`，可通过快捷方式 `｢…｣` 使用，或通过 `Q`，后面跟着围绕你的文本的任何一对分隔符。然而，大多数时候，你最需要的是 `'…'` 或 `"…"`，下文将更详细地介绍。
 
 Strings are usually represented in Raku code using some form of quoting construct. The most minimalistic of these is `Q`, usable via the shortcut `｢…｣`, or via `Q` followed by any pair of delimiters surrounding your text. Most of the time, though, the most you'll need is `'…'` or `"…"`, described in more detail in the following sections.
 
-<a id="%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%96%87%E6%9C%AC%EF%BC%9Aq--literal-strings-q"></a>
+<a id="字符串文本：q--literal-strings-q"></a>
 ## 字符串文本：Q / Literal strings: Q
 
 ```Raku
@@ -98,7 +98,7 @@ The behavior of quoting constructs can be modified with adverbs, as explained in
 | :to   | :heredoc    | Parse result as heredoc terminator                         |
 | :v    | :val        | Convert to allomorph if possible                           |
 
-<a id="%E8%BD%AC%E4%B9%89%EF%BC%9A-q--escaping-q"></a>
+<a id="转义：-q--escaping-q"></a>
 ## 转义： q / Escaping: q
 
 ```Raku
@@ -141,7 +141,7 @@ say '<code>$var</code> is <var>\qq[$var.uc()]</var>';
 # OUTPUT: «<code>$var</code> is <var>FOO</var>␤»
 ```
 
-<a id="%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%8F%92%E5%80%BC%EF%BC%9A-qq--interpolation-qq"></a>
+<a id="字符串插值：-qq--interpolation-qq"></a>
 ## 字符串插值： qq / Interpolation: qq
 
 ```Raku
@@ -248,7 +248,7 @@ say "alive"; # this line is dead code
 CONTROL { .die };
 ```
 
-<a id="%E8%AF%8D%E5%BC%95%E6%96%87-qw--word-quoting-qw"></a>
+<a id="词引文-qw--word-quoting-qw"></a>
 ## 词引文: qw / Word quoting: qw 
 
 ```Raku
@@ -277,7 +277,7 @@ It's easier to write and to read this:
 my @directions = qw|left right up down|;
 ```
 
-<a id="%E8%AF%8D%E5%BC%95%E6%96%87--word-quoting"></a>
+<a id="词引文--word-quoting"></a>
 ## 词引文: < > / Word quoting: < > 
 
 ```Raku
@@ -320,7 +320,7 @@ close-enough-π 710/226; # OUTPUT: «Your π is close enough!␤»
 sub compilation-failure (355/113) {}
 ```
 
-<a id="%E5%BC%95%E5%8F%B7%E4%BF%9D%E6%8A%A4%E8%AF%8D%E5%BC%95%E6%96%87%EF%BC%9Aqww--word-quoting-with-quote-protection-qww"></a>
+<a id="引号保护词引文：qww--word-quoting-with-quote-protection-qww"></a>
 ## 引号保护词引文：qww / Word quoting with quote protection: qww
 
 词引用的 `qw` 形式将按字面量处理引号，将它们留在结果的词中：
@@ -339,7 +339,7 @@ Thus, if you wish to preserve quoted sub-strings as single items in the resultin
 say qww{"a b" c}.perl; # OUTPUT: «("a b", "c")␤»
 ```
 
-<a id="%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%8F%92%E5%80%BC%E8%AF%8D%E5%BC%95%E6%96%87%EF%BC%9Aqqw--word-quoting-with-interpolation-qqw"></a>
+<a id="字符串插值词引文：qqw--word-quoting-with-interpolation-qqw"></a>
 ## 字符串插值词引文：qqw / Word quoting with interpolation: qqw
 
 `qw` 形式的词引文不进行变量插值：
@@ -370,7 +370,7 @@ my @list = qqw{$a c};
 .say for @list; # OUTPUT: «a␤b␤c␤»
 ```
 
-<a id="%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%8F%92%E5%80%BC%E8%AF%8D%E4%BB%A5%E5%8F%8A%E5%BC%95%E5%8F%B7%E4%BF%9D%E6%8A%A4%E8%AF%8D%E5%BC%95%E6%96%87%EF%BC%9Aqqww--word-quoting-with-interpolation-and-quote-protection-qqww"></a>
+<a id="字符串插值词以及引号保护词引文：qqww--word-quoting-with-interpolation-and-quote-protection-qqww"></a>
 ## 字符串插值词以及引号保护词引文：qqww / Word quoting with interpolation and quote protection: qqww
 
 词引文的 `qqw` 形式将按字面量处理引号，将它们留在结果词中：
@@ -400,7 +400,7 @@ my $b = "1 \"2 3\"";
 say qqww{"$b" $b}.perl; # OUTPUT: «("1 \"2 3\"", "1", "\"2", "3\"")␤»
 ```
 
-<a id="%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%8F%92%E5%80%BC%E4%BB%A5%E5%8F%8A%E5%BC%95%E5%8F%B7%E4%BF%9D%E6%8A%A4%E8%AF%8D%E5%BC%95%E6%96%87%EF%BC%9A%C2%AB-%C2%BB--word-quoting-with-interpolation-and-quote-protection-%C2%AB-%C2%BB"></a>
+<a id="字符串插值以及引号保护词引文：«-»--word-quoting-with-interpolation-and-quote-protection-«-»"></a>
 ## 字符串插值以及引号保护词引文：« » / Word quoting with interpolation and quote protection: « »
 
 这种方式的引用与 `qqww` 类似，但是有构建[语素变体](https://docs.raku.org/language/glossary#index-entry-Allomorph)的额外好处（使其功能上等价于 [qq:ww:v](https://docs.raku.org/language/quoting#index-entry-%3Aval_%28quoting_adverb%29)）。`« »` 的 ASCII 等价为双尖括号 `<< >>`。
@@ -417,7 +417,7 @@ my $a = 42; say «  "$a b" c  ».perl;  # OUTPUT: «("42 b", "c")␤»
 my $a = 42; say << "$a b" c >>.perl;  # OUTPUT: «("42 b", "c")␤»
 ```
 
-<a id="shell-%E5%BC%95%E6%96%87%EF%BC%9Aqx--shell-quoting-qx"></a>
+<a id="shell-引文：qx--shell-quoting-qx"></a>
 ## Shell 引文：qx / Shell quoting: qx
 
 要将字符串作为外部程序运行，不仅可以将字符串传递给 `shell` 或 `run` 函数，还可以使用 shell 引文。然而，也有一些细微之处需要考虑。`qx` *不*插值变量。因此
@@ -455,7 +455,7 @@ say $output;    # OUTPUT: «hello!␤»
 
 See also [shell](https://docs.raku.org/routine/shell), [run](https://docs.raku.org/routine/run) and [Proc::Async](https://docs.raku.org/type/Proc::Async) for other ways to execute external commands.
 
-<a id="%E5%B8%A6%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%8F%92%E5%80%BC%E7%9A%84-shell-%E5%BC%95%E6%96%87%EF%BC%9Aqqx--shell-quoting-with-interpolation-qqx"></a>
+<a id="带字符串插值的-shell-引文：qqx--shell-quoting-with-interpolation-qqx"></a>
 ## 带字符串插值的 Shell 引文：qqx / Shell quoting with interpolation: qqx
 
 如果希望在外部命令中使用 Raku 变量的内容，则应该使用 `qqx` shell 引文结构：
@@ -576,7 +576,7 @@ my ($first, $second) = qq:to/END1/, qq:to/END2/;
    END2 
 ```
 
-<a id="%E5%8F%8D%E5%BC%95%E6%96%87--unquoting"></a>
+<a id="反引文--unquoting"></a>
 ## 反引文 / Unquoting
 
 字符串文本允许使用转义序列对嵌入的引文构造进行字符串插值，如下所示：
@@ -593,7 +593,7 @@ say 'These animals are \qqw[$animal or zebras]'; # OUTPUT: «These animals are q
 
 In this example, `\qq` will do double-quoting interpolation, and `\qqw` word quoting with interpolation. Escaping any other quoting construct as above will act in the same way, allowing interpolation in literal strings.
 
-<a id="%E6%AD%A3%E5%88%99--regexes"></a>
+<a id="正则--regexes"></a>
 # 正则 / Regexes
 
 有关引文在正则中应用的信息，请参阅[正则表达式文档](https://docs.raku.org/language/regexes)。

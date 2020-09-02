@@ -8,15 +8,15 @@ Using the types the compiler and hardware make available to you
 
 <!-- MarkdownTOC -->
 
-- [具有原生表示的类型 / Types with native representation](#%E5%85%B7%E6%9C%89%E5%8E%9F%E7%94%9F%E8%A1%A8%E7%A4%BA%E7%9A%84%E7%B1%BB%E5%9E%8B--types-with-native-representation)
-- [具有原生表示形式和大小的类型 / Types with native representation and size](#%E5%85%B7%E6%9C%89%E5%8E%9F%E7%94%9F%E8%A1%A8%E7%A4%BA%E5%BD%A2%E5%BC%8F%E5%92%8C%E5%A4%A7%E5%B0%8F%E7%9A%84%E7%B1%BB%E5%9E%8B--types-with-native-representation-and-size)
-- [`void` 类型 / The `void` type](#void-%E7%B1%BB%E5%9E%8B--the-void-type)
-- [*Atomic* 类型 / Atomic* types](#atomic-%E7%B1%BB%E5%9E%8B--atomic-types)
-- [Rakudo 特定的原生类型 / Rakudo specific native types](#rakudo-%E7%89%B9%E5%AE%9A%E7%9A%84%E5%8E%9F%E7%94%9F%E7%B1%BB%E5%9E%8B--rakudo-specific-native-types)
+- [具有原生表示的类型 / Types with native representation](#具有原生表示的类型--types-with-native-representation)
+- [具有原生表示形式和大小的类型 / Types with native representation and size](#具有原生表示形式和大小的类型--types-with-native-representation-and-size)
+- [`void` 类型 / The `void` type](#void-类型--the-void-type)
+- [*Atomic* 类型 / Atomic* types](#atomic-类型--atomic-types)
+- [Rakudo 特定的原生类型 / Rakudo specific native types](#rakudo-特定的原生类型--rakudo-specific-native-types)
 
 <!-- /MarkdownTOC -->
 
-<a id="%E5%85%B7%E6%9C%89%E5%8E%9F%E7%94%9F%E8%A1%A8%E7%A4%BA%E7%9A%84%E7%B1%BB%E5%9E%8B--types-with-native-representation"></a>
+<a id="具有原生表示的类型--types-with-native-representation"></a>
 # 具有原生表示的类型 / Types with native representation
 
 Raku 中的一些简单类型具有*原生*表示，表示它们将使用编译器、操作系统和机器提供的 C 语言表示。这些是可用的四种本机类型：
@@ -101,7 +101,7 @@ say @letter-pairs.perl;
 # OUTPUT: «array[str].new(:shape(10,), ["aA", "bB", "cC", "dD", "eE", "fF", "gG", "hH", "iI", "jJ"])␤» 
 ```
 
-<a id="%E5%85%B7%E6%9C%89%E5%8E%9F%E7%94%9F%E8%A1%A8%E7%A4%BA%E5%BD%A2%E5%BC%8F%E5%92%8C%E5%A4%A7%E5%B0%8F%E7%9A%84%E7%B1%BB%E5%9E%8B--types-with-native-representation-and-size"></a>
+<a id="具有原生表示形式和大小的类型--types-with-native-representation-and-size"></a>
 # 具有原生表示形式和大小的类型 / Types with native representation and size
 
 已经提到的具有原生表示的类型也适用于这里；它们将自动装箱到 Raku 类型，并且不可绑定。但是，下表中列出的这些类型具有在 [NativeCall](https://docs.raku.org/language/nativecall#Passing_and_returning_values) 函数中可用的特性。
@@ -145,7 +145,7 @@ my native int8 is repr('P6int') is Int is nativesize(8) { }
 
 Indicating that it will use, besides an integer representation (`P6int`), a native size of only 8 bits. This trait, however, is not intended to be used in your programs since it is not part of the Raku specification.
 
-<a id="void-%E7%B1%BB%E5%9E%8B--the-void-type"></a>
+<a id="void-类型--the-void-type"></a>
 # `void` 类型 / The `void` type
 
 原生 `void` 类型对应于 C `void` 类型。但是，作为一个有效类型，你可以在表达式中使用它：
@@ -187,14 +187,14 @@ my Pointer[void] $native = nativecast(Pointer[void], Buf.new(0x22, 0x33));
 say $native.deref; # ERROR OUTPUT: «Internal error: unhandled target type␤» 
 ```
 
-<a id="atomic-%E7%B1%BB%E5%9E%8B--atomic-types"></a>
+<a id="atomic-类型--atomic-types"></a>
 # *Atomic* 类型 / Atomic* types
 
 在这种情况下，*atomic* 指的是线程下的安全操作。Raku 提供了一个 [`atomicint`](https://docs.raku.org/type/atomicint) 类型和[一些原子操作](https://docs.raku.org/type/atomicint#Routines)，它们共同保证了这一点。有关此问题的更多信息，请查看[数值页面上的原子操作部分](https://docs.raku.org/language/numerics#Atomic_operations)。
 
 In this context, *atomic* refers to safe operation under threading. Raku provides a type, [`atomicint`](https://docs.raku.org/type/atomicint), and [some operations](https://docs.raku.org/type/atomicint#Routines) which, together, guarantee this. Please check [the atomic operations section on the Numerics page](https://docs.raku.org/language/numerics#Atomic_operations) for more information on this.
 
-<a id="rakudo-%E7%89%B9%E5%AE%9A%E7%9A%84%E5%8E%9F%E7%94%9F%E7%B1%BB%E5%9E%8B--rakudo-specific-native-types"></a>
+<a id="rakudo-特定的原生类型--rakudo-specific-native-types"></a>
 # Rakudo 特定的原生类型 / Rakudo specific native types
 
 本节中描述的类型是 Rakudo 特定的，因此不能保证它们在其他实现中或在未来的版本中保持不变。

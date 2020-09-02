@@ -85,22 +85,22 @@ $eat.perform();
 
 <!-- MarkdownTOC -->
 
-- [从类开始 / Starting with class](#%E4%BB%8E%E7%B1%BB%E5%BC%80%E5%A7%8B--starting-with-class)
-- [状态 / State](#%E7%8A%B6%E6%80%81--state)
-- [静态字段？ / Static fields?](#%E9%9D%99%E6%80%81%E5%AD%97%E6%AE%B5%EF%BC%9F--static-fields)
-- [方法 / Methods](#%E6%96%B9%E6%B3%95--methods)
-    - [私有方法 / Private Methods](#%E7%A7%81%E6%9C%89%E6%96%B9%E6%B3%95--private-methods)
-- [构造器 / Constructors](#%E6%9E%84%E9%80%A0%E5%99%A8--constructors)
-- [类的使用 / Consuming our class](#%E7%B1%BB%E7%9A%84%E4%BD%BF%E7%94%A8--consuming-our-class)
-- [继承 / Inheritance](#%E7%BB%A7%E6%89%BF--inheritance)
-    - [覆盖继承的方法 / Overriding inherited methods](#%E8%A6%86%E7%9B%96%E7%BB%A7%E6%89%BF%E7%9A%84%E6%96%B9%E6%B3%95--overriding-inherited-methods)
-    - [多重继承 / Multiple inheritance](#%E5%A4%9A%E9%87%8D%E7%BB%A7%E6%89%BF--multiple-inheritance)
-    - [`also` 声明符 / The `also` declarator](#also-%E5%A3%B0%E6%98%8E%E7%AC%A6--the-also-declarator)
-- [内省 / Introspection](#%E5%86%85%E7%9C%81--introspection)
+- [从类开始 / Starting with class](#从类开始--starting-with-class)
+- [状态 / State](#状态--state)
+- [静态字段？ / Static fields?](#静态字段？--static-fields)
+- [方法 / Methods](#方法--methods)
+	- [私有方法 / Private Methods](#私有方法--private-methods)
+- [构造器 / Constructors](#构造器--constructors)
+- [类的使用 / Consuming our class](#类的使用--consuming-our-class)
+- [继承 / Inheritance](#继承--inheritance)
+	- [覆盖继承的方法 / Overriding inherited methods](#覆盖继承的方法--overriding-inherited-methods)
+	- [多重继承 / Multiple inheritance](#多重继承--multiple-inheritance)
+	- [`also` 声明符 / The `also` declarator](#also-声明符--the-also-declarator)
+- [内省 / Introspection](#内省--introspection)
 
 <!-- /MarkdownTOC -->
 
-<a id="%E4%BB%8E%E7%B1%BB%E5%BC%80%E5%A7%8B--starting-with-class"></a>
+<a id="从类开始--starting-with-class"></a>
 # 从类开始 / Starting with class
 
 Perl 6 和许多其他语言类似，使用 `class` 关键字来定义一个类。其后的代码块就是用户自己的代码，就像其他代码块一样，但是类通常含有状态以及行为声明。例子中的代码包含通过 `has` 关键字声明的属性（状态）以及通过 `method` 关键字声明的行为。
@@ -141,7 +141,7 @@ say foo 42;  # OUTPUT: «It's an instance!
 » 
 ```
 
-<a id="%E7%8A%B6%E6%80%81--state"></a>
+<a id="状态--state"></a>
 # 状态 / State
 
 Task 类中前三行都是用来声明属性的（在其他语言中叫*字段*或者*实例存储*）。就像用 `my` 声明的变量不可以在它被声明的作用域之外访问一样，属性也不可以在类之外被访问。这种封装特性是面向对象设计的重要原则。
@@ -222,7 +222,7 @@ has Task @!dependencies;
 has $.ready = not @!dependencies;
 ```
 
-<a id="%E9%9D%99%E6%80%81%E5%AD%97%E6%AE%B5%EF%BC%9F--static-fields"></a>
+<a id="静态字段？--static-fields"></a>
 # 静态字段？ / Static fields?
 
 Perl 6 没有 **static** 关键字。然而，任何类都可以声明模组可以声明的任何东西，创建一个有限作用域的变量听起来是个好点子。
@@ -255,7 +255,7 @@ class HaveStaticAttr {
 
 Class attributes may also be declared with a secondary sigil – in a similar manner to object attributes – that will generate read-only accessors if the attribute is to be public.
 
-<a id="%E6%96%B9%E6%B3%95--methods"></a>
+<a id="方法--methods"></a>
 # 方法 / Methods
 
 属性给赋予对象状态，方法赋予对象行为。让我们暂时忽略 `new` 这个特殊方法。考虑第二个方法 `add-dependency` ，它给任务的依赖列表增加了新任务。
@@ -302,7 +302,7 @@ Otherwise, the method performs all of the task's dependencies, using the `for`�
 
 After all of the dependencies have completed, it's time to perform the current `Task`'s task by invoking the `&!callback` attribute directly; this is the purpose of the parentheses. Finally, the method sets the `$!done` attribute to `True`, so that subsequent invocations of `perform`on this object (if this `Task` is a dependency of another `Task`, for example) will not repeat the task.
 
-<a id="%E7%A7%81%E6%9C%89%E6%96%B9%E6%B3%95--private-methods"></a>
+<a id="私有方法--private-methods"></a>
 ## 私有方法 / Private Methods
 
 和属性一样，方法也可以是私有的。私有方法用带前缀的感叹号声明。使用 `self!` 跟方法名调用私有方法。要调用另一个类的私有方法，调用类必须受被调用类的信任。信任关系是用 `trusts` 声明的，并且要信任的类必须已经声明。调用另一个类的私有方法需要该类的实例和该方法的完全限定名。信任还允许访问私有属性。
@@ -337,7 +337,7 @@ B.new.i-am-trusted();
 
 Trust relationships are not subject to inheritance. To trust the global namespace, the pseudo package `GLOBAL` can be used.
 
-<a id="%E6%9E%84%E9%80%A0%E5%99%A8--constructors"></a>
+<a id="构造器--constructors"></a>
 # 构造器 / Constructors
 
 Perl 6 在构造器领域比许多语言更自由。构造器是返回类实例的任何东西。此外，构造器是普通的方法。你从基类 `Mu` 继承了名为 `new` 的默认构造器，但是你可以自由地重写 `new`，如本例所示：
@@ -390,7 +390,7 @@ submethod BUILD(
 
 See [Object Construction](https://docs.raku.org/language/objects#Object_Construction) for more options to influence object construction and attribute initialization.
 
-<a id="%E7%B1%BB%E7%9A%84%E4%BD%BF%E7%94%A8--consuming-our-class"></a>
+<a id="类的使用--consuming-our-class"></a>
 # 类的使用 / Consuming our class
 
 类创建后，你才可以创建类实例。声明任务以及他们的依赖的一个简单方法是声明一个自定义构造器。创建一个没有依赖的简单任务：
@@ -438,7 +438,7 @@ making dinner
 eating dinner. NOM!
 ```
 
-<a id="%E7%BB%A7%E6%89%BF--inheritance"></a>
+<a id="继承--inheritance"></a>
 # 继承 / Inheritance
 
 面向对象编程采用继承作为代码重用的一种机制。Perl 6 支持一个类从一个或者多个类继承。当一个类从另一个类继承时，它通知方法分派器沿着继承链查找要分派的方法。这既适用于通过 method 关键字定义的标准方法，也适用于通过其他方法（如属性访问器）生成的方法。
@@ -480,7 +480,7 @@ $programmer.code_to_solve('halting problem');
 $programmer.pay();
 ```
 
-<a id="%E8%A6%86%E7%9B%96%E7%BB%A7%E6%89%BF%E7%9A%84%E6%96%B9%E6%B3%95--overriding-inherited-methods"></a>
+<a id="覆盖继承的方法--overriding-inherited-methods"></a>
 ## 覆盖继承的方法 / Overriding inherited methods
 
 当然，类可以通过定义自己的类来覆盖父类定义的方法和属性。下面的例子演示了 `Baker` 类覆盖了 `Cook` 的 `cook` 方法。
@@ -544,7 +544,7 @@ Because the dispatcher will see the `cook` method on `Baker` before it moves
 
 To access methods in the inheritance chain use [re-dispatch](https://docs.raku.org/language/functions#Re-dispatching) or the [MOP](https://docs.raku.org/type/Metamodel::ClassHOW#method_can).
 
-<a id="%E5%A4%9A%E9%87%8D%E7%BB%A7%E6%89%BF--multiple-inheritance"></a>
+<a id="多重继承--multiple-inheritance"></a>
 ## 多重继承 / Multiple inheritance
 
 如前所述，类可以从多个类继承。当一个类从多个类继承时，调度程序知道在查找要搜索的方法时查看这两个类。 Perl 6 使用 [C3 算法](https://en.wikipedia.org/wiki/C3_linearization)来线性化多个继承层次结构，这比深度优先搜索更好地处理多重继承。
@@ -578,7 +578,7 @@ Now all the methods made available to the Programmer and the Cook classes are av
 
 While multiple inheritance is a useful concept to know and occasionally use, it is important to understand that there are more useful OOP concepts. When reaching for multiple inheritance it is good practice to consider whether the design wouldn't be better realized by using roles, which are generally safer because they force the class author to explicitly resolve conflicting method names. For more information on roles see [Roles](https://docs.raku.org/language/objects#Roles).
 
-<a id="also-%E5%A3%B0%E6%98%8E%E7%AC%A6--the-also-declarator"></a>
+<a id="also-声明符--the-also-declarator"></a>
 ## `also` 声明符 / The `also` declarator
 
 要继承的类可以在类声明体中列出，方法是将 `is` 特性加上 `also`。这也适用于角色构成特性 `does`。
@@ -597,7 +597,7 @@ role B {};
 class C { also does A; also does B }
 ```
 
-<a id="%E5%86%85%E7%9C%81--introspection"></a>
+<a id="内省--introspection"></a>
 # 内省 / Introspection
 
 内省是在程序中收集有关某些对象的信息的过程，而不是通过读取源代码，而是通过查询对象（或是一个控制对象）来查找某些属性，例如其类型。

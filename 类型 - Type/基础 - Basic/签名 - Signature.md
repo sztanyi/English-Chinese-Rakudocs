@@ -22,49 +22,49 @@ Passing arguments to a signature *binds* the arguments, contained in a [Capture]
 
 <!-- MarkdownTOC -->
 
-- [签名字面量 / Signature literals](#%E7%AD%BE%E5%90%8D%E5%AD%97%E9%9D%A2%E9%87%8F--signature-literals)
-    - [参数分隔符 / Parameter separators](#%E5%8F%82%E6%95%B0%E5%88%86%E9%9A%94%E7%AC%A6--parameter-separators)
-    - [类型约束 / Type constraints](#%E7%B1%BB%E5%9E%8B%E7%BA%A6%E6%9D%9F--type-constraints)
-        - [约束可选参数 / Constraining optional arguments](#%E7%BA%A6%E6%9D%9F%E5%8F%AF%E9%80%89%E5%8F%82%E6%95%B0--constraining-optional-arguments)
-        - [约束 slurpy 参数 / Constraining slurpy arguments](#%E7%BA%A6%E6%9D%9F-slurpy-%E5%8F%82%E6%95%B0--constraining-slurpy-arguments)
-        - [约束命名参数 / Constraining named arguments](#%E7%BA%A6%E6%9D%9F%E5%91%BD%E5%90%8D%E5%8F%82%E6%95%B0--constraining-named-arguments)
-        - [约束参数的确定性 / Constraining argument definiteness](#%E7%BA%A6%E6%9D%9F%E5%8F%82%E6%95%B0%E7%9A%84%E7%A1%AE%E5%AE%9A%E6%80%A7--constraining-argument-definiteness)
-        - [约束`可调用`签名 / Constraining signatures of `Callable`s](#%E7%BA%A6%E6%9D%9F%E5%8F%AF%E8%B0%83%E7%94%A8%E7%AD%BE%E5%90%8D--constraining-signatures-of-callables)
-        - [约束返回值类型 / Constraining return types](#%E7%BA%A6%E6%9D%9F%E8%BF%94%E5%9B%9E%E5%80%BC%E7%B1%BB%E5%9E%8B--constraining-return-types)
+- [签名字面量 / Signature literals](#签名字面量--signature-literals)
+    - [参数分隔符 / Parameter separators](#参数分隔符--parameter-separators)
+    - [类型约束 / Type constraints](#类型约束--type-constraints)
+        - [约束可选参数 / Constraining optional arguments](#约束可选参数--constraining-optional-arguments)
+        - [约束 slurpy 参数 / Constraining slurpy arguments](#约束-slurpy-参数--constraining-slurpy-arguments)
+        - [约束命名参数 / Constraining named arguments](#约束命名参数--constraining-named-arguments)
+        - [约束参数的确定性 / Constraining argument definiteness](#约束参数的确定性--constraining-argument-definiteness)
+        - [约束`可调用`签名 / Constraining signatures of `Callable`s](#约束可调用签名--constraining-signatures-of-callables)
+        - [约束返回值类型 / Constraining return types](#约束返回值类型--constraining-return-types)
             - [`-->`](#--)
             - [`returns`](#returns)
             - [`of`](#of)
-            - [前缀（类似 C ）形式 / prefix\(C-like\) form](#%E5%89%8D%E7%BC%80%EF%BC%88%E7%B1%BB%E4%BC%BC-c-%EF%BC%89%E5%BD%A2%E5%BC%8F--prefixc-like-form)
-        - [强制转换类型 / Coercion type](#%E5%BC%BA%E5%88%B6%E8%BD%AC%E6%8D%A2%E7%B1%BB%E5%9E%8B--coercion-type)
-    - [slurpy（A.K.A。可变）参数 / Slurpy \(A.K.A. variadic\) parameters](#slurpy%EF%BC%88aka%E3%80%82%E5%8F%AF%E5%8F%98%EF%BC%89%E5%8F%82%E6%95%B0--slurpy-aka-variadic-parameters)
-    - [slurpy 数组参数的类型 / Types of slurpy array parameters](#slurpy-%E6%95%B0%E7%BB%84%E5%8F%82%E6%95%B0%E7%9A%84%E7%B1%BB%E5%9E%8B--types-of-slurpy-array-parameters)
-        - [展平的 slurpy 参数 / Flattened slurpy](#%E5%B1%95%E5%B9%B3%E7%9A%84-slurpy-%E5%8F%82%E6%95%B0--flattened-slurpy)
-        - [不展平的 slurpy 参数 / Unflattened slurpy](#%E4%B8%8D%E5%B1%95%E5%B9%B3%E7%9A%84-slurpy-%E5%8F%82%E6%95%B0--unflattened-slurpy)
-        - [单一 slurpy 参数规则 / Single argument rule slurpy](#%E5%8D%95%E4%B8%80-slurpy-%E5%8F%82%E6%95%B0%E8%A7%84%E5%88%99--single-argument-rule-slurpy)
-    - [类型捕获 / Type captures](#%E7%B1%BB%E5%9E%8B%E6%8D%95%E8%8E%B7--type-captures)
-    - [位置与命名参数 / Positional vs. named arguments](#%E4%BD%8D%E7%BD%AE%E4%B8%8E%E5%91%BD%E5%90%8D%E5%8F%82%E6%95%B0--positional-vs-named-arguments)
-    - [参数别名 / Argument aliases](#%E5%8F%82%E6%95%B0%E5%88%AB%E5%90%8D--argument-aliases)
-    - [可选和强制参数 / Optional and mandatory arguments](#%E5%8F%AF%E9%80%89%E5%92%8C%E5%BC%BA%E5%88%B6%E5%8F%82%E6%95%B0--optional-and-mandatory-arguments)
-    - [动态变量 / Dynamic variables](#%E5%8A%A8%E6%80%81%E5%8F%98%E9%87%8F--dynamic-variables)
-    - [解构参数 / Destructuring arguments](#%E8%A7%A3%E6%9E%84%E5%8F%82%E6%95%B0--destructuring-arguments)
-    - [子签名 / Sub-signatures](#%E5%AD%90%E7%AD%BE%E5%90%8D--sub-signatures)
-    - [长名 / Long names](#%E9%95%BF%E5%90%8D--long-names)
-    - [捕获参数 / Capture parameters](#%E6%8D%95%E8%8E%B7%E5%8F%82%E6%95%B0--capture-parameters)
-    - [参数特征和修饰符 / Parameter traits and modifiers](#%E5%8F%82%E6%95%B0%E7%89%B9%E5%BE%81%E5%92%8C%E4%BF%AE%E9%A5%B0%E7%AC%A6--parameter-traits-and-modifiers)
-- [Signature 的方法 / Methods](#signature-%E7%9A%84%E6%96%B9%E6%B3%95--methods)
-    - [方法 params / method params](#%E6%96%B9%E6%B3%95-params--method-params)
-    - [方法 arity / method arity](#%E6%96%B9%E6%B3%95-arity--method-arity)
-    - [方法 count / method count](#%E6%96%B9%E6%B3%95-count--method-count)
-    - [方法 returns / method returns](#%E6%96%B9%E6%B3%95-returns--method-returns)
-    - [方法 ACCEPTS / method ACCEPTS](#%E6%96%B9%E6%B3%95-accepts--method-accepts)
-    - [方法 Capture / method Capture](#%E6%96%B9%E6%B3%95-capture--method-capture)
-- [运行时创建签名对象\(6.d, 2019.01及以后\) / Runtime creation of Signature objects \(6.d, 2019.01 and later\)](#%E8%BF%90%E8%A1%8C%E6%97%B6%E5%88%9B%E5%BB%BA%E7%AD%BE%E5%90%8D%E5%AF%B9%E8%B1%A16d-201901%E5%8F%8A%E4%BB%A5%E5%90%8E--runtime-creation-of-signature-objects-6d-201901-and-later)
-- [类型图 / Type Graph](#%E7%B1%BB%E5%9E%8B%E5%9B%BE--type-graph)
+            - [前缀（类似 C ）形式 / prefix\(C-like\) form](#前缀（类似-c-）形式--prefixc-like-form)
+        - [强制转换类型 / Coercion type](#强制转换类型--coercion-type)
+    - [slurpy（A.K.A。可变）参数 / Slurpy \(A.K.A. variadic\) parameters](#slurpy（aka。可变）参数--slurpy-aka-variadic-parameters)
+    - [slurpy 数组参数的类型 / Types of slurpy array parameters](#slurpy-数组参数的类型--types-of-slurpy-array-parameters)
+        - [展平的 slurpy 参数 / Flattened slurpy](#展平的-slurpy-参数--flattened-slurpy)
+        - [不展平的 slurpy 参数 / Unflattened slurpy](#不展平的-slurpy-参数--unflattened-slurpy)
+        - [单一 slurpy 参数规则 / Single argument rule slurpy](#单一-slurpy-参数规则--single-argument-rule-slurpy)
+    - [类型捕获 / Type captures](#类型捕获--type-captures)
+    - [位置与命名参数 / Positional vs. named arguments](#位置与命名参数--positional-vs-named-arguments)
+    - [参数别名 / Argument aliases](#参数别名--argument-aliases)
+    - [可选和强制参数 / Optional and mandatory arguments](#可选和强制参数--optional-and-mandatory-arguments)
+    - [动态变量 / Dynamic variables](#动态变量--dynamic-variables)
+    - [解构参数 / Destructuring arguments](#解构参数--destructuring-arguments)
+    - [子签名 / Sub-signatures](#子签名--sub-signatures)
+    - [长名 / Long names](#长名--long-names)
+    - [捕获参数 / Capture parameters](#捕获参数--capture-parameters)
+    - [参数特征和修饰符 / Parameter traits and modifiers](#参数特征和修饰符--parameter-traits-and-modifiers)
+- [Signature 的方法 / Methods](#signature-的方法--methods)
+    - [方法 params / method params](#方法-params--method-params)
+    - [方法 arity / method arity](#方法-arity--method-arity)
+    - [方法 count / method count](#方法-count--method-count)
+    - [方法 returns / method returns](#方法-returns--method-returns)
+    - [方法 ACCEPTS / method ACCEPTS](#方法-accepts--method-accepts)
+    - [方法 Capture / method Capture](#方法-capture--method-capture)
+- [运行时创建签名对象\(6.d, 2019.01及以后\) / Runtime creation of Signature objects \(6.d, 2019.01 and later\)](#运行时创建签名对象6d-201901及以后--runtime-creation-of-signature-objects-6d-201901-and-later)
+- [类型图 / Type Graph](#类型图--type-graph)
 
 <!-- /MarkdownTOC -->
 
 
-<a id="%E7%AD%BE%E5%90%8D%E5%AD%97%E9%9D%A2%E9%87%8F--signature-literals"></a>
+<a id="签名字面量--signature-literals"></a>
 # 签名字面量 / Signature literals
 
 签名出现在[函数](https://docs.raku.org/type/Sub)和[方法](https://docs.raku.org/type/Method)名之后的括号里，在代码块中箭头 `->` 或者 `<->` 之后, 作为[变量声明符](https://docs.raku.org/language/variables#Variable_declarators_and_scope)如 [`my`](https://docs.raku.org/syntax/my) 的输入，或者以冒号开头的独立术语。
@@ -139,7 +139,7 @@ say %h ~~ :(:$left, :$right);
 # OUTPUT: «True␤» 
 ```
 
-<a id="%E5%8F%82%E6%95%B0%E5%88%86%E9%9A%94%E7%AC%A6--parameter-separators"></a>
+<a id="参数分隔符--parameter-separators"></a>
 ## 参数分隔符 / Parameter separators
 
 签名由零或者多个*参数*组成，由逗号分隔。
@@ -166,7 +166,7 @@ class Foo {
 say Foo.whoami; # OUTPUT: «Well I'm class Foo, of course!␤» 
 ```
 
-<a id="%E7%B1%BB%E5%9E%8B%E7%BA%A6%E6%9D%9F--type-constraints"></a>
+<a id="类型约束--type-constraints"></a>
 ## 类型约束 / Type constraints
 
 参数可以选择具有类型约束（默认为 [`Any`](https://docs.raku.org/type/Any)）。这些可用于限制函数输入。
@@ -267,7 +267,7 @@ foo 2, 4; # OUTPUT: «4 is a square of 2␤»»
 # OUTPUT: «Constraint type check failed in binding to parameter '$b'…» 
 ```
 
-<a id="%E7%BA%A6%E6%9D%9F%E5%8F%AF%E9%80%89%E5%8F%82%E6%95%B0--constraining-optional-arguments"></a>
+<a id="约束可选参数--constraining-optional-arguments"></a>
 ### 约束可选参数 / Constraining optional arguments
 
 [可选参数](https://docs.raku.org/type/Signature#Optional_and_mandatory_arguments)也可以有约束。任何参数的任一 `where` 子句都将会被执行，即使它是可选的并且不由调用者提供。那种情况下你需要防止 `where` 子句中未定义的值。
@@ -280,7 +280,7 @@ can have constraints, too. Any `where` clause on any parameter will be executed,
 sub f(Int $a, UInt $i? where { !$i.defined or $i > 5 }) { ... }
 ```
 
-<a id="%E7%BA%A6%E6%9D%9F-slurpy-%E5%8F%82%E6%95%B0--constraining-slurpy-arguments"></a>
+<a id="约束-slurpy-参数--constraining-slurpy-arguments"></a>
 ### 约束 slurpy 参数 / Constraining slurpy arguments
 
 [Slurpy 参数](https://docs.raku.org/type/Signature#Slurpy_%28A.K.A._variadic%29_parameters)不能有类型约束。可以使用 `where` 子句和 [Junction](https://docs.raku.org/type/Junction) 来实现该效果。
@@ -295,7 +295,7 @@ CATCH { default { say .^name, ' ==> ', .Str }  }
 # OUTPUT: «[42]␤Constraint type check failed in binding to parameter '@a' ...» 
 ```
 
-<a id="%E7%BA%A6%E6%9D%9F%E5%91%BD%E5%90%8D%E5%8F%82%E6%95%B0--constraining-named-arguments"></a>
+<a id="约束命名参数--constraining-named-arguments"></a>
 ### 约束命名参数 / Constraining named arguments
 
 对[命名参数](https://docs.raku.org/type/Signature#Positional_vs._named_arguments)的约束适用于[冒号对](https://docs.raku.org/type/Pair)的值部分。
@@ -310,7 +310,7 @@ CATCH { default { say .^name, ' ==> ', .Str }  }
 # binding to parameter '$i'; expected Int but got Str ("forty-two")␤» 
 ```
 
-<a id="%E7%BA%A6%E6%9D%9F%E5%8F%82%E6%95%B0%E7%9A%84%E7%A1%AE%E5%AE%9A%E6%80%A7--constraining-argument-definiteness"></a>
+<a id="约束参数的确定性--constraining-argument-definiteness"></a>
 ### 约束参数的确定性 / Constraining argument definiteness
 
 通常，类型约束仅检查参数的值是否为正确的类型。至关重要的是，*对象实例*和*类型对象*都将满足如下所示的约束：
@@ -522,7 +522,7 @@ say $a.defined;                 # Output: «False␤» : default response
 say $b.defined;                 # Output: «False␤» : .defined override 
 ```
 
-<a id="%E7%BA%A6%E6%9D%9F%E5%8F%AF%E8%B0%83%E7%94%A8%E7%AD%BE%E5%90%8D--constraining-signatures-of-callables"></a>
+<a id="约束可调用签名--constraining-signatures-of-callables"></a>
 ### 约束`可调用`签名 / Constraining signatures of `Callable`s
 
 可以在参数之后紧跟[签名](https://docs.raku.org/type/Signature)（不允许空格）来约束 [Callable](https://docs.raku.org/type/Callable) 参数：
@@ -548,7 +548,7 @@ sub h(Int $i, Str $s) { $s ~ $i }
 f(&h);   # OUTPUT: «ten10␤» 
 ```
 
-<a id="%E7%BA%A6%E6%9D%9F%E8%BF%94%E5%9B%9E%E5%80%BC%E7%B1%BB%E5%9E%8B--constraining-return-types"></a>
+<a id="约束返回值类型--constraining-return-types"></a>
 ### 约束返回值类型 / Constraining return types
 
 有多种方式限制一个[例程](https://docs.raku.org/type/Routine)的返回值类型。下面所有的版本都是合法的并且会强制类型检查，当例程成功执行的时候。
@@ -625,7 +625,7 @@ sub foo() of Int { 42 }; # Valid
 sub foo() of 42 {  };    # This will fail. 
 ```
 
-<a id="%E5%89%8D%E7%BC%80%EF%BC%88%E7%B1%BB%E4%BC%BC-c-%EF%BC%89%E5%BD%A2%E5%BC%8F--prefixc-like-form"></a>
+<a id="前缀（类似-c-）形式--prefixc-like-form"></a>
 #### 前缀（类似 C ）形式 / prefix(C-like) form
 
 这类似于将类型约束放在变量上，例如 `my Type $var = 20;`，除了 `$var` 是例程的定义。
@@ -637,7 +637,7 @@ my Int sub bar { 1 };     # Valid
 my 42 sub bad-answer {};  # This will fail. 
 ```
 
-<a id="%E5%BC%BA%E5%88%B6%E8%BD%AC%E6%8D%A2%E7%B1%BB%E5%9E%8B--coercion-type"></a>
+<a id="强制转换类型--coercion-type"></a>
 ### 强制转换类型 / Coercion type
 
 要接受一种类型但将其自动强制转换为另一种类型，请使用接受的类型作为目标类型的参数。如果接受的类型是 `Any`，则可以省略。
@@ -685,7 +685,7 @@ for 2,4, *²  … 256 -> $a {
 
 In this example, coercing the return type to `String` allows us to directly apply string methods, such as the number of characters.
 
-<a id="slurpy%EF%BC%88aka%E3%80%82%E5%8F%AF%E5%8F%98%EF%BC%89%E5%8F%82%E6%95%B0--slurpy-aka-variadic-parameters"></a>
+<a id="slurpy（aka。可变）参数--slurpy-aka-variadic-parameters"></a>
 ## slurpy（A.K.A。可变）参数 / Slurpy (A.K.A. variadic) parameters
 
 如果函数可以采用不同数量的参数，则该函数是可变参数;也就是说，它的参数元数并不固定。因此，可选，命名和解包参数是可变参数。数组或散列参数可以通过前导星号（*）或两个前导星号（**）或前导加号（+）标记为 *slurpy*。一个 slurpy 参数可以绑定到任意零或更多）。
@@ -749,7 +749,7 @@ Normally a slurpy parameter will create an [Array](https://docs.raku.org/type/Ar
 
 Slurpy parameters have special behaviors when combined with some [traits and modifiers](https://docs.raku.org/type/Signature#Parameter_Traits_and_Modifiers), as described in [the section on slurpy array parameters](https://docs.raku.org/type/Signature#Types_of_slurpy_array_parameters).
 
-<a id="slurpy-%E6%95%B0%E7%BB%84%E5%8F%82%E6%95%B0%E7%9A%84%E7%B1%BB%E5%9E%8B--types-of-slurpy-array-parameters"></a>
+<a id="slurpy-数组参数的类型--types-of-slurpy-array-parameters"></a>
 ## slurpy 数组参数的类型 / Types of slurpy array parameters
 
 slurpy 数组参数有三种变体。
@@ -768,7 +768,7 @@ There are three variations to slurpy array parameters.
 
 Each will be described in detail in the next few sections. As the difference between each is a bit nuanced, examples are provided for each to demonstrate how each slurpy convention varies from the others.
 
-<a id="%E5%B1%95%E5%B9%B3%E7%9A%84-slurpy-%E5%8F%82%E6%95%B0--flattened-slurpy"></a>
+<a id="展平的-slurpy-参数--flattened-slurpy"></a>
 ### 展平的 slurpy 参数 / Flattened slurpy
 
 用一个星号声明的 slurpy 参数将通过溶解一个或多个裸[可迭代](https://docs.raku.org/type/Iterable)层来展平参数。
@@ -790,7 +790,7 @@ a(($_ for 1, 2, 3));       # OUTPUT: «[1, 2, 3]»
 
 A single asterisk slurpy flattens all given iterables, effectively hoisting any object created with commas up to the top level.
 
-<a id="%E4%B8%8D%E5%B1%95%E5%B9%B3%E7%9A%84-slurpy-%E5%8F%82%E6%95%B0--unflattened-slurpy"></a>
+<a id="不展平的-slurpy-参数--unflattened-slurpy"></a>
 ### 不展平的 slurpy 参数 / Unflattened slurpy
 
 用两颗星声明的 slurpy 参数不会压缩列表中的任何[可迭代](https://docs.raku.org/type/Iterable)参数，但保持参数或多或少的原样：
@@ -812,7 +812,7 @@ b(($_ for 1, 2, 3));       # OUTPUT: «[(1, 2, 3),]␤»
 
 The double asterisk slurpy hides the nested comma objects and leaves them as-is in the slurpy array.
 
-<a id="%E5%8D%95%E4%B8%80-slurpy-%E5%8F%82%E6%95%B0%E8%A7%84%E5%88%99--single-argument-rule-slurpy"></a>
+<a id="单一-slurpy-参数规则--single-argument-rule-slurpy"></a>
 ### 单一 slurpy 参数规则 / Single argument rule slurpy
 
 使用 `+` 创建的 slurpy 参数使用*“单个参数规则”*，它决定如何根据上下文处理 slurpy 参数。基本上，如果只传递一个参数并且该参数是[可迭代](https://docs.raku.org/type/Iterable)，则该参数用于填充 slurpy 参数数组。在任何其他情况下，`+@` 的作用类似于 `**@`。
@@ -834,7 +834,7 @@ c(($_ for 1, 2, 3));       # OUTPUT: «[1, 2, 3]␤»
 
 For additional discussion and examples, see [Slurpy Conventions for Functions](https://docs.raku.org/language/functions#Slurpy_conventions).
 
-<a id="%E7%B1%BB%E5%9E%8B%E6%8D%95%E8%8E%B7--type-captures"></a>
+<a id="类型捕获--type-captures"></a>
 ## 类型捕获 / Type captures
 
 类型捕获允许将类型约束的规范推迟到调用函数的时间。它们允许在签名和函数体中引用类型。
@@ -857,7 +857,7 @@ my &s = f(10, 2, Int.new / Int.new);
 say s(2); # 10 / 2 * 2 == 10 
 ```
 
-<a id="%E4%BD%8D%E7%BD%AE%E4%B8%8E%E5%91%BD%E5%90%8D%E5%8F%82%E6%95%B0--positional-vs-named-arguments"></a>
+<a id="位置与命名参数--positional-vs-named-arguments"></a>
 ## 位置与命名参数 / Positional vs. named arguments
 
 参数可以是*位置的*或*命名的*。默认情况下，参数是位置的，除了 slurpy 哈希和标有前导冒号 `:` 的参数。后者称为[冒号对](https://docs.raku.org/type/Pair)。检查以下签名及其表示的内容：
@@ -911,7 +911,7 @@ sub named(:official($private)) { "Official business!" if $private }
 named :official;
 ```
 
-<a id="%E5%8F%82%E6%95%B0%E5%88%AB%E5%90%8D--argument-aliases"></a>
+<a id="参数别名--argument-aliases"></a>
 ## 参数别名 / Argument aliases
 
 [冒号对](https://docs.raku.org/type/Pair)语法可用于为参数提供别名：
@@ -967,7 +967,7 @@ say C.new(|%h.Map);
 # OUTPUT: «C.new(x => 5, y => 20, z => [1, 2])␤» 
 ```
 
-<a id="%E5%8F%AF%E9%80%89%E5%92%8C%E5%BC%BA%E5%88%B6%E5%8F%82%E6%95%B0--optional-and-mandatory-arguments"></a>
+<a id="可选和强制参数--optional-and-mandatory-arguments"></a>
 ## 可选和强制参数 / Optional and mandatory arguments
 
 默认情况下，位置参数是必需的，并且可以使用默认值或尾随问号使其成为可选参数：
@@ -999,7 +999,7 @@ $ = :($goal, $accuracy = $goal / 100);
 $ = :(:$excludes = ['.', '..']);        # a new Array for every call 
 ```
 
-<a id="%E5%8A%A8%E6%80%81%E5%8F%98%E9%87%8F--dynamic-variables"></a>
+<a id="动态变量--dynamic-variables"></a>
 ## 动态变量 / Dynamic variables
 
 签名中允许[动态变量](https://docs.raku.org/language/variables#The_%2A_twigil)，尽管它们不提供特殊行为，因为参数绑定无论如何都会连接两个作用域。
@@ -1007,7 +1007,7 @@ $ = :(:$excludes = ['.', '..']);        # a new Array for every call
 [Dynamic variables](https://docs.raku.org/language/variables#The_%2A_twigil) are allowed in signatures although they don't provide special behavior because argument binding does connect two scopes anyway.
 
 
-<a id="%E8%A7%A3%E6%9E%84%E5%8F%82%E6%95%B0--destructuring-arguments"></a>
+<a id="解构参数--destructuring-arguments"></a>
 ## 解构参数 / Destructuring arguments
 
 参数之后可以是括号中的子签名，它将对给定的参数进行解构。列表解构后就是它的元素：
@@ -1060,7 +1060,7 @@ for <Peter Paul Merry>.pairs -> (:key($index), :value($guest)) { }
 
 However, this unpacking of objects as their attributes is only the default behavior. To make an object get destructured differently, change its [`Capture`](https://docs.raku.org/routine/Capture) method.
 
-<a id="%E5%AD%90%E7%AD%BE%E5%90%8D--sub-signatures"></a>
+<a id="子签名--sub-signatures"></a>
 ## 子签名 / Sub-signatures
 
 要匹配复合参数，请在括号中的参数名称后面使用子签名。
@@ -1075,7 +1075,7 @@ foo(42, "answer");
 # OUTPUT: «called with \(42, "answer")␤» 
 ```
 
-<a id="%E9%95%BF%E5%90%8D--long-names"></a>
+<a id="长名--long-names"></a>
 ## 长名 / Long names
 
 要排除某些参数在多次分派中被考虑，请用双分号分隔它们。
@@ -1088,7 +1088,7 @@ f(10, 'answer');
 # OUTPUT: «10, answer, Any␤» 
 ```
 
-<a id="%E6%8D%95%E8%8E%B7%E5%8F%82%E6%95%B0--capture-parameters"></a>
+<a id="捕获参数--capture-parameters"></a>
 ## 捕获参数 / Capture parameters
 
 使用竖线 `|` 前缀参数使参数成为 [`Capture`](https://docs.raku.org/type/Capture)，它会消耗完所有剩余的位置和命名参数。
@@ -1110,7 +1110,7 @@ b(42, "answer");
 # OUTPUT: «Capture␤Int Str␤» 
 ```
 
-<a id="%E5%8F%82%E6%95%B0%E7%89%B9%E5%BE%81%E5%92%8C%E4%BF%AE%E9%A5%B0%E7%AC%A6--parameter-traits-and-modifiers"></a>
+<a id="参数特征和修饰符--parameter-traits-and-modifiers"></a>
 ## 参数特征和修饰符 / Parameter traits and modifiers
 
 默认情况下，参数绑定到其参数并标记为只读。可以通过参数上的特征来改变它。
@@ -1158,10 +1158,10 @@ Traits can be followed by the where clause:
 sub ip-expand-ipv6($ip is copy where m:i/^<[a..f\d\:]>**3..39$/) { }
 ```
 
-<a id="signature-%E7%9A%84%E6%96%B9%E6%B3%95--methods"></a>
+<a id="signature-的方法--methods"></a>
 # Signature 的方法 / Methods
 
-<a id="%E6%96%B9%E6%B3%95-params--method-params"></a>
+<a id="方法-params--method-params"></a>
 ## 方法 params / method params
 
 ```Perl6
@@ -1172,7 +1172,7 @@ method params(Signature:D: --> Positional)
 
 Returns the list of [`Parameter`](https://docs.raku.org/type/Parameter) objects that make up the signature.
 
-<a id="%E6%96%B9%E6%B3%95-arity--method-arity"></a>
+<a id="方法-arity--method-arity"></a>
 ## 方法 arity / method arity
 
 ```Perl6
@@ -1183,7 +1183,7 @@ method arity(Signature:D: --> Int:D)
 
 Returns the *minimal* number of positional arguments required to satisfy the signature.
 
-<a id="%E6%96%B9%E6%B3%95-count--method-count"></a>
+<a id="方法-count--method-count"></a>
 ## 方法 count / method count
 
 ```Perl6
@@ -1194,7 +1194,7 @@ method count(Signature:D: --> Real:D)
 
 Returns the *maximal* number of positional arguments which can be bound to the signature. Returns `Inf` if there is a slurpy positional parameter.
 
-<a id="%E6%96%B9%E6%B3%95-returns--method-returns"></a>
+<a id="方法-returns--method-returns"></a>
 ## 方法 returns / method returns
 
 无论签名的返回值约束是什么：
@@ -1205,7 +1205,7 @@ Whatever the Signature's return constraint is:
 :($a, $b --> Int).returns # OUTPUT: «(Int)» 
 ```
 
-<a id="%E6%96%B9%E6%B3%95-accepts--method-accepts"></a>
+<a id="方法-accepts--method-accepts"></a>
 ## 方法 ACCEPTS / method ACCEPTS
 
 ```Perl6
@@ -1250,7 +1250,7 @@ Since [`where` clauses](https://docs.raku.org/type/Signature#index-entry-where_c
 say :(42) ~~ :($ where 42)    # OUTPUT: «False␤» 
 ```
 
-<a id="%E6%96%B9%E6%B3%95-capture--method-capture"></a>
+<a id="方法-capture--method-capture"></a>
 ## 方法 Capture / method Capture
 
 定义为了：
@@ -1265,7 +1265,7 @@ method Capture()
 
 Throws `X::Cannot::Capture`.
 
-<a id="%E8%BF%90%E8%A1%8C%E6%97%B6%E5%88%9B%E5%BB%BA%E7%AD%BE%E5%90%8D%E5%AF%B9%E8%B1%A16d-201901%E5%8F%8A%E4%BB%A5%E5%90%8E--runtime-creation-of-signature-objects-6d-201901-and-later"></a>
+<a id="运行时创建签名对象6d-201901及以后--runtime-creation-of-signature-objects-6d-201901-and-later"></a>
 # 运行时创建签名对象(6.d, 2019.01及以后) / Runtime creation of Signature objects (6.d, 2019.01 and later)
 
 ```Perl6
@@ -1300,7 +1300,7 @@ The *minimal* number of positional arguments required to satisfy the signature. 
 
 The *maximal* number of positional arguments which can be bound to the signature. Defaults to the `arity` if not specified. Specify `Inf` if there is a slurpy positional parameter.
 
-<a id="%E7%B1%BB%E5%9E%8B%E5%9B%BE--type-graph"></a>
+<a id="类型图--type-graph"></a>
 # 类型图 / Type Graph
 
 `Signature` 签名的类型关系。

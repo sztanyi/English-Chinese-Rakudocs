@@ -16,7 +16,7 @@ A context is needed, in many occasions, to interpret the value of a container. I
 
 - [Sink](#sink)
 - [Number](#number)
-- [字符串 / String](#%E5%AD%97%E7%AC%A6%E4%B8%B2--string)
+- [字符串 / String](#字符串--string)
 
 <!-- /MarkdownTOC -->
 
@@ -94,7 +94,7 @@ say True+$list; # OUTPUT: «4␤»
 
 In the case of *listy* things, the numeric value will be in general equivalent to `.elems`; in some cases, like [Thread](https://docs.raku.org/routine/Numeric#%28Thread%29_method_Numeric) it will return an unique thread identifier.
 
-<a id="%E5%AD%97%E7%AC%A6%E4%B8%B2--string"></a>
+<a id="字符串--string"></a>
 # 字符串 / String
 
 在*字符串上下文*中，值可以作为字符串进行操作。例如，此上下文用于强制转换非字符串值，以便将其打印到标准输出。

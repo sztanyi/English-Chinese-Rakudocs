@@ -8,18 +8,18 @@ Working with associative arrays/dictionaries/hashes
 
 <!-- MarkdownTOC -->
 
-- [关联角色和关联类 / The associative role and associative classes](#%E5%85%B3%E8%81%94%E8%A7%92%E8%89%B2%E5%92%8C%E5%85%B3%E8%81%94%E7%B1%BB--the-associative-role-and-associative-classes)
-- [可变哈希和不变映射 / Mutable hashes and immutable maps](#%E5%8F%AF%E5%8F%98%E5%93%88%E5%B8%8C%E5%92%8C%E4%B8%8D%E5%8F%98%E6%98%A0%E5%B0%84--mutable-hashes-and-immutable-maps)
-- [哈希赋值 / Hash assignment](#%E5%93%88%E5%B8%8C%E8%B5%8B%E5%80%BC--hash-assignment)
-    - [哈希切片 / Hash slices](#%E5%93%88%E5%B8%8C%E5%88%87%E7%89%87--hash-slices)
-    - [非字符串键（对象哈希） / Non-string keys \(object hash\)](#%E9%9D%9E%E5%AD%97%E7%AC%A6%E4%B8%B2%E9%94%AE%EF%BC%88%E5%AF%B9%E8%B1%A1%E5%93%88%E5%B8%8C%EF%BC%89--non-string-keys-object-hash)
-    - [约束值类型 / Constraint value types](#%E7%BA%A6%E6%9D%9F%E5%80%BC%E7%B1%BB%E5%9E%8B--constraint-value-types)
-- [在哈希键和值上遍历 / Looping over hash keys and values](#%E5%9C%A8%E5%93%88%E5%B8%8C%E9%94%AE%E5%92%8C%E5%80%BC%E4%B8%8A%E9%81%8D%E5%8E%86--looping-over-hash-keys-and-values)
-    - [就地编辑值 / In place editing of values](#%E5%B0%B1%E5%9C%B0%E7%BC%96%E8%BE%91%E5%80%BC--in-place-editing-of-values)
+- [关联角色和关联类 / The associative role and associative classes](#关联角色和关联类--the-associative-role-and-associative-classes)
+- [可变哈希和不变映射 / Mutable hashes and immutable maps](#可变哈希和不变映射--mutable-hashes-and-immutable-maps)
+- [哈希赋值 / Hash assignment](#哈希赋值--hash-assignment)
+    - [哈希切片 / Hash slices](#哈希切片--hash-slices)
+    - [非字符串键（对象哈希） / Non-string keys \(object hash\)](#非字符串键（对象哈希）--non-string-keys-object-hash)
+    - [约束值类型 / Constraint value types](#约束值类型--constraint-value-types)
+- [在哈希键和值上遍历 / Looping over hash keys and values](#在哈希键和值上遍历--looping-over-hash-keys-and-values)
+    - [就地编辑值 / In place editing of values](#就地编辑值--in-place-editing-of-values)
 
 <!-- /MarkdownTOC -->
 
-<a id="%E5%85%B3%E8%81%94%E8%A7%92%E8%89%B2%E5%92%8C%E5%85%B3%E8%81%94%E7%B1%BB--the-associative-role-and-associative-classes"></a>
+<a id="关联角色和关联类--the-associative-role-and-associative-classes"></a>
 # 关联角色和关联类 / The associative role and associative classes
 
 [Associative](https://docs.raku.org/type/Associative) 角色是哈希和映射以及其他类（如 [MixHash](https://docs.raku.org/type/MixHash)）的基础。它定义了将在关联类中使用的两种类型；默认情况下，你可以使用任何类型（只要是 [Any](https://docs.raku.org/type/Any) 的子类都可以）[作为键](https://docs.raku.org/language/hashmap#Non-string_keys_%28object_hash%29)（尽管它将会被强制转为字符串）和任何对象作为值。可以使用 `of` 和 `keyof` 方法访问这些类型。
@@ -94,7 +94,7 @@ We override `DELETE-KEY`, `ASSIGN-KEY` and `BIND-KEY`, but only to throw an exce
 
 Making classes associative provides a very convenient way of using and working with them using hashes; an example can be seen in [Cro](https://cro.services/docs/reference/cro-http-client#Setting_the_request_body), which uses it extensively for the convenience of using hashes to define structured requests and express its response.
 
-<a id="%E5%8F%AF%E5%8F%98%E5%93%88%E5%B8%8C%E5%92%8C%E4%B8%8D%E5%8F%98%E6%98%A0%E5%B0%84--mutable-hashes-and-immutable-maps"></a>
+<a id="可变哈希和不变映射--mutable-hashes-and-immutable-maps"></a>
 # 可变哈希和不变映射 / Mutable hashes and immutable maps
 
 `Hash` 是从键到值的可变映射（在其他编程语言中称为*字典*、*哈希表*或*映射*）。这些值都是标量容器，这意味着你可以给它们赋值。[Map](https://docs.raku.org/type/Map) 是不可变的。一旦一个键与一个值配对，就不能更改此配对。
@@ -137,7 +137,7 @@ my %h;
 %h{'new key'} = 'new value';
 ```
 
-<a id="%E5%93%88%E5%B8%8C%E8%B5%8B%E5%80%BC--hash-assignment"></a>
+<a id="哈希赋值--hash-assignment"></a>
 # 哈希赋值 / Hash assignment
 
 将元素列表赋给散列变量首先会清空该变量，然后迭代右侧的元素。如果一个元素是一个 [Pair](https://docs.raku.org/type/Pair)，那么它的键将作为一个新的哈希键，其值将作为该键的新哈希值。否则，该值被强制转换为 [Str](https://docs.raku.org/type/Str) 并用作哈希键，而列表的下一个元素则作为相应的值。
@@ -291,7 +291,7 @@ my @names = map {
 
 This would have been avoided if you had used the `%()` hash constructor. Only use curly braces for creating Blocks.
 
-<a id="%E5%93%88%E5%B8%8C%E5%88%87%E7%89%87--hash-slices"></a>
+<a id="哈希切片--hash-slices"></a>
 ## 哈希切片 / Hash slices
 
 可以使用一个切片同时指定多个键。
@@ -303,7 +303,7 @@ my %h; %h<a b c> = 2 xx *; %h.perl.say;  # OUTPUT: «{:a(2), :b(2), :c(2)}␤»
 my %h; %h<a b c> = ^3;     %h.perl.say;  # OUTPUT: «{:a(0), :b(1), :c(2)}␤»
 ```
 
-<a id="%E9%9D%9E%E5%AD%97%E7%AC%A6%E4%B8%B2%E9%94%AE%EF%BC%88%E5%AF%B9%E8%B1%A1%E5%93%88%E5%B8%8C%EF%BC%89--non-string-keys-object-hash"></a>
+<a id="非字符串键（对象哈希）--non-string-keys-object-hash"></a>
 ## 非字符串键（对象哈希） / Non-string keys (object hash)
 
 默认情况下，`{ }` 中的键被强制转换为字符串。要用非字符串键组成哈希，请使用冒号前缀：
@@ -423,7 +423,7 @@ my %hash = %( "a"|"b" => 1, c => 2 );
 say %hash{"b"|"c"};       # OUTPUT: «any(1, 2)␤» 
 ```
 
-<a id="%E7%BA%A6%E6%9D%9F%E5%80%BC%E7%B1%BB%E5%9E%8B--constraint-value-types"></a>
+<a id="约束值类型--constraint-value-types"></a>
 ## 约束值类型 / Constraint value types
 
 在声明符和名称之间放置一个类型对象，以约束 `Hash` 的所有的值的类型。
@@ -490,7 +490,7 @@ try {
 # Type check failed in binding to parameter 'key'; expected Int but got Str ("string")
 ```
 
-<a id="%E5%9C%A8%E5%93%88%E5%B8%8C%E9%94%AE%E5%92%8C%E5%80%BC%E4%B8%8A%E9%81%8D%E5%8E%86--looping-over-hash-keys-and-values"></a>
+<a id="在哈希键和值上遍历--looping-over-hash-keys-and-values"></a>
 # 在哈希键和值上遍历 / Looping over hash keys and values
 
 处理哈希中元素的一个常见习惯用法是循环键和值，例如，
@@ -562,7 +562,7 @@ for %vowels.sort(*.key)>>.kv.flat -> $vowel, $index {
 
 You can also loop over a `Hash` using [destructuring](https://docs.raku.org/type/Signature#Destructuring_arguments).
 
-<a id="%E5%B0%B1%E5%9C%B0%E7%BC%96%E8%BE%91%E5%80%BC--in-place-editing-of-values"></a>
+<a id="就地编辑值--in-place-editing-of-values"></a>
 ## 就地编辑值 / In place editing of values
 
 有时你可能希望在对哈希值进行迭代时修改这些值。

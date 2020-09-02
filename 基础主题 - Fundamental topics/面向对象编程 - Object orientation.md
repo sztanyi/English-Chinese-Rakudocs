@@ -24,32 +24,32 @@ Everything that is not a *native* value is an *object*. Objects do allow for bot
 
 <!-- MarkdownTOC -->
 
-- [使用对象 / Using objects](#%E4%BD%BF%E7%94%A8%E5%AF%B9%E8%B1%A1--using-objects)
-    - [类型对象 / Type objects](#%E7%B1%BB%E5%9E%8B%E5%AF%B9%E8%B1%A1--type-objects)
-- [类 / Classes](#%E7%B1%BB--classes)
-    - [属性 / Attributes](#%E5%B1%9E%E6%80%A7--attributes)
-    - [方法 / Methods](#%E6%96%B9%E6%B3%95--methods)
-    - [类和实例方法 / Class and instance methods](#%E7%B1%BB%E5%92%8C%E5%AE%9E%E4%BE%8B%E6%96%B9%E6%B3%95--class-and-instance-methods)
+- [使用对象 / Using objects](#使用对象--using-objects)
+    - [类型对象 / Type objects](#类型对象--type-objects)
+- [类 / Classes](#类--classes)
+    - [属性 / Attributes](#属性--attributes)
+    - [方法 / Methods](#方法--methods)
+    - [类和实例方法 / Class and instance methods](#类和实例方法--class-and-instance-methods)
     - [`self`](#self)
-    - [私有方法 / Private methods](#%E7%A7%81%E6%9C%89%E6%96%B9%E6%B3%95--private-methods)
-    - [子方法 / Submethods](#%E5%AD%90%E6%96%B9%E6%B3%95--submethods)
-    - [继承 / Inheritance](#%E7%BB%A7%E6%89%BF--inheritance)
-    - [对象构造器 / Object construction](#%E5%AF%B9%E8%B1%A1%E6%9E%84%E9%80%A0%E5%99%A8--object-construction)
-    - [对象克隆 / Object cloning](#%E5%AF%B9%E8%B1%A1%E5%85%8B%E9%9A%86--object-cloning)
-- [角色 / Roles](#%E8%A7%92%E8%89%B2--roles)
-    - [应用角色 / Applying roles](#%E5%BA%94%E7%94%A8%E8%A7%92%E8%89%B2--applying-roles)
-    - [占位 / Stubs](#%E5%8D%A0%E4%BD%8D--stubs)
-    - [继承 / Inheritance](#%E7%BB%A7%E6%89%BF--inheritance-1)
-    - [顺序排行 / Pecking order](#%E9%A1%BA%E5%BA%8F%E6%8E%92%E8%A1%8C--pecking-order)
-    - [自动角色双关 / Automatic role punning](#%E8%87%AA%E5%8A%A8%E8%A7%92%E8%89%B2%E5%8F%8C%E5%85%B3--automatic-role-punning)
-    - [参数化角色 / Parameterized roles](#%E5%8F%82%E6%95%B0%E5%8C%96%E8%A7%92%E8%89%B2--parameterized-roles)
-    - [混合角色 / Mixins of roles](#%E6%B7%B7%E5%90%88%E8%A7%92%E8%89%B2--mixins-of-roles)
-- [元对象编程与自省 / Metaobject programming and introspection](#%E5%85%83%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B%E4%B8%8E%E8%87%AA%E7%9C%81--metaobject-programming-and-introspection)
+    - [私有方法 / Private methods](#私有方法--private-methods)
+    - [子方法 / Submethods](#子方法--submethods)
+    - [继承 / Inheritance](#继承--inheritance)
+    - [对象构造器 / Object construction](#对象构造器--object-construction)
+    - [对象克隆 / Object cloning](#对象克隆--object-cloning)
+- [角色 / Roles](#角色--roles)
+    - [应用角色 / Applying roles](#应用角色--applying-roles)
+    - [占位 / Stubs](#占位--stubs)
+    - [继承 / Inheritance](#继承--inheritance-1)
+    - [顺序排行 / Pecking order](#顺序排行--pecking-order)
+    - [自动角色双关 / Automatic role punning](#自动角色双关--automatic-role-punning)
+    - [参数化角色 / Parameterized roles](#参数化角色--parameterized-roles)
+    - [混合角色 / Mixins of roles](#混合角色--mixins-of-roles)
+- [元对象编程与自省 / Metaobject programming and introspection](#元对象编程与自省--metaobject-programming-and-introspection)
 
 <!-- /MarkdownTOC -->
 
 
-<a id="%E4%BD%BF%E7%94%A8%E5%AF%B9%E8%B1%A1--using-objects"></a>
+<a id="使用对象--using-objects"></a>
 # 使用对象 / Using objects
 
 若要调用对象上的方法，请添加一个点，后面跟着方法名称：
@@ -125,7 +125,7 @@ Here, we call method `nl-in` on the `$*IN` object, without arguments, and assign
 
 All objects support methods from class [Mu](https://docs.raku.org/type/Mu), which is the type hierarchy root. All objects derive from `Mu`.
 
-<a id="%E7%B1%BB%E5%9E%8B%E5%AF%B9%E8%B1%A1--type-objects"></a>
+<a id="类型对象--type-objects"></a>
 ## 类型对象 / Type objects
 
 类型本身就是对象，你可以通过直接输入它的名称来获得*类型对象*：
@@ -182,7 +182,7 @@ if $type ~~ Real {
 }
 ```
 
-<a id="%E7%B1%BB--classes"></a>
+<a id="类--classes"></a>
 # 类 / Classes
 
 类使用 `class` 关键字声明，通常后面跟着名称。
@@ -205,7 +205,7 @@ my class Journey { }
 
 This restricts their visibility to the current lexical scope, which can be useful if the class is an implementation detail nested inside a module or another class.
 
-<a id="%E5%B1%9E%E6%80%A7--attributes"></a>
+<a id="属性--attributes"></a>
 ## 属性 / Attributes 
 
 属性是存在类实例中的变量；当实例化时，变量与其值之间的关联称为属性。它们是存储对象状态的地方。在 Raku 中，所有属性都是*私有*，这意味着它们只能由类实例本身直接访问。它们通常使用 `has` 声明符和 `!` 符号声明。
@@ -289,7 +289,7 @@ $vacation.notes = 'Pack hiking gear and sunglasses!';
 
 Note that, although the default constructor can initialize read-only attributes, it will only set attributes that have an accessor method. That is, even if you pass `travelers => ["Alex", "Betty"]` to the default constructor, the attribute `@!travelers` is not initialized.
 
-<a id="%E6%96%B9%E6%B3%95--methods"></a>
+<a id="方法--methods"></a>
 ## 方法 / Methods
 
 方法在类中使用 `method` 关键字声明。
@@ -402,7 +402,7 @@ $trip.notes("First steps");
 
 Overriding the default auto-generated accessor means it is no longer available to provide a mutable container on return for an assignment. A method call is the preferred approach to adding computation and logic to the update of an attribute. Many modern languages can update an attribute by overloading assignment with a “setter” method. While Raku can overload the assignment operator for this purpose with a [`Proxy`](https://github.com/perl6/roast/blob/master/S12-attributes/mutators.t) object, overloading assignment to set attributes with complex logic is currently discouraged as [weaker object oriented design](https://6guts.wordpress.com/2016/11/25/perl-6-is-biased-towards-mutators-being-really-simple-thats-a-good-thing/).
 
-<a id="%E7%B1%BB%E5%92%8C%E5%AE%9E%E4%BE%8B%E6%96%B9%E6%B3%95--class-and-instance-methods"></a>
+<a id="类和实例方法--class-and-instance-methods"></a>
 ## 类和实例方法 / Class and instance methods
 
 方法的签名可以有一个*显式调用者*作为它的第一个参数，后面跟一个冒号，这允许方法使用调用方法的对象。
@@ -519,7 +519,7 @@ Note that if the relevant methods `bless`, `CREATE` of [Mu](https://docs.raku.or
 
 On the other hand, the submethods `BUILD` and `TWEAK` are called on instances, in different stages of initialization. Submethods of the same name from subclasses have not yet run, so you should not rely on potentially virtual method calls inside these methods.
 
-<a id="%E7%A7%81%E6%9C%89%E6%96%B9%E6%B3%95--private-methods"></a>
+<a id="私有方法--private-methods"></a>
 ## 私有方法 / Private methods
 
 在定义类之外的任何地方都不能调用带有 `!` 的方法；这些方法是私有的，因为它们在声明它们的类之外是不可见的。使用感叹号而不是点调用私有方法：
@@ -554,7 +554,7 @@ CATCH { default { put .^name ~ ":\n" ~ .Str } }
 
 Private methods are not inherited by subclasses.
 
-<a id="%E5%AD%90%E6%96%B9%E6%B3%95--submethods"></a>
+<a id="子方法--submethods"></a>
 ## 子方法 / Submethods
 
 子方法是不可由子类继承的公共方法。这个名称源于这样一个事实，即它们在语义上与子例程相似。
@@ -598,7 +598,7 @@ say InvertiblePoint2D.new(x => 1, y => 2);
 
 See also: [Object construction](https://docs.raku.org/language/objects#Object_construction).
 
-<a id="%E7%BB%A7%E6%89%BF--inheritance"></a>
+<a id="继承--inheritance"></a>
 ## 继承 / Inheritance
 
 类可以有*父类*。
@@ -644,7 +644,7 @@ $test.frob;          # calls the frob method of Child rather than Parent
 # OUTPUT: «the child's somewhat more fancy frob is called␤» 
 ```
 
-<a id="%E5%AF%B9%E8%B1%A1%E6%9E%84%E9%80%A0%E5%99%A8--object-construction"></a>
+<a id="对象构造器--object-construction"></a>
 ## 对象构造器 / Object construction
 
 对象通常是通过方法调用来创建的，无论是在类型对象上还是在同一类型的另一个对象上。
@@ -753,7 +753,7 @@ say RectangleWithCachedArea.new( x2 => 5, x1 => 1, y2 => 1, y1 => 0).area;
 # OUTPUT: «4␤» 
 ```
 
-<a id="%E5%AF%B9%E8%B1%A1%E5%85%8B%E9%9A%86--object-cloning"></a>
+<a id="对象克隆--object-cloning"></a>
 ## 对象克隆 / Object cloning
 
 克隆是使用 [clone](https://docs.raku.org/routine/clone) 方法完成的，所有对象都有这个方法，它会浅层克隆公共属性和私有属性。*公共*属性的新值可以作为命名参数提供。
@@ -776,7 +776,7 @@ say $o2; # Foo.new(foo => 42, bar => 5000)
 
 See document for [clone](https://docs.raku.org/routine/clone) for details on how non-scalar attributes get cloned, as well as examples of implementing your own custom clone methods.
 
-<a id="%E8%A7%92%E8%89%B2--roles"></a>
+<a id="角色--roles"></a>
 # 角色 / Roles
 
 角色是属性和方法的集合；但是，与类不同的是，角色只用于描述对象行为的一部分；这就是为什么通常将角色*混合*在类和对象中。通常，类用于管理对象，角色用于管理对象中的行为和代码重用。
@@ -823,7 +823,7 @@ print $trip;
 
 Roles are immutable as soon as the compiler parses the closing curly brace of the role declaration.
 
-<a id="%E5%BA%94%E7%94%A8%E8%A7%92%E8%89%B2--applying-roles"></a>
+<a id="应用角色--applying-roles"></a>
 ## 应用角色 / Applying roles
 
 角色应用与类继承有很大不同。当角色应用于类时，该角色的方法将复制到类中。如果对同一个类应用了多个角色，冲突（例如属性或同名的 non-multi 方法）会导致编译时错误，可以通过在类中提供同名的方法来解决。
@@ -930,7 +930,7 @@ role R2 {
 class C does R1 does R2 { }
 ```
 
-<a id="%E5%8D%A0%E4%BD%8D--stubs"></a>
+<a id="占位--stubs"></a>
 ## 占位 / Stubs
 
 当角色包含[占位](https://docs.raku.org/routine/...)方法时，必须在角色应用于类时提供同名方法的非占位版本。这允许你创建充当抽象接口的角色。
@@ -964,7 +964,7 @@ class SPoint does AbstractSerializable {
 
 The implementation of the stubbed method may also be provided by another role.
 
-<a id="%E7%BB%A7%E6%89%BF--inheritance-1"></a>
+<a id="继承--inheritance-1"></a>
 ## 继承 / Inheritance
 
 角色不能从类继承，但它们可能*承载*类，从而导致执行该角色的任何类从所承载的类继承。所以如果你写：
@@ -998,7 +998,7 @@ multi a ($a)   { "not F".say }
 a(G);                            # OUTPUT: «F␤» 
 ```
 
-<a id="%E9%A1%BA%E5%BA%8F%E6%8E%92%E8%A1%8C--pecking-order"></a>
+<a id="顺序排行--pecking-order"></a>
 ## 顺序排行 / Pecking order
 
 在类中直接定义的方法总是覆盖来自应用角色或继承类的定义。如果不存在此类定义，则来自角色的方法将覆盖从类继承的方法。这既发生在所述类由角色引入时，也发生在所述类直接继承时。
@@ -1028,7 +1028,7 @@ C.new.f; # OUTPUT «I am in role M␤»
 
 Note that each candidate for a multi-method is its own method. In this case, the above only applies if two such candidates have the same signature. Otherwise, there is no conflict, and the candidate is just added to the multi-method.
 
-<a id="%E8%87%AA%E5%8A%A8%E8%A7%92%E8%89%B2%E5%8F%8C%E5%85%B3--automatic-role-punning"></a>
+<a id="自动角色双关--automatic-role-punning"></a>
 ## 自动角色双关 / Automatic role punning
 
 任何直接实例化角色或将其用作类型对象的尝试都会自动创建与角色同名的类，从而可以透明地使用角色，就像使用类一样。
@@ -1054,7 +1054,7 @@ We call this automatic creation of classes *punning*, and the generated class a 
 
 Punning is not caused by most [metaprogramming](https://docs.raku.org/language/mop) constructs, however, as those are sometimes used to work directly with roles.
 
-<a id="%E5%8F%82%E6%95%B0%E5%8C%96%E8%A7%92%E8%89%B2--parameterized-roles"></a>
+<a id="参数化角色--parameterized-roles"></a>
 ## 参数化角色 / Parameterized roles
 
 角色可以参数化，方法是在方括号中给角色签名：
@@ -1117,7 +1117,7 @@ Logging[$*OUT].log(debug, 'here we go'); # OUTPUT: «[DEBUG] here we go␤»
 
 You can have multiple roles of the same name, but with different signatures; the normal rules of multi dispatch apply for choosing multi candidates.
 
-<a id="%E6%B7%B7%E5%90%88%E8%A7%92%E8%89%B2--mixins-of-roles"></a>
+<a id="混合角色--mixins-of-roles"></a>
 ## 混合角色 / Mixins of roles
 
 角色可以混合到对象中。角色的给定属性和方法将被添加到对象已经拥有的方法和属性中。多个混合器和匿名角色是支持的。
@@ -1192,7 +1192,7 @@ say %seen<not-there>.defined;  # OUTPUT: «True␤» (0 may be False but is well
 say Int.new(%seen<not-there>); # OUTPUT: «0␤» 
 ```
 
-<a id="%E5%85%83%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B%E4%B8%8E%E8%87%AA%E7%9C%81--metaobject-programming-and-introspection"></a>
+<a id="元对象编程与自省--metaobject-programming-and-introspection"></a>
 # 元对象编程与自省 / Metaobject programming and introspection
 
 Raku 有一个元对象系统，这意味着对象、类、角色、语法、枚举等的行为本身由其他对象控制；这些对象被称为*元对象*。元对象和普通对象一样，是类的实例，在本例中我们称之为*元类*。

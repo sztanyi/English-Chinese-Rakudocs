@@ -20,106 +20,106 @@ During the making of Raku great pains were taken to get rid of warts in the synt
 
 <!-- MarkdownTOC -->
 
-- [变量和常量 / Variables and constants](#%E5%8F%98%E9%87%8F%E5%92%8C%E5%B8%B8%E9%87%8F--variables-and-constants)
-    - [常量在编译时计算 / Constants are computed at compile time](#%E5%B8%B8%E9%87%8F%E5%9C%A8%E7%BC%96%E8%AF%91%E6%97%B6%E8%AE%A1%E7%AE%97--constants-are-computed-at-compile-time)
-    - [分配给 `Nil` 会产生一个不同的值，通常为 `Any` / Assigning to `Nil` produces a different value, usually `Any`](#%E5%88%86%E9%85%8D%E7%BB%99-nil-%E4%BC%9A%E4%BA%A7%E7%94%9F%E4%B8%80%E4%B8%AA%E4%B8%8D%E5%90%8C%E7%9A%84%E5%80%BC%EF%BC%8C%E9%80%9A%E5%B8%B8%E4%B8%BA-any--assigning-to-nil-produces-a-different-value-usually-any)
-    - [使用代码块插值一个匿名状态变量 / Using a block to interpolate anon state vars](#%E4%BD%BF%E7%94%A8%E4%BB%A3%E7%A0%81%E5%9D%97%E6%8F%92%E5%80%BC%E4%B8%80%E4%B8%AA%E5%8C%BF%E5%90%8D%E7%8A%B6%E6%80%81%E5%8F%98%E9%87%8F--using-a-block-to-interpolate-anon-state-vars)
-    - [当值为假时，在 `Associative` 上使用集合子例程 / Using set subroutines on `Associative` when the value is falsy](#%E5%BD%93%E5%80%BC%E4%B8%BA%E5%81%87%E6%97%B6%EF%BC%8C%E5%9C%A8-associative-%E4%B8%8A%E4%BD%BF%E7%94%A8%E9%9B%86%E5%90%88%E5%AD%90%E4%BE%8B%E7%A8%8B--using-set-subroutines-on-associative-when-the-value-is-falsy)
-- [代码块 / Blocks](#%E4%BB%A3%E7%A0%81%E5%9D%97--blocks)
-    - [小心空“代码块” / Beware of empty "blocks"](#%E5%B0%8F%E5%BF%83%E7%A9%BA%E2%80%9C%E4%BB%A3%E7%A0%81%E5%9D%97%E2%80%9D--beware-of-empty-blocks)
-- [对象 / Objects](#%E5%AF%B9%E8%B1%A1--objects)
-    - [赋值给属性 / Assigning to attributes](#%E8%B5%8B%E5%80%BC%E7%BB%99%E5%B1%9E%E6%80%A7--assigning-to-attributes)
-    - [`BUILD` 防止构造函数参数的自动属性初始化 / `BUILD` prevents automatic attribute initialization from constructor arguments](#build-%E9%98%B2%E6%AD%A2%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0%E7%9A%84%E8%87%AA%E5%8A%A8%E5%B1%9E%E6%80%A7%E5%88%9D%E5%A7%8B%E5%8C%96--build-prevents-automatic-attribute-initialization-from-constructor-arguments)
-- [空格 / Whitespace](#%E7%A9%BA%E6%A0%BC--whitespace)
-    - [正则表达式中的空格不匹配 / Whitespace in regexes does not match literally](#%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E4%B8%AD%E7%9A%84%E7%A9%BA%E6%A0%BC%E4%B8%8D%E5%8C%B9%E9%85%8D--whitespace-in-regexes-does-not-match-literally)
-    - [句法分析中的歧义 / Ambiguities in parsing](#%E5%8F%A5%E6%B3%95%E5%88%86%E6%9E%90%E4%B8%AD%E7%9A%84%E6%AD%A7%E4%B9%89--ambiguities-in-parsing)
-        - [代码块与哈希切片模糊度 / Block vs. Hash slice ambiguity](#%E4%BB%A3%E7%A0%81%E5%9D%97%E4%B8%8E%E5%93%88%E5%B8%8C%E5%88%87%E7%89%87%E6%A8%A1%E7%B3%8A%E5%BA%A6--block-vs-hash-slice-ambiguity)
-        - [约简与数组构造函数歧义 / Reduction vs. Array constructor ambiguity](#%E7%BA%A6%E7%AE%80%E4%B8%8E%E6%95%B0%E7%BB%84%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E6%AD%A7%E4%B9%89--reduction-vs-array-constructor-ambiguity)
-        - [少于运算符与词引文/关联数组索引 - Less than vs. Word quoting/Associative indexing](#%E5%B0%91%E4%BA%8E%E8%BF%90%E7%AE%97%E7%AC%A6%E4%B8%8E%E8%AF%8D%E5%BC%95%E6%96%87%E5%85%B3%E8%81%94%E6%95%B0%E7%BB%84%E7%B4%A2%E5%BC%95---less-than-vs-word-quotingassociative-indexing)
-        - [排他序列与范围序列 / Exclusive sequences vs. sequences with Ranges](#%E6%8E%92%E4%BB%96%E5%BA%8F%E5%88%97%E4%B8%8E%E8%8C%83%E5%9B%B4%E5%BA%8F%E5%88%97--exclusive-sequences-vs-sequences-with-ranges)
+- [变量和常量 / Variables and constants](#变量和常量--variables-and-constants)
+    - [常量在编译时计算 / Constants are computed at compile time](#常量在编译时计算--constants-are-computed-at-compile-time)
+    - [分配给 `Nil` 会产生一个不同的值，通常为 `Any` / Assigning to `Nil` produces a different value, usually `Any`](#分配给-nil-会产生一个不同的值，通常为-any--assigning-to-nil-produces-a-different-value-usually-any)
+    - [使用代码块插值一个匿名状态变量 / Using a block to interpolate anon state vars](#使用代码块插值一个匿名状态变量--using-a-block-to-interpolate-anon-state-vars)
+    - [当值为假时，在 `Associative` 上使用集合子例程 / Using set subroutines on `Associative` when the value is falsy](#当值为假时，在-associative-上使用集合子例程--using-set-subroutines-on-associative-when-the-value-is-falsy)
+- [代码块 / Blocks](#代码块--blocks)
+    - [小心空“代码块” / Beware of empty "blocks"](#小心空“代码块”--beware-of-empty-blocks)
+- [对象 / Objects](#对象--objects)
+    - [赋值给属性 / Assigning to attributes](#赋值给属性--assigning-to-attributes)
+    - [`BUILD` 防止构造函数参数的自动属性初始化 / `BUILD` prevents automatic attribute initialization from constructor arguments](#build-防止构造函数参数的自动属性初始化--build-prevents-automatic-attribute-initialization-from-constructor-arguments)
+- [空格 / Whitespace](#空格--whitespace)
+    - [正则表达式中的空格不匹配 / Whitespace in regexes does not match literally](#正则表达式中的空格不匹配--whitespace-in-regexes-does-not-match-literally)
+    - [句法分析中的歧义 / Ambiguities in parsing](#句法分析中的歧义--ambiguities-in-parsing)
+        - [代码块与哈希切片模糊度 / Block vs. Hash slice ambiguity](#代码块与哈希切片模糊度--block-vs-hash-slice-ambiguity)
+        - [约简与数组构造函数歧义 / Reduction vs. Array constructor ambiguity](#约简与数组构造函数歧义--reduction-vs-array-constructor-ambiguity)
+        - [少于运算符与词引文/关联数组索引 - Less than vs. Word quoting/Associative indexing](#少于运算符与词引文关联数组索引---less-than-vs-word-quotingassociative-indexing)
+        - [排他序列与范围序列 / Exclusive sequences vs. sequences with Ranges](#排他序列与范围序列--exclusive-sequences-vs-sequences-with-ranges)
 - [Captures](#captures)
-    - [容器与 capture 中的值相对应的值 / Containers versus values in a capture](#%E5%AE%B9%E5%99%A8%E4%B8%8E-capture-%E4%B8%AD%E7%9A%84%E5%80%BC%E7%9B%B8%E5%AF%B9%E5%BA%94%E7%9A%84%E5%80%BC--containers-versus-values-in-a-capture)
-- [`Cool` 技巧 / `Cool` tricks](#cool-%E6%8A%80%E5%B7%A7--cool-tricks)
-    - [字符串不是“列表”，当心索引 / Strings are not `List`s, so beware indexing](#%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%8D%E6%98%AF%E2%80%9C%E5%88%97%E8%A1%A8%E2%80%9D%EF%BC%8C%E5%BD%93%E5%BF%83%E7%B4%A2%E5%BC%95--strings-are-not-lists-so-beware-indexing)
-    - [`List` 变成字符串，所以 `.index()` 时小心 / `List`s become strings, so beware `.index()`ing](#list-%E5%8F%98%E6%88%90%E5%AD%97%E7%AC%A6%E4%B8%B2%EF%BC%8C%E6%89%80%E4%BB%A5-index-%E6%97%B6%E5%B0%8F%E5%BF%83--lists-become-strings-so-beware-indexing)
-    - [列表变为字符串，当心 `.contains()` / `List`s become strings, so beware `.contains()`](#%E5%88%97%E8%A1%A8%E5%8F%98%E4%B8%BA%E5%AD%97%E7%AC%A6%E4%B8%B2%EF%BC%8C%E5%BD%93%E5%BF%83-contains--lists-become-strings-so-beware-contains)
-    - [`Numeric` 字面量在强制类型转换前被解析 / `Numeric` literals are parsed before coercion](#numeric-%E5%AD%97%E9%9D%A2%E9%87%8F%E5%9C%A8%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E5%89%8D%E8%A2%AB%E8%A7%A3%E6%9E%90--numeric-literals-are-parsed-before-coercion)
-    - [从列表中获取一个随机项 / Getting a random item from a `List`](#%E4%BB%8E%E5%88%97%E8%A1%A8%E4%B8%AD%E8%8E%B7%E5%8F%96%E4%B8%80%E4%B8%AA%E9%9A%8F%E6%9C%BA%E9%A1%B9--getting-a-random-item-from-a-list)
-    - [列表中数字上下文中元素的个数 / `List`s numify to their number of elements in numeric context](#%E5%88%97%E8%A1%A8%E4%B8%AD%E6%95%B0%E5%AD%97%E4%B8%8A%E4%B8%8B%E6%96%87%E4%B8%AD%E5%85%83%E7%B4%A0%E7%9A%84%E4%B8%AA%E6%95%B0--lists-numify-to-their-number-of-elements-in-numeric-context)
-- [数组 / Arrays](#%E6%95%B0%E7%BB%84--arrays)
-    - [引用数组中的最后一个元素 / Referencing the last element of an array](#%E5%BC%95%E7%94%A8%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E6%9C%80%E5%90%8E%E4%B8%80%E4%B8%AA%E5%85%83%E7%B4%A0--referencing-the-last-element-of-an-array)
-    - [类型化数组参数 / Typed array parameters](#%E7%B1%BB%E5%9E%8B%E5%8C%96%E6%95%B0%E7%BB%84%E5%8F%82%E6%95%B0--typed-array-parameters)
-    - [在不需要时使用 `«»` 引用 / Using `«»` quoting when you don't need it](#%E5%9C%A8%E4%B8%8D%E9%9C%80%E8%A6%81%E6%97%B6%E4%BD%BF%E7%94%A8-%C2%AB%C2%BB-%E5%BC%95%E7%94%A8--using-%C2%AB%C2%BB-quoting-when-you-dont-need-it)
-- [字符串 / Strings](#%E5%AD%97%E7%AC%A6%E4%B8%B2--strings)
-    - [引用和插值 / Quotes and interpolation](#%E5%BC%95%E7%94%A8%E5%92%8C%E6%8F%92%E5%80%BC--quotes-and-interpolation)
-    - [字符串不是 Iterable / Strings are not iterable](#%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%8D%E6%98%AF-iterable--strings-are-not-iterable)
-    - [`.chars` 获取字素的数量，而不是编码点 / `.chars` gets the number of graphemes, not Codepoints](#chars-%E8%8E%B7%E5%8F%96%E5%AD%97%E7%B4%A0%E7%9A%84%E6%95%B0%E9%87%8F%EF%BC%8C%E8%80%8C%E4%B8%8D%E6%98%AF%E7%BC%96%E7%A0%81%E7%82%B9--chars-gets-the-number-of-graphemes-not-codepoints)
-    - [所有文本均按默认进行规格化 / All text is normalized by default](#%E6%89%80%E6%9C%89%E6%96%87%E6%9C%AC%E5%9D%87%E6%8C%89%E9%BB%98%E8%AE%A4%E8%BF%9B%E8%A1%8C%E8%A7%84%E6%A0%BC%E5%8C%96--all-text-is-normalized-by-default)
-    - [语素变体通常遵循数字语义 / Allomorphs generally follow numeric semantics](#%E8%AF%AD%E7%B4%A0%E5%8F%98%E4%BD%93%E9%80%9A%E5%B8%B8%E9%81%B5%E5%BE%AA%E6%95%B0%E5%AD%97%E8%AF%AD%E4%B9%89--allomorphs-generally-follow-numeric-semantics)
-    - [字符串的大小写不敏感比较 / Case-insensitive comparison of strings](#%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E5%A4%A7%E5%B0%8F%E5%86%99%E4%B8%8D%E6%95%8F%E6%84%9F%E6%AF%94%E8%BE%83--case-insensitive-comparison-of-strings)
-- [键值对 / Pairs](#%E9%94%AE%E5%80%BC%E5%AF%B9--pairs)
-    - [键值对标记左手边的常量 / Constants on the left-hand side of pair notation](#%E9%94%AE%E5%80%BC%E5%AF%B9%E6%A0%87%E8%AE%B0%E5%B7%A6%E6%89%8B%E8%BE%B9%E7%9A%84%E5%B8%B8%E9%87%8F--constants-on-the-left-hand-side-of-pair-notation)
-    - [`Pair` 中的标量值 / Scalar values within `Pair`](#pair-%E4%B8%AD%E7%9A%84%E6%A0%87%E9%87%8F%E5%80%BC--scalar-values-within-pair)
-- [集合、背包和混合 / Sets, bags and mixes](#%E9%9B%86%E5%90%88%E3%80%81%E8%83%8C%E5%8C%85%E5%92%8C%E6%B7%B7%E5%90%88--sets-bags-and-mixes)
-    - [集合、背包和混合是无序的 / Sets, bags and mixes do not have a fixed order](#%E9%9B%86%E5%90%88%E3%80%81%E8%83%8C%E5%8C%85%E5%92%8C%E6%B7%B7%E5%90%88%E6%98%AF%E6%97%A0%E5%BA%8F%E7%9A%84--sets-bags-and-mixes-do-not-have-a-fixed-order)
-- [运算符 / Operators](#%E8%BF%90%E7%AE%97%E7%AC%A6--operators)
+    - [容器与 capture 中的值相对应的值 / Containers versus values in a capture](#容器与-capture-中的值相对应的值--containers-versus-values-in-a-capture)
+- [`Cool` 技巧 / `Cool` tricks](#cool-技巧--cool-tricks)
+    - [字符串不是“列表”，当心索引 / Strings are not `List`s, so beware indexing](#字符串不是“列表”，当心索引--strings-are-not-lists-so-beware-indexing)
+    - [`List` 变成字符串，所以 `.index()` 时小心 / `List`s become strings, so beware `.index()`ing](#list-变成字符串，所以-index-时小心--lists-become-strings-so-beware-indexing)
+    - [列表变为字符串，当心 `.contains()` / `List`s become strings, so beware `.contains()`](#列表变为字符串，当心-contains--lists-become-strings-so-beware-contains)
+    - [`Numeric` 字面量在强制类型转换前被解析 / `Numeric` literals are parsed before coercion](#numeric-字面量在强制类型转换前被解析--numeric-literals-are-parsed-before-coercion)
+    - [从列表中获取一个随机项 / Getting a random item from a `List`](#从列表中获取一个随机项--getting-a-random-item-from-a-list)
+    - [列表中数字上下文中元素的个数 / `List`s numify to their number of elements in numeric context](#列表中数字上下文中元素的个数--lists-numify-to-their-number-of-elements-in-numeric-context)
+- [数组 / Arrays](#数组--arrays)
+    - [引用数组中的最后一个元素 / Referencing the last element of an array](#引用数组中的最后一个元素--referencing-the-last-element-of-an-array)
+    - [类型化数组参数 / Typed array parameters](#类型化数组参数--typed-array-parameters)
+    - [在不需要时使用 `«»` 引用 / Using `«»` quoting when you don't need it](#在不需要时使用-«»-引用--using-«»-quoting-when-you-dont-need-it)
+- [字符串 / Strings](#字符串--strings)
+    - [引用和插值 / Quotes and interpolation](#引用和插值--quotes-and-interpolation)
+    - [字符串不是 Iterable / Strings are not iterable](#字符串不是-iterable--strings-are-not-iterable)
+    - [`.chars` 获取字素的数量，而不是编码点 / `.chars` gets the number of graphemes, not Codepoints](#chars-获取字素的数量，而不是编码点--chars-gets-the-number-of-graphemes-not-codepoints)
+    - [所有文本均按默认进行规格化 / All text is normalized by default](#所有文本均按默认进行规格化--all-text-is-normalized-by-default)
+    - [语素变体通常遵循数字语义 / Allomorphs generally follow numeric semantics](#语素变体通常遵循数字语义--allomorphs-generally-follow-numeric-semantics)
+    - [字符串的大小写不敏感比较 / Case-insensitive comparison of strings](#字符串的大小写不敏感比较--case-insensitive-comparison-of-strings)
+- [键值对 / Pairs](#键值对--pairs)
+    - [键值对标记左手边的常量 / Constants on the left-hand side of pair notation](#键值对标记左手边的常量--constants-on-the-left-hand-side-of-pair-notation)
+    - [`Pair` 中的标量值 / Scalar values within `Pair`](#pair-中的标量值--scalar-values-within-pair)
+- [集合、背包和混合 / Sets, bags and mixes](#集合、背包和混合--sets-bags-and-mixes)
+    - [集合、背包和混合是无序的 / Sets, bags and mixes do not have a fixed order](#集合、背包和混合是无序的--sets-bags-and-mixes-do-not-have-a-fixed-order)
+- [运算符 / Operators](#运算符--operators)
     - [Junctions](#junctions)
-    - [排他序列运算符 / Exclusive sequence operator](#%E6%8E%92%E4%BB%96%E5%BA%8F%E5%88%97%E8%BF%90%E7%AE%97%E7%AC%A6--exclusive-sequence-operator)
-    - [字符串范围/序列 - String ranges/Sequences](#%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%8C%83%E5%9B%B4%E5%BA%8F%E5%88%97---string-rangessequences)
-    - [主题运算符 / Topicalizing operators](#%E4%B8%BB%E9%A2%98%E8%BF%90%E7%AE%97%E7%AC%A6--topicalizing-operators)
-    - [胖箭头与常量 / Fat arrow and constants](#%E8%83%96%E7%AE%AD%E5%A4%B4%E4%B8%8E%E5%B8%B8%E9%87%8F--fat-arrow-and-constants)
-    - [中缀运算符赋值 / Infix operator assignment](#%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6%E8%B5%8B%E5%80%BC--infix-operator-assignment)
-- [正则 / Regexes](#%E6%AD%A3%E5%88%99--regexes)
-    - [`$x` 与 ``，`$(code)` 与 `` / `$x` vs ``, and `$(code)` vs ``](#%24x-%E4%B8%8E-%EF%BC%8C%24code-%E4%B8%8E--%24x-vs--and-%24code-vs-)
-    - [`|` 与 `||`: 哪个分支将胜出 / `|` vs `||`: which branch will win](#%7C-%E4%B8%8E-%7C%7C-%E5%93%AA%E4%B8%AA%E5%88%86%E6%94%AF%E5%B0%86%E8%83%9C%E5%87%BA--%7C-vs-%7C%7C-which-branch-will-win)
-    - [`$/` 每次匹配正则表达式时都会更改 - `$/` changes each time a regular expression is matched](#%24-%E6%AF%8F%E6%AC%A1%E5%8C%B9%E9%85%8D%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%97%B6%E9%83%BD%E4%BC%9A%E6%9B%B4%E6%94%B9---%24-changes-each-time-a-regular-expression-is-matched)
-    - [`` 与 ``: 命名 rule 与引用列表 / `` vs. ``: named rules vs. quoted lists](#-%E4%B8%8E--%E5%91%BD%E5%90%8D-rule-%E4%B8%8E%E5%BC%95%E7%94%A8%E5%88%97%E8%A1%A8--vs--named-rules-vs-quoted-lists)
-    - [列表上下文中的非捕获、非全局匹配 / Non-capturing, non-global matching in list context](#%E5%88%97%E8%A1%A8%E4%B8%8A%E4%B8%8B%E6%96%87%E4%B8%AD%E7%9A%84%E9%9D%9E%E6%8D%95%E8%8E%B7%E3%80%81%E9%9D%9E%E5%85%A8%E5%B1%80%E5%8C%B9%E9%85%8D--non-capturing-non-global-matching-in-list-context)
-- [常见的优先级错误 / Common precedence mistakes](#%E5%B8%B8%E8%A7%81%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7%E9%94%99%E8%AF%AF--common-precedence-mistakes)
-    - [副词与优先级 / Adverbs and precedence](#%E5%89%AF%E8%AF%8D%E4%B8%8E%E4%BC%98%E5%85%88%E7%BA%A7--adverbs-and-precedence)
-    - [范围与优先级 / Ranges and precedence](#%E8%8C%83%E5%9B%B4%E4%B8%8E%E4%BC%98%E5%85%88%E7%BA%A7--ranges-and-precedence)
-    - [松散的布尔运算符 / Loose boolean operators](#%E6%9D%BE%E6%95%A3%E7%9A%84%E5%B8%83%E5%B0%94%E8%BF%90%E7%AE%97%E7%AC%A6--loose-boolean-operators)
-    - [显式运算符和减号前缀运算符 / Exponentiation operator and prefix minus](#%E6%98%BE%E5%BC%8F%E8%BF%90%E7%AE%97%E7%AC%A6%E5%92%8C%E5%87%8F%E5%8F%B7%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6--exponentiation-operator-and-prefix-minus)
-    - [方法运算符调用和减号前缀运算符 / Method operator calls and prefix minus](#%E6%96%B9%E6%B3%95%E8%BF%90%E7%AE%97%E7%AC%A6%E8%B0%83%E7%94%A8%E5%92%8C%E5%87%8F%E5%8F%B7%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6--method-operator-calls-and-prefix-minus)
-- [子程序和方法调用 / Subroutine and method calls](#%E5%AD%90%E7%A8%8B%E5%BA%8F%E5%92%8C%E6%96%B9%E6%B3%95%E8%B0%83%E7%94%A8--subroutine-and-method-calls)
-    - [命名参数 / Named parameters](#%E5%91%BD%E5%90%8D%E5%8F%82%E6%95%B0--named-parameters)
-    - [参数计数极限 / Argument count limit](#%E5%8F%82%E6%95%B0%E8%AE%A1%E6%95%B0%E6%9E%81%E9%99%90--argument-count-limit)
-    - [相位和隐式返回 / Phasers and implicit return](#%E7%9B%B8%E4%BD%8D%E5%92%8C%E9%9A%90%E5%BC%8F%E8%BF%94%E5%9B%9E--phasers-and-implicit-return)
-- [输入输出 / Input and output](#%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA--input-and-output)
+    - [排他序列运算符 / Exclusive sequence operator](#排他序列运算符--exclusive-sequence-operator)
+    - [字符串范围/序列 - String ranges/Sequences](#字符串范围序列---string-rangessequences)
+    - [主题运算符 / Topicalizing operators](#主题运算符--topicalizing-operators)
+    - [胖箭头与常量 / Fat arrow and constants](#胖箭头与常量--fat-arrow-and-constants)
+    - [中缀运算符赋值 / Infix operator assignment](#中缀运算符赋值--infix-operator-assignment)
+- [正则 / Regexes](#正则--regexes)
+    - [`$x` 与 ``，`$(code)` 与 `` / `$x` vs ``, and `$(code)` vs ``](#$x-与-，$code-与--$x-vs--and-$code-vs-)
+    - [`|` 与 `||`: 哪个分支将胜出 / `|` vs `||`: which branch will win](#|-与-||-哪个分支将胜出--|-vs-||-which-branch-will-win)
+    - [`$/` 每次匹配正则表达式时都会更改 - `$/` changes each time a regular expression is matched](#$-每次匹配正则表达式时都会更改---$-changes-each-time-a-regular-expression-is-matched)
+    - [`` 与 ``: 命名 rule 与引用列表 / `` vs. ``: named rules vs. quoted lists](#-与--命名-rule-与引用列表--vs--named-rules-vs-quoted-lists)
+    - [列表上下文中的非捕获、非全局匹配 / Non-capturing, non-global matching in list context](#列表上下文中的非捕获、非全局匹配--non-capturing-non-global-matching-in-list-context)
+- [常见的优先级错误 / Common precedence mistakes](#常见的优先级错误--common-precedence-mistakes)
+    - [副词与优先级 / Adverbs and precedence](#副词与优先级--adverbs-and-precedence)
+    - [范围与优先级 / Ranges and precedence](#范围与优先级--ranges-and-precedence)
+    - [松散的布尔运算符 / Loose boolean operators](#松散的布尔运算符--loose-boolean-operators)
+    - [显式运算符和减号前缀运算符 / Exponentiation operator and prefix minus](#显式运算符和减号前缀运算符--exponentiation-operator-and-prefix-minus)
+    - [方法运算符调用和减号前缀运算符 / Method operator calls and prefix minus](#方法运算符调用和减号前缀运算符--method-operator-calls-and-prefix-minus)
+- [子程序和方法调用 / Subroutine and method calls](#子程序和方法调用--subroutine-and-method-calls)
+    - [命名参数 / Named parameters](#命名参数--named-parameters)
+    - [参数计数极限 / Argument count limit](#参数计数极限--argument-count-limit)
+    - [相位和隐式返回 / Phasers and implicit return](#相位和隐式返回--phasers-and-implicit-return)
+- [输入输出 / Input and output](#输入输出--input-and-output)
     - [Closing open filehandles and pipes](#closing-open-filehandles-and-pipes)
-    - [字符串化 IO::Path / IO::Path stringification](#%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8C%96-iopath--iopath-stringification)
-    - [将输入数据分裂成行 / Splitting the input data into lines](#%E5%B0%86%E8%BE%93%E5%85%A5%E6%95%B0%E6%8D%AE%E5%88%86%E8%A3%82%E6%88%90%E8%A1%8C--splitting-the-input-data-into-lines)
-    - [Proc::Async 与 `print` / Proc::Async and `print`](#procasync-%E4%B8%8E-print--procasync-and-print)
-    - [使用 `.stdout` 后不调用 `.lines` / Using `.stdout` without `.lines`](#%E4%BD%BF%E7%94%A8-stdout-%E5%90%8E%E4%B8%8D%E8%B0%83%E7%94%A8-lines--using-stdout-without-lines)
-- [异常处理 / Exception handling](#%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86--exception-handling)
-    - [舍弃 `Proc` 的返回值 / Sunk `Proc`](#%E8%88%8D%E5%BC%83-proc-%E7%9A%84%E8%BF%94%E5%9B%9E%E5%80%BC--sunk-proc)
-- [使用简写 / Using shortcuts](#%E4%BD%BF%E7%94%A8%E7%AE%80%E5%86%99--using-shortcuts)
-    - [^ 符号 / The ^ twigil](#%5E-%E7%AC%A6%E5%8F%B7--the-%5E-twigil)
-    - [可互换地使用 `»` 和 `map` / Using `»` and `map` interchangeably](#%E5%8F%AF%E4%BA%92%E6%8D%A2%E5%9C%B0%E4%BD%BF%E7%94%A8-%C2%BB-%E5%92%8C-map--using-%C2%BB-and-map-interchangeably)
-    - [`« »` 中的分词 / Word splitting in `« »`](#%C2%AB-%C2%BB-%E4%B8%AD%E7%9A%84%E5%88%86%E8%AF%8D--word-splitting-in-%C2%AB-%C2%BB)
-- [作用域 / Scope](#%E4%BD%9C%E7%94%A8%E5%9F%9F--scope)
-    - [使用 `once` 代码块 / Using a `once` block](#%E4%BD%BF%E7%94%A8-once-%E4%BB%A3%E7%A0%81%E5%9D%97--using-a-once-block)
-    - [`LEAVE` 相位器与 `exit` / `LEAVE` phaser and `exit`](#leave-%E7%9B%B8%E4%BD%8D%E5%99%A8%E4%B8%8E-exit--leave-phaser-and-exit)
-    - [`LEAVE` 相位器可能比你想象的要早运行 / `LEAVE` phaser may run sooner than you think](#leave-%E7%9B%B8%E4%BD%8D%E5%99%A8%E5%8F%AF%E8%83%BD%E6%AF%94%E4%BD%A0%E6%83%B3%E8%B1%A1%E7%9A%84%E8%A6%81%E6%97%A9%E8%BF%90%E8%A1%8C--leave-phaser-may-run-sooner-than-you-think)
+    - [字符串化 IO::Path / IO::Path stringification](#字符串化-iopath--iopath-stringification)
+    - [将输入数据分裂成行 / Splitting the input data into lines](#将输入数据分裂成行--splitting-the-input-data-into-lines)
+    - [Proc::Async 与 `print` / Proc::Async and `print`](#procasync-与-print--procasync-and-print)
+    - [使用 `.stdout` 后不调用 `.lines` / Using `.stdout` without `.lines`](#使用-stdout-后不调用-lines--using-stdout-without-lines)
+- [异常处理 / Exception handling](#异常处理--exception-handling)
+    - [舍弃 `Proc` 的返回值 / Sunk `Proc`](#舍弃-proc-的返回值--sunk-proc)
+- [使用简写 / Using shortcuts](#使用简写--using-shortcuts)
+    - [^ 符号 / The ^ twigil](#^-符号--the-^-twigil)
+    - [可互换地使用 `»` 和 `map` / Using `»` and `map` interchangeably](#可互换地使用-»-和-map--using-»-and-map-interchangeably)
+    - [`« »` 中的分词 / Word splitting in `« »`](#«-»-中的分词--word-splitting-in-«-»)
+- [作用域 / Scope](#作用域--scope)
+    - [使用 `once` 代码块 / Using a `once` block](#使用-once-代码块--using-a-once-block)
+    - [`LEAVE` 相位器与 `exit` / `LEAVE` phaser and `exit`](#leave-相位器与-exit--leave-phaser-and-exit)
+    - [`LEAVE` 相位器可能比你想象的要早运行 / `LEAVE` phaser may run sooner than you think](#leave-相位器可能比你想象的要早运行--leave-phaser-may-run-sooner-than-you-think)
 - [Grammars](#grammars)
-    - [在 grammar 动作中使用正则表达式 / Using regexes within grammar's actions](#%E5%9C%A8-grammar-%E5%8A%A8%E4%BD%9C%E4%B8%AD%E4%BD%BF%E7%94%A8%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F--using-regexes-within-grammars-actions)
-    - [给 rule/token/regex 起某些名称 / Using certain names for rules/token/regexes](#%E7%BB%99-ruletokenregex-%E8%B5%B7%E6%9F%90%E4%BA%9B%E5%90%8D%E7%A7%B0--using-certain-names-for-rulestokenregexes)
-- [不幸的泛化 / Unfortunate generalization](#%E4%B8%8D%E5%B9%B8%E7%9A%84%E6%B3%9B%E5%8C%96--unfortunate-generalization)
+    - [在 grammar 动作中使用正则表达式 / Using regexes within grammar's actions](#在-grammar-动作中使用正则表达式--using-regexes-within-grammars-actions)
+    - [给 rule/token/regex 起某些名称 / Using certain names for rules/token/regexes](#给-ruletokenregex-起某些名称--using-certain-names-for-rulestokenregexes)
+- [不幸的泛化 / Unfortunate generalization](#不幸的泛化--unfortunate-generalization)
     - [`:exists` with more than one key](#exists-with-more-than-one-key)
-    - [使用带有列表的 `[…]` 元运算符 / Using `[…]` metaoperator with a list of lists](#%E4%BD%BF%E7%94%A8%E5%B8%A6%E6%9C%89%E5%88%97%E8%A1%A8%E7%9A%84-%E2%80%A6-%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6--using-%E2%80%A6-metaoperator-with-a-list-of-lists)
-    - [使用 \[~\] 连接一个 blob 列表 / Using \[~\] for concatenating a list of blobs](#%E4%BD%BF%E7%94%A8-%7E-%E8%BF%9E%E6%8E%A5%E4%B8%80%E4%B8%AA-blob-%E5%88%97%E8%A1%A8--using-%7E-for-concatenating-a-list-of-blobs)
+    - [使用带有列表的 `[…]` 元运算符 / Using `[…]` metaoperator with a list of lists](#使用带有列表的-…-元运算符--using-…-metaoperator-with-a-list-of-lists)
+    - [使用 \[~\] 连接一个 blob 列表 / Using \[~\] for concatenating a list of blobs](#使用-~-连接一个-blob-列表--using-~-for-concatenating-a-list-of-blobs)
 - [Maps](#maps)
-    - [注意在 sink 上下文中的嵌套 `Map` / Beware of nesting `Map`s in sink context](#%E6%B3%A8%E6%84%8F%E5%9C%A8-sink-%E4%B8%8A%E4%B8%8B%E6%96%87%E4%B8%AD%E7%9A%84%E5%B5%8C%E5%A5%97-map--beware-of-nesting-maps-in-sink-context)
-- [智能匹配 / Smartmatching](#%E6%99%BA%E8%83%BD%E5%8C%B9%E9%85%8D--smartmatching)
-    - [智能匹配与 `WhateverCode` / Smartmatch and `WhateverCode`](#%E6%99%BA%E8%83%BD%E5%8C%B9%E9%85%8D%E4%B8%8E-whatevercode--smartmatch-and-whatevercode)
+    - [注意在 sink 上下文中的嵌套 `Map` / Beware of nesting `Map`s in sink context](#注意在-sink-上下文中的嵌套-map--beware-of-nesting-maps-in-sink-context)
+- [智能匹配 / Smartmatching](#智能匹配--smartmatching)
+    - [智能匹配与 `WhateverCode` / Smartmatch and `WhateverCode`](#智能匹配与-whatevercode--smartmatch-and-whatevercode)
 
 <!-- /MarkdownTOC -->
 
 
-<a id="%E5%8F%98%E9%87%8F%E5%92%8C%E5%B8%B8%E9%87%8F--variables-and-constants"></a>
+<a id="变量和常量--variables-and-constants"></a>
 # 变量和常量 / Variables and constants
 
-<a id="%E5%B8%B8%E9%87%8F%E5%9C%A8%E7%BC%96%E8%AF%91%E6%97%B6%E8%AE%A1%E7%AE%97--constants-are-computed-at-compile-time"></a>
+<a id="常量在编译时计算--constants-are-computed-at-compile-time"></a>
 ## 常量在编译时计算 / Constants are computed at compile time
 
 常量是在编译时计算的，因此，如果在模组中使用常量，请记住，由于预编译模块本身，它们的值将被冻结：
@@ -146,7 +146,7 @@ unit module Something::Or::Other;
 my $config-file := "config.txt".IO.slurp;
 ```
 
-<a id="%E5%88%86%E9%85%8D%E7%BB%99-nil-%E4%BC%9A%E4%BA%A7%E7%94%9F%E4%B8%80%E4%B8%AA%E4%B8%8D%E5%90%8C%E7%9A%84%E5%80%BC%EF%BC%8C%E9%80%9A%E5%B8%B8%E4%B8%BA-any--assigning-to-nil-produces-a-different-value-usually-any"></a>
+<a id="分配给-nil-会产生一个不同的值，通常为-any--assigning-to-nil-produces-a-different-value-usually-any"></a>
 ## 分配给 `Nil` 会产生一个不同的值，通常为 `Any` / Assigning to `Nil` produces a different value, usually `Any`
 
 实际上，赋值 `Nil` [将变量恢复为其默认值](https://docs.raku.org/type/Nil)。所以：
@@ -194,7 +194,7 @@ say "Result2 is { $result2.^name }"; # OUTPUT: «Result2 is Any␤»
 
 A [`Match` will be `Nil`](https://docs.raku.org/language/regexes#Literals) if it finds nothing; however assigning `Nil` to `$result2` above will result in its default value, which is `Any` as shown.
 
-<a id="%E4%BD%BF%E7%94%A8%E4%BB%A3%E7%A0%81%E5%9D%97%E6%8F%92%E5%80%BC%E4%B8%80%E4%B8%AA%E5%8C%BF%E5%90%8D%E7%8A%B6%E6%80%81%E5%8F%98%E9%87%8F--using-a-block-to-interpolate-anon-state-vars"></a>
+<a id="使用代码块插值一个匿名状态变量--using-a-block-to-interpolate-anon-state-vars"></a>
 ## 使用代码块插值一个匿名状态变量 / Using a block to interpolate anon state vars
 
 程序员打算让代码计算调用例程的次数，但是计数器没有增加：
@@ -261,7 +261,7 @@ Alternatively, you can also use the [concatenation operator](https://docs.raku.o
 sub count-it { say "Count is " ~ $++ }
 ```
 
-<a id="%E5%BD%93%E5%80%BC%E4%B8%BA%E5%81%87%E6%97%B6%EF%BC%8C%E5%9C%A8-associative-%E4%B8%8A%E4%BD%BF%E7%94%A8%E9%9B%86%E5%90%88%E5%AD%90%E4%BE%8B%E7%A8%8B--using-set-subroutines-on-associative-when-the-value-is-falsy"></a>
+<a id="当值为假时，在-associative-上使用集合子例程--using-set-subroutines-on-associative-when-the-value-is-falsy"></a>
 ## 当值为假时，在 `Associative` 上使用集合子例程 / Using set subroutines on `Associative` when the value is falsy
 
 对实现了 [Associative](https://docs.raku.org/type/Associative) 的类使用 [(cont)](https://docs.raku.org/routine/(cont)%20,%20infix%20%20%E2%88%8B)、 [∋](https://docs.raku.org/routine/(cont),%20infix%20%E2%88%8B)、 [∌](https://docs.raku.org/routine/%E2%88%8C)、 [(elem)](https://docs.raku.org/routine/(elem),%20infix%20%E2%88%88)、 [∈](https://docs.raku.org/routine/(elem),%20infix%20%E2%88%88) 或者 [∉](https://docs.raku.org/routine/%E2%88%89) 将返回 `False` 如果键的值为假。
@@ -288,10 +288,10 @@ say Foo.enums<a>:exists;
 # True
 ```
 
-<a id="%E4%BB%A3%E7%A0%81%E5%9D%97--blocks"></a>
+<a id="代码块--blocks"></a>
 # 代码块 / Blocks
 
-<a id="%E5%B0%8F%E5%BF%83%E7%A9%BA%E2%80%9C%E4%BB%A3%E7%A0%81%E5%9D%97%E2%80%9D--beware-of-empty-blocks"></a>
+<a id="小心空“代码块”--beware-of-empty-blocks"></a>
 ## 小心空“代码块” / Beware of empty "blocks"
 
 花括号用于声明块。但是，空大括号将声明散列。
@@ -314,10 +314,10 @@ my &does-nothing = {;};
 say does-nothing(33); # OUTPUT: «Nil␤»
 ```
 
-<a id="%E5%AF%B9%E8%B1%A1--objects"></a>
+<a id="对象--objects"></a>
 # 对象 / Objects
 
-<a id="%E8%B5%8B%E5%80%BC%E7%BB%99%E5%B1%9E%E6%80%A7--assigning-to-attributes"></a>
+<a id="赋值给属性--assigning-to-attributes"></a>
 ## 赋值给属性 / Assigning to attributes
 
 新手通常认为，因为具有访问器的属性被声明为 `has $.x`，所以它们可以赋值给类内部的 `$.x`。不是这样。
@@ -367,7 +367,7 @@ method double {
 
 which operates on the attributes directly.
 
-<a id="build-%E9%98%B2%E6%AD%A2%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0%E7%9A%84%E8%87%AA%E5%8A%A8%E5%B1%9E%E6%80%A7%E5%88%9D%E5%A7%8B%E5%8C%96--build-prevents-automatic-attribute-initialization-from-constructor-arguments"></a>
+<a id="build-防止构造函数参数的自动属性初始化--build-prevents-automatic-attribute-initialization-from-constructor-arguments"></a>
 ## `BUILD` 防止构造函数参数的自动属性初始化 / `BUILD` prevents automatic attribute initialization from constructor arguments
 
 定义自己的 `BUILD` 子方法时，必须自己初始化所有属性。例如
@@ -415,10 +415,10 @@ submethod BUILD(:$!x) {
 }
 ```
 
-<a id="%E7%A9%BA%E6%A0%BC--whitespace"></a>
+<a id="空格--whitespace"></a>
 # 空格 / Whitespace
 
-<a id="%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E4%B8%AD%E7%9A%84%E7%A9%BA%E6%A0%BC%E4%B8%8D%E5%8C%B9%E9%85%8D--whitespace-in-regexes-does-not-match-literally"></a>
+<a id="正则表达式中的空格不匹配--whitespace-in-regexes-does-not-match-literally"></a>
 ## 正则表达式中的空格不匹配 / Whitespace in regexes does not match literally
 
 ```Raku
@@ -447,7 +447,7 @@ Ways to match whitespace:
 - `.ws`, a built-in rule for whitespace that oftentimes does what you actually want it to do
 - with `m:s/a b/` or `m:sigspace/a b/`, the blank in the regexes matches arbitrary whitespace
 
-<a id="%E5%8F%A5%E6%B3%95%E5%88%86%E6%9E%90%E4%B8%AD%E7%9A%84%E6%AD%A7%E4%B9%89--ambiguities-in-parsing"></a>
+<a id="句法分析中的歧义--ambiguities-in-parsing"></a>
 ## 句法分析中的歧义 / Ambiguities in parsing
 
 虽然有些语言可以让你尽可能地移除标记之间的空白，但 Raku 就不那么宽容了。最重要的口号是我们不鼓励代码高尔夫，所以不要限制空格（这些限制背后更严重的根本原因是单程解析和解析 Raku 程序的能力，而实际上没有[回溯](https://en.wikipedia.org/wiki/Backtracking)）。
@@ -458,7 +458,7 @@ While some languages will let you get away with removing as much whitespace betw
 
 The common areas you should watch out for are:
 
-<a id="%E4%BB%A3%E7%A0%81%E5%9D%97%E4%B8%8E%E5%93%88%E5%B8%8C%E5%88%87%E7%89%87%E6%A8%A1%E7%B3%8A%E5%BA%A6--block-vs-hash-slice-ambiguity"></a>
+<a id="代码块与哈希切片模糊度--block-vs-hash-slice-ambiguity"></a>
 ### 代码块与哈希切片模糊度 / Block vs. Hash slice ambiguity
 
 ```Raku
@@ -472,7 +472,7 @@ while ($++ > 5) { .say }
 while $++ > 5 { .say }
 ```
 
-<a id="%E7%BA%A6%E7%AE%80%E4%B8%8E%E6%95%B0%E7%BB%84%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E6%AD%A7%E4%B9%89--reduction-vs-array-constructor-ambiguity"></a>
+<a id="约简与数组构造函数歧义--reduction-vs-array-constructor-ambiguity"></a>
 ### 约简与数组构造函数歧义 / Reduction vs. Array constructor ambiguity
 
 ```Raku
@@ -488,7 +488,7 @@ my @a = [[ <foo>],];
 my @a = [[<foo bar ber>],];
 ```
 
-<a id="%E5%B0%91%E4%BA%8E%E8%BF%90%E7%AE%97%E7%AC%A6%E4%B8%8E%E8%AF%8D%E5%BC%95%E6%96%87%E5%85%B3%E8%81%94%E6%95%B0%E7%BB%84%E7%B4%A2%E5%BC%95---less-than-vs-word-quotingassociative-indexing"></a>
+<a id="少于运算符与词引文关联数组索引---less-than-vs-word-quotingassociative-indexing"></a>
 ### 少于运算符与词引文/关联数组索引 - Less than vs. Word quoting/Associative indexing
 
 ```Raku
@@ -500,7 +500,7 @@ say 3<5>4
 say 3 < 5 > 4
 ```
 
-<a id="%E6%8E%92%E4%BB%96%E5%BA%8F%E5%88%97%E4%B8%8E%E8%8C%83%E5%9B%B4%E5%BA%8F%E5%88%97--exclusive-sequences-vs-sequences-with-ranges"></a>
+<a id="排他序列与范围序列--exclusive-sequences-vs-sequences-with-ranges"></a>
 ### 排他序列与范围序列 / Exclusive sequences vs. sequences with Ranges
 
 有关 `...^` 运算符如何会被误认为是 `...` 运算符后紧跟 `^` 运算符的更多信息，请参见[运算符陷阱](https://docs.raku.org/language/traps#Exclusive_sequence_operator)一节。你必须正确地使用空格来指示后续的解释执行。
@@ -510,7 +510,7 @@ See the section on [operator traps](https://docs.raku.org/language/traps#Exclusi
 <a id="captures"></a>
 # Captures
 
-<a id="%E5%AE%B9%E5%99%A8%E4%B8%8E-capture-%E4%B8%AD%E7%9A%84%E5%80%BC%E7%9B%B8%E5%AF%B9%E5%BA%94%E7%9A%84%E5%80%BC--containers-versus-values-in-a-capture"></a>
+<a id="容器与-capture-中的值相对应的值--containers-versus-values-in-a-capture"></a>
 ## 容器与 capture 中的值相对应的值 / Containers versus values in a capture
 
 初学者可能期望 `Capture` 中的一个变量在以后使用 `Capture` 时提供它的当前值。例如：
@@ -573,21 +573,21 @@ for ^5 {
 
 With [item](https://docs.raku.org/routine/item), the container will be evaluated in item context, its value extracted, and the desired outcome achieved.
 
-<a id="cool-%E6%8A%80%E5%B7%A7--cool-tricks"></a>
+<a id="cool-技巧--cool-tricks"></a>
 # `Cool` 技巧 / `Cool` tricks
 
 Raku 包含一个 [Cool](https://docs.raku.org/type/Cool) 类，它提供了一些我们在必要时通过强制参数来习惯的 DWIM 行为。然而，DWIM 从来都不是完美的。特别是在 [List](https://docs.raku.org/type/List)，即 `Cool`，有许多方法不可能完成你可能认为它们所做的工作，包括 `contains`、`starts-with` 或 `index`。请参阅下面一节中的一些例子。
 
 Raku includes a [Cool](https://docs.raku.org/type/Cool) class, which provides some of the DWIM behaviors we got used to by coercing arguments when necessary. However, DWIM is never perfect. Especially with [List](https://docs.raku.org/type/List)s, which are `Cool`, there are many methods that will not do what you probably think they do, including `contains`, `starts-with` or `index`. Please see some examples in the section below.
 
-<a id="%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%8D%E6%98%AF%E2%80%9C%E5%88%97%E8%A1%A8%E2%80%9D%EF%BC%8C%E5%BD%93%E5%BF%83%E7%B4%A2%E5%BC%95--strings-are-not-lists-so-beware-indexing"></a>
+<a id="字符串不是“列表”，当心索引--strings-are-not-lists-so-beware-indexing"></a>
 ## 字符串不是“列表”，当心索引 / Strings are not `List`s, so beware indexing
 
 在 Raku 中，[字符串](https://docs.raku.org/type/Str)不是字符列表。不能像处理列表一样[遍历](https://docs.raku.org/language/traps#Strings_are_not_iterable)，尽管有名为 [.index 的子例程](https://docs.raku.org/type/Str#routine_index)。
 
 In Raku, [strings](https://docs.raku.org/type/Str) are not lists of characters. One [cannot iterate](https://docs.raku.org/language/traps#Strings_are_not_iterable) over them or index into them as you can with [lists](https://docs.raku.org/type/List), despite the name of the [.index routine](https://docs.raku.org/type/Str#routine_index).
 
-<a id="list-%E5%8F%98%E6%88%90%E5%AD%97%E7%AC%A6%E4%B8%B2%EF%BC%8C%E6%89%80%E4%BB%A5-index-%E6%97%B6%E5%B0%8F%E5%BF%83--lists-become-strings-so-beware-indexing"></a>
+<a id="list-变成字符串，所以-index-时小心--lists-become-strings-so-beware-indexing"></a>
 ## `List` 变成字符串，所以 `.index()` 时小心 / `List`s become strings, so beware `.index()`ing
 
 [list](https://docs.raku.org/type/List) 继承自 [Cool](https://docs.raku.org/type/Cool)，能使用 [.index](https://docs.raku.org/type/Str#routine_index) 子例程。由于 `.index` [强制转换](https://docs.raku.org/type/List#method_Str)数组类型至 [Str](https://docs.raku.org/type/Str)，这个有时返回列表元素的索引，但行为不是这样定义的。
@@ -606,7 +606,7 @@ say @a.index(<a b>);  # 0 -- not undefined!
 
 These same caveats apply to [.rindex](https://docs.raku.org/type/Str#routine_rindex).
 
-<a id="%E5%88%97%E8%A1%A8%E5%8F%98%E4%B8%BA%E5%AD%97%E7%AC%A6%E4%B8%B2%EF%BC%8C%E5%BD%93%E5%BF%83-contains--lists-become-strings-so-beware-contains"></a>
+<a id="列表变为字符串，当心-contains--lists-become-strings-so-beware-contains"></a>
 ## 列表变为字符串，当心 `.contains()` / `List`s become strings, so beware `.contains()`
 
 同样的，[.contains](https://docs.raku.org/type/List#(Cool)_method_contains) 方法不会查找列表里面的元素。
@@ -638,7 +638,7 @@ say @menu (>) <milkshake fries>;            # True (! NB: order doesn't matter)
 
 If you are doing a lot of element testing, you may be better off using a [Set](https://docs.raku.org/type/Set).
 
-<a id="numeric-%E5%AD%97%E9%9D%A2%E9%87%8F%E5%9C%A8%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E5%89%8D%E8%A2%AB%E8%A7%A3%E6%9E%90--numeric-literals-are-parsed-before-coercion"></a>
+<a id="numeric-字面量在强制类型转换前被解析--numeric-literals-are-parsed-before-coercion"></a>
 ## `Numeric` 字面量在强制类型转换前被解析 / `Numeric` literals are parsed before coercion
 
 经验丰富的程序员可能不会对此感到惊讶，但数字文字在被强制放入字符串之前将被解析为数字值，这可能会产生非直观的结果。
@@ -652,7 +652,7 @@ say 12_345.contains("23");  # True
 say 12_345.contains("2_");  # False 
 ```
 
-<a id="%E4%BB%8E%E5%88%97%E8%A1%A8%E4%B8%AD%E8%8E%B7%E5%8F%96%E4%B8%80%E4%B8%AA%E9%9A%8F%E6%9C%BA%E9%A1%B9--getting-a-random-item-from-a-list"></a>
+<a id="从列表中获取一个随机项--getting-a-random-item-from-a-list"></a>
 ## 从列表中获取一个随机项 / Getting a random item from a `List`
 
 一个常见的任务是从一个集合中检索一个或多个随机元素，但 `List.rand` 做不到。[Cool](https://docs.raku.org/type/Cool) 提供了 [rand](https://docs.raku.org/routine/rand#class_Cool)，但它首先将 `List` 转换为列表中的项目数，并返回 0 到该值之间的随机实数。要获得随机元素，请参见 [pick](https://docs.raku.org/routine/pick) 和 [roll](https://docs.raku.org/routine/roll)。
@@ -668,7 +668,7 @@ say @colors.pick(2);    # yellow violet  (cannot repeat)
 say @colors.roll(3);    # red green red  (can repeat) 
 ```
 
-<a id="%E5%88%97%E8%A1%A8%E4%B8%AD%E6%95%B0%E5%AD%97%E4%B8%8A%E4%B8%8B%E6%96%87%E4%B8%AD%E5%85%83%E7%B4%A0%E7%9A%84%E4%B8%AA%E6%95%B0--lists-numify-to-their-number-of-elements-in-numeric-context"></a>
+<a id="列表中数字上下文中元素的个数--lists-numify-to-their-number-of-elements-in-numeric-context"></a>
 ## 列表中数字上下文中元素的个数 / `List`s numify to their number of elements in numeric context
 
 你要检查一个数字是否可被一组数字中的任何一个整除：
@@ -692,10 +692,10 @@ say 42 %% <11 33 88 55 111 20325>.any;
 
 which will clearly reveal the falsehood of the divisiveness of all the numbers in the list, which will be numified separately.
 
-<a id="%E6%95%B0%E7%BB%84--arrays"></a>
+<a id="数组--arrays"></a>
 # 数组 / Arrays
 
-<a id="%E5%BC%95%E7%94%A8%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E6%9C%80%E5%90%8E%E4%B8%80%E4%B8%AA%E5%85%83%E7%B4%A0--referencing-the-last-element-of-an-array"></a>
+<a id="引用数组中的最后一个元素--referencing-the-last-element-of-an-array"></a>
 ## 引用数组中的最后一个元素 / Referencing the last element of an array
 
 在某些语言中，可以通过请求阵列的 "-1th" 元素来引用数组的最后一个元素，例如：
@@ -726,7 +726,7 @@ say @array.tail;      # OUTPUT: «eve␤»
 say @array.tail(2);   # OUTPUT: «(charlie eve)␤» 
 ```
 
-<a id="%E7%B1%BB%E5%9E%8B%E5%8C%96%E6%95%B0%E7%BB%84%E5%8F%82%E6%95%B0--typed-array-parameters"></a>
+<a id="类型化数组参数--typed-array-parameters"></a>
 ## 类型化数组参数 / Typed array parameters
 
 很常见的是，新用户可能会这样写：
@@ -768,7 +768,7 @@ bar(Array[Int].new(1, 2, 3));
 
 This may seem inconvenient, but on the upside it moves the type-check on what is assigned to `@b` to where the assignment happens, rather than requiring every element to be checked on every call.
 
-<a id="%E5%9C%A8%E4%B8%8D%E9%9C%80%E8%A6%81%E6%97%B6%E4%BD%BF%E7%94%A8-%C2%AB%C2%BB-%E5%BC%95%E7%94%A8--using-%C2%AB%C2%BB-quoting-when-you-dont-need-it"></a>
+<a id="在不需要时使用-«»-引用--using-«»-quoting-when-you-dont-need-it"></a>
 ## 在不需要时使用 `«»` 引用 / Using `«»` quoting when you don't need it
 
 这个陷阱可以从不同的变种中看到。以下是其中一些：
@@ -797,14 +797,14 @@ run <touch -->, $y;    # ← RIGHT; < > are OK, this is short and correct
 
 Basically, `«»` quoting is only safe to use if you remember to *always* quote your variables. The problem is that it inverts the default behavior to unsafe variant, so just by forgetting some quotes you are risking to introduce either a bug or maybe even a security hole. To stay on the safe side, refrain from using `«»`.
 
-<a id="%E5%AD%97%E7%AC%A6%E4%B8%B2--strings"></a>
+<a id="字符串--strings"></a>
 # 字符串 / Strings
 
 处理[字符串](https://docs.raku.org/type/Str)时可能出现的一些问题
 
 Some problems that might arise when dealing with [strings](https://docs.raku.org/type/Str).
 
-<a id="%E5%BC%95%E7%94%A8%E5%92%8C%E6%8F%92%E5%80%BC--quotes-and-interpolation"></a>
+<a id="引用和插值--quotes-and-interpolation"></a>
 ## 引用和插值 / Quotes and interpolation
 
 字符串字面量的插值对于你自己来说可能太聪明了。
@@ -840,7 +840,7 @@ say Q:c«{$a}()$b()»;
 # OUTPUT: «1()$b()␤» 
 ```
 
-<a id="%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%8D%E6%98%AF-iterable--strings-are-not-iterable"></a>
+<a id="字符串不是-iterable--strings-are-not-iterable"></a>
 ## 字符串不是 Iterable / Strings are not iterable
 
 有些方法是 [Str](https://docs.raku.org/type/Str) 继承自 [Any](https://docs.raku.org/type/Any)，用于处理列表之类的可迭代性。字符串上的迭代器包含一个元素，即整个字符串。若要使用基于列表的方法，如 `sort` 和 `reverse`，你需要首先将字符串转换为列表。
@@ -852,7 +852,7 @@ say "cba".sort;              # OUTPUT: «(cba)␤»
 say "cba".comb.sort.join;    # OUTPUT: «abc␤» 
 ```
 
-<a id="chars-%E8%8E%B7%E5%8F%96%E5%AD%97%E7%B4%A0%E7%9A%84%E6%95%B0%E9%87%8F%EF%BC%8C%E8%80%8C%E4%B8%8D%E6%98%AF%E7%BC%96%E7%A0%81%E7%82%B9--chars-gets-the-number-of-graphemes-not-codepoints"></a>
+<a id="chars-获取字素的数量，而不是编码点--chars-gets-the-number-of-graphemes-not-codepoints"></a>
 ## `.chars` 获取字素的数量，而不是编码点 / `.chars` gets the number of graphemes, not Codepoints
 
 在 Raku 中，字符串的 [`.chars`](https://docs.raku.org/routine/chars) 方法返回字素（用户课件的字符）的个数。例如字素可以由一个字母加上一个重音组成。如果你需要编码点的个数，你应该使用 [`.codes`](https://docs.raku.org/routine/codes) 方法。如果需要将字节数编码为 UTF8，则应该使用 `.encode.bytes` 将字符串编码为 UTF8，然后获取字节数。
@@ -871,14 +871,14 @@ say 'ǰ̣'.encode.bytes; # OUTPUT: «4»
 
 For more information on how strings work in Raku, see the [Unicode page](https://docs.raku.org/language/unicode).
 
-<a id="%E6%89%80%E6%9C%89%E6%96%87%E6%9C%AC%E5%9D%87%E6%8C%89%E9%BB%98%E8%AE%A4%E8%BF%9B%E8%A1%8C%E8%A7%84%E6%A0%BC%E5%8C%96--all-text-is-normalized-by-default"></a>
+<a id="所有文本均按默认进行规格化--all-text-is-normalized-by-default"></a>
 ## 所有文本均按默认进行规格化 / All text is normalized by default
 
 Raku 将所有文本规格化为 Unicode NFC 形式。文件名是默认的唯一未规范化的文本。如果你希望字符串保持字节表示为原始的字节，则需要在读取或写入任何文件句柄时使用 [`UTF8-C8`](https://docs.raku.org/language/unicode#UTF8-C8)。
 
 Raku normalizes all text into Unicode NFC form (Normalization Form Canonical). Filenames are the only text not normalized by default. If you are expecting your strings to maintain a byte for byte representation as the original, you need to use [`UTF8-C8`](https://docs.raku.org/language/unicode#UTF8-C8) when reading or writing to any filehandles.
 
-<a id="%E8%AF%AD%E7%B4%A0%E5%8F%98%E4%BD%93%E9%80%9A%E5%B8%B8%E9%81%B5%E5%BE%AA%E6%95%B0%E5%AD%97%E8%AF%AD%E4%B9%89--allomorphs-generally-follow-numeric-semantics"></a>
+<a id="语素变体通常遵循数字语义--allomorphs-generally-follow-numeric-semantics"></a>
 ## 语素变体通常遵循数字语义 / Allomorphs generally follow numeric semantics
 
 字符 `"0"` 为真，而数字 `0` 为假。那么[语素变体](https://docs.raku.org/language/glossary#index-entry-Allomorph) `<0>` 的布尔值是什么？
@@ -905,7 +905,7 @@ say so       <0>.Str; # OUTPUT: «True␤»
 say so chars <0>;     # OUTPUT: «True␤»
 ```
 
-<a id="%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E5%A4%A7%E5%B0%8F%E5%86%99%E4%B8%8D%E6%95%8F%E6%84%9F%E6%AF%94%E8%BE%83--case-insensitive-comparison-of-strings"></a>
+<a id="字符串的大小写不敏感比较--case-insensitive-comparison-of-strings"></a>
 ## 字符串的大小写不敏感比较 / Case-insensitive comparison of strings
 
 为了进行不区分大小写的比较，可以使用 `.fc` 方法。问题是人们倾向于使用 `.lc` 或 `.uc`，而且它似乎在 ASCII 范围内有效，但在其他字符上却失败了。这不仅仅是一个 Raku 陷阱，其他语言也是如此。
@@ -922,10 +922,10 @@ say ‘groß’.fc eq ‘GROSS’.fc; # ← RIGHT; True
 
 If you are working with regexes, then there is no need to use `.fc` and you can use `:i` (`:ignorecase`) adverb instead.
 
-<a id="%E9%94%AE%E5%80%BC%E5%AF%B9--pairs"></a>
+<a id="键值对--pairs"></a>
 # 键值对 / Pairs
 
-<a id="%E9%94%AE%E5%80%BC%E5%AF%B9%E6%A0%87%E8%AE%B0%E5%B7%A6%E6%89%8B%E8%BE%B9%E7%9A%84%E5%B8%B8%E9%87%8F--constants-on-the-left-hand-side-of-pair-notation"></a>
+<a id="键值对标记左手边的常量--constants-on-the-left-hand-side-of-pair-notation"></a>
 ## 键值对标记左手边的常量 / Constants on the left-hand side of pair notation
 
 考虑以下代码：
@@ -950,7 +950,7 @@ For example, in `Dog => 42` the key will be a `Str`. That is, it doesn't matter 
 
 To avoid this, use `(Dog) => 42` or `::Dog => 42`.
 
-<a id="pair-%E4%B8%AD%E7%9A%84%E6%A0%87%E9%87%8F%E5%80%BC--scalar-values-within-pair"></a>
+<a id="pair-中的标量值--scalar-values-within-pair"></a>
 ## `Pair` 中的标量值 / Scalar values within `Pair`
 
 在处理 [Scalar](https://docs.raku.org/type/Scalar) 值时，`Pair` 将容器保存到该值。这意味着可以从 `Pair` 之外反映对 `Scalar` 值的更改：
@@ -970,10 +970,10 @@ $pair.say; # OUTPUT: a => value B
 
 Use the method [freeze](https://docs.raku.org/type/Pair#method_freeze) to force the removal of the `Scalar` container from the `Pair`. For more details see the documentation about [Pair](https://docs.raku.org/type/Pair).
 
-<a id="%E9%9B%86%E5%90%88%E3%80%81%E8%83%8C%E5%8C%85%E5%92%8C%E6%B7%B7%E5%90%88--sets-bags-and-mixes"></a>
+<a id="集合、背包和混合--sets-bags-and-mixes"></a>
 # 集合、背包和混合 / Sets, bags and mixes
 
-<a id="%E9%9B%86%E5%90%88%E3%80%81%E8%83%8C%E5%8C%85%E5%92%8C%E6%B7%B7%E5%90%88%E6%98%AF%E6%97%A0%E5%BA%8F%E7%9A%84--sets-bags-and-mixes-do-not-have-a-fixed-order"></a>
+<a id="集合、背包和混合是无序的--sets-bags-and-mixes-do-not-have-a-fixed-order"></a>
 ## 集合、背包和混合是无序的 / Sets, bags and mixes do not have a fixed order
 
 当迭代这类对象时，没有定义顺序。
@@ -1000,7 +1000,7 @@ my $set = <a b c>.Set;
 
 In general, sets, bags and mixes are unordered, so you should not depend on them having a particular order.
 
-<a id="%E8%BF%90%E7%AE%97%E7%AC%A6--operators"></a>
+<a id="运算符--operators"></a>
 # 运算符 / Operators
 
 在 Raku 语言中，一些常见于其他语言的操作符被重新定位为其他更常见的东西：
@@ -1014,7 +1014,7 @@ Some operators commonly shared among other languages were repurposed in Raku for
 
 The `^`, `|`, and `&` are *not* bitwise operators, they create [Junctions](https://docs.raku.org/type/Junction). The corresponding bitwise operators in Raku are: `+^`, `+|`, `+&` for integers and `?^`, `?|`, `?&` for booleans.
 
-<a id="%E6%8E%92%E4%BB%96%E5%BA%8F%E5%88%97%E8%BF%90%E7%AE%97%E7%AC%A6--exclusive-sequence-operator"></a>
+<a id="排他序列运算符--exclusive-sequence-operator"></a>
 ## 排他序列运算符 / Exclusive sequence operator
 
 大量使用空格有助于提高可读性，但请记住，中缀运算符中不能包含任何空格。其中一个运算符是排除右点的序列运算符：`...^`（或其 [Unicode 等效](https://docs.raku.org/language/unicode_ascii)运算符 `…^`）。
@@ -1030,7 +1030,7 @@ say 1...^5;  # OUTPUT: «(1 2 3 4)␤»
 
 If you place whitespace between the ellipsis (`…`) and the caret (`^`), it's no longer a single infix operator, but an infix inclusive sequence operator (`…`) and a prefix [Range](https://docs.raku.org/type/Range) operator (`^`). [Iterables](https://docs.raku.org/type/Iterable) are valid endpoints for the sequence operator, so the result you'll get might not be what you expected.
 
-<a id="%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%8C%83%E5%9B%B4%E5%BA%8F%E5%88%97---string-rangessequences"></a>
+<a id="字符串范围序列---string-rangessequences"></a>
 ## 字符串范围/序列 - String ranges/Sequences
 
 在某些语言中，使用字符串作为范围终结点时，在计算下一个字符串应该是什么时，需要考虑整个字符串；松散地将字符串视为数字。下面是 Perl 5 版本的代码示例：
@@ -1066,7 +1066,7 @@ say join ", ", ("az", *.succ ... "bc");
 # OUTPUT: «az, ba, bb, bc␤» 
 ```
 
-<a id="%E4%B8%BB%E9%A2%98%E8%BF%90%E7%AE%97%E7%AC%A6--topicalizing-operators"></a>
+<a id="主题运算符--topicalizing-operators"></a>
 ## 主题运算符 / Topicalizing operators
 
 智能匹配运算符 `~~` 和 `andthen` 将主题 `$_` 设置在他们的左手边。结合对该主题的隐式方法调用，这可能会导致令人惊讶的结果。
@@ -1095,7 +1095,7 @@ say .&method ~~ 'topic';
 # OUTPUT: «object␤False␤» 
 ```
 
-<a id="%E8%83%96%E7%AE%AD%E5%A4%B4%E4%B8%8E%E5%B8%B8%E9%87%8F--fat-arrow-and-constants"></a>
+<a id="胖箭头与常量--fat-arrow-and-constants"></a>
 ## 胖箭头与常量 / Fat arrow and constants
 
 胖箭头运算符 `=>` 会将其左手边的单词转换为 `Str` 并且不会检查常量或者 `\` 标记的变量的作用域。使用显式作用域才能得到你想表达的意思。
@@ -1109,7 +1109,7 @@ say %h.perl
 # OUTPUT: «{:V("oi‽"), :x(42)}␤» 
 ```
 
-<a id="%E4%B8%AD%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6%E8%B5%8B%E5%80%BC--infix-operator-assignment"></a>
+<a id="中缀运算符赋值--infix-operator-assignment"></a>
 ## 中缀运算符赋值 / Infix operator assignment
 
 中缀运算符，包括内置的和用户定义的，都可以与赋值运算符结合使用，正如这个加法示例所演示的：
@@ -1156,10 +1156,10 @@ my @a = 1, 2, 3;
 say @a;  # OUTPUT: «[11 12 13]␤»
 ```
 
-<a id="%E6%AD%A3%E5%88%99--regexes"></a>
+<a id="正则--regexes"></a>
 # 正则 / Regexes
 
-<a id="%24x-%E4%B8%8E-%EF%BC%8C%24code-%E4%B8%8E--%24x-vs--and-%24code-vs-"></a>
+<a id="$x-与-，$code-与--$x-vs--and-$code-vs-"></a>
 ## `$x` 与 `<$x>`，`$(code)` 与 `<{code}>` / `$x` vs `<$x>`, and `$(code)` vs `<{code}>`
 
 Raku 提供了几个在运行时通过字符串插值构造正则（请从[这里](https://docs.raku.org/language/regexes#Regex_interpolation)参阅它们的详细描述）。当以这种方式生成的正则表达式只包含文本时，上述结构的行为（成对）是相同的，就好像它们是等效的替代物一样。然而，一旦生成的正则包含元字符，它们的行为就会有所不同，这可能是一个令人困惑的意外。
@@ -1214,7 +1214,7 @@ say ‘I ♥ camelia’ ~~ / <{$variable.flip}>  /;   # OUTPUT: ｢camelia｣
 
 In this case the return value of the code is the string `.amelia`, which contains the metacharacter `.`. The above attempt by `$(code)` to match the dot literally fails; the attempt by `<{code}>` to match the dot as a regex wildcard succeeds. Hence the different outputs.
 
-<a id="%7C-%E4%B8%8E-%7C%7C-%E5%93%AA%E4%B8%AA%E5%88%86%E6%94%AF%E5%B0%86%E8%83%9C%E5%87%BA--%7C-vs-%7C%7C-which-branch-will-win"></a>
+<a id="|-与-||-哪个分支将胜出--|-vs-||-which-branch-will-win"></a>
 ## `|` 与 `||`: 哪个分支将胜出 / `|` vs `||`: which branch will win
 
 为了匹配几种可能的替代方案之一，将使用 `||` 或者 `|`。但它们是如此不同。
@@ -1242,7 +1242,7 @@ say 42 ~~ / [ 42 ||  0 ] | 4/; # OUTPUT: «｢42｣␤»
 
 The code above may seem like it is producing a wrong result, but the implementation is actually right.
 
-<a id="%24-%E6%AF%8F%E6%AC%A1%E5%8C%B9%E9%85%8D%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%97%B6%E9%83%BD%E4%BC%9A%E6%9B%B4%E6%94%B9---%24-changes-each-time-a-regular-expression-is-matched"></a>
+<a id="$-每次匹配正则表达式时都会更改---$-changes-each-time-a-regular-expression-is-matched"></a>
 ## `$/` 每次匹配正则表达式时都会更改 - `$/` changes each time a regular expression is matched
 
 每次将正则表达式与某物匹配时，特殊变量 `$/` 持有匹配结果。[匹配对象](https://docs.raku.org/type/Match)随着匹配结果相应地更改（其值也可以是 `Nil`）。
@@ -1257,7 +1257,7 @@ The `$/` is changed without any regard to the scope the regular expression is ma
 
 For further information and examples please see the [related section in the Regular Expressions documentation](https://docs.raku.org/language/regexes.html#$/_changes_each_time_a_regular_expression_is_matched).
 
-<a id="-%E4%B8%8E--%E5%91%BD%E5%90%8D-rule-%E4%B8%8E%E5%BC%95%E7%94%A8%E5%88%97%E8%A1%A8--vs--named-rules-vs-quoted-lists"></a>
+<a id="-与--命名-rule-与引用列表--vs--named-rules-vs-quoted-lists"></a>
 ## `<foo>` 与 `< foo>`: 命名 rule 与引用列表 / `<foo>` vs. `< foo>`: named rules vs. quoted lists
 
 正则可以包含引用列表；对列表的元素执行最长令牌匹配，就好像使用了 `|`（有关更多信息，请参见[这里](https://docs.raku.org/language/regexes#Quoted_lists_are_LTM_matches)）。
@@ -1286,7 +1286,7 @@ say 'foo' ~~ /<foo>/;
 
 Be wary of the difference; if you intend to use a quoted list, ensure that whitespace follows the initial `<`.
 
-<a id="%E5%88%97%E8%A1%A8%E4%B8%8A%E4%B8%8B%E6%96%87%E4%B8%AD%E7%9A%84%E9%9D%9E%E6%8D%95%E8%8E%B7%E3%80%81%E9%9D%9E%E5%85%A8%E5%B1%80%E5%8C%B9%E9%85%8D--non-capturing-non-global-matching-in-list-context"></a>
+<a id="列表上下文中的非捕获、非全局匹配--non-capturing-non-global-matching-in-list-context"></a>
 ## 列表上下文中的非捕获、非全局匹配 / Non-capturing, non-global matching in list context
 
 与 Perl 5 不同，列表上下文中的非捕获和非全局匹配不会产生任何值：
@@ -1316,10 +1316,10 @@ for 'x' ~~ /(.)/  { say 'yes' }  # OUTPUT: «yes␤»
 for ('x' ~~ /./,) { say 'yes' }  # OUTPUT: «yes␤»
 ```
 
-<a id="%E5%B8%B8%E8%A7%81%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7%E9%94%99%E8%AF%AF--common-precedence-mistakes"></a>
+<a id="常见的优先级错误--common-precedence-mistakes"></a>
 # 常见的优先级错误 / Common precedence mistakes
 
-<a id="%E5%89%AF%E8%AF%8D%E4%B8%8E%E4%BC%98%E5%85%88%E7%BA%A7--adverbs-and-precedence"></a>
+<a id="副词与优先级--adverbs-and-precedence"></a>
 ## 副词与优先级 / Adverbs and precedence
 
 副词确实有一个优先顺序，可能不遵循显示在屏幕上的操作符的顺序。如果两个相同优先级的运算符后面跟着一个副词，它将选择它在抽象语法树中找到的第一个运算符。使用括号来帮助 Raku 理解你的意思或使用具有更松散优先级的运算符。
@@ -1335,7 +1335,7 @@ say not %x<b>:exists;         # works as well
 say True unless %x<b>:exists; # avoid negation altogether 
 ```
 
-<a id="%E8%8C%83%E5%9B%B4%E4%B8%8E%E4%BC%98%E5%85%88%E7%BA%A7--ranges-and-precedence"></a>
+<a id="范围与优先级--ranges-and-precedence"></a>
 ## 范围与优先级 / Ranges and precedence
 
 `..` 的松散优先级可能会导致一些错误。当你想要对整个范围进行操作时，通常最好使用括号将整个范围括起来。
@@ -1347,7 +1347,7 @@ The loose precedence of `..` can lead to some errors. It is usually best to pare
 (1..3).say;  # says "1..3" 
 ```
 
-<a id="%E6%9D%BE%E6%95%A3%E7%9A%84%E5%B8%83%E5%B0%94%E8%BF%90%E7%AE%97%E7%AC%A6--loose-boolean-operators"></a>
+<a id="松散的布尔运算符--loose-boolean-operators"></a>
 ## 松散的布尔运算符 / Loose boolean operators
 
 `and`、 `or` 等的优先级比函数调用更松散。这对于调用在其他语言中是运算符或者语句的诸如 `return`、 `last` 以及其他运算符可能会产生令人惊讶的结果。
@@ -1363,7 +1363,7 @@ sub f {
 say f; # OUTPUT: «True␤» 
 ```
 
-<a id="%E6%98%BE%E5%BC%8F%E8%BF%90%E7%AE%97%E7%AC%A6%E5%92%8C%E5%87%8F%E5%8F%B7%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6--exponentiation-operator-and-prefix-minus"></a>
+<a id="显式运算符和减号前缀运算符--exponentiation-operator-and-prefix-minus"></a>
 ## 显式运算符和减号前缀运算符 / Exponentiation operator and prefix minus
 
 ```Raku
@@ -1380,7 +1380,7 @@ say (-1)²;   # OUTPUT: «1␤»
 say (-1)**2; # OUTPUT: «1␤» 
 ```
 
-<a id="%E6%96%B9%E6%B3%95%E8%BF%90%E7%AE%97%E7%AC%A6%E8%B0%83%E7%94%A8%E5%92%8C%E5%87%8F%E5%8F%B7%E5%89%8D%E7%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6--method-operator-calls-and-prefix-minus"></a>
+<a id="方法运算符调用和减号前缀运算符--method-operator-calls-and-prefix-minus"></a>
 ## 方法运算符调用和减号前缀运算符 / Method operator calls and prefix minus
 
 减号前缀运算符绑定比点号的方法操作调用更宽松。减号前缀运算符将应用于方法的返回值。为了确保减号作为参数的一部分被传递，请用括号括起来。
@@ -1392,7 +1392,7 @@ say  -1.abs;  # OUTPUT: «-1␤»
 say (-1).abs; # OUTPUT: «1␤» 
 ```
 
-<a id="%E5%AD%90%E7%A8%8B%E5%BA%8F%E5%92%8C%E6%96%B9%E6%B3%95%E8%B0%83%E7%94%A8--subroutine-and-method-calls"></a>
+<a id="子程序和方法调用--subroutine-and-method-calls"></a>
 # 子程序和方法调用 / Subroutine and method calls
 
 子程序和方法调用可以使用两种形式之一：
@@ -1457,7 +1457,7 @@ Note that there are clever ways to eliminate the error with the function call fo
 
 Finally, note that, currently, when declaring the functions whitespace may be used between a function or method name and the parentheses surrounding the parameter list without problems.
 
-<a id="%E5%91%BD%E5%90%8D%E5%8F%82%E6%95%B0--named-parameters"></a>
+<a id="命名参数--named-parameters"></a>
 ## 命名参数 / Named parameters
 
 许多内置子例程和方法调用接受命名参数，你自己的代码也可能接受它们，但请确保调用例程时传递的参数实际上是命名参数：
@@ -1513,7 +1513,7 @@ A Capture is usually the best option for this as it works exactly like the usual
 
 The nice thing about the distinction here is that it gives the developer the option of passing pairs as either named or positional arguments, which can be handy in various instances.
 
-<a id="%E5%8F%82%E6%95%B0%E8%AE%A1%E6%95%B0%E6%9E%81%E9%99%90--argument-count-limit"></a>
+<a id="参数计数极限--argument-count-limit"></a>
 ## 参数计数极限 / Argument count limit
 
 虽然它通常是不引人注意的，但有一个后端依赖的参数计数限制。如果元素太多，任何将任意大小的数组扁平化为参数的代码都不会起作用。
@@ -1541,7 +1541,7 @@ my @b;
 say @b.elems # OUTPUT: «999999␤» 
 ```
 
-<a id="%E7%9B%B8%E4%BD%8D%E5%92%8C%E9%9A%90%E5%BC%8F%E8%BF%94%E5%9B%9E--phasers-and-implicit-return"></a>
+<a id="相位和隐式返回--phasers-and-implicit-return"></a>
 ## 相位和隐式返回 / Phasers and implicit return
 
 ```Raku
@@ -1577,7 +1577,7 @@ sub explicitly-return-ret () {
 }
 ```
 
-<a id="%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA--input-and-output"></a>
+<a id="输入输出--input-and-output"></a>
 # 输入输出 / Input and output
 
 <a id="closing-open-filehandles-and-pipes"></a>
@@ -1595,7 +1595,7 @@ The same rules apply to [IO::Handle's](https://docs.raku.org/type/IO::Handle) su
 
 The caveat applies to [IO::CatHandle](https://docs.raku.org/type/IO::CatHandle) type as well, though not as severely. See [`IO::CatHandle.close`](https://docs.raku.org/type/IO::CatHandle#method_close) for details.
 
-<a id="%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8C%96-iopath--iopath-stringification"></a>
+<a id="字符串化-iopath--iopath-stringification"></a>
 ## 字符串化 IO::Path / IO::Path stringification
 
 部分是出于历史原因部分出于设计原因。[IO::Path](https://docs.raku.org/type/IO::Path) 对象在转为字符串时不会考虑它的 [`CWD` 属性](https://docs.raku.org/type/IO::Path#attribute_CWD)，意味着如果你 [chdir](https://docs.raku.org/routine/chdir) 后将 [IO::Path](https://docs.raku.org/type/IO::Path) 对象转为字符串或者转为字符串时使用客制化的 `$!CWD` 属性，出来的字符串不会引用原始的文件系统对象：
@@ -1628,7 +1628,7 @@ If you do have a case where you need a stringified version of an [IO::Path](http
 
 If you are facing this issue because you use [chdir](https://docs.raku.org/routine/chdir) in your code, consider rewriting it in a way that does not involve changing the current directory. For example, you can pass `cwd` named argument to [run](https://docs.raku.org/routine/run) without having to use `chdir` around it.
 
-<a id="%E5%B0%86%E8%BE%93%E5%85%A5%E6%95%B0%E6%8D%AE%E5%88%86%E8%A3%82%E6%88%90%E8%A1%8C--splitting-the-input-data-into-lines"></a>
+<a id="将输入数据分裂成行--splitting-the-input-data-into-lines"></a>
 ## 将输入数据分裂成行 / Splitting the input data into lines
 
 在 [`IO::Handle`](https://docs.raku.org/type/IO::Handle#routine_lines) 和 [`Str`](https://docs.raku.org/type/Str#routine_lines) 上调用 `.lines` 有一点差异。 如果开始认为两个数据是相同的，就会出现陷阱。
@@ -1676,7 +1676,7 @@ Note that if you really want to slurp the data first, then you will have to use 
 
 If you are using [Proc::Async](https://docs.raku.org/type/Proc::Async), then there is currently no easy way to make it split data the right way. You can try reading the whole output and then using [`Str.split`](https://docs.raku.org/type/Str#routine_split) (not viable if you are dealing with large data) or writing your own logic to split the incoming data the way you need. Same applies if your data is null-separated.
 
-<a id="procasync-%E4%B8%8E-print--procasync-and-print"></a>
+<a id="procasync-与-print--procasync-and-print"></a>
 ## Proc::Async 与 `print` / Proc::Async and `print`
 
 使用 Proc::Async 时，你不应假定 `.print`（或任何其他类似方法）是同步的。 此陷阱的最大问题是，你一次运行代码可能不会注意到该问题，因此可能导致难以检测的间歇性故障。
@@ -1729,7 +1729,7 @@ whenever $proc.print: “one\ntwo\nthree\nfour” {
 }
 ```
 
-<a id="%E4%BD%BF%E7%94%A8-stdout-%E5%90%8E%E4%B8%8D%E8%B0%83%E7%94%A8-lines--using-stdout-without-lines"></a>
+<a id="使用-stdout-后不调用-lines--using-stdout-without-lines"></a>
 ## 使用 `.stdout` 后不调用 `.lines` / Using `.stdout` without `.lines`
 
 [Proc::Async](https://docs.raku.org/type/Proc::Async) 的方法 `.stdout` 返回的 supply 将发出*大块*的数据，而不是行。 陷阱是，有时人们认为它会立即产生行数据。
@@ -1774,10 +1774,10 @@ Abby
 
 If you want to work with lines, then use `$proc.stdout.lines`. If you're after the whole output, then something like this should do the trick: `whenever $proc.stdout { $out ~= $_ }`.
 
-<a id="%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86--exception-handling"></a>
+<a id="异常处理--exception-handling"></a>
 # 异常处理 / Exception handling
 
-<a id="%E8%88%8D%E5%BC%83-proc-%E7%9A%84%E8%BF%94%E5%9B%9E%E5%80%BC--sunk-proc"></a>
+<a id="舍弃-proc-的返回值--sunk-proc"></a>
 ## 舍弃 `Proc` 的返回值 / Sunk `Proc`
 
 有些方法返回一个 [Proc](https://docs.raku.org/type/Proc) 对象。如果它代表的是一个失败的进程，`Proc` 本身不会抛出异常，但是在 sink 上下文中会导致 [X::Proc::Unsuccessful](https://docs.raku.org/type/X::Proc::Unsuccessful) 异常抛出。这意味着
@@ -1810,10 +1810,10 @@ say "still alive";
 # OUTPUT: «still alive␤» 
 ```
 
-<a id="%E4%BD%BF%E7%94%A8%E7%AE%80%E5%86%99--using-shortcuts"></a>
+<a id="使用简写--using-shortcuts"></a>
 # 使用简写 / Using shortcuts
 
-<a id="%5E-%E7%AC%A6%E5%8F%B7--the-%5E-twigil"></a>
+<a id="^-符号--the-^-twigil"></a>
 ## ^ 符号 / The ^ twigil
 
 使用 '^' 符号可以节省相当数量的时间和空间时，编写小块代码。例如：
@@ -1857,7 +1857,7 @@ for 1..4 { say "$^one $^two $^three $^four"; }    # OUTPUT: «2 4 3 1␤»
 for 1..4 { say "$^a $^b $^c $^d"; }               # OUTPUT: «1 2 3 4␤» 
 ```
 
-<a id="%E5%8F%AF%E4%BA%92%E6%8D%A2%E5%9C%B0%E4%BD%BF%E7%94%A8-%C2%BB-%E5%92%8C-map--using-%C2%BB-and-map-interchangeably"></a>
+<a id="可互换地使用-»-和-map--using-»-and-map-interchangeably"></a>
 ## 可互换地使用 `»` 和 `map` / Using `»` and `map` interchangeably
 
 虽然 [`»`](https://docs.raku.org/language/operators#index-entry-hyper_%3C%3C-hyper_%3E%3E-hyper_%C2%AB-hyper_%C2%BB-Hyper_Operators) 看起来像 `map` 的短形式，他们在某些方面是不一样的。
@@ -1885,7 +1885,7 @@ say ((1, 2, 3), [^4], '5').map: *.Numeric; # OUTPUT: «(3 4 5)␤»
 
 The bottom line is that `map` and `»` are not interchangeable, but using one instead of the other is OK as long as you understand the differences.
 
-<a id="%C2%AB-%C2%BB-%E4%B8%AD%E7%9A%84%E5%88%86%E8%AF%8D--word-splitting-in-%C2%AB-%C2%BB"></a>
+<a id="«-»-中的分词--word-splitting-in-«-»"></a>
 ## `« »` 中的分词 / Word splitting in `« »`
 
 请记住，`« »` 执行分词的方式与 shell 的方式类似，所以[许多 shell 陷阱](https://mywiki.wooledge.org/BashPitfalls)也适用于此（特别是与 `run` 结合使用时）：
@@ -1907,10 +1907,10 @@ run «touch "$file"»;       # WRONG; error from `touch`
 
 Note that `--` is required for many programs to disambiguate between command-line arguments and [filenames that begin with hyphens](https://mywiki.wooledge.org/BashPitfalls#Filenames_with_leading_dashes).
 
-<a id="%E4%BD%9C%E7%94%A8%E5%9F%9F--scope"></a>
+<a id="作用域--scope"></a>
 # 作用域 / Scope
 
-<a id="%E4%BD%BF%E7%94%A8-once-%E4%BB%A3%E7%A0%81%E5%9D%97--using-a-once-block"></a>
+<a id="使用-once-代码块--using-a-once-block"></a>
 ## 使用 `once` 代码块 / Using a `once` block
 
 `once` 块是一个仅在其父块运行时运行一次的代码块。举个例子：
@@ -1976,7 +1976,7 @@ my $b = A.new;
 $b.sayit;      # nothing 
 ```
 
-<a id="leave-%E7%9B%B8%E4%BD%8D%E5%99%A8%E4%B8%8E-exit--leave-phaser-and-exit"></a>
+<a id="leave-相位器与-exit--leave-phaser-and-exit"></a>
 ## `LEAVE` 相位器与 `exit` / `LEAVE` phaser and `exit`
 
 使用 [`LEAVE`](https://docs.raku.org/language/phasers#LEAVE) 相位器执行优雅的资源终止是一种常见的模式，但它不包括程序 通过 [`exit`](https://docs.raku.org/routine/exit) 停止时的情况。
@@ -2019,7 +2019,7 @@ Closing the resource gracefully
 
 A call to `exit` is part of normal operation for many programs, so beware unintentional combination of `LEAVE` phasers and `exit` calls.
 
-<a id="leave-%E7%9B%B8%E4%BD%8D%E5%99%A8%E5%8F%AF%E8%83%BD%E6%AF%94%E4%BD%A0%E6%83%B3%E8%B1%A1%E7%9A%84%E8%A6%81%E6%97%A9%E8%BF%90%E8%A1%8C--leave-phaser-may-run-sooner-than-you-think"></a>
+<a id="leave-相位器可能比你想象的要早运行--leave-phaser-may-run-sooner-than-you-think"></a>
 ## `LEAVE` 相位器可能比你想象的要早运行 / `LEAVE` phaser may run sooner than you think
 
 只要我们进入子例程，参数绑定就会被执行。这意味着当我们因为参数绑定失败而离开子例程时 `LEAVE` 相位器将会被执行：
@@ -2073,7 +2073,7 @@ say foo rand; # OUTPUT: «Type check failed in binding to parameter '<anon>'; ex
 <a id="grammars"></a>
 # Grammars
 
-<a id="%E5%9C%A8-grammar-%E5%8A%A8%E4%BD%9C%E4%B8%AD%E4%BD%BF%E7%94%A8%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F--using-regexes-within-grammars-actions"></a>
+<a id="在-grammar-动作中使用正则表达式--using-regexes-within-grammars-actions"></a>
 ## 在 grammar 动作中使用正则表达式 / Using regexes within grammar's actions
 
 ```Raku
@@ -2095,7 +2095,7 @@ Will fail with `Cannot assign to a readonly variable ($/) or a value` on method 
 method TOP ($/ is copy) { my $foo = ~$/; my $v = $foo ~~ /foo/;  }
 ```
 
-<a id="%E7%BB%99-ruletokenregex-%E8%B5%B7%E6%9F%90%E4%BA%9B%E5%90%8D%E7%A7%B0--using-certain-names-for-rulestokenregexes"></a>
+<a id="给-ruletokenregex-起某些名称--using-certain-names-for-rulestokenregexes"></a>
 ## 给 rule/token/regex 起某些名称 / Using certain names for rules/token/regexes
 
 语法实际上是一种类。
@@ -2128,7 +2128,7 @@ say g.parse('defined');
 
 Also avoid [phasers](https://docs.raku.org/language/objects#Object_construction) for rule/token/regex names: `TWEAK`, `BUILD`, `BUILD-ALL` will throw another kind of exception if you do that: `Cannot find method 'match': no method cache and no .^find_method`, once again only slightly related to what is actually going on.
 
-<a id="%E4%B8%8D%E5%B9%B8%E7%9A%84%E6%B3%9B%E5%8C%96--unfortunate-generalization"></a>
+<a id="不幸的泛化--unfortunate-generalization"></a>
 # 不幸的泛化 / Unfortunate generalization
 
 <a id="exists-with-more-than-one-key"></a>
@@ -2161,7 +2161,7 @@ say ‘a and b’    if all %h<a b>:exists;   # ← RIGHT (all); True
 
 The reason why it is always `True` (without using a junction) is that it returns a list with [Bool](https://docs.raku.org/type/Bool) values for each requested lookup. Non-empty lists always give `True` when you [Bool](https://docs.raku.org/type/Bool)ify them, so the check always succeeds no matter what keys you give it.
 
-<a id="%E4%BD%BF%E7%94%A8%E5%B8%A6%E6%9C%89%E5%88%97%E8%A1%A8%E7%9A%84-%E2%80%A6-%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6--using-%E2%80%A6-metaoperator-with-a-list-of-lists"></a>
+<a id="使用带有列表的-…-元运算符--using-…-metaoperator-with-a-list-of-lists"></a>
 ## 使用带有列表的 `[…]` 元运算符 / Using `[…]` metaoperator with a list of lists
 
 不时有人想到，他们可以使用 `[Z]` 来创建一个二维列表的转换：
@@ -2188,7 +2188,7 @@ say @transpose;              # [(X Y)] – not the expected transpose [(X) (Y)]
 
 This happens partly because of the [single argument rule](https://docs.raku.org/language/functions#Slurpy_conventions), and there are other cases when this kind of a generalization may not work.
 
-<a id="%E4%BD%BF%E7%94%A8-%7E-%E8%BF%9E%E6%8E%A5%E4%B8%80%E4%B8%AA-blob-%E5%88%97%E8%A1%A8--using-%7E-for-concatenating-a-list-of-blobs"></a>
+<a id="使用-~-连接一个-blob-列表--using-~-for-concatenating-a-list-of-blobs"></a>
 ## 使用 [~] 连接一个 blob 列表 / Using [~] for concatenating a list of blobs
 
 [`~` 中缀运算符](https://docs.raku.org/routine/~#(Operators)_infix_~) 可以用来连接 [Str](https://docs.raku.org/type/Str) 或者 [Blob](https://docs.raku.org/type/Blob)。然而，空列表在字符串连接时将*总是*转换为空字符串。这是由于在没有元素的列表中，[reduction](https://docs.raku.org/language/operators#Reduction_operators) 元运算符返回给定运算符的[标识元素](https://docs.raku.org/language/operators#Identity)。`~` 的标识元素是一个空字符串，不管列表中可以填充哪种元素。
@@ -2247,7 +2247,7 @@ Please note that a similar issue may arise when reducing lists with other operat
 <a id="maps"></a>
 # Maps
 
-<a id="%E6%B3%A8%E6%84%8F%E5%9C%A8-sink-%E4%B8%8A%E4%B8%8B%E6%96%87%E4%B8%AD%E7%9A%84%E5%B5%8C%E5%A5%97-map--beware-of-nesting-maps-in-sink-context"></a>
+<a id="注意在-sink-上下文中的嵌套-map--beware-of-nesting-maps-in-sink-context"></a>
 ## 注意在 sink 上下文中的嵌套 `Map` / Beware of nesting `Map`s in sink context
 
 Map 将表达式应用于[列表](https://docs.raku.org/type/List)的每个元素，并返回 [Seq](https://docs.raku.org/type/Seq)：
@@ -2304,14 +2304,14 @@ Of course, saving `say` for the result will also produce the intended result, as
 say <foo bar ber>.map: { $^þ.comb }; # OUTPUT: « ((f o o) (b a r) (b e r))»
 ```
 
-<a id="%E6%99%BA%E8%83%BD%E5%8C%B9%E9%85%8D--smartmatching"></a>
+<a id="智能匹配--smartmatching"></a>
 # 智能匹配 / Smartmatching
 
 [智能匹配运算符](https://docs.raku.org/language/operators#index-entry-smartmatch_operator) 简写为右手边*接受*左手边。这可能会引起一些混乱。
 
 The [smartmatch operator](https://docs.raku.org/language/operators#index-entry-smartmatch_operator) shortcuts to the right hand side *accepting* the left hand side. This may cause some confusion.
 
-<a id="%E6%99%BA%E8%83%BD%E5%8C%B9%E9%85%8D%E4%B8%8E-whatevercode--smartmatch-and-whatevercode"></a>
+<a id="智能匹配与-whatevercode--smartmatch-and-whatevercode"></a>
 ## 智能匹配与 `WhateverCode` / Smartmatch and `WhateverCode`
 
 在智能匹配的左手边使用 `WhateverCode` 不会像预期的那样工作，或者根本不会：

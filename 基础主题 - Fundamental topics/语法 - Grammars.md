@@ -24,25 +24,25 @@ If you didn't like grammar in school, don't let that scare you off grammars. Gra
 
 <!-- MarkdownTOC -->
 
-- [命名正则 / Named Regexes](#%E5%91%BD%E5%90%8D%E6%AD%A3%E5%88%99--named-regexes)
-    - [规则 / Rules](#%E8%A7%84%E5%88%99--rules)
-- [创建语法 / Creating grammars](#%E5%88%9B%E5%BB%BA%E8%AF%AD%E6%B3%95--creating-grammars)
-    - [原型化正则 / Proto regexes](#%E5%8E%9F%E5%9E%8B%E5%8C%96%E6%AD%A3%E5%88%99--proto-regexes)
-    - [特殊标记 / Special tokens](#%E7%89%B9%E6%AE%8A%E6%A0%87%E8%AE%B0--special-tokens)
+- [命名正则 / Named Regexes](#命名正则--named-regexes)
+    - [规则 / Rules](#规则--rules)
+- [创建语法 / Creating grammars](#创建语法--creating-grammars)
+    - [原型化正则 / Proto regexes](#原型化正则--proto-regexes)
+    - [特殊标记 / Special tokens](#特殊标记--special-tokens)
         - [`TOP`](#top)
         - [`ws`](#ws)
         - [`sym`](#sym)
-        - [“总是成功”断言 / "Always succeed" assertion](#%E2%80%9C%E6%80%BB%E6%98%AF%E6%88%90%E5%8A%9F%E2%80%9D%E6%96%AD%E8%A8%80--always-succeed-assertion)
-    - [grammar 中的方法 / Methods in grammars](#grammar-%E4%B8%AD%E7%9A%84%E6%96%B9%E6%B3%95--methods-in-grammars)
-    - [grammar 中的动态变量 / Dynamic variables in grammars](#grammar-%E4%B8%AD%E7%9A%84%E5%8A%A8%E6%80%81%E5%8F%98%E9%87%8F--dynamic-variables-in-grammars)
-    - [grammar 中的属性 / Attributes in grammars](#grammar-%E4%B8%AD%E7%9A%84%E5%B1%9E%E6%80%A7--attributes-in-grammars)
-    - [传递参数给 grammar / Passing arguments into grammars](#%E4%BC%A0%E9%80%92%E5%8F%82%E6%95%B0%E7%BB%99-grammar--passing-arguments-into-grammars)
-- [*操作对象 / Action objects](#%E6%93%8D%E4%BD%9C%E5%AF%B9%E8%B1%A1--action-objects)
+        - [“总是成功”断言 / "Always succeed" assertion](#“总是成功”断言--always-succeed-assertion)
+    - [grammar 中的方法 / Methods in grammars](#grammar-中的方法--methods-in-grammars)
+    - [grammar 中的动态变量 / Dynamic variables in grammars](#grammar-中的动态变量--dynamic-variables-in-grammars)
+    - [grammar 中的属性 / Attributes in grammars](#grammar-中的属性--attributes-in-grammars)
+    - [传递参数给 grammar / Passing arguments into grammars](#传递参数给-grammar--passing-arguments-into-grammars)
+- [*操作对象 / Action objects](#操作对象--action-objects)
 
 <!-- /MarkdownTOC -->
 
 
-<a id="%E5%91%BD%E5%90%8D%E6%AD%A3%E5%88%99--named-regexes"></a>
+<a id="命名正则--named-regexes"></a>
 # 命名正则 / Named Regexes
 
 语法的主要成分为命名[正则](https://docs.raku.org/language/regexes)。虽然 Raku 正则的语法不在本文档的范围内，但*命名*正则有一个特殊的语法，类似于子例程定义：[[1\]](https://docs.raku.org/language/grammars#fn-1)
@@ -90,7 +90,7 @@ say so "bd" ~~ &tok-a;        # OUTPUT: «False␤»
 say so "bd" ~~ &tok-b;        # OUTPUT: «True␤» 
 ```
 
-<a id="%E8%A7%84%E5%88%99--rules"></a>
+<a id="规则--rules"></a>
 ## 规则 / Rules
 
 `token` 和 `rule` 声明符之间的唯一区别是，`rule` 声明符使 [`:sigspace`](https://docs.raku.org/language/regexes#Sigspace) 在 Regex 中生效：
@@ -106,14 +106,14 @@ say so 'onceuponatime'    ~~ &space-y;     # OUTPUT: «False␤»
 say so 'once upon a time' ~~ &space-y;     # OUTPUT: «True␤» 
 ```
 
-<a id="%E5%88%9B%E5%BB%BA%E8%AF%AD%E6%B3%95--creating-grammars"></a>
+<a id="创建语法--creating-grammars"></a>
 # 创建语法 / Creating grammars
 
 [Grammar](https://docs.raku.org/type/Grammar) 是类在用 `grammar` 关键字而不是 `class` 声明时自动获得的超类。Grammar 只能用于解析文本；如果希望提取复杂数据，可以在 grammar 中添加操作，或者建议将[操作对象](https://docs.raku.org/language/grammars#Action_objects)与 grammar 一起使用。如果不使用操作对象，`.parse` 返回一个 [Match](https://docs.raku.org/type/Match) 对象，并在默认情况下将[默认匹配对象 `$/`](https://docs.raku.org/syntax/$$SOLIDUS)设置为相同的值。
 
 [Grammar](https://docs.raku.org/type/Grammar) is the superclass that classes automatically get when they are declared with the `grammar` keyword instead of `class`. Grammars should only be used to parse text; if you wish to extract complex data, you can add actions within the grammar, or an [action object](https://docs.raku.org/language/grammars#Action_objects) is recommended to be used in conjunction with the grammar. If action objects are not used, `.parse` returns a [Match](https://docs.raku.org/type/Match) object and sets, by default, the [default match object `$/`](https://docs.raku.org/syntax/$$SOLIDUS), to the same value.
 
-<a id="%E5%8E%9F%E5%9E%8B%E5%8C%96%E6%AD%A3%E5%88%99--proto-regexes"></a>
+<a id="原型化正则--proto-regexes"></a>
 ## 原型化正则 / Proto regexes
 
 [Grammar](https://docs.raku.org/type/Grammar) 由规则、标记和正则组成；这些实际上是方法，因为 grammar 是类。
@@ -207,7 +207,7 @@ say BetterCalculator.parse('2 * 3', actions => BetterCalculations).made;
 
 All we had to add are additional rule and action to the `calc-op` group and the thing works—all thanks to proto regexes.
 
-<a id="%E7%89%B9%E6%AE%8A%E6%A0%87%E8%AE%B0--special-tokens"></a>
+<a id="特殊标记--special-tokens"></a>
 ## 特殊标记 / Special tokens
 
 <a id="top"></a>
@@ -321,7 +321,7 @@ grammar Foo {
 
 This comes in handy when you're already differentiating the proto regexes with the strings you're going to match, as using `<sym>` token prevents repetition of those strings.
 
-<a id="%E2%80%9C%E6%80%BB%E6%98%AF%E6%88%90%E5%8A%9F%E2%80%9D%E6%96%AD%E8%A8%80--always-succeed-assertion"></a>
+<a id="“总是成功”断言--always-succeed-assertion"></a>
 ### “总是成功”断言 / "Always succeed" assertion
 
 `<?>` 是*总是成功*的断言。当用作 grammar token 时，它可以用于触发 Action 类方法。在下面的 grammar 中，我们寻找阿拉伯数字，并用“总是成功”断言定义一个 `succ` token。
@@ -352,7 +352,7 @@ say Digifier.parse('255 435 777', actions => Devanagari.new).made;
 # OUTPUT: «(२५५ ४३५ ७७७)␤»  
 ```
 
-<a id="grammar-%E4%B8%AD%E7%9A%84%E6%96%B9%E6%B3%95--methods-in-grammars"></a>
+<a id="grammar-中的方法--methods-in-grammars"></a>
 ## grammar 中的方法 / Methods in grammars
 
 在 grammar 中使用方法而不是 rule 或 token 是很好的，只要它们返回一个 [Match](https://docs.raku.org/type/Match)：
@@ -381,7 +381,7 @@ say +DigitMatcher.subparse: '12७१७९०९', args => \(:!full-unicode);
 # OUTPUT: «12␤» 
 ```
 
-<a id="grammar-%E4%B8%AD%E7%9A%84%E5%8A%A8%E6%80%81%E5%8F%98%E9%87%8F--dynamic-variables-in-grammars"></a>
+<a id="grammar-中的动态变量--dynamic-variables-in-grammars"></a>
 ## grammar 中的动态变量 / Dynamic variables in grammars
 
 变量可以通过在用 `:` 定义变量的代码行前加前缀来在标记中定义。任意代码可以用大括号包围在标记中的任何位置。这对于保持 token 之间的状态很有用，可以用来改变语法解析文本的方式。在 token 中使用动态变量（变量带有 `$*`、`@*`、`&*`、`%*` 符号）级联到其后在其定义的 token 中定义的*所有* token，避免将它们作为参数从一个 token 传递到另一个 token。
@@ -428,7 +428,7 @@ say GrammarAdvice.subparse("use regexes for significant whitespace by default")
 # OUTPUT: #<failed match> 
 ```
 
-<a id="grammar-%E4%B8%AD%E7%9A%84%E5%B1%9E%E6%80%A7--attributes-in-grammars"></a>
+<a id="grammar-中的属性--attributes-in-grammars"></a>
 ## grammar 中的属性 / Attributes in grammars
 
 属性可以在 grammar 中定义。但是，只能通过方法访问它们。试图从令牌中使用它们将引发异常，因为 method 是 [Match](https://docs.raku.org/type/Match)，而不是 grammar 本身。注意，从一个在 token 中调用的方法中改变一个属性将*只修改该 token 自己的匹配对象*的属性！ grammar 属性可以在解析后返回的匹配项中访问，如果公开：
@@ -478,7 +478,7 @@ say $<field>».invalid;
 # OUTPUT: [(Bool) True] 
 ```
 
-<a id="%E4%BC%A0%E9%80%92%E5%8F%82%E6%95%B0%E7%BB%99-grammar--passing-arguments-into-grammars"></a>
+<a id="传递参数给-grammar--passing-arguments-into-grammars"></a>
 ## 传递参数给 grammar / Passing arguments into grammars
 
 To pass arguments into a grammar, you can use the named argument of `:args` on any of the parsing methods of grammar. The arguments passed should be in a `list`.
@@ -544,7 +544,7 @@ say demonstrate-arguments-dynamic.parse("I like everything else",
 # OUTPUT:  «added-words => ｢everything else｣␤» 
 ```
 
-<a id="%E6%93%8D%E4%BD%9C%E5%AF%B9%E8%B1%A1--action-objects"></a>
+<a id="操作对象--action-objects"></a>
 # *操作对象 / Action objects
 
 成功的 grammar 匹配为你提供了一个 [Match](https://docs.raku.org/type/Match) 对象的解析树，匹配树得到的深度越深，语法中的分支越多，浏览匹配树获得你真正感兴趣的信息就越困难。

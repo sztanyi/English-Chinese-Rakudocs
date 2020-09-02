@@ -8,55 +8,55 @@ Creating your own CLI in Raku
 
 <!-- MarkdownTOC -->
 
-- [命令行接口 - 概述 / Command line interface - an overview](#%E5%91%BD%E4%BB%A4%E8%A1%8C%E6%8E%A5%E5%8F%A3---%E6%A6%82%E8%BF%B0--command-line-interface---an-overview)
-  - [将命令行参数解析为 Capture / Parsing the command line parameters into a capture](#%E5%B0%86%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%8F%82%E6%95%B0%E8%A7%A3%E6%9E%90%E4%B8%BA-capture--parsing-the-command-line-parameters-into-a-capture)
-  - [使用该 Capture 调用提供的 `MAIN` 子例程 / Calling a provided `MAIN` subroutine using that capture](#%E4%BD%BF%E7%94%A8%E8%AF%A5-capture-%E8%B0%83%E7%94%A8%E6%8F%90%E4%BE%9B%E7%9A%84-main-%E5%AD%90%E4%BE%8B%E7%A8%8B--calling-a-provided-main-subroutine-using-that-capture)
-  - [如果调用 `MAIN` 失败，则创建/显示使用信息 - Creating / showing usage information if calling `MAIN` failed](#%E5%A6%82%E6%9E%9C%E8%B0%83%E7%94%A8-main-%E5%A4%B1%E8%B4%A5%EF%BC%8C%E5%88%99%E5%88%9B%E5%BB%BA%E6%98%BE%E7%A4%BA%E4%BD%BF%E7%94%A8%E4%BF%A1%E6%81%AF---creating--showing-usage-information-if-calling-main-failed)
-- [MAIN 子例程 / sub MAIN](#main-%E5%AD%90%E4%BE%8B%E7%A8%8B--sub-main)
-  - [%*SUB-MAIN-OPTS](#%25sub-main-opts)
+- [命令行接口 - 概述 / Command line interface - an overview](#命令行接口---概述--command-line-interface---an-overview)
+  - [将命令行参数解析为 Capture / Parsing the command line parameters into a capture](#将命令行参数解析为-capture--parsing-the-command-line-parameters-into-a-capture)
+  - [使用该 Capture 调用提供的 `MAIN` 子例程 / Calling a provided `MAIN` subroutine using that capture](#使用该-capture-调用提供的-main-子例程--calling-a-provided-main-subroutine-using-that-capture)
+  - [如果调用 `MAIN` 失败，则创建/显示使用信息 - Creating / showing usage information if calling `MAIN` failed](#如果调用-main-失败，则创建显示使用信息---creating--showing-usage-information-if-calling-main-failed)
+- [MAIN 子例程 / sub MAIN](#main-子例程--sub-main)
+  - [%*SUB-MAIN-OPTS](#sub-main-opts)
     - [named-anywhere](#named-anywhere)
   - [is hidden-from-USAGE](#is-hidden-from-usage)
-- [`MAIN` 的单元范围定义 / Unit-scoped definition of `MAIN`](#main-%E7%9A%84%E5%8D%95%E5%85%83%E8%8C%83%E5%9B%B4%E5%AE%9A%E4%B9%89--unit-scoped-definition-of-main)
-  - [USAGE 子例程 / sub USAGE](#usage-%E5%AD%90%E4%BE%8B%E7%A8%8B--sub-usage)
-- [拦截 CLI 参数解析（2018.10，v6.d 及以后版本） / Intercepting CLI argument parsing \(2018.10, v6.d and later\)](#%E6%8B%A6%E6%88%AA-cli-%E5%8F%82%E6%95%B0%E8%A7%A3%E6%9E%90%EF%BC%88201810%EF%BC%8Cv6d-%E5%8F%8A%E4%BB%A5%E5%90%8E%E7%89%88%E6%9C%AC%EF%BC%89--intercepting-cli-argument-parsing-201810-v6d-and-later)
-  - [ARGS-TO-CAPTURE 子例程 / sub ARGS-TO-CAPTURE](#args-to-capture-%E5%AD%90%E4%BE%8B%E7%A8%8B--sub-args-to-capture)
-- [拦截使用信息的生成（2018.10，v6.d 及以后版本） / Intercepting usage message generation \(2018.10, v6.d and later\)](#%E6%8B%A6%E6%88%AA%E4%BD%BF%E7%94%A8%E4%BF%A1%E6%81%AF%E7%9A%84%E7%94%9F%E6%88%90%EF%BC%88201810%EF%BC%8Cv6d-%E5%8F%8A%E4%BB%A5%E5%90%8E%E7%89%88%E6%9C%AC%EF%BC%89--intercepting-usage-message-generation-201810-v6d-and-later)
-  - [RUN-MAIN 子例程 / sub RUN-MAIN](#run-main-%E5%AD%90%E4%BE%8B%E7%A8%8B--sub-run-main)
-  - [GENERATE-USAGE 子例程 / sub GENERATE-USAGE](#generate-usage-%E5%AD%90%E4%BE%8B%E7%A8%8B--sub-generate-usage)
-- [拦截 MAIN 调用（在 2018.10，V6.e 之前） / Intercepting MAIN calling \(before 2018.10, v6.e\)](#%E6%8B%A6%E6%88%AA-main-%E8%B0%83%E7%94%A8%EF%BC%88%E5%9C%A8-201810%EF%BC%8Cv6e-%E4%B9%8B%E5%89%8D%EF%BC%89--intercepting-main-calling-before-201810-v6e)
+- [`MAIN` 的单元范围定义 / Unit-scoped definition of `MAIN`](#main-的单元范围定义--unit-scoped-definition-of-main)
+  - [USAGE 子例程 / sub USAGE](#usage-子例程--sub-usage)
+- [拦截 CLI 参数解析（2018.10，v6.d 及以后版本） / Intercepting CLI argument parsing \(2018.10, v6.d and later\)](#拦截-cli-参数解析（201810，v6d-及以后版本）--intercepting-cli-argument-parsing-201810-v6d-and-later)
+  - [ARGS-TO-CAPTURE 子例程 / sub ARGS-TO-CAPTURE](#args-to-capture-子例程--sub-args-to-capture)
+- [拦截使用信息的生成（2018.10，v6.d 及以后版本） / Intercepting usage message generation \(2018.10, v6.d and later\)](#拦截使用信息的生成（201810，v6d-及以后版本）--intercepting-usage-message-generation-201810-v6d-and-later)
+  - [RUN-MAIN 子例程 / sub RUN-MAIN](#run-main-子例程--sub-run-main)
+  - [GENERATE-USAGE 子例程 / sub GENERATE-USAGE](#generate-usage-子例程--sub-generate-usage)
+- [拦截 MAIN 调用（在 2018.10，V6.e 之前） / Intercepting MAIN calling \(before 2018.10, v6.e\)](#拦截-main-调用（在-201810，v6e-之前）--intercepting-main-calling-before-201810-v6e)
 
 <!-- /MarkdownTOC -->
 
 
-<a id="%E5%91%BD%E4%BB%A4%E8%A1%8C%E6%8E%A5%E5%8F%A3---%E6%A6%82%E8%BF%B0--command-line-interface---an-overview"></a>
+<a id="命令行接口---概述--command-line-interface---an-overview"></a>
 # 命令行接口 - 概述 / Command line interface - an overview
 
 Raku 脚本的默认命令行接口由三部分组成：
 
 The default command line interface of Raku scripts consists of three parts:
 
-<a id="%E5%B0%86%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%8F%82%E6%95%B0%E8%A7%A3%E6%9E%90%E4%B8%BA-capture--parsing-the-command-line-parameters-into-a-capture"></a>
+<a id="将命令行参数解析为-capture--parsing-the-command-line-parameters-into-a-capture"></a>
 ## 将命令行参数解析为 Capture / Parsing the command line parameters into a capture
 
 它查看 [@*ARGS](https://docs.raku.org/language/variables#index-entry-@*ARGS) 中的值，根据某些策略解释这些值，并创建一个 [Capture](https://docs.raku.org/type/Capture) 对象。开发人员可以提供另一种解析方法，或者使用模块安装。
 
 This looks at the values in [@*ARGS](https://docs.raku.org/language/variables#index-entry-@*ARGS), interprets these according to some policy, and creates a [Capture](https://docs.raku.org/type/Capture) object out of that. An alternative way of parsing may be provided by the developer or installed using a module.
 
-<a id="%E4%BD%BF%E7%94%A8%E8%AF%A5-capture-%E8%B0%83%E7%94%A8%E6%8F%90%E4%BE%9B%E7%9A%84-main-%E5%AD%90%E4%BE%8B%E7%A8%8B--calling-a-provided-main-subroutine-using-that-capture"></a>
+<a id="使用该-capture-调用提供的-main-子例程--calling-a-provided-main-subroutine-using-that-capture"></a>
 ## 使用该 Capture 调用提供的 `MAIN` 子例程 / Calling a provided `MAIN` subroutine using that capture
 
 标准[多分派](https://docs.raku.org/language/functions#index-entry-declarator_multi-Multi-dispatch)用于使用生成的 `Capture `对象调用 `MAN` 子例程。这意味着你的 `MAIN` 子例程可能是一个 `multi sub`，每个候选子例程都负责处理给定的命令行参数的某些部分。
 
 Standard [multi dispatch](https://docs.raku.org/language/functions#index-entry-declarator_multi-Multi-dispatch) is used to call the `MAIN` subroutine with the generated `Capture` object. This means that your `MAIN` subroutine may be a `multi sub`, each candidate of which is responsible for some part of processing the given command line arguments.
 
-<a id="%E5%A6%82%E6%9E%9C%E8%B0%83%E7%94%A8-main-%E5%A4%B1%E8%B4%A5%EF%BC%8C%E5%88%99%E5%88%9B%E5%BB%BA%E6%98%BE%E7%A4%BA%E4%BD%BF%E7%94%A8%E4%BF%A1%E6%81%AF---creating--showing-usage-information-if-calling-main-failed"></a>
+<a id="如果调用-main-失败，则创建显示使用信息---creating--showing-usage-information-if-calling-main-failed"></a>
 ## 如果调用 `MAIN` 失败，则创建/显示使用信息 - Creating / showing usage information if calling `MAIN` failed
 
 如果多分派失败，那么脚本的用户应该尽可能地被告知失败的原因。默认情况下，这是通过检查每个 `MAIN` 候选子例程以及任何相关的 Pod 信息的签名来完成的。然后将结果显示在 STDERR 上（如果指定了 `--help`，则显示在 STDOUT 上）。开发人员可以提供生成使用信息的替代方法，或者使用模块安装。
 
 If multi dispatch failed, then the user of the script should be informed as well as possible as to why it failed. By default, this is done by inspecting the signature of each `MAIN` candidate sub, and any associated Pod information. The result is then shown to the user on STDERR (or on STDOUT if `--help` was specified). An alternative way of generating the usage information may be provided by the developer or installed using a module.
 
-<a id="main-%E5%AD%90%E4%BE%8B%E7%A8%8B--sub-main"></a>
+<a id="main-子例程--sub-main"></a>
 # MAIN 子例程 / sub MAIN
 
 在运行所有相关的输入阶段（`BEGIN`、`CHECK`、`INT`、`PRE`、`ENTER`）并执行脚本的 [mainline](https://docs.raku.org/language/glossary#index-entry-Mainline) 之后，具有特殊名称的子程序 `MAIN` 将被执行。如果没有 `MAIN` 子例程，则不会出现错误：然后，你的脚本将只需在脚本的 mainline 中执行参数解析等工作。
@@ -234,7 +234,7 @@ Usage:
     --verbose                required verbosity
 ```
 
-<a id="%25sub-main-opts"></a>
+<a id="sub-main-opts"></a>
 ## %*SUB-MAIN-OPTS
 
 通过在 `%*SUB-MAIN-OPTS` 哈希中设置选项，在将参数传递到 `sub MAIN {}` 之前，可以更改参数的处理方式。由于动态变量的性质，需要设置 `%*SUB-MAIN-OPTS` 哈希，并用适当的设置填充它。例如：
@@ -308,7 +308,7 @@ Usage:
 
 Which, although technically correct, doesn't read as well.
 
-<a id="main-%E7%9A%84%E5%8D%95%E5%85%83%E8%8C%83%E5%9B%B4%E5%AE%9A%E4%B9%89--unit-scoped-definition-of-main"></a>
+<a id="main-的单元范围定义--unit-scoped-definition-of-main"></a>
 # `MAIN` 的单元范围定义 / Unit-scoped definition of `MAIN`
 
 如果整个程序主体驻留在 `MAIN` 中，则可以使用下面的 `unit` 声明器（修改较早的示例）：
@@ -332,7 +332,7 @@ say 'Verbosity ', ($verbose ?? 'on' !! 'off');
 
 Note that this is only appropriate if you can get by with just a single (only) `sub MAIN`.
 
-<a id="usage-%E5%AD%90%E4%BE%8B%E7%A8%8B--sub-usage"></a>
+<a id="usage-子例程--sub-usage"></a>
 ## USAGE 子例程 / sub USAGE
 
 如果没有为给定的命令行参数找到 `MAIN` 的多个候选项，则调用子例程 `USAGE`。如果没有找到这样的方法，编译器将输出默认的使用消息。
@@ -358,14 +358,14 @@ EOH
 
 The default usage message is available inside `sub USAGE` via the read-only `$*USAGE` variable. It will be generated based on available `sub MAIN` candidates and their parameters. As shown before, you can specify an additional extended description for each candidate using a `#|(...)` Pod block to set [`WHY`](https://docs.raku.org/routine/WHY).
 
-<a id="%E6%8B%A6%E6%88%AA-cli-%E5%8F%82%E6%95%B0%E8%A7%A3%E6%9E%90%EF%BC%88201810%EF%BC%8Cv6d-%E5%8F%8A%E4%BB%A5%E5%90%8E%E7%89%88%E6%9C%AC%EF%BC%89--intercepting-cli-argument-parsing-201810-v6d-and-later"></a>
+<a id="拦截-cli-参数解析（201810，v6d-及以后版本）--intercepting-cli-argument-parsing-201810-v6d-and-later"></a>
 # 拦截 CLI 参数解析（2018.10，v6.d 及以后版本） / Intercepting CLI argument parsing (2018.10, v6.d and later)
 
 通过为你自己提供 `ARGS-TO-CAPTURE` 子例程，或从生态系统中可用的 [Getopt](https://modules.perl6.org/search/?q=getopt) 模块中的任何一个导入一个子例程，你可以替换或增加参数解析的默认方式。
 
 You can replace or augment the default way of argument parsing by supplying a `ARGS-TO-CAPTURE` subroutine yourself, or by importing one from any of the [Getopt](https://modules.perl6.org/search/?q=getopt) modules available in the ecosystem.
 
-<a id="args-to-capture-%E5%AD%90%E4%BE%8B%E7%A8%8B--sub-args-to-capture"></a>
+<a id="args-to-capture-子例程--sub-args-to-capture"></a>
 ## ARGS-TO-CAPTURE 子例程 / sub ARGS-TO-CAPTURE
 
 `ARGS-TO-CAPTURE` 子例程应该接受两个参数：一个表示要执行的 `MAIN` 单元的 [Callable](https://docs.raku.org/type/Callable)（以便在必要时可以自省）和一个带有命令行参数的数组。它应该返回一个 [Capture](https://docs.raku.org/type/Capture) 对象，它将用于分派 `MAIN` 单元。下面是一个**非常**人为的示例，它将根据输入的某个关键字（在测试脚本的命令行接口时非常方便）创建一个 `Capture`：
@@ -387,14 +387,14 @@ sub ARGS-TO-CAPTURE(&main, @args --> Capture) {
 
 Note that the dynamic variable [`&*ARGS-TO-CAPTURE`](https://docs.raku.org/language/variables#&*ARGS-TO-CAPTURE) is available to perform the default command line arguments to `Capture` processing so you don't have to reinvent the whole wheel if you don't want to.
 
-<a id="%E6%8B%A6%E6%88%AA%E4%BD%BF%E7%94%A8%E4%BF%A1%E6%81%AF%E7%9A%84%E7%94%9F%E6%88%90%EF%BC%88201810%EF%BC%8Cv6d-%E5%8F%8A%E4%BB%A5%E5%90%8E%E7%89%88%E6%9C%AC%EF%BC%89--intercepting-usage-message-generation-201810-v6d-and-later"></a>
+<a id="拦截使用信息的生成（201810，v6d-及以后版本）--intercepting-usage-message-generation-201810-v6d-and-later"></a>
 # 拦截使用信息的生成（2018.10，v6.d 及以后版本） / Intercepting usage message generation (2018.10, v6.d and later)
 
 你可以通过自己提供一个 `GENERATE-USAGE` 子例程，或者从生态系统中可用的任何 [Getopt](https://modules.perl6.org/search/?q=getopt) 模块中导入一个，来替换或增强默认的使用消息生成方式（在向 MAIN 发送失败之后）。
 
 You can replace or augment the default way of usage message generation (after a failed dispatch to MAIN) by supplying a `GENERATE-USAGE` subroutine yourself, or by importing one from any of the [Getopt](https://modules.perl6.org/search/?q=getopt) modules available in the ecosystem.
 
-<a id="run-main-%E5%AD%90%E4%BE%8B%E7%A8%8B--sub-run-main"></a>
+<a id="run-main-子例程--sub-run-main"></a>
 ## RUN-MAIN 子例程 / sub RUN-MAIN
 
 定义为：
@@ -434,7 +434,7 @@ RUN-MAIN( &new-main, Nil );
 
 This will print the name (first argument) of the generated object.
 
-<a id="generate-usage-%E5%AD%90%E4%BE%8B%E7%A8%8B--sub-generate-usage"></a>
+<a id="generate-usage-子例程--sub-generate-usage"></a>
 ## GENERATE-USAGE 子例程 / sub GENERATE-USAGE
 
 `GENERATE-USAGE` 子例程应该接受一个 `Callable`，表示由于调度失败而未被执行的 `MAIN` 子程序。这可以用于内省。所有其他参数都是设置为发送到 `MAIN` 的参数。它应该返回你想要显示给用户的使用信息的字符串。一个只需重新创建由处理参数创建的 `Capture` 的示例：
@@ -466,7 +466,7 @@ multi sub GENERATE-USAGE(&main, |capture) {
 
 Note that the dynamic variable [`&*GENERATE-USAGE`](https://docs.raku.org/language/variables#&*GENERATE-USAGE) is available to perform the default usage message generation so you don't have to reinvent the whole wheel if you don't want to.
 
-<a id="%E6%8B%A6%E6%88%AA-main-%E8%B0%83%E7%94%A8%EF%BC%88%E5%9C%A8-201810%EF%BC%8Cv6e-%E4%B9%8B%E5%89%8D%EF%BC%89--intercepting-main-calling-before-201810-v6e"></a>
+<a id="拦截-main-调用（在-201810，v6e-之前）--intercepting-main-calling-before-201810-v6e"></a>
 # 拦截 MAIN 调用（在 2018.10，V6.e 之前） / Intercepting MAIN calling (before 2018.10, v6.e)
 
 一个较旧的接口使用户能够完全拦截对 `MAIN` 的调用。这取决于是否存在一个 `MAIN_HELPER` 子例程，如果在程序的主线中找到 `MAIN` 子例程，该子例程将被调用。

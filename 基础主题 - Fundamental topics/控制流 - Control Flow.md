@@ -10,8 +10,8 @@ Statements used to control the flow of execution
 
 <!-- MarkdownTOC -->
 
-- [语句 / statements](#%E8%AF%AD%E5%8F%A5--statements)
-- [代码块 / blocks](#%E4%BB%A3%E7%A0%81%E5%9D%97--blocks)
+- [语句 / statements](#语句--statements)
+- [代码块 / blocks](#代码块--blocks)
 - [do](#do)
 - [if](#if)
     - [else/elsif](#elseelsif)
@@ -24,7 +24,7 @@ Statements used to control the flow of execution
     - [default and when](#default-and-when)
     - [proceed](#proceed)
     - [succeed](#succeed)
-    - [given 作为语句 / given as a statement](#given-%E4%BD%9C%E4%B8%BA%E8%AF%AD%E5%8F%A5--given-as-a-statement)
+    - [given 作为语句 / given as a statement](#given-作为语句--given-as-a-statement)
 - [loop](#loop)
 - [while, until](#while-until)
 - [repeat/while, repeat/until](#repeatwhile-repeatuntil)
@@ -33,14 +33,14 @@ Statements used to control the flow of execution
 - [fail](#fail)
 - [once](#once)
 - [quietly](#quietly)
-- [标签 / LABELs](#%E6%A0%87%E7%AD%BE--labels)
+- [标签 / LABELs](#标签--labels)
 - [next](#next)
 - [last](#last)
 - [redo](#redo)
 
 <!-- /MarkdownTOC -->
 
-<a id="%E8%AF%AD%E5%8F%A5--statements"></a>
+<a id="语句--statements"></a>
 # 语句 / statements
 
 Raku 程序由一个或多个语句组成。简单语句由分号分隔。下面的这个程序会打印 “Hello” 然后在下一行打印 “World”。
@@ -61,7 +61,7 @@ say
 "Hello"; say "World";
 ```
 
-<a id="%E4%BB%A3%E7%A0%81%E5%9D%97--blocks"></a>
+<a id="代码块--blocks"></a>
 # 代码块 / blocks
 
 像许多语言一样，Raku 使用 `{` 和 `}` 包含的代码块将多个语句转变为单个语句。 代码块最后一个语句的分号可以省略。
@@ -851,7 +851,7 @@ given 42 {
 }
 ```
 
-<a id="given-%E4%BD%9C%E4%B8%BA%E8%AF%AD%E5%8F%A5--given-as-a-statement"></a>
+<a id="given-作为语句--given-as-a-statement"></a>
 ## given 作为语句 / given as a statement
 
 `given` 可以跟在一个语句后面，以在它后面的语句中设置主题。
@@ -1129,7 +1129,7 @@ warn 'still kaput!';
 » 
 ```
 
-<a id="%E6%A0%87%E7%AD%BE--labels"></a>
+<a id="标签--labels"></a>
 # 标签 / LABELs
 
 `while`、 `until`、 `loop` 和 `for` 循环都可以接受一个标签，`next`、 `last` 和 `redo` 可以使用这些标签。 例如，支持嵌套循环：

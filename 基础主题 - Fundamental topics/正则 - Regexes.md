@@ -6,157 +6,463 @@
 
 Pattern matching against strings
 
-正则表达式，简称*正则*，是一组描述文本模式的字符。模式匹配是将这些模式与实际文本匹配的过程。
+*正则表达式*是定义特定文本模式的字符序列，通常是希望在大文本体中找到的模式。
 
-Regular expressions, *regexes* for short, are a sequence of characters that describe a pattern of text. Pattern matching is the process of matching those patterns to actual text.
+A *regular expression* is a sequence of characters that defines a certain text pattern, typically one that one wishes to find in some large body of text.
+
+在理论计算机科学和形式语言理论中，正则表达式用于描述所谓的[*正则语言*](https://en.wikipedia.org/wiki/Regular_language)。自从正则表达式在 1950 年代问世以来，它们的实际实现，例如文本编辑器的文本搜索和替换功能，已经超出了它们严格的科学定义。为了确认这一点，并且为了消除歧义，Raku 中的正则表达式通常被称为 *regex*（来自：*reg*ular *ex*pression），这一术语在其他编程语言中也很常见。
+
+In theoretical computer science and formal language theory, regular expressions are used to describe so-called [*regular languages*](https://en.wikipedia.org/wiki/Regular_language). Since their inception in the 1950's, practical implementations of regular expressions, for instance in the text search and replace functions of text editors, have outgrown their strict scientific definition. In acknowledgement of this, and in an attempt to disambiguate, a regular expression in Raku is normally referred to as a *regex* (from: *reg*ular *ex*pression), a term that is also in common use in other programming languages.
+
+在 Raku 中，正则是用[*领域特定语言*](https://en.wikipedia.org/wiki/Domain-specific_language)编写的，即一种子语言。本页介绍这种语言，并解释如何使用正则表达式在名为*模式匹配*的进程中搜索字符串中的文本模式。
+
+In Raku, regexes are written in a [*domain-specific language*](https://en.wikipedia.org/wiki/Domain-specific_language), i.e. a sublanguage or *slang*. This page describes this language, and explains how regexes can be used to search for text patterns in strings in a process called *pattern matching*.
 
 <!-- MarkdownTOC -->
 
-- [词法约定 / Lexical conventions](#%E8%AF%8D%E6%B3%95%E7%BA%A6%E5%AE%9A--lexical-conventions)
-- [字面量 / Literals](#%E5%AD%97%E9%9D%A2%E9%87%8F--literals)
-- [通配符 / Wildcards](#%E9%80%9A%E9%85%8D%E7%AC%A6--wildcards)
-- [字符类 / Character classes](#%E5%AD%97%E7%AC%A6%E7%B1%BB--character-classes)
-  - [反斜杠字符类 / Backslashed character classes](#%E5%8F%8D%E6%96%9C%E6%9D%A0%E5%AD%97%E7%AC%A6%E7%B1%BB--backslashed-character-classes)
-    - [`\n` 和 `\N`](#n-%E5%92%8C-n)
-    - [`\t` 和 `\T`](#t-%E5%92%8C-t)
-    - [`\h` 和 `\H`](#h-%E5%92%8C-h)
-    - [`\v` 和 `\V`](#v-%E5%92%8C-v)
-    - [`\s` 和 `\S`](#s-%E5%92%8C-s)
-    - [`\d` 和 `\D`](#d-%E5%92%8C-d)
-    - [`\w` 和 `\W`](#w-%E5%92%8C-w)
-  - [预定义的字符串类 / Predefined character classes](#%E9%A2%84%E5%AE%9A%E4%B9%89%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%B1%BB--predefined-character-classes)
-  - [Unicode 属性 / Unicode properties](#unicode-%E5%B1%9E%E6%80%A7--unicode-properties)
-  - [枚举字符类和范围 / Enumerated character classes and ranges](#%E6%9E%9A%E4%B8%BE%E5%AD%97%E7%AC%A6%E7%B1%BB%E5%92%8C%E8%8C%83%E5%9B%B4--enumerated-character-classes-and-ranges)
-- [量词 / Quantifiers](#%E9%87%8F%E8%AF%8D--quantifiers)
-  - [一个或多个: `+` / One or more: `+`](#%E4%B8%80%E4%B8%AA%E6%88%96%E5%A4%9A%E4%B8%AA---one-or-more-)
-  - [零个或多个: `*` / Zero or more: `*`](#%E9%9B%B6%E4%B8%AA%E6%88%96%E5%A4%9A%E4%B8%AA---zero-or-more-)
-  - [零个或一个: `?` / Zero or one: `?`](#%E9%9B%B6%E4%B8%AA%E6%88%96%E4%B8%80%E4%B8%AA---zero-or-one-)
-  - [通用量词: `** min..max` / General quantifier: `** min..max`](#%E9%80%9A%E7%94%A8%E9%87%8F%E8%AF%8D--minmax--general-quantifier--minmax)
-  - [分隔修饰的量词：`%`, `%%` / Modified quantifier: `%`, `%%`](#%E5%88%86%E9%9A%94%E4%BF%AE%E9%A5%B0%E7%9A%84%E9%87%8F%E8%AF%8D%EF%BC%9A---modified-quantifier--)
-  - [阻止回溯: `:` / Preventing backtracking: `:`](#%E9%98%BB%E6%AD%A2%E5%9B%9E%E6%BA%AF---preventing-backtracking-)
-  - [贪婪对比节俭量词： `?` / Greedy versus frugal quantifiers: `?`](#%E8%B4%AA%E5%A9%AA%E5%AF%B9%E6%AF%94%E8%8A%82%E4%BF%AD%E9%87%8F%E8%AF%8D%EF%BC%9A---greedy-versus-frugal-quantifiers-)
-- [备选项: `||` / Alternation: `||`](#%E5%A4%87%E9%80%89%E9%A1%B9-%7C%7C--alternation-%7C%7C)
-- [最长的备选项： `|` / Longest alternation: `|`](#%E6%9C%80%E9%95%BF%E7%9A%84%E5%A4%87%E9%80%89%E9%A1%B9%EF%BC%9A-%7C--longest-alternation-%7C)
-  - [引文列表是 LTM 匹配项 / Quoted lists are LTM matches](#%E5%BC%95%E7%94%A8%E7%9A%84%E5%88%97%E8%A1%A8%E6%98%AF-ltm-%E5%8C%B9%E9%85%8D%E9%A1%B9--quoted-lists-are-ltm-matches)
-- [合取： `&&` / Conjunction: `&&`](#%E5%90%88%E5%8F%96%EF%BC%9A---conjunction-)
-- [合取： `&` / Conjunction: `&`](#%E5%90%88%E5%8F%96%EF%BC%9A---conjunction--1)
-- [定位符 / Anchors](#%E5%AE%9A%E4%BD%8D%E7%AC%A6--anchors)
-  - [字符串开始和结束 / Start of string and end of string](#%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%BC%80%E5%A7%8B%E5%92%8C%E7%BB%93%E6%9D%9F--start-of-string-and-end-of-string)
-  - [行开始和结束 / Start of line and end of line](#%E8%A1%8C%E5%BC%80%E5%A7%8B%E5%92%8C%E7%BB%93%E6%9D%9F--start-of-line-and-end-of-line)
-  - [词边界 / Word boundary](#%E8%AF%8D%E8%BE%B9%E7%95%8C--word-boundary)
-  - [左右词边界 / Left and right word boundary](#%E5%B7%A6%E5%8F%B3%E8%AF%8D%E8%BE%B9%E7%95%8C--left-and-right-word-boundary)
-  - [定位符概述 / Summary of anchors](#%E5%AE%9A%E4%BD%8D%E7%AC%A6%E6%A6%82%E8%BF%B0--summary-of-anchors)
-- [零宽度断言 / Zero-width assertions](#%E9%9B%B6%E5%AE%BD%E5%BA%A6%E6%96%AD%E8%A8%80--zero-width-assertions)
-  - [向前看断言 / Lookahead assertions](#%E5%90%91%E5%89%8D%E7%9C%8B%E6%96%AD%E8%A8%80--lookahead-assertions)
-  - [向后看断言 / Lookbehind assertions](#%E5%90%91%E5%90%8E%E7%9C%8B%E6%96%AD%E8%A8%80--lookbehind-assertions)
-- [分组与捕获 / Grouping and capturing](#%E5%88%86%E7%BB%84%E4%B8%8E%E6%8D%95%E8%8E%B7--grouping-and-capturing)
-  - [捕获 / Capturing](#%E6%8D%95%E8%8E%B7--capturing)
-  - [非捕获分组 / Non-capturing grouping](#%E9%9D%9E%E6%8D%95%E8%8E%B7%E5%88%86%E7%BB%84--non-capturing-grouping)
-  - [匹配数 / Capture numbers](#%E5%8C%B9%E9%85%8D%E6%95%B0--capture-numbers)
-  - [命名捕获 / Named captures](#%E5%91%BD%E5%90%8D%E6%8D%95%E8%8E%B7--named-captures)
-  - [捕获标识符： `` / Capture markers: ``](#%E6%8D%95%E8%8E%B7%E6%A0%87%E8%AF%86%E7%AC%A6%EF%BC%9A--capture-markers-)
-- [替换 / Substitution](#%E6%9B%BF%E6%8D%A2--substitution)
-  - [词法约定 / Lexical conventions](#%E8%AF%8D%E6%B3%95%E7%BA%A6%E5%AE%9A--lexical-conventions-1)
-  - [替换字符串文字 / Replacing string literals](#%E6%9B%BF%E6%8D%A2%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%96%87%E5%AD%97--replacing-string-literals)
-  - [通配符和字符类 / Wildcards and character classes](#%E9%80%9A%E9%85%8D%E7%AC%A6%E5%92%8C%E5%AD%97%E7%AC%A6%E7%B1%BB--wildcards-and-character-classes)
-  - [捕获分组 / Capturing groups](#%E6%8D%95%E8%8E%B7%E5%88%86%E7%BB%84--capturing-groups)
-  - [常用副词 / Common adverbs](#%E5%B8%B8%E7%94%A8%E5%89%AF%E8%AF%8D--common-adverbs)
-- [嵌套结构的波浪符号 / Tilde for nesting structures](#%E5%B5%8C%E5%A5%97%E7%BB%93%E6%9E%84%E7%9A%84%E6%B3%A2%E6%B5%AA%E7%AC%A6%E5%8F%B7--tilde-for-nesting-structures)
-- [子规则 / Subrules](#%E5%AD%90%E8%A7%84%E5%88%99--subrules)
-- [正则插值 / Regex interpolation](#%E6%AD%A3%E5%88%99%E6%8F%92%E5%80%BC--regex-interpolation)
-  - [正则布尔条件检查 / Regex boolean condition check](#%E6%AD%A3%E5%88%99%E5%B8%83%E5%B0%94%E6%9D%A1%E4%BB%B6%E6%A3%80%E6%9F%A5--regex-boolean-condition-check)
-- [副词 / Adverbs](#%E5%89%AF%E8%AF%8D--adverbs)
-  - [正则副词 / Regex adverbs](#%E6%AD%A3%E5%88%99%E5%89%AF%E8%AF%8D--regex-adverbs)
-    - [忽略标记 / Ignoremark](#%E5%BF%BD%E7%95%A5%E6%A0%87%E8%AE%B0--ignoremark)
-    - [棘轮 / Ratchet](#%E6%A3%98%E8%BD%AE--ratchet)
-    - [空格信号 / Sigspace](#%E7%A9%BA%E6%A0%BC%E4%BF%A1%E5%8F%B7--sigspace)
-    - [兼容 Perl 5 正则副词 / Perl 5 compatibility adverb](#%E5%85%BC%E5%AE%B9-perl-5-%E6%AD%A3%E5%88%99%E5%89%AF%E8%AF%8D--perl-5-compatibility-adverb)
-  - [匹配副词 / Matching adverbs](#%E5%8C%B9%E9%85%8D%E5%89%AF%E8%AF%8D--matching-adverbs)
-    - [位置副词 / Positional adverbs](#%E4%BD%8D%E7%BD%AE%E5%89%AF%E8%AF%8D--positional-adverbs)
+- [词法约定 / Lexical conventions](#词法约定--lexical-conventions)
+  - [定义匿名正则的语法 / Anonymous regex definition syntax](#定义匿名正则的语法--anonymous-regex-definition-syntax)
+  - [定义命名正则的语法 / Named regex definition syntax](#定义命名正则的语法--named-regex-definition-syntax)
+  - [正则可读性：空格与注释 / Regex readability: whitespace and comments](#正则可读性：空格与注释--regex-readability-whitespace-and-comments)
+  - [匹配语法 / Match syntax](#匹配语法--match-syntax)
+- [字面量与元字符 / Literals and metacharacters](#字面量与元字符--literals-and-metacharacters)
+- [通配符 / Wildcards](#通配符--wildcards)
+- [字符类 / Character classes](#字符类--character-classes)
+  - [反斜杠字符类 / Backslashed character classes](#反斜杠字符类--backslashed-character-classes)
+    - [`\n` 和 `\N`](#n-和-n)
+    - [`\t` 和 `\T`](#t-和-t)
+    - [`\h` 和 `\H`](#h-和-h)
+    - [`\v` 和 `\V`](#v-和-v)
+    - [`\s` 和 `\S`](#s-和-s)
+    - [`\d` 和 `\D`](#d-和-d)
+    - [`\w` 和 `\W`](#w-和-w)
+  - [预定义的字符类 / Predefined character classes](#预定义的字符类--predefined-character-classes)
+  - [Unicode 属性 / Unicode properties](#unicode-属性--unicode-properties)
+  - [枚举字符类和范围 / Enumerated character classes and ranges](#枚举字符类和范围--enumerated-character-classes-and-ranges)
+- [量词 / Quantifiers](#量词--quantifiers)
+  - [一个或多个: `+` / One or more: `+`](#一个或多个---one-or-more-)
+  - [零个或多个: `*` / Zero or more: `*`](#零个或多个---zero-or-more-)
+  - [零个或一个: `?` / Zero or one: `?`](#零个或一个---zero-or-one-)
+  - [通用量词: `** min..max` / General quantifier: `** min..max`](#通用量词--minmax--general-quantifier--minmax)
+  - [分隔修饰量词：`%`, `%%` / Modified quantifier: `%`, `%%`](#分隔修饰量词：---modified-quantifier--)
+  - [阻止回溯: `:` / Preventing backtracking: `:`](#阻止回溯---preventing-backtracking-)
+  - [贪婪对比节俭量词： `?` / Greedy versus frugal quantifiers: `?`](#贪婪对比节俭量词：---greedy-versus-frugal-quantifiers-)
+- [备选项: `||` / Alternation: `||`](#备选项-||--alternation-||)
+- [最长的备选项： `|` / Longest alternation: `|`](#最长的备选项：-|--longest-alternation-|)
+  - [引文列表是 LTM 匹配项 / Quoted lists are LTM matches](#引文列表是-ltm-匹配项--quoted-lists-are-ltm-matches)
+- [合取： `&&` / Conjunction: `&&`](#合取：---conjunction-)
+- [合取： `&` / Conjunction: `&`](#合取：---conjunction--1)
+- [定位符 / Anchors](#定位符--anchors)
+  - [字符串开始和结束 / Start of string and end of string](#字符串开始和结束--start-of-string-and-end-of-string)
+  - [行开始和结束 / Start of line and end of line](#行开始和结束--start-of-line-and-end-of-line)
+  - [词边界 / Word boundary](#词边界--word-boundary)
+  - [左右词边界 / Left and right word boundary](#左右词边界--left-and-right-word-boundary)
+  - [定位符概述 / Summary of anchors](#定位符概述--summary-of-anchors)
+- [零宽度断言 / Zero-width assertions](#零宽度断言--zero-width-assertions)
+  - [向前看断言 / Lookahead assertions](#向前看断言--lookahead-assertions)
+  - [向后看断言 / Lookbehind assertions](#向后看断言--lookbehind-assertions)
+- [分组与捕获 / Grouping and capturing](#分组与捕获--grouping-and-capturing)
+  - [捕获 / Capturing](#捕获--capturing)
+  - [非捕获分组 / Non-capturing grouping](#非捕获分组--non-capturing-grouping)
+  - [匹配数 / Capture numbers](#匹配数--capture-numbers)
+  - [命名捕获 / Named captures](#命名捕获--named-captures)
+  - [捕获标识符： `` / Capture markers: ``](#捕获标识符：--capture-markers-)
+- [替换 / Substitution](#替换--substitution)
+  - [词法约定 / Lexical conventions](#词法约定--lexical-conventions-1)
+  - [替换字符串文字 / Replacing string literals](#替换字符串文字--replacing-string-literals)
+  - [通配符和字符类 / Wildcards and character classes](#通配符和字符类--wildcards-and-character-classes)
+  - [捕获分组 / Capturing groups](#捕获分组--capturing-groups)
+  - [常用副词 / Common adverbs](#常用副词--common-adverbs)
+- [嵌套结构的波浪符号 / Tilde for nesting structures](#嵌套结构的波浪符号--tilde-for-nesting-structures)
+- [子规则 / Subrules](#子规则--subrules)
+- [正则插值 / Regex interpolation](#正则插值--regex-interpolation)
+  - [正则布尔条件检查 / Regex boolean condition check](#正则布尔条件检查--regex-boolean-condition-check)
+- [副词 / Adverbs](#副词--adverbs)
+  - [正则副词 / Regex adverbs](#正则副词--regex-adverbs)
+    - [忽略标记 / Ignoremark](#忽略标记--ignoremark)
+    - [棘轮 / Ratchet](#棘轮--ratchet)
+    - [空格信号 / Sigspace](#空格信号--sigspace)
+    - [兼容 Perl 5 正则副词 / Perl 5 compatibility adverb](#兼容-perl-5-正则副词--perl-5-compatibility-adverb)
+  - [匹配副词 / Matching adverbs](#匹配副词--matching-adverbs)
+    - [位置副词 / Positional adverbs](#位置副词--positional-adverbs)
     - [Continue](#continue)
-    - [穷举 / Exhaustive](#%E7%A9%B7%E4%B8%BE--exhaustive)
-    - [全局搜索 / Global](#%E5%85%A8%E5%B1%80%E6%90%9C%E7%B4%A2--global)
+    - [穷举 / Exhaustive](#穷举--exhaustive)
+    - [全局搜索 / Global](#全局搜索--global)
     - [Pos](#pos)
-    - [重叠 / Overlap](#%E9%87%8D%E5%8F%A0--overlap)
-  - [替换副词 / Substitution adverbs](#%E6%9B%BF%E6%8D%A2%E5%89%AF%E8%AF%8D--substitution-adverbs)
+    - [重叠 / Overlap](#重叠--overlap)
+  - [替换副词 / Substitution adverbs](#替换副词--substitution-adverbs)
     - [Samecase](#samecase)
     - [Samemark](#samemark)
     - [Samespace](#samespace)
-- [回溯 / Backtracking](#%E5%9B%9E%E6%BA%AF--backtracking)
-- [`$/`在每次匹配正则表达式时更改 / `$/` changes each time a regular expression is matched](#%24%E5%9C%A8%E6%AF%8F%E6%AC%A1%E5%8C%B9%E9%85%8D%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%97%B6%E6%9B%B4%E6%94%B9--%24-changes-each-time-a-regular-expression-is-matched)
-- [最佳实践和成功案例 / Best practices and gotchas](#%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E5%92%8C%E6%88%90%E5%8A%9F%E6%A1%88%E4%BE%8B--best-practices-and-gotchas)
+- [回溯 / Backtracking](#回溯--backtracking)
+- [`$/`在每次匹配正则表达式时更改 / `$/` changes each time a regular expression is matched](#$在每次匹配正则表达式时更改--$-changes-each-time-a-regular-expression-is-matched)
+- [最佳实践和成功案例 / Best practices and gotchas](#最佳实践和成功案例--best-practices-and-gotchas)
 
 <!-- /MarkdownTOC -->
-<a id="%E8%AF%8D%E6%B3%95%E7%BA%A6%E5%AE%9A--lexical-conventions"></a>
+
+
+<a id="词法约定--lexical-conventions"></a>
 # 词法约定 / Lexical conventions
 
-Raku 编写正则有特殊的语法：
+从根本上讲，Raku 正则表达式非常类似于子例程：两者都是代码对象，就像可以有匿名函数和命名函数一样，也可以有匿名和命名的正则表达式。
 
-Raku has special syntax for writing regexes:
+Fundamentally, Raku regexes are very much like subroutines: both are code objects, and just as you can have anonymous subs and named subs, you can have anonymous and named regexes.
+
+正则表达式，无论是匿名的还是命名的，都由 [`Regex`](https://docs.raku.org/type/Regex) 对象表示。但是，构造匿名和命名的 `Regex` 对象的语法不同。因此，我们将依次讨论这些问题。
+
+A regex, whether anonymous or named, is represented by a [`Regex`](https://docs.raku.org/type/Regex) object. Yet, the syntax for constructing anonymous and named `Regex` objects differs. We will therefore discuss them in turn.
+
+<a id="定义匿名正则的语法--anonymous-regex-definition-syntax"></a>
+## 定义匿名正则的语法 / Anonymous regex definition syntax
+
+匿名正则可以以下列方式之一构造：
+
+An anonymous regex may be constructed in one of the following ways:
 
 ```Raku
-m/abc/;         # 对变量 $_ 进行匹配的正则 / a regex that is immediately matched against $_ 
-rx/abc/;        # 一个正则对象，允许在正则前面使用副词 / a Regex object; allow adverbs to be used before regex 
-/abc/;          # 一个正则对象，'rx/ /' 操作符的简写 / a Regex object; shorthand version of 'rx/ /' operator 
+rx/pattern/;          # an anonymous Regex object; 'rx' stands for 'regex'
+/pattern/;            # an anonymous Regex object; shorthand for 'rx/.../' 
+ 
+regex { pattern };    # keyword-declared anonymous regex; this form is 
+                      # intended for defining named regexes and is discussed 
+                      # in that context in the next section
 ```
 
-前两个例子可以不使用斜杠作为分隔符：
+`rx/ /` 形式比单纯的简写形式 `//` 有两个优点。
 
-For the first two examples, delimiters other than the slash can be used:
+The `rx/ /` form has two advantages over the bare shorthand form `/ /`.
 
-```Raku
-m{abc};
-rx{abc};
+首先，它允许使用斜杠以外的分隔符，这可以用来提高正则定义的可读性：
+
+Firstly, it enables the use of delimiters other than the slash, which may be used to improve the readability of the regex definition:
+
+```
+rx{ '/tmp/'.* };      # the use of curly braces as delimiters makes this first 
+rx/ '/tmp/'.* /;      # definition somewhat easier on the eyes than the second
 ```
 
-请注意，冒号和圆括号不能作为分隔符；冒号与副词冲突，例如 `rx:i/abc/`（大小写不敏感正则），圆括号会被当做函数调用。
+虽然选择范围很广，但并非每个字符都可以被选择为一个正则分隔符：
 
-Note that neither the colon nor round parentheses can be delimiters; the colon is forbidden because it clashes with adverbs, such as `rx:i/abc/` (case insensitive regexes), and round parentheses indicate a function call instead.
+Although the choice is vast, not every character may be chosen as an alternative regex delimiter:
 
-`m/ /` 和 `/ /` 分隔符之间差异的例子：
+- 不能使用空格或字母数字字符作为分隔符。 正则定义语法中的空白符通常是可选的，但需要区别于函数调用语法的地方除外（下文将讨论）。
+- 括号可以用作替代正则分隔符，但只有当 `rx` 和开口分隔符之间有空格。 这是因为紧接在括号后面的标识符总是被解析为函数调用。 例如，在 `rx()` 中[调用运算符](https://docs.raku.org/language/operators#postcircumfix_(_)) `()` 调用 `rx` 函数。`rx ( abc )` 形式却定义了一个正则对象。
+- 使用冒号作为分隔符将与[副词](https://docs.raku.org/language/regexes#Adverbs)发生冲突，其形式为 `:adverb`；因此，禁止使用冒号。
+- 散列字符 `#` 不能作为分隔符使用，因为它解析为[注释](https://docs.raku.org/language/syntax#Single-line_comments)的开始知道行尾。
 
-Example of difference between `m/ /` and `/ /` operators:
+- You cannot use whitespace or alphanumeric characters as delimiters. Whitespace in regex definition syntax is generally optional, except where it is required to distinguish from function call syntax (discussed hereafter).
+- Parentheses can be used as alternative regex delimiters, but only with a space between `rx` and the opening delimiter. This is because identifiers that are immediately followed by parentheses are always parsed as a subroutine call. For example, in `rx()` the [call operator](https://docs.raku.org/language/operators#postcircumfix_(_)) `()` invokes the subroutine `rx`. The form `rx ( abc )`, however, *does* define a `Regex` object.
+- Use of a colon as a delimiter would clash with the use of [adverbs](https://docs.raku.org/language/regexes#Adverbs), which take the form `:adverb`; accordingly, such use of the colon is forbidden.
+- The hash character `#` is not available as a delimiter since it is parsed as the start of a [comment](https://docs.raku.org/language/syntax#Single-line_comments) that runs until the end of the line.
+
+其次，`rx` 形式允许使用[正则副词](https://docs.raku.org/language/regexes#Regex_adverbs)，它可以放在 `rx` 和开口分隔符之间，以修改整个正则的定义：
+
+Secondly, the `rx` form enables the use of [regex adverbs](https://docs.raku.org/language/regexes#Regex_adverbs), which may be placed between `rx` and the opening delimiter to modify the definition of the entire regex:
 
 ```Raku
-my $match;
-$_ = "abc";
-$match = m/.+/; say $match; say $match.^name; # OUTPUT: «｢abc｣␤Match␤» 
-$match =  /.+/; say $match; say $match.^name; # OUTPUT: «/.+/␤Regex␤» 
+rx:r:s/pattern/;            # :r (:ratchet) and :s (:sigspace) adverbs, defining 
+                            # a ratcheting regex in which whitespace is significant
 ```
 
-正则里的空格一般是被忽略的（ 除非使用副词 `:s` 或者它的全称 `:sigspace` ）。
+尽管匿名正则表达式本身并不是*命名*的，但通过将它们放在命名变量中，可以有效地为它们命名，之后可以在嵌入正则表达式外部和通过[插值](https://docs.raku.org/language/regexes#Regex_interpolation)从嵌入正则表达式内部引用它们:
 
-Whitespace in regexes is generally ignored (except with the `:s` or, completely, `:sigspace` adverb).
-
-正则表达式里可以有注释：
-
-Comments work within a regular expression:
+Although anonymous regexes are not, as such, *named*, they may effectively be given a name by putting them inside a named variable, after which they can be referenced, both outside of an embedding regex and from within an embedding regex by means of [interpolation](https://docs.raku.org/language/regexes#Regex_interpolation):
 
 ```Raku
-/ word #`(match lexical "word") / 
+my $regex = / R \w+ /;
+say "Zen Buddhists like Raku too" ~~ $regex; # OUTPUT: «｢Raku｣
+» 
+ 
+my $regex = /pottery/;
+"Japanese pottery rocks!" ~~ / <$regex> /;  # Interpolation of $regex into /.../ 
+say $/;                                     # OUTPUT: «｢pottery｣
+»
 ```
 
-<a id="%E5%AD%97%E9%9D%A2%E9%87%8F--literals"></a>
-# 字面量 / Literals
+<a id="定义命名正则的语法--named-regex-definition-syntax"></a>
+## 定义命名正则的语法 / Named regex definition syntax
 
-正则最简单的情况是匹配一个字符串字面量：
+可以使用 `regex` 声明符构造命名正则表达式，如下所示：
 
-The simplest case for a regex is a match against a string literal:
+A named regex may be constructed using the `regex` declarator as follows:
 
 ```Raku
-if 'properly' ~~ / perl / {
-    say "'properly' contains 'perl'";
-}
+regex R { pattern };        # a named Regex object, named 'R'
 ```
 
-字母数字和下划线 `_` 按字面值匹配。所有其它字符要么使用反斜线转义(例如, `\:` 匹配一个冒号), 要么用引号引起来:
+与 `rx` 格式不同，你不能选择你想要的分隔符：大括号是必需的。在这方面，应该指出，使用 `regex` 形式的命名正则的定义在语法上与函数的定义相似：
 
-Alphanumeric characters and the underscore `_` are matched literally. All other characters must either be escaped with a backslash (for example, `\:` to match a colon), or be within quotes:
+Unlike with the `rx` form, you cannot chose your preferred delimiter: curly braces are mandatory. In this regard it should be noted that the definition of a named regex using the `regex` form is syntactically similar to the definition of a subroutine:
 
 ```Raku
-/ 'two words' /;     # 匹配包括空格的 'two words' / matches 'two words' including the blank 
-/ "a:b"       /;     # 匹配包括冒号的 'a:b' / matches 'a:b' including the colon 
-/ '#' /;             # 匹配一个井号 / matches a hash character 
+my sub   S { /pattern/ };   # definition of Sub object (returning a Regex) 
+my regex R {  pattern  };   # definition of Regex object
+```
+
+它强调了 [`Regex`](https://docs.raku.org/type/Regex) 对象表示代码而不是数据：
+
+which emphasizes the fact that a [`Regex`](https://docs.raku.org/type/Regex) object represents code rather than data:
+
+```Raku
+&S ~~ Code;                 # OUTPUT: «True
+» 
+ 
+&R ~~ Code;                 # OUTPUT: «True
+» 
+&R ~~ Method;               # OUTPUT: «True
+»   (A Regex is really a Method!) 
+```
+
+与定义匿名正则表达式的 `rx` 形式不同，使用 `regex` 关键字的命名正则表达式定义不允许在开头分隔符之前插入副词。相反，用于修改整个正则表达式模式的副词可以首先包含在大括号中：
+
+Also unlike with the `rx` form for defining an anonymous regex, the definition of a named regex using the `regex` keyword does not allow for adverbs to be inserted before the opening delimiter. Instead, adverbs that are to modify the entire regex pattern may be included first thing within the curly braces:
+
+```Raku
+regex R { :i pattern };     # :i (:ignorecase), renders pattern case insensitive
+```
+
+或者，通过简写的方式，也可以（并建议）使用 `regex` 声明符的 `rule` 和 `token` 变体来定义 `regex`，当需要用到 `:ratchet` 和 `:sigspace` 副词时：
+
+Alternatively, by way of shorthand, it is also possible (and recommended) to use the `rule` and `token` variants of the `regex` declarator for defining a `Regex` when the `:ratchet` and `:sigspace` adverbs are of interest:
+
+```Raku
+regex R { :r pattern };     # apply :r (:ratchet) to entire pattern 
+```
+
+或者
+
+and, alternatively
+
+```Raku
+token R { pattern };        # same thing: 'token' implies ':r' 
+```
+
+或
+
+Or
+
+```Raku
+regex R { :r :s pattern };  # apply :r (:ratchet) and :s (:sigspace) to pattern 
+```
+
+等同于：
+
+with this alternative:
+
+```Raku
+rule  R { pattern };        # same thing: 'rule' implies ':r:s' 
+```
+
+命名的正则可以用作其他正则的构建块，因为它们是可以使用 `<正则名>` 语法从其他正则内部调用的方法。当它们以这种方式使用时，它们通常被称为*子规则*；有关其使用的更多详细信息，请参阅[此处](https://docs.raku.org/language/regexes#Subrules). [`Grammars`](https://docs.raku.org/type/Grammar) 是子规则的自然栖息地，但许多常见的预定义字符类也被实现为命名正则。
+
+Named regexes may be used as building blocks for other regexes, as they are methods that may called from within other regexes using the `<regex-name>` syntax. When they are used this way, they are often referred to as *subrules*; see for more details on their use [here](https://docs.raku.org/language/regexes#Subrules). [`Grammars`](https://docs.raku.org/type/Grammar) are the natural habitat of subrules, but many common predefined character classes are also implemented as named regexes.
+
+<a id="正则可读性：空格与注释--regex-readability-whitespace-and-comments"></a>
+## 正则可读性：空格与注释 / Regex readability: whitespace and comments
+
+Whitespace in regexes is ignored unless the [`:sigspace`](https://docs.raku.org/language/regexes#Sigspace) adverb is used to make whitespace syntactically significant.
+
+In addition to whitespace, comments may be used inside of regexes to improve their comprehensibility just as in code in general. This is true for both [single line comments](https://docs.raku.org/language/syntax#Single-line_comments) and [multi line/embedded comments](https://docs.raku.org/language/syntax#Multi-line_/_embedded_comments):
+
+```
+my $regex =  rx/ \d ** 4            #`(match the year YYYY) 
+                 '-'
+                 \d ** 2            # ...the month MM 
+                 '-'
+                 \d ** 2 /;         # ...and the day DD 
+ 
+say '2015-12-25'.match($regex);     # OUTPUT: «｢2015-12-25｣
+»
+```
+
+<a id="匹配语法--match-syntax"></a>
+## 匹配语法 / Match syntax
+
+有多种方法可以将字符串与正则表达式匹配。不管选择的语法如何，成功的匹配都会生成 [`Match`](https://docs.raku.org/type/Match)对象。如果匹配不成功，结果是 [`Nil`](https://docs.raku.org/type/Nil). 在任何一种情况下，匹配操作的结果都可以通过特殊的匹配变量 [`$/`](https://docs.raku.org/syntax/$$SOLIDUS)。
+
+There are a variety of ways to match a string against a regex. Irrespective of the syntax chosen, a successful match results in a [`Match`](https://docs.raku.org/type/Match) object. In case the match is unsuccessful, the result is [`Nil`](https://docs.raku.org/type/Nil). In either case, the result of the match operation is available via the special match variable [`$/`](https://docs.raku.org/syntax/$$SOLIDUS).
+
+将字符串与匿名正则表达式 `/pattern/` 或命名正则表达式 `R` 匹配的最常见方法包括：
+
+The most common ways to match a string against an anonymous regex `/pattern/` or against a named regex `R` include the following:
+
+- *智能匹配： "string" ~~ /pattern/ 或 "string" ~~ /<R>/*
+
+- *Smartmatch: "string" ~~ /pattern/, or "string" ~~ /<R>/*
+  
+  对一个字符串进行正则[智能匹配](https://docs.raku.org/language/operators#index-entry-smartmatch_operator)对比一个 `Regex` 对象对字符串执行正则匹配：
+
+  [Smartmatching](https://docs.raku.org/language/operators#index-entry-smartmatch_operator) a string against a `Regex` performs a regex match of the string against the `Regex`:
+
+  ```Raku
+  say "Go ahead, make my day." ~~ / \w+ /;   # OUTPUT: «｢Go｣
+» 
+   
+  my regex R { me|you };
+  say "You talkin' to me?" ~~ / <R> /;       # OUTPUT: «｢me｣
+ R => ｢me｣
+» 
+  say "May the force be with you." ~~ &R ;   # OUTPUT: «｢you｣
+»
+  ```
+  
+  最后两个语句的不同输出表明，这两种针对命名正则表达式的智能匹配方法是不相同的。产生这种差异的原因是匿名正则表达式 `//` 中的方法调用 `<R>`安装了一个所谓的['命名捕获'](https://docs.raku.org/language/regexes#Named_captures)在 `Match` 对象中，而针对命名的 `Regex` 的智能捕获则不会。
+
+  The different outputs of the last two statements show that these two ways of smartmatching against a named regex are not identical. The difference arises because the method call `<R>` from within the anonymous regex `/ /` installs a so-called ['named capture'](https://docs.raku.org/language/regexes#Named_captures) in the `Match` object, while the smartmatch against the named `Regex` as such does not.
+
+- *显示的主题匹配： m/pattern/ 或 m/<R>/*
+
+- *Explicit topic match: m/pattern/, or m/<R>/*
+  
+  匹配运算符 `m/ /` 立即将主题变量 [`$_`](https://docs.raku.org/language/variables#index-entry-topic_variable) 与 `m` 后面的正则进行匹配。
+
+  The match operator `m/ /` immediately matches the topic variable [`$_`](https://docs.raku.org/language/variables#index-entry-topic_variable) against the regex following the `m`.
+
+  与正则表达式定义的 `rx/ /` 语法一样，匹配运算符可以与 `m` 和开头的正则表达式分隔符之间的副词一起使用，也可以与斜杠以外的分隔符一起使用。但是，`rx/ /` 语法只能与[*正则副词*](https://docs.raku.org/language/regexes#Regex_adverbs)一起使用会影响正则表达式的编译，`m/ /` 语法还可以与[*匹配副词*](https://docs.raku.org/language/regexes#Matching_adverbs)一起使用，它决定正则表达式引擎如何执行模式匹配。
+
+  As with the `rx/ /` syntax for regex definitions, the match operator may be used with adverbs in between `m` and the opening regex delimiter, and with delimiters other than the slash. However, while the `rx/ /` syntax may only be used with [*regex adverbs*](https://docs.raku.org/language/regexes#Regex_adverbs) that affect the compilation of the regex, the `m/ /` syntax may additionally be used with [*matching adverbs*](https://docs.raku.org/language/regexes#Matching_adverbs) that determine how the regex engine is to perform pattern matching.
+  
+  下面的示例说明了 `m//` 和 `/ /` 语法之间的主要区别：
+
+  Here's an example that illustrates the primary difference between the `m/ /` and `/ /` syntax:
+
+  ```Raku
+  my $match;
+  $_ = "abc";
+  $match = m/.+/; say $match; say $match.^name; # OUTPUT: «｢abc｣
+Match
+» 
+  $match =  /.+/; say $match; say $match.^name; # OUTPUT: «/.+/
+Regex
+»
+  ```
+
+- *sink 和布尔上下文中的隐式主题匹配*
+
+- *Implicit topic match in sink and Boolean contexts*
+  
+  如果在接收器上下文中使用了 `Regex` 对象，或者在强制将其强制为 [`Bool`](https://docs.raku.org/type/Bool) 的上下文中，主题变量 [`$_`](https://docs.raku.org/language/variables#index-entry-topic_variable) 自动与之匹配：
+
+  In case a `Regex` object is used in sink context, or in a context in which it is coerced to [`Bool`](https://docs.raku.org/type/Bool), the topic variable [`$_`](https://docs.raku.org/language/variables#index-entry-topic_variable) is automatically matched against it:
+
+  ```Raku
+  $_ = "dummy string";        # Set the topic explicitly 
+
+  rx/ s.* /;                  # Regex object in sink context matches automatically 
+  say $/;                     # OUTPUT: «｢string｣
+» 
+
+  say $/ if rx/ d.* /;        # Regex object in Boolean context matches automatically 
+                              # OUTPUT: «｢dummy string｣
+»
+  ```
+
+- *match 方法： "string".match: /pattern/ 或 "string".match: /<R>/*
+
+- *Match method: "string".match: /pattern/, or "string".match: /<R>/*
+  
+  [`match`](https://docs.raku.org/type/Str\method#match) 方法类似于上面讨论的 `m/ /` 运算符。以 `Regex` 作为参数在字符串上调用它，将字符串与 `Regex` 匹配。
+
+  The [`match`](https://docs.raku.org/type/Str#method_match) method is analogous to the `m/ /` operator discussed above. Invoking it on a string, with a `Regex` as an argument, matches the string against the `Regex`.
+
+- *分析 grammar： grammar-name.parse($string)*
+
+- *Parsing grammars: grammar-name.parse($string)*
+  
+  虽然解析一个[语法](https://docs.raku.org/language/grammars)不仅涉及到字符串与正则表达式的匹配，这个强大的基于正则表达式的文本解构工具在对常见模式匹配方法的概述中不能忽略。
+
+  Although parsing a [Grammar](https://docs.raku.org/language/grammars) involves more than just matching a string against a regex, this powerful regex-based text destructuring tool can't be left out from this overview of common pattern matching methods.
+
+  如果你觉得你的需求超出了简单正则表达式所能提供的，请查看这个[语法教程](https://docs.raku.org/language/grammar_tutorial)将正则表达式提升到下一个级别。
+
+  If you feel that your needs exceed what simple regexes have to offer, check out this [grammar tutorial](https://docs.raku.org/language/grammar_tutorial) to take regexes to the next level.
+
+
+<a id="字面量与元字符--literals-and-metacharacters"></a>
+# 字面量与元字符 / Literals and metacharacters
+
+正则表达式描述要按文本和元字符匹配的模式。字母数字字符和下划线 `_` 构成这样的文本：这些字符本身匹配，其他字符不匹配。其他字符充当元字符，因此可能有一个特殊的含义，或者单独使用（例如作为通配符的点 `.`），或者与更大元语法结构中的其他字符一起使用（例如 `<?before ...>`，它定义了一个向前看断言）。
+
+A regex describes a pattern to be matched in terms of literals and metacharacters. Alphanumeric characters and the underscore `_` constitute the literals: these characters match themselves and nothing else. Other characters act as metacharacters and may, as such, have a special meaning, either by themselves (such as the dot `.`, which serves as a wildcard) or together with other characters in larger metasyntactic constructs (such as `<?before ...>`, which defines a lookahead assertion).
+
+在最简单的形式中，正则表达式只包含文本：
+
+In its simplest form a regex comprises only literals:
+
+```Raku
+/Cześć/;           # "Hello" in Polish 
+/こんばんは/;        # "Good afternoon" in Japanese 
+/Καλησπέρα/;       # "Good evening" in Greek
+```
+
+如果希望正则表达式逐字匹配一个或多个通常充当元字符的字符，则这些字符必须使用反斜杠转义，或者使用单引号或双引号引起来。
+
+If you want a regex to literally match one or more characters that normally act as metacharacters, those characters must either be escaped using a backslash, or be quoted using single or double quotes.
+
+反斜杠起到开关的作用。它将单个元字符转换为文本，反之亦然：
+
+The backslash serves as a switch. It switches a single metacharacter into a literal, and vice versa:
+
+```Raku
+/ \# /;             # matches the hash metacharacter literally 
+/ \w /;             # turns literal 'w' into a character class (see below) 
+/Hallelujah\!/;     # matches string 'Hallelujah!' incl. exclamation mark
+```
+
+即使元字符在 Raku 中还没有特殊的含义，转义（或引用）也需要确保正则表达式编译并按字面匹配字符。这样就可以保持文本和元字符之间的明确区分。因此，例如，为了匹配逗号，这样能生效：
+
+Even if a metacharacter does not (yet) have a special meaning in Raku, escaping (or quoting) it is required to ensure that the regex compiles and matches the character literally. This allows the clear distinction between literals and metacharacters to be maintained. So, for instance, to match a comma this will work:
+
+```Raku
+/ \, /;             # matches a literal comma ','
+```
+
+然而这样会失败：
+
+while this will fail:
+
+```Raku
+/ ,  /;             # !! error: an as-yet meaningless/unrecognized metacharacter 
+                    # does not automatically match literally 
+```
+
+当转义反斜杠对下一个单独的字符起作用时，单个元字符和一系列元字符都可以通过单引号或双引号引起来而变成字面上匹配的字符串：
+
+While an escaping backslash exerts its effect on the next individual character, both a single metacharacter and a sequence of metacharacters may be turned into literally matching strings by quoting them in single or double quotes:
+
+```Raku
+/ "abc" /;          # quoting literals does not make them more literal 
+/ "Hallelujah!" /;  # yet, this form is generally preferred over /Hallelujah\!/ 
+ 
+/ "two words" /;    # quoting a space renders it significant, so this matches 
+                    # the string 'two words' including the intermediate space 
+ 
+/ '#!:@' /;         # this regex matches the string of metacharacters '#!:@'
+```
+
+然而，引用并不是简单地将每个元字符转换为字面意思。这是因为引号允许反斜杠转义和插值。特别是：在单引号中，反斜杠可以用来转义单引号和反斜杠本身；双引号还可以插入变量和 `{...}` 形式的代码块。因此，所有这些可以顺利执行：
+
+Quoting does not simply turn every metacharacter into a literal, however. This is because quotes allow for backslash-escapes and interpolation. Specifically: in single quotes, the backslash may be used to escape single quotes and the backslash itself; double quotes additionally enable the interpolation of variables, and of code blocks of the form `{...}`. Hence all of this works:
+
+```Raku
+/ '\\\'' /;          # matches a backslash followed by a single quote: \' 
+ 
+my $x = 'Hi';
+/ "$x there!" /;     # matches the string 'Hi there!' 
+ 
+/ "1 + 1 = {1+1}" /; # matches the string '1 + 1 = 2'
+```
+
+然而这些示例说明了你希望避免的错误：
+
+while these examples illustrate mistakes that you will want to avoid:
+
+```Raku
+/ '\' /;             # !! error: this is NOT the way to literally match a 
+                     # backslash because now it escapes the second quote 
+ 
+/"Price tag $0.50"/; # !! error: "$0" is interpreted as the first positional 
+                     # capture (which is Nil), not as '$0' 
 ```
 
 字符串是从左往右搜索的, 所以如果只有部分字符串匹配正则表达式也足够:
@@ -165,11 +471,16 @@ Strings are searched left to right, so it is enough if only part of the string m
 
 ```Raku
 if 'Life, the Universe and Everything' ~~ / and / {
-    say ~$/;            # OUTPUT: «and␤» 
-    say $/.prematch;    # OUTPUT: «Life, the Universe ␤» 
-    say $/.postmatch;   # OUTPUT: « Everything␤» 
-    say $/.from;        # OUTPUT: «19␤» 
-    say $/.to;          # OUTPUT: «22␤» 
+    say ~$/;            # OUTPUT: «and
+» 
+    say $/.prematch;    # OUTPUT: «Life, the Universe 
+» 
+    say $/.postmatch;   # OUTPUT: « Everything
+» 
+    say $/.from;        # OUTPUT: «19
+» 
+    say $/.to;          # OUTPUT: «22
+» 
 };
 ```
 
@@ -177,7 +488,7 @@ if 'Life, the Universe and Everything' ~~ / and / {
 
 Match results are stored in the `$/` variable and are also returned from the match. The result is of type [Match](https://docs.raku.org/type/Match) if the match was successful; otherwise it is [Nil](https://docs.raku.org/type/Nil).
 
-<a id="%E9%80%9A%E9%85%8D%E7%AC%A6--wildcards"></a>
+<a id="通配符--wildcards"></a>
 # 通配符 / Wildcards
 
 在正则中未转义的 `.` 匹配任一字符。
@@ -221,20 +532,24 @@ my $text = qq:to/END/
   ;
  
 say $text ~~ / .* /;
-# OUTPUT «｢Although I am a␤multi-line text,␤now can be matched␤with /.*/␤｣» 
+# OUTPUT «｢Although I am a
+multi-line text,
+now can be matched
+with /.*/
+｣» 
 ```
 
-<a id="%E5%AD%97%E7%AC%A6%E7%B1%BB--character-classes"></a>
+<a id="字符类--character-classes"></a>
 # 字符类 / Character classes
 
-<a id="%E5%8F%8D%E6%96%9C%E6%9D%A0%E5%AD%97%E7%AC%A6%E7%B1%BB--backslashed-character-classes"></a>
+<a id="反斜杠字符类--backslashed-character-classes"></a>
 ## 反斜杠字符类 / Backslashed character classes
 
 存在预定义的字符类 `\w`。其否定为大写形式字符 `\W`。
 
 There are predefined character classes of the form `\w`. Its negation is written with an upper-case letter, `\W`.
 
-<a id="n-%E5%92%8C-n"></a>
+<a id="n-和-n"></a>
 ### `\n` 和 `\N`
 
 `\n` 匹配一个逻辑换行符。`\N` 匹配一个不是换行符的字符。
@@ -245,7 +560,7 @@ There are predefined character classes of the form `\w`. Its negation is written
 
 What is considered as a single newline character is defined via the compile time variable [`$?NL`](https://docs.raku.org/language/variables#index-entry-%24%3FNL), and the [newline pragma](https://docs.raku.org/language/pragmas); therefore, `\n` is supposed to be able to match either a Unix-like newline `"\n"`, a Microsoft Windows style one `"\r\n"`, or one in the Mac style `"\r"`.
 
-<a id="t-%E5%92%8C-t"></a>
+<a id="t-和-t"></a>
 ### `\t` 和 `\T`
 
 `\t` 匹配一个制表符 `U+0009`。`\T` 匹配一个非制表符的字符。
@@ -256,7 +571,7 @@ What is considered as a single newline character is defined via the compile time
 
 Note that exotic tabs like the `U+000B VERTICAL TABULATION` character are not included here.
 
-<a id="h-%E5%92%8C-h"></a>
+<a id="h-和-h"></a>
 ### `\h` 和 `\H`
 
 `\h` 匹配一个水平空白符。`\H`匹配一个非水平空白符的字符。
@@ -278,7 +593,7 @@ U+2001 EM QUAD
 
 Vertical whitespace such as newline characters are explicitly excluded; those can be matched with `\v`; `\s` matches any kind of whitespace.
 
-<a id="v-%E5%92%8C-v"></a>
+<a id="v-和-v"></a>
 ### `\v` 和 `\V`
 
 `\v` 匹配单个垂直空白符字符。`\V` 匹配非垂直空白符字符。
@@ -303,7 +618,7 @@ U+2029 PARAGRAPH SEPARATOR
 
 Use `\s` to match any kind of whitespace, not just vertical whitespace.
 
-<a id="s-%E5%92%8C-s"></a>
+<a id="s-和-s"></a>
 ### `\s` 和 `\S`
 
 `\s` 匹配一个空白符。`\S` 匹配一个非空白符。
@@ -312,10 +627,11 @@ Use `\s` to match any kind of whitespace, not just vertical whitespace.
 
 ```Raku
 say $/.prematch if 'Match the first word.' ~~ / \s+ /;
-# OUTPUT: «Match␤» 
+# OUTPUT: «Match
+» 
 ```
 
-<a id="d-%E5%92%8C-d"></a>
+<a id="d-和-d"></a>
 ### `\d` 和 `\D`
 
 `\d` 匹配单个数字（Unicode 属性 `N`）而 `\D` 匹配单个非数字的字符。
@@ -323,8 +639,10 @@ say $/.prematch if 'Match the first word.' ~~ / \s+ /;
 `\d` matches a single digit (Unicode property `N`) and `\D` matches a single character that is not a digit.
 
 ```Raku
-'ab42' ~~ /\d/ and say ~$/;     # OUTPUT: «4␤» 
-'ab42' ~~ /\D/ and say ~$/;     # OUTPUT: «a␤» 
+'ab42' ~~ /\d/ and say ~$/;     # OUTPUT: «4
+» 
+'ab42' ~~ /\D/ and say ~$/;     # OUTPUT: «a
+» 
 ```
 
 注意，不仅仅只有阿拉伯数字（通常用于拉丁字母中）匹配 `\d`，还可以是来自其他字母系统的数字。
@@ -342,7 +660,7 @@ U+0E53 ๓ THAI DIGIT THREE
 U+17E5 ៥ KHMER DIGIT FIVE
 ```
 
-<a id="w-%E5%92%8C-w"></a>
+<a id="w-和-w"></a>
 ### `\w` 和 `\W`
 
 `\w` 匹配单个单词字符，例如：一个字母（Unicode 类别 L），一个数字或者一个下划线。`\W` 匹配一个非单词字符的字符
@@ -361,7 +679,7 @@ Examples of word characters:
 0409 Љ CYRILLIC CAPITAL LETTER LJE
 ```
 
-<a id="%E9%A2%84%E5%AE%9A%E4%B9%89%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%B1%BB--predefined-character-classes"></a>
+<a id="预定义的字符类--predefined-character-classes"></a>
 ## 预定义的字符类 / Predefined character classes
 
 ```Raku
@@ -390,7 +708,7 @@ Examples of word characters:
 
 Note that the character classes `<same>`, `<wb>` and `<ww>` are so called zero-width assertions, which do not really match a character.
 
-<a id="unicode-%E5%B1%9E%E6%80%A7--unicode-properties"></a>
+<a id="unicode-属性--unicode-properties"></a>
 ## Unicode 属性 / Unicode properties
 
 到目前为止提到的字符类大多是为了方便；另一种方法是使用 Unicode 字符属性。他们是以 `<:property>` 的形式出现，其中 `property` 可以是一个短的或者长的 Unicode 通用类别名。他们使用键值对语法。
@@ -402,10 +720,14 @@ The character classes mentioned so far are mostly for convenience; another appro
 To match against a Unicode property you can use either smartmatch or [`uniprop`](https://docs.raku.org/routine/uniprop):
 
 ```Raku
-"a".uniprop('Script');                 # OUTPUT: «Latin␤» 
-"a" ~~ / <:Script<Latin>> /;           # OUTPUT: «｢a｣␤» 
-"a".uniprop('Block');                  # OUTPUT: «Basic Latin␤» 
-"a" ~~ / <:Block('Basic Latin')> /;    # OUTPUT: «｢a｣␤» 
+"a".uniprop('Script');                 # OUTPUT: «Latin
+» 
+"a" ~~ / <:Script<Latin>> /;           # OUTPUT: «｢a｣
+» 
+"a".uniprop('Block');                  # OUTPUT: «Basic Latin
+» 
+"a" ~~ / <:Block('Basic Latin')> /;    # OUTPUT: «｢a｣
+» 
 ```
 
 下面这些是用作匹配的 Unicode 通用类别：
@@ -479,10 +801,11 @@ To match either a lower-case letter or a number, write `<:Ll+:N>` or `<:Ll+:Numb
 It's also possible to group categories and sets of categories with parentheses; for example:
 
 ```Raku
-say $0 if 'perl6' ~~ /\w+(<:Ll+:N>)/ # OUTPUT: «｢6｣␤» 
+say $0 if 'perl6' ~~ /\w+(<:Ll+:N>)/ # OUTPUT: «｢6｣
+» 
 ```
 
-<a id="%E6%9E%9A%E4%B8%BE%E5%AD%97%E7%AC%A6%E7%B1%BB%E5%92%8C%E8%8C%83%E5%9B%B4--enumerated-character-classes-and-ranges"></a>
+<a id="枚举字符类和范围--enumerated-character-classes-and-ranges"></a>
 ## 枚举字符类和范围 / Enumerated character classes and ranges
 
 有时，现有的通配符和字符类是不够的。幸运的是，定义自己的也较简单。你可以在 `<[ ]>` 中放置任意数量的字符和字符范围（在端点之间用两个点表示），可以有空格。
@@ -522,7 +845,8 @@ You can include Unicode properties in the list as well:
 You can use `\` to escape characters that would have some meaning in the regular expression:
 
 ```Raku
-say "[ hey ]" ~~ /<-[ \] \[ \s ]>+/; # OUTPUT: «｢hey｣␤» 
+say "[ hey ]" ~~ /<-[ \] \[ \s ]>+/; # OUTPUT: «｢hey｣
+» 
 ```
 
 排除一个字符类，请在左尖括号后加一个 `-` 号：
@@ -553,7 +877,7 @@ Just as you can use the `-` for both set difference and negation of a single val
 / <+[123]> /  # same as <[123]> 
 ```
 
-<a id="%E9%87%8F%E8%AF%8D--quantifiers"></a>
+<a id="量词--quantifiers"></a>
 # 量词 / Quantifiers
 
 量词使前面的元素匹配可变的次数。例如，`a+` 匹配一个或多个 `a` 字符。
@@ -564,7 +888,7 @@ A quantifier makes the preceding atom match a variable number of times. For exam
 
 Quantifiers bind tighter than concatenation, so `ab+` matches one `a` followed by one or more `b`s. This is different for quotes, so `'ab'+` matches the strings `ab`, `abab`, `ababab` etc.
 
-<a id="%E4%B8%80%E4%B8%AA%E6%88%96%E5%A4%9A%E4%B8%AA---one-or-more-"></a>
+<a id="一个或多个---one-or-more-"></a>
 ## 一个或多个: `+` / One or more: `+`
 
 `+` 量词使前面的元素匹配一次或多次，没有上限。
@@ -579,7 +903,7 @@ For example, to match strings of the form `key=value`, you can write a regex lik
 / \w+ '=' \w+ /
 ```
 
-<a id="%E9%9B%B6%E4%B8%AA%E6%88%96%E5%A4%9A%E4%B8%AA---zero-or-more-"></a>
+<a id="零个或多个---zero-or-more-"></a>
 ## 零个或多个: `*` / Zero or more: `*`
 
 `*` 量词使前面的元素匹配零次或者多次，没有上限。
@@ -594,7 +918,7 @@ For example, to allow optional whitespace between `a` and `b` you can write:
 / a \s* b /
 ```
 
-<a id="%E9%9B%B6%E4%B8%AA%E6%88%96%E4%B8%80%E4%B8%AA---zero-or-one-"></a>
+<a id="零个或一个---zero-or-one-"></a>
 ## 零个或一个: `?` / Zero or one: `?`
 
 `?` 量词使前面的元素匹配量词或者一次。
@@ -609,7 +933,7 @@ For example, to match `dog` or `dogs`, you can write:
 / dogs? /
 ```
 
-<a id="%E9%80%9A%E7%94%A8%E9%87%8F%E8%AF%8D--minmax--general-quantifier--minmax"></a>
+<a id="通用量词--minmax--general-quantifier--minmax"></a>
 ## 通用量词: `** min..max` / General quantifier: `** min..max`
 
 要对一个元素进行任意次数的量化，请使用 `**` 量词，该量词在其右侧接受一个 [Int](https://docs.raku.org/type/Int) 或 [Range](https://docs.raku.org/type/Range)。如果指定了 [Range](https://docs.raku.org/type/Range)，则两个端点指定要匹配的最小和最大次数。
@@ -617,13 +941,20 @@ For example, to match `dog` or `dogs`, you can write:
 To quantify an atom an arbitrary number of times, use the `**` quantifier, which takes a single [Int](https://docs.raku.org/type/Int) or a [Range](https://docs.raku.org/type/Range) on the right-hand side that specifies the number of times to match. If [Range](https://docs.raku.org/type/Range) is specified, the end-points specify the minimum and maximum number of times to match.
 
 ```Raku
-say 'abcdefg' ~~ /\w ** 4/;      # OUTPUT: «｢abcd｣␤» 
-say 'a'       ~~ /\w **  2..5/;  # OUTPUT: «Nil␤» 
-say 'abc'     ~~ /\w **  2..5/;  # OUTPUT: «｢abc｣␤» 
-say 'abcdefg' ~~ /\w **  2..5/;  # OUTPUT: «｢abcde｣␤» 
-say 'abcdefg' ~~ /\w ** 2^..^5/; # OUTPUT: «｢abcd｣␤» 
-say 'abcdefg' ~~ /\w ** ^3/;     # OUTPUT: «｢ab｣␤» 
-say 'abcdefg' ~~ /\w ** 1..*/;   # OUTPUT: «｢abcdefg｣␤» 
+say 'abcdefg' ~~ /\w ** 4/;      # OUTPUT: «｢abcd｣
+» 
+say 'a'       ~~ /\w **  2..5/;  # OUTPUT: «Nil
+» 
+say 'abc'     ~~ /\w **  2..5/;  # OUTPUT: «｢abc｣
+» 
+say 'abcdefg' ~~ /\w **  2..5/;  # OUTPUT: «｢abcde｣
+» 
+say 'abcdefg' ~~ /\w ** 2^..^5/; # OUTPUT: «｢abcd｣
+» 
+say 'abcdefg' ~~ /\w ** ^3/;     # OUTPUT: «｢ab｣
+» 
+say 'abcdefg' ~~ /\w ** 1..*/;   # OUTPUT: «｢abcdefg｣
+» 
 ```
 
 为避免与其他正则构造混淆，只支持量词右侧的基本字面量语法。如果需要使用更复杂的表达式，例如由变量构成的 [Range](https://docs.raku.org/type/Range)，请将 [Range](https://docs.raku.org/type/Range) 括在大括号中：
@@ -632,8 +963,10 @@ Only basic literal syntax for the right-hand side of the quantifier is supported
 
 ```Raku
 my $start = 3;
-say 'abcdefg' ~~ /\w ** {$start .. $start+2}/; # OUTPUT: «｢abcde｣␤» 
-say 'abcdefg' ~~ /\w ** {π.Int}/;              # OUTPUT: «｢abc｣␤» 
+say 'abcdefg' ~~ /\w ** {$start .. $start+2}/; # OUTPUT: «｢abcde｣
+» 
+say 'abcdefg' ~~ /\w ** {π.Int}/;              # OUTPUT: «｢abc｣
+» 
 ```
 
 负数值被当做零：
@@ -641,10 +974,14 @@ say 'abcdefg' ~~ /\w ** {π.Int}/;              # OUTPUT: «｢abc｣␤»
 Negative values are treated like zero:
 
 ```Raku
-say 'abcdefg' ~~ /\w ** {-Inf}/;     # OUTPUT: «｢｣␤» 
-say 'abcdefg' ~~ /\w ** {-42}/;      # OUTPUT: «｢｣␤» 
-say 'abcdefg' ~~ /\w ** {-10..-42}/; # OUTPUT: «｢｣␤» 
-say 'abcdefg' ~~ /\w ** {-42..-10}/; # OUTPUT: «｢｣␤» 
+say 'abcdefg' ~~ /\w ** {-Inf}/;     # OUTPUT: «｢｣
+» 
+say 'abcdefg' ~~ /\w ** {-42}/;      # OUTPUT: «｢｣
+» 
+say 'abcdefg' ~~ /\w ** {-10..-42}/; # OUTPUT: «｢｣
+» 
+say 'abcdefg' ~~ /\w ** {-42..-10}/; # OUTPUT: «｢｣
+» 
 ```
 
 如果结果值为 `Inf` 或 `NaN`，或结果 [Range](https://docs.raku.org/type/Range)为空、非数字、包含 `NaN` 终结点或最小有效终结点为 `Inf`，则将引发 `X::Syntax::Regex::QuantifierValue` 异常：
@@ -654,25 +991,31 @@ If then, the resultant value is `Inf` or `NaN` or the resultant [Range](https://
 ```Raku
 (try say 'abcdefg' ~~ /\w ** {42..10}/  )
     orelse say ($!.^name, $!.empty-range);
-    # OUTPUT: «(X::Syntax::Regex::QuantifierValue True)␤» 
+    # OUTPUT: «(X::Syntax::Regex::QuantifierValue True)
+» 
 (try say 'abcdefg' ~~ /\w ** {Inf..Inf}/)
     orelse say ($!.^name, $!.inf);
-    # OUTPUT: «(X::Syntax::Regex::QuantifierValue True)␤» 
+    # OUTPUT: «(X::Syntax::Regex::QuantifierValue True)
+» 
 (try say 'abcdefg' ~~ /\w ** {NaN..42}/ )
     orelse say ($!.^name, $!.non-numeric-range);
-    # OUTPUT: «(X::Syntax::Regex::QuantifierValue True)␤» 
+    # OUTPUT: «(X::Syntax::Regex::QuantifierValue True)
+» 
 (try say 'abcdefg' ~~ /\w ** {"a".."c"}/)
     orelse say ($!.^name, $!.non-numeric-range);
-    # OUTPUT: «(X::Syntax::Regex::QuantifierValue True)␤» 
+    # OUTPUT: «(X::Syntax::Regex::QuantifierValue True)
+» 
 (try say 'abcdefg' ~~ /\w ** {Inf}/)
     orelse say ($!.^name, $!.inf);
-    # OUTPUT: «(X::Syntax::Regex::QuantifierValue True)␤» 
+    # OUTPUT: «(X::Syntax::Regex::QuantifierValue True)
+» 
 (try say 'abcdefg' ~~ /\w ** {NaN}/)
     orelse say ($!.^name, $!.non-numeric);
-    # OUTPUT: «(X::Syntax::Regex::QuantifierValue True)␤» 
+    # OUTPUT: «(X::Syntax::Regex::QuantifierValue True)
+» 
 ```
 
-<a id="%E5%88%86%E9%9A%94%E4%BF%AE%E9%A5%B0%E7%9A%84%E9%87%8F%E8%AF%8D%EF%BC%9A---modified-quantifier--"></a>
+<a id="分隔修饰量词：---modified-quantifier--"></a>
 ## 分隔修饰量词：`%`, `%%` / Modified quantifier: `%`, `%%`
 
 为了更容易地匹配逗号分割那样的值, 你可以在以上任何一个量词后面加上一个 `%` 修饰符以指定某个修饰符必须出现在每一次匹配之间。例如, `a+ % ','` 会匹配 `a` 、`a,a` 或 `a,a,a` 等等。如果还要匹配末尾的分隔符（ `a,` 或者 `a,a,` ）, 那么使用 %% 代替 %。
@@ -688,7 +1031,7 @@ say so 'abc,def' ~~ / ^ [\w+] ** 1 % ',' $ /;  # Output: «False»
 say so 'abc,def' ~~ / ^ [\w+] ** 2 % ',' $ /;  # Output: «True» 
 ```
 
-<a id="%E9%98%BB%E6%AD%A2%E5%9B%9E%E6%BA%AF---preventing-backtracking-"></a>
+<a id="阻止回溯---preventing-backtracking-"></a>
 ## 阻止回溯: `:` / Preventing backtracking: `:`
 
 你可以在正则表达式中通过为量词附加一个 `:` 修饰符来阻止回溯:
@@ -698,9 +1041,12 @@ You can prevent backtracking in regexes by attaching a `:` modifier to the quant
 ```Raku
 my $str = "ACG GCT ACT An interesting chain";
 say $str ~~ /<[ACGT\s]>+ \s+ (<[A..Z a..z \s]>+)/;
-# OUTPUT: «｢ACG GCT ACT An interesting chain｣␤ 0 => ｢An interesting chain｣␤» 
+# OUTPUT: «｢ACG GCT ACT An interesting chain｣
+ 0 => ｢An interesting chain｣
+» 
 say $str ~~ /<[ACGT\s]>+: \s+ (<[A..Z a..z \s]>+)/;
-# OUTPUT: «Nil␤» 
+# OUTPUT: «Nil
+» 
 ```
 
 在第二种情况下，`An` 中的 `A` 已经被正则模式“吸收”，从而阻止了模式第二部分在 `\s+` 之后的匹配。一般来说，我们想要的是相反的：防止回溯来精确匹配我们正在寻找的。
@@ -740,7 +1086,7 @@ say  m:g/[(\w+:) \s*]+ (\w+) $$/;
 
 Without the `:` following `\w+`, the *ID* part captured would have been simply `T`, since the pattern would go ahead and match everything, leaving a single letter to match the `\w+` expression at the end of the line.
 
-<a id="%E8%B4%AA%E5%A9%AA%E5%AF%B9%E6%AF%94%E8%8A%82%E4%BF%AD%E9%87%8F%E8%AF%8D%EF%BC%9A---greedy-versus-frugal-quantifiers-"></a>
+<a id="贪婪对比节俭量词：---greedy-versus-frugal-quantifiers-"></a>
 ## 贪婪对比节俭量词： `?` / Greedy versus frugal quantifiers: `?`
 
 默认情况下，量词是贪婪的：
@@ -748,7 +1094,8 @@ Without the `:` following `\w+`, the *ID* part captured would have been simply `
 By default, quantifiers request a greedy match:
 
 ```Raku
-'abababa' ~~ /a .* a/ && say ~$/;   # OUTPUT: «abababa␤» 
+'abababa' ~~ /a .* a/ && say ~$/;   # OUTPUT: «abababa
+» 
 ```
 
 量词后接 `?` 开启节俭匹配：
@@ -756,7 +1103,8 @@ By default, quantifiers request a greedy match:
 You can attach a `?` modifier to the quantifier to enable frugal matching:
 
 ```Raku
-'abababa' ~~ /a .*? a/ && say ~$/;   # OUTPUT: «aba␤» 
+'abababa' ~~ /a .*? a/ && say ~$/;   # OUTPUT: «aba
+» 
 ```
 
 也可以用在通用量词上开启节俭匹配：
@@ -764,15 +1112,17 @@ You can attach a `?` modifier to the quantifier to enable frugal matching:
 You can also enable frugal matching for general quantifiers:
 
 ```Raku
-say '/foo/o/bar/' ~~ /\/.**?{1..10}\//;  # OUTPUT: «｢/foo/｣␤» 
-say '/foo/o/bar/' ~~ /\/.**!{1..10}\//;  # OUTPUT: «｢/foo/o/bar/｣␤» 
+say '/foo/o/bar/' ~~ /\/.**?{1..10}\//;  # OUTPUT: «｢/foo/｣
+» 
+say '/foo/o/bar/' ~~ /\/.**!{1..10}\//;  # OUTPUT: «｢/foo/o/bar/｣
+» 
 ```
 
 显式开启贪婪匹配可以在量词后使用 `!`。
 
 Greedy matching can be explicitly requested with the `!` modifier.
 
-<a id="%E5%A4%87%E9%80%89%E9%A1%B9-%7C%7C--alternation-%7C%7C"></a>
+<a id="备选项-||--alternation-||"></a>
 # 备选项: `||` / Alternation: `||`
 
 匹配多个可能的备选项中的一个，将他们用 `||` 分隔；第一个匹配上的备选项胜出。
@@ -815,7 +1165,7 @@ An empty string as the first branch is ignored, to allow you to format branches 
 
 Even in non-backtracking contexts, the alternation operator `||` tries all the branches in order until the first one matches.
 
-<a id="%E6%9C%80%E9%95%BF%E7%9A%84%E5%A4%87%E9%80%89%E9%A1%B9%EF%BC%9A-%7C--longest-alternation-%7C"></a>
+<a id="最长的备选项：-|--longest-alternation-|"></a>
 # 最长的备选项： `|` / Longest alternation: `|`
 
 简而言之，在用 `|` 分隔的正则分支中，最长的 token 匹配获胜，与正则中的文本顺序无关。然而，`|` 真正做的不止这些。它不决定哪个分支在完成整个匹配后获胜，而是遵循[最长令牌匹配（LTM）策略](https://design.perl6.org/S05.html#Longest-token_matching)。
@@ -869,7 +1219,7 @@ If the tie breaker above doesn't work, then the textually earlier alternative ta
 
 For more details, see [the LTM strategy](https://design.perl6.org/S05.html#Longest-token_matching).
 
-<a id="%E5%BC%95%E7%94%A8%E7%9A%84%E5%88%97%E8%A1%A8%E6%98%AF-ltm-%E5%8C%B9%E9%85%8D%E9%A1%B9--quoted-lists-are-ltm-matches"></a>
+<a id="引文列表是-ltm-匹配项--quoted-lists-are-ltm-matches"></a>
 ## 引文列表是 LTM 匹配项 / Quoted lists are LTM matches
 
 在正则中使用引文列表等同于指定列表元素的最长匹配备选项。因此，以下匹配：
@@ -877,7 +1227,8 @@ For more details, see [the LTM strategy](https://design.perl6.org/S05.html#Longe
 Using a quoted list in a regex is equivalent to specifying the longest-match alternation of the list's elements. So, the following match:
 
 ```Raku
-say 'food' ~~ /< f fo foo food >/;      # OUTPUT: «｢food｣␤» 
+say 'food' ~~ /< f fo foo food >/;      # OUTPUT: «｢food｣
+» 
 ```
 
 等同于：
@@ -885,7 +1236,8 @@ say 'food' ~~ /< f fo foo food >/;      # OUTPUT: «｢food｣␤»
 is equivalent to:
 
 ```Raku
-say 'food' ~~ / f | fo | foo | food /;  # OUTPUT: «｢food｣␤» 
+say 'food' ~~ / f | fo | foo | food /;  # OUTPUT: «｢food｣
+» 
 ```
 
 注意，第一个 `<` 后面的空格在这里很重要： 无空格的 `<food>` 意为调用命名 rule `food` 而 `< food >` 和 `< food>` 是引文列表，包含一个元素 `'food'`。
@@ -911,14 +1263,15 @@ Arrays can also be interpolated into a regex to achieve the same effect:
 
 ```Raku
 my @increasingly-edible = <f fo foo food>;
-say 'food' ~~ /@increasingly-edible/;   # OUTPUT: «｢food｣␤» 
+say 'food' ~~ /@increasingly-edible/;   # OUTPUT: «｢food｣
+» 
 ```
 
 这在下面的[正则插值](https://docs.raku.org/language/regexes#Regex_interpolation)中有进一步的记录。
 
 This is documented further under [Regex Interpolation](https://docs.raku.org/language/regexes#Regex_interpolation), below.
 
-<a id="%E5%90%88%E5%8F%96%EF%BC%9A---conjunction-"></a>
+<a id="合取：---conjunction-"></a>
 # 合取： `&&` / Conjunction: `&&`
 
 如果所有以 `&&` 分隔的段与目标字符串的相同子字符串匹配，则成功匹配。这些段从左到右进行计算。
@@ -934,17 +1287,21 @@ This can be useful for augmenting an existing regex. For example if you have a r
 Note that you cannot easily obtain the same behavior with a lookahead, that is, a regex doesn't consume characters, because a lookahead doesn't stop looking when the quoted string stops matching.
 
 ```Raku
-say 'abc' ~~ / <?before a> && . /;    # OUTPUT: «Nil␤» 
-say 'abc' ~~ / <?before a> . && . /;  # OUTPUT: «｢a｣␤» 
-say 'abc' ~~ / <?before a> . /;       # OUTPUT: «｢a｣␤» 
-say 'abc' ~~ / <?before a> .. /;      # OUTPUT: «｢ab｣␤» 
+say 'abc' ~~ / <?before a> && . /;    # OUTPUT: «Nil
+» 
+say 'abc' ~~ / <?before a> . && . /;  # OUTPUT: «｢a｣
+» 
+say 'abc' ~~ / <?before a> . /;       # OUTPUT: «｢a｣
+» 
+say 'abc' ~~ / <?before a> .. /;      # OUTPUT: «｢ab｣
+» 
 ```
 
 与 `||` 类似，第一个空分支会被忽略。
 
 Just like with `||`, empty first branches are ignored.
 
-<a id="%E5%90%88%E5%8F%96%EF%BC%9A---conjunction--1"></a>
+<a id="合取：---conjunction--1"></a>
 # 合取： `&` / Conjunction: `&`
 
 就像正则中的 `&&`，如果所有以 `&` 分隔的段与目标字符串的同一部分匹配，则成功匹配。
@@ -959,14 +1316,14 @@ Much like `&&` in a regex, it matches successfully if all segments separated by 
 
 Just like with `||` and `&`, empty first branches are ignored.
 
-<a id="%E5%AE%9A%E4%BD%8D%E7%AC%A6--anchors"></a>
+<a id="定位符--anchors"></a>
 # 定位符 / Anchors
 
 正则表达式在整个字符串中搜索匹配项。有时候这不是你想要的。定位符只在字符串中的特定位置匹配，因此将正则匹配定位到该位置。
 
 Regexes search an entire string for matches. Sometimes this is not what you want. Anchors match only at certain positions in the string, thereby anchoring the regex match to that position.
 
-<a id="%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%BC%80%E5%A7%8B%E5%92%8C%E7%BB%93%E6%9D%9F--start-of-string-and-end-of-string"></a>
+<a id="字符串开始和结束--start-of-string-and-end-of-string"></a>
 ## 字符串开始和结束 / Start of string and end of string
 
 `^` 定位符只匹配字符串的开头：
@@ -974,10 +1331,14 @@ Regexes search an entire string for matches. Sometimes this is not what you want
 The `^` anchor only matches at the start of the string:
 
 ```Raku
-say so 'properly' ~~ /  perl/;    # OUTPUT: «True␤» 
-say so 'properly' ~~ /^ perl/;    # OUTPUT: «False␤» 
-say so 'perly'    ~~ /^ perl/;    # OUTPUT: «True␤» 
-say so 'perl'     ~~ /^ perl/;    # OUTPUT: «True␤» 
+say so 'properly' ~~ /  perl/;    # OUTPUT: «True
+» 
+say so 'properly' ~~ /^ perl/;    # OUTPUT: «False
+» 
+say so 'perly'    ~~ /^ perl/;    # OUTPUT: «True
+» 
+say so 'perl'     ~~ /^ perl/;    # OUTPUT: «True
+» 
 ```
 
 `$` 定位符只匹配字符串的结尾：
@@ -985,9 +1346,12 @@ say so 'perl'     ~~ /^ perl/;    # OUTPUT: «True␤»
 The `$` anchor only matches at the end of the string:
 
 ```Raku
-say so 'use perl' ~~ /  perl  /;   # OUTPUT: «True␤» 
-say so 'use perl' ~~ /  perl $/;   # OUTPUT: «True␤» 
-say so 'perly'    ~~ /  perl $/;   # OUTPUT: «False␤» 
+say so 'use perl' ~~ /  perl  /;   # OUTPUT: «True
+» 
+say so 'use perl' ~~ /  perl $/;   # OUTPUT: «True
+» 
+say so 'perly'    ~~ /  perl $/;   # OUTPUT: «False
+» 
 ```
 
 你可以组合两个定位符：
@@ -995,8 +1359,10 @@ say so 'perly'    ~~ /  perl $/;   # OUTPUT: «False␤»
 You can combine both anchors:
 
 ```Raku
-say so 'use perl' ~~ /^ perl $/;   # OUTPUT: «False␤» 
-say so 'perl'     ~~ /^ perl $/;   # OUTPUT: «True␤» 
+say so 'use perl' ~~ /^ perl $/;   # OUTPUT: «False
+» 
+say so 'perl'     ~~ /^ perl $/;   # OUTPUT: «True
+» 
 ```
 
 请记住，`^` 匹配**字符串**的开头，而不是**行**的开头。同样，`$` 匹配**字符串**的结尾，而不是**行**的结尾。
@@ -1014,19 +1380,23 @@ my $str = chomp q:to/EOS/;
    EOS
  
 # 'safe' is at the end of the string 
-say so $str ~~ /safe   $/;   # OUTPUT: «True␤» 
+say so $str ~~ /safe   $/;   # OUTPUT: «True
+» 
  
 # 'secret' is at the end of a line, not the string 
-say so $str ~~ /secret $/;   # OUTPUT: «False␤» 
+say so $str ~~ /secret $/;   # OUTPUT: «False
+» 
 
 # 'Keep' is at the start of the string 
-say so $str ~~ /^Keep   /;   # OUTPUT: «True␤» 
+say so $str ~~ /^Keep   /;   # OUTPUT: «True
+» 
 
 # 'and' is at the start of a line -- not the string 
-say so $str ~~ /^and    /;   # OUTPUT: «False␤» 
+say so $str ~~ /^and    /;   # OUTPUT: «False
+» 
 ```
 
-<a id="%E8%A1%8C%E5%BC%80%E5%A7%8B%E5%92%8C%E7%BB%93%E6%9D%9F--start-of-line-and-end-of-line"></a>
+<a id="行开始和结束--start-of-line-and-end-of-line"></a>
 ## 行开始和结束 / Start of line and end of line
 
 `^^` 定位符在逻辑行的开头匹配。也就是说，要么在字符串的开头，要么在换行符之后。但是，它在字符串末尾不匹配，即使它以换行符结尾。 
@@ -1051,28 +1421,35 @@ my $str = q:to/EOS/;
     EOS
  
 # 'There' is at the start of string 
-say so $str ~~ /^^ There/;        # OUTPUT: «True␤» 
+say so $str ~~ /^^ There/;        # OUTPUT: «True
+» 
  
 # 'limericks' is not at the start of a line 
-say so $str ~~ /^^ limericks/;    # OUTPUT: «False␤» 
+say so $str ~~ /^^ limericks/;    # OUTPUT: «False
+» 
  
 # 'as' is at start of the last line 
-say so $str ~~ /^^ as/;            # OUTPUT: «True␤» 
+say so $str ~~ /^^ as/;            # OUTPUT: «True
+» 
  
 # there are blanks between start of line and the "When" 
-say so $str ~~ /^^ When/;         # OUTPUT: «False␤» 
+say so $str ~~ /^^ When/;         # OUTPUT: «False
+» 
  
 # 'Japan' is at end of first line 
-say so $str ~~ / Japan $$/;       # OUTPUT: «True␤» 
+say so $str ~~ / Japan $$/;       # OUTPUT: «True
+» 
  
 # there's a . between "scan" and the end of line 
-say so $str ~~ / scan $$/;        # OUTPUT: «False␤» 
+say so $str ~~ / scan $$/;        # OUTPUT: «False
+» 
  
 # matched at the last line 
-say so $str ~~ / '."' $$/;        # OUTPUT: «True␤» 
+say so $str ~~ / '."' $$/;        # OUTPUT: «True
+» 
 ```
 
-<a id="%E8%AF%8D%E8%BE%B9%E7%95%8C--word-boundary"></a>
+<a id="词边界--word-boundary"></a>
 ## 词边界 / Word boundary
 
 要匹配任何单词边界，请使用 `<|w>` 或 `<?wb>` 这在其他语言中类似于 `\b`。要匹配相反的字符，任何不绑定单词的字符，请使用 `<!|w>` 或 `<!wb>`。这在其他语言中类似于 `\B`。
@@ -1084,11 +1461,12 @@ To match any word boundary, use `<|w>` or `<?wb>`. This is similar to `\b` in ot
 These are both zero-width regex elements.
 
 ```Raku
-say "two-words" ~~ / two<|w>\-<|w>words /;    # OUTPUT: «｢two-words｣␤» 
+say "two-words" ~~ / two<|w>\-<|w>words /;    # OUTPUT: «｢two-words｣
+» 
 say "twowords" ~~ / two<!|w><!|w>words /;     # OUTPUT: «｢twowords｣» 
 ```
 
-<a id="%E5%B7%A6%E5%8F%B3%E8%AF%8D%E8%BE%B9%E7%95%8C--left-and-right-word-boundary"></a>
+<a id="左右词边界--left-and-right-word-boundary"></a>
 ## 左右词边界 / Left and right word boundary
 
 `<<` 匹配左侧的词边界。它匹配左边的一个非单词字符，或者字符串开头，右边有一个单词字符的位置。
@@ -1105,15 +1483,24 @@ These are both zero-width regex elements.
 
 ```Raku
 my $str = 'The quick brown fox';
-say so ' ' ~~ /\W/;               # OUTPUT: «True␤» 
-say so $str ~~ /br/;              # OUTPUT: «True␤» 
-say so $str ~~ /<< br/;           # OUTPUT: «True␤» 
-say so $str ~~ /br >>/;           # OUTPUT: «False␤» 
-say so $str ~~ /own/;             # OUTPUT: «True␤» 
-say so $str ~~ /<< own/;          # OUTPUT: «False␤» 
-say so $str ~~ /own >>/;          # OUTPUT: «True␤» 
-say so $str ~~ /<< The/;          # OUTPUT: «True␤» 
-say so $str ~~ /fox >>/;          # OUTPUT: «True␤» 
+say so ' ' ~~ /\W/;               # OUTPUT: «True
+» 
+say so $str ~~ /br/;              # OUTPUT: «True
+» 
+say so $str ~~ /<< br/;           # OUTPUT: «True
+» 
+say so $str ~~ /br >>/;           # OUTPUT: «False
+» 
+say so $str ~~ /own/;             # OUTPUT: «True
+» 
+say so $str ~~ /<< own/;          # OUTPUT: «False
+» 
+say so $str ~~ /own >>/;          # OUTPUT: «True
+» 
+say so $str ~~ /<< The/;          # OUTPUT: «True
+» 
+say so $str ~~ /fox >>/;          # OUTPUT: «True
+» 
 ```
 
 你还可以使用变体 `«` 和 `»`：
@@ -1122,8 +1509,10 @@ You can also use the variants `«` and `»` :
 
 ```Raku
 my $str = 'The quick brown fox';
-say so $str ~~ /« own/;          # OUTPUT: «False␤» 
-say so $str ~~ /own »/;          # OUTPUT: «True␤» 
+say so $str ~~ /« own/;          # OUTPUT: «False
+» 
+say so $str ~~ /own »/;          # OUTPUT: «True
+» 
 ```
 
 来看下 `<|w>` 和 `«`，`»`之间的区别：
@@ -1131,12 +1520,15 @@ say so $str ~~ /own »/;          # OUTPUT: «True␤»
 To see the difference between `<|w>` and `«`, `»`:
 
 ```Raku
-say "stuff here!!!".subst(:g, />>/, '|');   # OUTPUT: «stuff| here|!!!␤» 
-say "stuff here!!!".subst(:g, /<</, '|');   # OUTPUT: «|stuff |here!!!␤» 
-say "stuff here!!!".subst(:g, /<|w>/, '|'); # OUTPUT: «|stuff| |here|!!!␤» 
+say "stuff here!!!".subst(:g, />>/, '|');   # OUTPUT: «stuff| here|!!!
+» 
+say "stuff here!!!".subst(:g, /<</, '|');   # OUTPUT: «|stuff |here!!!
+» 
+say "stuff here!!!".subst(:g, /<|w>/, '|'); # OUTPUT: «|stuff| |here|!!!
+» 
 ```
 
-<a id="%E5%AE%9A%E4%BD%8D%E7%AC%A6%E6%A6%82%E8%BF%B0--summary-of-anchors"></a>
+<a id="定位符概述--summary-of-anchors"></a>
 ## 定位符概述 / Summary of anchors
 
 定位符是零宽度正则元素。因此，它们不使用输入字符串的字符，也就是说，正则引擎尝试匹配的当前位置不会前进。一个好的心理模型是，它们匹配的位置在字符串的两个字符之间，或者在输入字符串的第一个字符之前，或者在最后一个字符之后。
@@ -1156,7 +1548,7 @@ Anchors are zero-width regex elements. Hence they do not use up a character of t
 | ^       | Start of string     | "⏏two\nlines"        |
 | ^^      | Start of line       | "⏏two\n⏏lines"       |
 
-<a id="%E9%9B%B6%E5%AE%BD%E5%BA%A6%E6%96%AD%E8%A8%80--zero-width-assertions"></a>
+<a id="零宽度断言--zero-width-assertions"></a>
 # 零宽度断言 / Zero-width assertions
 
  零宽度断言可以帮助你实施自己的定位符。
@@ -1171,7 +1563,7 @@ A zero-width assertion turns another regex into an anchor, making them consume n
 
 Technically, anchors are also zero-width assertions, and they can look both ahead and behind.
 
-<a id="%E5%90%91%E5%89%8D%E7%9C%8B%E6%96%AD%E8%A8%80--lookahead-assertions"></a>
+<a id="向前看断言--lookahead-assertions"></a>
 ## 向前看断言 / Lookahead assertions
 
 要检查某个模式是否出现在另一个模式之前，请通过 `before` 断言使用向前看断言。其形式如下：
@@ -1195,7 +1587,8 @@ Thus, to search for the string `foo` which is immediately followed by the string
 For example:
 
 ```Raku
-say "foobar" ~~ / foo <?before bar> /;  # OUTPUT: «foo␤» 
+say "foobar" ~~ / foo <?before bar> /;  # OUTPUT: «foo
+» 
 ```
 
 但是，如果你想寻找一个模式**不是**立即跟随某个模式，那么你需要使用向前看断言的否定，格式是：
@@ -1211,7 +1604,8 @@ However, if you want to search for a pattern which is **not** immediately follow
 In the following example, all occurrences of `foo` which is not before `bar` would match with
 
 ```Raku
-say "foobaz" ~~ / foo <!before bar> /;  # OUTPUT: «foo␤» 
+say "foobaz" ~~ / foo <!before bar> /;  # OUTPUT: «foo
+» 
 ```
 
 向前看断言也可以用于其他模式，如字符范围、内插变量、下标等。在这种情况下，使用 `？` 或者其否定形式 `！` 就够用了。例如，以下各行产生的结果完全相同：
@@ -1240,7 +1634,7 @@ say $_;         # OUTPUT: Please buy 2 packs of sugar, 5 kg each
 
 Since the lookahead is not part of the match object, the unit is not substituted.
 
-<a id="%E5%90%91%E5%90%8E%E7%9C%8B%E6%96%AD%E8%A8%80--lookbehind-assertions"></a>
+<a id="向后看断言--lookbehind-assertions"></a>
 ## 向后看断言 / Lookbehind assertions
 
 要检查模式是否出现在另一个模式之后，请通过 `after` 断言使用向后看断言。其格式如下：
@@ -1264,7 +1658,8 @@ Therefore, to search for the string `bar` immediately preceded by the string `fo
 For example:
 
 ```Raku
-say "foobar" ~~ / <?after foo> bar /;   # OUTPUT: «bar␤» 
+say "foobar" ~~ / <?after foo> bar /;   # OUTPUT: «bar
+» 
 ```
 
 但是，如果你想寻找一个模式，而这个模式**不是**在某个模式之后的，那么你就需要使用向后看断言的否定，格式是：
@@ -1280,7 +1675,8 @@ However, if you want to search for a pattern which is **not** immediately preced
 Hence all occurrences of `bar` which do not have `foo` before them would be matched by
 
 ```Raku
-say "fotbar" ~~ / <!after foo> bar /;    # OUTPUT: «bar␤» 
+say "fotbar" ~~ / <!after foo> bar /;    # OUTPUT: «bar
+» 
 ```
 
 与向前看的情况一样，零宽度断言不*消耗*字符，如下所示：
@@ -1289,14 +1685,16 @@ These are, as in the case of lookahead, zero-width assertions which do not *cons
 
 ```Raku
 say "atfoobar" ~~ / (.**3) .**2 <?after foo> bar /;
-# OUTPUT: «｢atfoobar｣␤ 0 => ｢atf｣␤» 
+# OUTPUT: «｢atfoobar｣
+ 0 => ｢atf｣
+» 
 ```
 
 在这里，我们捕获 `bar` 前 5 个字符中的前 3 个，但前提是 `bar` 前面有 `foo`。断言为零宽度的事实允许我们使用断言中的部分字符进行捕获。
 
 where we capture the first 3 of the 5 characters before bar, but only if `bar` is preceded by `foo`. The fact that the assertion is zero-width allows us to use part of the characters in the assertion for capture.
 
-<a id="%E5%88%86%E7%BB%84%E4%B8%8E%E6%8D%95%E8%8E%B7--grouping-and-capturing"></a>
+<a id="分组与捕获--grouping-and-capturing"></a>
 # 分组与捕获 / Grouping and capturing
 
 在常规（非正则）Raku 中，可以使用括号将事物分组在一起，通常是为了覆盖运算符优先级：
@@ -1304,8 +1702,10 @@ where we capture the first 3 of the 5 characters before bar, but only if `bar` i
 In regular (non-regex) Raku, you can use parentheses to group things together, usually to override operator precedence:
 
 ```Raku
-say 1 + 4 * 2;     # OUTPUT: «9␤», parsed as 1 + (4 * 2) 
-say (1 + 4) * 2;   # OUTPUT: «10␤» 
+say 1 + 4 * 2;     # OUTPUT: «9
+», parsed as 1 + (4 * 2) 
+say (1 + 4) * 2;   # OUTPUT: «10
+» 
 ```
 
 在正则中也有同样的分组功能：
@@ -1331,7 +1731,7 @@ The same grouping applies to quantifiers:
 
 An unquantified capture produces a [Match](https://docs.raku.org/type/Match) object. When a capture is quantified (except with the `?` quantifier) the capture becomes a list of [Match](https://docs.raku.org/type/Match) objects instead.
 
-<a id="%E6%8D%95%E8%8E%B7--capturing"></a>
+<a id="捕获--capturing"></a>
 ## 捕获 / Capturing
 
 圆括号不只是分组，它们还*捕获*；也就是说，它们使组内匹配的字符串可用作变量，也可用作结果 [Match](https://docs.raku.org/type/Match) 对象的元素：
@@ -1353,7 +1753,8 @@ Pairs of parentheses are numbered left to right, starting from zero.
 
 ```Raku
 if 'abc' ~~ /(a) b (c)/ {
-    say "0: $0; 1: $1";             # OUTPUT: «0: a; 1: c␤» 
+    say "0: $0; 1: $1";             # OUTPUT: «0: a; 1: c
+» 
 }
 ```
 
@@ -1367,11 +1768,12 @@ Coercing the match object to a list gives an easy way to programmatically access
 
 ```Raku
 if 'abc' ~~ /(a) b (c)/ {
-    say $/.list.join: ', '  # OUTPUT: «a, c␤» 
+    say $/.list.join: ', '  # OUTPUT: «a, c
+» 
 }
 ```
 
-<a id="%E9%9D%9E%E6%8D%95%E8%8E%B7%E5%88%86%E7%BB%84--non-capturing-grouping"></a>
+<a id="非捕获分组--non-capturing-grouping"></a>
 ## 非捕获分组 / Non-capturing grouping
 
 正则中的括号执行双重角色：它们将正则元素分组在内部，并捕获与内部子正则匹配的元素。
@@ -1384,7 +1786,8 @@ To get only the grouping behavior, you can use square brackets `[ ... ]` which, 
 
 ```Raku
 if 'abc' ~~ / [a||b] (c) / {
-    say ~$0;                # OUTPUT: «c␤» 
+    say ~$0;                # OUTPUT: «c
+» 
 }
 ```
 
@@ -1400,7 +1803,7 @@ If you do not need the captures, using non-capturing `[ ... ]` groups provides t
 - they make it easier to count the capturing groups that do mean;
 - they make matching a bit faster.
 
-<a id="%E5%8C%B9%E9%85%8D%E6%95%B0--capture-numbers"></a>
+<a id="匹配数--capture-numbers"></a>
 ## 匹配数 / Capture numbers
 
 如上所述，捕获从左到右进行编号。虽然原则上是正确的，但这也过于简单化了。
@@ -1426,7 +1829,8 @@ Example:
 
 ```Raku
 if 'abc' ~~ /(x)(y) || (a)(.)(.)/ {
-    say ~$1;        # OUTPUT: «b␤» 
+    say ~$1;        # OUTPUT: «b
+» 
 }
 ```
 
@@ -1437,7 +1841,8 @@ If two (or more) alternations have a different number of captures, the one with 
 ```Raku
 if 'abcd' ~~ / a [ b (.) || (x) (y) ] (.) / {
     #                 $0     $0  $1    $2 
-    say ~$2;            # OUTPUT: «d␤» 
+    say ~$2;            # OUTPUT: «d
+» 
 }
 ```
 
@@ -1463,7 +1868,8 @@ These capture variables are only available outside the regex.
 ```Raku
 # ！！错误！！ $0 指的是第二个捕获*里面*的捕获
 # !!WRONG!! The $0 refers to a capture *inside* the second capture 
-say "11" ~~ /(\d) ($0)/; # OUTPUT: «Nil␤» 
+say "11" ~~ /(\d) ($0)/; # OUTPUT: «Nil
+» 
 ```
 
 为了使它们在正则中可用，需要在匹配项后面插入一个代码块；如果没有任何有意义的操作，则此代码块可能为空：
@@ -1474,8 +1880,13 @@ In order to make them available inside the regex, you need to insert a code bloc
 # 正确： $0 存入了第二个捕获之外的变量中，在它被使用在第二个捕获里面之前
 # CORRECT: $0 is saved into a variable outside the second capture 
 # before it is used inside
-say "11" ~~ /(\d) {} :my $c = $0; ($c)/; # OUTPUT: «｢11｣␤ 0 => ｢1｣␤ 1 => ｢1｣␤» 
-say "Matched $c"; # OUTPUT: «␤Matched 1␤» 
+say "11" ~~ /(\d) {} :my $c = $0; ($c)/; # OUTPUT: «｢11｣
+ 0 => ｢1｣
+ 1 => ｢1｣
+» 
+say "Matched $c"; # OUTPUT: «
+Matched 1
+» 
 ```
 
 此代码块发布正则内的捕获，以便将其分配给其他变量或用于后续匹配
@@ -1483,7 +1894,9 @@ say "Matched $c"; # OUTPUT: «␤Matched 1␤»
 This code block publishes the capture inside the regex, so that it can be assigned to other variables or used for subsequent matches
 
 ```Raku
-say "11" ~~ /(\d) {} $0/; # OUTPUT: «｢11｣␤ 0 => ｢1｣␤» 
+say "11" ~~ /(\d) {} $0/; # OUTPUT: «｢11｣
+ 0 => ｢1｣
+» 
 ```
 
 `:my` 使 `$c` 作用域在正则之内以及正则所在的范围。在这种情况下，我们可以在下一句话中使用它来显示正则中匹配的内容。这可用于在正则表达式内部进行调试，例如：
@@ -1493,7 +1906,8 @@ say "11" ~~ /(\d) {} $0/; # OUTPUT: «｢11｣␤ 0 => ｢1｣␤»
 ```Raku
 my $paragraph="line\nline2\nline3";
 $paragraph ~~ rx| :my $counter = 0; ( \V* { ++$counter } ) *%% \n |;
-say "Matched $counter lines"; # OUTPUT: «Matched 3 lines␤» 
+say "Matched $counter lines"; # OUTPUT: «Matched 3 lines
+» 
 ```
 
 由于 `:my` 代码块只是声明，因此匹配项变量 `$/` 或编号的匹配项（如 `$0`）在它们中不可用，除非它们以前是通过插入空代码块（或任何代码块）发布的：
@@ -1502,7 +1916,9 @@ Since `:my` blocks are simply declarations, the match variable `$/` or numbered 
 
 ```Raku
 "aba" ~~ / (a) b {} :my $c = $/; /;
-say $c; # OUTPUT: «｢ab｣␤ 0 => ｢a｣␤» 
+say $c; # OUTPUT: «｢ab｣
+ 0 => ｢a｣
+» 
 ```
 
 任何其他代码块也将显示变量并使其在声明中可用：
@@ -1511,8 +1927,10 @@ Any other code block will also reveal the variables and make them available in d
 
 ```Raku
 "aba" ~~ / (a) {say "Check so far ", ~$/} b :my $c = ~$0; /;
-# OUTPUT: «Check so far a␤» 
-say "Capture $c"; # OUTPUT: «Capture a␤» 
+# OUTPUT: «Check so far a
+» 
+say "Capture $c"; # OUTPUT: «Capture a
+» 
 ```
 
 与类中的 [`our`](https://docs.raku.org/syntax/our) 类似，`:our` 可用于 [Grammar](https://docs.raku.org/type/Grammar) 中声明可通过其完全限定名从 grammar 外部访问的变量：
@@ -1527,15 +1945,17 @@ grammar HasOur {
     }
 }
  
-say HasOur.parse('Þor is mighty'); # OUTPUT: «｢Þor is mighty｣␤» 
-say $HasOur::our;                  # OUTPUT: «Þor␤» 
+say HasOur.parse('Þor is mighty'); # OUTPUT: «｢Þor is mighty｣
+» 
+say $HasOur::our;                  # OUTPUT: «Þor
+» 
 ```
 
 解析成功后，我们使用变量 `$our` 的完全限定名称来访问其值，该值只能是 `Þor`。
 
 Once the parsing has been done successfully, we use the FQN name of the `$our` variable to access its value, that can be none other than `Þor`.
 
-<a id="%E5%91%BD%E5%90%8D%E6%8D%95%E8%8E%B7--named-captures"></a>
+<a id="命名捕获--named-captures"></a>
 ## 命名捕获 / Named captures
 
 你也可以给捕获命名，而不是给它们编号。通用的、稍微冗长的命名捕获方法如下：
@@ -1544,7 +1964,8 @@ Instead of numbering captures, you can also give them names. The generic, and sl
 
 ```Raku
 if 'abc' ~~ / $<myname> = [ \w+ ] / {
-    say ~$<myname>      # OUTPUT: «abc␤» 
+    say ~$<myname>      # OUTPUT: «abc
+» 
 }
 ```
 
@@ -1566,9 +1987,12 @@ Named captures can also be nested using regular capture group syntax:
 
 ```Raku
 if 'abc-abc-abc' ~~ / $<string>=( [ $<part>=[abc] ]* % '-' ) / {
-    say ~$<string>;          # OUTPUT: «abc-abc-abc␤» 
-    say ~$<string><part>;    # OUTPUT: «abc abc abc␤» 
-    say ~$<string><part>[0]; # OUTPUT: «abc␤» 
+    say ~$<string>;          # OUTPUT: «abc-abc-abc
+» 
+    say ~$<string><part>;    # OUTPUT: «abc abc abc
+» 
+    say ~$<string><part>[0]; # OUTPUT: «abc
+» 
 }
 ```
 
@@ -1579,8 +2003,10 @@ Coercing the match object to a hash gives you easy programmatic access to all na
 ```Raku
 if 'count=23' ~~ / $<variable>=\w+ '=' $<value>=\w+ / {
     my %h = $/.hash;
-    say %h.keys.sort.join: ', ';        # OUTPUT: «value, variable␤» 
-    say %h.values.sort.join: ', ';      # OUTPUT: «23, count␤» 
+    say %h.keys.sort.join: ', ';        # OUTPUT: «value, variable
+» 
+    say %h.values.sort.join: ', ';      # OUTPUT: «23, count
+» 
     for %h.kv -> $k, $v {
         say "Found value '$v' with key '$k'";
         # outputs two lines: 
@@ -1594,7 +2020,7 @@ if 'count=23' ~~ / $<variable>=\w+ '=' $<value>=\w+ / {
 
 A more convenient way to get named captures is by using named regex as discussed in the [Subrules](https://docs.raku.org/language/regexes#Subrules) section.
 
-<a id="%E6%8D%95%E8%8E%B7%E6%A0%87%E8%AF%86%E7%AC%A6%EF%BC%9A--capture-markers-"></a>
+<a id="捕获标识符：--capture-markers-"></a>
 ## 捕获标识符： `<( )>` / Capture markers: `<( )>`
 
 `<(` 标记表示匹配的整体捕获的开始，而相应的 `)>` 标记表示结束点。`<(` 类似于其他语言的 \K，用于放弃在 `\K` 之前找到的所有匹配项。
@@ -1602,15 +2028,17 @@ A more convenient way to get named captures is by using named regex as discussed
 A `<(` token indicates the start of the match's overall capture, while the corresponding `)>` token indicates its endpoint. The `<(`is similar to other languages \K to discard any matches found before the `\K`.
 
 ```Raku
-say 'abc' ~~ / a <( b )> c/;            # OUTPUT: «｢b｣␤» 
-say 'abc' ~~ / <(a <( b )> c)>/;        # OUTPUT: «｢bc｣␤» 
+say 'abc' ~~ / a <( b )> c/;            # OUTPUT: «｢b｣
+» 
+say 'abc' ~~ / <(a <( b )> c)>/;        # OUTPUT: «｢bc｣
+» 
 ```
 
 如上例所示，你可以看到 `<(` 设置了起点而 `)>` 设置了终点；由于它们实际上彼此独立，因此最内部的起点（连接到 `b`）和最外部的终点（连接到 `c`）获胜。
 
 As in the example above, you can see `<(` sets the start point and `)>` sets the endpoint; since they are actually independent of each other, the inner-most start point wins (the one attached to `b`) and the outer-most end wins (the one attached to `c`).
 
-<a id="%E6%9B%BF%E6%8D%A2--substitution"></a>
+<a id="替换--substitution"></a>
 # 替换 / Substitution
 
 正则表达式也可用于用一段文本替换另一段文本。可以将其用于任何内容，从更正拼写错误（例如，将 'Perl Jam' 替换为 'Pearl Jam'），到将 ISO8601 日期从 `yyyy-mm-ddThh:mm:ssZ` 重新格式化为 `mm-dd-yy h:m {AM,PM}`。
@@ -1621,7 +2049,7 @@ Regular expressions can also be used to substitute one piece of text for another
 
 Just like the search-and-replace editor's dialog box, the `s/ / /` operator has two sides, a left and right side. The left side is where your matching expression goes, and the right side is what you want to replace it with.
 
-<a id="%E8%AF%8D%E6%B3%95%E7%BA%A6%E5%AE%9A--lexical-conventions-1"></a>
+<a id="词法约定--lexical-conventions-1"></a>
 ## 词法约定 / Lexical conventions
 
 替换的编写方式与匹配类似，但替换运算符同时具有要匹配的正则区域和要替换的文本：
@@ -1662,14 +2090,15 @@ The right-hand side is now a (not quoted) Raku expression, in which `$/` is avai
 ```Raku
 $_ = 'some 11 words 21';
 s:g[ \d+ ] =  2 * $/;
-.say;                    # OUTPUT: «some 22 words 42␤» 
+.say;                    # OUTPUT: «some 22 words 42
+» 
 ```
 
 与 `m//` 运算符类似，替换的正则部分忽略空白。上文的注释，就像在一般的 Raku 代码中一样，从 `#` 字符开始，直到当前行的末尾。
 
 Like the `m//` operator, whitespace is ignored in the regex part of a substitution. Comments, as in Raku in general, start with the hash character `#` and go to the end of the current line.
 
-<a id="%E6%9B%BF%E6%8D%A2%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%96%87%E5%AD%97--replacing-string-literals"></a>
+<a id="替换字符串文字--replacing-string-literals"></a>
 ## 替换字符串文字 / Replacing string literals
 
 最简单的替换是字符串文字。被替换的字符串位于替换运算符的左侧，用来替换的字符串位于右侧；例如：
@@ -1679,7 +2108,8 @@ The simplest thing to replace is a string literal. The string you want to replac
 ```Raku
 $_ = 'The Replacements';
 s/Replace/Entrap/;
-.say;                    # OUTPUT: «The Entrapments␤» 
+.say;                    # OUTPUT: «The Entrapments
+» 
 ```
 
 字母数字字符和下划线是字面匹配的，就像在它的表亲 `m//` 运算符中一样。所有其他字符必须用反斜杠 `\` 转义或包含在引号中：
@@ -1689,7 +2119,8 @@ Alphanumeric characters and the underscore are literal matches, just as in its c
 ```Raku
 $_ = 'Space: 1999';
 s/Space\:/Party like it's/;
-.say                        # OUTPUT: «Party like it's 1999␤» 
+.say                        # OUTPUT: «Party like it's 1999
+» 
 ```
 
 注意，匹配限制只适用于替换表达式的左侧。
@@ -1703,10 +2134,11 @@ By default, substitutions are only done on the first match:
 ```Raku
 $_ = 'There can be twly two';
 s/tw/on/;                     # replace 'tw' with 'on' once 
-.say;                         # OUTPUT: «There can be only two␤» 
+.say;                         # OUTPUT: «There can be only two
+» 
 ```
 
-<a id="%E9%80%9A%E9%85%8D%E7%AC%A6%E5%92%8C%E5%AD%97%E7%AC%A6%E7%B1%BB--wildcards-and-character-classes"></a>
+<a id="通配符和字符类--wildcards-and-character-classes"></a>
 ## 通配符和字符类 / Wildcards and character classes
 
 任何可以进入 `m//` 运算符的内容都可以进入替换运算符的左侧，包括通配符和字符类。当要匹配的文本不是静态的，例如尝试匹配字符串中间的数字，这很方便：
@@ -1716,12 +2148,13 @@ Anything that can go into the `m//` operator can go into the left-hand side of t
 ```Raku
 $_ = "Blake's 9";
 s/\d+/7/;         # replace any sequence of digits with '7' 
-.say;             # OUTPUT: «Blake's 7␤» 
+.say;             # OUTPUT: «Blake's 7
+» 
 ```
 
 Of course, you can use any of the `+`, `*` and `?` modifiers, and they'll behave just as they would in the `m//` operator's context.
 
-<a id="%E6%8D%95%E8%8E%B7%E5%88%86%E7%BB%84--capturing-groups"></a>
+<a id="捕获分组--capturing-groups"></a>
 ## 捕获分组 / Capturing groups
 
 正如在匹配操作符中一样，左侧允许捕获组，匹配的内容填充了 `$0`..`$n` 变量和 `$/` 对象：
@@ -1731,9 +2164,12 @@ Just as in the match operator, capturing groups are allowed on the left-hand sid
 ```Raku
 $_ = '2016-01-23 18:09:00';
 s/ (\d+)\-(\d+)\-(\d+) /today/;   # replace YYYY-MM-DD with 'today' 
-.say;                             # OUTPUT: «today 18:09:00␤» 
-"$1-$2-$0".say;                   # OUTPUT: «01-23-2016␤» 
-"$/[1]-$/[2]-$/[0]".say;          # OUTPUT: «01-23-2016␤» 
+.say;                             # OUTPUT: «today 18:09:00
+» 
+"$1-$2-$0".say;                   # OUTPUT: «01-23-2016
+» 
+"$/[1]-$/[2]-$/[0]".say;          # OUTPUT: «01-23-2016
+» 
 ```
 
 变量 `$0`、`$1`、`$/` 中的任何一个也可以在运算符的右侧使用，这样就可以操纵刚刚匹配的内容。通过这种方式，你可以将日期的`YYYY`、`MM` 和 `DD` 部分分开，并将它们重新格式化为 `MM-DD-YYYY` 顺序：
@@ -1743,7 +2179,8 @@ Any of these variables `$0`, `$1`, `$/` can be used on the right-hand side of th
 ```Raku
 $_ = '2016-01-23 18:09:00';
 s/ (\d+)\-(\d+)\-(\d+) /$1-$2-$0/;    # transform YYYY-MM-DD to MM-DD-YYYY 
-.say;                                 # OUTPUT: «01-23-2016 18:09:00␤» 
+.say;                                 # OUTPUT: «01-23-2016 18:09:00
+» 
 ```
 
 也可以使用命名捕获：
@@ -1753,7 +2190,8 @@ Named capture can be used too:
 ```Raku
 $_ = '2016-01-23 18:09:00';
 s/ $<y>=(\d+)\-$<m>=(\d+)\-$<d>=(\d+) /$<m>-$<d>-$<y>/;
-.say;                                 # OUTPUT: «01-23-2016 18:09:00␤» 
+.say;                                 # OUTPUT: «01-23-2016 18:09:00
+» 
 ```
 
 由于右侧实际上是一个常规的 Raku 内插字符串，因此可以将时间从 `HH:MM` 重新格式化为 `h:MM {AM,PM}`。像这样：
@@ -1763,14 +2201,15 @@ Since the right-hand side is effectively a regular Raku interpolated string, you
 ```Raku
 $_ = '18:38';
 s/(\d+)\:(\d+)/{$0 % 12}\:$1 {$0 < 12 ?? 'AM' !! 'PM'}/;
-.say;                                 # OUTPUT: «6:38 PM␤» 
+.say;                                 # OUTPUT: «6:38 PM
+» 
 ```
 
 使用上面的模运算符 `%` 可以将示例代码保持在 80 个字符以下，但在其他方面与 `$0 < 12 ?? $0 !! $0 - 12` 一样.当结合解析器表达式语法的强大功能，可以使用“正则表达式”来解析几乎所有的文本。
 
 Using the modulo `%` operator above keeps the sample code under 80 characters, but is otherwise the same as `$0 < 12 ?? $0 !! $0 - 12 `. When combined with the power of the Parser Expression Grammars that **really** underlies what you're seeing here, you can use "regular expressions" to parse pretty much any text out there.
 
-<a id="%E5%B8%B8%E7%94%A8%E5%89%AF%E8%AF%8D--common-adverbs"></a>
+<a id="常用副词--common-adverbs"></a>
 ## 常用副词 / Common adverbs
 
 可以应用于正则表达式的副词的完整列表可以在本文档的其他地方可以找到（[节副词](https://docs.raku.org/language/regexes#Adverbs)），但最常见的可能是 `:g` 和 `:i`。
@@ -1788,7 +2227,8 @@ Ordinarily, matches are only made once in a given string, but adding the `:g` mo
 ```Raku
 $_ = q{I can say "banana" but I don't know when to stop};
 s:g/na/nana,/;    # substitute 'nana,' for 'na' 
-.say;             # OUTPUT: «I can say "banana,nana," but I don't ...␤» 
+.say;             # OUTPUT: «I can say "banana,nana," but I don't ...
+» 
 ```
 
 在这里，`na` 在原始字符串中被发现两次，每次都有一个替换。不过，替换仅应用于原始字符串。结果字符串未受影响。
@@ -1806,10 +2246,12 @@ Ordinarily, matches are case-sensitive. `s/foo/bar/` will only match `'foo'` and
 ```Raku
 $_ = 'Fruit';
 s/fruit/vegetable/;
-.say;                          # OUTPUT: «Fruit␤» 
+.say;                          # OUTPUT: «Fruit
+» 
  
 s:i/fruit/vegetable/;
-.say;                          # OUTPUT: «vegetable␤» 
+.say;                          # OUTPUT: «vegetable
+» 
 ```
 
 有关这些副词实际操作的更多信息，请参阅本文档的[副词部分](https://docs.raku.org/language/regexes#Adverbs)部分。
@@ -1824,7 +2266,7 @@ These are just a few of the transformations you can apply with the substitution 
 
 As an aside, novices to regular expressions often get overwhelmed and think that their regular expression needs to match every piece of data in the line, including what they want to match. Write just enough to match the data you're looking for, no more, no less.
 
-<a id="%E5%B5%8C%E5%A5%97%E7%BB%93%E6%9E%84%E7%9A%84%E6%B3%A2%E6%B5%AA%E7%AC%A6%E5%8F%B7--tilde-for-nesting-structures"></a>
+<a id="嵌套结构的波浪符号--tilde-for-nesting-structures"></a>
 # 嵌套结构的波浪符号 / Tilde for nesting structures
 
 `~` 运算符是一个帮助器，用于将嵌套子规则与特定终结符匹配为目标。它被设计成放置在一个开始和结束分隔符对之间，如下所示：
@@ -1863,10 +2305,12 @@ grammar A {
     }
 }
 
-say A.parse: '[good]';  # OUTPUT: «｢[good]｣␤» 
+say A.parse: '[good]';  # OUTPUT: «｢[good]｣
+» 
 A.parse: '[bad';        # will throw FAILGOAL exception 
 CATCH { default { put .^name, ': ', .Str } };
-# OUTPUT: «X::AdHoc: Cannot find ']'  near position 4␤» 
+# OUTPUT: «X::AdHoc: Cannot find ']'  near position 4
+» 
 ```
 
 请注意，即使没有开始分隔符，也可以使用此构造设置结束构造的期望值：
@@ -1888,11 +2332,13 @@ The order of the regex capture is original:
 
 ```Raku
 "abc" ~~ /a ~ (c) (b)/;
-say $0; # OUTPUT: «｢c｣␤» 
-say $1; # OUTPUT: «｢b｣␤» 
+say $0; # OUTPUT: «｢c｣
+» 
+say $1; # OUTPUT: «｢b｣
+» 
 ```
 
-<a id="%E5%AD%90%E8%A7%84%E5%88%99--subrules"></a>
+<a id="子规则--subrules"></a>
 # 子规则 / Subrules
 
 就像可以将代码片段放入子例程一样，也可以将正则片段放入命名规则中。
@@ -1902,7 +2348,8 @@ Just like you can put pieces of code into subroutines, you can also put pieces o
 ```Raku
 my regex line { \N*\n }
 if "abc\ndef" ~~ /<line> def/ {
-    say "First line: ", $<line>.chomp;      # OUTPUT: «First line: abc␤» 
+    say "First line: ", $<line>.chomp;      # OUTPUT: «First line: abc
+» 
 }
 ```
 
@@ -1956,7 +2403,7 @@ say %config.raku;
 
 Named regexes can and should be grouped in [grammars](https://docs.raku.org/language/grammars). A list of predefined subrules is listed in [S05-regex](https://design.perl6.org/S05.html#Predefined_Subrules) of design documents.
 
-<a id="%E6%AD%A3%E5%88%99%E6%8F%92%E5%80%BC--regex-interpolation"></a>
+<a id="正则插值--regex-interpolation"></a>
 # 正则插值 / Regex interpolation
 
 你可以使用变量保存该模式，而不是使用文本模式进行正则匹配。
@@ -1969,7 +2416,8 @@ This variable can then be 'interpolated' which means it is used as though it is 
 
 ```Raku
 my Str $pattern = 'camelia';
-say 'camelia' ~~ / $pattern /;             # OUTPUT: «｢camelia｣␤» 
+say 'camelia' ~~ / $pattern /;             # OUTPUT: «｢camelia｣
+» 
 ```
 
 如果要插入的变量是静态类型的 `Str` 或 `str`，并且只是按字面量插入，那么编译器可以对其进行优化，并且运行得更快（如上面的 `$pattern`）。
@@ -1982,7 +2430,8 @@ Sometimes you may want to match a generated string in a regex. This can be done 
 
 ```Raku
 my Str $pattern = 'ailemac';
-say 'camelia' ~~ / $($pattern.flip) /;     # OUTPUT: «｢camelia｣␤» 
+say 'camelia' ~~ / $($pattern.flip) /;     # OUTPUT: «｢camelia｣
+» 
 ```
 
 有四种方法可以将字符串作为模式插入正则。即使用 `$pattern`、`$($pattern)`、`<$pattern>` 或 `<{$pattern.method}>`。
@@ -2003,17 +2452,26 @@ my Str $pattern0 = 'camelia';
 my     $pattern1 = 'ailemac';
 my str $pattern2 = '\w+';
  
-say $text ~~ / $pattern0 /;                # OUTPUT: «｢camelia｣␤» 
-say $text ~~ / $($pattern0) /;             # OUTPUT: «｢camelia｣␤» 
-say $text ~~ / $($pattern1.flip) /;        # OUTPUT: «｢camelia｣␤» 
-say 'ailemacxflip' ~~ / $pattern1.flip /;  # OUTPUT: «｢ailemacxflip｣␤» 
-say '\w+' ~~ / $pattern2 /;                # OUTPUT: «｢\w+｣␤» 
-say '\w+' ~~ / $($pattern2) /;             # OUTPUT: «｢\w+｣␤» 
+say $text ~~ / $pattern0 /;                # OUTPUT: «｢camelia｣
+» 
+say $text ~~ / $($pattern0) /;             # OUTPUT: «｢camelia｣
+» 
+say $text ~~ / $($pattern1.flip) /;        # OUTPUT: «｢camelia｣
+» 
+say 'ailemacxflip' ~~ / $pattern1.flip /;  # OUTPUT: «｢ailemacxflip｣
+» 
+say '\w+' ~~ / $pattern2 /;                # OUTPUT: «｢\w+｣
+» 
+say '\w+' ~~ / $($pattern2) /;             # OUTPUT: «｢\w+｣
+» 
  
-say $text ~~ / <{$pattern1.flip}> /;       # OUTPUT: «｢camelia｣␤» 
+say $text ~~ / <{$pattern1.flip}> /;       # OUTPUT: «｢camelia｣
+» 
 # say $text ~~ / <$pattern1.flip> /;       # !!Compile Error!! 
-say $text ~~ / <$pattern2> /;              # OUTPUT: «｢camelia｣␤» 
-say $text ~~ / <{$pattern2}> /;            # OUTPUT: «｢camelia｣␤» 
+say $text ~~ / <$pattern2> /;              # OUTPUT: «｢camelia｣
+» 
+say $text ~~ / <{$pattern2}> /;            # OUTPUT: «｢camelia｣
+» 
 ```
 
 当一个数组变量被插入到一个正则中时，正则引擎会像处理正则元素的一个 `|` 备选项一样处理它（请参阅上面[嵌入列表](https://docs.raku.org/language/regexes#Quoted_lists_are_LTM_matches)上的文档，如上图所示）。单个元素的插值规则与标量相同，因此字符串和数字按字面量匹配，而 [/type/regex](https://docs.raku.org/type/Regex) 对象与正则匹配。正如普通的 `|` 插值一样，最长的匹配也会成功：
@@ -2029,7 +2487,7 @@ say ('b235' ~~ /  b @a /).Str;      # OUTPUT: «b23»
 
 The use of hashes in regexes is reserved.
 
-<a id="%E6%AD%A3%E5%88%99%E5%B8%83%E5%B0%94%E6%9D%A1%E4%BB%B6%E6%A3%80%E6%9F%A5--regex-boolean-condition-check"></a>
+<a id="正则布尔条件检查--regex-boolean-condition-check"></a>
 ## 正则布尔条件检查 / Regex boolean condition check
 
 特殊运算符 `<?{}>` 允许对布尔表达式进行计算，该布尔表达式可以在正则表达式继续之前对匹配项执行语义计算。换句话说，可以在布尔上下文中检查正则表达式的一部分，从而使整个匹配无效（或允许其继续），即使从语法角度来看匹配成功。
@@ -2097,7 +2555,7 @@ $localhost ~~ / ^ <ipv4-octet> ** 4 % "." $ /;
 say $/<ipv4-octet>;   # OUTPUT: [｢127｣ ｢0｣ ｢0｣ ｢1｣] 
 ```
 
-<a id="%E5%89%AF%E8%AF%8D--adverbs"></a>
+<a id="副词--adverbs"></a>
 # 副词 / Adverbs
 
 副词是一个或多个以冒号 `:` 开头的字母组合，用于修改正则的工作方式，并为某些类型的重复任务提供方便的快捷方式。
@@ -2114,10 +2572,12 @@ This distinction often blurs, because matching and declaration are often textual
 
 ```Raku
 say "Abra abra CADABRA" ~~ m:exhaustive/:i a \w+ a/;
-# OUTPUT: «(｢Abra｣ ｢abra｣ ｢ADABRA｣ ｢ADA｣ ｢ABRA｣)␤» 
+# OUTPUT: «(｢Abra｣ ｢abra｣ ｢ADABRA｣ ｢ADA｣ ｢ABRA｣)
+» 
 my $regex = /:i a \w+ a /;
 say "Abra abra CADABRA".match($regex,:ex);
-# OUTPUT: «(｢Abra｣ ｢abra｣ ｢ADABRA｣ ｢ADA｣ ｢ABRA｣)␤» 
+# OUTPUT: «(｢Abra｣ ｢abra｣ ｢ADABRA｣ ｢ADA｣ ｢ABRA｣)
+» 
 ```
 
 在第一个例子中，匹配副词（`:exhaustive`）与正则副词（`:i`）相邻，事实上，正则声明和匹配被一起使用；但是，通过使用 `match`，它比 `:i` 更清楚，仅在定义 `$regex` 变量和 `:ex`（`:exhaustive` 的缩写）作为匹配时的参数。事实上，匹配副词甚至不能在 regex 的定义中使用：
@@ -2126,7 +2586,8 @@ In the first example, the matching adverb (`:exhaustive`) is contiguous to the r
 
 ```Raku
 my $regex = rx:ex/:i a \w+ a /;
-# ===SORRY!=== Error while compiling (...)␤Adverb ex not allowed on rx 
+# ===SORRY!=== Error while compiling (...)
+Adverb ex not allowed on rx 
 ```
 
 类似于 `:i` 的正则副词进入定义行，类似于 `:overlap` 的匹配副词（可以缩写为 `:ov`）附加到匹配调用：
@@ -2138,10 +2599,12 @@ my $regex = /:i . a/;
 for 'baA'.match($regex, :overlap) -> $m {
     say ~$m;
 }
-# OUTPUT: «ba␤aA␤» 
+# OUTPUT: «ba
+aA
+» 
 ```
 
-<a id="%E6%AD%A3%E5%88%99%E5%89%AF%E8%AF%8D--regex-adverbs"></a>
+<a id="正则副词--regex-adverbs"></a>
 ## 正则副词 / Regex adverbs
 
 在正则声明时出现的副词是实际正则的一部分，并影响 Raku 编译器如何将正则转换为二进制代码。
@@ -2206,14 +2669,15 @@ Square brackets and parentheses limit the scope of an adverb:
 When two adverbs are used together, they keep their colon at the front
 
 ```Raku
-"þor is Þor" ~~ m:g:i/þ/;  # OUTPUT: «(｢þ｣ ｢Þ｣)␤» 
+"þor is Þor" ~~ m:g:i/þ/;  # OUTPUT: «(｢þ｣ ｢Þ｣)
+» 
 ```
 
 这意味着当一个 `:` 后面有两个元音时，它们对应于同一个副词，就像在 `:ov` 或 `:P5` 中一样。
 
 That implies that when there are two vowels together after a `:`, they correspond to the same adverb, as in `:ov` or `:P5`.
 
-<a id="%E5%BF%BD%E7%95%A5%E6%A0%87%E8%AE%B0--ignoremark"></a>
+<a id="忽略标记--ignoremark"></a>
 ### 忽略标记 / Ignoremark
 
 `:ignoremark` 或 `:m` 副词指示正则引擎仅比较基本字符，并忽略其他标记，如组合重音：
@@ -2226,7 +2690,7 @@ say so 'a' ~~ rx:ignoremark /ä/;    # OUTPUT: «True»
 say so 'ỡ' ~~ rx:ignoremark /o/;    # OUTPUT: «True> 
 ```
 
-<a id="%E6%A3%98%E8%BD%AE--ratchet"></a>
+<a id="棘轮--ratchet"></a>
 ### 棘轮 / Ratchet
 
 `:ratchet` 或 `:r` 副词导致正则引擎无法回溯（请参阅[回溯](https://docs.raku.org/language/regexes#Backtracking)）。助记符：一个[棘轮]（https://en.wikipedia.org/wiki/ratchet device%29）只能朝一个方向移动，不能后退。
@@ -2238,8 +2702,10 @@ The `:ratchet` or `:r` adverb causes the regex engine to not backtrack (see [bac
 Without this adverb, parts of a regex will try different ways to match a string in order to make it possible for other parts of the regex to match. For example, in `'abc' ~~ /\w+ ./`, the `\w+` first eats up the whole string, `abc` but then the `.` fails. Thus `\w+`gives up a character, matching only `ab`, and the `.` can successfully match the string `c`. This process of giving up characters (or in the case of alternations, trying a different branch) is known as backtracking.
 
 ```Raku
-say so 'abc' ~~ / \w+ . /;        # OUTPUT: «True␤» 
-say so 'abc' ~~ / :r \w+ . /;     # OUTPUT: «False␤» 
+say so 'abc' ~~ / \w+ . /;        # OUTPUT: «True
+» 
+say so 'abc' ~~ / :r \w+ . /;     # OUTPUT: «False
+» 
 ```
 
 棘轮运动可以是一种优化，因为回溯成本很高。但更重要的是，它与人类如何解析文本密切相关。如果你有一个正则  `my regex identifier { \w+ }`  和 `my regex keyword { if | else | endif }`，那么如果下一个规则不成功，你会直观地期望 `identifier` 吞噬一个完整的单词，而不会让它放弃到下一个规则的结尾。
@@ -2260,7 +2726,7 @@ my token thing { ... };
 my regex thing { :r ... };
 ```
 
-<a id="%E7%A9%BA%E6%A0%BC%E4%BF%A1%E5%8F%B7--sigspace"></a>
+<a id="空格信号--sigspace"></a>
 ### 空格信号 / Sigspace
 
 **:sigspace** 或者 **:s** 副词使空格变得重要。
@@ -2268,9 +2734,12 @@ my regex thing { :r ... };
 The **:sigspace** or **:s** adverb makes whitespace significant in a regex.
 
 ```Raku
-say so "I used Photoshop®"   ~~ m:i/   photo shop /;      # OUTPUT: «True␤»
-say so "I used a photo shop" ~~ m:i:s/ photo shop /;   # OUTPUT: «True␤»
-say so "I used Photoshop®"   ~~ m:i:s/ photo shop /;   # OUTPUT: «False␤»
+say so "I used Photoshop®"   ~~ m:i/   photo shop /;      # OUTPUT: «True
+»
+say so "I used a photo shop" ~~ m:i:s/ photo shop /;   # OUTPUT: «True
+»
+say so "I used Photoshop®"   ~~ m:i:s/ photo shop /;   # OUTPUT: «False
+»
 ```
 
 `m:s/ photo shop /` 的作用与 `m/ photo <.ws> shop <.ws> /` 相同。默认情况下，`<.ws> ` 确保单词是分开的，因此 `a b` 和 `^&` 将在中间匹配 `<.ws> `，但 `ab` 不会。
@@ -2349,19 +2818,23 @@ grammar Demo {
 }
 
 # doesn't parse, whitespace required between a and b 
-say so Demo.parse("ab.");                 # OUTPUT: «False␤» 
-say so Demo.parse("a b.");                # OUTPUT: «True␤» 
-say so Demo.parse("a\tb .");              # OUTPUT: «True␤» 
+say so Demo.parse("ab.");                 # OUTPUT: «False
+» 
+say so Demo.parse("a b.");                # OUTPUT: «True
+» 
+say so Demo.parse("a\tb .");              # OUTPUT: «True
+» 
  
 # \n is vertical whitespace, so no match 
-say so Demo.parse("a\tb\n.");             # OUTPUT: «False␤» 
+say so Demo.parse("a\tb\n.");             # OUTPUT: «False
+» 
 ```
 
 在分析某些空格（例如垂直空格）很重要的文件格式时，建议重写 `ws`。
 
 When parsing file formats where some whitespace (for example, vertical whitespace) is significant, it's advisable to override `ws`.
 
-<a id="%E5%85%BC%E5%AE%B9-perl-5-%E6%AD%A3%E5%88%99%E5%89%AF%E8%AF%8D--perl-5-compatibility-adverb"></a>
+<a id="兼容-perl-5-正则副词--perl-5-compatibility-adverb"></a>
 ### 兼容 Perl 5 正则副词 / Perl 5 compatibility adverb
 
 **:Perl5** 或 **:P5** 副词将正则解析和匹配转换为 Perl 5 正则的行为方式：
@@ -2369,16 +2842,19 @@ When parsing file formats where some whitespace (for example, vertical whitespac
 The **:Perl5** or **:P5** adverb switch the Regex parsing and matching to the way Perl 5 regexes behave:
 
 ```
-so 'hello world' ~~ m:Perl5/^hello (world)/;   # OUTPUT: «True␤» 
-so 'hello world' ~~ m/^hello (world)/;         # OUTPUT: «False␤» 
-so 'hello world' ~~ m/^ 'hello ' ('world')/;   # OUTPUT: «True␤» 
+so 'hello world' ~~ m:Perl5/^hello (world)/;   # OUTPUT: «True
+» 
+so 'hello world' ~~ m/^hello (world)/;         # OUTPUT: «False
+» 
+so 'hello world' ~~ m/^ 'hello ' ('world')/;   # OUTPUT: «True
+» 
 ```
 
 当然，在 Raku 中建议使用常规的行为，并且更为惯用，但是当需要与 Perl 5 兼容时，**:Perl5** 副词非常有用。
 
 The regular behavior is recommended and more idiomatic in Raku of course, but the **:Perl5** adverb can be useful when compatibility with Perl5 is required.
 
-<a id="%E5%8C%B9%E9%85%8D%E5%89%AF%E8%AF%8D--matching-adverbs"></a>
+<a id="匹配副词--matching-adverbs"></a>
 ## 匹配副词 / Matching adverbs
 
 与正则副词（与正则声明绑定）不同，匹配副词只在字符串与正则匹配时才有意义。
@@ -2389,7 +2865,7 @@ In contrast to regex adverbs, which are tied to the declaration of a regex, matc
 
 They can never appear inside a regex, only on the outside – either as part of an `m/.../` match or as arguments to a match method.
 
-<a id="%E4%BD%8D%E7%BD%AE%E5%89%AF%E8%AF%8D--positional-adverbs"></a>
+<a id="位置副词--positional-adverbs"></a>
 ### 位置副词 / Positional adverbs
 
 位置副词使表达式只与指定位置的字符串匹配：
@@ -2398,10 +2874,14 @@ Positional adverbs make the expression match only the string in the indicated po
 
 ```Raku
 my $data = "f fo foo fooo foooo fooooo foooooo";
-say $data ~~ m:nth(4)/fo+/;   # OUTPUT: «｢foooo｣␤» 
-say $data ~~ m:1st/fo+/;      # OUTPUT: «｢fo｣␤» 
-say $data ~~ m:3rd/fo+/;      # OUTPUT: «｢fooo｣␤» 
-say $data ~~ m:nth(1,3)/fo+/; # OUTPUT: «(｢fo｣ ｢fooo｣)␤» 
+say $data ~~ m:nth(4)/fo+/;   # OUTPUT: «｢foooo｣
+» 
+say $data ~~ m:1st/fo+/;      # OUTPUT: «｢fo｣
+» 
+say $data ~~ m:3rd/fo+/;      # OUTPUT: «｢fooo｣
+» 
+say $data ~~ m:nth(1,3)/fo+/; # OUTPUT: «(｢fo｣ ｢fooo｣)
+» 
 ```
 
 如你所见，副词参数也可以是一个列表。实际上，`:nth` 副词和其他副词没有区别。你可以根据易读性来选择它们。从 6.d 开始，你还可以使用 `Junction` 作为参数。
@@ -2410,7 +2890,8 @@ As you can see, the adverb argument can also be a list. There's actually no diff
 
 ```Raku
 my $data = "f fo foo fooo foooo fooooo foooooo";
-say $data ~~ m:st(1|8)/fo+/;  # OUTPUT: «True␤» 
+say $data ~~ m:st(1|8)/fo+/;  # OUTPUT: «True
+» 
 ```
 
 在这种情况下，其中一个存在（1），因此它返回 True。注意我们使用了 `:st`。如前所述，它在功能上是等效的，明显比使用 `:nth` 更不容易辨认，所以建议使用最后一种形式。
@@ -2426,8 +2907,10 @@ The `:continue` or short `:c` adverb takes an argument. The argument is the posi
 
 ```Raku
 given 'a1xa2' {
-    say ~m/a./;         # OUTPUT: «a1␤» 
-    say ~m:c(2)/a./;    # OUTPUT: «a2␤» 
+    say ~m/a./;         # OUTPUT: «a1
+» 
+    say ~m:c(2)/a./;    # OUTPUT: «a2
+» 
 }
 ```
 
@@ -2436,11 +2919,13 @@ given 'a1xa2' {
 *Note:* unlike `:pos`, a match with :continue() will attempt to match further in the string, instead of failing:
 
 ```Raku
-say "abcdefg" ~~ m:c(3)/e.+/; # OUTPUT: «｢efg｣␤» 
-say "abcdefg" ~~ m:p(3)/e.+/; # OUTPUT: «False␤» 
+say "abcdefg" ~~ m:c(3)/e.+/; # OUTPUT: «｢efg｣
+» 
+say "abcdefg" ~~ m:p(3)/e.+/; # OUTPUT: «False
+» 
 ```
 
-<a id="%E7%A9%B7%E4%B8%BE--exhaustive"></a>
+<a id="穷举--exhaustive"></a>
 ### 穷举 / Exhaustive
 
 要查找一个正则的所有可能匹配项（包括重叠的匹配项）和几个从同一位置开始的匹配项，请使用 `:exhaustive`（简称为 `:ex`）副词。
@@ -2472,7 +2957,7 @@ The above code produces this output:
            abra
 ```
 
-<a id="%E5%85%A8%E5%B1%80%E6%90%9C%E7%B4%A2--global"></a>
+<a id="全局搜索--global"></a>
 ### 全局搜索 / Global
 
 不是搜索一个匹配并返回一个[匹配对象](https://docs.raku.org/type/Match)，而是搜索每个不重叠的匹配并返回到[列表](https://docs.raku.org/type/List)。为此，请使用 `:global` 副词：
@@ -2482,8 +2967,10 @@ Instead of searching for just one match and returning a [Match object](https://d
 ```Raku
 given 'several words here' {
     my @matches = m:global/\w+/;
-    say @matches.elems;         # OUTPUT: «3␤» 
-    say ~@matches[2];           # OUTPUT: «here␤» 
+    say @matches.elems;         # OUTPUT: «3
+» 
+    say ~@matches[2];           # OUTPUT: «here
+» 
 }
 ```
 
@@ -2501,8 +2988,10 @@ Anchor the match at a specific position in the string:
 ```Raku
 given 'abcdef' {
     my $match = m:pos(2)/.*/;
-    say $match.from;        # OUTPUT: «2␤» 
-    say ~$match;            # OUTPUT: «cdef␤» 
+    say $match.from;        # OUTPUT: «2
+» 
+    say ~$match;            # OUTPUT: «cdef
+» 
 }
 ```
 
@@ -2515,11 +3004,13 @@ given 'abcdef' {
 *Note:* unlike `:continue`, a match anchored with :pos() will fail, instead of attempting to match further down the string:
 
 ```Raku
-say "abcdefg" ~~ m:c(3)/e.+/; # OUTPUT: «｢efg｣␤» 
-say "abcdefg" ~~ m:p(3)/e.+/; # OUTPUT: «False␤» 
+say "abcdefg" ~~ m:c(3)/e.+/; # OUTPUT: «｢efg｣
+» 
+say "abcdefg" ~~ m:p(3)/e.+/; # OUTPUT: «False
+» 
 ```
 
-<a id="%E9%87%8D%E5%8F%A0--overlap"></a>
+<a id="重叠--overlap"></a>
 ### 重叠 / Overlap
 
 要获得多个匹配，包括重叠匹配，但每个起始位置只有一个（最长），请指定 `:overlap`（简写为 `:ov`）副词：
@@ -2545,7 +3036,7 @@ produces
            abra
 ```
 
-<a id="%E6%9B%BF%E6%8D%A2%E5%89%AF%E8%AF%8D--substitution-adverbs"></a>
+<a id="替换副词--substitution-adverbs"></a>
 ## 替换副词 / Substitution adverbs
 
 可以将匹配副词（如 `:global`、 `:pos` 等）应用于替换。此外，有一些副词只对替换有意义，因为它们将属性从匹配字符串转移到替换字符串。
@@ -2599,7 +3090,7 @@ say S:samespace/a ./c d/.perl given "a\nb";     # OUTPUT: «"c\nd"»
 
 The `ss/.../.../` syntactic form is a shorthand for `s:samespace/.../.../`.
 
-<a id="%E5%9B%9E%E6%BA%AF--backtracking"></a>
+<a id="回溯--backtracking"></a>
 # 回溯 / Backtracking
 
 在计算正则表达式时，Raku 默认为*回溯*的。回溯是一种允许引擎尝试不同的匹配以使正则表达式的每个部分都成功的技术。这是昂贵的，因为它要求引擎在第一次匹配时尽可能地消耗掉字符，然后向后调整，以确保所有正则表达式部分都有机会匹配。
@@ -2819,7 +3310,7 @@ Capture 1 =  database!
 
 This demonstrate that disabling backtracking does not mean disabling possible multiple iterations of the matching engine, but rather disabling the backward matching tuning.
 
-<a id="%24%E5%9C%A8%E6%AF%8F%E6%AC%A1%E5%8C%B9%E9%85%8D%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%97%B6%E6%9B%B4%E6%94%B9--%24-changes-each-time-a-regular-expression-is-matched"></a>
+<a id="$在每次匹配正则表达式时更改--$-changes-each-time-a-regular-expression-is-matched"></a>
 # `$/`在每次匹配正则表达式时更改 / `$/` changes each time a regular expression is matched
 
 值得注意的是，每次使用正则表达式时，都会重置返回的[匹配对象](https://docs.raku.org/type/Match)（即 `$/`）。换句话说，`$/` 总是指最后一个匹配的正则表达式：
@@ -2871,7 +3362,7 @@ say $/<x>;          # OUTPUT: Nil
 say $/<capital>;    # OUTPUT: Nil 
 ```
 
-<a id="%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E5%92%8C%E6%88%90%E5%8A%9F%E6%A1%88%E4%BE%8B--best-practices-and-gotchas"></a>
+<a id="最佳实践和成功案例--best-practices-and-gotchas"></a>
 # 最佳实践和成功案例 / Best practices and gotchas
 
 [最佳实践和成功案例](https://docs.raku.org/language/regexes-best-practices) 提供有关如何在编写正则表达式和语法时避免常见陷阱的有用信息。

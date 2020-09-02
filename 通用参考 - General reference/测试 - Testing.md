@@ -33,29 +33,29 @@ ok check-name($meta, :$relaxed-name), "name has a hyphen rather than '::'" \
 
 <!-- MarkdownTOC -->
 
-- [编写测试 / Writing tests](#%E7%BC%96%E5%86%99%E6%B5%8B%E8%AF%95--writing-tests)
-    - [线程安全 / Thread safety](#%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8--thread-safety)
-- [运行测试 / Running tests](#%E8%BF%90%E8%A1%8C%E6%B5%8B%E8%AF%95--running-tests)
-- [测试计划 / Test plans](#%E6%B5%8B%E8%AF%95%E8%AE%A1%E5%88%92--test-plans)
-- [测试返回值 / Testing return values](#%E6%B5%8B%E8%AF%95%E8%BF%94%E5%9B%9E%E5%80%BC--testing-return-values)
-    - [按字符串比较 / By string comparison](#%E6%8C%89%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%AF%94%E8%BE%83--by-string-comparison)
-    - [按近似数值比较 /  By approximate numeric comparison](#%E6%8C%89%E8%BF%91%E4%BC%BC%E6%95%B0%E5%80%BC%E6%AF%94%E8%BE%83--by-approximate-numeric-comparison)
-    - [按数据结构比较 / By structural comparison](#%E6%8C%89%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E6%AF%94%E8%BE%83--by-structural-comparison)
-    - [按任意类型比较 / By arbitrary comparison](#%E6%8C%89%E4%BB%BB%E6%84%8F%E7%B1%BB%E5%9E%8B%E6%AF%94%E8%BE%83--by-arbitrary-comparison)
-    - [按对象类型 / By object type](#%E6%8C%89%E5%AF%B9%E8%B1%A1%E7%B1%BB%E5%9E%8B--by-object-type)
-    - [按方法名 / By method name](#%E6%8C%89%E6%96%B9%E6%B3%95%E5%90%8D--by-method-name)
-    - [按角色 / By role](#%E6%8C%89%E8%A7%92%E8%89%B2--by-role)
-    - [按正则 / By regex](#%E6%8C%89%E6%AD%A3%E5%88%99--by-regex)
-- [测试模组 / Testing modules](#%E6%B5%8B%E8%AF%95%E6%A8%A1%E7%BB%84--testing-modules)
-- [测试异常 / Testing exceptions](#%E6%B5%8B%E8%AF%95%E5%BC%82%E5%B8%B8--testing-exceptions)
-- [分组测试 / Grouping tests](#%E5%88%86%E7%BB%84%E6%B5%8B%E8%AF%95--grouping-tests)
-- [跳过测试 / Skipping tests](#%E8%B7%B3%E8%BF%87%E6%B5%8B%E8%AF%95--skipping-tests)
-- [人工控制 / Manual control](#%E4%BA%BA%E5%B7%A5%E6%8E%A7%E5%88%B6--manual-control)
+- [编写测试 / Writing tests](#编写测试--writing-tests)
+    - [线程安全 / Thread safety](#线程安全--thread-safety)
+- [运行测试 / Running tests](#运行测试--running-tests)
+- [测试计划 / Test plans](#测试计划--test-plans)
+- [测试返回值 / Testing return values](#测试返回值--testing-return-values)
+    - [按字符串比较 / By string comparison](#按字符串比较--by-string-comparison)
+    - [按近似数值比较 /  By approximate numeric comparison](#按近似数值比较--by-approximate-numeric-comparison)
+    - [按数据结构比较 / By structural comparison](#按数据结构比较--by-structural-comparison)
+    - [按任意类型比较 / By arbitrary comparison](#按任意类型比较--by-arbitrary-comparison)
+    - [按对象类型 / By object type](#按对象类型--by-object-type)
+    - [按方法名 / By method name](#按方法名--by-method-name)
+    - [按角色 / By role](#按角色--by-role)
+    - [按正则 / By regex](#按正则--by-regex)
+- [测试模组 / Testing modules](#测试模组--testing-modules)
+- [测试异常 / Testing exceptions](#测试异常--testing-exceptions)
+- [分组测试 / Grouping tests](#分组测试--grouping-tests)
+- [跳过测试 / Skipping tests](#跳过测试--skipping-tests)
+- [人工控制 / Manual control](#人工控制--manual-control)
 
 <!-- /MarkdownTOC -->
 
 
-<a id="%E7%BC%96%E5%86%99%E6%B5%8B%E8%AF%95--writing-tests"></a>
+<a id="编写测试--writing-tests"></a>
 # 编写测试 / Writing tests
 
 与任何 Perl 项目一样，测试都存在于项目基本目录中的 `t` 目录下。
@@ -81,7 +81,7 @@ done-testing;  # optional with 'plan'
 
 We ensure that we're using Raku, via the `use v6.c` pragma, then we load the `Test` module and specify where our libraries are. We then specify how many tests we *plan* to run (such that the testing framework can tell us if more or fewer tests were run than we expected) and when finished with the tests, we use *done-testing* to tell the framework we are done.
 
-<a id="%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8--thread-safety"></a>
+<a id="线程安全--thread-safety"></a>
 ## 线程安全 / Thread safety
 
 请注意，`Test` 模块中的例程*不是*线程安全的。这意味着你不应该尝试在多个线程中同时使用测试例程，因为 [TAP](https://testanything.org/) 输出可能会出现顺序错误，并混淆了解释它的程序。
@@ -92,7 +92,7 @@ Note that routines in `Test` module are *not* thread-safe. This means you should
 
 There are no current plans to make it thread safe. If threaded-testing is crucial to you, you may find some suitable [ecosystem modules](https://modules.raku.org/search/?q=Test) to use instead of `Test` for your testing needs.
 
-<a id="%E8%BF%90%E8%A1%8C%E6%B5%8B%E8%AF%95--running-tests"></a>
+<a id="运行测试--running-tests"></a>
 # 运行测试 / Running tests
 
 通过在命令行中指定测试文件名，可以单独运行测试：
@@ -149,14 +149,14 @@ use Test;
 ...
 ```
 
-<a id="%E6%B5%8B%E8%AF%95%E8%AE%A1%E5%88%92--test-plans"></a>
+<a id="测试计划--test-plans"></a>
 # 测试计划 / Test plans
 
 测试计划使用 [`plan`](https://docs.raku.org/type/Test#plan) 来声明将要做或者可能是跳过多少个计划。 如果没有声明计划，则使用 [`done-testing`](https://docs.raku.org/type/Test#done-testing) 声明测试结束。
 
 Tests plans use [`plan`](https://docs.raku.org/type/Test#plan) for declaring how many plans are going to be done or, as might be the case, skipped. If no plan is declared, [`done-testing`](https://docs.raku.org/type/Test#done-testing) is used to declare the end of the tests.
 
-<a id="%E6%B5%8B%E8%AF%95%E8%BF%94%E5%9B%9E%E5%80%BC--testing-return-values"></a>
+<a id="测试返回值--testing-return-values"></a>
 # 测试返回值 / Testing return values
 
 `Test` 模块导出检查给定表达式返回值并产生标准化测试输出的各种功能。
@@ -167,49 +167,49 @@ The `Test` module exports various functions that check the return value of a giv
 
 In practice, the expression will often be a call to a function or method that you want to unit-test. [`ok`](https://docs.raku.org/type/Test#ok) and [`nok`](https://docs.raku.org/type/Test#nok) will match `True` and `False`. However, where possible it's better to use one of the specialized comparison test functions below, because they can print more helpful diagnostics output in case the comparison fails.
 
-<a id="%E6%8C%89%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%AF%94%E8%BE%83--by-string-comparison"></a>
+<a id="按字符串比较--by-string-comparison"></a>
 ## 按字符串比较 / By string comparison
 
 使用 [`is`](https://docs.raku.org/type/Test#is) 或 [`nok`](https://docs.raku.org/type/Test#isnt) 进行等式测试，取决于它处理的对象（或类）
 
 [`is`](https://docs.raku.org/type/Test#is) and [`nok`](https://docs.raku.org/type/Test#isnt) test for equality using the proper operator, depending on the object (or class) it's handled.
 
-<a id="%E6%8C%89%E8%BF%91%E4%BC%BC%E6%95%B0%E5%80%BC%E6%AF%94%E8%BE%83--by-approximate-numeric-comparison"></a>
+<a id="按近似数值比较--by-approximate-numeric-comparison"></a>
 ## 按近似数值比较 /  By approximate numeric comparison
 
 [`is-approx`](https://docs.raku.org/type/Test#is-approx) 比较数字与一定的精度，这可以是绝对的或相对的。 它可以用于数值，其精度将取决于内部表示。
 
 [`is-approx`](https://docs.raku.org/type/Test#is-approx) compares numbers with a certain precision, which can be absolute or relative. It can be useful for numeric values whose precision will depend on the internal representation.
 
-<a id="%E6%8C%89%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E6%AF%94%E8%BE%83--by-structural-comparison"></a>
+<a id="按数据结构比较--by-structural-comparison"></a>
 ## 按数据结构比较 / By structural comparison
 
 数据结构也可以使用 [`is-deeply`](https://docs.raku.org/type/Test#is-deeply) 进行比较，这将比较对象的内部结构是否相同。
 
 Structures can be also compared using [`is-deeply`](https://docs.raku.org/type/Test#is-deeply), which will check that internal structures of the objects compared is the same.
 
-<a id="%E6%8C%89%E4%BB%BB%E6%84%8F%E7%B1%BB%E5%9E%8B%E6%AF%94%E8%BE%83--by-arbitrary-comparison"></a>
+<a id="按任意类型比较--by-arbitrary-comparison"></a>
 ## 按任意类型比较 / By arbitrary comparison
 
 你可以使用 [`cmp-ok`](https://docs.raku.org/type/Test#cmp-ok) 进行任何类型的比较 ，它将你想要用于比较的函数或运算符作为参数。
 
 You can use any kind of comparison with [`cmp-ok`](https://docs.raku.org/type/Test#cmp-ok), which takes as an argument the function or operator that you want to be used for comparing.
 
-<a id="%E6%8C%89%E5%AF%B9%E8%B1%A1%E7%B1%BB%E5%9E%8B--by-object-type"></a>
+<a id="按对象类型--by-object-type"></a>
 ## 按对象类型 / By object type
 
 [`isa-ok`](https://docs.raku.org/type/Test#isa-ok) 测试一个对象是否属于某一类型。
 
 [`isa-ok`](https://docs.raku.org/type/Test#isa-ok) tests whether an object is of a certain type.
 
-<a id="%E6%8C%89%E6%96%B9%E6%B3%95%E5%90%8D--by-method-name"></a>
+<a id="按方法名--by-method-name"></a>
 ## 按方法名 / By method name
 
 [`can-ok`](https://docs.raku.org/type/Test#can-ok) 用在对象上检查对象是否有特定的方法。
 
 [`can-ok`](https://docs.raku.org/type/Test#can-ok) is used on objects to check whether they have that particular method.
 
-<a id="%E6%8C%89%E8%A7%92%E8%89%B2--by-role"></a>
+<a id="按角色--by-role"></a>
 ## 按角色 / By role
 
 ```
@@ -220,40 +220,40 @@ does-ok($variable, $role, $description?)
 
 [`does-ok`](https://docs.raku.org/type/Test#does-ok) checks whether the given variable can do a certain [Role](https://docs.raku.org/language/objects#Roles).
 
-<a id="%E6%8C%89%E6%AD%A3%E5%88%99--by-regex"></a>
+<a id="按正则--by-regex"></a>
 ## 按正则 / By regex
 
 [`like`](https://docs.raku.org/type/Test#like) 与 [`unlike`](https://docs.raku.org/type/Test#unlike) 使用正则检查；在第一种情况下，如果存在匹配则通过，在第二种情况下，当它不匹配时，通过检查。
 
 [`like`](https://docs.raku.org/type/Test#like) and [`unlike`](https://docs.raku.org/type/Test#unlike) check using regular expressions; in the first case passes if a match exists, in the second case when it does not.
 
-<a id="%E6%B5%8B%E8%AF%95%E6%A8%A1%E7%BB%84--testing-modules"></a>
+<a id="测试模组--testing-modules"></a>
 # 测试模组 / Testing modules
 
 Modules are tentatively loaded with [`use-ok`](https://docs.raku.org/type/Test#use-ok), which fails if they fail to load.
 
-<a id="%E6%B5%8B%E8%AF%95%E5%BC%82%E5%B8%B8--testing-exceptions"></a>
+<a id="测试异常--testing-exceptions"></a>
 # 测试异常 / Testing exceptions
 
 [`dies-ok`](https://docs.raku.org/type/Test#dies-ok) 和 [`lives-ok`](https://docs.raku.org/type/Test#lives-ok) 是测试代码的两种相反的方式；第一种方式检测代码异常的抛出，第二种检查异常不抛出；[`throws-like`](https://docs.raku.org/type/Test#throws-like) 检查代码是否抛出作为参数传递的特定异常；[`fails-like`](https://docs.raku.org/type/Test#fails-like) 类似地，检查代码是否返回特定类型的 [Failure](https://docs.raku.org/type/Failure)。[`eval-dies-ok`](https://docs.raku.org/type/Test#eval-dies-ok) 和 [`eval-lives-ok`](https://docs.raku.org/type/Test#eval-lives-ok) 作用于测试的字符串，有类似的效果。
 
 [`dies-ok`](https://docs.raku.org/type/Test#dies-ok) and [`lives-ok`](https://docs.raku.org/type/Test#lives-ok) are opposites ways of testing code; the first checks that it throws an exception, the second that it does not; [`throws-like`](https://docs.raku.org/type/Test#throws-like) checks that the code throws the specific exception it gets handed as an argument; [`fails-like`](https://docs.raku.org/type/Test#fails-like), similarly, checks if the code returns a specific type of [Failure](https://docs.raku.org/type/Failure). [`eval-dies-ok`](https://docs.raku.org/type/Test#eval-dies-ok) and [`eval-lives-ok`](https://docs.raku.org/type/Test#eval-lives-ok) work similarly on strings that are evaluated prior to testing.
 
-<a id="%E5%88%86%E7%BB%84%E6%B5%8B%E8%AF%95--grouping-tests"></a>
+<a id="分组测试--grouping-tests"></a>
 # 分组测试 / Grouping tests
 
 一组子测试的结果为 `ok` 如果所有子测试都 `ok`；它们使用 [`subtest`](https://docs.raku.org/type/Test#subtest) 分组。
 
 The result of a group of subtests is only `ok` if all subtests are `ok`; they are grouped using [`subtest`](https://docs.raku.org/type/Test#subtest).
 
-<a id="%E8%B7%B3%E8%BF%87%E6%B5%8B%E8%AF%95--skipping-tests"></a>
+<a id="跳过测试--skipping-tests"></a>
 # 跳过测试 / Skipping tests
 
 有时测试还没有准备好运行，例如，可能还没有实现功能，在这种情况下，测试可以标记为 [`todo`](https://docs.raku.org/type/Test#todo)。 或者，一个特定的功能只在特定的平台上工作-在这种情况下，一个人会 [`skip`](https://docs.raku.org/type/Test#skip) 其他平台上的测试；[`skip-rest`](https://docs.raku.org/type/Test#skip-rest) 将跳过其余的测试，而不是作为参数给出的特定数字；[`bail-out`](https://docs.raku.org/type/Test#bail-out) 将简单地用消息退出测试。
 
 Sometimes tests just aren't ready to be run, for instance a feature might not yet be implemented, in which case tests can be marked as [`todo`](https://docs.raku.org/type/Test#todo). Or it could be the case that a given feature only works on a particular platform - in which case one would [`skip`](https://docs.raku.org/type/Test#skip) the test on other platforms; [`skip-rest`](https://docs.raku.org/type/Test#skip-rest) will skip the remaining tests instead of a particular number given as argument; [`bail-out`](https://docs.raku.org/type/Test#bail-out) will simply exit the tests with a message.
 
-<a id="%E4%BA%BA%E5%B7%A5%E6%8E%A7%E5%88%B6--manual-control"></a>
+<a id="人工控制--manual-control"></a>
 # 人工控制 / Manual control
 
 如果上面记录的方便功能不适合你的需要，你可以使用以下功能手动指导测试线束输出；[`pass`](https://docs.raku.org/type/Test#pass) 将表示测试已经通过，[`diag`](https://docs.raku.org/type/Test#diag) 将打印（可能）通知消息。

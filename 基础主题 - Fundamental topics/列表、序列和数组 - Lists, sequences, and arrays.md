@@ -12,37 +12,37 @@ Lists have been a central part of computing since before there were computers, d
 
 <!-- MarkdownTOC -->
 
-- [列表字面量 / Literal lists](#%E5%88%97%E8%A1%A8%E5%AD%97%E9%9D%A2%E9%87%8F--literal-lists)
-- [@ 标记 / The @ sigil](#-%E6%A0%87%E8%AE%B0--the--sigil)
-- [重置列表容器 / Reset a list container](#%E9%87%8D%E7%BD%AE%E5%88%97%E8%A1%A8%E5%AE%B9%E5%99%A8--reset-a-list-container)
-- [迭代 / Iteration](#%E8%BF%AD%E4%BB%A3--iteration)
-    - [单参数规则 / Single Argument Rule](#%E5%8D%95%E5%8F%82%E6%95%B0%E8%A7%84%E5%88%99--single-argument-rule)
-- [成员测试 / Testing for elements](#%E6%88%90%E5%91%98%E6%B5%8B%E8%AF%95--testing-for-elements)
-    - [序列 / Sequences](#%E5%BA%8F%E5%88%97--sequences)
-    - [使用 `.iterator` / Using `.iterator`](#%E4%BD%BF%E7%94%A8-iterator--using-iterator)
+- [列表字面量 / Literal lists](#列表字面量--literal-lists)
+- [@ 标记 / The @ sigil](#-标记--the--sigil)
+- [重置列表容器 / Reset a list container](#重置列表容器--reset-a-list-container)
+- [迭代 / Iteration](#迭代--iteration)
+    - [单参数规则 / Single Argument Rule](#单参数规则--single-argument-rule)
+- [成员测试 / Testing for elements](#成员测试--testing-for-elements)
+    - [序列 / Sequences](#序列--sequences)
+    - [使用 `.iterator` / Using `.iterator`](#使用-iterator--using-iterator)
     - [Slips](#slips)
-- [惰性列表 / Lazy lists](#%E6%83%B0%E6%80%A7%E5%88%97%E8%A1%A8--lazy-lists)
-- [不变性 / Immutability](#%E4%B8%8D%E5%8F%98%E6%80%A7--immutability)
-- [列表上下文 / List contexts](#%E5%88%97%E8%A1%A8%E4%B8%8A%E4%B8%8B%E6%96%87--list-contexts)
-    - [列表赋值上下文 / List assignment context](#%E5%88%97%E8%A1%A8%E8%B5%8B%E5%80%BC%E4%B8%8A%E4%B8%8B%E6%96%87--list-assignment-context)
-    - [扁平化“上下文” / Flattening "context"](#%E6%89%81%E5%B9%B3%E5%8C%96%E2%80%9C%E4%B8%8A%E4%B8%8B%E6%96%87%E2%80%9D--flattening-context)
-    - [参数列表上下文 / Argument list \(Capture\) context](#%E5%8F%82%E6%95%B0%E5%88%97%E8%A1%A8%E4%B8%8A%E4%B8%8B%E6%96%87--argument-list-capture-context)
-    - [切片索引上下文 / Slice indexing context](#%E5%88%87%E7%89%87%E7%B4%A2%E5%BC%95%E4%B8%8A%E4%B8%8B%E6%96%87--slice-indexing-context)
-    - [范围为切片 / Range as slice](#%E8%8C%83%E5%9B%B4%E4%B8%BA%E5%88%87%E7%89%87--range-as-slice)
-    - [数组构造器上下文 / Array constructor context](#%E6%95%B0%E7%BB%84%E6%9E%84%E9%80%A0%E5%99%A8%E4%B8%8A%E4%B8%8B%E6%96%87--array-constructor-context)
-- [数组 / Arrays](#%E6%95%B0%E7%BB%84--arrays)
-    - [类型 / Typing](#%E7%B1%BB%E5%9E%8B--typing)
-    - [定长数组 / Fixed size arrays](#%E5%AE%9A%E9%95%BF%E6%95%B0%E7%BB%84--fixed-size-arrays)
-    - [条目化 / Itemization](#%E6%9D%A1%E7%9B%AE%E5%8C%96--itemization)
-    - [字面量数组 / Literal arrays](#%E5%AD%97%E9%9D%A2%E9%87%8F%E6%95%B0%E7%BB%84--literal-arrays)
-    - [可变性 / Mutability](#%E5%8F%AF%E5%8F%98%E6%80%A7--mutability)
-        - [赋值 / Assigning](#%E8%B5%8B%E5%80%BC--assigning)
-        - [绑定 / Binding](#%E7%BB%91%E5%AE%9A--binding)
+- [惰性列表 / Lazy lists](#惰性列表--lazy-lists)
+- [不变性 / Immutability](#不变性--immutability)
+- [列表上下文 / List contexts](#列表上下文--list-contexts)
+    - [列表赋值上下文 / List assignment context](#列表赋值上下文--list-assignment-context)
+    - [扁平化“上下文” / Flattening "context"](#扁平化“上下文”--flattening-context)
+    - [参数列表上下文 / Argument list \(Capture\) context](#参数列表上下文--argument-list-capture-context)
+    - [切片索引上下文 / Slice indexing context](#切片索引上下文--slice-indexing-context)
+    - [范围为切片 / Range as slice](#范围为切片--range-as-slice)
+    - [数组构造器上下文 / Array constructor context](#数组构造器上下文--array-constructor-context)
+- [数组 / Arrays](#数组--arrays)
+    - [类型 / Typing](#类型--typing)
+    - [定长数组 / Fixed size arrays](#定长数组--fixed-size-arrays)
+    - [条目化 / Itemization](#条目化--itemization)
+    - [字面量数组 / Literal arrays](#字面量数组--literal-arrays)
+    - [可变性 / Mutability](#可变性--mutability)
+        - [赋值 / Assigning](#赋值--assigning)
+        - [绑定 / Binding](#绑定--binding)
 
 <!-- /MarkdownTOC -->
 
 
-<a id="%E5%88%97%E8%A1%A8%E5%AD%97%E9%9D%A2%E9%87%8F--literal-lists"></a>
+<a id="列表字面量--literal-lists"></a>
 # 列表字面量 / Literal lists
 
 字面量 [`List`](https://docs.raku.org/type/List) 由逗号和分号**而不是**括号创建：
@@ -125,7 +125,7 @@ say (1, 2)[-1]; # Error
 say ((<a b>,<c d>),(<e f>,<g h>))[1;0;1]; # says "f"
 ```
 
-<a id="-%E6%A0%87%E8%AE%B0--the--sigil"></a>
+<a id="-标记--the--sigil"></a>
 # @ 标记 / The @ sigil
 
 Raku 中名带有 `@` 标记的变量应该包含某种类似列表的对象。当然，其他变量也可能包含这些对象，但是 `@` 标记的变量总是包含这些对象。
@@ -148,7 +148,7 @@ One of the ways `@`-sigiled variables act like lists is by always supporting [po
 my @a := 1; # Type check failed in binding; expected Positional but got Int 
 ```
 
-<a id="%E9%87%8D%E7%BD%AE%E5%88%97%E8%A1%A8%E5%AE%B9%E5%99%A8--reset-a-list-container"></a>
+<a id="重置列表容器--reset-a-list-container"></a>
 # 重置列表容器 / Reset a list container
 
 从位置容器中删除所有元素可以赋值 [`Empty`](https://docs.raku.org/type/Slip#Empty)、空列表 `()` 或者空列表的 `Slip` 形式给容器。
@@ -162,7 +162,7 @@ my @a = 1, 2, 3;
 @a = |();
 ```
 
-<a id="%E8%BF%AD%E4%BB%A3--iteration"></a>
+<a id="迭代--iteration"></a>
 # 迭代 / Iteration
 
 可以迭代所有列表，这意味着按顺序从列表中取出每个元素，并在最后一个元素之后停止：
@@ -173,7 +173,7 @@ All lists may be iterated, which means taking each element from the list in orde
 for 1, 2, 3 { .say }  # OUTPUT: «1␤2␤3␤» 
 ```
 
-<a id="%E5%8D%95%E5%8F%82%E6%95%B0%E8%A7%84%E5%88%99--single-argument-rule"></a>
+<a id="单参数规则--single-argument-rule"></a>
 ## 单参数规则 / Single Argument Rule
 
 传递给迭代器（如 `for` ）的参数集被视为单个参数，而不是多个参数；即 `some-iterator( a, b, c, ...)` 将始终被视为 `some-iterator( list-or-array(a, b, c))`，而不是 `(some-iterator(a))(b)...`，即迭代应用迭代器到第一个参数，然后是下一个参数的结果，依此类推。在这个例子中
@@ -211,7 +211,7 @@ for @list -> @element {
 
 Since what `for` receives is a single argument, it will be treated as a list of elements to iterate over. The rule of thumb is that [if there's a comma, anything preceding it is an element](https://perl6advent.wordpress.com/2015/12/14/day-15-2015-the-year-of-the-great-list-refactor/) and the list thus created becomes the *single element*. That happens in the case of the two arrays separated by a comma which are the third in the `Array` we are iterating. In general, quoting the article linked above, the single argument rule *... makes for behavior as the programmer would expect*.
 
-<a id="%E6%88%90%E5%91%98%E6%B5%8B%E8%AF%95--testing-for-elements"></a>
+<a id="成员测试--testing-for-elements"></a>
 # 成员测试 / Testing for elements
 
 要测试是否为列表或者数组的成员，可以使用["是否成员"](https://docs.raku.org/language/setbagmix#infix_%28elem%29) [`Set`](https://docs.raku.org/type/Set) 操作符
@@ -240,7 +240,7 @@ except that, if possible, it won't actually do the conversion.
 
 It basically compares the value with each element in the array using the [===](https://docs.raku.org/routine/===) infix operator. If you want to use another way to compare values, you probably should use [first](https://docs.raku.org/routine/first#%28List%29_routine_first).
 
-<a id="%E5%BA%8F%E5%88%97--sequences"></a>
+<a id="序列--sequences"></a>
 ## 序列 / Sequences
 
 并不是所有的列表都天生充满了元素。有些只创建所需的元素。这些被称为序列，其类型为 [Seq](https://docs.raku.org/type/Seq)。当它发生时，循环返回 `Seq`。
@@ -297,7 +297,7 @@ my @s := (loop { 42.say }).list;
 
 You may also use the `.cache` method instead of `.list`, depending on how you want the references handled. See the [page on `Seq`](https://docs.raku.org/type/Seq) for details.
 
-<a id="%E4%BD%BF%E7%94%A8-iterator--using-iterator"></a>
+<a id="使用-iterator--using-iterator"></a>
 ## 使用 `.iterator` / Using `.iterator`
 
 所有列表都混合在[迭代器](https://docs.raku.org/type/Iterator)角色中，因此它们可以使用 `.iterator` 方法对列表进行更好的控制。我们可以这样使用它，例如：
@@ -342,7 +342,7 @@ say (1, |$(2, 3), 4) eqv (1, 2, 3, 4);       # OUTPUT: «True␤»
 say (1, slip($(2, 3)), 4) eqv (1, 2, 3, 4);  # OUTPUT: «False␤» 
 ```
 
-<a id="%E6%83%B0%E6%80%A7%E5%88%97%E8%A1%A8--lazy-lists"></a>
+<a id="惰性列表--lazy-lists"></a>
 # 惰性列表 / Lazy lists
 
 `List`、`Seq`、`Array` 和任何其他实现 [Iterator](https://docs.raku.org/type/Iterator) 角色的类都是惰性的，这意味着它们的值是按需计算的，并存储以备以后使用。创建懒惰对象的方法之一是使用 [gather/take](https://docs.raku.org/language/control#gather%2Ftake) 或[序列运算符](https://docs.raku.org/language/operators#infix_...)。你还可以编写一个实现角色 [Iterator](https://docs.raku.org/type/Iterator) 的类，并在调用 [is-lazy](https://docs.raku.org/routine/is-lazy) 时返回 `True`。请注意，某些方法（如 `elems`）不能在惰性列表中调用，并将导致引发 [Exception](https://docs.raku.org/type/Exception)。
@@ -391,7 +391,7 @@ say @lazy-array[10..15]; # OUTPUT: «(1024 2048 4096 8192 16384 32768)␤»
 say @lazy-array.is-lazy; # OUTPUT: «True␤» 
 ```
 
-<a id="%E4%B8%8D%E5%8F%98%E6%80%A7--immutability"></a>
+<a id="不变性--immutability"></a>
 # 不变性 / Immutability
 
 到目前为止我们讨论过的列表（`List`、`Seq`和 `Slip`）都是不可变的。这意味着你不能从中删除元素，也不能重新绑定现有元素：
@@ -418,14 +418,14 @@ $a.say;            # OUTPUT: «42␤»
 
 that is, it is only the list structure itself – how many elements there are and each element's identity – that is immutable. The immutability is not contagious past the identity of the element.
 
-<a id="%E5%88%97%E8%A1%A8%E4%B8%8A%E4%B8%8B%E6%96%87--list-contexts"></a>
+<a id="列表上下文--list-contexts"></a>
 # 列表上下文 / List contexts
 
 到目前为止，我们主要是在中性环境下处理列表。列表实际上在语法级别上对上下文非常敏感。
 
 So far we have mostly dealt with lists in neutral contexts. Lists are actually very context sensitive on a syntactical level.
 
-<a id="%E5%88%97%E8%A1%A8%E8%B5%8B%E5%80%BC%E4%B8%8A%E4%B8%8B%E6%96%87--list-assignment-context"></a>
+<a id="列表赋值上下文--list-assignment-context"></a>
 ## 列表赋值上下文 / List assignment context
 
 当一个列表（或者将要转换成列表的东西）出现在赋值的右侧，变成一个 `@` 变量时，它会被“急切地”评估。例如，这意味着 `Seq` 将被遍历，直到不能再生成任何元素。这是你不希望放置无限列表的地方之一，以免程序挂起，最终耗尽内存：
@@ -445,7 +445,7 @@ say @divisors; # OUTPUT: «[2 5 7]␤»
 
 The [`gather` statement](https://docs.raku.org/language/control#index-entry-lazy_list_gather) creates a lazy list, which is eagerly evaluated when assigned to `@divisors`.
 
-<a id="%E6%89%81%E5%B9%B3%E5%8C%96%E2%80%9C%E4%B8%8A%E4%B8%8B%E6%96%87%E2%80%9D--flattening-context"></a>
+<a id="扁平化“上下文”--flattening-context"></a>
 ## 扁平化“上下文” / Flattening "context"
 
 当你有一个包含子列表的列表，但你只需要一个简单列表时，可以将该列表展平以生成一个值序列，就像删除了所有括号一样。不管括号嵌套多少层，这都有效。
@@ -479,7 +479,7 @@ my @a = 2, (3, 4);                 # Arrays are special, see below
 for (1, @a, 5).flat { .say };      # OUTPUT: «1␤2␤(3 4)␤5␤» 
 ```
 
-<a id="%E5%8F%82%E6%95%B0%E5%88%97%E8%A1%A8%E4%B8%8A%E4%B8%8B%E6%96%87--argument-list-capture-context"></a>
+<a id="参数列表上下文--argument-list-capture-context"></a>
 ## 参数列表上下文 / Argument list (Capture) context
 
 当列表显示为函数或方法调用的参数时，将使用特殊的语法规则：列表将立即转换为 `Capture` 对象。`Capture` 本身有一个列表（`.list`）和一个哈希（`.hash`）。任何键未被引用或未加括号的 `Pair` 文本都不会进入 `.list`。相反，它们被认为是命名参数并被压缩到 `.hash`。有关此处理的详细信息，请参阅 [`Capture` 页面](https://docs.raku.org/type/Capture)。
@@ -519,7 +519,7 @@ my %a = "c" => 3;
 Array.new(1, |%a, 4);    # Array contains 1, 4 
 ```
 
-<a id="%E5%88%87%E7%89%87%E7%B4%A2%E5%BC%95%E4%B8%8A%E4%B8%8B%E6%96%87--slice-indexing-context"></a>
+<a id="切片索引上下文--slice-indexing-context"></a>
 ## 切片索引上下文 / Slice indexing context
 
 从[切片下标](https://docs.raku.org/language/subscripts#Slices)中的 `List` 来看，它的特别之处就是没有什么特别的：因为切片的 [adverbs](https://docs.raku.org/language/subscripts#Adverbs) 附加在 `]` 之后，切片的内部**不是**一个参数列表，不会有键值对形式的特殊处理。
@@ -559,7 +559,7 @@ say @sliceable[ ^3; 4..6 ]; #OUTPUT: «(4 5 6 e f g Ⅴ Ⅵ Ⅶ)␤»
 
 which is selecting the 4 to 6th element from the three first dimensions (`^3`).
 
-<a id="%E8%8C%83%E5%9B%B4%E4%B8%BA%E5%88%87%E7%89%87--range-as-slice"></a>
+<a id="范围为切片--range-as-slice"></a>
 ## 范围为切片 / Range as slice
 
 [`Range`](https://docs.raku.org/type/Range) 是上下边界的容器，可以只有上边界或者只有下边界。生成带有 `Range` 的切片将包含边界之间的任何索引，但无限范围将[截断](https://docs.raku.org/language/subscripts#Truncating_slices)不存在的元素。具有排除上边界的无限范围（例如 `0..^Inf`）仍然是无限的，并且将获取所有元素。
@@ -591,7 +591,7 @@ say @a[0..^*/2];  # OUTPUT: «(1 2 3)␤»
 
 Notice that `0..^*` and `0..^*+0` behave consistently in subscripts despite one being an infinite range and the other a WhateverCode producing ranges, but `0..*+0` will give you an additional trailing `Nil` because, unlike the infinite range `0..*`, it does not truncate.
 
-<a id="%E6%95%B0%E7%BB%84%E6%9E%84%E9%80%A0%E5%99%A8%E4%B8%8A%E4%B8%8B%E6%96%87--array-constructor-context"></a>
+<a id="数组构造器上下文--array-constructor-context"></a>
 ## 数组构造器上下文 / Array constructor context
 
 在数组字面量中，初始化值的列表不在 capture 上下文中，只是一个普通的列表。然而，它被急切地求值，就像在赋值中一样。
@@ -608,7 +608,7 @@ say so [ 1, 2, :c(3) ] eqv Array.new((1, 2, :c(3))); # OUTPUT: «True␤»
 
 Which brings us to Arrays...
 
-<a id="%E6%95%B0%E7%BB%84--arrays"></a>
+<a id="数组--arrays"></a>
 # 数组 / Arrays
 
 数组与列表的区别主要有三种：它们的元素可以被类型化，它们自动条目化它们的元素，并且它们是可变的。否则，它们是列表。
@@ -623,7 +623,7 @@ say Array ~~ List     # OUTPUT: «True␤»
 
 A fourth, more subtle, way they differ is that when working with Arrays, it can sometimes be harder to maintain laziness or work with infinite sequences.
 
-<a id="%E7%B1%BB%E5%9E%8B--typing"></a>
+<a id="类型--typing"></a>
 ## 类型 / Typing
 
 数组可以有类型，这样在赋值时会执行类型检查。只允许分配 `Int` 值的数组的类型为 `Array[Int]`，可以使用 `Array[Int].new` 创建一个数组。如果你只打算为此目的使用 `@` 变量，则可以通过在声明元素时指定元素类型来更改其类型：
@@ -717,7 +717,7 @@ my Numeric @n is default(Real);
 @n[0].say;                      # OUTPUT: «(Real)␤» 
 ```
 
-<a id="%E5%AE%9A%E9%95%BF%E6%95%B0%E7%BB%84--fixed-size-arrays"></a>
+<a id="定长数组--fixed-size-arrays"></a>
 ## 定长数组 / Fixed size arrays
 
 要限制 `Array` 的维度，请在数组容器名称后的方括号中提供由 `,` 或 `;` 分隔的维度，以防有多个维度；这些维度也被称为 *shaped* 数组。此类数组的值将默认为 `Any`。运行时可以通过 `shape` 方法访问形状。
@@ -759,7 +759,7 @@ say @a.perl;
 
 As the third statement shows, you can assign directly to an element in a shaped array too. **Note**: the second statement works only from version 2018.09.
 
-<a id="%E6%9D%A1%E7%9B%AE%E5%8C%96--itemization"></a>
+<a id="条目化--itemization"></a>
 ## 条目化 / Itemization
 
 对于大多数情况，`Array` 由多个槽组成，每个槽都包含正确类型的标量。每个这样的标量依次包含该类型的值。 Raku 将自动检查值的类型，并在初始化、赋值或构造数组时创建包含这些值的标量。
@@ -833,14 +833,14 @@ say gather [0, [(1, 2), [3, 4]], $(5, 6)].deepmap: *.take; # OUTPUT: «(1 2 3 4 
 
 The fact that all elements of an array are itemized (in `Scalar` containers) is more a gentleman's agreement than a universally enforced rule, and it is less well enforced that typechecks in typed arrays. See the section below on binding to Array slots.
 
-<a id="%E5%AD%97%E9%9D%A2%E9%87%8F%E6%95%B0%E7%BB%84--literal-arrays"></a>
+<a id="字面量数组--literal-arrays"></a>
 ## 字面量数组 / Literal arrays
 
 字面量 `Array` 是用方括号内的 `List` 构造的。`List` 被急切地迭代（如果可能的话，在编译时），其中的值被执行类型检查并单条目化。方括号本身在扁平化时会将元素溢出到周围的列表中，但元素本身不会由于单条目化而溢出。
 
 Literal `Array`s are constructed with a `List` inside square brackets. The `List` is eagerly iterated (at compile time if possible) and values in it are each type-checked and itemized. The square brackets themselves will spill elements into surrounding lists when flattened, but the elements themselves will not spill due to the itemization.
 
-<a id="%E5%8F%AF%E5%8F%98%E6%80%A7--mutability"></a>
+<a id="可变性--mutability"></a>
 ## 可变性 / Mutability
 
 与列表不同，`Array` 是可变的。元素可以删除、添加或更改。
@@ -858,7 +858,7 @@ my @a = "a", "b", "c";
 @a.say;                  # OUTPUT: «[a c d c]␤» 
 ```
 
-<a id="%E8%B5%8B%E5%80%BC--assigning"></a>
+<a id="赋值--assigning"></a>
 ### 赋值 / Assigning
 
 将列表赋给 `Array` 是非惰性的。列表将被全部估值，不应是无限的，否则程序可能挂起。同样，对 `Array` 的一个切片的赋值也是非惰性的，但只能达到所请求的有限元素数：
@@ -875,7 +875,7 @@ my @a;
 
 During assignment, each value will be typechecked to ensure it is a permitted type for the `Array`. Any `Scalar` will be stripped from each value and a new `Scalar` will be wrapped around it.
 
-<a id="%E7%BB%91%E5%AE%9A--binding"></a>
+<a id="绑定--binding"></a>
 ### 绑定 / Binding
 
 单个数组元素的绑定方式可能与 `$` 变量的绑定方式相同：

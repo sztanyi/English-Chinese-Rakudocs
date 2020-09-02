@@ -12,48 +12,48 @@ One often needs to refer to a specific element (or slice of elements) from a col
 
 <!-- MarkdownTOC -->
 
-- [基础 / Basics](#%E5%9F%BA%E7%A1%80--basics)
-    - [位置下标 / **Positional** subscripting](#%E4%BD%8D%E7%BD%AE%E4%B8%8B%E6%A0%87--positional-subscripting)
-    - [关联下标 / **Associative** subscripting](#%E5%85%B3%E8%81%94%E4%B8%8B%E6%A0%87--associative-subscripting)
-    - [应用下标 / Applying subscripts](#%E5%BA%94%E7%94%A8%E4%B8%8B%E6%A0%87--applying-subscripts)
-- [不存在的成员 / Nonexistent elements](#%E4%B8%8D%E5%AD%98%E5%9C%A8%E7%9A%84%E6%88%90%E5%91%98--nonexistent-elements)
-- [从末尾 / From the end](#%E4%BB%8E%E6%9C%AB%E5%B0%BE--from-the-end)
-- [切片 / Slices](#%E5%88%87%E7%89%87--slices)
-    - [截断切片 / Truncating slices](#%E6%88%AA%E6%96%AD%E5%88%87%E7%89%87--truncating-slices)
-    - [禅切片 / Zen slices](#%E7%A6%85%E5%88%87%E7%89%87--zen-slices)
-- [多维 / Multiple dimensions](#%E5%A4%9A%E7%BB%B4--multiple-dimensions)
-- [修改成员 / Modifying elements](#%E4%BF%AE%E6%94%B9%E6%88%90%E5%91%98--modifying-elements)
-- [自动生动化 / Autovivification](#%E8%87%AA%E5%8A%A8%E7%94%9F%E5%8A%A8%E5%8C%96--autovivification)
-- [绑定 / Binding](#%E7%BB%91%E5%AE%9A--binding)
-- [副词 / Adverbs](#%E5%89%AF%E8%AF%8D--adverbs)
+- [基础 / Basics](#基础--basics)
+    - [位置下标 / **Positional** subscripting](#位置下标--positional-subscripting)
+    - [关联下标 / **Associative** subscripting](#关联下标--associative-subscripting)
+    - [应用下标 / Applying subscripts](#应用下标--applying-subscripts)
+- [不存在的成员 / Nonexistent elements](#不存在的成员--nonexistent-elements)
+- [从末尾 / From the end](#从末尾--from-the-end)
+- [切片 / Slices](#切片--slices)
+    - [截断切片 / Truncating slices](#截断切片--truncating-slices)
+    - [禅切片 / Zen slices](#禅切片--zen-slices)
+- [多维 / Multiple dimensions](#多维--multiple-dimensions)
+- [修改成员 / Modifying elements](#修改成员--modifying-elements)
+- [自动生动化 / Autovivification](#自动生动化--autovivification)
+- [绑定 / Binding](#绑定--binding)
+- [副词 / Adverbs](#副词--adverbs)
     - [`:exists`](#exists)
     - [`:delete`](#delete)
     - [`:p`](#p)
     - [`:kv`](#kv)
     - [`:k`](#k)
     - [`:v`](#v)
-- [自定义类型 / Custom types](#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%B1%BB%E5%9E%8B--custom-types)
-    - [自定义类型例子 / Custom type example](#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%B1%BB%E5%9E%8B%E4%BE%8B%E5%AD%90--custom-type-example)
-    - [实现位置下标的方法 / Methods to implement for positional subscripting](#%E5%AE%9E%E7%8E%B0%E4%BD%8D%E7%BD%AE%E4%B8%8B%E6%A0%87%E7%9A%84%E6%96%B9%E6%B3%95--methods-to-implement-for-positional-subscripting)
-        - [elems 方法 / method elems](#elems-%E6%96%B9%E6%B3%95--method-elems)
-        - [AT-POS 方法 / method AT-POS](#at-pos-%E6%96%B9%E6%B3%95--method-at-pos)
-        - [EXISTS-POS 方法 / method EXISTS-POS](#exists-pos-%E6%96%B9%E6%B3%95--method-exists-pos)
-        - [DELETE-POS 方法 / method DELETE-POS](#delete-pos-%E6%96%B9%E6%B3%95--method-delete-pos)
-        - [ASSIGN-POS 方法 / method ASSIGN-POS](#assign-pos-%E6%96%B9%E6%B3%95--method-assign-pos)
-        - [BIND-POS 方法 / method BIND-POS](#bind-pos-%E6%96%B9%E6%B3%95--method-bind-pos)
-        - [STORE 方法 / method STORE](#store-%E6%96%B9%E6%B3%95--method-store)
-    - [实现关联下标的方法 / Methods to implement for associative subscripting](#%E5%AE%9E%E7%8E%B0%E5%85%B3%E8%81%94%E4%B8%8B%E6%A0%87%E7%9A%84%E6%96%B9%E6%B3%95--methods-to-implement-for-associative-subscripting)
-        - [AT-KEY 方法 / method AT-KEY](#at-key-%E6%96%B9%E6%B3%95--method-at-key)
-        - [EXISTS-KEY 方法 / method EXISTS-KEY](#exists-key-%E6%96%B9%E6%B3%95--method-exists-key)
-        - [DELETE-KEY 方法 / method DELETE-KEY](#delete-key-%E6%96%B9%E6%B3%95--method-delete-key)
-        - [ASSIGN-KEY 方法 / method ASSIGN-KEY](#assign-key-%E6%96%B9%E6%B3%95--method-assign-key)
-        - [BIND-KEY 方法 / method BIND-KEY](#bind-key-%E6%96%B9%E6%B3%95--method-bind-key)
-        - [STORE 方法 / method STORE](#store-%E6%96%B9%E6%B3%95--method-store-1)
+- [自定义类型 / Custom types](#自定义类型--custom-types)
+    - [自定义类型例子 / Custom type example](#自定义类型例子--custom-type-example)
+    - [实现位置下标的方法 / Methods to implement for positional subscripting](#实现位置下标的方法--methods-to-implement-for-positional-subscripting)
+        - [elems 方法 / method elems](#elems-方法--method-elems)
+        - [AT-POS 方法 / method AT-POS](#at-pos-方法--method-at-pos)
+        - [EXISTS-POS 方法 / method EXISTS-POS](#exists-pos-方法--method-exists-pos)
+        - [DELETE-POS 方法 / method DELETE-POS](#delete-pos-方法--method-delete-pos)
+        - [ASSIGN-POS 方法 / method ASSIGN-POS](#assign-pos-方法--method-assign-pos)
+        - [BIND-POS 方法 / method BIND-POS](#bind-pos-方法--method-bind-pos)
+        - [STORE 方法 / method STORE](#store-方法--method-store)
+    - [实现关联下标的方法 / Methods to implement for associative subscripting](#实现关联下标的方法--methods-to-implement-for-associative-subscripting)
+        - [AT-KEY 方法 / method AT-KEY](#at-key-方法--method-at-key)
+        - [EXISTS-KEY 方法 / method EXISTS-KEY](#exists-key-方法--method-exists-key)
+        - [DELETE-KEY 方法 / method DELETE-KEY](#delete-key-方法--method-delete-key)
+        - [ASSIGN-KEY 方法 / method ASSIGN-KEY](#assign-key-方法--method-assign-key)
+        - [BIND-KEY 方法 / method BIND-KEY](#bind-key-方法--method-bind-key)
+        - [STORE 方法 / method STORE](#store-方法--method-store-1)
 
 <!-- /MarkdownTOC -->
 
 
-<a id="%E5%9F%BA%E7%A1%80--basics"></a>
+<a id="基础--basics"></a>
 # 基础 / Basics
 
 Raku 提供两个通用下标接口：
@@ -71,7 +71,7 @@ Raku provides two universal subscripting interfaces:1
 | [ ]  | zero-based indices         | Positional     | Array, List, Buf, Match, ... |
 | { }  | string or object keys      | Associative    | Hash, Bag, Mix, Match, ...   |
 
-<a id="%E4%BD%8D%E7%BD%AE%E4%B8%8B%E6%A0%87--positional-subscripting"></a>
+<a id="位置下标--positional-subscripting"></a>
 ## 位置下标 / **Positional** subscripting
 
 **位置**下标（通过[后环缀运算符 `[ ]`](https://docs.raku.org/language/operators#postcircumfix_[_]) 按位置对有序集合的元素进行寻址。索引 0 引用第一个元素，索引 1 引用第二个元素，依此类推：
@@ -85,7 +85,7 @@ say @chores[1];  # OUTPUT: «feed dog␤»
 say @chores[2];  # OUTPUT: «wash car␤»
 ```
 
-<a id="%E5%85%B3%E8%81%94%E4%B8%8B%E6%A0%87--associative-subscripting"></a>
+<a id="关联下标--associative-subscripting"></a>
 ## 关联下标 / **Associative** subscripting
 
 **关联**下标（通过后环缀运算符 [`{ }`](https://docs.raku.org/language/operators#postcircumfix_{_}) 不需要集合将其元素保持任何特定顺序，而是使用唯一的键来寻址每个值。密钥的性质取决于所讨论的集合：例如，标准的 [Hash](https://docs.raku.org/type/Hash) 使用字符串密钥，而 [Mix](https://docs.raku.org/type/Mix) 允许任意对象作为键，等等：
@@ -151,7 +151,7 @@ my %h := MixHash.new;
 
 (Any name that `=>` would convert to a string can also be used to build a pair using "adverbial notation" and will appear that way when viewed through `.perl`, which is why we see `:pi(1)` above.)
 
-<a id="%E5%BA%94%E7%94%A8%E4%B8%8B%E6%A0%87--applying-subscripts"></a>
+<a id="应用下标--applying-subscripts"></a>
 ## 应用下标 / Applying subscripts
 
 下标可以应用于任何返回可使用下标的对象的表达式，而不仅仅是应用于变量：
@@ -172,7 +172,7 @@ say 42[0];    # OUTPUT: «42␤»
 say 42<foo>;  # ERROR: Type Int does not support associative indexing. 
 ```
 
-<a id="%E4%B8%8D%E5%AD%98%E5%9C%A8%E7%9A%84%E6%88%90%E5%91%98--nonexistent-elements"></a>
+<a id="不存在的成员--nonexistent-elements"></a>
 # 不存在的成员 / Nonexistent elements
 
 当一个*不存在*的元素被下标寻址时会发生什么，取决于所集合的类型。标准 [Array](https://docs.raku.org/type/Array) 和 [Hash](https://docs.raku.org/type/Hash) 集合返回其[值类型约束](https://docs.raku.org/routine/of)的类型对象（默认情况下，是 [Any](https://docs.raku.org/type/Any)，除非集合已被 [`is default`](https://docs.raku.org/type/Variable#trait_is_default) 特性声明，在这种情况下，返回值将是程序员声明的：
@@ -209,7 +209,7 @@ say array[uint8].new(1, 2)[2] # OUTPUT: «0␤»
 
 To silently skip nonexistent elements in a subscripting operation, see [Truncating slices](https://docs.raku.org/language/subscripts#Truncating_slices) and the [:v](https://docs.raku.org/language/subscripts#%3Av) adverb.
 
-<a id="%E4%BB%8E%E6%9C%AB%E5%B0%BE--from-the-end"></a>
+<a id="从末尾--from-the-end"></a>
 # 从末尾 / From the end
 
 位置索引是从集合的开始计算出来的，但也有一个符号，用来寻址元素相对于它们的末尾的位置： `*-1` 指的是最后一个元素，`*-2` 指的是倒数第二个元素，等等。
@@ -241,7 +241,7 @@ say @array[$i % *];   # wrap around a given index ("modular arithmetic")
 say @array[ -> $size { $i % $size } ];  # same as previous 
 ```
 
-<a id="%E5%88%87%E7%89%87--slices"></a>
+<a id="切片--slices"></a>
 # 切片 / Slices
 
 当需要访问一个集合的多个元素时，有一个快捷方式来完成多个单独的子查询操作：只需在下标中指定索引/键的列表，就可以返回一个元素的*列表*，也叫做“切片” — 以相同的顺序。
@@ -331,7 +331,7 @@ say @alphabet[flat 0, (1..2, (3,))];  # OUTPUT: «(a b c d)␤»
 say flat @alphabet[0, (1..2, (3,))];  # OUTPUT: «(a b c d)␤» 
 ```
 
-<a id="%E6%88%AA%E6%96%AD%E5%88%87%E7%89%87--truncating-slices"></a>
+<a id="截断切片--truncating-slices"></a>
 ## 截断切片 / Truncating slices
 
 引用切片下标中不存在的元素会导致输出 `List` 包含未定义的值（或[其他任何内容](https://docs.raku.org/language/subscripts#Nonexistent_elements)，所讨论的集合选择返回不存在的元素）：
@@ -377,7 +377,7 @@ say @letters[     3..*]; # OUTPUT: «(d e f)␤»
 
 This behavior exists as a precaution to prevent runaway generation of massive, potentially infinite `Lists` and the out-of-memory issues that occur as a result.
 
-<a id="%E7%A6%85%E5%88%87%E7%89%87--zen-slices"></a>
+<a id="禅切片--zen-slices"></a>
 ## 禅切片 / Zen slices
 
 如果将下标运算符放在对象后面而根本不指定任何索引/键，则将返回被下标的对象本身。因为它是空的，但返回所有内容，所以它被称为“禅切片”。
@@ -410,7 +410,7 @@ my $list = <a b c>;
 .say for $list[]; # OUTPUT: «a␤b␤c␤»
 ```
 
-<a id="%E5%A4%9A%E7%BB%B4--multiple-dimensions"></a>
+<a id="多维--multiple-dimensions"></a>
 # 多维 / Multiple dimensions
 
 下标中的维度用分号分隔，允许混合元素和维度列表。
@@ -471,10 +471,10 @@ say @a.sort( { $_[1] } ); # sort by 2nd column
 # OUTPUT: «((2 a 4) (5 b 3) (1 c 6))␤»
 ```
 
-<a id="%E4%BF%AE%E6%94%B9%E6%88%90%E5%91%98--modifying-elements"></a>
+<a id="修改成员--modifying-elements"></a>
 # 修改成员 / Modifying elements
 
-<a id="%E8%87%AA%E5%8A%A8%E7%94%9F%E5%8A%A8%E5%8C%96--autovivification"></a>
+<a id="自动生动化--autovivification"></a>
 # 自动生动化 / Autovivification
 
 下标参与“自动生动化”，即数组和散列在需要时自动出现的过程，这样你就可以构建嵌套的数据结构，而不必在每个级别预先声明集合类型：
@@ -497,7 +497,7 @@ say $beatles.perl;  # OUTPUT: «${"White Album" => $["Back in the U.S.S.R."]}␤
 
 Note that the subscripting itself does not cause autovivification: It only happens when the result of the subscripting chain is *assigned* to (or otherwise mutated).
 
-<a id="%E7%BB%91%E5%AE%9A--binding"></a>
+<a id="绑定--binding"></a>
 # 绑定 / Binding
 
 下标表达式也可以在绑定语句的左侧。如果下标集合的类型支持，则这将使用指定的容器替换在集合的“槽”中自然找到的任何值容器。
@@ -546,7 +546,7 @@ In this case, hash keys are bound to lazily generated sequences. The fact that t
 
 See [method BIND-POS](https://docs.raku.org/language/subscripts#method_BIND-POS) and [method BIND-KEY](https://docs.raku.org/language/subscripts#method_BIND-KEY) for the underlying mechanism.
 
-<a id="%E5%89%AF%E8%AF%8D--adverbs"></a>
+<a id="副词--adverbs"></a>
 # 副词 / Adverbs
 
 下标操作的返回值和可能的副作用可以使用副词控制；这些副词在相关的下标[运算符](https://docs.raku.org/language/operators#Method_postfix_precedence)上定义。
@@ -810,7 +810,7 @@ say %month<Jan Foo Mar>:!v;  # OUTPUT: «(1 (Any) 3)␤»
 
 See also the [values](https://docs.raku.org/routine/values) routine.
 
-<a id="%E8%87%AA%E5%AE%9A%E4%B9%89%E7%B1%BB%E5%9E%8B--custom-types"></a>
+<a id="自定义类型--custom-types"></a>
 # 自定义类型 / Custom types
 
 本页描述的下标接口并不是 Raku 内置集合类型的专有接口，你可以（而且应该）将它们用于任何希望通过索引或键访问数据的自定义类型。
@@ -836,7 +836,7 @@ So in order to make subscripting work, you only have to implement or delegate th
 
 If you do, you should also let your type compose the [`Positional`](https://docs.raku.org/type/Positional) or [`Associative`](https://docs.raku.org/type/Associative) role, respectively. This doesn't add any functionality per se, but announces (and may be used to check) that the type implements the corresponding subscripting interface.
 
-<a id="%E8%87%AA%E5%AE%9A%E4%B9%89%E7%B1%BB%E5%9E%8B%E4%BE%8B%E5%AD%90--custom-type-example"></a>
+<a id="自定义类型例子--custom-type-example"></a>
 ## 自定义类型例子 / Custom type example
 
 设想一个 `HTTP::Header` 类型，尽管它是一个具有特殊行为的自定义类，但可以像散列一样索引：
@@ -914,14 +914,14 @@ multi method AT-KEY (::?CLASS:D: $key) is rw {
 
 Note that declaring the method as `multi` and restricting it to `:D` (defined invocants) makes sure that the undefined case is passed through to the default implementation provided by `Any` (which is involved in auto-vivification).
 
-<a id="%E5%AE%9E%E7%8E%B0%E4%BD%8D%E7%BD%AE%E4%B8%8B%E6%A0%87%E7%9A%84%E6%96%B9%E6%B3%95--methods-to-implement-for-positional-subscripting"></a>
+<a id="实现位置下标的方法--methods-to-implement-for-positional-subscripting"></a>
 ## 实现位置下标的方法 / Methods to implement for positional subscripting
 
 为了使通过[后环缀运算符 `[ ]`](https://docs.raku.org/routine/[%20]#postcircumfix_[_]) 进行的基于索引的下标能够适用于你的自定义类型，你应该至少实现 `elems`、`AT-POS` 和 `EXISTS-POS`-以及下面详细描述的可选的其他类型。
 
 In order to make index-based subscripting via [`postcircumfix [ ]`](https://docs.raku.org/routine/[%20]#postcircumfix_[_]) work for your custom type, you should implement at least `elems`, `AT-POS` and `EXISTS-POS` - and optionally others as detailed below.
 
-<a id="elems-%E6%96%B9%E6%B3%95--method-elems"></a>
+<a id="elems-方法--method-elems"></a>
 ### elems 方法 / method elems
 
 ```Raku
@@ -936,7 +936,7 @@ Expected to return a number indicating how many subscriptable elements there are
 
 If not implemented, your type will inherit the default implementation from `Any` that always returns `1` for defined invocants - which is most likely not what you want. So if the number of elements cannot be known for your positional type, add an implementation that [fail](https://docs.raku.org/routine/fail)s or [die](https://docs.raku.org/routine/die)s, to avoid silently doing the wrong thing.
 
-<a id="at-pos-%E6%96%B9%E6%B3%95--method-at-pos"></a>
+<a id="at-pos-方法--method-at-pos"></a>
 ### AT-POS 方法 / method AT-POS
 
 ```Raku
@@ -951,7 +951,7 @@ Expected to return the element at position `$index`. This is what [`postcircumfi
 
 If you want an element to be mutable (like they are for the built-in [Array](https://docs.raku.org/type/Array) type), you'll have to make sure to return it in the form of an item container that evaluates to the element's value when read, and updates it when assigned to. (Remember to use `return-rw` or the `is rw` routine trait to make that work; see the [example](https://docs.raku.org/language/subscripts#Custom_type_example).)
 
-<a id="exists-pos-%E6%96%B9%E6%B3%95--method-exists-pos"></a>
+<a id="exists-pos-方法--method-exists-pos"></a>
 ### EXISTS-POS 方法 / method EXISTS-POS
 
 ```Raku
@@ -970,7 +970,7 @@ What "existence" of an element means, is up to your type.
 
 If you don't implement this, your type will inherit the default implementation from `Any`, which returns True for 0 and False for any other index - which is probably not what you want. So if checking for element existence cannot be done for your type, add an implementation that [fail](https://docs.raku.org/routine/fail)s or [die](https://docs.raku.org/routine/die)s, to avoid silently doing the wrong thing.
 
-<a id="delete-pos-%E6%96%B9%E6%B3%95--method-delete-pos"></a>
+<a id="delete-pos-方法--method-delete-pos"></a>
 ### DELETE-POS 方法 / method DELETE-POS
 
 ```Raku
@@ -989,7 +989,7 @@ What "deleting" an element means, is up to your type.
 
 Implementing this method is optional; if you don't, users trying to delete elements from an object of this type will get an appropriate error message.
 
-<a id="assign-pos-%E6%96%B9%E6%B3%95--method-assign-pos"></a>
+<a id="assign-pos-方法--method-assign-pos"></a>
 ### ASSIGN-POS 方法 / method ASSIGN-POS
 
 ```Raku
@@ -1008,7 +1008,7 @@ This is meant as an opt-in performance optimization, so that simple assignments 
 
 Note that implementing `ASSIGN-POS` does *not* relieve you from making `AT-POS` an `rw` method though, because less trivial assignments/modifications such as `@numbers[5]++` will still use `AT-POS`.
 
-<a id="bind-pos-%E6%96%B9%E6%B3%95--method-bind-pos"></a>
+<a id="bind-pos-方法--method-bind-pos"></a>
 ### BIND-POS 方法 / method BIND-POS
 
 ```Raku
@@ -1028,7 +1028,7 @@ my $x = 10;
 
 The generic [Array](https://docs.raku.org/type/Array) class supports this in order to allow building complex linked data structures, but for more domain-specific types it may not make sense, so don't feel compelled to implement it. If you don't, users will get an appropriate error message when they try to bind to a positional slot of an object of this type.
 
-<a id="store-%E6%96%B9%E6%B3%95--method-store"></a>
+<a id="store-方法--method-store"></a>
 ### STORE 方法 / method STORE
 
 ```Raku
@@ -1080,14 +1080,14 @@ say @string.Str;    # OUTPUT: «((A C G) (T C G))␤»
 
 This code takes into account the value of `$initialize`, which is set to `True` only if we are assigning a value to a variable declared using the `is` syntax for the first time. The `STORE` method should set the `self` variable and return it in all cases, including when the variable has already been initialized.
 
-<a id="%E5%AE%9E%E7%8E%B0%E5%85%B3%E8%81%94%E4%B8%8B%E6%A0%87%E7%9A%84%E6%96%B9%E6%B3%95--methods-to-implement-for-associative-subscripting"></a>
+<a id="实现关联下标的方法--methods-to-implement-for-associative-subscripting"></a>
 ## 实现关联下标的方法 / Methods to implement for associative subscripting
 
 为了使基于键的下标通过[后环缀运算符 `{ }`](https://docs.raku.org/routine/%7B%20%7D#postcircumfix_{_}) 为你的自定义类型工作，你应该至少实现 `AT-KEY` 和 `EXISTS-KEY` - 和其他选项，详见下文。
 
 In order to make key-based subscripting via [`postcircumfix { }`](https://docs.raku.org/routine/%7B%20%7D#postcircumfix_{_}) work for your custom type, you should implement at least `AT-KEY` and `EXISTS-KEY` - and optionally others as detailed below.
 
-<a id="at-key-%E6%96%B9%E6%B3%95--method-at-key"></a>
+<a id="at-key-方法--method-at-key"></a>
 ### AT-KEY 方法 / method AT-KEY
 
 ```Raku
@@ -1106,7 +1106,7 @@ If you want an element to be mutable (like they are for the built-in [Hash](http
 
 On the other hand if you want your collection to be read-only, feel free to return non-container values directly.
 
-<a id="exists-key-%E6%96%B9%E6%B3%95--method-exists-key"></a>
+<a id="exists-key-方法--method-exists-key"></a>
 ### EXISTS-KEY 方法 / method EXISTS-KEY
 
 ```Raku
@@ -1125,7 +1125,7 @@ What "existence" of an element means, is up to your type.
 
 If you don't implement this, your type will inherit the default implementation from `Any`, which always returns False - which is probably not what you want. So if checking for element existence cannot be done for your type, add an implementation that [fail](https://docs.raku.org/routine/fail)s or [die](https://docs.raku.org/routine/die)s, to avoid silently doing the wrong thing.
 
-<a id="delete-key-%E6%96%B9%E6%B3%95--method-delete-key"></a>
+<a id="delete-key-方法--method-delete-key"></a>
 ### DELETE-KEY 方法 / method DELETE-KEY
 
 ```Raku
@@ -1144,7 +1144,7 @@ What "deleting" an element means, is up to your type - though it should usually 
 
 Implementing this method is optional; if you don't, users trying to delete elements from an object of this type will get an appropriate error message.
 
-<a id="assign-key-%E6%96%B9%E6%B3%95--method-assign-key"></a>
+<a id="assign-key-方法--method-assign-key"></a>
 ### ASSIGN-KEY 方法 / method ASSIGN-KEY
 
 ```Raku
@@ -1163,7 +1163,7 @@ This is meant as an opt-in performance optimization, so that simple assignments 
 
 Note that implementing `ASSIGN-KEY` does *not* relieve you from making `AT-KEY` an `rw` method though, because less trivial assignments/modifications such as `%age<Claire>++` will still use `AT-KEY`.
 
-<a id="bind-key-%E6%96%B9%E6%B3%95--method-bind-key"></a>
+<a id="bind-key-方法--method-bind-key"></a>
 ### BIND-KEY 方法 / method BIND-KEY
 
 ```Raku
@@ -1183,7 +1183,7 @@ my $x = 10;
 
 The generic [Hash](https://docs.raku.org/type/Hash) class supports this in order to allow building complex linked data structures, but for more domain-specific types it may not make sense, so don't feel compelled to implement it. If you don't, users will get an appropriate error message when they try to bind to an associative slot of an object of this type.
 
-<a id="store-%E6%96%B9%E6%B3%95--method-store-1"></a>
+<a id="store-方法--method-store-1"></a>
 ### STORE 方法 / method STORE
 
 ```Raku

@@ -12,18 +12,18 @@ Creating module packages for code reuse
 
 <!-- MarkdownTOC -->
 
-- [模组是什么 / What are modules?](#%E6%A8%A1%E7%BB%84%E6%98%AF%E4%BB%80%E4%B9%88--what-are-modules)
-    - [何时使用模块 / When to use modules](#%E4%BD%95%E6%97%B6%E4%BD%BF%E7%94%A8%E6%A8%A1%E5%9D%97--when-to-use-modules)
-    - [使用模块 / Working with modules](#%E4%BD%BF%E7%94%A8%E6%A8%A1%E5%9D%97--working-with-modules)
-- [磁盘上的模块 / Modules on disk](#%E7%A3%81%E7%9B%98%E4%B8%8A%E7%9A%84%E6%A8%A1%E5%9D%97--modules-on-disk)
-    - [文件和模块命名 / File and module naming](#%E6%96%87%E4%BB%B6%E5%92%8C%E6%A8%A1%E5%9D%97%E5%91%BD%E5%90%8D--file-and-module-naming)
-        - [`unit` 关键字 / The `unit` keyword](#unit-%E5%85%B3%E9%94%AE%E5%AD%97--the-unit-keyword)
-    - [如果省略 `module` 会发生什么？ / What happens if I omit `module`?](#%E5%A6%82%E6%9E%9C%E7%9C%81%E7%95%A5-module-%E4%BC%9A%E5%8F%91%E7%94%9F%E4%BB%80%E4%B9%88%EF%BC%9F--what-happens-if-i-omit-module)
-        - [词法别名与安全 / Lexical aliasing and safety](#%E8%AF%8D%E6%B3%95%E5%88%AB%E5%90%8D%E4%B8%8E%E5%AE%89%E5%85%A8--lexical-aliasing-and-safety)
+- [模组是什么 / What are modules?](#模组是什么--what-are-modules)
+  - [何时使用模块 / When to use modules](#何时使用模块--when-to-use-modules)
+  - [使用模块 / Working with modules](#使用模块--working-with-modules)
+- [磁盘上的模块 / Modules on disk](#磁盘上的模块--modules-on-disk)
+  - [文件和模块命名 / File and module naming](#文件和模块命名--file-and-module-naming)
+    - [`unit` 关键字 / The `unit` keyword](#unit-关键字--the-unit-keyword)
+  - [如果省略 `module` 会发生什么？ / What happens if I omit `module`?](#如果省略-module-会发生什么？--what-happens-if-i-omit-module)
+    - [词法别名与安全 / Lexical aliasing and safety](#词法别名与安全--lexical-aliasing-and-safety)
 
 <!-- /MarkdownTOC -->
 
-<a id="%E6%A8%A1%E7%BB%84%E6%98%AF%E4%BB%80%E4%B9%88--what-are-modules"></a>
+<a id="模组是什么--what-are-modules"></a>
 # 模组是什么 / What are modules?
 
 模块，如类和语法，是一种[包](https://docs.raku.org/language/packages)。模块对象是 `ModuleHOW` 元类的实例；这为创建命名空间、版本控制、委托和数据封装提供了一些有用的功能（另请参阅[类](https://docs.raku.org/syntax/class)和[角色])(https://docs.raku.org/syntax/role)）。
@@ -43,14 +43,14 @@ say M.HOW;   # OUTPUT: «Perl6::Metamodel::ModuleHOW.new␤»
 
 Here we define a new module named `M`; introspection with `HOW` confirms that the metaclass underlying `M` is `Perl6::Metamodel::ModuleHOW`.
 
-<a id="%E4%BD%95%E6%97%B6%E4%BD%BF%E7%94%A8%E6%A8%A1%E5%9D%97--when-to-use-modules"></a>
+<a id="何时使用模块--when-to-use-modules"></a>
 ## 何时使用模块 / When to use modules
 
 模块主要用于封装不属于类或角色定义的代码和数据。模块内容（类、子例程、变量等）。可以从具有 `is export` 特性的模块导出；一旦模块使用 `import` 或  `use` 被导入了，则这些选项在调用方的命名空间中可用。模块还可以通过 `our` 选择性地暴露其命名空间内的符号以获得合格的参考。
 
 Modules are primarily useful for encapsulating code and data that do not belong inside a class or role definition. Module contents (classes, subroutines, variables, etc.) can be exported from a module with the `is export` trait; these are available in the caller's namespace once the module has been imported with `import` or `use`. A module can also selectively expose symbols within its namespace for qualified reference via `our`.
 
-<a id="%E4%BD%BF%E7%94%A8%E6%A8%A1%E5%9D%97--working-with-modules"></a>
+<a id="使用模块--working-with-modules"></a>
 ## 使用模块 / Working with modules
 
 为了说明模块范围和导出规则，我们首先定义一个简单的模块 `M`：
@@ -75,7 +75,7 @@ say M::loud-greeting;   # OUTPUT: «GREETINGS, CAMELIA!␤»
 say friendly-greeting;  # OUTPUT: «Greetings, friend!␤» 
 ```
 
-<a id="%E7%A3%81%E7%9B%98%E4%B8%8A%E7%9A%84%E6%A8%A1%E5%9D%97--modules-on-disk"></a>
+<a id="磁盘上的模块--modules-on-disk"></a>
 # 磁盘上的模块 / Modules on disk
 
 虽然 `.pm` 和 `.pm6` 文件（以下称 `.pm6`）有时被称为"模块"，但它们实际上只是在写 `need`、 `use` 或 `require` 时加载和编译的正常文件。
@@ -96,7 +96,7 @@ say friendly-greeting;  # OUTPUT: «Greetings, friend!␤»
 
 Note the decoupling between file and module names—a `.pm6` file can declare zero or more modules with arbitrary identifiers.
 
-<a id="%E6%96%87%E4%BB%B6%E5%92%8C%E6%A8%A1%E5%9D%97%E5%91%BD%E5%90%8D--file-and-module-naming"></a>
+<a id="文件和模块命名--file-and-module-naming"></a>
 ## 文件和模块命名 / File and module naming
 
 通常，我们想要一个 `.pm6` 文件来提供一个*单一*模块，仅此而已。在这里，一个常见的约定是文件名与模块名匹配。说回到 `Foo.pm6` 时，很明显，它只提供了一个模块 `M`；在本例中，我们可能希望将 `M` 重命名为 `Foo`。修改后的文件内容如下：
@@ -125,7 +125,7 @@ say friendly-greeting;   # OUTPUT: «Greetings, friend!␤»
 
 If `Foo.pm6` is placed deeper within the source tree, e.g. at `lib/Utils/Foo.pm6`, we can elect to name the module `Utils::Foo` to maintain consistency.
 
-<a id="unit-%E5%85%B3%E9%94%AE%E5%AD%97--the-unit-keyword"></a>
+<a id="unit-关键字--the-unit-keyword"></a>
 ### `unit` 关键字 / The `unit` keyword
 
 仅提供单个模块的文件可以用 `unit` 关键字更简洁地编写；`unit module` 指定编译单元的其余部分是所声明的模块的一部分。此处为 `Foo.pm6`，用 `unit` 重写：
@@ -148,7 +148,7 @@ Everything following the unit declaration is part of the `Foo` module specificat
 
 (Note that `unit` can also be used with `class`, `grammar` and `role`.)
 
-<a id="%E5%A6%82%E6%9E%9C%E7%9C%81%E7%95%A5-module-%E4%BC%9A%E5%8F%91%E7%94%9F%E4%BB%80%E4%B9%88%EF%BC%9F--what-happens-if-i-omit-module"></a>
+<a id="如果省略-module-会发生什么？--what-happens-if-i-omit-module"></a>
 ## 如果省略 `module` 会发生什么？ / What happens if I omit `module`?
 
 为了更好地理解 `module` 声明器在 `Foo.pm6` 中所做的事情，让我们将其与省略声明的变体文件 `Bar.pm6` 进行对比。下面的子例程定义几乎是相同的（唯一的区别是 `greeting` 的正文，为了清楚起见对其作了修改）：
@@ -185,7 +185,7 @@ say friendly-greeting;   # OUTPUT: «Greetings from Bar, friend!␤»
 
 Note the use of `loud-greeting` rather than `Bar::loud-greeting` as `Bar` is not a known symbol (we didn't create a `module` of that name in `Bar.pm6`). But why is `loud-greeting` callable even though we didn't mark it for export? The answer is simply that `Bar.pm6` doesn't create a new package namespace—`$?PACKAGE` is still set to `GLOBAL`—so when we declare `loud-greeting` as `our`, it is registered in the `GLOBAL` symbol table.
 
-<a id="%E8%AF%8D%E6%B3%95%E5%88%AB%E5%90%8D%E4%B8%8E%E5%AE%89%E5%85%A8--lexical-aliasing-and-safety"></a>
+<a id="词法别名与安全--lexical-aliasing-and-safety"></a>
 ### 词法别名与安全 / Lexical aliasing and safety
 
 值得庆幸的是，Raku 保护我们免受意外调用站点定义（例如，内置）。请考虑以下添加到 `Bar.pm6`：
