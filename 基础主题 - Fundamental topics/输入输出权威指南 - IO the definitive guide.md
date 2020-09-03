@@ -9,7 +9,7 @@ Correctly use Raku IO
 <!-- MarkdownTOC -->
 
 - [基础 / The basics](#基础--the-basics)
-- [探索路径 / Navigating paths](#探索路径--navigating-paths)
+- [浏览文件路径 / Navigating paths](#浏览文件路径--navigating-paths)
     - [什么是 IO::Path / What's an IO::Path anyway?](#什么是-iopath--whats-an-iopath-anyway)
     - [操作文件 / Working with files](#操作文件--working-with-files)
         - [写入文件 / Writing into files](#写入文件--writing-into-files)
@@ -33,11 +33,11 @@ Correctly use Raku IO
 
 The vast majority of common IO work is done by the [IO::Path](https://docs.raku.org/type/IO::Path) type. If you want to read from or write to a file in some form or shape, this is the class you want. It abstracts away the details of filehandles (or "file descriptors") and so you mostly don't even have to think about them.
 
-在幕后，[IO::Path](https://docs.raku.org/type/IO::Path) 与 [IO::Handle](https://docs.raku.org/type/IO::Handle) 一起使用；如果你需要比 [IO::Path](https://docs.raku.org/type/IO::Path) 更多的控制，可以直接使用 `IO::Handle` 类。在处理其他进程时，例如使用 [Proc](https://docs.raku.org/type/Proc) 或 [Proc::Async](https://docs.raku.org/type/Proc::Async) 类型，你还将处理 [IO::Handle](https://docs.raku.org/type/IO::Handle) 的*子类*： [IO::Pipe](https://docs.raku.org/type/IO::Pipe)。
+在幕后，[IO::Path](https://docs.raku.org/type/IO::Path) 与 [IO::Handle](https://docs.raku.org/type/IO::Handle) 一起工作；如果你需要比 [IO::Path](https://docs.raku.org/type/IO::Path) 更多的控制，可以直接使用 `IO::Handle` 类。在处理其他进程时，例如使用 [Proc](https://docs.raku.org/type/Proc) 或 [Proc::Async](https://docs.raku.org/type/Proc::Async) 类型，你还将与 [IO::Handle](https://docs.raku.org/type/IO::Handle) 的*子类*： [IO::Pipe](https://docs.raku.org/type/IO::Pipe) 打交道。
 
 Behind the scenes, [IO::Path](https://docs.raku.org/type/IO::Path) works with [IO::Handle](https://docs.raku.org/type/IO::Handle); a class which you can use directly if you need a bit more control than what [IO::Path](https://docs.raku.org/type/IO::Path) provides. When working with other processes, e.g. via [Proc](https://docs.raku.org/type/Proc) or [Proc::Async](https://docs.raku.org/type/Proc::Async) types, you'll also be dealing with a *subclass* of [IO::Handle](https://docs.raku.org/type/IO::Handle): the [IO::Pipe](https://docs.raku.org/type/IO::Pipe).
 
-最后，你有 [IO::CatHandle](https://docs.raku.org/type/IO::CatHandle)，以及 [IO::Spec](https://docs.raku.org/type/IO::Spec) 及其子类，你很少直接使用它们。这些类为你提供了高级功能，例如将多个文件作为一个句柄进行操作，或者提供低级路径操作。
+最后，你有 [IO::CatHandle](https://docs.raku.org/type/IO::CatHandle) 以及 [IO::Spec](https://docs.raku.org/type/IO::Spec) 及其子类，你很少直接使用它们。这些类为你提供了高级功能，例如将多个文件作为一个句柄进行操作，或者提供低级路径操作。
 
 Lastly, you have the [IO::CatHandle](https://docs.raku.org/type/IO::CatHandle), as well as [IO::Spec](https://docs.raku.org/type/IO::Spec) and its subclasses, that you'll rarely, if ever, use directly. These classes give you advanced features, such as operating on multiple files as one handle, or low-level path manipulations.
 
@@ -49,13 +49,13 @@ Along with all these classes, Raku provides several subroutines that let you ind
 
 While [IO::Socket](https://docs.raku.org/type/IO::Socket) and its subclasses also have to do with Input and Output, this guide does not cover them.
 
-<a id="探索路径--navigating-paths"></a>
-# 探索路径 / Navigating paths
+<a id="浏览文件路径--navigating-paths"></a>
+# 浏览文件路径 / Navigating paths
 
 <a id="什么是-iopath--whats-an-iopath-anyway"></a>
 ## 什么是 IO::Path / What's an IO::Path anyway?
 
-要将路径表示为文件或目录，请使用 [IO::Path](https://docs.raku.org/type/IO::Path) 类型。获取该类型对象的最简单方法是通过对其调用 [`.IO`](https://docs.raku.org/routine/IO) 方法来强制转换 [Str](https://docs.raku.org/type/Str) 类型：
+要将路径表示为文件或目录，请使用 [IO::Path](https://docs.raku.org/type/IO::Path) 类。获取该类型对象的最简单方法是通过对其调用 [`.IO`](https://docs.raku.org/routine/IO) 方法来强制转换 [Str](https://docs.raku.org/type/Str) 类型：
 
 To represent paths as either files or directories, use [IO::Path](https://docs.raku.org/type/IO::Path) type. The simplest way to obtain an object of that type is to coerce a [Str](https://docs.raku.org/type/Str) by calling [`.IO`](https://docs.raku.org/routine/IO) method on it:
 
@@ -63,12 +63,12 @@ To represent paths as either files or directories, use [IO::Path](https://docs.r
 say 'my-file.txt'.IO; # OUTPUT: «"my-file.txt".IO␤» 
 ```
 
-这里似乎缺少了一些东西，没有涉及到磁盘卷或绝对路径，但这些信息实际上存在于对象中。你可以通过使用 [`.perl`](https://docs.raku.org/routine/perl) 方法看到它：
+这里似乎缺少了一些东西，没有涉及到磁盘卷或绝对路径，但这些信息实际上存在于对象中。你可以通过使用 [`.raku`](https://docs.raku.org/routine/raku) 方法看到它：
 
-It may seem like something is missing here—there is no volume or absolute path involved—but that information is actually present in the object. You can see it by using [`.perl`](https://docs.raku.org/routine/perl) method:
+It may seem like something is missing here—there is no volume or absolute path involved—but that information is actually present in the object. You can see it by using [`.raku`](https://docs.raku.org/routine/raku) method:
 
 ```Raku
-say 'my-file.txt'.IO.perl;
+say 'my-file.txt'.IO.raku;
 # OUTPUT: «IO::Path.new("my-file.txt", :SPEC(IO::Spec::Unix), :CWD("/home/camelia"))␤» 
 ```
 
@@ -198,18 +198,18 @@ given 'some-file.txt'.IO.open {
 }
 ```
 
-[IO::Handle](https://docs.raku.org/type/IO::Handle) 为你提供了 [.read](https://docs.raku.org/type/IO::Handle#method_read)、 [.readchars](https://docs.raku.org/type/IO::Handle#method_readchars)、 [.get](https://docs.raku.org/type/IO::Handle#routine_get)、 [.getc](https://docs.raku.org/type/IO::Handle#method_getc)、 [.words](https://docs.raku.org/type/IO::Handle#routine_words)、 [.lines](https://docs.raku.org/type/IO::Handle#routine_lines)、 [.slurp](https://docs.raku.org/type/IO::Handle#routine_slurp)、 [.comb](https://docs.raku.org/type/IO::Handle#method_comb)、 [.split](https://docs.raku.org/type/IO::Handle#method_split)、 以及 [.Supply](https://docs.raku.org/type/IO::Handle#method_Supply) 方法从中读取数据。有很多选择，但关键是当你完成后，你需要关闭手柄。
+[IO::Handle](https://docs.raku.org/type/IO::Handle) 为你提供了 [.read](https://docs.raku.org/type/IO::Handle#method_read)、 [.readchars](https://docs.raku.org/type/IO::Handle#method_readchars)、 [.get](https://docs.raku.org/type/IO::Handle#routine_get)、 [.getc](https://docs.raku.org/type/IO::Handle#method_getc)、 [.words](https://docs.raku.org/type/IO::Handle#routine_words)、 [.lines](https://docs.raku.org/type/IO::Handle#routine_lines)、 [.slurp](https://docs.raku.org/type/IO::Handle#routine_slurp)、 [.comb](https://docs.raku.org/type/IO::Handle#method_comb)、 [.split](https://docs.raku.org/type/IO::Handle#method_split) 以及 [.Supply](https://docs.raku.org/type/IO::Handle#method_Supply) 方法从中读取数据。有很多选择，但关键是当你完成后，你需要关闭手柄。
 
 The [IO::Handle](https://docs.raku.org/type/IO::Handle) gives you [.read](https://docs.raku.org/type/IO::Handle#method_read), [.readchars](https://docs.raku.org/type/IO::Handle#method_readchars), [.get](https://docs.raku.org/type/IO::Handle#routine_get), [.getc](https://docs.raku.org/type/IO::Handle#method_getc), [.words](https://docs.raku.org/type/IO::Handle#routine_words), [.lines](https://docs.raku.org/type/IO::Handle#routine_lines), [.slurp](https://docs.raku.org/type/IO::Handle#routine_slurp), [.comb](https://docs.raku.org/type/IO::Handle#method_comb), [.split](https://docs.raku.org/type/IO::Handle#method_split), and [.Supply](https://docs.raku.org/type/IO::Handle#method_Supply) methods to read data from it. Plenty of options; and the catch is you need to close the handle when you're done with it.
 
-与某些语言不同，当离开句柄定义的作用域时，它不会自动关闭。相反，它将一直保持打开，直到被垃圾收集。为了使句柄关闭更容易，有些方法允许你指定一个 `:close` 参数，你还可以使用 [`will leave` 特征](https://docs.raku.org/language/phasers#index-entry-will_trait)，或者由 [`Trait::IO`](https://modules.perl6.org/dist/Trait::IO) 模组提供的 `does auto-close` 特征。
+与某些语言不同，当离开句柄定义的作用域时，它不会自动关闭。相反，它将一直保持打开，直到被垃圾收集。为了使句柄关闭更容易，有些方法允许你指定一个 `:close` 参数，你还可以使用 [`will leave` 特征](https://docs.raku.org/language/phasers#index-entry-will_trait)，或者由 [`Trait::IO`](https://github.com/raku-community-modules/perl6-Trait-IO) 模组提供的 `does auto-close` 特征。
 
-Unlike some languages, the handle won't get automatically closed when the scope it's defined in is left. Instead, it'll remain open until it's garbage collected. To make the closing business easier, some of the methods let you specify a `:close` argument, you can also use the [`will leave` trait](https://docs.raku.org/language/phasers#index-entry-will_trait), or the `does auto-close` trait provided by the [`Trait::IO`](https://modules.perl6.org/dist/Trait::IO) module.
+Unlike some languages, the handle won't get automatically closed when the scope it's defined in is left. Instead, it'll remain open until it's garbage collected. To make the closing business easier, some of the methods let you specify a `:close` argument, you can also use the [`will leave` trait](https://docs.raku.org/language/phasers#index-entry-will_trait), or the `does auto-close` trait provided by the [`Trait::IO`](https://github.com/raku-community-modules/perl6-Trait-IO) module.
 
 <a id="错误的做事方式--the-wrong-way-to-do-things"></a>
 # 错误的做事方式 / The wrong way to do things
 
-本节介绍 Perl6 IO *不该*做的事情。
+本节介绍 Raku IO *不该*做的事情。
 
 This section describes how NOT to do Raku IO.
 
