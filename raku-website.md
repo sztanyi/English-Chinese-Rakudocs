@@ -57,3 +57,10 @@ https://design.raku.org/
 
 # The Home of Vrurg
 https://vrurg.github.io/
+
+# Apocalypse
+https://raku.org/archive/doc/apocalypse.html
+
+# Raku Test Suite
+https://github.com/Raku/roast
+
