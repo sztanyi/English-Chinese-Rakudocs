@@ -24,5 +24,13 @@ Raku 原生类型 - Raku native types
 枚举 - Enumeration
 正则 - Regexes
 输入输出权威指南 - IO the definitive guide
-  换行处理 - Newline handling in Raku
+换行处理 - Newline handling in Raku
 面向对象编程 - Object orientation.md
+  特性
+  相位器
+  类型系统
+  系统交互
+  语句前缀
+  语法
+  运算符
+  集合、背包和混合 - Sets, bags, and mixes

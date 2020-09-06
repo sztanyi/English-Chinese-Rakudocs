@@ -10,7 +10,7 @@ How the different newline characters are handled, and how to change the behavior
 
 Different operating systems use different characters, or combinations of them, to represent the transition to a new line. Every language has its own set of rules to handle this. Raku has the following ones:
 
-- `\n` 在字符串字面中表示 Unicode 码位 10。
+- `\n` 字面意思为 Unicode 码位 10。
 - 通过 say 附加到字符串末尾的默认 [nl-out](https://docs.raku.org/routine/nl-out) 也是 `\n`。
 - 在 Windows 上输出时，编码器将默认地在文件、进程或终端（但在 socket 上不会这样做）将 `\n` 转换为 `\r\n`。
 - 在输入时，在任何平台上，解码器默认将文件、进程或终端的 `\r\n` 输入格式化为 `\n`（同样，不适用于 socket）。

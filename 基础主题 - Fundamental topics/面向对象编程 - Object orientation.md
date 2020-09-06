@@ -14,11 +14,11 @@ Raku 有很多预定义的类型，可以分为两类：常规类型和[*原生*
 
 Raku comes with a wealth of predefined types, which can be classified in two categories: regular and [*native* types](https://docs.raku.org/language/nativetypes). Everything that you can store in a variable is either a *native value* or an *object*. That includes literals, types (type objects), code and containers.
 
-原生类型用于低级类型（如 `uint64`）。即使*原生*类型不具有与对象相同的功能，如果在它们上调用方法，它们也会自动*装箱*到普通对象中。
+原生类型用于低级类型（如 `uint64`）。即使*原生*类型不具有与对象相同的功能，如果在它们上调用方法，它们也会被自动*装箱*到普通对象中。
 
 Native types are used for low-level types (like `uint64`). Even if *native* types do not have the same capabilities as objects, if you call methods on them, they are automatically *boxed* into normal objects.
 
-所有不是*原生*值的东西都是*对象*。对象确实允许[继承](https://en.wikipedia.org/wiki/Object-oriented_programming#Inheritance_and_behavioral_subtyping)和[封装](https://en.wikipedia.org/wiki/Object-oriented_programming#Encapsulation)。
+所有不是*原生*值的东西都是*对象*。对象允许[继承](https://en.wikipedia.org/wiki/Object-oriented_programming#Inheritance_and_behavioral_subtyping)和[封装](https://en.wikipedia.org/wiki/Object-oriented_programming#Encapsulation)。
 
 Everything that is not a *native* value is an *object*. Objects do allow for both [inheritance](https://en.wikipedia.org/wiki/Object-oriented_programming#Inheritance_and_behavioral_subtyping) and [encapsulation](https://en.wikipedia.org/wiki/Object-oriented_programming#Encapsulation).
 
@@ -208,7 +208,7 @@ This restricts their visibility to the current lexical scope, which can be usefu
 <a id="属性--attributes"></a>
 ## 属性 / Attributes 
 
-属性是存在类实例中的变量；当实例化时，变量与其值之间的关联称为属性。它们是存储对象状态的地方。在 Raku 中，所有属性都是*私有*，这意味着它们只能由类实例本身直接访问。它们通常使用 `has` 声明符和 `!` 符号声明。
+属性是存在类实例中的变量；当实例化时，变量与其值之间的关联称为特性。它们是存储对象状态的地方。在 Raku 中，所有属性都是*私有*，这意味着它们只能由类实例本身直接访问。它们通常使用 `has` 声明符和 `!` 符号声明。
 
 Attributes are variables that exist per instance of a class; when instantiated to a value, the association between the variable and its value is called a property. They are where the state of an object is stored. In Raku, all attributes are *private*, which means they can be accessed directly only by the class instance itself. They are typically declared using the `has` declarator and the `!` twigil.
 
@@ -221,7 +221,7 @@ class Journey {
 }
 ```
 
-虽然不存在公共(甚至是受保护的)属性，但有一种方法可以自动生成访问器方法：将 `!` 替换为 `.`（`.` 应该会使你想到方法调用）。
+虽然不存在公共（甚至是受保护的）属性，但有一种方法可以自动生成访问器方法：将 `!` 替换为 `.`（`.` 应该会使你想到方法调用）。
 
 While there is no such thing as a public (or even protected) attribute, there is a way to have accessor methods generated automatically: replace the `!` twigil with the `.` twigil (the `.` should remind you of a method call).
 
@@ -234,7 +234,7 @@ class Journey {
 }
 ```
 
-默认提供只读访问器。为了允许对属性进行更改，添加 [is rw](https://docs.raku.org/routine/is%20rw) 特性：
+默认提供只读访问器。添加 [is rw](https://docs.raku.org/routine/is%20rw) 特性可以允许对属性进行更改：
 
 This defaults to providing a read-only accessor. In order to allow changes to the attribute, add the [is rw](https://docs.raku.org/routine/is%20rw) trait:
 
@@ -495,7 +495,7 @@ CATCH { default { put .^name ~ ":\n" ~ .Str } };
 #          not an object instance of type 'C'.  Did you forget a 'multi'?» 
 ```
 
-`self` 也可以与属性一起使用，只要它们有访问器。`self.a` 将调用属性的访问器，该属性声明为 `has $.a`。但是，`self.a` 和 `$.a` 之间有区别，因为后者将逐项列出；`$.a` 将等同于 `self.a.item` 或 `$(self.a)`。
+`self` 也可以与属性一起使用，只要它们有访问器。`self.a` 将调用属性的访问器，该属性声明为 `has $.a`。但是，`self.a` 和 `$.a` 之间有区别，因为后者将以单项列出；`$.a` 将等同于 `self.a.item` 或 `$(self.a)`。
 
 `self` can also be used with attributes, as long as they have an accessor. `self.a` will call the accessor for an attribute declared as `has $.a`. However, there is a difference between `self.a` and `$.a`, since the latter will itemize; `$.a` will be equivalent to `self.a.item` or `$(self.a)`.
 
@@ -515,7 +515,7 @@ The colon-syntax for method arguments is only supported for method calls using `
 
 Note that if the relevant methods `bless`, `CREATE` of [Mu](https://docs.raku.org/type/Mu) are not overloaded, `self` will point to the type object in those methods.
 
-另一方面，在初始化的不同阶段调用了 `BUILD` 和 `TWEAK` 等子方法。子类中同名的子方法尚未运行，因此不应依赖这些方法中潜在的虚拟方法调用。
+另一方面，在实例初始化的不同阶段调用了 `BUILD` 和 `TWEAK` 等子方法。子类中同名的子方法尚未运行，因此不应依赖这些方法中潜在的虚拟方法调用。
 
 On the other hand, the submethods `BUILD` and `TWEAK` are called on instances, in different stages of initialization. Submethods of the same name from subclasses have not yet run, so you should not rely on potentially virtual method calls inside these methods.
 
@@ -561,7 +561,7 @@ Private methods are not inherited by subclasses.
 
 Submethods are public methods that will not be inherited by subclasses. The name stems from the fact that they are semantically similar to subroutines.
 
-子方法对于对象构造和销毁任务非常有用，对于特定类型的任务也很有用，因此子类型肯定必须重写它们。
+子方法对于对象构造和销毁任务非常有用，对于特定类型的任务也很有用，因此子类型必须重写它们。
 
 Submethods are useful for object construction and destruction tasks, as well as for tasks that are so specific to a certain type that subtypes would certainly have to override them.
 
@@ -668,7 +668,7 @@ say "y: ", $p.y;
 # OUTPUT: «y: 2␤» 
 ```
 
-`Mu.new` 对自己的调用者调用方法 [bless](https://docs.raku.org/routine/bless)，将所有的命名[参数](https://docs.raku.org/language/functions#Arguments)传递给这个方法。`bless` 创建新对象，然后以反向方法解析顺序遍历所有子类(即从 [Mu](https://docs.raku.org/type/Mu) 到大多数派生类)，并在每个类中检查是否存在一个名为 `BUILD` 的方法。如果存在该方法，则使用 `new` 方法中的所有命名参数调用该方法。如果没有，则从同名命名参数初始化该类的公共属性。在这两种情况下，如果 `BUILD` 或默认机制都没有初始化属性，则应用默认值。这意味着 `BUILD` 可以更改一个属性，但它不能访问声明为其默认值的属性的内容；这些内容只有在 `TWEAK`（见下文）期间才可用，可以“查看”类声明中初始化的属性的内容。
+`Mu.new` 对自己的调用者调用方法 [bless](https://docs.raku.org/routine/bless)，将所有的命名[参数](https://docs.raku.org/language/functions#Arguments)传递给这个方法。`bless` 创建新对象，然后以逆着方法解析顺序遍历所有子类(即从 [Mu](https://docs.raku.org/type/Mu) 到大多数派生类)，并在每个类中检查是否存在一个名为 `BUILD` 的方法。如果存在该方法，则使用 `new` 方法中的所有命名参数调用该方法。如果没有，则从同名命名参数初始化该类的公共属性。在这两种情况下，如果 `BUILD` 或默认机制都没有初始化属性，则应用默认值。这意味着 `BUILD` 可以更改一个属性，但它不能访问声明为其默认值的属性的内容；这些内容只有在 `TWEAK`（见下文）期间才可用，这期间可以“看见”类声明中初始化的属性的内容。
 
 `Mu.new` calls method [bless](https://docs.raku.org/routine/bless) on its invocant, passing all the named [arguments](https://docs.raku.org/language/functions#Arguments). `bless` creates the new object, and then walks all subclasses in reverse method resolution order (i.e. from [Mu](https://docs.raku.org/type/Mu) to most derived classes) and in each class checks for the existence of a method named `BUILD`. If the method exists, the method is called with all the named arguments from the `new` method. If not, the public attributes from this class are initialized from named arguments of the same name. In either case, if neither `BUILD` nor the default mechanism has initialized the attribute, default values are applied. This means that `BUILD` may change an attribute, but it does not have access to the contents of the attribute declared as its default; these are available only during `TWEAK` (see below), which can 'see' the contents of an attribute initialized in the declaration of the class.
 
@@ -732,7 +732,7 @@ class Point {
 
 However this is considered poor practice, because it makes correct initialization of objects from subclasses harder.
 
-另一件要注意的是，在 Raku 中，`new` 这个名字并不特殊。它只是一个常见的约定，在[大多数 Raku 类](https://docs.raku.org/routine/new)中都是完全遵循的。你可以从任何方法中调用 `bless` ，也可以使用 `CREATE` 来摆弄低层次的工作。
+另一件要注意的是，在 Raku 中，`new` 这个名字并不特殊。它只是一个常见的约定，在[大多数 Raku 类](https://docs.raku.org/routine/new)中都是完全遵循的。你可以从任何方法中调用 `bless` ，也可以使用 `CREATE` 来摆弄低级别的工作。
 
 Another thing to note is that the name `new` is not special in Raku. It is merely a common convention, one that is followed quite thoroughly in [most Raku classes](https://docs.raku.org/routine/new). You can call `bless` from any method at all, or use `CREATE` to fiddle around with low-level workings.
 
@@ -783,7 +783,7 @@ See document for [clone](https://docs.raku.org/routine/clone) for details on how
 
 Roles are a collection of attributes and methods; however, unlike classes, roles are meant for describing only parts of an object's behavior; this is why, in general, roles are intended to be *mixed in* classes and objects. In general, classes are meant for managing objects and roles are meant for managing behavior and code reuse within objects.
 
-角色使用关键字 `role` 后接角色名称声明。角色在使用混合角色的名称之前的 `does` 关键字时是混合的。
+角色使用关键字 `role` 后接角色名称声明。使用 `does` 关键字混入角色。
 
 Roles use the keyword `role` preceding the name of the role that is declared. Roles are mixed in using the `does` keyword preceding the name of the role that is mixed in.
 
@@ -826,7 +826,7 @@ Roles are immutable as soon as the compiler parses the closing curly brace of th
 <a id="应用角色--applying-roles"></a>
 ## 应用角色 / Applying roles
 
-角色应用与类继承有很大不同。当角色应用于类时，该角色的方法将复制到类中。如果对同一个类应用了多个角色，冲突（例如属性或同名的 non-multi 方法）会导致编译时错误，可以通过在类中提供同名的方法来解决。
+角色应用与类继承有很大不同。当角色应用于类时，该角色的方法将复制到类中。如果对同一个类应用了多个角色，冲突（例如属性或同名的非 multi 方法）会导致编译时错误，可以通过在类中提供同名的方法来解决。
 
 Role application differs significantly from class inheritance. When a role is applied to a class, the methods of that role are copied into the class. If multiple roles are applied to the same class, conflicts (e.g. attributes or non-multi methods of the same name) cause a compile-time error, which can be solved by providing a method of the same name in the class.
 
@@ -858,7 +858,7 @@ say $t.steer;
 # OUTPUT: «Taurus.new(castrated => Bool::True, direction => Any)␤» 
 ```
 
-通过这种设置，你的可怜的客户将发现自己无法改变他们的 Taurus，你将无法制造更多的你的产品！在这种情况下，最好使用角色：
+通过这种设置，你可怜的客户将发现自己无法改变他们的 Taurus，你将无法制造更多的产品！在这种情况下，最好使用角色：
 
 With this setup, your poor customers will find themselves unable to turn their Taurus and you won't be able to make more of your product! In this case, it may have been better to use roles:
 
@@ -1230,11 +1230,11 @@ say $metaobject.name($object);      # OUTPUT: «Int␤»
 say 1.HOW.name(1);                  # OUTPUT: «Int␤» 
 ```
 
-(其动机是 Raku 还希望允许一个更基于原型的对象系统，而不必为每种类型创建一个新的元对象)。
+（其动机是 Raku 还希望允许一个更基于原型的对象系统，而不必为每种类型创建一个新的元对象）。
 
 (The motivation is that Raku also wants to allow a more prototype-based object system, where it's not necessary to create a new metaobject for every type).
 
-有一个快捷方式可以避免两次使用同一个对象：
+有一个快捷方式可以避免使用同一个对象两次：
 
 There's a shortcut to keep from using the same object twice:
 
