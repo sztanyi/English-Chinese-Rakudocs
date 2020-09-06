@@ -12,43 +12,43 @@ The lifetime (execution timeline) of a program is broken up into phases. A *phas
 
 <!-- MarkdownTOC -->
 
-- [相位器 / Phasers](#%E7%9B%B8%E4%BD%8D%E5%99%A8--phasers)
-  - [执行顺序 / Execution order](#%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F--execution-order)
-- [程序执行相位器 / Program execution phasers](#%E7%A8%8B%E5%BA%8F%E6%89%A7%E8%A1%8C%E7%9B%B8%E4%BD%8D%E5%99%A8--program-execution-phasers)
+- [相位器 / Phasers](#相位器--phasers)
+  - [执行顺序 / Execution order](#执行顺序--execution-order)
+- [程序执行相位器 / Program execution phasers](#程序执行相位器--program-execution-phasers)
   - [BEGIN](#begin)
   - [CHECK](#check)
   - [INIT](#init)
   - [END](#end)
-- [代码块相位器 / Block phasers](#%E4%BB%A3%E7%A0%81%E5%9D%97%E7%9B%B8%E4%BD%8D%E5%99%A8--block-phasers)
+- [代码块相位器 / Block phasers](#代码块相位器--block-phasers)
   - [ENTER](#enter)
   - [LEAVE](#leave)
   - [KEEP](#keep)
   - [UNDO](#undo)
   - [PRE](#pre)
   - [POST](#post)
-- [循环相位器 / Loop phasers](#%E5%BE%AA%E7%8E%AF%E7%9B%B8%E4%BD%8D%E5%99%A8--loop-phasers)
+- [循环相位器 / Loop phasers](#循环相位器--loop-phasers)
   - [FIRST](#first)
   - [NEXT](#next)
   - [LAST](#last)
-- [异常处理相位器 / Exception handling phasers](#%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E7%9B%B8%E4%BD%8D%E5%99%A8--exception-handling-phasers)
+- [异常处理相位器 / Exception handling phasers](#异常处理相位器--exception-handling-phasers)
   - [CATCH](#catch)
   - [CONTROL](#control)
-- [对象相位器 / Object phasers](#%E5%AF%B9%E8%B1%A1%E7%9B%B8%E4%BD%8D%E5%99%A8--object-phasers)
-  - [COMPOSE \(尚未实施\) / COMPOSE \(Not yet implemented\)](#compose-%E5%B0%9A%E6%9C%AA%E5%AE%9E%E6%96%BD--compose-not-yet-implemented)
-- [异步相位器 / Asynchronous phasers](#%E5%BC%82%E6%AD%A5%E7%9B%B8%E4%BD%8D%E5%99%A8--asynchronous-phasers)
+- [对象相位器 / Object phasers](#对象相位器--object-phasers)
+  - [COMPOSE \(尚未实施\) / COMPOSE \(Not yet implemented\)](#compose-尚未实施--compose-not-yet-implemented)
+- [异步相位器 / Asynchronous phasers](#异步相位器--asynchronous-phasers)
   - [LAST](#last-1)
   - [QUIT](#quit)
   - [CLOSE](#close)
-- [DOC 相位器 / DOC phasers](#doc-%E7%9B%B8%E4%BD%8D%E5%99%A8--doc-phasers)
+- [DOC 相位器 / DOC phasers](#doc-相位器--doc-phasers)
   - [DOC](#doc)
 
 <!-- /MarkdownTOC -->
 
 
-<a id="%E7%9B%B8%E4%BD%8D%E5%99%A8--phasers"></a>
+<a id="相位器--phasers"></a>
 # 相位器 / Phasers
 
-相位块只是包含它的闭包的一个特征，并在适当的时候自动调用。这些自动调用的块被称为*相位器*，因为它们通常标志着从计算的一个阶段到另一个阶段的过渡。例如，在编译一个编译单元的末尾调用一个 `CHECK` 块。还可以安装其他类型的相位器；它们会在适当的不同时间自动调用，其中一些会响应各种控制异常和退出值。例如，如果某个代码块的退出成功与否，可能会调用一些相位器，在本例中，*成功*是通过返回定义的值或列表来定义的，在此过程中没有任何 `Failure` 或异常。
+相位块只是包含它的闭包的一个特性，并在适当的时候自动调用。这些自动调用的块被称为*相位器*，因为它们通常标志着从计算的一个阶段到另一个阶段的过渡。例如，在编译一个编译单元的末尾调用一个 `CHECK` 块。还可以安装其他类型的相位器；它们会在适当的不同时间自动调用，其中一些会响应各种控制异常和退出值。例如，某个代码块的退出成功与否，可能会调用一些相位器，在本例中，*成功*是通过返回定义的值或列表来定义的，在此过程中没有任何 `Failure` 或异常。
 
 A phaser block is just a trait of the closure containing it, and is automatically called at the appropriate moment. These auto-called blocks are known as *phasers*, since they generally mark the transition from one phase of computing to another. For instance, a `CHECK` block is called at the end of compiling a compilation unit. Other kinds of phasers can be installed as well; these are automatically called at various times as appropriate, and some of them respond to various control exceptions and exit values. For instance, some phasers might be called if the exit from a block is successful or not, with *success* in this case defined by returning with a defined value or list without any `Failure` or exception in the process.
 
@@ -57,32 +57,32 @@ A phaser block is just a trait of the closure containing it, and is automaticall
 Here is a summary:
 
 ```Raku
-  BEGIN {...} #  * at compile time, as soon as possible, only ever runs once 
-  CHECK {...} #  * at compile time, as late as possible, only ever runs once 
-   INIT {...} #  * at runtime, as soon as possible, only ever runs once 
-    END {...} #  at runtime, as late as possible, only ever runs once 
-    DOC [BEGIN|CHECK|INIT] {...} # only in documentation mode 
+  BEGIN {...} #  * at compile time, as soon as possible, only ever runs once / 编译时运行一次，尽量早地运行
+  CHECK {...} #  * at compile time, as late as possible, only ever runs once / 编译时运行一次，尽量晚地运行
+   INIT {...} #  * at runtime, as soon as possible, only ever runs once / 运行时运行一次，尽量早地运行
+    END {...} #  at runtime, as late as possible, only ever runs once / 运行时运行一次，尽量晚地运行
+    DOC [BEGIN|CHECK|INIT] {...} # only in documentation mode / 仅在文档模式下
  
-  ENTER {...} #  * at every block entry time, repeats on loop blocks. 
-  LEAVE {...} #  at every block exit time (even stack unwinds from exceptions) 
-   KEEP {...} #  at every successful block exit, part of LEAVE queue 
-   UNDO {...} #  at every unsuccessful block exit, part of LEAVE queue 
+  ENTER {...} #  * at every block entry time, repeats on loop blocks. / 在进入每个代码块时，在循环代码块中重复
+  LEAVE {...} #  at every block exit time (even stack unwinds from exceptions) / 退出代码块时
+   KEEP {...} #  at every successful block exit, part of LEAVE queue / 成功退出代码块时，LEAVE 队列的一部分
+   UNDO {...} #  at every unsuccessful block exit, part of LEAVE queue / 非成功退出代码块时，LEAVE 队列的一部分
  
-  FIRST {...} #  at loop initialization time, before any ENTER 
-   NEXT {...} #  at loop continuation time, before any LEAVE 
-   LAST {...} #  at loop termination time, after any LEAVE 
+  FIRST {...} #  at loop initialization time, before any ENTER / 循环初始时，在 ENTER 之前
+   NEXT {...} #  at loop continuation time, before any LEAVE / 循环继续时，在 LEAVE 之前
+   LAST {...} #  at loop termination time, after any LEAVE / 循环终止时，在 LEAVE 之后
  
-    PRE {...} #  assert precondition at every block entry, before ENTER 
-   POST {...} #  assert postcondition at every block exit, after LEAVE 
+    PRE {...} #  assert precondition at every block entry, before ENTER / 断言先决条件在每个代码块入口，在 ENTER 之前
+   POST {...} #  assert postcondition at every block exit, after LEAVE / 断言先决条件在每个代码块出口，在 LEAVE 之后
  
-  CATCH {...} #  catch exceptions, before LEAVE 
-CONTROL {...} #  catch control exceptions, before LEAVE 
+  CATCH {...} #  catch exceptions, before LEAVE / 捕获异常，在 LEAVE 之前
+CONTROL {...} #  catch control exceptions, before LEAVE / 捕获控制一次，在 LEAVE 之前
  
-   LAST {...} #  supply tapped by whenever-block is done, runs very last 
-   QUIT {...} #  catch async exceptions within a whenever-block, runs very last 
+   LAST {...} #  supply tapped by whenever-block is done, runs very last / supply 被 whenever 代码块利用完时，最后一个
+   QUIT {...} #  catch async exceptions within a whenever-block, runs very last / 在 whenever 代码块中捕获异步异常，最后一个
  
-COMPOSE {...} #  when a role is composed into a class (Not yet implemented) 
-  CLOSE {...} #  appears in a supply block, called when the supply is closed 
+COMPOSE {...} #  when a role is composed into a class (Not yet implemented) / 当角色被编入类时（尚未实现）
+  CLOSE {...} #  appears in a supply block, called when the supply is closed / 出现在 supply 代码块中，当 supply 被关闭时调用
 ```
 
 标记为 `*` 的相位器具有一个运行时值，如果计算时间早于其周围表达式，则只需保存其结果，以便稍后在计算表达式的其余部分时在表达式中使用：
@@ -103,11 +103,11 @@ my $compiletime = BEGIN now;
 our $random = ENTER rand;
 ```
 
-这些相位器中的大多数将采用代码块或函数引用。语句形式对于将在词汇作用域上的声明公开给周围的词法作用域特别有用，而不会在块中“捕获”它。
+这些相位器中的大多数接受代码块或函数引用。语句形式对于将在词汇作用域上的声明公开给周围的词法作用域特别有用，而不会在块中“捕获”它。
 
 Most of these phasers will take either a block or a function reference. The statement form can be particularly useful to expose a lexically scoped declaration to the surrounding lexical scope without "trapping" it inside a block.
 
-它们声明具有与前面示例相同范围的相同变量，但在指定的时间作为一个整体运行语句：
+这些声明具有与前面示例相同范围的相同变量，但在指定的时间作为一个整体运行语句：
 
 These declare the same variables with the same scope as the preceding example, but run the statements as a whole at the indicated time:
 
@@ -136,11 +136,11 @@ Note, however, that
 END say my $accumulator = 0;
 ```
 
-在 `END` 时将变量设置为 0，因为这是实际执行 “my” 声明的时候。只有无参的相位器才能使用语句形式。这意味着 `CATCH` 和 `CONTROL` 总是需要一个代码块，因为它们采用的参数是将 `$_` 设置为当前主题，以便内部节点能够表现为开关语句。（如果允许仅作陈述，`$_` 的临时绑定就会在 `CATCH` 或 `CONTROL` 结束后泄露出去，后果难以预测，而且很可能会造成可怕的后果。异常处理程序应该减少不确定性，而不是增加不确定性。）
+在 `END` 时将变量设置为 0，因为这是在实际执行 “my” 声明的时候。只有无参的相位器才能使用语句形式。这意味着 `CATCH` 和 `CONTROL` 总是需要一个代码块，因为它们采用的参数是将 `$_` 设置为当前主题，以便内部节点能够表现为开关语句。（如果允许仅作陈述，`$_` 的临时绑定就会在 `CATCH` 或 `CONTROL` 结束后泄露出去，后果难以预测，而且很可能会造成可怕的后果。异常处理程序应该减少不确定性，而不是增加不确定性。）
 
 sets the variable to 0 at `END` time, since that is when the "my" declaration is actually executed. Only argumentless phasers may use the statement form. This means that `CATCH` and `CONTROL` always require a block, since they take an argument that sets `$_` to the current topic, so that the innards are able to behave as a switch statement. (If bare statements were allowed, the temporary binding of `$_` would leak out past the end of the `CATCH` or `CONTROL`, with unpredictable and quite possibly dire consequences. Exception handlers are supposed to reduce uncertainty, not increase it.)
 
-其中一些相位器还具有相应的特征，可以设置在变量上；它们使用 `will`，后面跟着小写的相位器名称。这些方法的优点是将所述变量作为其主题传递到闭包中：
+其中一些相位器还具有相应的特性，可以设置在变量上；它们使用 `will`，后面跟着小写的相位器名称。这些方法的优点是将所述变量作为其主题传递到闭包中：
 
 Some of these phasers also have corresponding traits that can be set on variables; they use `will` followed by the name of the phaser in lowercase. These have the advantage of passing the variable in question into the closure as its topic:
 
@@ -148,7 +148,7 @@ Some of these phasers also have corresponding traits that can be set on variable
 our $h will enter { .rememberit() } will undo { .forgetit() };
 ```
 
-只有可以在代码块内多次发生的相位器才有资格使用每个变量形式；这不包括 `CATCH` 和其他类似 `CLOSE` 或 `QUIT` 的类型。
+只有可以在代码块内多次发生的相位器才有资格使用每变量形式；这不包括 `CATCH` 和其他类似 `CLOSE` 或 `QUIT` 的类型。
 
 Only phasers that can occur multiple times within a block are eligible for this per-variable form; this excludes `CATCH` and others like `CLOSE` or `QUIT`.
 
@@ -160,11 +160,11 @@ The topic of the block outside a phaser is still available as `OUTER::<$_> `. Wh
 
 Any phaser defined in the lexical scope of a method is a closure that closes over `self` as well as normal lexicals. (Or equivalently, an implementation may simply turn all such phasers into submethods whose primed invocant is the current object.)
 
-当多个相位器计划同时运行时，一般的解绑原则是初始化相位器按声明的顺序执行，而最终相位器按相反的顺序执行，因为设置和拆卸通常希望以彼此相反的顺序执行。
+当多个相位器计划同时运行时，一般的解绑原则是初始化相位器按声明的顺序执行，而终结相位器按相反的顺序执行，因为设置和拆卸通常希望以彼此相反的顺序执行。
 
 When multiple phasers are scheduled to run at the same moment, the general tiebreaking principle is that initializing phasers execute in order declared, while finalizing phasers execute in the opposite order, because setup and teardown usually want to happen in the opposite order from each other.
 
-<a id="%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F--execution-order"></a>
+<a id="执行顺序--execution-order"></a>
 ## 执行顺序 / Execution order
 
 编译开始
@@ -262,7 +262,7 @@ Program terminating
         END {...} #  at runtime, ALAP, only ever runs once 
 ```
 
-<a id="%E7%A8%8B%E5%BA%8F%E6%89%A7%E8%A1%8C%E7%9B%B8%E4%BD%8D%E5%99%A8--program-execution-phasers"></a>
+<a id="程序执行相位器--program-execution-phasers"></a>
 # 程序执行相位器 / Program execution phasers
 
 <a id="begin"></a>
@@ -338,7 +338,7 @@ Runs after compilation during main execution, as late as possible, only runs onc
 
 When phasers are in different modules, the `INIT` and `END` phasers are treated as if declared at `use` time in the using module. (It is erroneous to depend on this order if the module is used more than once, however, since the phasers are only installed the first time they're noticed.)
 
-<a id="%E4%BB%A3%E7%A0%81%E5%9D%97%E7%9B%B8%E4%BD%8D%E5%99%A8--block-phasers"></a>
+<a id="代码块相位器--block-phasers"></a>
 # 代码块相位器 / Block phasers
 
 在代码块的上下文中执行具有自己的阶段。
@@ -465,7 +465,7 @@ If a `POST` fails or any kind of `LEAVE` block throws an exception while the sta
 
 The exceptions thrown by failing `PRE` and `POST` phasers cannot be caught by a `CATCH` in the same block, which implies that `POST` phaser are not run if a `PRE` phaser fails.
 
-<a id="%E5%BE%AA%E7%8E%AF%E7%9B%B8%E4%BD%8D%E5%99%A8--loop-phasers"></a>
+<a id="循环相位器--loop-phasers"></a>
 # 循环相位器 / Loop phasers
 
 `FIRST`、`NEXT` 和 `LAST` 只有在循环的词法范围内才有意义，并且只能发生在这种循环块的顶层。
@@ -497,7 +497,7 @@ A `NEXT` executes only if the end of the loop block is reached normally, or an e
 
 Runs when a loop is finished because the condition is met, or when it exits using `last` or `return`; it is executed after `LEAVE`.
 
-<a id="%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E7%9B%B8%E4%BD%8D%E5%99%A8--exception-handling-phasers"></a>
+<a id="异常处理相位器--exception-handling-phasers"></a>
 # 异常处理相位器 / Exception handling phasers
 
 <a id="catch"></a>
@@ -532,17 +532,17 @@ say elems gather {
 # 0
 ```
 
-<a id="%E5%AF%B9%E8%B1%A1%E7%9B%B8%E4%BD%8D%E5%99%A8--object-phasers"></a>
+<a id="对象相位器--object-phasers"></a>
 # 对象相位器 / Object phasers
 
-<a id="compose-%E5%B0%9A%E6%9C%AA%E5%AE%9E%E6%96%BD--compose-not-yet-implemented"></a>
+<a id="compose-尚未实施--compose-not-yet-implemented"></a>
 ## COMPOSE (尚未实施) / COMPOSE (Not yet implemented)
 
 将角色合成类时运行。
 
 Runs when a role is composed into a class.
 
-<a id="%E5%BC%82%E6%AD%A5%E7%9B%B8%E4%BD%8D%E5%99%A8--asynchronous-phasers"></a>
+<a id="异步相位器--asynchronous-phasers"></a>
 # 异步相位器 / Asynchronous phasers
 
 <a id="last-1"></a>
@@ -574,7 +574,7 @@ This phaser is similar to setting the `quit` routine while tapping a Supply with
 
 Appears in a supply block. Called when the supply is closed.
 
-<a id="doc-%E7%9B%B8%E4%BD%8D%E5%99%A8--doc-phasers"></a>
+<a id="doc-相位器--doc-phasers"></a>
 # DOC 相位器 / DOC phasers
 
 <a id="doc"></a>
