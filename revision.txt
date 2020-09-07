@@ -24,7 +24,7 @@ Raku 原生类型 - Raku native types
 枚举 - Enumeration
 正则 - Regexes
 特性
-  相位器
+相位器
   类型系统
   系统交互
   语句前缀

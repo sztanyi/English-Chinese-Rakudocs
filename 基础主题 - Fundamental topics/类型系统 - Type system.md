@@ -13,8 +13,8 @@ Introduction to the type system of Raku
     - [类型对象 / Type objects](#类型对象--type-objects)
         - [未定义 / Undefinedness](#未定义--undefinedness)
         - [强制类型转换 / Coercion](#强制类型转换--coercion)
-- [类型声明符 / Type declarators](#类型声明符--type-declarators)
-    - [`class`](#class)
+- [类型声明器 / Type declarators](#类型声明器--type-declarators)
+    - [`class` / 类声明器](#class--类声明器)
         - [混合类 / Mixins](#混合类--mixins)
         - [内省 / Introspection](#内省--introspection)
             - [元类 / Metaclass](#元类--metaclass)
@@ -165,8 +165,8 @@ say <a b c d>.starts-with("ab");
 # OUTPUT: «False␤»
 ```
 
-<a id="类型声明符--type-declarators"></a>
-# 类型声明符 / Type declarators
+<a id="类型声明器--type-declarators"></a>
+# 类型声明器 / Type declarators
 
 类型声明器将新类型引入给定范围。嵌套作用域可以用 `::` 分隔。如果尚未存在此类范围，则会自动创建新 [package](https://docs.raku.org/language/packages)。
 
@@ -188,8 +188,8 @@ class C {...}
 class C { has $.attr }
 ```
 
-<a id="class"></a>
-## `class`
+<a id="class--类声明器"></a>
+## `class` / 类声明器
 
 `class` 声明器创建一个编译时构造，该构造被编译成一个类型对象。后者是一个简单的 Raku 对象，它提供了通过执行初始化器和子方法来构造实例的方法，以填充类中声明的所有属性和任何父类中的值。可以在属性声明或构造函数中提供初始化器。了解如何运行它们是 [Metamodel::ClassHOW](https://docs.raku.org/type/Metamodel::ClassHOW) 的责任。这是在 Raku 中构建对象的唯一神奇部分，默认的父类型是 `Any`，它继承自 `Mu`。后者提供了默认的构造函数 `.new`（按约定命名）。除此之外，`.new` 没有任何特殊的含义，也没有任何特殊的处理方式。
 

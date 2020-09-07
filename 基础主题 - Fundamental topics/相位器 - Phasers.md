@@ -319,7 +319,7 @@ Runs after compilation during main execution, as soon as possible, only runs onc
 
 When phasers are in different modules, the `INIT` and `END` phasers are treated as if declared at `use` time in the using module. (It is erroneous to depend on this order if the module is used more than once, however, since the phasers are only installed the first time they're noticed.)
 
-在运行时生成的代码仍然可以触发 `CHECK` 和 `INIT` 相位器，当然，这些相位器不能做需要回到过去的事情。你需要一个虫洞。
+在运行时生成的代码仍然可以触发 `CHECK` 和 `INIT` 相位器，当然，这些相位器不能做需要回到过去的事情。你需要一个虫洞。。。
 
 Code that is generated at runtime can still fire off `CHECK` and `INIT` phasers, though of course those phasers can't do things that would require travel back in time. You need a wormhole for that.
 
@@ -418,7 +418,7 @@ Although the subroutine's body did not get run, because the sub expects an [Int]
 <a id="keep"></a>
 ## KEEP
 
-在每个成功的代码块出口处运行，作为 LEAVE 队列的一部分(共享相同的执行顺序)。
+在每个成功的代码块出口处运行，作为 LEAVE 队列的一部分（共享相同的执行顺序）。
 
 Runs at every successful block exit, as part of the LEAVE queue (shares the same order of execution).
 

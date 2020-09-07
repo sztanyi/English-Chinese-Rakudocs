@@ -69,7 +69,7 @@ Variable names can start with or without a special character called a *sigil*, 
             - [`$*KERNEL`](#$kernel)
             - [`$*DISTRO`](#$distro)
             - [`$*VM`](#$vm)
-            - [`$*PERL`](#$perl)
+            - [`$*RAKU`](#$raku)
             - [`$*PID`](#$pid)
             - [`$*PROGRAM-NAME`](#$program-name)
             - [`$*PROGRAM`](#$program)
@@ -173,15 +173,15 @@ The type of assignment (item or list) is decided by the first context seen in th
 
 ```Raku
 my $foo = 5;            # item assignment
-say $foo.perl;          # OUTPUT: «5»
+say $foo.raku;          # OUTPUT: «5»
 
 my @bar = 7, 9;         # list assignment
 say @bar.^name;         # OUTPUT: «Array»
-say @bar.perl;          # OUTPUT: «[7, 9]»
+say @bar.raku;          # OUTPUT: «[7, 9]»
 
 (my $baz) = 11, 13;     # list assignment
 say $baz.^name;         # OUTPUT: «List»
-say $baz.perl;          # OUTPUT: «$(11, 13)»
+say $baz.raku;          # OUTPUT: «$(11, 13)»
 ```
 
 列表赋值中的赋值行为依赖于包含它的表达式或者声明语句。
@@ -195,8 +195,8 @@ For instance, if the internal assignment is a declarator, item assignment is use
 ```Raku
 my @array;
 @array = my $num = 42, "str";   # item assignment: uses declarator
-say @array.perl;                # OUTPUT: «[42, "str"]» (an Array)
-say $num.perl;                  # OUTPUT: «42» (a Num)
+say @array.raku;                # OUTPUT: «[42, "str"]» (an Array)
+say $num.raku;                  # OUTPUT: «42» (a Num)
 ```
 
 类似地，如果中间的的赋值是一个用来初始化声明符的语句，赋值类型由中间表达式的上下文决定：
@@ -206,13 +206,13 @@ Similarly, if the internal assignment is an expression that is being used as an 
 ```Raku
 my $num;
 my @array = $num = 42, "str";    # item assignment: uses expression
-say @array.perl;                 # OUTPUT: «[42, "str"]» (an Array)
-say $num.perl;                   # OUTPUT: «42» (a Num)
+say @array.raku;                 # OUTPUT: «[42, "str"]» (an Array)
+say $num.raku;                   # OUTPUT: «42» (a Num)
  
 my ( @foo, $bar );
 @foo = ($bar) = 42, "str";       # list assignment: uses parentheses
-say @foo.perl;                   # OUTPUT: «[(42, "str"),]» (an Array)
-say $bar.perl;                   # OUTPUT: «$(42, "str")» (a List)#
+say @foo.raku;                   # OUTPUT: «[(42, "str"),]» (an Array)
+say $bar.raku;                   # OUTPUT: «$(42, "str")» (a List)#
 ```
 
 但是，如果中间的赋值既不是一个声明语句也不是一个表达式，而是更大的表达式中的一部分， 那个更大的表达式的上下文决定了赋值类型：
@@ -222,8 +222,8 @@ However, if the internal assignment is neither a declarator nor an expression, b
 ```Raku
 my ( @array, $num );
 @array = $num = 42, "str";    # list assignment
-say @array.perl;              # OUTPUT: «[42, "str"]»
-say $num.perl;                # OUTPUT: «42»
+say @array.raku;              # OUTPUT: «[42, "str"]»
+say $num.raku;                # OUTPUT: «42»
 ```
 
 赋值语句被解析为 `@array = (($num = 42), "str")`, 因为单条目赋值比逗号的优先级更高。
@@ -260,10 +260,10 @@ Sigilless variables do not enforce context, so they can be used to pass somethin
 
 ```Raku
 sub logged(&f, |args) {
-    say('Calling ' ~ &f.name ~ ' with arguments ' ~ args.perl);
+    say('Calling ' ~ &f.name ~ ' with arguments ' ~ args.raku);
     my \result = f(|args);
     #  ^^^^^^^ not enforcing any context here
-    say(&f.name ~ ' returned ' ~ result.perl);
+    say(&f.name ~ ' returned ' ~ result.raku);
     return |result;
 }
 ```
@@ -474,7 +474,7 @@ sub say-it()  { say $^a; } # invalid
 
 占位符变量不能有类型约束或者变量名称带有单个大写字母。
 
-Placeholder variables cannot have type constraints or a variable name with a single upper-case letter (this is disallowed to enable catching some Perl5-isms).
+Placeholder variables cannot have type constraints or a variable name with a single upper-case letter (this is disallowed to enable catching some Perl-isms).
 
 <a id="-号-4"></a>
 ## `:` 号
@@ -530,7 +530,7 @@ The `~` twigil is for referring to sublanguages (called slangs). The following
 | $~Quasi   | the current root of quasiquoting language        |
 | $~Regex   | the current root of regex language               |
 | $~Trans   | the current root of transliteration language     |
-| $~P5Regex | the current root of the Perl 5 regex language    |
+| $~P5Regex | the current root of the Perl regex language    |
 
 你可以在当前的词汇范围内扩充这些语言。
 
@@ -694,7 +694,7 @@ This can be used in conjunction with destructuring assignment. Any assignment to
 
 ```Raku
 my (Str $a, Str $b, Int $c) = <a b>;
-say [$a, $b, $c].perl;
+say [$a, $b, $c].raku;
 # OUTPUT: «["a", "b", Int]»
 ```
 
@@ -705,7 +705,7 @@ To destructure a list into a single value, create a list literal with one elemen
 ```Raku
 sub f { 1,2,3 };
 my ($a) = f;
-say $a.perl;
+say $a.raku;
 # OUTPUT: «1» 
 ```
 
@@ -715,7 +715,7 @@ To skip elements in the list use the anonymous state variable `$`.
 
 ```Raku
 my ($,$a,$,%h) = ('a', 'b', [1,2,3], {:1th});
-say [$a, %h].perl;
+say [$a, %h].raku;
 # OUTPUT: «["b", {:th(1)}]» 
 ```
 
@@ -866,7 +866,7 @@ say "1-a 2-b 3-c".subst(:g, /\d/, {<one two three>[$++]});
 Furthermore, state variables can be used outside of subroutines. You could, for example, use `$` in a one-liner to number the lines in a file.
 
 ```Raku
-perl6 -ne 'say ++$ ~ " $_"' example.txt
+raku -ne 'say ++$ ~ " $_"' example.txt
 ```
 
 在词法范围内对 `$` 的每个引用在效果上相当于一个独立的变量。
@@ -874,7 +874,7 @@ perl6 -ne 'say ++$ ~ " $_"' example.txt
 Each reference to `$` within a lexical scope is in effect a separate variable.
 
 ```Raku
-perl6 -e '{ say ++$; say $++  } for ^5'
+raku -e '{ say ++$; say $++  } for ^5'
 # OUTPUT: «1
 0
 2
@@ -1588,7 +1588,7 @@ say $*DISTRO; # OUTPUT: «debian (9.stretch)»
 This shows additional information on the operating system and version it's using, but as a matter of fact, this variable contains information which is useful to create portable programs, such as the path separator:
 
 ```Raku
-say $*DISTRO.perl;
+say $*DISTRO.raku;
 # OUTPUT: «Distro.new(release => "42.3", is-win => Bool::False, 
 #          path-sep => ":", name => "opensuse", 
 #          auth => "https://www.opensuse.org/", version => v42.3, 
@@ -1620,15 +1620,15 @@ say $*VM.config<versionmajor>, ".", $*VM.config<versionminor>;
 
 which are the version of the virtual machine, generally the same one as the one used in the interpreter and the overall Raku environment.
 
-<a id="$perl"></a>
-#### `$*PERL`
+<a id="$raku"></a>
+#### `$*RAKU`
 
 此对象包含有关当前 Raku 语言实现的信息：
 
 This object contains information on the current implementation of the Raku language:
 
 ```Raku
-say $*PERL.compiler.version; # OUTPUT: «v2018.11.52.g.06156.a.7.ca» 
+say $*RAKU.compiler.version; # OUTPUT: «v2018.11.52.g.06156.a.7.ca» 
 ```
 
 但其 gist 输出包括语言名称，然后是编译器的主要版本：
@@ -1636,7 +1636,7 @@ say $*PERL.compiler.version; # OUTPUT: «v2018.11.52.g.06156.a.7.ca»
 but its gist includes the name of the language, followed by the major version of the compiler:
 
 ```Raku
-say $*PERL; # OUTPUT: «Raku (6.d)» 
+say $*RAKU; # OUTPUT: «Raku (6.d)» 
 ```
 
 它将字符串化为 `Raku` ：
@@ -1644,8 +1644,12 @@ say $*PERL; # OUTPUT: «Raku (6.d)»
 It stringifies to `Raku`:
 
 ```Raku
-$*PERL.put; # OUTPUT: «Perl 6» 
+$*RAKU.put; # OUTPUT: «RAKU» 
 ```
+
+注意：在 Rakudo 2020.1 版本以前，这个信息只能通过 `$*PERL` 变量得到。从 Rakudo 版本 2020.1 其，可以同时通过 `$*RAKU` 和 `$*PERL` 变量得到。
+
+Note: Before Rakudo version 2020.1, this information was only available through the `$*PERL` variable. Since Rakudo version 2020.1, it is available through both the `$*RAKU` and the `$*PERL` variables.
 
 <a id="$pid"></a>
 #### `$*PID`
@@ -1657,9 +1661,9 @@ Object containing an integer describing the current Process IDentifier (operatin
 <a id="$program-name"></a>
 #### `$*PROGRAM-NAME`
 
-它包含当前可执行文件在命令行中输入时的路径，或者如果使用 -e 标志调用 perl，则为 `-e`。
+它包含当前可执行文件在命令行中输入时的路径，或者如果使用 -e 标志调用 raku，则为 `-e`。
 
-This contains the path to the current executable as it was entered on the command line, or `-e` if perl was invoked with the -e flag.
+This contains the path to the current executable as it was entered on the command line, or `-e` if raku was invoked with the -e flag.
 
 <a id="$program"></a>
 #### `$*PROGRAM`
@@ -1671,9 +1675,9 @@ Contains the location (in the form of an `IO::Path` object) of the Raku program 
 <a id="exit"></a>
 #### `&*EXIT`
 
-这是一个[可调用](https://docs.raku.org/type/callable)，其中包含执行 `exit()` 调用时将执行的代码。用于将 Raku 嵌入到另一个语言运行时（如 Perl5 中的 Inline::Perl6）的情况。
+这是一个[可调用](https://docs.raku.org/type/callable)，其中包含执行 `exit()` 调用时将执行的代码。用于将 Raku 嵌入到另一个语言运行时（如 Perl 中的 Inline::Perl6）的情况。
 
-This is a [Callable](https://docs.raku.org/type/Callable) that contains the code that will be executed when doing an `exit()` call. Intended to be used in situations where Raku is embedded in another language runtime (such as Inline::Perl6 in Perl 5).
+This is a [Callable](https://docs.raku.org/type/Callable) that contains the code that will be executed when doing an `exit()` call. Intended to be used in situations where Raku is embedded in another language runtime (such as Inline::Perl6 in Perl).
 
 <a id="$executable"></a>
 #### `$*EXECUTABLE`
@@ -1687,7 +1691,7 @@ Contains an `IO::Path` absolute path of the Raku executable that is currently ru
 
 包含当前运行的 Raku 可执行文件的名称。（例如 raku-p、raku-m）。优先选择 `$*EXECUTABLE`，因为不能保证 Raku 可执行文件在 `PATH` 中。
 
-Contains the name of the Raku executable that is currently running. (e.g. raku-p, raku-m). Favor `$*EXECUTABLE` over this one, since it's not guaranteed that the perl executable is in `PATH`.
+Contains the name of the Raku executable that is currently running. (e.g. raku-p, raku-m). Favor `$*EXECUTABLE` over this one, since it's not guaranteed that the raku executable is in `PATH`.
 
 <a id="$usage"></a>
 #### `$*USAGE`
