@@ -14,15 +14,15 @@ Several traits are already defined as part of the language or the Rakudo compile
 
 <!-- MarkdownTOC -->
 
-- [The `is` trait / `is` 特性](#the-is-trait--is-特性)
-	- [`is` applied to classes. / `is` 应用与类](#is-applied-to-classes--is-应用与类)
-	- [`is repr` and native representations. / `is repr` 与原生表示](#is-repr-and-native-representations--is-repr-与原生表示)
-	- [`is` on routines / 例程上的 `is`](#is-on-routines--例程上的-is)
+- [`is` 特性 / The `is` trait](#is-特性--the-is-trait)
+	- [`is` 应用与类 / `is` applied to classes.](#is-应用与类--is-applied-to-classes)
+	- [`is repr` 与原生表示 / `is repr` and native representations.](#is-repr-与原生表示--is-repr-and-native-representations)
+	- [例程上的 `is` / `is` on routines](#例程上的-is--is-on-routines)
 
 <!-- /MarkdownTOC -->
 
-<a id="the-is-trait--is-特性"></a>
-# The `is` trait / `is` 特性
+<a id="is-特性--the-is-trait"></a>
+# `is` 特性 / The `is` trait
 
 其定义为
 
@@ -36,8 +36,8 @@ proto sub trait_mod:<is>(Mu $, |) {*}
 
 `is` applies to any kind of scalar object, and can take any number of named or positional arguments. It is the most commonly used trait, and takes the following forms, depending on the type of the first argument.
 
-<a id="is-applied-to-classes--is-应用与类"></a>
-## `is` applied to classes. / `is` 应用与类
+<a id="is-应用与类--is-applied-to-classes"></a>
+## `is` 应用与类 / `is` applied to classes.
 
 最常见的形式，包括两个类，一个正在定义，另一个已经存在，[定义父母身份](https://docs.raku.org/syntax/is). `A is B` 中，如果两者都是类，则将 A 定义为 B 的子类。
 
@@ -72,8 +72,8 @@ say don't-instantiate.imm for ^10;
 
 Uninstantiable classes can still be used via their class variables and methods, as above. However, trying to instantiate them this way: `my $do-instantiate = don't-instantiate.new;` will yield the error `You cannot create an instance of this type (don't-instantiate)`.
 
-<a id="is-repr-and-native-representations--is-repr-与原生表示"></a>
-## `is repr` and native representations. / `is repr` 与原生表示
+<a id="is-repr-与原生表示--is-repr-and-native-representations"></a>
+## `is repr` 与原生表示 / `is repr` and native representations.
 
 由于 `is` 特征通常指的是应用于它们的类或对象的性质，因此它们在[原生调用](https://docs.raku.org/language/nativecall)中被广泛用来[详细说明](https://docs.raku.org/language/nativecall#Specifying_the_native_representation)通过 `is repr` 后缀指定的将要处理的数据结构。同时，`is native` 用于实际通过原生函数实现的例程。以下是可以使用的表示法：
 
@@ -102,8 +102,8 @@ say Thar.REPR;    #OUTPUT: «P6opaque␤»
 
 The [metaobject protocol](https://docs.raku.org/language/mop) uses it by default for every object and class unless specified otherwise; for that reason, it is in general not necessary unless you are effectively working with that interface.
 
-<a id="is-on-routines--例程上的-is"></a>
-## `is` on routines / 例程上的 `is`
+<a id="例程上的-is--is-on-routines"></a>
+## 例程上的 `is` / `is` on routines
 
 `is` 特征可用于方法和例程的定义以建立[优先级](https://docs.raku.org/language/functions#Precedence)和[关联性](https://docs.raku.org/language/functions#Associativity)。 它们作为[使用 `trait_mod` 特性定义的子例程](https://docs.raku.org/type/Sub#Traits)以要添加的特征的类型和名称作为参数。在子例程的情况下，特性是一种跨越类和角色层次结构添加功能的方法，甚至可以用来向独立定义的例程添加行为。
 

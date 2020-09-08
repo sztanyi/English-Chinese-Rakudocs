@@ -36,23 +36,22 @@ Introduction to the type system of Raku
         - [`trusts` 特性 / trait `trusts`](#trusts-特性--trait-trusts)
         - [扩充类 / Augmenting a class](#扩充类--augmenting-a-class)
         - [版本控制和作者 / Versioning and authorship](#版本控制和作者--versioning-and-authorship)
-    - [`role`](#role)
+    - [角色 / `role`](#角色--role)
         - [自动双关 / Auto-punning](#自动双关--auto-punning)
         - [`does` 特性 / trait `does`](#does-特性--trait-does)
         - [参数化 / Parameterized](#参数化--parameterized)
         - [作为类型约束 / As type constraints](#作为类型约束--as-type-constraints)
         - [版本控制和作者 / Versioning and authorship](#版本控制和作者--versioning-and-authorship-1)
-    - [`enum`](#enum)
+    - [枚举 / `enum`](#枚举--enum)
         - [元类 / Metaclass](#元类--metaclass-1)
         - [方法 / Methods](#方法--methods-1)
             - [enums 方法 / method enums](#enums-方法--method-enums)
         - [强制类型转换 / Coercion](#强制类型转换--coercion-1)
-    - [`module`](#module)
-        - [版本控制和作者 / Versioning and authorship](#版本控制和作者--versioning-and-authorship-2)
-    - [`package`](#package)
-    - [`grammar`](#grammar)
-        - [版本控制和作者 / Versioning and authorship](#版本控制和作者--versioning-and-authorship-3)
+    - [模组 / `module`](#模组--module)
+    - [包 / `package`](#包--package)
+    - [语法 / `grammar`](#语法--grammar)
     - [`subset`](#subset)
+- [版本、作者身份及 API 版本 / Versioning, authorship, and API version.](#版本、作者身份及-api-版本--versioning-authorship-and-api-version)
 
 <!-- /MarkdownTOC -->
 
@@ -74,11 +73,13 @@ If no type is provided by the user Raku assumes the type to be `Any`. This inclu
 my $a = 1;
 $a = Nil;
 say $a.^name;
-# OUTPUT: «Any␤»
+# OUTPUT: «Any
+»
 
 class C {};
 say C.^parents(:all);
-# OUTPUT: «((Any) (Mu))␤»
+# OUTPUT: «((Any) (Mu))
+»
 ```
 
 对于容器，默认类型是 `Any`，但默认类型约束是 `Mu`。请注意，绑定取代了容器，而不仅仅是值。在这种情况下，类型约束可能会改变。
@@ -95,9 +96,11 @@ To test if an object is a type object, use [smartmatch](https://docs.raku.org/la
 ```Raku
 my $a = Int;
 say $a ~~ Mu:U;
-# OUTPUT: «True␤»
+# OUTPUT: «True
+»
 say not $a.DEFINITE;
-# OUTPUT: «True␤»
+# OUTPUT: «True
+»
 ```
 
 如果调用方是实例，`.DEFINITE` 将返回 `True`。如果它返回 `False`，那么调用方就是类型对象。
@@ -111,7 +114,7 @@ say not $a.DEFINITE;
 
 Undefined objects maintain type information in Raku. Type objects are used to represent both undefinedness and the type of the undefined value. To provide a general undefined value use [Any](https://docs.raku.org/type/Any). If differentiation from `Any`, the default type for containers and arguments, is required use [Mu](https://docs.raku.org/type/Mu).
 
-由 [.CREATE](https://docs.raku.org/type/Mu#method_CREATE) 创建的对象的实例是按照约定定义的。方法 [.defined](https://docs.raku.org/type/Mu#routine_defined) 将返回 `Bool::True` 来表示确定性。该规则的例外是 [Nil](https://docs.raku.org/type/Nil) 和 [Failure](https://docs.raku.org/type/Failure)。请注意，任何对象都可以重载 `.defined`，因此可以携带额外的信息。此外，Raku 明确区分了定义和真值。许多值是定义的，尽管它们为假或空的含义。这些值是 `0`，[Bool::False](https://docs.raku.org/type/Bool)，[()](https://docs.raku.org/language/operators#term_(_))（空列表）和 [NaN](https://docs.raku.org/type/Num#NaN)。
+由 [.CREATE](https://docs.raku.org/type/Mu#method_CREATE) 创建的对象的实例按照约定是已定义的。方法 [.defined](https://docs.raku.org/type/Mu#routine_defined) 将返回 `Bool::True` 来表示确定性。该规则的例外是 [Nil](https://docs.raku.org/type/Nil) 和 [Failure](https://docs.raku.org/type/Failure)。请注意，任何对象都可以重载 `.defined`，因此可以携带额外的信息。此外，Raku 明确区分了定义和真值。许多值是定义的，尽管它们为假或空的含义。这些值是 `0`，[Bool::False](https://docs.raku.org/type/Bool)，[()](https://docs.raku.org/language/operators#term_(_))（空列表）和 [NaN](https://docs.raku.org/type/Num#NaN)。
 
 Instances of objects created by [.CREATE](https://docs.raku.org/type/Mu#method_CREATE) are by convention defined. The method [.defined](https://docs.raku.org/type/Mu#routine_defined) will return `Bool::True` to indicate definedness. The exceptions to that rule are [Nil](https://docs.raku.org/type/Nil) and [Failure](https://docs.raku.org/type/Failure). Please note that any object is able to overload `.defined` and as such can carry additional information. Also, Raku makes a clear distinction between definedness and trueness. Many values are defined even though they carry the meaning of wrongness or emptiness. Such values are `0`, [Bool::False](https://docs.raku.org/type/Bool), [()](https://docs.raku.org/language/operators#term_(_)) (empty list) and [NaN](https://docs.raku.org/type/Num#NaN).
 
@@ -122,7 +125,8 @@ Values can become undefined at runtime via [mixin](https://docs.raku.org/languag
 ```Raku
 my Int $i = 1 but role :: { method defined { False } };
 say $i // "undefined";
-# OUTPUT: «undefined␤»
+# OUTPUT: «undefined
+»
 ```
 
 要测试是否定义，请调用方法 `.defined`、使用 [//](https://docs.raku.org/language/operators#infix_//)、[with/without](https://docs.raku.org/language/control#with,_orwith,_without) 和 [签名](https://docs.raku.org/type/Signature#Constraining_defined_and_undefined_values)。
@@ -150,7 +154,8 @@ augment class Int {
 my $i = 10;
 $i.=C;
 $i.this-is-c();
-# OUTPUT: «oioioioioioioioioioi‽␤»
+# OUTPUT: «oioioioioioioioioioi‽
+»
 ```
 
 Raku 提供了 [Cool](https://docs.raku.org/type/Cool) 中定义的方法在应用进一步的操作之前转换为目标类型。大多数内置类型都来自 `Cool`，因此可能提供可能不想要的隐式强制类型转换。关注这些方法的无陷阱使用是用户的责任。
@@ -160,9 +165,11 @@ Raku provides methods defined in [Cool](https://docs.raku.org/type/Cool) to conv
 ```Raku
 my $whatever = "123.6";
 say $whatever.round;
-# OUTPUT: «124␤»
+# OUTPUT: «124
+»
 say <a b c d>.starts-with("ab");
-# OUTPUT: «False␤»
+# OUTPUT: «False
+»
 ```
 
 <a id="类型声明器--type-declarators"></a>
@@ -175,7 +182,8 @@ Type declarators introduce a new type into the given scope. Nested scopes can be
 ```Raku
 class Foo::Bar::C {};
 put Foo::Bar::.keys;
-# OUTPUT: «C␤»
+# OUTPUT: «C
+»
 ```
 
 前向声明可以提供一个只包含 `...` 的代码块。如果定义了类型，编译器将在当前作用域的末尾进行检查。
@@ -213,7 +221,9 @@ my R $A = A but R;
 my $a1 = $A.new;
 $a1.m;
 say [$A ~~ R, $a1 ~~ R];
-# OUTPUT: «oi‽␤[True True]␤»
+# OUTPUT: «oi‽
+[True True]
+»
 ```
 
 <a id="内省--introspection"></a>
@@ -229,7 +239,8 @@ To test if a given type object is a class, test the metaobject method `.HOW` aga
 ```Raku
 class C {};
 say C.HOW ~~ Metamodel::ClassHOW;
-# OUTPUT: «True␤»
+# OUTPUT: «True
+»
 ```
 
 <a id="私有属性--private-attributes"></a>
@@ -246,7 +257,8 @@ class C {
 };
 
 say (.name, .package, .has_accessor) for C.new.^attributes;
-# OUTPUT: «($!priv (C) False)␤»
+# OUTPUT: «($!priv (C) False)
+»
 ```
 
 <a id="方法--methods"></a>
@@ -275,7 +287,8 @@ class B is A {
 
 my int $i;
 B.new.m($i);
-# OUTPUT: «B::Int␤»
+# OUTPUT: «B::Int
+»
 ```
 
 <a id="only-方法--only-method"></a>
@@ -290,7 +303,8 @@ class C {
     only method m {};
     multi method m {};
 };
-# OUTPUT: «X::Comp::AdHoc: Cannot have a multi candidate for 'm' when an only method is also in the package 'C'␤»
+# OUTPUT: «X::Comp::AdHoc: Cannot have a multi candidate for 'm' when an only method is also in the package 'C'
+»
 ```
 
 <a id="build-子方法--submethod-build"></a>
@@ -312,8 +326,10 @@ class C {
 };
 
 C.new.say; C.new('answer').say;
-# OUTPUT: «C.new(attr => 42)␤
-#          C.new(attr => "answer")␤»
+# OUTPUT: «C.new(attr => 42)
+
+#          C.new(attr => "answer")
+»
 ```
 
 <a id="fallback-方法--fallback-method"></a>
@@ -331,7 +347,8 @@ class Magic {
 };
 Magic.new.simsalabim(42, "answer");
 
-# OUTPUT: «simsalabim called with parameters ⌈\(42, "answer")⌋␤»
+# OUTPUT: «simsalabim called with parameters ⌈\(42, "answer")⌋
+»
 ```
 
 <a id="保留方法名--reserved-method-names"></a>
@@ -346,8 +363,10 @@ class A {
     method WHAT { "ain't gonna happen" }
 };
 
-say A.new.WHAT;    # OUTPUT: «(A)␤»
-say A.new."WHAT"() # OUTPUT: «ain't gonna happen␤»
+say A.new.WHAT;    # OUTPUT: «(A)
+»
+say A.new."WHAT"() # OUTPUT: «ain't gonna happen
+»
 ```
 
 <a id="包作用域里的方法--methods-in-package-scope"></a>
@@ -363,7 +382,8 @@ class C {
     method loose {}
 };
 say C::.keys
-# OUTPUT: «(&packaged)␤»
+# OUTPUT: «(&packaged)
+»
 ```
 
 <a id="使用同名变量和方法设置属性--setting-attributes-with-namesake-variables-and-methods"></a>
@@ -381,27 +401,30 @@ class B {
     #                  ^^^^  Instead of i => $.i or :i($.i)
 };
 my $a = B.new.m;
-say $a.i; # OUTPUT: «answer␤»
+say $a.i; # OUTPUT: «answer
+»
 ```
 
-`$.i` 方法调用名为 `i` 并且属性名也叫 `i`，因此 Raku 允许我们用快捷方式。这同样适用于 `:$var`、`:$!private-attribute`、`:&attr-with-code-in-it` 等等。
+`$.i` 方法调用名字为 `i` 并且属性名也叫 `i`，因此 Raku 允许我们用快捷方式。这同样适用于 `:$var`、`:$!private-attribute`、`:&attr-with-code-in-it` 等等。
 
 Since `$.i` method call is named `i` and the attribute is also named `i`, Raku lets us shortcut. The same applies to `:$var`, `:$!private-attribute`, `:&attr-with-code-in-it`, and so on.
 
 <a id="is-nodal-特性--trait-is-nodal"></a>
 ### `is nodal` 特性 / trait `is nodal`
 
-标记一个 [List](https://docs.raku.org/type/List) 方法，以指示超级运算符不要下降到内部 [Iterables](https://docs.raku.org/type/Iterable) 来调用此方法。这种特性通常不是最终用户会使用的特性，除非他们正在子类化或增强核心[List](https://docs.raku.org/type/List)类型。
+标记一个 [List](https://docs.raku.org/type/List) 方法，以指示超级运算符不要下降到内部 [Iterables](https://docs.raku.org/type/Iterable) 来调用此方法。这种特性通常不是最终用户会使用的特性，除非他们正在子类化或增强核心 [List](https://docs.raku.org/type/List) 类型。
 
 Marks a [List](https://docs.raku.org/type/List) method to indicate to hyperoperator to not descend into inner [Iterables](https://docs.raku.org/type/Iterable) to call this method. This trait generally isn't something end users would be using, unless they're subclassing or augmenting core [List](https://docs.raku.org/type/List) type.
 
-为了证明这一区别，请考虑以下例子：第一种方法 (`elems`) 使用 `is nodal` 的方法，第二种方法使用不是节点的方法 (`Int`)。
+为了证明这一区别，请考虑以下例子：第一种方法（`elems`）使用了 `is nodal` 特性，第二种（`Int`）方法没有使用 `is nodal`。
 
 In order to demonstrate the difference consider the following examples, the first using a method (`elems`) that `is nodal` and the second using a method (`Int`) which is not nodal.
 
 ```Raku
-say ((1.0, "2", 3e0), [^4], '5')».elems; # OUTPUT: «(3, 4, 1)␤»
-say ((1.0, "2", 3e0), [^4], '5')».Int    # OUTPUT: «((1 2 3) [0 1 2 3] 5)␤»
+say ((1.0, "2", 3e0), [^4], '5')».elems; # OUTPUT: «(3, 4, 1)
+»
+say ((1.0, "2", 3e0), [^4], '5')».Int    # OUTPUT: «((1 2 3) [0 1 2 3] 5)
+»
 ```
 
 <a id="handles-特性--trait-handles"></a>
@@ -426,7 +449,8 @@ class C {
     has A $.delegate handles 'm';
     method new($delegate){ self.bless(delegate => $delegate) }
 };
-say C.new(B.new).m(); # OUTPUT: «B::m has been called.␤»
+say C.new(B.new).m(); # OUTPUT: «B::m has been called.
+»
 ```
 
 除了方法名外，还可以作用于 `Pair`（用于重命名）、名字数组、`Pair` 数组、 `Regex` 或者 `Whatever` 。在后一种情况下，类本身及其继承链中的现有方法都将优先。如果需要搜索本地 `FALLBACK`，请使用 `HyperWhatever`。
@@ -479,7 +503,8 @@ class A {
     multi method from-a(){ 'A::from-a' }
 }
 say A.new.^parents(:all).perl;
-# OUTPUT: «(Any, Mu)␤»
+# OUTPUT: «(Any, Mu)
+»
 
 class B {
     method from-b(){ 'B::from-b ' }
@@ -488,7 +513,8 @@ class B {
 
 class C is A is B {}
 say C.new.from-a();
-# OUTPUT: «A::from-a␤»
+# OUTPUT: «A::from-a
+»
 ```
 
 <a id="is-rw-特性--trait-is-rw"></a>
@@ -511,7 +537,8 @@ class C is rw {
     has $.a;
 };
 my $c = C.new.a = 42;
-say $c; # OUTPUT: «42␤»
+say $c; # OUTPUT: «42
+»
 ```
 
 <a id="is-required-特性--trait-is-required"></a>
@@ -526,7 +553,7 @@ multi sub trait_mod:<is>(Attribute $attr, :$required!)
 multi sub trait_mod:<is>(Parameter:D $param, :$required!)
 ```
 
-标记一个类或者角色的属性必须的。如果在对象构建时属性没有被初始化则抛出 [X::Attribute::Required](https://docs.raku.org/type/X::Attribute::Required) 异常。
+标记一个类或者角色的属性是必须的。如果在对象构建时属性没有被初始化则抛出 [X::Attribute::Required](https://docs.raku.org/type/X::Attribute::Required) 异常。
 
 Marks a class or roles attribute as required. If the attribute is not initialized at object construction time throws [X::Attribute::Required](https://docs.raku.org/type/X::Attribute::Required).
 
@@ -536,14 +563,16 @@ class Correct {
     submethod BUILD (:$attr) { $!attr = $attr }
 }
 say Correct.new(attr => 42);
-# OUTPUT: «Correct.new(attr => 42)␤»
+# OUTPUT: «Correct.new(attr => 42)
+»
 
 class C {
     has $.attr is required;
 }
 C.new;
 CATCH { default { say .^name => .Str } }
-# OUTPUT: «X::Attribute::Required => The attribute '$!attr' is required, but you did not provide a value for it.␤»
+# OUTPUT: «X::Attribute::Required => The attribute '$!attr' is required, but you did not provide a value for it.
+»
 ```
 
 你可以提供一个理由作为 `is required` 的参数，说明为什么是必须的。
@@ -555,7 +584,9 @@ class Correct {
     has $.attr is required("it's so cool")
 };
 say Correct.new();
-# OUTPUT: «The attribute '$!attr' is required because it's so cool,␤but you did not provide a value for it.␤»
+# OUTPUT: «The attribute '$!attr' is required because it's so cool,
+but you did not provide a value for it.
+»
 ```
 
 <a id="hides-特性--trait-hides"></a>
@@ -576,7 +607,8 @@ class B hides A {
 
 B.new.m;
 B.new.n;
-# OUTPUT: «i am hidden␤»
+# OUTPUT: «i am hidden
+»
 ```
 
 `is hidden` 特性允许类隐藏自己不受[重新调度](https://docs.raku.org/language/functions#Re-dispatching)的影响。
@@ -594,7 +626,8 @@ class B is A {
 
 B.new.m;
 B.new.n;
-# OUTPUT: «i am hidden␤»
+# OUTPUT: «i am hidden
+»
 ```
 
 <a id="trusts-特性--trait-trusts"></a>
@@ -617,7 +650,8 @@ class B {
     method change { $!a!A::foo = 42; self }
 };
 say B.new.change;
-# OUTPUT: «B.new(a => A.new(foo => 42))␤»
+# OUTPUT: «B.new(a => A.new(foo => 42))
+»
 ```
 
 <a id="扩充类--augmenting-a-class"></a>
@@ -636,10 +670,11 @@ use MONKEY; augment class Str {
 my $s = "42";
 $s.mark(set => "answer");
 say $s.mark
-# OUTPUT: «answer␤»
+# OUTPUT: «answer
+»
 ```
 
-在类片段中所能做的事情几乎没有限制。其中之一是将方法或子例程声明为 multi。使用添加的属性尚未实现。请注意，添加一个仅在其命名参数不同的多个候选项将在已经定义的参数后面添加该候选项，因此它不会被调度程序选中。
+在类片段中所能做的事情几乎没有限制。其中之一是将方法或子例程重新声明为 multi。使用添加的属性尚未实现。请注意，添加一个仅在其命名参数不同的多个候选项将在已经定义的参数后面添加该候选项，因此它不会被调度程序选中。
 
 There are few limitations of what can be done inside the class fragment. One of them is the redeclaration of a method or sub into a multi. Using added attributes is not yet implemented. Please note that adding a multi candidate that differs only in its named parameters will add that candidate behind the already defined one and as such it won't be picked by the dispatcher.
 
@@ -653,11 +688,12 @@ Versioning and authorship can be applied via the adverbs `:ver<>` and `:auth<>`.
 ```Raku
 class C:ver<4.2.3>:auth<me@here.local> {}
 say [C.^ver, C.^auth];
-# OUTPUT: «[v4.2.3 me@here.local]␤»
+# OUTPUT: «[v4.2.3 me@here.local]
+»
 ```
 
-<a id="role"></a>
-## `role`
+<a id="角色--role"></a>
+## 角色 / `role`
 
 角色是类片段，它允许定义被类共享的接口。`role` 声明符还引入了一个可用于类型检查的类型对象。角色可以在运行时和编译时混合到类和对象中。`role` 声明符返回创建的类型对象，从而允许定义匿名角色和就地混合。
 
@@ -677,7 +713,8 @@ my Serialize @list;
 @list.push: B.new;
 
 say @list».to-string;
-# OUTPUT: «[A<57192848> B<57192880>]␤»
+# OUTPUT: «[A<57192848> B<57192880>]
+»
 ```
 
 使用 `...` 作为方法主体的唯一元素来声明方法是抽象的。任何得到这样一个方法的类都必须重载它。如果在编译单元结束前未重载该方法，则将抛出 `X::Comp::AdHoc` 异常。
@@ -687,7 +724,8 @@ Use `...` as the only element of a method body to declare a method to be abstrac
 ```Raku
 EVAL 'role R { method overload-this(){...} }; class A does R {}; ';
 CATCH { default { say .^name, ' ', .Str } }
-# OUTPUT: «X::Comp::AdHoc Method 'overload-this' must be implemented by A because it is required by roles: R.␤»
+# OUTPUT: «X::Comp::AdHoc Method 'overload-this' must be implemented by A because it is required by roles: R.
+»
 ```
 
 <a id="自动双关--auto-punning"></a>
@@ -700,11 +738,14 @@ A role can be used instead of a class to create objects. Since roles can't exist
 ```Raku
 role R { method m { say 'oi‽' } };
 R.new.^mro.say;
-# OUTPUT: «((R) (Any) (Mu))␤»
+# OUTPUT: «((R) (Any) (Mu))
+»
 say R.new.^mro[0].HOW.^name;
-# OUTPUT: «Perl6::Metamodel::ClassHOW␤»
+# OUTPUT: «Perl6::Metamodel::ClassHOW
+»
 say R.new ~~ R;
-# OUTPUT: «True␤»
+# OUTPUT: «True
+»
 ```
 
 <a id="does-特性--trait-does"></a>
@@ -721,7 +762,8 @@ role R2 {};
 class C does R1 {};
 
 say [C ~~ R1, C ~~ R2];
-# OUTPUT: «[True True]␤»
+# OUTPUT: «[True True]
+»
 ```
 
 运行时混入，见 [but](https://docs.raku.org/language/operators#infix_but) 和 [does](https://docs.raku.org/language/operators#infix_does)。
@@ -741,7 +783,8 @@ class C does R["default"] { };
 
 my $c = C.new;
 say $c;
-# OUTPUT: «C.new(a => "default")␤»
+# OUTPUT: «C.new(a => "default")
+»
 ```
 
 参数可以具有类型约束，`where` 子句不支持类型，但可以通过 `subset` 实现。
@@ -764,13 +807,15 @@ Default parameters can be provided.
 role R[$p = fail("Please provide a parameter to role R")] {};
 my $i = 1 does R;
 CATCH { default { say .^name, ': ', .Str} }
-# OUTPUT: «X::AdHoc: Could not instantiate role 'R':␤Please provide a parameter to role R␤»
+# OUTPUT: «X::AdHoc: Could not instantiate role 'R':
+Please provide a parameter to role R
+»
 ```
 
 <a id="作为类型约束--as-type-constraints"></a>
 ### 作为类型约束 / As type constraints
 
-角色可以用作类型约束，只要需要的是类型。如果一个角色与 `does` 或 `but` 混合，则将其类型对象添加到所述对象的类型对象列表中。如果使用角色代替类(使用自动双关)，则自动生成的类的类型对象(与角色同名)将被添加到继承链中。
+角色可以用作类型约束，只要需要的是类型。如果一个角色与 `does` 或 `but` 混合，则将其类型对象添加到所述对象的类型对象列表中。如果使用角色代替类（使用自动双关），则自动生成的类的类型对象（与角色同名）将被添加到继承链中。
 
 Roles can be used as type constraints wherever a type is expected. If a role is mixed in with `does` or `but`, its type-object is added to the type-object list of the object in question. If a role is used instead of a class (using auto-punning), the auto-generated class' type-object, of the same name as the role, is added to the inheritance chain.
 
@@ -805,9 +850,11 @@ multi sub N(SI-kilogram $kg, SI-meter $m, SI-second $s --> SI-Newton ){ ($kg * (
 multi sub N(SI-kilogram $kg --> SI-Newton)                            { ($kg * g) does SI-Newton }
 
 say [75kg, N(75kg)];
-# OUTPUT: «[75kg 735.49875kN]␤»
+# OUTPUT: «[75kg 735.49875kN]
+»
 say [(75kg).^name, N(75kg).^name];
-# OUTPUT: «[Int+{SI-kilogram} Rat+{SI-Newton}]␤»
+# OUTPUT: «[Int+{SI-kilogram} Rat+{SI-Newton}]
+»
 ```
 
 <a id="版本控制和作者--versioning-and-authorship-1"></a>
@@ -820,11 +867,12 @@ Versioning and authorship can be applied via the adverbs `:ver<>` and `:auth<>`.
 ```Raku
 role R:ver<4.2.3>:auth<me@here.local> {}
 say [R.^ver, R.^auth];
-# OUTPUT: «[v4.2.3 me@here.local]␤»
+# OUTPUT: «[v4.2.3 me@here.local]
+»
 ```
 
-<a id="enum"></a>
-## `enum`
+<a id="枚举--enum"></a>
+## 枚举 / `enum`
 
 枚举提供具有关联类型的常量键值对。任何键都是该类型的，并作为符号注入到当前范围中。如果使用符号，则将其视为常量表达式，并将符号替换为枚举键值对的值。任何枚举都从角色 [`Enumeration`](https://docs.raku.org/type/Enumeration) 继承方法。不支持用于生成键值对的复杂表达式。一般来说，`enum` 是一个元素中混入了 `Enumeration` 角色的 [Map](https://docs.raku.org/type/Map)；这个角色对于每个元素包括一个索引，它在 map 上创建了一个顺序。
 
@@ -836,8 +884,10 @@ Stringification of the symbol, which is done automatically in string context and
 
 ```Raku
 enum Names ( name1 => 1, name2 => 2 );
-say name1, ' ', name2; # OUTPUT: «name1 name2␤»
-say name1.value, ' ', name2.value; # OUTPUT: «1 2␤»
+say name1, ' ', name2; # OUTPUT: «name1 name2
+»
+say name1.value, ' ', name2.value; # OUTPUT: «1 2
+»
 ```
 
 比较符号将使用类型信息和枚举对的值。因为值类型支持 `Num` 和 `Str`。
@@ -850,11 +900,15 @@ sub same(Names $a, Names $b){
    $a eqv $b
 }
 
-say same(name1, name1); # OUTPUT: «True␤»
-say same(name1, name2); # OUTPUT: «False␤»
+say same(name1, name1); # OUTPUT: «True
+»
+say same(name1, name2); # OUTPUT: «False
+»
 my $a = name1;
-say $a ~~ Names; # OUTPUT: «True␤»
-say $a.^name;    # OUTPUT: «Names␤»
+say $a ~~ Names; # OUTPUT: «True
+»
+say $a.^name;    # OUTPUT: «Names
+»
 ```
 
 所有的键都必须是同类型的。
@@ -865,7 +919,8 @@ All keys have to be of the same type.
 enum Mass ( mg => 1/1000, g => 1/1, kg => 1000/1 );
 
 say Mass.enums;
-# OUTPUT: «Map.new((g => 1, kg => 1000, mg => 0.001))␤»
+# OUTPUT: «Map.new((g => 1, kg => 1000, mg => 0.001))
+»
 ```
 
 你可以使用任何一种符号：
@@ -881,7 +936,8 @@ enum Suit <♣ ♦ ♥ ♠>;
 As long as you refer to that symbol using the full syntax:
 
 ```Raku
-say Suit::<♣>; # OUTPUT: «♣␤»
+say Suit::<♣>; # OUTPUT: «♣
+»
 ```
 
 试图不使用上述语法访问 Unicode 枚举键将导致错误：
@@ -889,10 +945,11 @@ say Suit::<♣>; # OUTPUT: «♣␤»
 Attempting to access unicode enum keys without said syntax will result in an error:
 
 ```Raku
-say ♣ ; # OUTPUT: «(exit code 1) ===SORRY!===␤Argument to "say" seems to be    malformed…
+say ♣ ; # OUTPUT: «(exit code 1) ===SORRY!===
+Argument to "say" seems to be    malformed…
 ```
 
-如果没有给定值，`Int` 将被假定为值类型，并从零开始每键递增 1。作为 enum 键类型支持 `Int`、`Num`、`Rat` 和 `Str`。
+如果没有给定值，`Int` 将被假定为值类型，并从零开始每键递增一。作为 enum 键类型支持 `Int`、`Num`、`Rat` 和 `Str`。
 
 If no value is given `Int` will be assumed as the values type and incremented by one per key starting at zero. As enum key types `Int`, `Num`, `Rat` and `Str` are supported.
 
@@ -900,7 +957,8 @@ If no value is given `Int` will be assumed as the values type and incremented by
 enum Numbers <one two three four>;
 
 say Numbers.enums;
-# OUTPUT: «Map.new((four => 3, one => 0, three => 2, two => 1))␤»
+# OUTPUT: «Map.new((four => 3, one => 0, three => 2, two => 1))
+»
 ```
 
 可以提供不同的起始值。
@@ -911,7 +969,8 @@ A different starting value can be provided.
 enum Numbers «:one(1) two three four»;
 
 say Numbers.enums;
-# OUTPUT: «Map.new((four => 4, one => 1, three => 3, two => 2))␤»
+# OUTPUT: «Map.new((four => 4, one => 1, three => 3, two => 2))
+»
 ```
 
 你也可以使用 **()** 形式来初始化，但是需要引号括起来没有值的键：
@@ -933,9 +992,12 @@ Enums can also be anonymous, with the only difference with named `enum`s being t
 
 ```Raku
 my $e = enum <one two three>;
-say two;       # OUTPUT: «two␤»
-say one.^name; # OUTPUT: «␤»
-say $e.^name;  # OUTPUT: «Map␤»
+say two;       # OUTPUT: «two
+»
+say one.^name; # OUTPUT: «
+»
+say $e.^name;  # OUTPUT: «Map
+»
 ```
 
 有各种方法可以访问已定义的符号的键和值。所有这些都会将值转换为 `Str`，这可能不令人满意。通过将枚举看作一个包，我们可以得到键的类型列表。
@@ -946,7 +1008,8 @@ There are various methods to get access to the keys and values of the symbols th
 enum E(<one two>);
 my @keys = E::.values;
 say @keys.map: *.enums;
-# OUTPUT: «(Map.new((one => 0, two => 1)) Map.new((one => 0, two => 1)))␤»
+# OUTPUT: «(Map.new((one => 0, two => 1)) Map.new((one => 0, two => 1)))
+»
 ```
 
 使用 **()** 括号，可以使用任意动态定义的列表定义枚举。列表应该包含 Pair 对象：
@@ -967,7 +1030,8 @@ We can create an enum using it with this code:
 
 ```Raku
     enum ConfigValues ('config'.IO.lines.map({ my ($key, $value) = $_.words; $key => $value }));
-    say ConfigValues.enums;          # OUTPUT: «Map.new((a => 1, b => 2))␤»
+    say ConfigValues.enums;          # OUTPUT: «Map.new((a => 1, b => 2))
+»
 ```
 
 首先，我们从 `config` 文件中读取行，使用 `words` 方法拆分每一行，并为每一行返回结果对，从而创建键值对列表。
@@ -983,8 +1047,10 @@ To test if a given type object is an `enum`, test the metaobject method `.HOW` a
 
 ```Raku
 enum E(<a b c>);
-say E.HOW ~~ Metamodel::EnumHOW; # OUTPUT: «True␤»
-say E ~~ Enumeration;            # OUTPUT: «True␤»
+say E.HOW ~~ Metamodel::EnumHOW; # OUTPUT: «True
+»
+say E ~~ Enumeration;            # OUTPUT: «True
+»
 ```
 
 <a id="方法--methods-1"></a>
@@ -1007,7 +1073,8 @@ Returns the list of enum-pairs.
 
 ```Raku
 enum Mass ( mg => 1/1000, g => 1/1, kg => 1000/1 );
-say Mass.enums; # OUTPUT: «{g => 1, kg => 1000, mg => 0.001}␤»
+say Mass.enums; # OUTPUT: «{g => 1, kg => 1000, mg => 0.001}
+»
 ```
 
 <a id="强制类型转换--coercion-1"></a>
@@ -1019,16 +1086,18 @@ If you want to coerce the value of an enum element to its proper enum object, us
 
 ```Raku
 my enum A (sun => 42, mon => 72);
-A(72).pair.say;   # OUTPUT: «mon => 72␤»
-A(1000).say; # OUTPUT: «(A)␤»
+A(72).pair.say;   # OUTPUT: «mon => 72
+»
+A(1000).say; # OUTPUT: «(A)
+»
 ```
 
 最后一个例子显示了如果没有包含作为值的枚举对会发生什么情况。
 
 The last example shows what happens if there is no enum-pair that includes that as a value.
 
-<a id="module"></a>
-## `module`
+<a id="模组--module"></a>
+## 模组 / `module`
 
 模组通常是公开 Raku 构造的一个或多个源文件，例如类、角色、语法、子例程和变量。模组通常用于将 Raku 核心代码作为库分发，这些库可以在另一个 Raku 程序中使用。
 
@@ -1038,21 +1107,8 @@ Modules are usually one or more source files that expose Raku constructs, such a
 
 For a full explanation see [Modules](https://docs.raku.org/language/modules).
 
-<a id="版本控制和作者--versioning-and-authorship-2"></a>
-### 版本控制和作者 / Versioning and authorship
-
-版本控制和作者可以通过副词 `:ver<>` 和 `:auth<>` 指定。两者都使用一个字符串作为参数，因为 `:ver` 字符串被转换为一个 [Version](https://docs.raku.org/type/Version) 对象。若要查询类的版本和作者使用 `.^ver` 和 `^.auth`。
-
-Versioning and authorship can be applied via the adverbs `:ver<>` and `:auth<>`. Both take a string as argument, for `:ver` the string is converted to a [Version](https://docs.raku.org/type/Version) object. To query a modules version and author use `.^ver` and `^.auth`.
-
-```Raku
-module M:ver<4.2.3>:auth<me@here.local> {}
-say [M.^ver, M.^auth];
-# OUTPUT: «[v4.2.3 me@here.local]␤»
-```
-
-<a id="package"></a>
-## `package`
+<a id="包--package"></a>
+## 包 / `package`
 
 包是命名程序元素的嵌套命名空间。模组、类和语法都是包的类型。
 
@@ -1062,8 +1118,8 @@ Packages are nested namespaces of named program elements. Modules, classes and g
 
 For a full explanation see [Packages](https://docs.raku.org/language/packages).
 
-<a id="grammar"></a>
-## `grammar`
+<a id="语法--grammar"></a>
+## 语法 / `grammar`
 
 grammar 是一种特定类型的类，用于解析文本。grammar 由规则、标记和正则表达式组成，它们实际上是方法，因为 grammar 是类。
 
@@ -1072,19 +1128,6 @@ Grammars are a specific type of class intended for parsing text. Grammars are co
 有关详细说明，请参见 [Grammar](https://docs.raku.org/language/grammars)。
 
 For a full explanation see [Grammars](https://docs.raku.org/language/grammars).
-
-<a id="版本控制和作者--versioning-and-authorship-3"></a>
-### 版本控制和作者 / Versioning and authorship
-
-版本控制和作者可以通过副词 `:ver<>` 和 `:auth<>` 指定。两者都使用一个字符串作为参数，因为 `:ver` 字符串被转换为一个 [Version](https://docs.raku.org/type/Version) 对象。若要查询类的版本和作者使用 `.^ver` 和 `^.auth`。
-
-Versioning and authorship can be applied via the adverbs `:ver<>` and `:auth<>`. Both take a string as argument, for `:ver` the string is converted to a [Version](https://docs.raku.org/type/Version) object. To query a grammars version and author use `.^ver` and `^.auth`.
-
-```Raku
-grammar G:ver<4.2.3>:auth<me@here.local> {}
-say [G.^ver, G.^auth];
-# OUTPUT: «[v4.2.3 me@here.local]␤»
-```
 
 <a id="subset"></a>
 ## `subset`
@@ -1098,7 +1141,8 @@ subset Positive of Int where * > -1;
 my Positive $i = 1;
 $i = -42;
 CATCH { default { put .^name,': ', .Str } }
-# OUTPUT: «X::TypeCheck::Assignment: Type check failed in assignment to $i; expected Positive but got Int (-42)␤»
+# OUTPUT: «X::TypeCheck::Assignment: Type check failed in assignment to $i; expected Positive but got Int (-42)
+»
 ```
 
 subset 可用于函数签名，例如键入输出：
@@ -1124,7 +1168,8 @@ sub g(@a where { .all ~~ subset :: where E1|E2 } ) {
     say @a
 }
 g([A, C]);
-# OUTPUT: «[A C]␤»
+# OUTPUT: «[A C]
+»
 ```
 
 subset 可以用于动态地检查类型，这可以与 [require](https://docs.raku.org/language/modules#require) 结合使用。
@@ -1135,3 +1180,26 @@ Subsets can be used to check types dynamically, which can be useful in conjuncti
 require ::('YourModule');
 subset C where ::('YourModule::C');
 ```
+
+<a id="版本、作者身份及-api-版本--versioning-authorship-and-api-version"></a>
+# 版本、作者身份及 API 版本 / Versioning, authorship, and API version.
+
+当你声明一个类型时，你可以向它传递一个版本、作者和/或 API 编号，所有这些都可以在随后进行内省。类型的版本控制、作者身份和/或 API 编号可以分别通过副词 `:ver<>`、`:auth<>` 和 `:api<>` 来应用。它们都以字符串作为参数；对于 `:ver`，字符串被转换为 [`Version`](https://docs.raku.org/type/Version) 对象，并且对于 `:api`，字符串将转换为 [allomorph](https://docs.raku.org/language/glossary#index-entry-Allomorph) [`IntStr`](https://docs.raku.org/type/IntStr) 对象。`:auth` 通常采用形式 `hosting:ID`，如`github:github-user` 或者 `gitlab:gitlab-user`.
+
+When you declare a type you can pass it a version, author, and/or API number, all of which you can subsequently introspect. The versioning, authorship, and/or API number of a type can be applied via the adverbs `:ver<>`, `:auth<>`, and `:api<>` respectively. All of them take a string as argument; for `:ver` the string is converted to a [`Version`](https://docs.raku.org/type/Version) object, and for `:api` the string is converted into an [allomorph](https://docs.raku.org/language/glossary#index-entry-Allomorph) [`IntStr`](https://docs.raku.org/type/IntStr) object. `:auth` generally takes the form `hosting:ID`, as in `github:github-user` or `gitlab:gitlab-user`.
+
+要查询类型的版本、作者和 API 版本，请分别使用 [`.^ver`](https://docs.raku.org/type/Metamodel::Versioning#method_ver)、 [`.^auth`](https://docs.raku.org/type/Metamodel::Versioning#method_auth) 和 [`.^api`](https://docs.raku.org/type/Metamodel::Versioning#method_api)。下面的例子通过查询一个类进行了演示。
+
+To query the version, author, and API version of a type use [`.^ver`](https://docs.raku.org/type/Metamodel::Versioning#method_ver), [`.^auth`](https://docs.raku.org/type/Metamodel::Versioning#method_auth), and [`.^api`](https://docs.raku.org/type/Metamodel::Versioning#method_api) respectively, as illustrated down below by querying a `class`.
+
+```Raku
+class C:ver<4.2.3>:auth<github:jane>:api<1> {}
+say C.^ver;       # OUTPUT: «v4.2.3␤» 
+say C.^ver.parts; # OUTPUT: «(4 2 3)␤» 
+say C.^auth;      # OUTPUT: «github:jane␤» 
+say C.^api;       # OUTPUT: «1␤»
+```
+
+以类似的方式，可以查询关于上述信息的 `role`、`grammar` 和 `module`。
+
+In a similar fashion, `role`s, `grammar`s, and `module`s can be queried about the aforementioned information.

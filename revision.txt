@@ -25,7 +25,7 @@ Raku 原生类型 - Raku native types
 正则 - Regexes
 特性
 相位器
-  类型系统
+类型系统
   系统交互
   语句前缀
   语法
