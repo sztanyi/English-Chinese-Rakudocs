@@ -6,7 +6,7 @@
 
 Prefixes that alter the behavior of a statement or a set of them
 
-语句前缀是在语句前面编写的，并更改它们的含义、输出或将运行的时间。由于它们有特定的行为，它们有时也是特定于某些语句或一组语句的。
+顾名思义，语句前缀是在语句前面的，并更改它们的含义、输出或将运行的时间。由于它们有特定的行为，它们有时也是特定于某些语句或一组语句的。
 
 Statement prefixes are written in front of a statement, and change their meaning, their output, or the moment they are going to be run. Since they have a specific behavior, they are also sometimes specific to some statement or group of statements.
 
@@ -30,7 +30,7 @@ Statement prefixes are written in front of a statement, and change their meaning
 <a id="lazy"></a>
 ## `lazy`
 
-作为语句前缀，`lazy` 在任何语句(包括 `for` 循环)前面活动，将执行保存到实际需要分配给它们的变量时。
+作为语句前缀，`lazy` 在任何语句（包括 `for` 循环）前面活动，将执行保存到实际需要分配给它们的变量时。
 
 As a statement prefix, `lazy` acts in front of any statement, including `for` loops, saving the execution for when the variable they are assigned to is actually needed.
 
@@ -70,7 +70,7 @@ my $result := eager gather { for 1..3 { say "Hey"; take $_² } };
 say $result[0]; # OUTPUT: «Hey␤Hey␤Hey␤1␤» 
 ```
 
-`gather` 是[绑定到标量时隐含的懒惰](https://docs.raku.org/syntax/gather%20take)。但是，如果使用 `eager` 作为语句前缀，它将运行循环中的所有三个迭代，如打印的 "Hey" 所示，即使我们只是连续请求第一个迭代。
+`gather` [绑定到标量时隐含惰性](https://docs.raku.org/syntax/gather%20take)。但是，如果使用 `eager` 作为语句前缀，它将运行循环中的所有三个迭代，如打印的 "Hey" 所示，即使我们只是连续请求第一个迭代。
 
 `gather` is [implicitly lazy when bound to a scalar](https://docs.raku.org/syntax/gather%20take). However, with `eager` as a statement prefix it will run all three iterations in the loop, as shown by the printed "Hey", even if we are just requesting the first one in a row.
 
@@ -113,7 +113,7 @@ sub marine() {};
 quietly say ~&marine; # OUTPUT: «marine␤» 
 ```
 
-对 [`code` 调用 `.Str` 产生告警](https://docs.raku.org/type/Code#method_Str)。在语句之前使用 `quietly` 没有告警只产生输出，即例程的名字。
+对 [`code` 调用 `.Str` 产生告警](https://docs.raku.org/type/Code#method_Str)。在语句之前使用 `quietly` 不会有告警只产生输出，即例程的名字。
 
 Calling [`.Str` on `code` produces a warning](https://docs.raku.org/type/Code#method_Str). Preceding the statement with `quietly` will just produce the output, the name of the routine.
 
@@ -143,7 +143,7 @@ say $counter; # OUTPUT: «5␤»
 say $result;  # OUTPUT: «(0 1 2 3 4)␤» 
 ```
 
-`do` 与其他情况一样，等同于用圆括号围绕语句。它可以作为一种(可能更直截了当的)语法的替代。
+`do` 与其他情况一样，等同于用圆括号围绕语句。它可以作为一种（可能更直截了当的）句法的替代。
 
 `do` is equivalent, as in other cases, to surrounding a statement with a parenthesis. It can be used as an alternative with a (possibly more) straightforward syntax.
 
@@ -198,7 +198,7 @@ In this example, `gather` precedes `say`, which prints the first result of the f
 <a id="start"></a>
 ## `start`
 
-作为语句前缀，`start` 以与[在块前面](https://docs.raku.org/language/control#flow%29_start)相同的方式运行，也就是说，它以异步方式运行语句，并返回一个 promise。
+作为语句前缀，`start` 以与[在块前面](https://docs.raku.org/language/control#flow%29_start)相同的方式运行，也就是说，它以异步方式运行语句，并返回一个 promise 对象。
 
 As a statement prefix, `start` behaves in the same way as [in front of a block](https://docs.raku.org/language/control#flow%29_start), that is, it runs the statement asynchronously, and returns a promise.
 
@@ -250,7 +250,7 @@ In this case `react` prefixes `whenever`, which makes a long sum with every numb
 <a id="supply"></a>
 ## `supply`
 
-关键字 `supply` 可以创建[按需 supply](https://docs.raku.org/language/concurrency#index-entry-supply_(on-demand))。它与 `emit` 成对工作，它可以在 `supply` 前缀语句中的任何地方使用。
+关键字 `supply` 可以创建[按需 supply](https://docs.raku.org/language/concurrency#index-entry-supply_(on-demand)) 用来消费。它与 `emit` 成对工作，它可以在 `supply` 前缀语句中的任何地方使用。
 
 The keyword `supply` creates [on-demand supplies](https://docs.raku.org/language/concurrency#index-entry-supply_(on-demand)) that you can tap. It pairs with `emit`, which can be used anywhere from within a `supply` prefixed statement.
 
@@ -271,6 +271,6 @@ $supply.tap( -> $v { say "Drawing: $v" }, done => { say "No more cards" });
 # No more cards 
 ```
 
-在本例中，`supply` 充当先前定义的 `cards` 例程的前缀。它很可能被定义为一个块，但是在这种情况下给它取一个名称可能会增加可读性，或者简单地将定义它的责任交给其他模组。
+在本例中，`supply` 充当先前定义的 `cards` 函数的前缀。它很可能被定义为一个块，但是在这种情况下给它取一个名称可能会增加可读性，或者简单地将定义它的责任交给其他模组。
 
 In this example, `supply` acts as prefix of the previously defined `cards` routine. It would very well be defined as a block, but giving it a name in this case might increase legibility or simply give the responsibility of defining it to other module.

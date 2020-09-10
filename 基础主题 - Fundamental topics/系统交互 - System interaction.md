@@ -24,10 +24,10 @@ The simplest way is to use the [`@*ARGS`](https://docs.raku.org/language/variabl
 
 ```Raku
 export API_KEY=1967196417966160761fabc1511067
-./consume_api.p6
+./consume_api.raku
 ```
 
-你可以通过以下方式使用你的程序中的它们：
+你可以通过以下方式在你的程序中使用它们：
 
 You can use them from your program this way:
 
@@ -35,7 +35,7 @@ You can use them from your program this way:
 my $api-key = %*ENV<API_KEY> // die "Need the API key";
 ```
 
-如果以前没有定义环境变量 `API_KEY`，这将失败。
+如果以前没有定义环境变量 `API_KEY`，这将报错并退出。
 
 This will fail if the environment variable `API_KEY` has not been defined previously.
 
@@ -50,7 +50,7 @@ for $*ARGFILES.lines -> $l {
 }
 ```
 
-例如，你可以以 `argfiles.p6 *.p6` 的方式运行这个程序，每次它发现一行超过72个字符时，它都会打印一个文件名。`$*ARGFILES` 包含命令行中描述的所有文件的文件句柄--`.lines` 将依次从每个文件中读取一行，每次处理新句柄时都更改 `$*ARGFILES.path` 的值。一般来说，它为处理文件集的脚本提供了一个非常方便的 API。
+例如，你可以以 `argfiles.raku *.raku` 的方式运行这个程序，每次它发现一行超过 72 个字符时，它都会打印一个文件名。`$*ARGFILES` 包含命令行中描述的所有文件的文件句柄，`.lines` 将依次从每个文件中读取一行，每次处理新句柄时都更改 `$*ARGFILES.path` 的值。一般来说，它为处理文件集的脚本提供了一个非常方便的 API。
 
 You can run this program this way `argfiles.p6 *.p6`, for instance, and it will print a file name every time it finds a line longer than 72 characters. `$*ARGFILES` contains filehandles of all files described in the command lines- `.lines` will read in turn one line from every one of them, changing the value of `$*ARGFILES.path` every time a new handle is being processed. In general, it provides a very convenient API for scripts that deal with sets of files.
 
@@ -68,7 +68,7 @@ my UInt $num-iters = prompt "How many iterations to run: ";
 <a id="同步和异步地运行程序--running-programs-synchronously-and-asynchronously"></a>
 # 同步和异步地运行程序 / Running programs synchronously and asynchronously
 
-运行外部程序有两个例程：[`run`](https://docs.raku.org/routine/run) 和 [`shell`](https://docs.raku.org/routine/shell)。两者都存在于 [`IO`](https://docs.raku.org/type/IO) 角色中，因此都包含在混合该角色的所有类中，如 [IO::Path](https://docs.raku.org/type/IO::Path)。两者都返回一个 [Proc](https://docs.raku.org/type/Proc) 对象，但主要区别在于，`run` 会尽量避免系统 shell 而 `shell` 会在系统默认 shell 中运行命令。
+运行外部程序有两个例程：[`run`](https://docs.raku.org/routine/run) 和 [`shell`](https://docs.raku.org/routine/shell)。两者都存在于 [`IO`](https://docs.raku.org/type/IO) 角色中，因此都包含在混合该角色的所有类中，如 [IO::Path](https://docs.raku.org/type/IO::Path)。两者都返回一个 [Proc](https://docs.raku.org/type/Proc) 对象，但主要区别在于 `run` 会尽量避免系统 shell 而 `shell` 会在系统默认 shell 中运行命令。
 
 There are two routines to run external programs: [`run`](https://docs.raku.org/routine/run) and [`shell`](https://docs.raku.org/routine/shell). Both exist in the [`IO`](https://docs.raku.org/type/IO) role and are thus included in all classes that mix that role in, like [IO::Path](https://docs.raku.org/type/IO::Path). Both return a [Proc](https://docs.raku.org/type/Proc) object, but the main difference is that `run` will try to avoid the system shell, if possible, while `shell` will run the command through the default system shell.
 
@@ -83,6 +83,6 @@ The key class for running all external programs is [Proc::Async](https://docs.ra
 
 The [`NativeCall`](https://docs.raku.org/language/nativecall) API can be used to interact with system libraries, as well as any other accessible library. This [short tutorial](https://docs.raku.org/language/nativecall#Short_tutorial_on_calling_a_C_function) explains, for instance, how to call system functions such as `getaddrinfo` using that interface; some other functions like `kill` can also be [accessed that way, via declaration using the NativeCall interface](https://docs.raku.org/language/5to6-perlfunc#kill).
 
-幸运的是，你不必对所有原生函数都这样做。作为她的 Butterfly 项目的一部分，将 Perl 5 功能移植到 Raku 作为生态系统的一部分，[Elizabeth Mattijsen](https://github.com/lizmat) 正在将该语言中的许多系统功能移植到诸如 [`P5getprotobyname`](https://github.com/lizmat/P5getprotobyname) 等模组中，其中包括诸如`endprotoent`、`getprotoent`、`getprotobyname`、`getprotobynumber` 和 `setprotoent` 等功能。[搜索并安装 `P5` 模组](https://modules.perl6.org/search/?q=p5)，如果你想使用 p6y 形式的这些函数的话。
+幸运的是，你不必对所有原生函数都这样做。作为她的 Butterfly 项目的一部分，将 Perl 功能移植到 Raku 作为生态系统的一部分，[Elizabeth Mattijsen](https://github.com/lizmat) 正在将该语言中的许多系统功能移植到诸如 [`P5getprotobyname`](https://github.com/lizmat/P5getprotobyname) 等模组中，其中包括诸如`endprotoent`、`getprotoent`、`getprotobyname`、`getprotobynumber` 和 `setprotoent` 等功能。[搜索并安装 `P5` 模组](https://modules.perl6.org/search/?q=p5)，如果你想使用这些已经在 Raku 中的函数的话。
 
-Fortunately, you do not have to do that for all native functions. As part of her Butterfly project porting Perl 5 functions to Raku as part of the ecosystem, [Elizabeth Mattijsen](https://github.com/lizmat) is porting many system functions that were part of that language to modules such as [`P5getprotobyname`](https://github.com/lizmat/P5getprotobyname), which includes functions such as `endprotoent`, `getprotoent`, `getprotobyname`, `getprotobynumber` and `setprotoent`. [Search and install `P5` modules](https://modules.perl6.org/search/?q=p5) if you want to use those functions already in p6y form.
+Fortunately, you do not have to do that for all native functions. As part of her Butterfly project porting Perl functions to Raku as part of the ecosystem, [Elizabeth Mattijsen](https://github.com/lizmat) is porting many system functions that were part of that language to modules such as [`P5getprotobyname`](https://github.com/lizmat/P5getprotobyname), which includes functions such as `endprotoent`, `getprotoent`, `getprotobyname`, `getprotobynumber` and `setprotoent`. [Search and install `P5` modules](https://modules.perl6.org/search/?q=p5) if you want to use those functions already in Raku.
