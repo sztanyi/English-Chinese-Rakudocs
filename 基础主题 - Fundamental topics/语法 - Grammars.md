@@ -37,7 +37,7 @@ If you didn't like grammar in school, don't let that scare you off grammars. Gra
     - [grammar 中的动态变量 / Dynamic variables in grammars](#grammar-中的动态变量--dynamic-variables-in-grammars)
     - [grammar 中的属性 / Attributes in grammars](#grammar-中的属性--attributes-in-grammars)
     - [传递参数给 grammar / Passing arguments into grammars](#传递参数给-grammar--passing-arguments-into-grammars)
-- [*操作对象 / Action objects](#操作对象--action-objects)
+- [Action 对象 / Action objects](#action-对象--action-objects)
 
 <!-- /MarkdownTOC -->
 
@@ -79,7 +79,7 @@ say so $s ~~ &fails-but-fast; # OUTPUT: «False␤»
                               # the entire string get taken by the .+ 
 ```
 
-请注意，非回溯是按条件工作的，如下面的示例所示，如果匹配了某个内容，那么将永远不会进行回溯。但如果不匹配，有被 `|` 或 `||` 引入的其他候选者话，会重新尝试匹配。
+请注意，无回溯是有条件的，如下面的示例所示，如果匹配了某个内容，那么将永远不会进行回溯。但如果不匹配，有被 `|` 或 `||` 引入的其他候选者话，会重新尝试匹配。
 
 Note that non-backtracking works on terms, that is, as the example below, if you have matched something, then you will never backtrack. But when you fail to match, if there is another candidate introduced by `|` or `||`, you will retry to match again.
 
@@ -234,7 +234,7 @@ A different token can be chosen to be matched first using the `:rule` named argu
 <a id="ws"></a>
 ### `ws`
 
-默认的 `ws` 匹配零个或多个空格字符，只要该点不在单词中（在代码形式中，这是 `regex ws { <!ww> \s* }`）：
+默认的 `ws` 匹配零个或多个空格字符，只要不在单词中（用代码来表示，这相当于 `regex ws { <!ww> \s* }`）：
 
 The default `ws` matches zero or more whitespace characters, as long as that point is not within a word (in code form, that's `regex ws { <!ww> \s* }`):
 
@@ -242,11 +242,11 @@ The default `ws` matches zero or more whitespace characters, as long as that poi
 # First <.ws> matches word boundary at the start of the line 
 # and second <.ws> matches the whitespace between 'b' and 'c' 
 say 'ab   c' ~~ /<.ws> ab <.ws> c /; # OUTPUT: «｢ab   c｣␤» 
- 
+
 # Failed match: there is neither any whitespace nor a word 
 # boundary between 'a' and 'b' 
 say 'ab' ~~ /. <.ws> b/;             # OUTPUT: «Nil␤» 
- 
+
 # Successful match: there is a word boundary between ')' and 'b' 
 say ')b' ~~ /. <.ws> b/;             # OUTPUT: «｢)b｣␤» 
 ```
@@ -255,7 +255,7 @@ say ')b' ~~ /. <.ws> b/;             # OUTPUT: «｢)b｣␤»
 
 Please bear in mind that we're preceding `ws` with a dot to avoid capturing, which we are not interested in. Since in general whitespace is a separator, this is how it's mostly found.
 
-当使用 `rule` 而不是 `token` 时，`:sigspace` 在默认情况下是启用的，并且术语和右括号/方括号后的任何空白都将变成对 `ws` 的非捕获调用，写为 `<.ws>` 其中 `.` 表示非捕获。也就是说：
+当使用 `rule` 而不是 `token` 时，`:sigspace` 在默认情况下是启用的，并且术语和右括号/方括号后的任何空白都将变成对 `ws` 的非捕获调用，写为 `<.ws>`。 其中 `.` 表示非捕获。也就是说：
 
 When `rule` instead of `token` is used, `:sigspace` is enabled by default and any whitespace after terms and closing parenthesis/brackets is turned into a non-capturing call to `ws`, written as `<.ws>` where `.` means non-capturing. That is to say:
 
@@ -317,7 +317,7 @@ grammar Foo {
 }).made.say; # OUTPUT: «Perl␤» 
 ```
 
-当你已经用要匹配的字符串来区分原型正则时，这很有用，因为使用 `<sym>` token 可以防止这些字符串的重复。
+当你已经用要匹配的字符串来区分原型正则时，这很有用，因为使用 `<sym>` token 可以防止重复这些字符串。
 
 This comes in handy when you're already differentiating the proto regexes with the strings you're going to match, as using `<sym>` token prevents repetition of those strings.
 
@@ -384,11 +384,11 @@ say +DigitMatcher.subparse: '12७१७९०९', args => \(:!full-unicode);
 <a id="grammar-中的动态变量--dynamic-variables-in-grammars"></a>
 ## grammar 中的动态变量 / Dynamic variables in grammars
 
-变量可以通过在用 `:` 定义变量的代码行前加前缀来在标记中定义。任意代码可以用大括号包围在标记中的任何位置。这对于保持 token 之间的状态很有用，可以用来改变语法解析文本的方式。在 token 中使用动态变量（变量带有 `$*`、`@*`、`&*`、`%*` 符号）级联到其后在其定义的 token 中定义的*所有* token，避免将它们作为参数从一个 token 传递到另一个 token。
+通过在定义变量的代码行前面加前缀 `:` 可以在 token 中定义变量。在 token 的任何位置都可以放置用大括号包起来的任意代码。这对于保持 token 之间的状态很有用，可以用来改变语法解析文本的方式。在 token 中使用动态变量（变量带有 `$*`、`@*`、`&*`、`%*` 符号）级联到其后在其定义的 token 中定义的*所有* token，避免将它们作为参数从一个 token 传递到另一个 token。
 
 Variables can be defined in tokens by prefixing the lines of code defining them with `:`. Arbitrary code can be embedded anywhere in a token by surrounding it with curly braces. This is useful for keeping state between tokens, which can be used to alter how the grammar will parse text. Using dynamic variables (variables with `$*`, `@*`, `&*`, `%*` twigils) in tokens cascades down through *all* tokens defined thereafter within the one where it's defined, avoiding having to pass them from token to token as arguments.
 
-动态变量的一个用途是保护匹配项。此示例使用 guards 解释哪些正则类从字面上解析空白：
+动态变量的一个用途是作为匹配项的 guards。此示例使用 guards 解释哪些正则类从字面上解析空白：
 
 One use for dynamic variables is guards for matches. This example uses guards to explain which regex classes parse whitespace literally:
 
@@ -410,7 +410,7 @@ grammar GrammarAdvice {
 }
 ```
 
-这里，像 "use rules for significant whitespace by default" 这样的文本仅在提到 rule、 token 或 regex 时所分配的状态与正确的保护符匹配时才匹配：
+这里，像 "use rules for significant whitespace by default" 这样的文本仅在提到 rule、 token 或 regex 时所分配的状态与正确的 guard 匹配时才匹配：
 
 Here, text such as "use rules for significant whitespace by default" will only match if the state assigned by whether rules, tokens, or regexes are mentioned matches with the correct guard:
 
@@ -544,8 +544,8 @@ say demonstrate-arguments-dynamic.parse("I like everything else",
 # OUTPUT:  «added-words => ｢everything else｣␤» 
 ```
 
-<a id="操作对象--action-objects"></a>
-# *操作对象 / Action objects
+<a id="action-对象--action-objects"></a>
+# Action 对象 / Action objects
 
 成功的 grammar 匹配为你提供了一个 [Match](https://docs.raku.org/type/Match) 对象的解析树，匹配树得到的深度越深，语法中的分支越多，浏览匹配树获得你真正感兴趣的信息就越困难。
 
