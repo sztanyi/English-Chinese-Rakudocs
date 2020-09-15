@@ -28,7 +28,7 @@ Raku 原生类型 - Raku native types
 类型系统
 系统交互
 语句前缀
-  语法
+语法
   运算符
   集合、背包和混合
 输入输出权威指南 - IO the definitive guide

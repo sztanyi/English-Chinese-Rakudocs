@@ -431,7 +431,7 @@ say GrammarAdvice.subparse("use regexes for significant whitespace by default")
 <a id="grammar-中的属性--attributes-in-grammars"></a>
 ## grammar 中的属性 / Attributes in grammars
 
-属性可以在 grammar 中定义。但是，只能通过方法访问它们。试图从令牌中使用它们将引发异常，因为 method 是 [Match](https://docs.raku.org/type/Match)，而不是 grammar 本身。注意，从一个在 token 中调用的方法中改变一个属性将*只修改该 token 自己的匹配对象*的属性！ grammar 属性可以在解析后返回的匹配项中访问，如果公开：
+属性可以在 grammar 中定义。但是，只能通过方法访问它们。试图从 token 中使用它们将引发异常，因为 token 是 [Match](https://docs.raku.org/type/Match) 的方法，而不是 grammar 本身。注意，从一个在 token 中调用的方法中改变一个属性将*只修改该 token 自己的匹配对象*的属性！ grammar 的公共属性可以在解析后返回的匹配项中被访问：
 
 Attributes may be defined in grammars. However, they can only be accessed by methods. Attempting to use them from within a token will throw an exception because tokens are methods of [Match](https://docs.raku.org/type/Match), not of the grammar itself. Note that mutating an attribute from within a method called in a token will *only modify the attribute for that token's own match object*! Grammar attributes can be accessed in the match returned after parsing if made public:
 
@@ -480,6 +480,8 @@ say $<field>».invalid;
 
 <a id="传递参数给-grammar--passing-arguments-into-grammars"></a>
 ## 传递参数给 grammar / Passing arguments into grammars
+
+要将参数传递到 grammar 中，可以在 grammar 的任何解析方法上使用 `:args` 的命名参数。传递的参数应在 `list` 中。
 
 To pass arguments into a grammar, you can use the named argument of `:args` on any of the parsing methods of grammar. The arguments passed should be in a `list`.
 
@@ -641,7 +643,7 @@ Key: hits       Value: 42
 Key: perl       Value: 6
 ```
 
-Rule `pair` 解析由等号分隔的 pair，它为对 token `identifier` 的两个调用起别名，以分离捕获名称，使它们更容易和直观地可用。相应的操作方法构造一个 [Pair](https://docs.raku.org/type/Pair) 对象，并使用子匹配对象的 `.made` 属性。所以它（和操作方法 `TOP` 一样）利用了这样一个事实：子匹配的操作方法调用发生在外部正则或者调用者之前。因此，操作方法按 [post-order](https://en.wikipedia.org/wiki/Tree_traversal#Post-order) 调用。
+Rule `pair` 解析由等号分隔的一对字符串，它为对 token `identifier` 的两个调用起别名，以分离捕获名称，使它们更容易和直观地可用。相应的操作类方法构造一个 [Pair](https://docs.raku.org/type/Pair) 对象，并使用子匹配对象的 `.made` 属性。所以它（和操作方法 `TOP` 一样）利用了这样一个事实：子匹配的操作方法调用发生在外部正则或者调用者之前。因此，操作类的方法按 [post-order](https://en.wikipedia.org/wiki/Tree_traversal#Post-order) 顺序调用。
 
 Rule `pair`, which parsed a pair separated by an equals sign, aliases the two calls to token `identifier` to separate capture names to make them available more easily and intuitively. The corresponding action method constructs a [Pair](https://docs.raku.org/type/Pair) object, and uses the `.made` property of the sub match objects. So it (like the action method `TOP` too) exploits the fact that action methods for submatches are called before those of the calling/outer regex. So action methods are called in [post-order](https://en.wikipedia.org/wiki/Tree_traversal#Post-order).
 
@@ -649,14 +651,14 @@ Rule `pair`, which parsed a pair separated by an equals sign, aliases the two ca
 
 The action method `TOP` simply collects all the objects that were `.made` by the multiple matches of the `pair` rule, and returns them in a list.
 
-还请注意，`KeyValuePairsActions` 作为类型对象传递给方法 `parse`，这是可能的，因为没有任何操作方法使用属性（只有在实例中才可用）。
+还请注意，`KeyValuePairsActions` 作为类型对象传递给方法 `parse`，这是可能的，因为没有任何操作类方法使用属性（只有在实例中才可用）。
 
 Also note that `KeyValuePairsActions` was passed as a type object to method `parse`, which was possible because none of the action methods use attributes (which would only be available in an instance).
 
-在其他情况下，操作方法可能希望在属性中保持状态。当然，你必须将实例传递给方法 parse。
+在其他情况下，操作类方法可能希望在属性中保持状态。当然，你必须将实例传递给方法 parse。
 
 In other cases, action methods might want to keep state in attributes. Then of course you must pass an instance to method parse.
 
-注意，`token` `ws` 是特殊的：当启用了 `:sigspace` 时（我们使用的是 `rule`），它将替换某些空白序列。这就是为什么等号周围的空格在 `rule pair` 中工作得很好，以及为什么在 `token TOP` 中查找的换行符在结尾 `}` 前的空格不会被吞没的原因。
+注意，`token` `ws` 是特殊的：当启用了 `:sigspace` 时（我们使用的是 `rule`），它将替换某些空白序列。这就是为什么等号周围的空格在 `rule pair` 中工作得很好，以及为什么在 `token TOP` 中查找的换行符在 `}` 前的空格不会被吞没的原因。
 
 Note that `token` `ws` is special: when `:sigspace` is enabled (and it is when we are using `rule`), it replaces certain whitespace sequences. This is why the spaces around the equals sign in `rule pair` work just fine and why the whitespace before closing `}`does not gobble up the newlines looked for in `token TOP`.
