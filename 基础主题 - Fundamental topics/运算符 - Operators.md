@@ -342,7 +342,7 @@ $str ~~ s/o .+ d/new/;
 say $str; # OUTPUT: «new string␤»
 ```
 
-`s///` 对 `$_` 主题变量进行操作，就地更改。它使用给定的 [`Regex`](https://docs.raku.org/type/Regex) 查找要替换的部分，并将其更改为提供的替换字符串。将 `$/` 设置为 [`Match`](https://docs.raku.org/type/Match) 对象，或者，如果进行了多个匹配，则设置为一组 `Match` 对象的。返回值为 `$/`。
+`s///` 对 `$_` 主题变量进行操作，就地更改。它使用给定的[`正则`](https://docs.raku.org/type/Regex)查找要替换的部分，并将其更改为提供的替换字符串。将 `$/` 设置为 [`Match`](https://docs.raku.org/type/Match) 对象，或者，如果进行了多个匹配，则设置为一组 `Match` 对象。其返回值为 `$/`。
 
 `s///` operates on the `$_` topical variable, changing it in place. It uses the given [`Regex`](https://docs.raku.org/type/Regex) to find portions to replace and changes them to the provided replacement string. Sets `$/` to the [`Match`](https://docs.raku.org/type/Match) object or, if multiple matches were made, a [`List`](https://docs.raku.org/type/List) of `Match` objects. Returns `$/`.
 
@@ -350,7 +350,7 @@ say $str; # OUTPUT: «new string␤»
 
 It's common to use this operator with the `~~` smartmatch operator, as it aliases left-hand side to `$_`, which `s///` uses.
 
-正则捕获可以在替换部分中引用；它使用与 [`.subst` 方法](https://docs.raku.org/routine/subst)相同的副词，这些副词位于 `s` 和开头的 `/` 之间，用可选空格分隔：
+正则捕获可以在替换部分中引用；它使用与 [`.subst` 方法](https://docs.raku.org/routine/subst)相同的副词，这些副词位于 `s` 和起始 `/` 之间，用可选空格分隔：
 
 Regex captures can be referenced in the replacement part; it takes the same adverbs as the [`.subst` method](https://docs.raku.org/routine/subst), which go between the `s` and the opening `/`, separated with optional whitespace:
 
@@ -569,7 +569,7 @@ Hyper operators are defined recursively on nested arrays.
 say -« [[1, 2], 3]; # OUTPUT: «[[-1 -2] -3]␤»
 ```
 
-此外，可以以无序、并发的方式调用方法。结果列表将按顺序排列。请注意，所有超运算符都是并行运算的的候选人，但是如果这些方法有副作用，有你哭的时候。优化器完全控制超运算符，这就是用户无法定义它们的原因。
+此外，可以以无序、并发的方式调用方法。结果列表将按顺序排列。请注意，所有超运算符都是并行运算的的候选，但是如果这些方法有副作用，有你哭的时候。优化器完全控制超运算符，这就是用户无法定义它们的原因。
 
 Also, methods can be called in an out of order, concurrent fashion. The resulting list will be in order. Note that all hyper operators are candidates for parallelism and will cause tears if the methods have side effects. The optimizer has full reign over hyper operators, which is the reason that they cannot be defined by the user.
 
@@ -587,7 +587,6 @@ my @slops;        # May Contain Nuts
 Hyper operators can work with hashes. The pointy direction indicates if missing keys are to be ignored in the resulting hash. The enclosed operator operates on all values that have keys in both hashes.
 
 | %foo «+» %bar;     | intersection of keys                                         |
-| ------------------ | ------------------------------------------------------------ |
 | %foo »+« %bar;     | union of keys                                                |
 | %outer »+» %inner; | only keys of %inner that exist in %outer will occur in the result |
 
