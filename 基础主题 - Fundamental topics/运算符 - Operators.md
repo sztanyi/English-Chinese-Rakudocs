@@ -31,7 +31,7 @@ See [creating operators](https://docs.raku.org/language/optut) on how to define 
 - [术语优先级 / Term precedence](#术语优先级--term-precedence)
     - [术语 `` / term ``](#术语--term-)
     - [术语 `( )` / term `( )`](#术语----term--)
-    - [术语 `{ }` term `{ }`](#术语---term--)
+    - [术语 `{ }` / term `{ }`](#术语----term---1)
     - [环缀运算符 `[ ]` / circumfix `[ ]`](#环缀运算符----circumfix--)
 - [术语 / Terms](#术语--terms)
 - [方法后缀优先级 / Method postfix precedence](#方法后缀优先级--method-postfix-precedence)
@@ -342,7 +342,7 @@ $str ~~ s/o .+ d/new/;
 say $str; # OUTPUT: «new string␤»
 ```
 
-`s///` 对 `$_` 主题变量进行操作，就地更改。它使用给定的 [`Regex`](https://docs.raku.org/type/Regex) 查找要替换的部分，并将其更改为提供的替换字符串。将 `$/` 设置为 [`Match`](https://docs.raku.org/type/Match) 对象，或者，如果进行了多个匹配，则设置为一组 `Match` 对象的。返回值为 `$/`。
+`s///` 对 `$_` 主题变量进行操作，就地更改。它使用给定的[`正则`](https://docs.raku.org/type/Regex)查找要替换的部分，并将其更改为提供的替换字符串。将 `$/` 设置为 [`Match`](https://docs.raku.org/type/Match) 对象，或者，如果进行了多个匹配，则设置为一组 `Match` 对象。其返回值为 `$/`。
 
 `s///` operates on the `$_` topical variable, changing it in place. It uses the given [`Regex`](https://docs.raku.org/type/Regex) to find portions to replace and changes them to the provided replacement string. Sets `$/` to the [`Match`](https://docs.raku.org/type/Match) object or, if multiple matches were made, a [`List`](https://docs.raku.org/type/List) of `Match` objects. Returns `$/`.
 
@@ -350,7 +350,7 @@ say $str; # OUTPUT: «new string␤»
 
 It's common to use this operator with the `~~` smartmatch operator, as it aliases left-hand side to `$_`, which `s///` uses.
 
-正则捕获可以在替换部分中引用；它使用与 [`.subst` 方法](https://docs.raku.org/routine/subst)相同的副词，这些副词位于 `s` 和开头的 `/` 之间，用可选空格分隔：
+正则捕获可以在替换部分中引用；它使用与 [`.subst` 方法](https://docs.raku.org/routine/subst)相同的副词，这些副词位于 `s` 和起始 `/` 之间，用可选空格分隔：
 
 Regex captures can be referenced in the replacement part; it takes the same adverbs as the [`.subst` method](https://docs.raku.org/routine/subst), which go between the `s` and the opening `/`, separated with optional whitespace:
 
@@ -569,7 +569,7 @@ Hyper operators are defined recursively on nested arrays.
 say -« [[1, 2], 3]; # OUTPUT: «[[-1 -2] -3]␤»
 ```
 
-此外，可以以无序、并发的方式调用方法。结果列表将按顺序排列。请注意，所有超运算符都是并行运算的的候选人，但是如果这些方法有副作用，有你哭的时候。优化器完全控制超运算符，这就是用户无法定义它们的原因。
+此外，可以以无序、并发的方式调用方法。结果列表将按顺序排列。请注意，所有超运算符都是并行运算的的候选，但是如果这些方法有副作用，有你哭的时候。优化器完全控制超运算符，这就是用户无法定义它们的原因。
 
 Also, methods can be called in an out of order, concurrent fashion. The resulting list will be in order. Note that all hyper operators are candidates for parallelism and will cause tears if the methods have side effects. The optimizer has full reign over hyper operators, which is the reason that they cannot be defined by the user.
 
@@ -582,7 +582,7 @@ my @slops;        # May Contain Nuts
 @slops».?this-method-may-not-exist();
 ```
 
-超运算符可以使用哈希。箭头方向指示是否要在结果哈希中忽略缺少的键。封闭运算符对两个散列中都有键的所有值进行操作。
+超运算符可以作用于哈希。箭头方向指示是否要在结果哈希中忽略缺少的键。封闭运算符对两个散列中都有键的所有值进行操作。
 
 Hyper operators can work with hashes. The pointy direction indicates if missing keys are to be ignored in the resulting hash. The enclosed operator operates on all values that have keys in both hashes.
 
@@ -659,7 +659,7 @@ say [+] 1, 2, 3;                # OUTPUT: «6␤»
 say reduce &infix:<+>, 1, 2, 3; # OUTPUT: «6␤»
 ```
 
-方括号和运算符之间不允许有空格。要包装函数而不是运算符，请提供另一层方括号：
+方括号和运算符之间不允许有空格。要包装函数而不是运算符，需要再加一层方括号：
 
 No whitespace is allowed between the square brackets and the operator. To wrap a function instead of an operator, provide an additional layer of square brackets:
 
@@ -668,7 +668,7 @@ sub plus { $^a + $^b };
 say [[&plus]] 1, 2, 3;          # OUTPUT: «6␤»
 ```
 
-参数列表不展开即遍历。这意味着你可以将嵌套列表传递给列表中缀运算符的缩减形式：
+参数列表不展开即遍历。这意味着你可以将嵌套列表传递给列表中缀运算符的归约形式：
 
 The argument list is iterated without flattening. This means that you can pass a nested list to the reducing form of a list infix operator:
 
@@ -680,7 +680,7 @@ say [X~] (1, 2), <a b>;         # OUTPUT: «(1a 1b 2a 2b)␤»
 
 which is equivalent to `1, 2 X~ <a b>`.
 
-默认情况下，只返回缩减的最终结果。在换行运算符前面加上 `\`，以返回所有中间值的惰性列表。这被称为“三角形减少”。如果非元部分已经包含一个 `\` 值，请用 `[]` 引用它（例如 `[\[\x]`）。
+默认情况下，只返回归约的最终结果。在包裹的运算符前面加上 `\`，以返回所有中间值的惰性列表。这被称为“三角形规约”。如果非元部分已经包含一个 `\`，请用 `[]` 引用它（例如 `[\[\x]]`）。
 
 By default, only the final result of the reduction is returned. Prefix the wrapped operator with a `\`, to return a lazy list of all intermediate values instead. This is called a "triangular reduce". If the non-meta part contains a `\` already, quote it with `[]` (e.g. `[\[\x]]`).
 
@@ -692,7 +692,7 @@ say @n[^5];         # OUTPUT: «(1 12 123 1234 12345)␤»
 <a id="交叉运算符--cross-operators"></a>
 # 交叉运算符 / Cross operators
 
-交叉元运算符 `X` 将按交叉积的顺序对所有列表应用给定的中缀运算符，以便最右边的运算符变化最快。
+交叉元运算符 `X` 将按交叉积的顺序对所有列表应用给定的中缀运算符，使得最右边的运算符变化最快。
 
 The cross metaoperator, `X`, will apply a given infix operator in order of cross product to all lists, such that the rightmost operator varies most quickly.
 
@@ -711,7 +711,7 @@ The zip metaoperator (which is not the same thing as [Z](https://docs.raku.org/l
 my @l = <a b c> Z~ 1, 2, 3;     # RESULT: «[a1 b2 c3]␤»
 ```
 
-如果其中一个操作数过早用完元素，则 zip 运算符将停止。无限列表可用于重复元素。最后一个元素为 `*` 的列表将无限期地重复其最后第二个元素。
+如果其中一个操作数过早用完元素，则 zip 运算符将停止。无限列表可用于重复元素。最后一个元素为 `*` 的列表将无限重复倒数第二个元素。
 
 If one of the operands runs out of elements prematurely, the zip operator will stop. An infinite list can be used to repeat elements. A list with a final element of `*` will repeat its 2nd last element indefinitely.
 
@@ -789,10 +789,10 @@ p a => 1;           # OUTPUT: «named␤»
 p (a => 1);         # OUTPUT: «positional␤»
 ```
 
-<a id="术语---term--"></a>
-## 术语 `{ }` term `{ }`
+<a id="术语----term---1"></a>
+## 术语 `{ }` / term `{ }`
 
-[代码块](https://docs.raku.org/type/Block) 或者[哈希](https://docs.raku.org/type/Hash)的构造器。
+[代码块](https://docs.raku.org/type/Block)或者[哈希](https://docs.raku.org/type/Hash)的构造器。
 
 [Block](https://docs.raku.org/type/Block) or [Hash](https://docs.raku.org/type/Hash) constructor.
 
@@ -890,7 +890,7 @@ say %color{"strawberry"}:exists;      # OUTPUT: «False␤»
 say %color;             # OUTPUT: «banana => yellowish, kiwi => green, lime => green␤»
 ```
 
-请参阅[后环缀 `< >`](https://docs.raku.org/routine/%3C%20%3E#(Operators)_postcircumfix_%3C_%3E) 和[后环缀 `« »`](https://docs.raku.org/routine/%C2%AB%20%C2%BB#(Operators)_postcircumfix_%C2%AB_%C2%BB) 以获取方便的快捷方式，以及[下标](https://docs.raku.org/language/subscripts)以获取有关此操作符行为的更详细解释，以及如何在自定义类型中实现对其的支持。
+请参阅[后环缀运算符 `< >`](https://docs.raku.org/routine/%3C%20%3E#(Operators)_postcircumfix_%3C_%3E) 和[后环缀运算符 `« »`](https://docs.raku.org/routine/%C2%AB%20%C2%BB#(Operators)_postcircumfix_%C2%AB_%C2%BB) 以获取方便的快捷方式，以及[下标](https://docs.raku.org/language/subscripts)以获取有关此操作符行为的更详细解释，以及如何在自定义类型中实现对其的支持。
 
 See [`postcircumfix < >`](https://docs.raku.org/routine/%3C%20%3E#(Operators)_postcircumfix_%3C_%3E) and [`postcircumfix « »`](https://docs.raku.org/routine/%C2%AB%20%C2%BB#(Operators)_postcircumfix_%C2%AB_%C2%BB) for convenient shortcuts, and [Subscripts](https://docs.raku.org/language/subscripts) for a more detailed explanation of this operator's behavior and how to implement support for it in custom types.
 
