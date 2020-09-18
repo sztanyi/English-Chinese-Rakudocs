@@ -2,7 +2,7 @@
 
 # 运算符 / Operators
 
-常见的 Raku 中缀、前缀、后缀运算符等等！
+常见的 Raku 中缀、前缀和后缀运算符等等！
 
 Common Raku infixes, prefixes, postfixes, and more!
 
