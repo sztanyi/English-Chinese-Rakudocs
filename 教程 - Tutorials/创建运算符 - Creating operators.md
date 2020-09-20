@@ -6,7 +6,7 @@
 
 A short tutorial on how to declare operators and create new ones.
 
-运算符的声明方式是使用 `sub` 关键字，后面跟着 `prefix`、`infix`、`postfix`、`circumfix` 或 `postcircumfix`；然后是引号结构中的冒号和运算符名称。对于（后）换缀运算符，用空格分隔这两个部分。
+运算符的声明方式是使用 `sub` 关键字，后面跟着 `prefix`、`infix`、`postfix`、`circumfix` 或 `postcircumfix`；然后是引号结构中的冒号和运算符名称。对于（后）环缀运算符，用空格分隔这两个部分。
 
 Operators are declared by using the `sub` keyword followed by `prefix`, `infix`, `postfix`, `circumfix`, or `postcircumfix`; then a colon and the operator name in a quote construct. For (post-)circumfix operators separate the two parts by white space.
 

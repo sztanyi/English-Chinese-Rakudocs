@@ -27,7 +27,6 @@ Creating your own CLI in Raku
 
 <!-- /MarkdownTOC -->
 
-
 <a id="命令行接口---概述--command-line-interface---an-overview"></a>
 # 命令行接口 - 概述 / Command line interface - an overview
 
@@ -67,7 +66,7 @@ The sub with the special name `MAIN` will be executed after all relevant entry p
 
 Any normal exit from the `MAIN` sub will result in an exit code of `0`, indicating success. Any return value of the `MAIN` sub will be ignored. If an exception is thrown that is not handled inside the `MAIN` sub, then the exit code will be `1`. If the dispatch to `MAIN` failed, a usage message will be displayed on STDERR and the exit code will be `2`.
 
-命令行参数存在于 `@*ARGS` 动态变量中，并且在调用 `MAIN` 单元之前，可以在脚本的主线中进行更改。
+命令行参数存在于 `@*ARGS` 动态变量中，并且在调用 `MAIN` 单元之前，可以在脚本的 mainline 中进行更改。
 
 The command line parameters are present in the `@*ARGS` dynamic variable and may be altered in the mainline of the script before the `MAIN` unit is called.
 
@@ -80,7 +79,7 @@ The signature of (the candidates of the multi) sub `MAIN` determines which candi
 A simple example:
 
 ```Raku
-# inside file 'hello.p6' 
+# inside file 'hello.raku'
 sub MAIN($name) {
     say "Hello $name, how are you?"
 }
@@ -91,9 +90,9 @@ sub MAIN($name) {
 If you call that script without any parameters, you get the following usage message:
 
 ```Raku
-$ perl6 hello.p6
+$ raku hello.raku
 Usage:
-  hello.p6 <name>
+  hello.raku <name>
 ```
 
 但是，如果为参数提供默认值，那么在指定名称或不指定名称的情况下运行脚本将始终有效：
@@ -101,22 +100,22 @@ Usage:
 However, if you give a default value for the parameter, running the script either with or without specifying a name will always work:
 
 ```Raku
-# inside file 'hello.p6' 
+# inside file 'hello.raku' 
 sub MAIN($name = 'bashful') {
     say "Hello $name, how are you?"
 }
-$ perl6 hello.p6
+$ raku hello.raku
 Hello bashful, how are you?
-$ perl6 hello.p6 Liz
+$ raku hello.raku Liz
 Hello Liz, how are you?
 ```
 
-另一种方法是使 `sub MAIN` 成为 `multi sub`：
+完成这个的另一种方法是使 `sub MAIN` 成为 `multi sub`：
 
 Another way to do this is to make `sub MAIN` a `multi sub`:
 
 ```Raku
-# inside file 'hello.p6' 
+# inside file 'hello.raku' 
 multi sub MAIN()      { say "Hello bashful, how are you?" }
 multi sub MAIN($name) { say "Hello $name, how are you?"   }
 ```
@@ -130,7 +129,7 @@ Which would give the same output as the examples above. Whether you should use e
 A more complicated example using a single positional and multiple named parameters:
 
 ```Raku
-# inside "frobnicate.p6" 
+# inside "frobnicate.raku" 
 sub MAIN(
   Str   $file where *.IO.f = 'file.dat',
   Int  :$length = 24,
@@ -147,7 +146,7 @@ sub MAIN(
 With `file.dat` present, this will work this way:
 
 ```Raku
-$ perl6 frobnicate.p6 file.dat
+$ raku frobnicate.raku file.dat
 24
 file.dat
 Verbosity off
@@ -158,7 +157,7 @@ Verbosity off
 Or this way with `--verbose`:
 
 ```Raku
-$ perl6 frobnicate.p6 --verbose file.dat
+$ raku frobnicate.raku --verbose file.dat
 24
 file.dat
 Verbosity on
@@ -169,9 +168,9 @@ Verbosity on
 If the file `file.dat` is not present, or you've specified another filename that doesn't exist, you would get the standard usage message created from introspection of the `MAIN` sub:
 
 ```Raku
-$ perl6 frobnicate.p6 doesntexist.dat
+$ raku frobnicate.raku doesntexist.dat
 Usage:
-  frobnicate.p6 [--length=<Int>] [--verbose] [<file>]
+  frobnicate.raku [--length=<Int>] [--verbose] [<file>]
 ```
 
 尽管你不必在代码中做任何事情来执行此操作，但它可能被视为有点过于精练。但是，通过提供使用 pod 功能的提示，很容易使使用消息变得更好：
@@ -179,7 +178,7 @@ Usage:
 Although you don't have to do anything in your code to do this, it may still be regarded as a bit terse. But there's an easy way to make that usage message better by providing hints using pod features:
 
 ```Raku
-# inside "frobnicate.p6" 
+# inside "frobnicate.raku" 
 sub MAIN(
   Str   $file where *.IO.f = 'file.dat',  #= an existing file to frobnicate 
   Int  :$length = 24,                     #= length needed for frobnication 
@@ -196,9 +195,9 @@ sub MAIN(
 Which would improve the usage message like this:
 
 ```Raku
-$ perl6 frobnicate.p6 doesntexist.dat
+$ raku frobnicate.raku doesntexist.dat
 Usage:
-  frobnicate.p6 [--length=<Int>] [--verbose] [<file>]
+  frobnicate.raku [--length=<Int>] [--verbose] [<file>]
  
     [<file>]          an existing file to frobnicate
     --length=<Int>    length needed for frobnication
@@ -227,7 +226,7 @@ In which case, these aliases will also be listed as alternatives with `--help`:
 
 ```Raku
 Usage:
-  frobnicate.p6 [--size|--length=<Int>] [--verbose] [<file>]
+  frobnicate.raku [--size|--length=<Int>] [--verbose] [<file>]
  
     [<file>]                 an existing file to frobnicate
     --size|--length=<Int>    length needed for frobnication
@@ -263,7 +262,7 @@ Available options are:
 By default, named arguments passed to the program (i.e., `MAIN`) cannot appear after any positional argument. However, if `%*SUB-MAIN-OPTS<named-anywhere>` is set to a true value, named arguments can be specified anywhere, even after positional parameter. For example, the above program can be called with:
 
 ```Raku
-$ perl6 example.p6 1 --c=2 3 --d=4
+$ raku example.p6 1 --c=2 3 --d=4
 ```
 
 <a id="is-hidden-from-usage"></a>
@@ -274,7 +273,7 @@ $ perl6 example.p6 1 --c=2 3 --d=4
 Sometimes you want to exclude a `MAIN` candidate from being shown in any automatically generated usage message. This can be achieved by adding a `hidden-from-USAGE` trait to the specification of the `MAIN` candidate you do not want to show. Expanding on an earlier example:
 
 ```Raku
-# inside file 'hello.p6' 
+# inside file 'hello.raku' 
 multi sub MAIN() is hidden-from-USAGE {
     say "Hello bashful, how are you?"
 }
@@ -288,9 +287,9 @@ multi sub MAIN($name) {  #= the name by which you would like to be called
 So, if you would call this script with just a named variable, you would get the following usage:
 
 ```Raku
-$ perl6 hello.p6 --verbose
+$ raku hello.raku --verbose
 Usage:
-  hello.p6 <name> -- the name by which you would like to be called
+  hello.raku <name> -- the name by which you would like to be called
 ```
 
 如果在第一个候选人上没有 `hidden-from-USAGE` 的特性，结果就会是这样：
@@ -298,10 +297,10 @@ Usage:
 Without the `hidden-from-USAGE` trait on the first candidate, it would have looked like this:
 
 ```Raku
-$ perl6 hello.p6 --verbose
+$ raku hello.raku --verbose
 Usage:
-  hello.p6
-  hello.p6 <name> -- the name by which you would like to be called
+  hello.raku
+  hello.raku <name> -- the name by which you would like to be called
 ```
 
 这虽然技术上是正确的，但也不是很好。
@@ -361,9 +360,9 @@ The default usage message is available inside `sub USAGE` via the read-only `$*U
 <a id="拦截-cli-参数解析（201810，v6d-及以后版本）--intercepting-cli-argument-parsing-201810-v6d-and-later"></a>
 # 拦截 CLI 参数解析（2018.10，v6.d 及以后版本） / Intercepting CLI argument parsing (2018.10, v6.d and later)
 
-通过为你自己提供 `ARGS-TO-CAPTURE` 子例程，或从生态系统中可用的 [Getopt](https://modules.perl6.org/search/?q=getopt) 模块中的任何一个导入一个子例程，你可以替换或增加参数解析的默认方式。
+通过为你自己提供 `ARGS-TO-CAPTURE` 子例程，或从生态系统中可用的 [Getopt](https://modules.raku.org/search/?q=getopt) 模块中的任何一个导入一个子例程，你可以替换或增加参数解析的默认方式。
 
-You can replace or augment the default way of argument parsing by supplying a `ARGS-TO-CAPTURE` subroutine yourself, or by importing one from any of the [Getopt](https://modules.perl6.org/search/?q=getopt) modules available in the ecosystem.
+You can replace or augment the default way of argument parsing by supplying a `ARGS-TO-CAPTURE` subroutine yourself, or by importing one from any of the [Getopt](https://modules.raku.org/search/?q=getopt) modules available in the ecosystem.
 
 <a id="args-to-capture-子例程--sub-args-to-capture"></a>
 ## ARGS-TO-CAPTURE 子例程 / sub ARGS-TO-CAPTURE
@@ -390,9 +389,9 @@ Note that the dynamic variable [`&*ARGS-TO-CAPTURE`](https://docs.raku.org/langu
 <a id="拦截使用信息的生成（201810，v6d-及以后版本）--intercepting-usage-message-generation-201810-v6d-and-later"></a>
 # 拦截使用信息的生成（2018.10，v6.d 及以后版本） / Intercepting usage message generation (2018.10, v6.d and later)
 
-你可以通过自己提供一个 `GENERATE-USAGE` 子例程，或者从生态系统中可用的任何 [Getopt](https://modules.perl6.org/search/?q=getopt) 模块中导入一个，来替换或增强默认的使用消息生成方式（在向 MAIN 发送失败之后）。
+你可以通过自己提供一个 `GENERATE-USAGE` 子例程，或者从生态系统中可用的任何 [Getopt](https://modules.raku.org/search/?q=getopt) 模块中导入一个，来替换或增强默认的使用消息生成方式（在向 MAIN 发送失败之后）。
 
-You can replace or augment the default way of usage message generation (after a failed dispatch to MAIN) by supplying a `GENERATE-USAGE` subroutine yourself, or by importing one from any of the [Getopt](https://modules.perl6.org/search/?q=getopt) modules available in the ecosystem.
+You can replace or augment the default way of usage message generation (after a failed dispatch to MAIN) by supplying a `GENERATE-USAGE` subroutine yourself, or by importing one from any of the [Getopt](https://modules.raku.org/search/?q=getopt) modules available in the ecosystem.
 
 <a id="run-main-子例程--sub-run-main"></a>
 ## RUN-MAIN 子例程 / sub RUN-MAIN
@@ -424,7 +423,7 @@ class Hero {
 }
 
 sub new-main($name, *@stuff ) {
-    Hero.new(:name($name), :inventory(@stuff) ).perl.say
+    Hero.new(:name($name), :inventory(@stuff) ).raku.say
 }
 
 RUN-MAIN( &new-main, Nil );
