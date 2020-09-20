@@ -49,7 +49,7 @@ The six collection classes are [Set](https://docs.raku.org/type/Set), [SetHash](
 
 In a nutshell, these classes hold, in general, unordered collections of objects, much like an [object hash](https://docs.raku.org/type/Hash#index-entry-object_hash). The [QuantHash](https://docs.raku.org/type/QuantHash) role is the role that is implemented by all of these classes: therefore they are also referenced as `QuantHash`es.
 
-`Set` and `SetHash` 还实现了[setty]（https://docs.raku.org/type/setty）角色，`Bag` 和 `BagHash` 实现了 [Baggy](https://docs.raku.org/type/Baggy) 角色，`Mix` 和 `MixHash` 实现了 [Mixy](https://docs.raku.org/type/Mixy) 角色（它本身实现了 `Baggy` 角色）。
+`Set` and `SetHash` 还实现了 [setty](https://docs.raku.org/type/setty) 角色，`Bag` 和 `BagHash` 实现了 [Baggy](https://docs.raku.org/type/Baggy) 角色，`Mix` 和 `MixHash` 实现了 [Mixy](https://docs.raku.org/type/Mixy) 角色（它本身实现了 `Baggy` 角色）。
 
 `Set` and `SetHash` also implement the [Setty](https://docs.raku.org/type/Setty) role, `Bag` and `BagHash` implement the [Baggy](https://docs.raku.org/type/Baggy) role, `Mix` and `MixHash` implement the [Mixy](https://docs.raku.org/type/Mixy) role (which itself implements the `Baggy` role).
 
@@ -81,7 +81,7 @@ The types [Mix](https://docs.raku.org/type/Mix) and [MixHash](https://docs.raku.
 
 [Set](https://docs.raku.org/type/Set), [Bag](https://docs.raku.org/type/Bag), and [Mix](https://docs.raku.org/type/Mix) are *immutable* types. Use the mutable variants [SetHash](https://docs.raku.org/type/SetHash), [BagHash](https://docs.raku.org/type/BagHash), and [MixHash](https://docs.raku.org/type/MixHash) if you want to add or remove elements after the container has been constructed.
 
-一方面，就它们而言，相同的对象指的是同一个元素——其中使用 [WHICH](https://docs.raku.org/routine/WHICH) 方法来确定同一个元素（即与 [===](https://docs.raku.org/routine/===) 操作符检查身份相同的方式）。对于像 `Str` 这样的值类型，这意味着具有相同的值；对于诸如 `Array` 这样的引用类型，它指的是引用相同的对象实例。
+一方面，就它们而言，相同的对象指的是同一个元素 - 其中使用 [WHICH](https://docs.raku.org/routine/WHICH) 方法来确定同一个元素（即与 [===](https://docs.raku.org/routine/===) 操作符检查身份相同的方式）。对于像 `Str` 这样的值类型，这意味着具有相同的值；对于诸如 `Array` 这样的引用类型，它指的是引用相同的对象实例。
 
 For one thing, as far as they are concerned, identical objects refer to the same element – where identity is determined using the [WHICH](https://docs.raku.org/routine/WHICH) method (i.e. the same way that the [===](https://docs.raku.org/routine/===) operator checks identity). For value types like `Str`, this means having the same value; for reference types like `Array`, it means referring to the same object instance.
 

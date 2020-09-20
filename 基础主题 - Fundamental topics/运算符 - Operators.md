@@ -1209,7 +1209,7 @@ say %a # OUTPUT: «{a => 11, b => 22, x => 33}␤»
 multi sub prefix:<++>($x is rw) is assoc<non>
 ```
 
-这是。将其参数增加一并返回更新后的值。
+这是。将其参数加一并返回更新后的值。
 
 This is the . Increments its argument by one and returns the updated value.
 
@@ -1230,7 +1230,7 @@ It works by calling the [succ](https://docs.raku.org/routine/succ) method (for *
 multi sub prefix:<-->($x is rw) is assoc<non>
 ```
 
-将其参数递减一并返回更新后的值。
+将其参数减一并返回更新后的值。
 
 Decrements its argument by one and returns the updated value.
 
@@ -1251,7 +1251,7 @@ It works by calling the [pred](https://docs.raku.org/routine/pred) method (for *
 multi sub postfix:<++>($x is rw) is assoc<non>
 ```
 
-将其参数增加一并返回原始值。
+将其参数加一并返回原始值。
 
 Increments its argument by one and returns the original value.
 
@@ -1391,8 +1391,6 @@ multi sub prefix:<!>(Mu --> Bool:D)
 
 Negated boolean context operator.
 
-通过调用参数的 `Bool` 方法将其强制为 [Bool](https://docs.raku.org/type/Bool) 类型。注意，这会折叠 [Junction](https://docs.raku.org/type/Junction) 类型。
-
 通过调用参数的 `Bool` 方法将其强制为 [Bool](https://docs.raku.org/type/Bool) 类型，并返回结果的否定值。注意，这会折叠[Junction](https://docs.raku.org/type/Junction) 类型。
 
 Coerces the argument to [Bool](https://docs.raku.org/type/Bool) by calling the `Bool` method on it, and returns the negation of the result. Note that this collapses [Junction](https://docs.raku.org/type/Junction)s.
@@ -1483,7 +1481,7 @@ Integer bitwise negation operator: Coerces the argument to [Int](https://docs.ra
 
 Coerces the argument to a non-variable-encoding string buffer type (e.g. `buf8`, `buf16`, `buf32`) and then flips each bit in that buffer.
 
-请注意，这一点尚未实现。。。
+请注意，这一点尚未实现。
 
 Please note that this has not yet been implemented.
 
@@ -1688,6 +1686,7 @@ Integer bit shift to the right.
 ## 中缀运算符 `~&` / infix `~&`
 
 将每个参数强制为非变量编码字符串缓冲区类型（例如 `buf8`、`buf16`、`buf32`），然后对两个缓冲区的相应整数执行逐位与运算，用零填充较短的缓冲区。
+
 Coerces each argument to a non-variable-encoding string buffer type (e.g. `buf8`, `buf16`, `buf32`) and then performs a numeric bitwise AND on corresponding integers of the two buffers, padding the shorter buffer with zeroes.
 
 <a id="中缀运算符-~--infix-~-1"></a>
@@ -1748,7 +1747,7 @@ multi sub infix:<+>($a, $b --> Numeric:D)
 
 Addition operator.
 
-将两个参数强制为[Numeric](https://docs.raku.org/type/Numeric)并将它们相加。
+将两个参数强制为 [Numeric](https://docs.raku.org/type/Numeric) 并将它们相加。
 
 Coerces both arguments to [Numeric](https://docs.raku.org/type/Numeric) and adds them.
 
@@ -1763,7 +1762,7 @@ multi sub infix:<->($a, $b --> Numeric:D)
 
 Subtraction operator.
 
-将两个参数强制为 [Numeric](https://docs.raku.org/type/Numeric)并从第一个参数中减去第二个参数。
+将两个参数强制为 [Numeric](https://docs.raku.org/type/Numeric) 并从第一个参数中减去第二个参数。
 
 Coerces both arguments to [Numeric](https://docs.raku.org/type/Numeric) and subtracts the second from the first.
 
@@ -1844,7 +1843,7 @@ sub infix:<x>($a, $b --> Str:D)
 
 String repetition operator.
 
-重复字符串 `$a` `$b` 次，如果需要，强制将 `$a` 转换为 [`Str`](https://docs.raku.org/type/Str) 和 `$b` 转换为 [`Int`](https://docs.raku.org/type/Int)。如果 `$b` 小于 0，则返回空字符串。如果 `$b` 是 `-Inf` 或 `NaN`，则将引发异常 `X::Numeric::CannotConvert`。
+重复字符串 `$a` `$b` 次，如果需要，强制将 `$a` 转换为 [`Str`](https://docs.raku.org/type/Str) 和 `$b` 转换为 [`Int`](https://docs.raku.org/type/Int)。如果 `$b` 小于 0，则返回空字符串。如果 `$b` 是 `-Inf` 或 `NaN`，则将抛出异常 `X::Numeric::CannotConvert`。
 
 Repeats the string `$a` `$b` times, if necessary coercing `$a` to [`Str`](https://docs.raku.org/type/Str) and `$b` [`Int`](https://docs.raku.org/type/Int). Returns an empty string if `$b <= 0`. An exception `X::Numeric::CannotConvert` will be thrown if `$b` is `-Inf` or `NaN`.
 
@@ -1881,7 +1880,7 @@ multi sub infix:<xx>(Mu \x, Bool:D $b)
 multi sub infix:<xx>(Mu \x, Int:D $n)
 ```
 
-一般来说，它返回一个重复的 `$a` 序列并计算 `$b` 次（`$b` 被强制为 [Int](https://docs.raku.org/type/Int)）。如果 `$b` 小于 0，则返回空列表。它将返回一个没有操作数的错误，并用一个操作数返回操作数本身。如果 `$b` 是 `-Inf` 或 `NaN`，则将引发异常 `X::Numeric::CannotConvert`。
+一般来说，它返回一个重复的 `$a` 序列并计算 `$b` 次（`$b` 被强制为 [Int](https://docs.raku.org/type/Int)）。如果 `$b` 小于 0，则返回空列表。它将返回一个没有操作数的错误，并用一个操作数返回操作数本身。如果 `$b` 是 `-Inf` 或 `NaN`，则将抛出异常 `X::Numeric::CannotConvert`。
 
 In general, it returns a Sequence of `$a` repeated and evaluated `$b` times (`$b` is coerced to [Int](https://docs.raku.org/type/Int)). If `$b <= 0`, the empty list is returned. It will return an error with no operand, and return the operand itself with a single operand. An exception `X::Numeric::CannotConvert` will be thrown if `$b` is `-Inf` or `NaN`.
 
@@ -2043,7 +2042,7 @@ multi sub infix:<(.)>(**@p)
 multi sub infix:<⊍>(**@p)
 ```
 
-Baggy（Bag 类型的）乘法运算符。
+Baggy 乘法运算符。
 
 Baggy multiplication operator.
 
@@ -2287,10 +2286,10 @@ say "Left the block; value is now `$v`";
 sleep 2;
  
 # OUTPUT: 
-# PROMISE
+# [PROMISE] Value before block is left: `new one` 
 # About to leave the block; value is `new one` 
 # Left the block; value is now `original` 
-# PROMISE
+# [PROMISE] Block was left while we slept; value is now `original` 
 ```
 
 <a id="前缀运算符-let--prefix-let"></a>
@@ -2337,7 +2336,7 @@ sub infix:<does>(Mu $obj, Mu $role) is assoc<non>
 
 Mixes `$role` into `$obj` at runtime. Requires `$obj` to be mutable.
 
-类似于 [but](https://docs.raku.org/routine/but) 操作符，角色 `$role` 可以改为一个实例化对象，在这种情况下，操作符将自动为你创建一个角色。角色将包含一个名为 `$obj.^name` 的方法，该方法返回 `$obj`：
+类似于 [but](https://docs.raku.org/routine/but) 操作符，角色 `$role` 也可以是一个实例化对象，在这种情况下，操作符将自动为你创建一个角色。角色将包含一个名为 `$obj.^name` 的方法，该方法返回 `$obj`：
 
 Similar to [but](https://docs.raku.org/routine/but) operator, the `$role` can instead be an instantiated object, in which case, the operator will create a role for you automatically. The role will contain a single method named the same as `$obj.^name` and that returns `$obj`:
 
@@ -2490,7 +2489,7 @@ multi sub infix:<leg>(Any,   Any)
 multi sub infix:<leg>(Str:D, Str:D)
 ```
 
-字符串三向比较器。*less、equal 或 greater？* 的简称。
+字符串三向比较器。*less、equal 或 greater* 的简称。
 
 String three-way comparator. Short for *less, equal or greater?*.
 
@@ -2889,7 +2888,7 @@ say 1 eqv 2;                    # OUTPUT: «False␤»
 say 1 eqv 1.0;                  # OUTPUT: «False␤»
 ```
 
-不能比较惰性 [`Iterables`](https://docs.raku.org/type/Iterable) 类型，因为它们被认为是无限的。但是，如果两个惰性 `Iterable` 是不同类型的，或者只有一个 `Iterable` 是惰性的，则运算符将尽力返回假值。
+不能比较惰性 [`Iterables`](https://docs.raku.org/type/Iterable) 类型，因为它们被认为是无限的。但是，如果两个惰性 `Iterable` 是不同类型的，或者只有一个 `Iterable` 是惰性的，则运算符将尽力返回 `False` 值。
 
 Lazy [`Iterables`](https://docs.raku.org/type/Iterable) cannot be compared, as they're assumed to be infinite. However, the operator will do its best and return `False` if the two lazy `Iterables` are of different types or if only one `Iterable` is lazy.
 
@@ -3549,7 +3548,7 @@ Also called *ternary* or *conditional* operator, `$condition ?? $true !! $false`
 sub infix:<ff>(Mu $a, Mu $b)
 ```
 
-也称为*触发器*运算符，将这两个参数与 `$_`（即 `$_ ~~ $a` 和 `$_ ~~ $b`）进行比较。计算结果为 `False`，直到左侧智能匹配返回为 `True`，此时计算结果为 `True`，直到右侧智能匹配为 `True`。
+也称为*正反器*运算符，将这两个参数与 `$_`（即 `$_ ~~ $a` 和 `$_ ~~ $b`）进行比较。计算结果为 `False`，直到左侧智能匹配返回为 `True`，此时计算结果为 `True`，直到右侧智能匹配为 `True`。
 
 Also called the *flipflop operator*, compares both arguments to `$_` (that is, `$_ ~~ $a` and `$_ ~~ $b`). Evaluates to `False` until the left-hand smartmatch is `True`, at which point it evaluates to `True` until the right-hand smartmatch is `True`.
 
@@ -3689,7 +3688,7 @@ This operator cannot be overloaded, as it's handled specially by the compiler.
 sub infix:<fff>(Mu $a, Mu $b)
 ```
 
-执行类似 sed 的触发器操作，它返回 `False`，直到 `$_` 智能匹配左参数，然后返回 `True`，直到 `$_` 智能匹配右参数。
+执行类似 sed 的正反器操作，它返回 `False`，直到 `$_` 智能匹配左参数，然后返回 `True`，直到 `$_` 智能匹配右参数。
 
 Performs a sed-like flipflop operation, wherein it returns `False` until the left argument smartmatches against `$_`, then returns `True` until the right argument smartmatches against `$_`.
 
@@ -3703,7 +3702,7 @@ for <AB C D B E F> {
 }
 ```
 
-非 sed 类型的触发器（在成功地将左参数与 `$_` 匹配之后，将尝试对右参数使用相同的 `$_`，并相应地执行操作）。见 [ff](https://docs.raku.org/routine/ff)。
+非 sed 类型的正反器（在成功地将左参数与 `$_` 匹配之后，将尝试对右参数使用相同的 `$_`，并相应地执行操作）。见 [ff](https://docs.raku.org/routine/ff)。
 
 The non-sed-like flipflop (which after successfully matching the left argument against `$_` will try that same `$_` against the right argument and act accordingly). See [ff](https://docs.raku.org/routine/ff).
 
@@ -3932,7 +3931,7 @@ Zip 运算符像拉链一样交错传递给 `Z` 的列表，从每个操作数�
 The Zip operator interleaves the lists passed to `Z` like a zipper, taking index-corresponding elements from each operand. The returned `Seq` contains nested lists, each with a value from every operand in the chain. If one of the operands runs out of elements prematurely, the zip operator will stop.
 
 ```Raku
-say (1, 2 Z <a b c> Z <+ ->).perl;
+say (1, 2 Z <a b c> Z <+ ->).raku;
 # OUTPUT: «((1, "a", "+"), (2, "b", "-")).Seq␤» 
 for <a b c> Z <1 2 3 4> -> [$l, $r] {
     say "$l:$r"
