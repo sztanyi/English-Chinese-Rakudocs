@@ -64,3 +64,8 @@ https://raku.org/archive/doc/apocalypse.html
 # Raku Test Suite
 https://github.com/Raku/roast
 
+# Raku Manifesto
+https://www.codesections.com/blog/raku-manifesto/
+https://www.codesections.com/blog/raku-manifesto-2/
+https://www.codesections.com/blog/raku-manifesto-3/
+
