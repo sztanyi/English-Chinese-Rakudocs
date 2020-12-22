@@ -71,3 +71,6 @@ https://www.codesections.com/blog/raku-manifesto-3/
 
 # Jonathan blog
 https://6guts.wordpress.com/
+
+# Raku Advent
+https://raku-advent.blog/category/2020/
