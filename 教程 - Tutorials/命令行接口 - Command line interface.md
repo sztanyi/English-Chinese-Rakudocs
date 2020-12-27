@@ -37,40 +37,40 @@ The default command line interface of Raku scripts consists of three parts:
 <a id="将命令行参数解析为-capture--parsing-the-command-line-parameters-into-a-capture"></a>
 ## 将命令行参数解析为 Capture / Parsing the command line parameters into a capture
 
-它查看 [@*ARGS](https://docs.raku.org/language/variables#index-entry-@*ARGS) 中的值，根据某些策略解释这些值，并创建一个 [Capture](https://docs.raku.org/type/Capture) 对象。开发人员可以提供另一种解析方法，或者使用模块安装。
+它查看 [@*ARGS](https://docs.raku.org/language/variables#index-entry-@*ARGS) 中的值，根据某些策略解释这些值，并由此创建一个 [Capture](https://docs.raku.org/type/Capture) 对象。开发人员可以提供自己的解析方法，或者使用模块。
 
 This looks at the values in [@*ARGS](https://docs.raku.org/language/variables#index-entry-@*ARGS), interprets these according to some policy, and creates a [Capture](https://docs.raku.org/type/Capture) object out of that. An alternative way of parsing may be provided by the developer or installed using a module.
 
 <a id="使用该-capture-调用提供的-main-子例程--calling-a-provided-main-subroutine-using-that-capture"></a>
 ## 使用该 Capture 调用提供的 `MAIN` 子例程 / Calling a provided `MAIN` subroutine using that capture
 
-标准[多分派](https://docs.raku.org/language/functions#index-entry-declarator_multi-Multi-dispatch)用于使用生成的 `Capture `对象调用 `MAN` 子例程。这意味着你的 `MAIN` 子例程可能是一个 `multi sub`，每个候选子例程都负责处理给定的命令行参数的某些部分。
+标准[多分派](https://docs.raku.org/language/functions#index-entry-declarator_multi-Multi-dispatch)用于使用生成的 `Capture` 对象调用 `MAN` 子例程。这意味着你的 `MAIN` 可能是一个`多分派子例程`，每个候选子例程都负责处理给定的命令行参数的某些部分。
 
 Standard [multi dispatch](https://docs.raku.org/language/functions#index-entry-declarator_multi-Multi-dispatch) is used to call the `MAIN` subroutine with the generated `Capture` object. This means that your `MAIN` subroutine may be a `multi sub`, each candidate of which is responsible for some part of processing the given command line arguments.
 
 <a id="如果调用-main-失败，则创建显示使用信息---creating--showing-usage-information-if-calling-main-failed"></a>
 ## 如果调用 `MAIN` 失败，则创建/显示使用信息 - Creating / showing usage information if calling `MAIN` failed
 
-如果多分派失败，那么脚本的用户应该尽可能地被告知失败的原因。默认情况下，这是通过检查每个 `MAIN` 候选子例程以及任何相关的 Pod 信息的签名来完成的。然后将结果显示在 STDERR 上（如果指定了 `--help`，则显示在 STDOUT 上）。开发人员可以提供生成使用信息的替代方法，或者使用模块安装。
+如果多分派失败，那么脚本的用户应该尽可能地被告知失败的原因。默认情况下，这是通过检查每个 `MAIN` 候选子例程以及任何相关的 Pod 信息的签名来完成的。然后将结果显示在标准错误输出上（如果指定了 `--help`，则显示在标准输出上）。开发人员可以提供生成使用信息的替代方法，或者使用模块。
 
 If multi dispatch failed, then the user of the script should be informed as well as possible as to why it failed. By default, this is done by inspecting the signature of each `MAIN` candidate sub, and any associated Pod information. The result is then shown to the user on STDERR (or on STDOUT if `--help` was specified). An alternative way of generating the usage information may be provided by the developer or installed using a module.
 
 <a id="main-子例程--sub-main"></a>
 # MAIN 子例程 / sub MAIN
 
-在运行所有相关的输入阶段（`BEGIN`、`CHECK`、`INT`、`PRE`、`ENTER`）并执行脚本的 [mainline](https://docs.raku.org/language/glossary#index-entry-Mainline) 之后，具有特殊名称的子程序 `MAIN` 将被执行。如果没有 `MAIN` 子例程，则不会出现错误：然后，你的脚本将只需在脚本的 mainline 中执行参数解析等工作。
+在运行所有相关的输入阶段（`BEGIN`、`CHECK`、`INT`、`PRE`、`ENTER`）并执行脚本的[主线程序](https://docs.raku.org/language/glossary#index-entry-Mainline)之后，具有特殊名称的子程序 `MAIN` 将被执行。如果没有 `MAIN` 子例程，则不会出现错误：然后，你的脚本将只需在脚本的 mainline 中执行参数解析等工作。
 
 The sub with the special name `MAIN` will be executed after all relevant entry phasers (`BEGIN`, `CHECK`, `INIT`, `PRE`, `ENTER`) have been run and the [mainline](https://docs.raku.org/language/glossary#index-entry-Mainline) of the script has been executed. No error will occur if there is no `MAIN` sub: your script will then just have to do the work, such as argument parsing, in the mainline of the script.
 
-来自 `MAIN` 子例程的任何正常退出将导致退出代码为 `0`，表示成功。`MAIN` 子例程的任何返回值将被忽略。如果抛出 `MAIN` 子例程中未处理的异常，则退出代码将为 `1`。如果调度到 `MAIN` 失败，将在 STDERR 上显示使用消息，退出代码将为 `2`。
+来自 `MAIN` 子例程的任何正常退出将导致退出代码为 `0`，表示成功。`MAIN` 子例程的任何返回值将被忽略。如果抛出 `MAIN` 子例程中未处理的异常，则退出代码将为 `1`。如果调度到 `MAIN` 失败，将在标准错误输出上显示使用消息，退出代码将为 `2`。
 
 Any normal exit from the `MAIN` sub will result in an exit code of `0`, indicating success. Any return value of the `MAIN` sub will be ignored. If an exception is thrown that is not handled inside the `MAIN` sub, then the exit code will be `1`. If the dispatch to `MAIN` failed, a usage message will be displayed on STDERR and the exit code will be `2`.
 
-命令行参数存在于 `@*ARGS` 动态变量中，并且在调用 `MAIN` 单元之前，可以在脚本的 mainline 中进行更改。
+命令行参数存在于 `@*ARGS` 动态变量中，并且在调用 `MAIN` 单元之前，可以在脚本的主线程序中进行更改。
 
 The command line parameters are present in the `@*ARGS` dynamic variable and may be altered in the mainline of the script before the `MAIN` unit is called.
 
-`MAIN` 子例程的签名决定哪个候选实际上将使用标准[多分派](https://docs.raku.org/language/glossary#index-entry-Multi-Dispatch)语义来调用。
+`MAIN` 子例程的签名决定哪个候选实际上将使用标准[多分派](https://docs.raku.org/language/glossary#index-entry-Multi-Dispatch)语义而被调用。
 
 The signature of (the candidates of the multi) sub `MAIN` determines which candidate will actually be called using the standard [multi dispatch](https://docs.raku.org/language/glossary#index-entry-Multi-Dispatch) semantics.
 
@@ -110,7 +110,7 @@ $ raku hello.raku Liz
 Hello Liz, how are you?
 ```
 
-完成这个的另一种方法是使 `sub MAIN` 成为 `multi sub`：
+完成这个的另一种方法是使 `sub MAIN` 成为`多分派子例程`：
 
 Another way to do this is to make `sub MAIN` a `multi sub`:
 
@@ -124,7 +124,7 @@ multi sub MAIN($name) { say "Hello $name, how are you?"   }
 
 Which would give the same output as the examples above. Whether you should use either method to achieve the desired goal is entirely up to you.
 
-一个使用单个位置和多个命名参数的更复杂的示例：
+一个使用单个位置参数和多个命名参数的更复杂示例：
 
 A more complicated example using a single positional and multiple named parameters:
 
@@ -257,18 +257,18 @@ Available options are:
 <a id="named-anywhere"></a>
 ### named-anywhere
 
-默认情况下，传递给程序的命名参数（即 `MAIN`）不能出现在任何位置参数之后。但是，如果 `%*SUB-MAIN-OPTS<named-anywhere>` 设置为真值，则可以在任何地方指定命名参数，甚至在位置参数之后也可以。例如，可以使用以下方法调用上述程序：
+默认情况下，传递给程序（即 `MAIN`）的命名参数不能出现在任何位置参数之后。但是，如果 `%*SUB-MAIN-OPTS<named-anywhere>` 设置为真值，则可以在任何地方指定命名参数，甚至在位置参数之后也可以。例如，可以使用以下方法调用上述程序：
 
 By default, named arguments passed to the program (i.e., `MAIN`) cannot appear after any positional argument. However, if `%*SUB-MAIN-OPTS<named-anywhere>` is set to a true value, named arguments can be specified anywhere, even after positional parameter. For example, the above program can be called with:
 
 ```Raku
-$ raku example.p6 1 --c=2 3 --d=4
+$ raku example.raku 1 --c=2 3 --d=4
 ```
 
 <a id="is-hidden-from-usage"></a>
 ## is hidden-from-USAGE
 
-有时你要排除在任何自动生成的使用消息中显示的 `MAIN` 候选项。这可以通过将 `hidden-from-USAGE` 特性添加到不想显示的 `MAIN` 候选项的规格来实现。在较早的示例中展开：
+有时你想要排除 `MAIN` 候选项在任何自动生成的使用消息中显示 。这可以通过将 `hidden-from-USAGE` 特性添加到不想显示的 `MAIN` 候选项中来实现。在较早的示例中展开：
 
 Sometimes you want to exclude a `MAIN` candidate from being shown in any automatically generated usage message. This can be achieved by adding a `hidden-from-USAGE` trait to the specification of the `MAIN` candidate you do not want to show. Expanding on an earlier example:
 
@@ -320,14 +320,14 @@ unit sub MAIN(
   Int  :$length = 24,
   Bool :$verbose,
 );  # <- note semicolon here 
- 
+
 say $length if $length.defined;
 say $file   if $file.defined;
 say 'Verbosity ', ($verbose ?? 'on' !! 'off');
-# rest of script is part of MAIN 
+# rest of script is part of MAIN
 ```
 
-请注意，只有仅使用单个 `sub MAIN`才能获得此选项。
+请注意，只有仅使用单个 `MAIN 子例程`才能获得此选项。
 
 Note that this is only appropriate if you can get by with just a single (only) `sub MAIN`.
 
@@ -353,7 +353,7 @@ EOH
 }
 ```
 
-默认使用帮助消息可通过只读变量 `$*USAGE` 在 `sub USAGE` 中使用。它将基于可用的 `sub MAIN` 候选函数和它们的参数来生成。如前面所示，你可以使用 `#|(...)` Pod 代码块来为每个候选指定一个附加的扩展说明，以设置  [`WHY`](https://docs.raku.org/routine/WHY)。
+默认使用帮助消息可通过只读变量 `$*USAGE` 在 `USAGE 子例程`中使用。它将基于可用的 `MAIN 子例程`候选函数和它们的参数来生成。如前面所示，你可以使用 `#|(...)` Pod 代码块来为每个候选指定一个附加的扩展说明，以设置  [`WHY`](https://docs.raku.org/routine/WHY)。
 
 The default usage message is available inside `sub USAGE` via the read-only `$*USAGE` variable. It will be generated based on available `sub MAIN` candidates and their parameters. As shown before, you can specify an additional extended description for each candidate using a `#|(...)` Pod block to set [`WHY`](https://docs.raku.org/routine/WHY).
 
@@ -382,7 +382,7 @@ sub ARGS-TO-CAPTURE(&main, @args --> Capture) {
 }
 ```
 
-请注意，动态变量 [`&*ARGS-TO-CAPTURE`](https://docs.raku.org/language/variables#&*ARGS-TO-CAPTURE) 可以执行默认的命令行参数到 `Capture` 处理，因此如果不愿意，你就不必重新发明轮子。
+请注意，动态变量 [`&*ARGS-TO-CAPTURE`](https://docs.raku.org/language/variables#&*ARGS-TO-CAPTURE) 可以执行默认的命令行参数到 `Capture` 处理，因此你不必重新发明轮子。
 
 Note that the dynamic variable [`&*ARGS-TO-CAPTURE`](https://docs.raku.org/language/variables#&*ARGS-TO-CAPTURE) is available to perform the default command line arguments to `Capture` processing so you don't have to reinvent the whole wheel if you don't want to.
 

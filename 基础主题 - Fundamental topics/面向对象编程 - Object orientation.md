@@ -398,9 +398,9 @@ we now do a method call:
 $trip.notes("First steps");
 ```
 
-覆盖默认的自动生成访问器意味着，不可以对返回值赋值可变容器。方法调用是将计算和逻辑添加到属性更新中的首选方法。许多现代语言可以通过使用 “setter” 方法重载赋值来更新属性。虽然 Raku 可以通过一个 [`Proxy`](https://github.com/perl6/roast/blob/master/S12-attributes/mutators.t) 对象重载赋值操作符，但重载赋值设置复杂逻辑属性是不可取的，因为[较弱的面向对象设计](https://6guts.wordpress.com/2016/11/25/perl-6-is-biased-towards-mutators-being-really-simple-thats-a-good-thing/)。
+覆盖默认的自动生成访问器意味着，不可以对返回值赋值可变容器。方法调用是将计算和逻辑添加到属性更新中的首选方法。许多现代语言可以通过使用 “setter” 方法重载赋值来更新属性。虽然 Raku 可以通过一个 [`Proxy`](https://github.com/Raku/roast/blob/master/S12-attributes/mutators.t) 对象重载赋值操作符，但重载赋值设置复杂逻辑属性是不可取的，因为[较弱的面向对象设计](https://6guts.wordpress.com/2016/11/25/perl-6-is-biased-towards-mutators-being-really-simple-thats-a-good-thing/)。
 
-Overriding the default auto-generated accessor means it is no longer available to provide a mutable container on return for an assignment. A method call is the preferred approach to adding computation and logic to the update of an attribute. Many modern languages can update an attribute by overloading assignment with a “setter” method. While Raku can overload the assignment operator for this purpose with a [`Proxy`](https://github.com/perl6/roast/blob/master/S12-attributes/mutators.t) object, overloading assignment to set attributes with complex logic is currently discouraged as [weaker object oriented design](https://6guts.wordpress.com/2016/11/25/perl-6-is-biased-towards-mutators-being-really-simple-thats-a-good-thing/).
+Overriding the default auto-generated accessor means it is no longer available to provide a mutable container on return for an assignment. A method call is the preferred approach to adding computation and logic to the update of an attribute. Many modern languages can update an attribute by overloading assignment with a “setter” method. While Raku can overload the assignment operator for this purpose with a [`Proxy`](https://github.com/Raku/roast/blob/master/S12-attributes/mutators.t) object, overloading assignment to set attributes with complex logic is currently discouraged as [weaker object oriented design](https://6guts.wordpress.com/2016/11/25/perl-6-is-biased-towards-mutators-being-really-simple-thats-a-good-thing/).
 
 <a id="类和实例方法--class-and-instance-methods"></a>
 ## 类和实例方法 / Class and instance methods
