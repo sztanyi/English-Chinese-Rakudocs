@@ -204,7 +204,7 @@ The [IO::Handle](https://docs.raku.org/type/IO::Handle) gives you [.read](https:
 
 与某些语言不同，当离开句柄定义的作用域时，它不会自动关闭。相反，它将一直保持打开，直到被垃圾收集。为了使句柄关闭更容易，有些方法允许你指定一个 `:close` 参数，你还可以使用 [`will leave` 特征](https://docs.raku.org/language/phasers#index-entry-will_trait)，或者由 [`Trait::IO`](https://github.com/raku-community-modules/perl6-Trait-IO) 模组提供的 `does auto-close` 特征。
 
-Unlike some languages, the handle won't get automatically closed when the scope it's defined in is left. Instead, it'll remain open until it's garbage collected. To make the closing business easier, some of the methods let you specify a `:close` argument, you can also use the [`will leave` trait](https://docs.raku.org/language/phasers#index-entry-will_trait), or the `does auto-close` trait provided by the [`Trait::IO`](https://github.com/raku-community-modules/perl6-Trait-IO) module.
+Unlike some languages, the handle won't get automatically closed when the scope it's defined in is left. Instead, it'll remain open until it's garbage collected. To make the closing business easier, some of the methods let you specify a `:close` argument, you can also use the [`will leave` trait](https://docs.raku.org/language/phasers#index-entry-will_trait), or the `does auto-close` trait provided by the [`Trait::IO`](https://github.com/raku-community-modules/Trait-IO) module.
 
 <a id="错误的做事方式--the-wrong-way-to-do-things"></a>
 # 错误的做事方式 / The wrong way to do things

@@ -4497,7 +4497,7 @@ In general, infix operators can be applied to a single or no element without yie
 say [-] ()  # OUTPUT: «0␤»
 ```
 
-设计文档阐述了这应该返回[标识值](https://en.wikipedia.org/wiki/Identity_element)，[并且必须为每个操作员指定](http://design.perl6.org/S03.html#Reduction_operators)一个标识值。一般来说，返回的标识元素应该是直观的。但是，这里有一个表，它阐述了如何在 Raku 中定义运算符类，该表对应于上述表中的定义，他们是由语言定义的类型和运算符：
+设计文档阐述了这应该返回[标识值](https://en.wikipedia.org/wiki/Identity_element)，[并且必须为每个操作员指定](http://design.raku.org/S03.html#Reduction_operators)一个标识值。一般来说，返回的标识元素应该是直观的。但是，这里有一个表，它阐述了如何在 Raku 中定义运算符类，该表对应于上述表中的定义，他们是由语言定义的类型和运算符：
 
 The design documents specify that this should return [an identity value](https://en.wikipedia.org/wiki/Identity_element), and that an identity value [must be specified for every operator](http://design.perl6.org/S03.html#Reduction_operators). In general, the identity element returned should be intuitive. However, here is a table that specifies how it is defined for operator classes in Raku, which corresponds to the table in the above definition in the types and operators defined by the language:
 

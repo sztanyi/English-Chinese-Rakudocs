@@ -1168,9 +1168,9 @@ Even in non-backtracking contexts, the alternation operator `||` tries all the b
 <a id="最长的备选项：-|--longest-alternation-|"></a>
 # 最长的备选项： `|` / Longest alternation: `|`
 
-简而言之，在用 `|` 分隔的正则分支中，最长的 token 匹配获胜，与正则中的文本顺序无关。然而，`|` 真正做的不止这些。它不决定哪个分支在完成整个匹配后获胜，而是遵循[最长令牌匹配（LTM）策略](https://design.perl6.org/S05.html#Longest-token_matching)。
+简而言之，在用 `|` 分隔的正则分支中，最长的 token 匹配获胜，与正则中的文本顺序无关。然而，`|` 真正做的不止这些。它不决定哪个分支在完成整个匹配后获胜，而是遵循[最长令牌匹配（LTM）策略](https://design.raku.org/S05.html#Longest-token_matching)。
 
-In short, in regex branches separated by `|`, the longest token match wins, independent of the textual ordering in the regex. However, what `|` really does is more than that. It does not decide which branch wins after finishing the whole match, but follows the [longest-token matching (LTM) strategy](https://design.perl6.org/S05.html#Longest-token_matching).
+In short, in regex branches separated by `|`, the longest token match wins, independent of the textual ordering in the regex. However, what `|` really does is more than that. It does not decide which branch wins after finishing the whole match, but follows the [longest-token matching (LTM) strategy](https://design.raku.org/S05.html#Longest-token_matching).
 
 简言之，`|` 的作用是：
 
@@ -1215,9 +1215,9 @@ say "abc" ~~ /a\w| a. { print "lose" } /; # Output: ⌜ab⌟
 
 If the tie breaker above doesn't work, then the textually earlier alternative takes precedence.
 
-更多细节，见 [LTM 策略](https://design.perl6.org/S05.html#Longest-token_matching)。
+更多细节，见 [LTM 策略](https://design.raku.org/S05.html#Longest-token_matching)。
 
-For more details, see [the LTM strategy](https://design.perl6.org/S05.html#Longest-token_matching).
+For more details, see [the LTM strategy](https://design.raku.org/S05.html#Longest-token_matching).
 
 <a id="引文列表是-ltm-匹配项--quoted-lists-are-ltm-matches"></a>
 ## 引文列表是 LTM 匹配项 / Quoted lists are LTM matches
@@ -2399,9 +2399,9 @@ say %config.raku;
 #           :quotas(${:jack("123"), :joy("42")})}» 
 ```
 
-命名正则可以并且应该在 [grammars](https://docs.raku.org/language/grammars) 中分组。预先定义的子规则列表列在设计文档 [S05-regex](https://design.perl6.org/S05.html#Predefined_Subrules) 中。
+命名正则可以并且应该在 [grammars](https://docs.raku.org/language/grammars) 中分组。预先定义的子规则列表列在设计文档 [S05-regex](https://design.raku.org/S05.html#Predefined_Subrules) 中。
 
-Named regexes can and should be grouped in [grammars](https://docs.raku.org/language/grammars). A list of predefined subrules is listed in [S05-regex](https://design.perl6.org/S05.html#Predefined_Subrules) of design documents.
+Named regexes can and should be grouped in [grammars](https://docs.raku.org/language/grammars). A list of predefined subrules is listed in [S05-regex](https://design.raku.org/S05.html#Predefined_Subrules) of design documents.
 
 <a id="正则插值--regex-interpolation"></a>
 # 正则插值 / Regex interpolation
