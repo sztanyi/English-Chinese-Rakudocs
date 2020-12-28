@@ -37,7 +37,7 @@ The default command line interface of Raku scripts consists of three parts:
 <a id="将命令行参数解析为-capture--parsing-the-command-line-parameters-into-a-capture"></a>
 ## 将命令行参数解析为 Capture / Parsing the command line parameters into a capture
 
-它查看 [@*ARGS](https://docs.raku.org/language/variables#index-entry-@*ARGS) 中的值，根据某些策略解释这些值，并创建一个 [Capture](https://docs.raku.org/type/Capture) 对象。开发人员可以提供另一种解析方法，或者使用模块安装。
+它查看 [@*ARGS](https://docs.raku.org/language/variables#index-entry-@*ARGS) 中的值，根据某些策略解释这些值，并由此创建一个 [Capture](https://docs.raku.org/type/Capture) 对象。开发人员可以提供另一种解析方法，或者使用模块安装。
 
 This looks at the values in [@*ARGS](https://docs.raku.org/language/variables#index-entry-@*ARGS), interprets these according to some policy, and creates a [Capture](https://docs.raku.org/type/Capture) object out of that. An alternative way of parsing may be provided by the developer or installed using a module.
 
