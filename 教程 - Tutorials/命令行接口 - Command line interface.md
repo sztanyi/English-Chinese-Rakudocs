@@ -448,7 +448,7 @@ sub GENERATE-USAGE(&main, |capture) {
 }
 ```
 
-你还可以使用多个子程序来创建相同的效果：
+你还可以使用多分派子例程来创建相同的效果：
 
 You can also use multi subroutines to create the same effect:
 

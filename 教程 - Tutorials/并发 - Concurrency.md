@@ -6,17 +6,17 @@
 
 Concurrency and asynchronous programming
 
-与大多数现代编程语言一样，Perl 6 被设计为支持并行、异步和 [并发](https://en.wikipedia.org/wiki/Concurrent_computing)。并行性是指同时做多件事。*异步编程*有时被称为事件驱动或反应式编程，它是关于支持由程序中其他地方触发的事件引起的程序流更改。最后，并发性是关于一些共享资源的访问和修改的协调。
+与大多数现代编程语言一样，Raku 被设计为支持并行、异步和[并发](https://en.wikipedia.org/wiki/Concurrent_computing)。并行性是指同时做多件事。*异步编程*有时被称为事件驱动或响应式编程，它是关于支持由程序中其他地方触发的事件引起的程序流更改。最后，并发性是关于一些共享资源的访问和修改的协调。
 
-In common with most modern programming languages, Perl 6 is designed to support parallelism, asynchronicity and [concurrency](https://en.wikipedia.org/wiki/Concurrent_computing). Parallelism is about doing multiple things at once. *Asynchronous programming*, which is sometimes called event driven or reactive programming, is about supporting changes in the program flow caused by events triggered elsewhere in the program. Finally, concurrency is about the coordination of access and modification of some shared resources.
+In common with most modern programming languages, Raku is designed to support parallelism, asynchronicity and [concurrency](https://en.wikipedia.org/wiki/Concurrent_computing). Parallelism is about doing multiple things at once. *Asynchronous programming*, which is sometimes called event driven or reactive programming, is about supporting changes in the program flow caused by events triggered elsewhere in the program. Finally, concurrency is about the coordination of access and modification of some shared resources.
 
-Perl 6 并发设计的目的是通过下面描述的各种功能层，提供一个高级、可组合和一致的接口，不管虚拟机如何为特定的操作系统实现它。
+Raku 并发设计的目的是通过下面描述的各种功能层，提供一个高级、可组合和一致的接口，不管虚拟机如何为特定的操作系统实现它。
 
-The aim of the Perl 6 concurrency design is to provide a high-level, composable and consistent interface, regardless of how a virtual machine may implement it for a particular operating system, through layers of facilities as described below.
+The aim of the Raku concurrency design is to provide a high-level, composable and consistent interface, regardless of how a virtual machine may implement it for a particular operating system, through layers of facilities as described below.
 
-此外，某些 Perl 功能可能以异步方式隐式操作，因此为了确保与这些功能的可预测互操作，用户代码应尽可能避免较低级别的并发 API（例如，[Thread](https://docs.raku.org/type/Thread) 和 [Scheduler](https://docs.raku.org/type/Scheduler))，并使用更高级的接口。
+此外，某些 Raku 功能可能以异步方式隐式操作，因此为了确保与这些功能的可预测互操作，用户代码应尽可能避免较低级别的并发 API（例如，[Thread](https://docs.raku.org/type/Thread) 和 [Scheduler](https://docs.raku.org/type/Scheduler))，并使用更高级的接口。
 
-Additionally, certain Perl features may implicitly operate in an asynchronous fashion, so in order to ensure predictable interoperation with these features, user code should, where possible, avoid the lower level concurrency APIs (e.g., [Thread](https://docs.raku.org/type/Thread) and [Scheduler](https://docs.raku.org/type/Scheduler)) and use the higher-level interfaces.
+Additionally, certain Raku features may implicitly operate in an asynchronous fashion, so in order to ensure predictable interoperation with these features, user code should, where possible, avoid the lower level concurrency APIs (e.g., [Thread](https://docs.raku.org/type/Thread) and [Scheduler](https://docs.raku.org/type/Scheduler)) and use the higher-level interfaces.
 
 # 目录 / Table of Contents
 
@@ -53,7 +53,7 @@ Additionally, certain Perl features may implicitly operate in an asynchronous fa
 
 A [Promise](https://docs.raku.org/type/Promise) (also called *future* in other programming environments) encapsulates the result of a computation that may not have completed or even started at the time the promise is obtained. A `Promise` starts from a `Planned` status and can result in either a `Kept` status, meaning the promise has been successfully completed, or a `Broken` status meaning that the promise has failed. Usually this is much of the functionality that user code needs to operate in a concurrent or asynchronous manner.
 
-```Perl6
+```Raku
 my $p1 = Promise.new;
 say $p1.status;         # OUTPUT: «Planned␤» 
 $p1.keep('Result');
@@ -73,7 +73,7 @@ Promise 强大在于它的可组合特性，例如通过链式调用，通常通
 
 Promises gain much of their power by being composable, for example by chaining, usually by the [then](https://docs.raku.org/type/Promise#method_then) method:
 
-```Perl6
+```Raku
 my $promise1 = Promise.new();
 my $promise2 = $promise1.then(
     -> $v { say $v.result; "Second Result" }
@@ -86,7 +86,7 @@ say $promise2.result;   # OUTPUT: «First Result␤Second Result␤»
 
 Here the [then](https://docs.raku.org/type/Promise#method_then) method schedules code to be executed when the first [Promise](https://docs.raku.org/type/Promise) is kept or broken, itself returning a new [Promise](https://docs.raku.org/type/Promise) which will be kept with the result of the code when it is executed (or broken if the code fails). `keep` changes the status of the promise to `Kept` setting the result to the positional argument. `result` blocks the current thread of execution until the promise is kept or broken, if it was kept then it will return the result (that is the value passed to `keep`), otherwise it will throw an exception based on the value passed to `break`. The latter behavior is illustrated with:
 
-```Perl6
+```Raku
 my $promise1 = Promise.new();
 my $promise2 = $promise1.then(-> $v { say "Handled but : "; say $v.result});
 $promise1.break("First Result");
@@ -102,7 +102,7 @@ Here the `break` will cause the code block of the `then` to throw an exception w
 
 A [Promise](https://docs.raku.org/type/Promise) can also be scheduled to be automatically kept at a future time:
 
-```Perl6
+```Raku
 my $promise1 = Promise.in(5);
 my $promise2 = $promise1.then(-> $v { say $v.status; 'Second Result' });
 say $promise2.result;
@@ -116,7 +116,7 @@ promise 非常常用的场景是运行一段代码，代码成功返回则 keep 
 
 A very frequent use of promises is to run a piece of code, and keep the promise once it returns successfully, or break it when the code dies. The [start method](https://docs.raku.org/type/Promise#method_start) provides a shortcut for that:
 
-```Perl6
+```Raku
 my $promise = Promise.start(
     { my $i = 0; for 1 .. 10 { $i += $_ }; $i}
 );
@@ -127,17 +127,17 @@ promise 的 `result` 方法的返回值就是 start 中代码的返回值。 如
 
 Here the `result` of the promise returned is the value returned from the code. Similarly if the code fails (and the promise is thus broken), then `cause` will be the [Exception](https://docs.raku.org/type/Exception) object that was thrown:
 
-```Perl6
+```Raku
 my $promise = Promise.start({ die "Broken Promise" });
 try $promise.result;
 say $promise.cause;
 ```
 
-因为这个是非常常用的模式，Perl 6 提供了 start 关键字：
+因为这个是非常常用的模式，Raku 提供了 start 关键字：
 
 This is considered to be such a commonly required pattern that it is also provided as a keyword:
 
-```Perl6
+```Raku
 my $promise = start {
     my $i = 0;
     for 1 .. 10 {
@@ -153,7 +153,7 @@ say $result;
 
 The subroutine [await](https://docs.raku.org/type/Promise#sub_await) is almost equivalent to calling `result` on the promise object returned by `start` but it will also take a list of promises and return the result of each:
 
-```Perl6
+```Raku
 my $p1 = start {
     my $i = 0;
     for 1 .. 10 {
@@ -176,7 +176,7 @@ Promise 的两个类方法可以融合多个 [Promise](https://docs.raku.org/typ
 
 In addition to `await`, two class methods combine several [Promise](https://docs.raku.org/type/Promise) objects into a new promise: `allof` returns a promise that is kept when all the original promises are kept or broken:
 
-```Perl6
+```Raku
 my $promise = Promise.allof(
     Promise.in(2),
     Promise.in(3)
@@ -190,7 +190,7 @@ say "All done"; # Should be not much more than three seconds later
 
 And `anyof` returns a new promise that will be kept when any of the original promises is kept or broken:
 
-```Perl6
+```Raku
 my $promise = Promise.anyof(
     Promise.in(3),
     Promise.in(8600)
@@ -204,7 +204,7 @@ say "All done"; # Should be about 3 seconds later
 
 Unlike `await` however the results of the original kept promises are not available without referring to the original, so these are more useful when the completion or otherwise of the tasks is more important to the consumer than the actual results, or when the results have been collected by other means. You may, for example, want to create a dependent Promise that will examine each of the original promises:
 
-```Perl6
+```Raku
 my @promises;
 for 1..5 -> $t {
     push @promises, start {
@@ -223,7 +223,7 @@ Which will give True if all of the promises were kept with True, False otherwise
 
 If you are creating a promise that you intend to keep or break yourself then you probably don't want any code that might receive the promise to inadvertently (or otherwise) keep or break the promise before you do. For this purpose there is the [method vow](https://docs.raku.org/type/Promise#method_vow), which returns a Vow object which becomes the only mechanism by which the promise can be kept or broken. If an attempt to keep or break the Promise is made directly then the exception [X::Promise::Vowed](https://docs.raku.org/type/X::Promise::Vowed) will be thrown, as long as the vow object is kept private, the status of the promise is safe:
 
-```Perl6
+```Raku
 sub get_promise {
     my $promise = Promise.new;
     my $vow = $promise.vow;
@@ -247,7 +247,7 @@ The methods that return a promise that will be kept or broken automatically such
 <a id="supplies"></a>
 ## Supplies
 
-[Supply](https://docs.raku.org/type/Supply) 是异步数据流机制，它能够被一个或者多个消费者同时消费。这种方式类似于其他编程语言的事件。可以视作开启 Perl6 *事件驱动*或者响应式设计。
+[Supply](https://docs.raku.org/type/Supply) 是异步数据流机制，它能够被一个或者多个消费者同时消费。这种方式类似于其他编程语言的事件。可以视作开启 Raku *事件驱动*或者响应式设计。
 
 A [Supply](https://docs.raku.org/type/Supply) is an asynchronous data streaming mechanism that can be consumed by one or more consumers simultaneously in a manner similar to "events" in other programming languages and can be seen as enabling *event driven* or reactive designs.
 
@@ -255,15 +255,15 @@ A [Supply](https://docs.raku.org/type/Supply) is an asynchronous data streaming 
 
 At its simplest, a [Supply](https://docs.raku.org/type/Supply) is a message stream that can have multiple subscribers created with the method `tap` on to which data items can be placed with `emit`.
 
-[Supply](https://docs.raku.org/type/Supply) 可以是 `live` 或者 `on-demand`的。 `live` 就像电视广播：那些刚开始收看的观众看不到播放过的内容。 `on-demand` 广播就像 Netflix 影片租赁公司：所有人都可以点播一个影片（正如 tap 一个 supply），永远可以从头开始看（获取所有的值），不论现在有多少观众。请注意 `on-demand` supply 不会保留历史数据，而是每次 `tap` 时，`supply` 的代码块被执行。
+[Supply](https://docs.raku.org/type/Supply) 可以是`实时`或者`按需`的。`实时` 就像电视广播：那些刚开始收看的观众看不到播放过的内容。`按需`广播就像 Netflix 影片租赁公司：所有人都可以点播一个影片（正如 tap 一个 supply），永远可以从头开始看（获取所有的值），不论现在有多少观众。请注意`按需` supply 不会保留历史数据，而是每次 `tap` 时，`supply` 的代码块被执行。
 
 The [Supply](https://docs.raku.org/type/Supply) can either be `live` or `on-demand`. A `live` supply is like a TV broadcast: those who tune in don't get previously emitted values. An `on-demand` broadcast is like Netflix: everyone who starts streaming a movie (taps a supply), always starts it from the beginning (gets all the values), regardless of how many people are watching it right now. Note that no history is kept for `on-demand` supplies, instead, the `supply` block is run for each tap of the supply.
 
-`live` [Supply](https://docs.raku.org/type/Supply) 由 [Supplier](https://docs.raku.org/type/Supplier) 工厂创建，每一个发出的值传递给了所有激活的对 Supply 调用了 tap 方法的代码块。
+`实时` [Supply](https://docs.raku.org/type/Supply) 由 [Supplier](https://docs.raku.org/type/Supplier) 工厂创建，每一个发出的值传递给了所有激活的对 Supply 调用了 tap 方法的代码块。
 
 A `live` [Supply](https://docs.raku.org/type/Supply) is created by the [Supplier](https://docs.raku.org/type/Supplier) factory, each emitted value is passed to all the active tappers as they are added:
 
-```Perl6
+```Raku
 my $supplier = Supplier.new;
 my $supply   = $supplier.Supply;
  
@@ -282,7 +282,7 @@ Note that the `tap` is called on a [Supply](https://docs.raku.org/type/Supply) o
 
 An `on-demand` [Supply](https://docs.raku.org/type/Supply) is created by the `supply` keyword:
 
-```Perl6
+```Raku
 my $supply = supply {
     for 1 .. 10 {
         emit($_);
@@ -295,7 +295,7 @@ $supply.tap( -> $v { say $v });
 
 In this case the code in the supply block is executed every time the [Supply](https://docs.raku.org/type/Supply) returned by `supply` is tapped, as demonstrated by:
 
-```Perl6
+```Raku
 my $supply = supply {
     for 1 .. 10 {
         emit($_);
@@ -309,7 +309,7 @@ $supply.tap( -> $v { say "Second : $v" });
 
 The `tap` method returns a [Tap](https://docs.raku.org/type/Tap) object which can be used to obtain information about the tap and also to turn it off when we are no longer interested in the events:
 
-```Perl6
+```Raku
 my $supplier = Supplier.new;
 my $supply   = $supplier.Supply;
  
@@ -324,11 +324,11 @@ $supplier.emit("Won't trigger the tap");
 
 Calling `done` on the supply object calls the `done` callback that may be specified for any taps, but does not prevent any further events being emitted to the stream, or taps receiving them.
 
-`interval` 方法会创建一个 `on-demand` supply，它会在指定间隔定期释放一个新事件。每个释放的事件带的数据是从 0 开始递增的整数。 下列代码输出 0 .. 5 ：
+`interval` 方法会创建一个`按需` supply，它会在指定间隔定期释放一个新事件。每个释放的事件带的数据是从 0 开始递增的整数。 下列代码输出 0 .. 5 ：
 
 The method `interval` returns a new `on-demand` supply which periodically emits a new event at the specified interval. The data that is emitted is an integer starting at 0 that is incremented for each event. The following code outputs 0 .. 5 :
 
-```Perl6
+```Raku
 my $supply = Supply.interval(2);
 $supply.tap(-> $v { say $v });
 sleep 10;
@@ -338,7 +338,7 @@ sleep 10;
 
 A second argument can be supplied to `interval` which specifies a delay in seconds before the first event is fired. Each tap of a supply created by `interval` has its own sequence starting from 0, as illustrated by the following:
 
-```Perl6
+```Raku
 my $supply = Supply.interval(2);
 $supply.tap(-> $v { say "First $v" });
 sleep 6;
@@ -353,7 +353,7 @@ A live `Supply` that keeps values until first tapped can be created with [Suppli
 <a id="whenever"></a>
 ### `whenever`
 
-`whenever` 关键字可以在 supply 或者 react 代码块中使用。 从 6.d 版本开始，需要在他们的词法作用域中被使用。 它引入一个代码块，当它指定的异步事件提示时将运行该代码块。 可以是一个 [Supply](https://docs.raku.org/type/Supply), [Channel](https://docs.raku.org/type/Channel), [Promise](https://docs.raku.org/type/Promise) 或者 [Iterable](https://docs.raku.org/type/Iterable)。
+`whenever` 关键字可以在 supply 或者 react 代码块中使用。 从 6.d 版本开始，需要在他们的词法作用域中被使用。 它引入一个代码块，当它指定的异步事件提示时将运行该代码块。 可以是一个 [Supply](https://docs.raku.org/type/Supply)、 [Channel](https://docs.raku.org/type/Channel)、 [Promise](https://docs.raku.org/type/Promise) 或者 [Iterable](https://docs.raku.org/type/Iterable)。
 
 The `whenever` keyword can be used in supply blocks or in react blocks. From the 6.d version, it needs to be used within the lexical scope of them. It introduces a block of code that will be run when prompted by an asynchronous event that it specifies - that could be a [Supply](https://docs.raku.org/type/Supply), a [Channel](https://docs.raku.org/type/Channel), a [Promise](https://docs.raku.org/type/Promise) or an [Iterable](https://docs.raku.org/type/Iterable).
 
@@ -361,7 +361,7 @@ The `whenever` keyword can be used in supply blocks or in react blocks. From the
 
 In this example we are watching two supplies.
 
-```Perl6
+```Raku
 my $bread-supplier = Supplier.new;
 my $vegetable-supplier = Supplier.new;
  
@@ -395,7 +395,7 @@ The `react` keyword introduces a block of code containing one or more `whenever`
 
 Another difference is that a supply block can be used without the `whenever` keyword, but a react block requires at least one `whenever` to be of any real use.
 
-```Perl6
+```Raku
 react {
     whenever Supply.interval(2) -> $v {
         say $v;
@@ -412,7 +412,7 @@ Here the `whenever` keyword uses [`.act`](https://docs.raku.org/type/Supply#meth
 
 An `on-demand` [Supply](https://docs.raku.org/type/Supply) can also be created from a list of values that will be emitted in turn, thus the first `on-demand` example could be written as:
 
-```Perl6
+```Raku
 react {
     whenever Supply.from-list(1..10) -> $v {
         say $v;
@@ -427,7 +427,7 @@ react {
 
 An existing supply object can be filtered or transformed, using the methods `grep` and `map` respectively, to create a new supply in a manner like the similarly named list methods: `grep` returns a supply such that only those events emitted on the source stream for which the `grep` condition is true is emitted on the second supply:
 
-```Perl6
+```Raku
 my $supplier = Supplier.new;
 my $supply = $supplier.Supply;
 
@@ -448,7 +448,7 @@ for 0 .. 10 {
 
 `map` returns a new supply such that for each item emitted to the original supply a new item which is the result of the expression passed to the `map` is emitted:
 
-```Perl6
+```Raku
 my $supplier = Supplier.new;
 my $supply = $supplier.Supply;
 
@@ -470,7 +470,7 @@ for 0 .. 10 {
 
 If you need to have an action that runs when the supply finishes, you can do so by setting the `done` and `quit` options in the call to `tap`:
 
-```Perl6
+```Raku
 $supply.tap: { ... },
     done => { say 'Job is done.' },
     quit => {
@@ -489,7 +489,7 @@ The `quit` block works very similar to a `CATCH`. If the exception is marked as 
 
 If you are using the `react` or `supply` block syntax with `whenever`, you can add phasers within your `whenever` blocks to handle the `done` and `quit` messages from the tapped supply:
 
-```Perl6
+```Raku
 react {
     whenever $supply {
         ...; # your usual supply tap code here 
@@ -514,7 +514,7 @@ A [Channel](https://docs.raku.org/type/Channel) is a thread-safe queue that can 
 
 An item is queued onto the [Channel](https://docs.raku.org/type/Channel) with the [method send](https://docs.raku.org/type/Channel#method_send), and the [method receive](https://docs.raku.org/type/Channel#method_receive) removes an item from the queue and returns it, blocking until a new item is sent if the queue is empty:
 
-```Perl6
+```Raku
 my $channel = Channel.new;
 $channel.send('Channel One');
 say $channel.receive;  # OUTPUT: «Channel One␤» 
@@ -528,7 +528,7 @@ If the channel has been closed with the [method close](https://docs.raku.org/typ
 
 The [method list](https://docs.raku.org/type/Channel#method_list) returns all the items on the [Channel](https://docs.raku.org/type/Channel) and will block until further items are queued unless the channel is closed:
 
-```Perl6
+```Raku
 my $channel = Channel.new;
 await (^10).map: -> $r {
     start {
@@ -546,7 +546,7 @@ for $channel.list -> $r {
 
 There is also the non-blocking [method poll](https://docs.raku.org/type/Channel#method_poll) that returns an available item from the channel or [Nil](https://docs.raku.org/type/Nil) if there is no item or the channel is closed, this does of course mean that the channel must be checked to determine whether it is closed:
 
-```Perl6
+```Raku
 my $c = Channel.new;
  
 # Start three Promises that sleep for 1..3 seconds, and then 
@@ -595,7 +595,7 @@ The [method closed](https://docs.raku.org/type/Channel#method_closed) returns a 
 
 The `.poll` method can be used in combination with `.receive` method, as a caching mechanism where lack of value returned by `.poll` is a signal that more values need to be fetched and loaded into the channel:
 
-```Perl6
+```Raku
 sub get-value {
     return $c.poll // do { start replenish-cache; $c.receive };
 }
@@ -611,7 +611,7 @@ Channel 可以取代 `whenever` 在 `react` 代码块中的位置：
 
 Channels can be used in place of the [Supply](https://docs.raku.org/type/Supply) in the `whenever` of a `react` block described earlier:
 
-```Perl6
+```Raku
 my $channel = Channel.new;
 my $p = start {
     react {
@@ -636,7 +636,7 @@ await $p;
 
 It is also possible to obtain a [Channel](https://docs.raku.org/type/Channel) from a [Supply](https://docs.raku.org/type/Supply) using the [Channel method](https://docs.raku.org/type/Supply#method_Channel) which returns a [Channel](https://docs.raku.org/type/Channel) which is fed by a `tap`on the [Supply](https://docs.raku.org/type/Supply):
 
-```Perl6
+```Raku
 my $supplier = Supplier.new;
 my $supply   = $supplier.Supply;
 my $channel = $supply.Channel;
@@ -671,7 +671,7 @@ await $p;
 
 [Proc::Async](https://docs.raku.org/type/Proc::Async) builds on the facilities described to run and interact with an external program asynchronously:
 
-```Perl6
+```Raku
 my $proc = Proc::Async.new('echo', 'foo', 'bar');
  
 $proc.stdout.tap(-> $v { print "Output: $v" });
@@ -697,7 +697,7 @@ The path to the command as well as any arguments to the command are supplied to 
 
 If you want to write to the standard input of the program you can supply the `:w` adverb to the constructor and use the methods [write](https://docs.raku.org/type/Proc::Async#method_write), [print](https://docs.raku.org/type/Proc::Async#method_print) or [say](https://docs.raku.org/type/Proc::Async#method_say) to write to the opened pipe once the program has been started:
 
-```Perl6
+```Raku
 my $proc = Proc::Async.new(:w, 'grep', 'foo');
  
 $proc.stdout.tap(-> $v { print "Output: $v" });
@@ -736,7 +736,7 @@ The lowest level interface for concurrency is provided by [Thread](https://docs.
 
 A thread can either be created and then actually run later:
 
-```Perl6
+```Raku
 my $thread = Thread.new(code => { for  1 .. 10  -> $v { say $v }});
 # ... 
 $thread.run;
@@ -746,7 +746,7 @@ $thread.run;
 
 Or can be created and run at a single invocation:
 
-```Perl6
+```Raku
 my $thread = Thread.start({ for  1 .. 10  -> $v { say $v }});
 ```
 
@@ -754,7 +754,7 @@ my $thread = Thread.start({ for  1 .. 10  -> $v { say $v }});
 
 In both cases the completion of the code encapsulated by the [Thread](https://docs.raku.org/type/Thread) object can be waited on with the `finish` method which will block until the thread completes:
 
-```Perl6
+```Raku
 $thread.finish;
 ```
 
@@ -777,7 +777,7 @@ The current default global scheduler is available in the variable `$*SCHEDULER`.
 
 The primary interface of a scheduler (indeed the only method required by the [Scheduler](https://docs.raku.org/type/Scheduler) interface) is the `cue` method:
 
-```Perl6
+```Raku
 method cue(:&code, Instant :$at, :$in, :$every, :$times = 1; :&catch)
 ```
 
@@ -785,7 +785,7 @@ method cue(:&code, Instant :$at, :$in, :$every, :$times = 1; :&catch)
 
 This will schedule the [Callable](https://docs.raku.org/type/Callable) in `&code` to be executed in the manner determined by the adverbs (as documented in [Scheduler](https://docs.raku.org/type/Scheduler)) using the execution scheme as implemented by the scheduler. For example:
 
-```Perl6
+```Raku
 my $i = 0;
 my $cancellation = $*SCHEDULER.cue({ say $i++}, every => 2 );
 sleep 20;
@@ -795,7 +795,7 @@ sleep 20;
 
 Assuming that the `$*SCHEDULER` hasn't been changed from the default, will print the numbers 0 to 10 approximately (i.e with operating system scheduling tolerances) every two seconds. In this case the code will be scheduled to run until the program ends normally, however the method returns a [Cancellation](https://docs.raku.org/type/Cancellation) object which can be used to cancel the scheduled execution before normal completion:
 
-```Perl6
+```Raku
 my $i = 0;
 my $cancellation = $*SCHEDULER.cue({ say $i++}, every => 2 );
 sleep 10;
@@ -844,7 +844,7 @@ The class [Lock](https://docs.raku.org/type/Lock) provides the low level mechani
 
 The primary interface to [Lock](https://docs.raku.org/type/Lock) is the method [protect](https://docs.raku.org/type/Lock#method_protect) which ensures that a block of code (commonly called a "critical section") is only executed in one thread at a time:
 
-```Perl6
+```Raku
 my $lock = Lock.new;
  
 my $a = 0;
@@ -881,7 +881,7 @@ Some shared data concurrency issues are less obvious than others. For a good gen
 
 One particular issue of note is when container autovivification or extension takes place. When an [Array](https://docs.raku.org/type/Array) or a [Hash](https://docs.raku.org/type/Hash) entry is initially assigned the underlying structure is altered and that operation is not async safe. For example, in this code:
 
-```Perl6
+```Raku
 my @array;
 my $slot := @array[20];
 $slot = 'foo';
