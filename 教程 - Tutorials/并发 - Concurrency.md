@@ -357,7 +357,7 @@ A live `Supply` that keeps values until first tapped can be created with [Suppli
 
 The `whenever` keyword can be used in supply blocks or in react blocks. From the 6.d version, it needs to be used within the lexical scope of them. It introduces a block of code that will be run when prompted by an asynchronous event that it specifies - that could be a [Supply](https://docs.raku.org/type/Supply), a [Channel](https://docs.raku.org/type/Channel), a [Promise](https://docs.raku.org/type/Promise) or an [Iterable](https://docs.raku.org/type/Iterable).
 
-这个例子中我们监听两个 supply：
+这个例子中我们正在监听两个 supply：
 
 In this example we are watching two supplies.
 
@@ -408,7 +408,7 @@ react {
 
 Here the `whenever` keyword uses [`.act`](https://docs.raku.org/type/Supply#method_act) to create a tap on the [Supply](https://docs.raku.org/type/Supply) from the provided block. The `react` block is exited when `done()` is called in one of the taps. Using `last` to exit the block would produce an error indicating that it's not really a loop construct.
 
-`on-demand` [Supply](https://docs.raku.org/type/Supply) 也可以从将依次发出的值的列表中创建，因此第一个 `on-demand` 例子可写成：
+`按需` [Supply](https://docs.raku.org/type/Supply) 也可以从将依次发出的值的列表中创建，因此第一个`按需`例子可写成：
 
 An `on-demand` [Supply](https://docs.raku.org/type/Supply) can also be created from a list of values that will be emitted in turn, thus the first `on-demand` example could be written as:
 
@@ -765,7 +765,7 @@ Beyond that there are no further facilities for synchronization or resource shar
 <a id="调度器--schedulers"></a>
 ## 调度器 / Schedulers
 
-实现了角色 [Scheduler](https://docs.raku.org/type/Scheduler) 中定义的接口的类提供并发 API 的下一个级别。调度器接口的目的是提供一种机制，以确定运行特定任务所需的资源以及何时运行该任务。大多数高级并发 API 都是建立在调度器上的，用户代码可能根本不需要使用它们。尽管有些在 [Proc::Async](https://docs.raku.org/type/Proc::Async)，[Promise](https://docs.raku.org/type/Promise) 以及 [Supply](https://docs.raku.org/type/Supply) 中的方法允许你显式地提供一个调度器。
+实现了角色 [Scheduler](https://docs.raku.org/type/Scheduler) 中定义的接口的类提供并发 API 的下一个级别。调度器接口的目的是提供一种机制，以确定运行特定任务所需的资源以及何时运行该任务。大多数高级并发 API 都是建立在调度器上的，用户代码可能根本不需要使用它们。尽管有些在 [Proc::Async](https://docs.raku.org/type/Proc::Async)、[Promise](https://docs.raku.org/type/Promise) 以及 [Supply](https://docs.raku.org/type/Supply) 中的方法允许你显式地提供一个调度器。
 
 The next level of the concurrency API is supplied by classes that implement the interface defined by the role [Scheduler](https://docs.raku.org/type/Scheduler). The intent of the scheduler interface is to provide a mechanism to determine which resources to use to run a particular task and when to run it. The majority of the higher level concurrency APIs are built upon a scheduler and it may not be necessary for user code to use them at all, although some methods such as those found in [Proc::Async](https://docs.raku.org/type/Proc::Async), [Promise](https://docs.raku.org/type/Promise) and [Supply](https://docs.raku.org/type/Supply) allow you to explicitly supply a scheduler.
 
@@ -829,14 +829,14 @@ Rakudo allows the maximum number of threads allowed in the default scheduler to 
 <a id="当前线程调度器--currentthreadscheduler"></a>
 ### 当前线程调度器 / CurrentThreadScheduler
 
-[CurrentThreadScheduler](https://docs.raku.org/type/CurrentThreadScheduler) 是一个非常简单的调度器，调度代码直接运行在当前线程中。对这个调度器调用 `cue` 方法将会阻塞线程直到代码完成，将其效用限制在某些特殊情况下，如测试。
+[CurrentThreadScheduler](https://docs.raku.org/type/CurrentThreadScheduler) 是一个非常简单的调度器，调度代码直接运行在当前线程中。对这个调度器调用 `cue` 方法将会阻塞线程直到代码完成，将其效用限制在某些特殊情况下，比如测试。
 
 The [CurrentThreadScheduler](https://docs.raku.org/type/CurrentThreadScheduler) is a very simple scheduler that will always schedule code to be run straight away on the current thread. The implication is that `cue` on this scheduler will block until the code finishes execution, limiting its utility to certain special cases such as testing.
 
 <a id="锁--locks"></a>
 ## 锁 / Locks
 
-[Lock](https://docs.raku.org/type/Lock) 类提供底层机制，用来在并行环境中保护共享数据，因此在高级 API 中支持线程安全发挥关键作用。在其他编程语言中有时被称为"互斥锁"。因为更高级别类（[Promise](https://docs.raku.org/type/Promise), [Supply](https://docs.raku.org/type/Supply) 以及 [Channel](https://docs.raku.org/type/Channel）在需要时会使用 [Lock](https://docs.raku.org/type/Lock)，用户没必要直接使用 [Lock](https://docs.raku.org/type/Lock)。
+[Lock](https://docs.raku.org/type/Lock) 类提供底层机制，用来在并行环境中保护共享数据，因此在高级 API 中支持线程安全发挥关键作用。在其他编程语言中有时被称为"互斥锁"。因为更高级别类（[Promise](https://docs.raku.org/type/Promise)、 [Supply](https://docs.raku.org/type/Supply) 以及 [Channel](https://docs.raku.org/type/Channel) 在需要时会使用 [Lock](https://docs.raku.org/type/Lock)，用户没必要直接使用 [Lock](https://docs.raku.org/type/Lock)。
 
 The class [Lock](https://docs.raku.org/type/Lock) provides the low level mechanism that protects shared data in a concurrent environment and is thus key to supporting thread-safety in the high level API, this is sometimes known as a "Mutex" in other programming languages. Because the higher level classes ([Promise](https://docs.raku.org/type/Promise), [Supply](https://docs.raku.org/type/Supply) and [Channel](https://docs.raku.org/type/Channel)) use a [Lock](https://docs.raku.org/type/Lock) where required it is unlikely that user code will need to use a [Lock](https://docs.raku.org/type/Lock) directly.
 
@@ -877,7 +877,7 @@ Because `protect` will block any threads that are waiting to execute the critica
 
 Some shared data concurrency issues are less obvious than others. For a good general write-up on this subject see this [blog post](https://6guts.wordpress.com/2014/04/17/racing-to-writeness-to-wrongness-leads/).
 
-一个特别的问题是当容器自动生动化或扩展发生时。当初始分配了一个 [Array](https://docs.raku.org/type/Array) 或一个 [Hash](https://docs.raku.org/type/Hash) 条目时，底层结构将被更改，并且该操作不是异步安全的。例如，在此代码中：
+值得留意的问题是当容器自动生动化或扩展发生时。当初始分配了一个 [Array](https://docs.raku.org/type/Array) 或一个 [Hash](https://docs.raku.org/type/Hash) 条目时，底层结构将被更改，并且该操作不是异步安全的。例如，在此代码中：
 
 One particular issue of note is when container autovivification or extension takes place. When an [Array](https://docs.raku.org/type/Array) or a [Hash](https://docs.raku.org/type/Hash) entry is initially assigned the underlying structure is altered and that operation is not async safe. For example, in this code:
 
@@ -887,7 +887,7 @@ my $slot := @array[20];
 $slot = 'foo';
 ```
 
-第三行是临界区，即当数组扩展时。最简单的修复方法是使用 [Lock](https://docs.raku.org/type/Lock) 来保护关键部分。一个可能更好的解决方法是重构代码，不使用共享容器。
+第三行是关键，因为那是数组扩展的时候。最简单的修复方法是使用 [Lock](https://docs.raku.org/type/Lock) 来保护关键部分。一个可能更好的解决方法是重构代码，不使用共享容器。
 
 The third line is the critical section as that is when the array is extended. The simplest fix is to use a [Lock](https://docs.raku.org/type/Lock) to protect the critical section. A possibly better fix would be to refactor the code so that sharing a container is not necessary.
 
