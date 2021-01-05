@@ -404,7 +404,7 @@ Defined as:
 sub RUN-MAIN(&main, $mainline, :$in-as-argsfiles)
 ```
 
-这个例程允许完全控制 `MAIN` 的处理。它得到一个 `Callable`，即应该执行的 `MAIN`、mainline 执行的返回值和附加的命名变量：`:in-as-argsfiles`，如果 STDIN 应该被视为 `$*ARGFILES`，它将是 `True`。
+这个例程允许完全控制 `MAIN` 的处理。它得到一个 `Callable`，即应该执行的 `MAIN`、主线程序执行的返回值和附加的命名变量：`:in-as-argsfiles`，如果 STDIN 被视为 `$*ARGFILES`，它将是 `True`。
 
 This routine allows complete control over the handling of `MAIN`. It gets a `Callable` that is the `MAIN` that should be executed, the return value of the mainline execution and additional named variables: `:in-as-argsfiles` which will be `True` if STDIN should be treated as `$*ARGFILES`.
 
