@@ -75,9 +75,9 @@ Raku 中的模块分布（在*关联源码文件集合*的意义上）具有与 
 
 Module distributions (in the *set of related source files* sense) in Raku have the same structure as any distribution in the Perl family of languages: there is a main project directory containing a `README` and a `LICENSE` file, a `lib` directory for the source files, which may be individually referred to as modules and/or may themselves define modules with the `module` keyword [[3]](https://docs.raku.org/language/modules#fn-3) , a `t` directory for tests, and possibly a `bin` directory for executable programs and scripts.
 
-源文件通常使用 `.pm6` 扩展名，脚本或可执行文件使用 `.p6`。测试文件使用 `.t` 扩展名。包含文档的文件使用 `.pod6` 扩展名。
+源文件通常使用 `.rakumod` 扩展名，脚本或可执行文件使用 `.raku`。测试文件使用 `.rakutest`/`.t` 扩展名。包含文档的文件使用 `.rakudoc` 扩展名。
 
-Source files generally use the `.pm6` extension, and scripts or executables use the `.p6`. Test files use the `.t` extension. Files which contain documentation use the `.pod6` extension.
+Source files generally use the `.rakumod` extension, and scripts or executables use the `.raku`. Test files use the `.rakutest` (or `.t`) extension. Files which contain documentation use the `.rakudoc` extension.
 
 <a id="加载与基本引入--loading-and-basic-importing"></a>
 # 加载与基本引入 / Loading and basic importing
@@ -102,7 +102,7 @@ need MyModule;
 Any packages in the namespace defined within will also be available.
 
 ```Raku
-# MyModule.pm6 
+# MyModule.raku
 unit module MyModule;
 
 class Class {}
@@ -113,7 +113,7 @@ class Class {}
 `MyModule::Class` will be defined when `MyModule` is loaded, and you can use it directly employing its fully qualified name (FQN). Classes and other types defined that way are not automatically exported; you will need to explicitly export it if you want to use it by its short name:
 
 ```Raku
-# MyModule.pm6 
+# MyModule.raku
 unit module MyModule;
 
 class Class is export {}
@@ -127,15 +127,15 @@ And then
 use MyModule;
  
 my $class = Class.new();
-say $class.perl;
+say $class.raku;
 ```
 
 <a id="use"></a>
 ## `use`
 
-`use` 在编译时从编译单元加载并导入。它将查找以 `.pm6` 结尾的文件（`.pm`也受支持，但不受鼓励）。运行时将在哪里查找模块，请看[这](https://docs.raku.org/language/modules#Finding_installed_modules)。
+`use` 在编译时从编译单元加载并导入。它将查找以 `.rakumod` 结尾的文件。运行时将在哪里查找模块，请看[这](https://docs.raku.org/language/modules#Finding_installed_modules)。
 
-`use` loads and then imports from a compunit at compile time. It will look for files that end in `.pm6` (`.pm` is also supported, but discouraged). See [here](https://docs.raku.org/language/modules#Finding_installed_modules) for where the runtime will look for modules.
+`use` loads and then imports from a compunit at compile time. It will look for files that end in `.rakumod`. See [here](https://docs.raku.org/language/modules#Finding_installed_modules) for where the runtime will look for modules.
 
 ```Raku
 use MyModule;
@@ -189,7 +189,7 @@ mmk('oi‽'); # OUTPUT: «ok 1 - ␤»
 
 The FQN of `ok` is `Test::EXPORT::DEFAULT::&ok`. We are aliasing it to `mmk` so that we can use that symbol provided by `Test` in the current scope.
 
-要导入符号，必须在编译时定义它们。**注：** `require` 在词汇范围内：
+要导入符号，必须在编译时定义它们。**注：** `require` 为词法作用域：
 
 To import symbols you must define them at compile time. **NOTE:** `require` is lexically scoped:
 
@@ -307,7 +307,7 @@ sub foo(Str $string) is export { ... }
 You can pass named parameters to `is export` to group symbols for exporting so that the importer can pick and choose. There are three predefined tags: `ALL`, `DEFAULT` and `MANDATORY`.
 
 ```Raku
-# lib/MyModule.pm6 
+# lib/MyModule.rakumod
 unit module MyModule;
 sub bag        is export             { ... }
 # objects with tag ':MANDATORY' are always exported 
@@ -355,7 +355,7 @@ Notes:
 4. Multiple import tags may be used (separated by commas). For example:
 
 ```Raku
-# main.p6 
+# main.raku
 use lib 'lib';
 use MyModule :day, :night; # pants, sunglasses, torch 
 ```
@@ -404,7 +404,7 @@ my package EXPORT::other {
 For most purposes, `is export` is sufficient but the `EXPORT` packages are useful when you want to produce the exported symbols dynamically. For example:
 
 ```Raku
-# lib/MyModule.pm6 
+# lib/MyModule.raku
 unit module MyModule;
  
 my package EXPORT::DEFAULT {
@@ -546,12 +546,12 @@ cd your-module-dir
 zef --force install .
 ```
 
-用户可能有一组在正常生态系统中找不到的模块，这些模块由模块或包管理器维护，但定期需要。可以使用 `PERL6LIB` 环境变量来指向模块位置，而不是使用 `use lib` 指令。例如：
+用户可能有一组在正常生态系统中找不到的模块，这些模块由模块或包管理器维护，但定期需要。可以使用 `RAKULIB` 环境变量来指向模块位置，而不是使用 `use lib` 指令。例如：
 
-A user may have a collection of modules not found in the normal ecosystem, maintained by a module or package manager, but needed regularly. Instead of using the `use lib` pragma one can use the `PERL6LIB` environment variable to point to module locations. For example:
+A user may have a collection of modules not found in the normal ecosystem, maintained by a module or package manager, but needed regularly. Instead of using the `use lib` pragma one can use the `RAKULIB` environment variable to point to module locations. For example:
 
 ```Raku
-export PERL6LIB=/path/to/my-modules,/path/to/more/modules
+export RAKULIB=/path/to/my-modules,/path/to/more/modules
 ```
 
 注意，逗号用作目录分隔符。
@@ -565,9 +565,9 @@ The include path will be searched recursively for any modules when Rakudo is sta
 <a id="发布模块--distributing-modules"></a>
 # 发布模块 / Distributing modules
 
-如果你编写了一个 Raku 模块并希望与社区共享，我们很高兴将它列在 [Raku modules directory](https://modules.perl6.org/) 中。
+如果你编写了一个 Raku 模块并希望与社区共享，我们很高兴将它列在 [Raku modules directory](https://modules.raku.org/) 中。
 
-If you've written a Raku module and would like to share it with the community, we'd be delighted to have it listed in the [Raku modules directory](https://modules.perl6.org/). `:)`
+If you've written a Raku module and would like to share it with the community, we'd be delighted to have it listed in the [Raku modules directory](https://modules.raku.org/). `:)`
 
 目前有两种不同的模块生态系统（模块分配网络）：
 
@@ -602,7 +602,7 @@ For a module to work in any of the ecosystems, it needs to follow a certain stru
   Vortex-TotalPerspective/
   ├── lib
   │   └── Vortex
-  │       └── TotalPerspective.pm6
+  │       └── TotalPerspective.rakumod
   ├── LICENSE
   ├── META6.json
   ├── README.md
@@ -617,10 +617,10 @@ If your project contains other modules that help the main module do its job, the
   ```
   lib
   └── Vortex
-      ├── TotalPerspective.pm6
+      ├── TotalPerspective.rakumod
       └── TotalPerspective
-          ├── FairyCake.pm6
-          └── Gargravarr.pm6
+          ├── FairyCake.rakumod
+          └── Gargravarr.rakumod
   ```
 
 - 如果你希望安装任何其他文件（例如模板或动态库），以便在运行时访问它们，则应将它们放在项目的 `resources` 子目录中，例如：
@@ -641,7 +641,7 @@ The file must then be referenced in `META6.json` (see below for more on `META6.j
 {
     "name" : "Vortex::TotalPerspective",
     "provides" : {
-        "Vortex::TotalPerspective" : "lib/Vortex/TotalPerspective.pm6"
+        "Vortex::TotalPerspective" : "lib/Vortex/TotalPerspective.rakumod"
     },
     "resources": [ "templates/default-template.mustache"]
 }
@@ -656,9 +656,9 @@ my $template-text = %?RESOURCES<templates/default-template.mustache>.slurp;
 # Note that %?RESOURCES provides a C<IO> path object 
 ```
 
-- `README.md` 文件是一个 [markdown 格式](https://help.github.com/articles/markdown-basics/)的文本文件。它将由 GitHub/GitLab 对保存在这些生态系统中模块自动呈现为 HTML，或者由 [modules.perl6.org](https://modules.perl6.org/) 网站将保存在 [CPAN](https://docs.raku.org/language/faq#index-entry-CPAN_(FAQ)) 上的模块自动呈现为HTML。
+- `README.md` 文件是一个 [markdown 格式](https://help.github.com/articles/markdown-basics/)的文本文件。它将由 GitHub/GitLab 对保存在这些生态系统中模块自动呈现为 HTML，或者由 [modules.raku.org](https://modules.raku.org/) 网站将保存在 [CPAN](https://docs.raku.org/language/faq#index-entry-CPAN_(FAQ)) 上的模块自动呈现为HTML。
 
-- The `README.md` file is a [markdown-formatted](https://help.github.com/articles/markdown-basics/) text file, which will later be automatically rendered as HTML by GitHub/GitLab for modules kept in those ecosystems or by [modules.perl6.org](https://modules.perl6.org/) website for modules kept on [CPAN](https://docs.raku.org/language/faq#index-entry-CPAN_(FAQ)).
+- The `README.md` file is a [markdown-formatted](https://help.github.com/articles/markdown-basics/) text file, which will later be automatically rendered as HTML by GitHub/GitLab for modules kept in those ecosystems or by [modules.perl6.org](https://modules.raku.org/) website for modules kept on [CPAN](https://docs.raku.org/language/faq#index-entry-CPAN_(FAQ)).
 
 - 关于 `LICENSE` 文件，如果你没有其他偏好，可以用 Rakudo Raku 使用的文件。只需将[其 license](https://github.com/rakudo/rakudo/blob/master/LICENSE) 的原始形式复制/粘贴到你自己的 `LICENSE` 文件中即可。
 
@@ -670,7 +670,7 @@ my $template-text = %?RESOURCES<templates/default-template.mustache>.slurp;
 
 - 如果你无法在 `spdx.org` 上找到你的许可证，或者使用你自己的许可证，你应该将许可证的名称放在许可字段中。有关更多细节，请参见。
 
-- If you can't find your license on `spdx.org` or you use your own license, you should put the license's name in the license field. For more details see <https://design.perl6.org/S22.html#license>.
+- If you can't find your license on `spdx.org` or you use your own license, you should put the license's name in the license field. For more details see <https://design.raku.org/S22.html#license>.
 
 - 如果你尚未进行任何测试，则可以暂时省略 `t` 目录和 `basic.t` 文件。有关如何编写测试的更多信息（目前而言），你可以查看其他模块是如何使用 `Test` 的。
 
@@ -705,7 +705,7 @@ If your module requires extra processing during installation to fully integrate 
     "authors" : [ "Your Name" ],
     "license" : "Artistic-2.0",
     "provides" : {
-        "Vortex::TotalPerspective" : "lib/Vortex/TotalPerspective.pm6"
+        "Vortex::TotalPerspective" : "lib/Vortex/TotalPerspective.rakumod"
     },
     "depends" : [ ],
     "build-depends" : [ ],
@@ -722,9 +722,9 @@ If your module requires extra processing during installation to fully integrate 
 
 The attributes in this file are analyzed by the [`META6`](https://github.com/jonathanstowe/META6) class. They are divided into optional, mandatory and *customary*. Mandatory are the ones you need to insert into your file, and customary are those used by the current Raku ecosystem and possibly displayed on the module page if it's published, but you have no obligation to use it.
 
-要选择版本编号方案，请尝试并使用 "major.minor.patch" 的方式（请参见[关于版本控制的规范](https://design.perl6.org/S11.html#Versioning)以了解更多详细信息）。这与 `META6.json` 文件中的 `version` 键有关。这个字段是可选的，如果这个字段存在，会被安装程序用来匹配已安装的版本。 文件中 `description` 字段是必须的，包括模组的一小段描述。
+要选择版本编号方案，请尝试并使用 "major.minor.patch" 的方式（请参见[关于版本控制的规范](https://design.raku.org/S11.html#Versioning)以了解更多详细信息）。这与 `META6.json` 文件中的 `version` 键有关。这个字段是可选的，如果这个字段存在，会被安装程序用来匹配已安装的版本。 文件中 `description` 字段是必须的，包括模组的一小段描述。
 
-For choosing a version numbering scheme, try and use "major.minor.patch" (see [the spec on versioning](https://design.perl6.org/S11.html#Versioning) for further details). This will go into the `version` key of `META6.json`. This field is optional, but used by installation to match against installed version, if one exists. The `description` field is also mandatory, and includes a short description of the module.
+For choosing a version numbering scheme, try and use "major.minor.patch" (see [the spec on versioning](https://design.raku.org/S11.html#Versioning) for further details). This will go into the `version` key of `META6.json`. This field is optional, but used by installation to match against installed version, if one exists. The `description` field is also mandatory, and includes a short description of the module.
 
 `name` 键是必须的，如果不包括它，则 `zef` 将失败。即使你只创建了一个 META6.json 文件来表示一系列脚本的依赖项，也必须包括本节。
 
@@ -748,7 +748,7 @@ In the `provides` section, include all the namespaces provided by your distribut
 
 `perl` 键设置为模块使用的最低 Raku 版本。这个字段是强制性的。如果你的模块对圣诞节版本有效，请使用 `6.c`，如果你的模块需要排灯节版本，请使用 `6.d`。
 
-Set `perl` version to the minimum perl version your module works with. This field is mandatory. Use `6.c` if your module is valid for Christmas release and newer ones, use `6.d` if it requires, at least, the Diwali version.
+Set `perl` version to the minimum Raku version your module works with. This field is mandatory. Use `6.c` if your module is valid for Christmas release and newer ones, use `6.d` if it requires, at least, the Diwali version.
 
 `resources` 部分是可选的，但如果存在，则应该包含希望安装的 `resources` 目录中的文件列表。这些文件将在库文件旁边安装散列名称。它们的安装位置可以通过提供的名称上的 `%?RESOURCES` `Hash` 索引来确定。`tags` 部分也是可选的。它用于描述 Raku 生态系统中的模块。
 
@@ -815,9 +815,9 @@ Finally, `source-url` indicates the URL of the repository where the module is de
 
 The [`Test::META` module](https://github.com/jonathanstowe/Test-META/) can help you check the correctness of the META6.json file; this module will check for all the mandatory fields and that the type used for all of them is correct.
 
-在[ `META` 设计文档](https://design.perl6.org/S22.html#META6.json)中有更多的字段描述，但并不是所有这些字段都是由现有的包管理器实现的。因此，你应该坚持以上示例块中描述的字段，以确保与现有包管理器（如 `zef`）的兼容性。例如你还可以查看 [Moritz Lenz 所有模组存储库](https://github.com/moritz/perl6-all-modules/search?l=JSON&q=META6.json&type=)，但是请记住，它们中的一些可能使用字段，例如上面的 `source-type`，这些字段目前被忽略了。
+在[ `META` 设计文档](https://design.raku.org/S22.html#META6.json)中有更多的字段描述，但并不是所有这些字段都是由现有的包管理器实现的。因此，你应该坚持以上示例块中描述的字段，以确保与现有包管理器（如 `zef`）的兼容性。例如你还可以查看 [Moritz Lenz 所有模组存储库](https://github.com/moritz/perl6-all-modules/search?l=JSON&q=META6.json&type=)，但是请记住，它们中的一些可能使用字段，例如上面的 `source-type`，这些字段目前被忽略了。
 
-There are more fields described in the [`META` design documents](https://design.perl6.org/S22.html#META6.json), but not all of these are implemented by existing package managers. Hence you should stick to the fields described in the above example block to ensure compatibility with existing package managers such as `zef`. You can also check [Moritz Lenz's repository of all modules for examples](https://github.com/moritz/perl6-all-modules/search?l=JSON&q=META6.json&type=), but bear in mind that some of them might use fields, such as `source-type` above, which are currently ignored.
+There are more fields described in the [`META` design documents](https://design.raku.org/S22.html#META6.json), but not all of these are implemented by existing package managers. Hence you should stick to the fields described in the above example block to ensure compatibility with existing package managers such as `zef`. You can also check [Moritz Lenz's repository of all modules for examples](https://github.com/moritz/perl6-all-modules/search?l=JSON&q=META6.json&type=), but bear in mind that some of them might use fields, such as `source-type` above, which are currently ignored.
 
 - 如果你想要测试你的模块，可以使用以下命令直接从刚才创建的模块文件夹安装模块。
 
@@ -827,9 +827,9 @@ There are more fields described in the [`META` design documents](https://design.
 zef install ./your-module-folder
 ```
 
-请注意，这样做可以预编译和安装你的模块。如果对源代码进行更改，则需要重新安装模块。（请参阅 `use lib` 指令、`-I` 命令行开关或 `PERL6LIB` 环境变量，以便在开发模块源时包含到模块源的路径，这样你就不必安装它）。
+请注意，这样做可以预编译和安装你的模块。如果对源代码进行更改，则需要重新安装模块。（请参阅 `use lib` 指令、`-I` 命令行开关或 `RAKULIB` 环境变量，以便在开发模块源时包含到模块源的路径，这样你就不必安装它）。
 
-Note that doing so precompiles and installs your module. If you make changes to the source, you'll need to re-install the module. (See `use lib` pragma, `-I` command line switch, or `PERL6LIB` env variable, to include a path to your module source while developing it, so you don't have to install it at all).
+Note that doing so precompiles and installs your module. If you make changes to the source, you'll need to re-install the module. (See `use lib` pragma, `-I` command line switch, or `RAKULIB` env variable, to include a path to your module source while developing it, so you don't have to install it at all).
 
 <a id="将模块上传到-cpan--upload-your-module-to-cpan"></a>
 ## 将模块上传到 CPAN / Upload your module to CPAN
@@ -889,15 +889,15 @@ If you want to use the *p6c* ecosystem you need to use git for your module's ver
 - 一旦你对你的项目感到满意，就在 GitHub 上为它创建一个存储库。如有必要，参见 [GitHub 的帮助文档](https://help.github.com/)。你的 GitHub 存储库应该与你的项目目录命名相同。在创建 GitHub 存储库之后，GitHub 将向你展示如何配置本地存储库以了解 GitHub 存储库。
 - 把你的项目推到 GitHub。
 - 考虑建立自动测试（参考 <https://docs.travis-ci.com/user/languages/perl6>）。
-- 在[生态系统](https://github.com/perl6/ecosystem)上创建 PR，将你的模块添加到 META.list 中，或在 IRC（Freenode 的 #Raku）上 ping 某个人，以获得帮助。
+- 在[生态系统](https://github.com/Raku/ecosystem)上创建 PR，将你的模块添加到 META.list 中，或在 IRC（Freenode 的 #Raku）上 ping 某个人，以获得帮助。
 - pull 请求被接受后，等待一小时。如果你的模块在 <https://modules.raku.org/> 中未出现，请查看日志文件，看看它是否标识了你的模块或 `meta` 文件的错误。
 
 - Put your project under git version control if you haven't done so already.
 - Once you're happy with your project, create a repository for it on GitHub. See [GitHub's help docs](https://help.github.com/) if necessary. Your GitHub repository should be named the same as your project directory. Immediately after creating the GitHub repo, GitHub shows you how to configure your local repository to know about your GitHub repository.
 - Push your project to GitHub.
 - Consider setting up automated testing (see <https://docs.travis-ci.com/user/languages/perl6>).
-- Create a PR on [ecosystem](https://github.com/perl6/ecosystem) adding your module to META.list, or ping someone on IRC (#perl6 at freenode) to get help having it added.
-- After the pull request has been accepted, wait for an hour. If your module doesn't show up on <https://modules.perl6.org/>, please view the log file at <https://modules.perl6.org/update.log> to see if it identifies an error with your module or `meta` file.
+- Create a PR on [ecosystem](https://github.com/Raku/ecosystem) adding your module to META.list, or ping someone on IRC (#perl6 at freenode) to get help having it added.
+- After the pull request has been accepted, wait for an hour. If your module doesn't show up on <https://modules.raku.org/>, please view the log file at <https://modules.raku.org/update.log> to see if it identifies an error with your module or `meta` file.
 
 **就这样!感谢你对 Raku 社区的贡献！**
 
@@ -946,7 +946,7 @@ To discuss toolchain specific questions, you can use the [perl6-toolchain on irc
 
 1. [[↑]](https://docs.raku.org/language/modules#fn-ref-1) Technically a module is a set of *compunits* which are usually files but could come from anywhere as long as there is a *compunit repository* that can provide it. See [S11](https://design.raku.org/S11.html).
 2. [[↑]](https://docs.raku.org/language/modules#fn-ref-2) If it's installed, it will reinstall only if the version of the module is newer than the one installed
-3. [[↑]](https://docs.raku.org/language/modules#fn-ref-3) As [synopsis S11](https://design.perl6.org/S11.html#Units) says: Confusing? Yes it is.
+3. [[↑]](https://docs.raku.org/language/modules#fn-ref-3) As [synopsis S11](https://design.raku.org/S11.html#Units) says: Confusing? Yes it is.
 4. [[↑]](https://docs.raku.org/language/modules#fn-ref-4) This change was introduced in late 2016. If you are using versions older than this, behavior will be different.
 5. [[↑]](https://docs.raku.org/language/modules#fn-ref-5) Note, described above is a minimal project directory. If your project contains scripts that you'd like distributed along with your module(s), put them in a `bin` directory. If you'd like a graphical logo to appear next to your module at the module directory, create a `logotype` directory and put into it a `logo_32x32.png` file. At some point, you might also consider adding `CONTRIBUTORS`, `NEWS`, `TODO`, or other files.
 6. [[↑]](https://docs.raku.org/language/modules#fn-ref-6) Some old modules also provide a `source-type` field, which was used to indicate the kind of source control system, generally `git`, which can be used to download the module. However, this field is nowadays ignored by `zef` and the rest of the tools.
