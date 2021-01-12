@@ -765,7 +765,7 @@ Beyond that there are no further facilities for synchronization or resource shar
 <a id="调度器--schedulers"></a>
 ## 调度器 / Schedulers
 
-实现了角色 [Scheduler](https://docs.raku.org/type/Scheduler) 中定义的接口的类提供并发 API 的下一个级别。调度器接口的目的是提供一种机制，以确定运行特定任务所需的资源以及何时运行该任务。大多数高级并发 API 都是建立在调度器上的，用户代码可能根本不需要使用它们。尽管有些在 [Proc::Async](https://docs.raku.org/type/Proc::Async)、[Promise](https://docs.raku.org/type/Promise) 以及 [Supply](https://docs.raku.org/type/Supply) 中的方法允许你显式地提供一个调度器。
+实下一个级别的并发 API 由实现了角色 [Scheduler](https://docs.raku.org/type/Scheduler) 中定义的接口的类提供。调度器接口的目的是提供一种机制，以确定运行特定任务所需的资源以及何时运行该任务。大多数高级并发 API 都是建立在调度器上的，用户代码可能根本不需要使用它们。尽管有些在 [Proc::Async](https://docs.raku.org/type/Proc::Async)、[Promise](https://docs.raku.org/type/Promise) 以及 [Supply](https://docs.raku.org/type/Supply) 中的方法允许你显式地提供一个调度器。
 
 The next level of the concurrency API is supplied by classes that implement the interface defined by the role [Scheduler](https://docs.raku.org/type/Scheduler). The intent of the scheduler interface is to provide a mechanism to determine which resources to use to run a particular task and when to run it. The majority of the higher level concurrency APIs are built upon a scheduler and it may not be necessary for user code to use them at all, although some methods such as those found in [Proc::Async](https://docs.raku.org/type/Proc::Async), [Promise](https://docs.raku.org/type/Promise) and [Supply](https://docs.raku.org/type/Supply) allow you to explicitly supply a scheduler.
 
