@@ -7,8 +7,8 @@ https://docs.raku.org/
 # Weekly Rakudo News
 https://rakudoweekly.blog/
 
-# Raku Online
-http://raku.online/
+# Raku Online Course
+https://course.raku.online/
 
 # Raku Blog Aggregator
 https://pl6anet.org/

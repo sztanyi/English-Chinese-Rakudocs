@@ -922,7 +922,7 @@ To use `Vortex::TotalPerspective` from your scripts, just write `use Vortex::Tot
 <a id="与模块创作相关的模块和工具--modules-and-tools-related-to-module-authoring"></a>
 # 与模块创作相关的模块和工具 / Modules and tools related to module authoring
 
-你可以在[额外模组](https://docs.raku.org/language/modules-extra)]中找到旨在提高编写/测试模块经验的模块和工具列表。
+你可以在[额外模组](https://docs.raku.org/language/modules-extra)中找到旨在提高编写/测试模块经验的模块和工具列表。
 
 You can find a list of modules and tools that aim to improve the experience of writing/test modules at [Modules Extra](https://docs.raku.org/language/modules-extra)
 
