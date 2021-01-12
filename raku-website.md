@@ -4,6 +4,9 @@ https://raku.org/
 # Raku docs
 https://docs.raku.org/
 
+# Directory of Raku distributions
+https://raku.land/
+
 # Weekly Rakudo News
 https://rakudoweekly.blog/
 
