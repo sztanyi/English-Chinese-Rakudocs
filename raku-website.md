@@ -77,3 +77,6 @@ https://6guts.wordpress.com/
 
 # Raku Advent
 https://raku-advent.blog/category/2020/
+
+# Rau Influence Network
+https://programminglanguages.info/language/raku/
