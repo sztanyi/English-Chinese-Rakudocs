@@ -6,7 +6,7 @@
 
 Status/result of an asynchronous computation
 
-```Perl6
+```Raku
 my enum PromiseStatus (:Planned(0), :Kept(1), :Broken(2));
 class Promise {}
 ```
@@ -15,7 +15,7 @@ class Promise {}
 
 A *Promise* is used to handle the result of a computation that might not have finished. It allows the user to execute code once the computation is done (with the `then` method), execution after a time delay (with `in`), combining promises, and waiting for results.
 
-```Perl6
+```Raku
 my $p = Promise.start({ sleep 2; 42});
 $p.then({ say .result });   # will print 42 once the block finished 
 say $p.status;              # OUTPUT: «Planned␤» 
@@ -31,7 +31,7 @@ There are two typical scenarios for using promises. The first is to use a factor
 
 The second is to create your promises yourself with `Promise.new`. If you want to ensure that only your code can keep or break the promise, you can use the `vow` method to get a unique handle, and call `keep` or `break` on it:
 
-```Perl6
+```Raku
 sub async-get-with-promise($user-agent, $url) {
     my $p = Promise.new;
     my $v = $p.vow;
@@ -86,7 +86,7 @@ Further examples can be found in the [concurrency page](https://docs.raku.org/la
 <a id="start-方法--method-start"></a>
 ## start 方法 / method start
 
-```Perl6
+```Raku
 method start(Promise:U: &code, :$scheduler = $*SCHEDULER --> Promise:D)
 ```
 
@@ -102,7 +102,7 @@ The scheduler that handles this promise can be passed as a named argument.
 
 There is also a statement prefix `start` that provides syntactic sugar for this method:
 
-```Perl6
+```Raku
 # these two are equivalent: 
 my $p1 = Promise.start({ ;#`( do something here ) });
 my $p2 = start { ;#`( do something here ) };
@@ -112,7 +112,7 @@ my $p2 = start { ;#`( do something here ) };
 
 As of the 6.d version of the language, `start` statement prefix used in [sink](https://docs.raku.org/routine/sink) context will automatically attach an exceptions handler. If an exception occurs in the given code, it will be printed and the program will then exit, like if it were thrown without any `start` statement prefixes involved.
 
-```Perl6
+```Raku
 use v6.c;
 start { die }; sleep ⅓; say "hello"; # OUTPUT: «hello␤» 
 use v6.d;
@@ -127,7 +127,7 @@ start { die }; sleep ⅓; say "hello";
 
 If you wish to avoid this behavior, use `start` in non-sink context or catch the exception yourself:
 
-```Perl6
+```Raku
 # Don't sink it: 
 my $ = start { die }; sleep ⅓; say "hello"; # OUTPUT: «hello␤» 
  
@@ -145,7 +145,7 @@ This behavior exists only syntactically, by using an alternate `.sink` method fo
 <a id="in-方法--method-in"></a>
 ## in 方法 / method in
 
-```Perl6
+```Raku
 method in(Promise:U: $seconds, :$scheduler = $*SCHEDULER --> Promise:D)
 ```
 
@@ -153,7 +153,7 @@ method in(Promise:U: $seconds, :$scheduler = $*SCHEDULER --> Promise:D)
 
 Creates a new Promise that will be kept in `$seconds` seconds, or later.
 
-```Perl6
+```Raku
 my $proc = Proc::Async.new('perl6', '-e', 'sleep 10; warn "end"');
  
 my $result = await Promise.anyof(
@@ -179,7 +179,7 @@ Please note that situations like these are often more clearly handled with a [re
 <a id="at-方法--method-at"></a>
 ## at 方法 / method at
 
-```Perl6
+```Raku
 method at(Promise:U: $at, :$scheduler = $*SCHEDULER --> Promise:D)
 ```
 
@@ -187,7 +187,7 @@ method at(Promise:U: $at, :$scheduler = $*SCHEDULER --> Promise:D)
 
 Creates a new `Promise` that will be kept `$at` the given time—which is given as an [Instant](https://docs.raku.org/type/Instant) or equivalent [Numeric](https://docs.raku.org/type/Numeric)—or as soon as possible after it.
 
-```Perl6
+```Raku
 my $p = Promise.at(now + 2).then({ say "2 seconds later" });
 # do other stuff here 
  
@@ -205,7 +205,7 @@ Please note that situations like these are often more clearly handled with a [re
 <a id="kept-方法--method-kept"></a>
 ## kept 方法 / method kept
 
-```Perl6
+```Raku
 multi method kept(Promise:U: \result = True --> Promise:D)
 ```
 
@@ -216,17 +216,19 @@ Returns a new promise that is already kept, either with the given value, or with
 <a id="broken-方法--method-broken"></a>
 ## broken 方法 / method broken
 
-```Perl6
+```Raku
 multi method broken(Promise:U: --> Promise:D)
 multi method broken(Promise:U: \exception --> Promise:D)
 ```
+
+返回一个已经 broken 的新 promise，参数为给定值或者默认值 `X::AdHoc.new(payload => "Died")`
 
 Returns a new promise that is already broken, either with the given value, or with the default value `X::AdHoc.new(payload => "Died")`
 
 <a id="allof-方法--method-allof"></a>
 ## allof 方法 / method allof
 
-```Perl6
+```Raku
 method allof(Promise:U: *@promises --> Promise:D)
 ```
 
@@ -238,7 +240,7 @@ Returns a new promise that will be kept when all the promises passed as argument
 
 In the following requesting the `result` of a broken promise will cause the original Exception to be thrown. (You may need to run it several times to see the exception.)
 
-```Perl6
+```Raku
 my @promises;
 for 1..5 -> $t {
     push @promises, start {
@@ -254,7 +256,7 @@ say "Promises kept so we get to live another day!";
 <a id="anyof-方法--method-anyof"></a>
 ## anyof 方法 / method anyof
 
-```Perl6
+```Raku
 method anyof(Promise:U: *@promises --> Promise:D)
 ```
 
@@ -262,11 +264,11 @@ method anyof(Promise:U: *@promises --> Promise:D)
 
 Returns a new promise that will be kept as soon as any of the promises passed as arguments is kept or broken. The result of the completed Promise is not reflected in the result of the returned promise which will always be Kept.
 
-你可以使用它来等待一个 promise 最多给定的秒钟：
+你可以使用它来等待一个 promise 在给定的秒钟内：
 
 You can use this to wait at most a number of seconds for a promise:
 
-```Perl6
+```Raku
 my $timeout = 5;
 await Promise.anyof(
     Promise.in($timeout),
@@ -279,7 +281,7 @@ await Promise.anyof(
 <a id="then-方法--method-then"></a>
 ## then 方法 / method then
 
-```Perl6
+```Raku
 method then(Promise:D: &code)
 ```
 
@@ -287,7 +289,7 @@ method then(Promise:D: &code)
 
 Schedules a piece of code to be run after the invocant has been kept or broken, and returns a new promise for this computation. In other words, creates a chained promise.
 
-```Perl6
+```Raku
 my $timer = Promise.in(2);
 my $after = $timer.then({ say "2 seconds are over!"; 'result' });
 say $after.result;  # 2 seconds are over 
@@ -297,7 +299,7 @@ say $after.result;  # 2 seconds are over
 <a id="keep-方法--method-keep"></a>
 ## keep 方法 / method keep
 
-```Perl6
+```Raku
 multi method keep(Promise:D: \result = True)
 ```
 
@@ -309,7 +311,7 @@ Keeps a promise, optionally setting the result. If no result is passed, the resu
 
 Throws an exception of type `X::Promise::Vowed` if a vow has already been taken. See method `vow` for more information.
 
-```Perl6
+```Raku
 my $p = Promise.new;
  
 if Bool.pick {
@@ -323,11 +325,11 @@ else {
 <a id="break-方法--method-break"></a>
 ## break 方法 / method break
 
-```Perl6
+```Raku
 multi method break(Promise:D: \cause = False)
 ```
 
-break 一个 promise，可参数设置 cause。如果没有传递 cause，cause 为 `False`。
+break 一个 promise，可参数设置原因。如果没有传递原因，原因为 `False`。
 
 Breaks a promise, optionally setting the cause. If no cause is passed, the cause will be `False`.
 
@@ -335,7 +337,7 @@ Breaks a promise, optionally setting the cause. If no cause is passed, the cause
 
 Throws an exception of type `X::Promise::Vowed` if a vow has already been taken. See method `vow` for more information.
 
-```Perl6
+```Raku
 my $p = Promise.new;
  
 $p.break('sorry');
@@ -346,7 +348,7 @@ say $p.cause;           # OUTPUT: «sorry␤»
 <a id="result-方法--method-result"></a>
 ## result 方法 / method result
 
-```Perl6
+```Raku
 method result(Promise:D)
 ```
 
@@ -357,7 +359,7 @@ Waits for the promise to be kept or broken. If it is kept, returns the result; o
 <a id="cause-方法--method-cause"></a>
 ## cause 方法 / method cause
 
-```Perl6
+```Raku
 method cause(Promise:D)
 ```
 
@@ -368,7 +370,7 @@ If the promise was broken, returns the result (or exception). Otherwise, throws 
 <a id="bool-方法--method-bool"></a>
 ## Bool 方法 / method Bool
 
-```Perl6
+```Raku
 multi method Bool(Promise:D:)
 ```
 
@@ -379,21 +381,21 @@ Returns `True` for a kept or broken promise, and `False` for one in state `Plann
 <a id="status-方法--method-status"></a>
 ## status 方法 / method status
 
-```Perl6
+```Raku
 method status(Promise:D --> PromiseStatus)
 ```
 
 放回 promise 的当前状态： `Kept`，`Broken` 或者 `Planned`:
 Returns the current state of the promise: `Kept`, `Broken` or `Planned`:
 
-```Perl6
+```Raku
 say "promise got Kept" if $promise.status ~~ Kept;
 ```
 
 <a id="scheduler-方法--method-scheduler"></a>
 ## scheduler 方法 / method scheduler
 
-```Perl6
+```Raku
 method scheduler(Promise:D:)
 ```
 
@@ -404,7 +406,7 @@ Returns the scheduler that manages the promise.
 <a id="vow-方法--method-vow"></a>
 ## vow 方法 / method vow
 
-```Perl6
+```Raku
 my class Vow {
     has Promise $.promise;
     method keep() { ... }
@@ -417,7 +419,7 @@ method vow(Promise:D: --> Vow:D)
 
 Returns an object that holds the sole authority over keeping or breaking a promise. Calling `keep` or `break` on a promise that has vow taken throws an exception of type `X::Promise::Vowed`.
 
-```Perl6
+```Raku
 my $p   = Promise.new;
 my $vow = $p.vow;
 $vow.keep($p);
@@ -427,7 +429,7 @@ say $p.status;          # OUTPUT: «Kept␤»
 <a id="supply-方法--method-supply"></a>
 ## Supply 方法 / method Supply
 
-```Perl6
+```Raku
 method Supply(Promise:D:)
 ```
 
@@ -439,7 +441,7 @@ Returns a [Supply](https://docs.raku.org/type/Supply) that will emit the `result
 <a id="await-子例程--sub-await"></a>
 ## await 子例程 / sub await
 
-```Perl6
+```Raku
 multi sub await(Promise:D --> Promise)
 multi sub await(*@ --> Array)
 ```
