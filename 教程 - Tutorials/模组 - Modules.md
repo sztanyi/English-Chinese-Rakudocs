@@ -35,11 +35,9 @@ How to create, use, and distribute Raku modules
 <a id="创建和使用模块--creating-and-using-modules"></a>
 # 创建和使用模块 / Creating and using modules
 
-模块通常是一个或一组揭露 Raku 构造的源文件。
+模块通常是一个或一组展示 Raku 构造的源文件。
 
-A module is usually a source file or set of source files that expose Raku constructs.
-
-[[1]](https://docs.raku.org/language/modules#fn-1)
+A module is usually a source file or set of source files that expose Raku constructs [[1]]().
 
 模块通常是软件包（[类](https://docs.raku.org/language/objects#Classes)、[角色](https://docs.raku.org/language/objects#Roles)、[语法](https://docs.raku.org/type/Grammar)）、[子例程](https://docs.raku.org/language/functions)，有时是[变量](https://docs.raku.org/language/variables)。在 Raku *模块*中，还可以引用使用 `module` 关键字声明的包的类型（请参见[模块包](https://docs.raku.org/language/module-packages)和下面的示例），但此处我们主要指的是作为命名空间中的一组源文件的"模块"。
 
@@ -71,7 +69,7 @@ will install the module with that particular name, if it is not already installe
 <a id="基本结构--basic-structure"></a>
 ## 基本结构 / Basic structure
 
-Raku 中的模块分布（在*关联源码文件集合*的意义上）具有与 Perl 族语言中的任何分布相同的结构：存在一个主项目目录，包含一个 `README` 和一个 `LICENSE` 文件，用于源文件的“lib”目录，这些文件可以单独地称为模块和/或可以自己定义带有 `module` 关键字的模块 [[3]](https://docs.raku.org/language/modules#fn-3)，用于测试的 `t` 目录，以及可执行文件和脚本的 `bin` 目录。
+Raku 中的模块分布（在*关联源码文件集合*的意义上）具有与 Perl 族语言中的任何分布相同的结构：存在一个主项目目录，包含一个 `README` 和一个 `LICENSE` 文件，用于源文件的 `lib` 目录，这些文件可以单独地称为模块和/或可以自己定义带有 `module` 关键字的模块 [[3]](https://docs.raku.org/language/modules#fn-3)，用于测试的 `t` 目录，以及可执行文件和脚本的 `bin` 目录。
 
 Module distributions (in the *set of related source files* sense) in Raku have the same structure as any distribution in the Perl family of languages: there is a main project directory containing a `README` and a `LICENSE` file, a `lib` directory for the source files, which may be individually referred to as modules and/or may themselves define modules with the `module` keyword [[3]](https://docs.raku.org/language/modules#fn-3) , a `t` directory for tests, and possibly a `bin` directory for executable programs and scripts.
 
@@ -208,7 +206,7 @@ do-something();
 
 If `MyModule` doesn't export `&something` then `require` will fail.
 
-带有编译时符号的 `require` 将安装占位符 `package`，该占位符 `package` 将更新为已加载的模块、类或包。请注意，占位符将被保留，**即使需要加载模块失败。**这意味着检查是否加载这样的模块是错误的：
+带有编译时符号的 `require` 将安装占位符 `package`，该占位符 `package` 将更新为已加载的模块、类或包。请注意，占位符将被保留，即使需要加载模块失败。这意味着检查是否加载这样的模块是错误的：
 
 A `require` with compile-time symbol will install a placeholder `package` that will be updated to the loaded module, class, or package. Note that the placeholder will be kept, **even if require failed to load the module.** This means that checking if a module loaded like this is wrong:
 
@@ -344,15 +342,16 @@ use Foo :bar, :s5;
 
 Notes:
 
-1. 导出子例程中的 `:MANDATORY` 标记确保无论使用程序是否使用任何标记，都将会导出该标记。
-2. 所有没有显式标记的导出子例程都隐式为 `:DEFAULT`。
-3. 模块名称后面和标记之前的空格是强制性的。
-4. 可以使用多个导入标记（用逗号分隔）。例如：
+- 导出子例程中的 `:MANDATORY` 标记确保无论使用程序是否使用任何标记，都将会导出该标记。
+- 所有没有显式标记的导出子例程都隐式为 `:DEFAULT`。
+- 模块名称后面和标记之前的空格是强制性的。
+- 可以使用多个导入标记（用逗号分隔）。例如：
 
-1. The `:MANDATORY` tag on an exported sub ensures it will be exported no matter whether the using program adds any tag or not.
-2. All exported subs without an explicit tag are implicitly `:DEFAULT`.
-3. The space after the module name and before the tag is mandatory.
-4. Multiple import tags may be used (separated by commas). For example:
+- The `:MANDATORY` tag on an exported sub ensures it will be exported no matter whether the using program adds any tag or not.
+- All exported subs without an explicit tag are implicitly `:DEFAULT`.
+- The space after the module name and before the tag is mandatory.
+- Multiple import tags may be used (separated by commas). For example:
+
 
 ```Raku
 # main.raku
@@ -360,9 +359,9 @@ use lib 'lib';
 use MyModule :day, :night; # pants, sunglasses, torch 
 ```
 
-5. 在 `export` 特性中可以使用多个标签，但它们都必须用逗号或空格分隔，但不能两者兼用。
+- 在 `export` 特性中可以使用多个标签，但它们都必须用逗号或空格分隔，但不能两者兼用。
 
-5. Multiple tags may be used in the `export` trait, but they must all be separated by either commas, or whitespace, but not both.
+- Multiple tags may be used in the `export` trait, but they must all be separated by either commas, or whitespace, but not both.
 
 ```Raku
 sub foo() is export(:foo :s2 :net) {}
@@ -399,7 +398,7 @@ my package EXPORT::other {
 }
 ```
 
-在大多数情况下，`is export` 就足够了，但是当你想动态生成导出的符号时，`EXPORT` 包是有用的。例如：
+在大多数情况下，`is export` 就足够了，但是当你想动态生成导出的符号时，`EXPORT` 包就起作用了。例如：
 
 For most purposes, `is export` is sufficient but the `EXPORT` packages are useful when you want to produce the exported symbols dynamically. For example:
 
@@ -523,13 +522,15 @@ say URI::Escape::EXPORT::DEFAULT::.keys;
 my &escape-uri = URI::Escape::EXPORT::DEFAULT::<&uri_escape>;
 ```
 
-小心*不要*在 [`unit` declarator](https://docs.raku.org/syntax/unit) 之后加上 `sub EXPORT` 如果你这样做，它将成为你的包内的一个子例程，而不是特殊的导出子例程：
+小心*不要*在 [`unit` 生命符](https://docs.raku.org/syntax/unit)之后加上 `sub EXPORT`。如果你这样做，它将成为你的包内的一个子例程，而不是特殊的导出子例程：
 
 Be careful *not* to put `sub EXPORT` after [`unit` declarator](https://docs.raku.org/syntax/unit). If you do so, it'll become just a sub inside your package, rather than the special export sub:
 
 ```Raku
 unit module Bar;
 sub EXPORT { %(Foo => &say) } # WRONG!!! Sub is scoped wrong 
+```
+```
 sub EXPORT { %(Foo => &say) } # RIGHT!!! Sub is outside the module 
 unit module Bar;
 ```
@@ -537,7 +538,7 @@ unit module Bar;
 <a id="查找已安装的模块--finding-installed-modules"></a>
 ## 查找已安装的模块 / Finding installed modules
 
-这取决于模块安装程序知道 `compunit` 期望模块放置在哪里。[distribution](https://docs.raku.org/routine/distribution) 将在当前主目录中提供一个位置。无论如何，让模块安装程序处理你的模块是一个安全的选择。
+模块安装程序应该知道`编译单元`期望模块放置在哪里。[distribution](https://docs.raku.org/routine/distribution) 将在当前家目录中提供一个位置。无论如何，让模块安装程序处理你的模块是一个安全的选择。
 
 It is up to the module installer to know where `compunit` expects modules to be placed. There will be a location provided by the [distribution](https://docs.raku.org/routine/distribution) and in the current home directory. In any case, letting the module installer deal with your modules is a safe bet.
 
@@ -574,9 +575,8 @@ If you've written a Raku module and would like to share it with the community, w
 Currently there are two different module ecosystems (module distribution networks) available:
 
 - **CPAN** 这是 Perl 正在使用的一个生态系统。模块被上传为 *.zip* 或 *.tar.gz* 文件到 [PAUSE](https://pause.perl.org/) 上。
-- **p6c** 直到最近才成为唯一的生态系统。它基于可直接访问的 Github 存储库。它在版本控制方面的能力有限。
-
 - **CPAN** This is the same ecosystem Perl is using. Modules are uploaded as *.zip* or *.tar.gz* files on [PAUSE](https://pause.perl.org/).
+- **p6c** 直到最近才成为唯一的生态系统。它基于可直接访问的 Github 存储库。它在版本控制方面的能力有限。
 - **p6c** Up until recently the only ecosystem. It is based on Github repositories which are directly accessed. It has only limited capability for versioning.
 
 共享你的模块的过程包括两个步骤：准备模块并将模块上载到一个生态系统。
@@ -651,7 +651,7 @@ The file must then be referenced in `META6.json` (see below for more on `META6.j
 
 The additional file can then be accessed inside module code:
 
-```
+```Raku
 my $template-text = %?RESOURCES<templates/default-template.mustache>.slurp;
 # Note that %?RESOURCES provides a C<IO> path object 
 ```
@@ -660,7 +660,7 @@ my $template-text = %?RESOURCES<templates/default-template.mustache>.slurp;
 
 - The `README.md` file is a [markdown-formatted](https://help.github.com/articles/markdown-basics/) text file, which will later be automatically rendered as HTML by GitHub/GitLab for modules kept in those ecosystems or by [modules.perl6.org](https://modules.raku.org/) website for modules kept on [CPAN](https://docs.raku.org/language/faq#index-entry-CPAN_(FAQ)).
 
-- 关于 `LICENSE` 文件，如果你没有其他偏好，可以用 Rakudo Raku 使用的文件。只需将[其 license](https://github.com/rakudo/rakudo/blob/master/LICENSE) 的原始形式复制/粘贴到你自己的 `LICENSE` 文件中即可。
+- 关于 `LICENSE` 文件，如果你没有其他偏好，可以用 Rakudo Raku 使用的文件。只需将[其证书](https://github.com/rakudo/rakudo/blob/master/LICENSE)的原始形式复制/粘贴到你自己的 `LICENSE` 文件中即可。
 
 - Regarding the `LICENSE` file, if you have no other preference, you might just use the same one that Rakudo Raku uses. Just copy/paste the raw form of [its license](https://github.com/rakudo/rakudo/blob/master/LICENSE) into your own `LICENSE` file.
 
@@ -937,16 +937,17 @@ To discuss module development in general, or if your module would fill a need in
 
 To discuss toolchain specific questions, you can use the [perl6-toolchain on irc.freenode.net](irc://irc.freenode.net/#perl6-toolchain) IRC channel. A repository to discuss tooling issues is also available at <https://github.com/perl6/toolchain-bikeshed>.
 
-1. [[↑]](https://docs.raku.org/language/modules#fn-ref-1) 技术上，一个模块是一组*编译单元*，它们通常是文件，只要有一个可以提供*编译单元的存储库*，就可以从任何地方来。参见 [S11](https://design.raku.org/S11.html)。
-2. [[↑]](https://docs.raku.org/language/modules#fn-ref-2) 如果模组安装了，只有当模块的版本比已安装的版本更新时，它才会重新安装。
-3. [[↑]](https://docs.raku.org/language/modules#fn-ref-3) 如[概要 S11](https://design.raku.org/S11.html#Units) 所说：混淆？是的。
-4. [[↑]](https://docs.raku.org/language/modules#fn-ref-4) 这一变化是在 2016 年末引入的。如果使用的版本早于此，则行为将不同。
-5. [[↑]](https://docs.raku.org/language/modules#fn-ref-5) 注意，上面描述的是一个最小的项目目录。如果项目包含要与模块一起分发的脚本，请将它们放在 `bin` 目录中。如果你希望在模块目录下的模块旁边显示图形徽标，请创建 `logotype` 目录并将 `logo_32x32.png` 文件放入其中。在某些情况下，你还可以考虑添加 `CONTRIBUTORS`、`NEWS`、`TODO` 或其他文件。
-6. [[↑]](https://docs.raku.org/language/modules#fn-ref-6) 一些旧的模块还提供了一个 `source-type` 字段，用于指示源代码管理系统的类型，通常是 `git`，该字段可用于下载模块。然而，这个领域现在被 `zef` 和其他工具所忽略。
+[[1]]() 技术上，一个模块是一组*编译单元*，它们通常是文件，只要有一个可以提供*编译单元的存储库*，就可以从任何地方来。参见 [S11](https://design.raku.org/S11.html)。
 
-1. [[↑]](https://docs.raku.org/language/modules#fn-ref-1) Technically a module is a set of *compunits* which are usually files but could come from anywhere as long as there is a *compunit repository* that can provide it. See [S11](https://design.raku.org/S11.html).
-2. [[↑]](https://docs.raku.org/language/modules#fn-ref-2) If it's installed, it will reinstall only if the version of the module is newer than the one installed
-3. [[↑]](https://docs.raku.org/language/modules#fn-ref-3) As [synopsis S11](https://design.raku.org/S11.html#Units) says: Confusing? Yes it is.
-4. [[↑]](https://docs.raku.org/language/modules#fn-ref-4) This change was introduced in late 2016. If you are using versions older than this, behavior will be different.
-5. [[↑]](https://docs.raku.org/language/modules#fn-ref-5) Note, described above is a minimal project directory. If your project contains scripts that you'd like distributed along with your module(s), put them in a `bin` directory. If you'd like a graphical logo to appear next to your module at the module directory, create a `logotype` directory and put into it a `logo_32x32.png` file. At some point, you might also consider adding `CONTRIBUTORS`, `NEWS`, `TODO`, or other files.
-6. [[↑]](https://docs.raku.org/language/modules#fn-ref-6) Some old modules also provide a `source-type` field, which was used to indicate the kind of source control system, generally `git`, which can be used to download the module. However, this field is nowadays ignored by `zef` and the rest of the tools.
+[[2]]() 如果模组安装了，只有当模块的版本比已安装的版本更新时，它才会重新安装。
+[[3]]() 如[概要 S11](https://design.raku.org/S11.html#Units) 所说：混淆？是的。
+[[4]]() 这一变化是在 2016 年末引入的。如果使用的版本早于此，则行为将不同。
+[[5]]() 注意，上面描述的是一个最小的项目目录。如果项目包含要与模块一起分发的脚本，请将它们放在 `bin` 目录中。如果你希望在模块目录下的模块旁边显示图形徽标，请创建 `logotype` 目录并将 `logo_32x32.png` 文件放入其中。在某些情况下，你还可以考虑添加 `CONTRIBUTORS`、`NEWS`、`TODO` 或其他文件。
+[[6]]() 一些旧的模块还提供了一个 `source-type` 字段，用于指示源代码管理系统的类型，通常是 `git`，该字段可用于下载模块。然而，这个领域现在被 `zef` 和其他工具所忽略。
+
+[[1]]() Technically a module is a set of *compunits* which are usually files but could come from anywhere as long as there is a *compunit repository* that can provide it. See [S11](https://design.raku.org/S11.html).
+[[2]]() If it's installed, it will reinstall only if the version of the module is newer than the one installed
+[[3]]() As [synopsis S11](https://design.raku.org/S11.html#Units) says: Confusing? Yes it is.
+[[4]]() This change was introduced in late 2016. If you are using versions older than this, behavior will be different.
+[[5]]() Note, described above is a minimal project directory. If your project contains scripts that you'd like distributed along with your module(s), put them in a `bin` directory. If you'd like a graphical logo to appear next to your module at the module directory, create a `logotype` directory and put into it a `logo_32x32.png` file. At some point, you might also consider adding `CONTRIBUTORS`, `NEWS`, `TODO`, or other files.
+[[6]]() Some old modules also provide a `source-type` field, which was used to indicate the kind of source control system, generally `git`, which can be used to download the module. However, this field is nowadays ignored by `zef` and the rest of the tools.
