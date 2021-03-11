@@ -28,6 +28,9 @@ https://perlweeklychallenge.org/
 # Raku Guide
 https://raku.guide
 
+# Think Raku
+https://github.com/LaurentRosenfeld/think_raku/raw/master/PDF/think_raku.pdf
+
 # Lean Raku in Y minutes
 https://learnxinyminutes.com/docs/perl6/
 
@@ -80,3 +83,6 @@ https://raku-advent.blog/category/2020/
 
 # Rau Influence Network
 https://programminglanguages.info/language/raku/
+
+# Alternative view of Raku Documentation
+https://raku.finanalyst.org/search.html
