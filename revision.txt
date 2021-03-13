@@ -38,7 +38,7 @@ Raku 原生类型 - Raku native types
 命令行接口 - Command line interface.md
 并发 - Concurrency.md
 核心模组 - Core modules.md
-	模组 - Modules.md
+模组 - Modules.md
 	模组包 - Module packages.md
 	模组开发工具 - Module development utilities.md
 	正则最佳实践与陷阱 - Regexes best practices and gotchas.md

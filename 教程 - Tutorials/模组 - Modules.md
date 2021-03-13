@@ -35,7 +35,7 @@ How to create, use, and distribute Raku modules
 <a id="创建和使用模块--creating-and-using-modules"></a>
 # 创建和使用模块 / Creating and using modules
 
-模块通常是一个或一组展示 Raku 构造的源文件。
+模块通常是一个或一组展示 Raku 构造的源文件[[1]]()。
 
 A module is usually a source file or set of source files that expose Raku constructs [[1]]().
 
@@ -940,14 +940,23 @@ To discuss toolchain specific questions, you can use the [perl6-toolchain on irc
 [[1]]() 技术上，一个模块是一组*编译单元*，它们通常是文件，只要有一个可以提供*编译单元的存储库*，就可以从任何地方来。参见 [S11](https://design.raku.org/S11.html)。
 
 [[2]]() 如果模组安装了，只有当模块的版本比已安装的版本更新时，它才会重新安装。
+
 [[3]]() 如[概要 S11](https://design.raku.org/S11.html#Units) 所说：混淆？是的。
+
 [[4]]() 这一变化是在 2016 年末引入的。如果使用的版本早于此，则行为将不同。
+
 [[5]]() 注意，上面描述的是一个最小的项目目录。如果项目包含要与模块一起分发的脚本，请将它们放在 `bin` 目录中。如果你希望在模块目录下的模块旁边显示图形徽标，请创建 `logotype` 目录并将 `logo_32x32.png` 文件放入其中。在某些情况下，你还可以考虑添加 `CONTRIBUTORS`、`NEWS`、`TODO` 或其他文件。
+
 [[6]]() 一些旧的模块还提供了一个 `source-type` 字段，用于指示源代码管理系统的类型，通常是 `git`，该字段可用于下载模块。然而，这个领域现在被 `zef` 和其他工具所忽略。
 
 [[1]]() Technically a module is a set of *compunits* which are usually files but could come from anywhere as long as there is a *compunit repository* that can provide it. See [S11](https://design.raku.org/S11.html).
+
 [[2]]() If it's installed, it will reinstall only if the version of the module is newer than the one installed
+
 [[3]]() As [synopsis S11](https://design.raku.org/S11.html#Units) says: Confusing? Yes it is.
+
 [[4]]() This change was introduced in late 2016. If you are using versions older than this, behavior will be different.
+
 [[5]]() Note, described above is a minimal project directory. If your project contains scripts that you'd like distributed along with your module(s), put them in a `bin` directory. If you'd like a graphical logo to appear next to your module at the module directory, create a `logotype` directory and put into it a `logo_32x32.png` file. At some point, you might also consider adding `CONTRIBUTORS`, `NEWS`, `TODO`, or other files.
+
 [[6]]() Some old modules also provide a `source-type` field, which was used to indicate the kind of source control system, generally `git`, which can be used to download the module. However, this field is nowadays ignored by `zef` and the rest of the tools.
