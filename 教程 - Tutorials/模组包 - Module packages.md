@@ -26,7 +26,7 @@ Creating module packages for code reuse
 <a id="模组是什么--what-are-modules"></a>
 # 模组是什么 / What are modules?
 
-模块，如类和语法，是一种[包](https://docs.raku.org/language/packages)。模块对象是 `ModuleHOW` 元类的实例；这为创建命名空间、版本控制、委托和数据封装提供了一些有用的功能（另请参阅[类](https://docs.raku.org/syntax/class)和[角色])(https://docs.raku.org/syntax/role)）。
+模块, 与类和语法相似，是一种[包](https://docs.raku.org/language/packages)。模块对象是 `ModuleHOW` 元类的实例；这为创建命名空间、版本控制、委托和数据封装提供了一些有用的功能（另请参阅[类](https://docs.raku.org/syntax/class)和[角色](https://docs.raku.org/syntax/role)）。
 
 Modules, like classes and grammars, are a kind of [package](https://docs.raku.org/language/packages). Module objects are instances of the `ModuleHOW` metaclass; this provides certain capabilities useful for creating namespaces, versioning, delegation and data encapsulation (see also [class](https://docs.raku.org/syntax/class) and [role](https://docs.raku.org/syntax/role)).
 
@@ -39,7 +39,7 @@ module M {}
 say M.HOW;   # OUTPUT: «Perl6::Metamodel::ModuleHOW.new␤»
 ```
 
-在这里，我们定义了一个名为 `M` 的新模块；带有 `HOW` 的内省确认了在 `M` 背后的元类是 `Perl6::Metamodel::ModuleHOW`。
+在这里，我们定义了一个名为 `M` 的新模块；`HOW` 的内省确认了在 `M` 背后的元类是 `Perl6::Metamodel::ModuleHOW`。
 
 Here we define a new module named `M`; introspection with `HOW` confirms that the metaclass underlying `M` is `Perl6::Metamodel::ModuleHOW`.
 
@@ -78,30 +78,30 @@ say friendly-greeting;  # OUTPUT: «Greetings, friend!␤»
 <a id="磁盘上的模块--modules-on-disk"></a>
 # 磁盘上的模块 / Modules on disk
 
-虽然 `.pm` 和 `.pm6` 文件（以下称 `.pm6`）有时被称为"模块"，但它们实际上只是在写 `need`、 `use` 或 `require` 时加载和编译的正常文件。
+虽然 `.raku` 和 `.rakumod` 文件有时被称为"模块"，但它们实际上只是在写 `need`、 `use` 或 `require` 时加载和编译的正常文件。
 
-While `.pm` and `.pm6` files (hereafter: `.pm6`) are sometimes referred to as "modules", they are really just normal files that are loaded and compiled when you write `need`, `use` or `require`.
+While `.raku` and `.rakumod` files are sometimes referred to as "modules", they are really just normal files that are loaded and compiled when you write `need`, `use` or `require`.
 
-对于 `.pm6` 文件，要在我们使用的意义上提供一个模块，它需要使用 `module` 声明一个“模块”，如上面所记录的。例如，通过将模块 `M` 置于 `Foo.pm6` 内部，我们可以按如下方式加载和使用模块：
+对于 `.rakumod` 文件，要在我们使用的意义上提供一个模块，它需要使用 `module` 声明一个“模块”，如上面所记录的。例如，通过将模块 `M` 置于 `Foo.rakumod` 内部，我们可以按如下方式加载和使用模块：
 
-For a `.pm6` file to provide a module in the sense that we've been using, it needs to declare one with `module` as documented above. For example, by placing module `M` inside `Foo.pm6`, we can load and use the module as follows:
+For a `.rakumod` file to provide a module in the sense that we've been using, it needs to declare one with `module` as documented above. For example, by placing module `M` inside `Foo.rakumod`, we can load and use the module as follows:
 
 ```Raku
-use Foo;                # find Foo.pm6, run need followed by import 
+use Foo;                # find Foo.rakumod, run need followed by import 
 say M::loud-greeting;   # OUTPUT: «GREETINGS, CAMELIA!␤» 
 say friendly-greeting;  # OUTPUT: «Greetings, friend!␤» 
 ```
 
-注意文件和模块名称之间的解耦 -`.pm6` 文件可以声明具有任意标识符的零个或多个模块。
+注意文件和模块名称之间的解耦 -`.rakumod` 文件可以声明具有任意标识符的零个或多个模块。
 
-Note the decoupling between file and module names—a `.pm6` file can declare zero or more modules with arbitrary identifiers.
+Note the decoupling between file and module names—a `.rakumod` file can declare zero or more modules with arbitrary identifiers.
 
 <a id="文件和模块命名--file-and-module-naming"></a>
 ## 文件和模块命名 / File and module naming
 
-通常，我们想要一个 `.pm6` 文件来提供一个*单一*模块，仅此而已。在这里，一个常见的约定是文件名与模块名匹配。说回到 `Foo.pm6` 时，很明显，它只提供了一个模块 `M`；在本例中，我们可能希望将 `M` 重命名为 `Foo`。修改后的文件内容如下：
+通常，我们想要一个 `.rakumod` 文件来提供一个*单一*模块，仅此而已。在这里，一个常见的约定是文件名与模块名匹配。说回到 `Foo.rakumod` 时，很明显，它只提供了一个模块 `M`；在本例中，我们可能希望将 `M` 重命名为 `Foo`。修改后的文件内容如下：
 
-Often we want a `.pm6` file to provide a *single* module and nothing more. Here a common convention is for the file basename to match the module name. Returning to `Foo.pm6`, it is apparent that it only provides a single module, `M`; in this case, we might want to rename `M` to `Foo`. The amended file would then read:
+Often we want a `.rakumod` file to provide a *single* module and nothing more. Here a common convention is for the file basename to match the module name. Returning to `Foo.rakumod`, it is apparent that it only provides a single module, `M`; in this case, we might want to rename `M` to `Foo`. The amended file would then read:
 
 ```Raku
 module Foo {
@@ -121,16 +121,16 @@ say Foo::loud-greeting;  # OUTPUT: «GREETINGS, CAMELIA!␤»
 say friendly-greeting;   # OUTPUT: «Greetings, friend!␤» 
 ```
 
-如果 `Foo.pm6` 放置在源码树种更深的放置中，例如在 `lib/Utils/Foo.pm6`，我们可以选择将模块命名为 `Utils::Foo` 以保持一致性。
+如果 `Foo.rakumod` 放置在源码树种更深的放置中，例如在 `lib/Utils/Foo.rakumod`，我们可以选择将模块命名为 `Utils::Foo` 以保持一致性。
 
-If `Foo.pm6` is placed deeper within the source tree, e.g. at `lib/Utils/Foo.pm6`, we can elect to name the module `Utils::Foo` to maintain consistency.
+If `Foo.rakumod` is placed deeper within the source tree, e.g. at `lib/Utils/Foo.rakumod`, we can elect to name the module `Utils::Foo` to maintain consistency.
 
 <a id="unit-关键字--the-unit-keyword"></a>
 ### `unit` 关键字 / The `unit` keyword
 
-仅提供单个模块的文件可以用 `unit` 关键字更简洁地编写；`unit module` 指定编译单元的其余部分是所声明的模块的一部分。此处为 `Foo.pm6`，用 `unit` 重写：
+仅提供单个模块的文件可以用 `unit` 关键字更简洁地编写；`unit module` 指定编译单元的其余部分是所声明的模块的一部分。此处为 `Foo.rakumod`，用 `unit` 重写：
 
-Files that only provide a single module can be written more concisely with the `unit` keyword; `unit module` specifies that the rest of the compilation unit is part of the declared module. Here's `Foo.pm6` rewritten with `unit`:
+Files that only provide a single module can be written more concisely with the `unit` keyword; `unit module` specifies that the rest of the compilation unit is part of the declared module. Here's `Foo.rakumod` rewritten with `unit`:
 
 ```Raku
 unit module Foo;
@@ -151,9 +151,9 @@ Everything following the unit declaration is part of the `Foo` module specificat
 <a id="如果省略-module-会发生什么？--what-happens-if-i-omit-module"></a>
 ## 如果省略 `module` 会发生什么？ / What happens if I omit `module`?
 
-为了更好地理解 `module` 声明器在 `Foo.pm6` 中所做的事情，让我们将其与省略声明的变体文件 `Bar.pm6` 进行对比。下面的子例程定义几乎是相同的（唯一的区别是 `greeting` 的正文，为了清楚起见对其作了修改）：
+为了更好地理解 `module` 声明器在 `Foo.rakumod` 中所做的事情，让我们将其与省略声明的变体文件 `Bar.rakumod` 进行对比。下面的子例程定义几乎是相同的（唯一的区别是 `greeting` 的正文，为了清楚起见对其作了修改）：
 
-To better understand what the `module` declarator is doing in `Foo.pm6`, let's contrast it with a variant file, `Bar.pm6`, that omits the declaration. The subroutine definitions below are almost identical (the only difference is in the body of `greeting`, modified for clarity):
+To better understand what the `module` declarator is doing in `Foo.rakumod`, let's contrast it with a variant file, `Bar.rakumod`, that omits the declaration. The subroutine definitions below are almost identical (the only difference is in the body of `greeting`, modified for clarity):
 
 ```Raku
 sub greeting ($name = 'Camelia') { "Greetings from Bar, $name!" }
@@ -161,9 +161,9 @@ our sub loud-greeting (--> Str)  { greeting().uc                }
 sub friendly-greeting is export  { greeting('friend')           }
 ```
 
-作为提醒，这里是我们以前使用的 `Foo.pm6` 的方式，
+作为提醒，这里是我们以前使用的 `Foo.rakumod` 的方式，
 
-As a reminder, here's how we used `Foo.pm6` before,
+As a reminder, here's how we used `Foo.rakumod` before,
 
 ```Raku
 use Foo;
@@ -171,9 +171,9 @@ say Foo::loud-greeting;  # OUTPUT: «GREETINGS, CAMELIA!␤»
 say friendly-greeting;   # OUTPUT: «Greetings, friend!␤» 
 ```
 
-以下是我们如何使用 `Bar.pm6`，
+以下是我们如何使用 `Bar.rakumod`，
 
-and here's how we use `Bar.pm6`,
+and here's how we use `Bar.rakumod`,
 
 ```Raku
 use Bar;
@@ -181,24 +181,24 @@ say loud-greeting;       # OUTPUT: «GREETINGS FROM BAR, CAMELIA!␤»
 say friendly-greeting;   # OUTPUT: «Greetings from Bar, friend!␤» 
 ```
 
-注意 `loud-greeting` 而不是 `Bar::loud-greeting` 的用法，因为 `Bar` 不是已知的符号（我们没有在 `Bar.pm6` 中创建那个名称的 `module`）。但是为什么 `loud-greeting` 是可以调用的，即使我们没有标记它的出口呢？答案仅仅是 `Bar.pm6` 不创建新的包命名空间--`$?PACKAGE` 仍然被设置为 `GLOBAL`--因此，当我们将 `loud-greeting` 声明为 `our` 时，它将注册在 `GLOBAL` 符号表中。
+注意 `loud-greeting` 而不是 `Bar::loud-greeting` 的用法，因为 `Bar` 不是已知的符号（我们没有在 `Bar.rakumod` 中创建那个名称的 `module`）。但是为什么 `loud-greeting` 是可以调用的，即使我们没有标记它为导出函数呢？答案仅仅是 `Bar.rakumod` 不创建新的包命名空间--`$?PACKAGE` 仍然被设置为 `GLOBAL`--因此，当我们将 `loud-greeting` 声明为 `our` 时，它将注册在 `GLOBAL` 符号表中。
 
-Note the use of `loud-greeting` rather than `Bar::loud-greeting` as `Bar` is not a known symbol (we didn't create a `module` of that name in `Bar.pm6`). But why is `loud-greeting` callable even though we didn't mark it for export? The answer is simply that `Bar.pm6` doesn't create a new package namespace—`$?PACKAGE` is still set to `GLOBAL`—so when we declare `loud-greeting` as `our`, it is registered in the `GLOBAL` symbol table.
+Note the use of `loud-greeting` rather than `Bar::loud-greeting` as `Bar` is not a known symbol (we didn't create a `module` of that name in `Bar.rakumod`). But why is `loud-greeting` callable even though we didn't mark it for export? The answer is simply that `Bar.rakumod` doesn't create a new package namespace—`$?PACKAGE` is still set to `GLOBAL`—so when we declare `loud-greeting` as `our`, it is registered in the `GLOBAL` symbol table.
 
 <a id="词法别名与安全--lexical-aliasing-and-safety"></a>
 ### 词法别名与安全 / Lexical aliasing and safety
 
-值得庆幸的是，Raku 保护我们免受意外调用站点定义（例如，内置）。请考虑以下添加到 `Bar.pm6`：
+值得庆幸的是，Raku 保护我们免受意外调用站点定义（例如，内置函数）。如果将下列代码添加到 `Bar.rakumod`：
 
-Thankfully, Raku protects us from accidentally clobbering call site definitions (e.g. builtins). Consider the following addition to `Bar.pm6`:
+Thankfully, Raku protects us from accidentally clobbering call site definitions (e.g. builtins). Consider the following addition to `Bar.rakumod`:
 
 ```Raku
 our sub say ($ignored) { print "oh dear\n" }
 ```
 
-这创建了一个词法别名，将内置函数 `say` 隐藏至 `Bar.pm6` 但是让调用者的 `say` 不变。因此，以下 `say` 的调用仍按预期运行：
+这创建了一个词法别名，将内置函数 `say` 隐藏至 `Bar.rakumod` 但是让调用者的 `say` 不变。因此，以下 `say` 的调用仍按预期运行：
 
-This creates a lexical alias, hiding the `say` builtin *inside* `Bar.pm6` but leaving the caller's `say` unchanged. Consequently, the following call to `say` still works as expected:
+This creates a lexical alias, hiding the `say` builtin *inside* `Bar.rakumod` but leaving the caller's `say` unchanged. Consequently, the following call to `say` still works as expected:
 
 ```Raku
 use Bar;

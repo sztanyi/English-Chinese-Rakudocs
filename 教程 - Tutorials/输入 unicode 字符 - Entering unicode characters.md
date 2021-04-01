@@ -6,7 +6,7 @@
 
 Input methods for unicode characters in editors and the shell
 
-Perl 6 允许使用 Unicode 字符作为变量名。许多操作符使用 Unicode 符号（特别是 [set/bag operators](https://docs.raku.org/language/setbagmix#Set%252FBag_operators)）以及一些引用结构。因此，最好知道如何将这些符号输入编辑器，Perl 6 shell 和命令行，特别是如果符号不是键盘上的实际字符。
+Raku 允许使用 Unicode 字符作为变量名。许多操作符使用 Unicode 符号（特别是 [set/bag operators](https://docs.raku.org/language/setbagmix#Set%252FBag_operators)）以及一些引用结构。因此，最好知道如何将这些符号输入编辑器，Perl 6 shell 和命令行，特别是如果符号不是键盘上的实际字符。
 
 Perl 6 allows the use of unicode characters as variable names. Many operators are defined with unicode symbols (in particular the [set/bag operators](https://docs.raku.org/language/setbagmix#Set%252FBag_operators)) as well as some quoting constructs. Hence it is good to know how to enter these symbols into editors, the Perl 6 shell and the command line, especially if the symbols aren't available as actual characters on a keyboard.
 
@@ -245,7 +245,7 @@ These characters are used in different languages as quotation marks. In Perl 6 t
 
 Constructs such as these are now possible:
 
-```Perl6
+```Raku
 say ｢What?!｣;
 say ”Whoa!“;
 say „This works too!”;
@@ -257,7 +257,7 @@ say “here: “no problem” at all!”; # You can nest them!
 
 This is very useful in shell:
 
-```Perl6
+```Raku
 perl6 -e 'say ‘hello world’'
 ```
 
@@ -281,7 +281,7 @@ These characters are used in French and German as quotation marks. In Perl 6 the
 
 Thus constructs such as these are now possible:
 
-```Perl6
+```Raku
 say (1, 2) »+« (3, 4);     # OUTPUT: «(4 6)␤» - element-wise add 
 [1, 2, 3] »+=» 42;         # add 42 to each element of @array 
 say «moo»;                 # OUTPUT: «moo␤» 
@@ -334,7 +334,7 @@ Greek characters may be used as variable names. For a list of Greek and Coptic c
 
 For example, to assign the value 3 to π, enter the following in Vim (whitespace added to the compose sequences for clarity):
 
-```Perl6
+```Raku
 my $Ctrl-V u 03C0 = 3;  # same as: my $π = 3;
 say $Ctrl-V u 03C0;     # 3    same as: say $π;
 ```
@@ -350,7 +350,7 @@ A limited set of [superscripts and subscripts](https://en.wikipedia.org/wiki/Sup
 
 Thus, to write the [Taylor series](https://en.wikipedia.org/wiki/Taylor_series) expansion around zero of the function `exp(x)` one would input into e.g. vim the following:
 
-```Perl6
+```Raku
 exp(x) = 1 + x + xCtrl-V u 00B2/2! + xCtrl-V u 00B3/3!
 + ... + xCtrl-V u 207F/n!
 # which would appear as
@@ -361,7 +361,7 @@ exp(x) = 1 + x + x²/2! + x³/3! + ... + xⁿ/n!
 
 Or to specify the elements in a list from `1` up to `k`:
 
-```Perl6
+```Raku
 ACtrl-V u 2081, ACtrl-V u 2082, ..., ACtrl-V u 2096
 # which would appear as
 A₁, A₂, ..., Aₖ

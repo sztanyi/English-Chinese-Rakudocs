@@ -8,7 +8,7 @@ Different mathematical paradigms and how they are implemented in this language
 
 # 集合 / Sets
 
-Raku 包含 [Set](https://docs.raku.org/type/Set) 数据类型，以及对[大多数集合运算符](https://docs.raku.org/language/setbagmix#Set/Bag_operators)的支持。[并集和交集](https://en.wikipedia.org/wiki/Algebra_of_sets)不仅仅是原生运算符，并且使用它们的*天然*符号、∩ 和 ∪。例如，该代码将检查有限数量的集合的集合算术的基本规律：
+Raku 包含 [Set](https://docs.raku.org/type/Set) 数据类型，以及对[大多数集合运算符](https://docs.raku.org/language/setbagmix#Set/Bag_operators)的支持。[并集和交集](https://en.wikipedia.org/wiki/Algebra_of_sets)不仅仅是原生运算符，而是使用它们的*天然*符号 ∩ 和 ∪。例如，该代码将检查有限数量的集合的集合算术的基本规律：
 
 Raku includes the [Set](https://docs.raku.org/type/Set) data type, as well as support for [most set operations](https://docs.raku.org/language/setbagmix#Set/Bag_operators). [Union and intersection](https://en.wikipedia.org/wiki/Algebra_of_sets) are not only native operations, they use their *natural* symbols, ∩ and ∪. For instance, this code would check the fundamental laws of the arithmetic of sets for a limited number of sets:
 
@@ -86,11 +86,11 @@ Raku can do arithmetic using different data types. [Num](https://docs.raku.org/t
 | Num        | ℝ     |
 | Complex    | ℂ     |
 
-在数学中通常被这样叫的 `Int` 或 ℤ，不是一个数学字段，而是一个环，因为它们不是在乘法逆运算下封闭的。但是，如果使用整数除法 `div`，则它们的操作总是会产生其他整数；而如果使用 `/`，则结果通常是 [Rat](https://docs.raku.org/type/Rat)。
+`Int` 或 ℤ，不是一个数学字段，而是一个环，因为它们不是在乘法逆运算下封闭的。但是，如果使用整数除法 `div`，则它们的操作总是会产生其他整数；而如果使用 `/`，则结果通常是 [Rat](https://docs.raku.org/type/Rat)。
 
 The `Int`s or ℤ, as they're usually called in mathematics, are not a mathematical field but rather a ring, since they are not closed under multiplicative inverses. However, if the integer division `div` is used, their operations will always yield other integers; if `/` is used, on the other hand, in general the result will be a [Rat](https://docs.raku.org/type/Rat).
 
-此外，`Int` 可以执行无限精度运算（或至少在内存允许的范围内；“数字溢出”仍可发生），如果数字太大，则不回退回到 [Num](https://docs.raku.org/type/Num)：
+此外，`Int` 可以执行无限精度运算（或至少在内存允许的范围内；“数字溢出”仍可发生），如果数字太大，则不回退到 [Num](https://docs.raku.org/type/Num)：
 
 Besides, `Int` can do infinite-precision arithmetic (or at least infinite as memory allows; `Numeric overflow` can still occur), without falling back to [Num](https://docs.raku.org/type/Num) if the number is too big:
 
@@ -98,7 +98,7 @@ Besides, `Int` can do infinite-precision arithmetic (or at least infinite as mem
 my @powers = 2, 2 ** * ... Inf; say @powers[4].chars; # OUTPUT: «19729␤»
 ```
 
-严格地说，行为像数学字段的 Rational 类是 [FatRat](https://docs.raku.org/type/FatRat)。出于效率原因，当数字足够大或分子和分母之间有很大差异时，使用 `Rat` 的操作将回到 `Num`。`FatRat` 可以以任意精度工作，与默认的 `Int` 类相同。
+严格地说，行为像数学字段的 Rational 类是 [FatRat](https://docs.raku.org/type/FatRat)。出于效率原因，当数字足够大或分子和分母之间有很大差异时，使用 `Rat` 的操作将回退到 `Num`。`FatRat` 可以以任意精度工作，与默认的 `Int` 类相同。
 
 Also strictly speaking, the Rational class that behaves like a mathematical field is [FatRat](https://docs.raku.org/type/FatRat). For efficiency reasons, operating with `Rat`s will fall back to `Num` when the numbers are big enough or when there is a big difference between numerator and denominator. `FatRat` can work with arbitrary precision, the same as the default `Int` class.
 
@@ -111,6 +111,8 @@ Some modules in the ecosystem can work with additional data types mathematically
 - [`Math::Quaternion`](https://github.com/Util/Perl6-Math-Quaternion) 为[四元数代数, ℍ](https://en.wikipedia.org/wiki/Quaternion) 运算。
 - [`Math::Polynomial`](https://github.com/colomon/Math-Polynomial) 处理多项式并且能够用它们做简单的算术。
 - [`Math::Symbolic`](https://github.com/raydiak/Math-Symbolic) 处理符号数学。
+
+##
 
 - [`Math::Vector`](https://github.com/colomon/Math-Vector) basic operations for [vectors](https://en.wikipedia.org/wiki/Coordinate_vector).
 - [`Math::Matrix`](https://github.com/pierre-vigier/Perl6-Math-Matrix) operates on [matrices rings over numeric rings](https://en.wikipedia.org/wiki/Matrix_(mathematics)).
@@ -131,7 +133,7 @@ Numbers are duck-typed automatically to the numeric class they actually represen
 Arithmetic operations are performed by taking into account the type of operands:
 
 ```Raku
-say .33-.22-.11 == 0; # OUTPUT: «True␤»
+say .33 - .22 - .11 == 0; # OUTPUT: «True␤»
 ```
 
 在这种情况下，所有数字都被解释为 `Rat`，这使得操作准确。一般来说，大多数其他语言都会将它们解释为浮点数，如果需要，也可以用 Raku 语言实现：
@@ -139,7 +141,7 @@ say .33-.22-.11 == 0; # OUTPUT: «True␤»
 In this case, all numbers are interpreted as `Rat`s, which makes the operation exact. In general, most other languages would interpret them as floating point numbers, which can also be achieved in Raku if needed:
 
 ```Raku
-say .33.Num -.22.Num - .11.Num; # OUTPUT: «1.3877787807814457e-17␤»
+say .33.Num - .22.Num - .11.Num; # OUTPUT: «1.3877787807814457e-17␤»
 ```
 
 对于这种情况，Raku 还包括一个“近似相等”运算符 [≅](https://docs.raku.org/language/operators#infix_=~=)
@@ -147,7 +149,7 @@ say .33.Num -.22.Num - .11.Num; # OUTPUT: «1.3877787807814457e-17␤»
 For cases such as this, Raku also includes an `approximately equal` operator, [≅](https://docs.raku.org/language/operators#infix_=~=)
 
 ```Raku
-say .33.Num -.22.Num - .11.Num ≅ 0; # OUTPUT: «True␤»
+say .33.Num - .22.Num - .11.Num ≅ 0; # OUTPUT: «True␤»
 ```
 
 # 序列 / Sequences
@@ -261,6 +263,8 @@ In Raku there are some modules in the ecosystem that can make it easier:
 
 - [`Math::Model`](https://github.com/moritz/Math-Model) 用于以简单和自然的方式编写数学和物理模型。
 - [`Math::RungeKutta`](https://github.com/moritz/Math-RungeKutta) 用于线性常微分方程组的龙格-库塔积分.
+
+##
 
 - [`Math::Model`](https://github.com/moritz/Math-Model) which lets you write mathematical and physical models in an easy and natural way.
 - [`Math::RungeKutta`](https://github.com/moritz/Math-RungeKutta) Runge-Kutta integration for systems of ordinary, linear differential equations.
@@ -379,13 +383,13 @@ There, we select our time limits and the resolution. Next, we generate a plot. A
 
 [link to the image](https://rawgit.com/thebooort/perl-6-math-model-tutorial/master/population%20growth%20malthus.svg)
 
-真不错!但老实说，这是完全没有代表性的。让我们从更复杂的情况中探索其他示例！
+真不错！但老实说，这是完全没有代表性的。让我们从更复杂的情况中探索其他示例！
 
 Looks great! But to be honest, it is quite unrepresentative. Let's explore other examples from more complex situations!
 
 ## Logistic 模型 / Logistic model
 
-资源不是无限的，我们的人口也不会永远增长。P-F Verhulst 也是这么想的，所以他提出了 [Logistic 模型](https://en.wikipedia.org/wiki/Logistic_function)。这一模式是一种普遍的人口增长模式，在这一模式中，生殖率与现有人口和现有资源的数量成正比，所有这些都是平等的。看起来是这样的：
+资源不是无限的，我们的人口也不会永远增长。皮埃尔·弗朗索瓦·韦吕勒也是这么想的，所以他提出了 [Logistic 模型](https://en.wikipedia.org/wiki/Logistic_function)。这一模式是一种普遍的人口增长模式，在这一模式中，生殖率与现有人口和现有资源的数量成正比，所有这些都是平等的。看起来是这样的：
 
 Resources aren't infinite and our population is not going to grow forever. P-F Verhulst thought the same thing, so he presented the [logistic model](https://en.wikipedia.org/wiki/Logistic_function). This model is a common model of population growth, where the rate of reproduction is proportional to both the existing population and the amount of available resources, all else being equal. It looks like this:
 
@@ -393,7 +397,7 @@ Resources aren't infinite and our population is not going to grow forever. P-F V
 
 *x(0)=x_0*
 
-其中常数 g 定义了生长速率,k 是承载容量。修改上述代码，我们可以及时模拟其行为：
+其中常数 g 定义了生长速率, k 是承载容量。修改上述代码，我们可以及时模拟其行为：
 
 where the constant g defines the growth rate and k is the carrying capacity. Modifying the above code we can simulate its behavior in time:
 
@@ -419,7 +423,7 @@ $m.integrate(:from(0), :to(8), :min-resolution(0.5));
 $m.render-svg('population growth logistic.svg', :title('population growth'));
 ```
 
-让我们看看我们的很酷的图片：[图像地方链接](https://rawgit.com/thebooort/perl-6-math-model-tutorial/master/population%20growth%20logistic.svg)
+让我们看看我们的很酷的图片：[图像链接](https://rawgit.com/thebooort/perl-6-math-model-tutorial/master/population%20growth%20logistic.svg)
 
 Let's look at our cool plot: [link to the image](https://rawgit.com/thebooort/perl-6-math-model-tutorial/master/population%20growth%20logistic.svg)
 
@@ -427,13 +431,13 @@ Let's look at our cool plot: [link to the image](https://rawgit.com/thebooort/pe
 
 As you can see population growths till a maximum.
 
-## 强 Allee 效应 / Strong Allee Effect
+## 强阿利效应 / Strong Allee Effect
 
 有意思，不是吗？即使这些方程似乎是基本的，但它们与我们这个世界上的许多行为有关，比如肿瘤的生长。但是，在结束之前，让我给你看一个奇怪的案例。Logistic 模型可能是准确的但是如果从某一临界值来看，人口规模太小，以致于由于个人找不到其他人而使存活率和/或生殖率下降，会发生什么情况？
 
 Interesting, isn't it? Even if these equations seem basic they are linked to a lot of behaviors in our world, like tumor growth. But, before end, let me show you a curious case. Logistic model could be accurate but... What happens when, from a certain threshold, the population size is so small that the survival rate and / or the reproductive rate drops due to the individual's inability to find other ones?
 
-这是 W.C.Allee 描述的一个有趣的现象，通常被称为 [Allee 效应](https://en.wikipedia.org/wiki/Allee_effect)。要获得与这种效应相关的不同行为，一个简单的方法是使用 Logistic 模型作为出口，添加一些条件，并得到一个像这样的立方增长模型：
+这是阿利描述的一个有趣的现象，通常被称为[阿利效应](https://en.wikipedia.org/wiki/Allee_effect)。要获得与这种效应相关的不同行为，一个简单的方法是使用 Logistic 模型作为出口，添加一些条件，并得到一个像这样的立方增长模型：
 
 Well, this is an interesting phenomenon described by W.C.Allee, usually known as [Allee effect](https://en.wikipedia.org/wiki/Allee_effect). A simple way to obtain different behaviors associated with this effect is to use the logistic model as a departure, add some terms, and get a cubic growth model like this one:
 
@@ -474,9 +478,9 @@ $m.render-svg('population growth allee.svg', :title('population growth'));
 
 Try to execute this one yourself to see the different behaviors that arise when you change the initial condition around the critical point!
 
-## 弱 Allee 效应 / Weak Allee Effect
+## 弱阿利效应 / Weak Allee Effect
 
-强 Allee 效应是具有临界人口规模或密度的人口 Allee 效应，弱 Allee 效应是没有临界人口规模或密度的人口 Allee 效应，即当人口密度或人口规模较低时，表现出弱 Allee 效应的人口人均增长率将降低。然而，即使在人口数量或密度如此低的情况下，人口的人均增长率也始终是正的。这个模型与强模型略有不同，得到了一个新的公式：
+强阿利效应是具有临界人口规模或密度的人口阿利效应，弱阿利效应是没有临界人口规模或密度的人口阿利效应，即当人口密度或人口规模较低时，表现出弱阿利效应的人口人均增长率将降低。然而，即使在人口数量或密度如此低的情况下，人口的人均增长率也始终是正的。这个模型与强模型略有不同，得到了一个新的公式：
 
 Whilst the strong Allee effect is a demographic Allee effect with a critical population size or density, the weak Allee effect is a demographic Allee effect without a critical population size or density, i.e., a population exhibiting a weak Allee effect will possess a reduced per capita growth rate at lower population density or size. However, even at this low population size or density, the population will always exhibit a positive per capita growth rate. This model differs lightly from the strong one, getting a new formula:
 
@@ -512,6 +516,6 @@ $m.render-svg('population growth allee.svg', :title('population growth'));
 
 ## 额外信息 / Extra info
 
-你喜欢物理吗？检查已经使用的模块的创建者 Moritz Lenz: <https://perlgeek.de/blog-en/perl-6/physical-modelling.html>。
+你喜欢物理吗？查看刚才使用的模块的创建者 Moritz Lenz 的原始帖子: <https://perlgeek.de/blog-en/perl-6/physical-modelling.html>。
 
 Do you like physics? Check the original post by the creator of the modules that have been used, Moritz Lenz: <https://perlgeek.de/blog-en/perl-6/physical-modelling.html>.

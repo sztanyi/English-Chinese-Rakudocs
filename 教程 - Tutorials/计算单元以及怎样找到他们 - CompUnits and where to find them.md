@@ -41,7 +41,7 @@ Both compiled and interpreted forms have advantages. Briefly, interpreted progra
 
 `Raku` has both paradigms. At the **top level** a Raku program is interpreted, but if code that is separated out into a Module will be compiled and the preprocessed version is then loaded when necessary. In practice, Modules that have been written by the community will only need to be precompiled once by a user when they are 'installed', for example by a Module manager such as `zef`. Then they can be `use`d by a developer in her own program. The effect is to make `Raku` top level programs run quickly.
 
-`Perl` 语系的一大优点是能够将一个由称职的程序员编写的模块组成的整个生态系统集成到一个小程序中。 这种力量被广泛复制，现在是所有语言的常态。 `Raku` 更进一步地进行集成，使得 `Raku` 程序将以其他语言编写的系统库集成到 `Raku` 程序中相对容易，参见 [NativeCall](https://docs.raku.org/language/nativecall)。
+`Perl` 语系的一大优点是能够将一个由称职的程序员编写的模块组成的整个生态系统集成到一个小程序中。 这种力量被广泛复制，现在是所有语言的常态。 `Raku` 更进一步地进行集成，使得 `Raku` 程序将以其他语言编写的系统库集成到 `Raku` 程序中相对容易，参见 [Native Call](https://docs.raku.org/language/nativecall)。
 
 One of the great strengths of the `Perl` family of languages was the ability to integrate a whole ecosystem of modules written by competent programmers into a small program. This strength was widely copied and is now the norm for all languages. `Raku` takes integration even further, making it relatively easy for `Raku` programs to incorporate system libraries written in other languages into `Raku` programs, see [Native Call](https://docs.raku.org/language/nativecall).
 
@@ -50,16 +50,18 @@ One of the great strengths of the `Perl` family of languages was the ability to 
 The experience from `Perl` and other languages is that the distributive nature of Modules generate several practical difficulties:
 
 - 当 API 得到改进时，一个流行的模块可能会经过几次迭代，而不能保证有反向兼容性。 因此，如果程序依赖于某些特定的函数或返回，则必须有一种方法来指定*版本*。
-- 一个模块可能是由鲍勃编写的，他是一个非常能干的程序员，他在生活中继续前进，使模块无法维护，所以爱丽丝接管了。 这意味着相同的模块，具有相同的名称，以及相同的通用 API 可能在野外有两个版本。 或者，两个开发人员（例如爱丽丝和鲍勃）最初在一个模块上合作，然后拆伙开发。 因此，有时需要有一种方法来定义模块的**作者**。
+- 一个模块可能是由鲍勃编写的，他是一个非常能干的程序员，由于他忙于生活中其他事情，不能维护模块了，所以爱丽丝接管了。 这意味着相同的模块，具有相同的名称，以及相同的通用 API 可能在野外有两个版本。 或者，两个开发人员（例如爱丽丝和鲍勃）最初在一个模块上合作，然后拆伙开发。 因此，有时需要有一种方法来定义模块的**作者**。
 - 一个模块可以随着时间的推移而增强，维护人员保持两个版本的最新，但具有不同的 API。 因此，可能需要定义所需的 **API**。
 - 在开发新程序时，开发人员可能希望在本地安装爱丽丝和鲍勃编写的模块。 因此，不可能只安装一个单一名称的模块的一个版本。
+
+##
 
 - a popular module may go through several iterations as the API gets improved, without a guarantee that there is backward compatibility. So, if a program relies on some specific function or return, then there has to be a way to specify the **Version**.
 - a module may have been written by Bob, a very competent programmer, who moves on in life, leaving the module unmaintained, so Alice takes over. This means that the same module, with the same name, and the same general API may have have two versions in the wild. Alternatively, two developers (e.g., Alice and Bob) who initially cooperated on a module, then part company about its development. Consequently, it sometimes is necessary for there to be a way to define the **Auth** of the module.
 - a module may be enhanced over time and the maintainer keeps two versions up to date, but with different APIs. So it is may be necessary to define the **API** required.
 - when developing a new program a developer may want to have the modules written by both Alice and Bob installed locally. So it is not possible simply to have only one version of a module with a single name installed.
 
-`Raku` 允许所有这些可能性，允许多个版本、多个权限和多个 API 存在、安装和本地可用。 用特定属性访问类和模块的方式在[其他地方](https://docs.raku.org/language/typesystem#Versioning_and_authorship)解释。 本教程是关于 `Raku` 如何处理这些可能性的。
+`Raku` 允许所有这些可能性，允许多个版本、多个作者和多个 API 存在、安装和本地可用。 用特定属性访问类和模块的方式在[其他地方](https://docs.raku.org/language/typesystem#Versioning_and_authorship)有解释说明。 本教程是关于 `Raku` 如何处理这些可能性的。
 
 `Raku` enables all of these possibilities, allowing for multiple versions, multiple authorities, and multiple APIs to be present, installed, and available locally. The way classes and modules can be accessed with specific attributes is explained [elsewhere](https://docs.raku.org/language/typesystem#Versioning_and_authorship). This tutorial is about how `Raku` handles these possibilities.
 
@@ -117,6 +119,8 @@ Why would `Raku` need another framework? The reason is there are features that t
 - 不同作者以相同名称发布的模组
 - 安装了多个版本的模块
 
+<br/>
+
 - Unicode module names
 - Modules published under the same names by different authors
 - Having multiple versions of a module installed
@@ -125,7 +129,7 @@ Why would `Raku` need another framework? The reason is there are features that t
 
 The set of 26 Latin characters is too restrictive for virtually all real modern languages, including English, which have diacritics for many commonly-used words.
 
-使用模块名称和文件系统路径之间的 1：1 关系，一旦尝试在多个平台和文件系统上支持 Unicode，您将进入一个痛苦的世界。
+使用模块名称和文件系统路径之间的 1:1 关系，一旦尝试在多个平台和文件系统上支持 Unicode，您将进入一个痛苦的世界。
 
 With a 1:1 relation between module names and filesystem paths, you enter a world of pain once you try to support Unicode on multiple platforms and filesystems.
 
@@ -133,19 +137,19 @@ With a 1:1 relation between module names and filesystem paths, you enter a world
 
 Then there's sharing module names between multiple authors. This one may or may not work out well in practice. I can imagine using it for example for publishing a module with some fix until the original author includes the fix in the "official" version.
 
-最后有多个版本。 通常需要特定版本模块的人可以使用 local::lib 或容器或一些自己的绕过方式。 他们都有自己的缺点。 如果应用程序只能说，嘿，我需要一个旧的、 可信的 2.9 版本，或者可能是该分支的 bug 修复版本，那么这些都是不必要的。
+最后会出现多个版本。 通常需要特定版本模块的人可以使用 local::lib 或容器或一些其他方式绕过。他们都有自己的缺点。如果应用程序只用说，嘿，我需要一个旧的、可信的 2.9 版本，或者可能是该分支的缺陷修复版本，那么这些都是不必要的。
 
 Finally there's multiple versions. Usually people who need certain versions of modules reach for local::lib or containers or some home grown workarounds. They all have their own disadvantages. None of them would be necessary if applications could just say, hey I need good old, trusty version 2.9 or maybe a bug fix release of that branch.
 
-如果您有任何希望继续使用简单的名称映射解决方案，您可能会放弃版本控制要求。 因为，在寻找 2.9 或更高版本时，您将如何找到模块的版本 3.2？
+如果您有任何希望继续使用简单的名称映射解决方案，您可能会放弃版本控制要求。 因为，在寻找 2.9 或更高版本时，您将如何找到模块的 3.2 或者更高的版本？
 
 If you had any hopes of continuing using the simple name mapping solution, you probably gave up at the versioning requirement. Because, how would you find version 3.2 of a module when looking for a 2.9 or higher?
 
-流行的想法包括在 JSON 文件中收集有关已安装模块的信息，但当这些模块最终发展缓慢时，文本文件被替换为将元数据放入 SQLite 数据库。 然而，这些想法可以很容易地通过引入另一个要求：分发包。
+流行的想法包括在 JSON 文件中收集有关已安装模块的信息，但当这种方式变得缓慢时，文本文件将被替换为将元数据放入 SQLite 数据库。然而，当有分发包这个需求时，这些想法可以很容易地被毙掉。
 
 Popular ideas included collecting information about installed modules in JSON files but when those turned out to be toe-nail growing slow, text files were replace by putting the metadata into SQLite databases. However, these ideas can be easily shot down by introducing another requirement: distribution packages.
 
-Linux 发行版的包主要是包含一些文件和一些元数据的档案。 理想情况下，安装这样一个包的过程只意味着解压文件和更新中央包数据库。 卸载意味着删除以这种方式安装的文件，并再次更新包数据库。 在安装和卸载过程中更改现有文件会使打包机的寿命更加困难，所以我们真的想避免这种情况。 此外，已安装文件的名称可能不取决于以前安装的文件。 我们必须在包装时知道名字将是什么。
+Linux 发行版的包主要是包含一些文件和一些元数据的档案。 理想情况下，安装这样一个包的过程只意味着解压文件和更新中央包数据库。 卸载意味着删除以这种方式安装的文件，并再次更新包数据库。 在安装和卸载过程中更改现有文件会使打包机的生活更加困难，所以很想避免这种情况。 此外，已安装文件的名称可能不取决于以前安装的文件。 我们必须在包装时知道名字将是什么。
 
 Packages for Linux distributions are mostly just archives containing some files plus some metadata. Ideally the process of installing such a package means just unpacking the files and updating the central package database. Uninstalling means deleting the files installed this way and again updating the package database. Changing existing files on install and uninstall makes packagers' lives much harder, so we really want to avoid that. Also the names of the installed files may not depend on what was previously installed. We must know at the time of packaging what the names are going to be.
 

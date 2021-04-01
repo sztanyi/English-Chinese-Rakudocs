@@ -2,19 +2,19 @@
 
 # 类与对象 / Classes and objects
 
-创建和使用 Perl 6 中类的教程
+创建和使用 Raku 中类的教程
 
-A tutorial about creating and using classes in Perl 6
+A tutorial about creating and using classes in Raku
 
-Perl 6 有一套丰富的定义和使用类的内建语法。
+Raku 有一套丰富的定义和使用类的内建语法。
 
-Perl 6 has a rich built-in syntax for defining and using classes.
+Raku has a rich built-in syntax for defining and using classes.
 
 默认构造器可以为生成的对象设置属性：
 
 A default constructor allows the setting of attributes for the created object:
 
-```Perl6
+```Raku
 class Point {
     has Int $.x;
     has Int $.y;
@@ -36,11 +36,11 @@ say $r.area(); # OUTPUT: «100
 » 
 ```
 
-你也可以提供你自己的构造器和构造实现。下面例子更详细地展示了 Perl 6 中的依赖操作可能的样子。 它展示了客制化的构造器，私有和公有的属性，子方法，方法以及各种签名。代码不多，但是运行结果很有意思也很有用。
+你也可以提供你自己的构造器和构造实现。下面例子更详细地展示了 Raku 中的依赖操作可能的样子。 它展示了客制化的构造器、私有和公有的属性、子方法、方法以及各种签名。代码不多，但是运行结果很有意思也很有用。
 
-You can also provide your own construction and BUILD implementation. The following, more elaborate example shows how a dependency handler might look in Perl 6. It showcases custom constructors, private and public attributes, Submethods, methods, and various aspects of signatures. It's not a lot of code, and yet the result is interesting and useful.
+You can also provide your own construction and BUILD implementation. The following, more elaborate example shows how a dependency handler might look in Raku. It showcases custom constructors, private and public attributes, Submethods, methods, and various aspects of signatures. It's not a lot of code, and yet the result is interesting and useful.
 
-```Perl6
+```Raku
 class Task {
     has      &!callback;
     has Task @!dependencies;
@@ -50,7 +50,7 @@ class Task {
     method new(&callback, *@dependencies) {
         return self.bless(:&callback, :@dependencies);
     }
- 
+
     # BUILD is the equivalent of a constructor in other languages 
     submethod BUILD(:&!callback, :@!dependencies) { }
  
@@ -103,19 +103,19 @@ $eat.perform();
 <a id="从类开始--starting-with-class"></a>
 # 从类开始 / Starting with class
 
-Perl 6 和许多其他语言类似，使用 `class` 关键字来定义一个类。其后的代码块就是用户自己的代码，就像其他代码块一样，但是类通常含有状态以及行为声明。例子中的代码包含通过 `has` 关键字声明的属性（状态）以及通过 `method` 关键字声明的行为。
+Raku 和许多其他语言类似，使用 `class` 关键字来定义一个类。其后的代码块就是用户自己的代码，就像其他代码块一样，但是类通常含有状态以及行为声明。例子中的代码包含通过 `has` 关键字声明的属性（状态）以及通过 `method` 关键字声明的行为。
 
-Perl 6, like many other languages, uses the `class` keyword to define a class. The block that follows may contain arbitrary code, just as with any other block, but classes commonly contain state and behavior declarations. The example code includes attributes (state), introduced through the `has` keyword, and behaviors, introduced through the `method` keyword.
+Raku, like many other languages, uses the `class` keyword to define a class. The block that follows may contain arbitrary code, just as with any other block, but classes commonly contain state and behavior declarations. The example code includes attributes (state), introduced through the `has` keyword, and behaviors, introduced through the `method` keyword.
 
-声明一个类默认给当前的包创建了一个新的类型对象（就像通过 `our` 声明的变量）。这个类型对象是类的一个“空实例”。例如，`Int` 和 `Str` 类型指代 Perl 6 中内建类的类型对象。上面的例子使用类名 `Task` 以供其他代码以后来代指它，例如调用 `new` 方法来创建类实例。
+声明一个类默认给当前的包创建了一个新的类型对象（就像通过 `our` 声明的变量）。这个类型对象是类的一个“空实例”。例如，`Int` 和 `Str` 类型指代 Raku 中内建类的类型对象。上面的例子使用类名 `Task` 以供其他代码以后来代指它，例如调用 `new` 方法来创建类实例。
 
-Declaring a class creates a new *type object* which, by default, is installed into the current package (just like a variable declared with `our`scope). This type object is an "empty instance" of the class. For example, types such as `Int` and `Str` refer to the type object of one of the Perl 6 built-in classes. The example above uses the class name `Task` so that other code can refer to it later, such as to create class instances by calling the `new` method.
+Declaring a class creates a new *type object* which, by default, is installed into the current package (just like a variable declared with `our` scope). This type object is an "empty instance" of the class. For example, types such as `Int` and `Str` refer to the type object of one of the Raku built-in classes. The example above uses the class name `Task` so that other code can refer to it later, such as to create class instances by calling the `new` method.
 
 你可以使用 `.DEFINITE` 方法来弄清楚你拥有的是实例还是类型对象：
 
 You can use `.DEFINITE` method to find out if what you have is an instance or a type object:
 
-```Perl6
+```Raku
 say Int.DEFINITE; # OUTPUT: «False
 » (type object) 
 say 426.DEFINITE; # OUTPUT: «True
@@ -132,7 +132,7 @@ say Foo.new.DEFINITE; # OUTPUT: «True
 
 You can also use type smileys to only accept instances or type objects:
 
-```Perl6
+```Raku
 multi foo (Int:U) { "It's a type object!" }
 multi foo (Int:D) { "It's an instance!"   }
 say foo Int; # OUTPUT: «It's a type object!
@@ -146,13 +146,13 @@ say foo 42;  # OUTPUT: «It's an instance!
 
 Task 类中前三行都是用来声明属性的（在其他语言中叫*字段*或者*实例存储*）。就像用 `my` 声明的变量不可以在它被声明的作用域之外访问一样，属性也不可以在类之外被访问。这种封装特性是面向对象设计的重要原则。
 
-The first three lines inside the class block all declare attributes (called *fields* or *instance storage* in other languages). Just as a `my`variable cannot be accessed from outside its declared scope, attributes are not accessible outside of the class. This *encapsulation* is one of the key principles of object oriented design.
+The first three lines inside the class block all declare attributes (called *fields* or *instance storage* in other languages). Just as a `my` variable cannot be accessed from outside its declared scope, attributes are not accessible outside of the class. This *encapsulation* is one of the key principles of object oriented design.
 
 第一个声明语句定义了一个回调的实例存储 - 为执行对象代表的任务而调用的一小段代码:
 
 The first declaration specifies instance storage for a callback – a bit of code to invoke in order to perform the task that an object represents:
 
-```Perl6
+```Raku
 has &!callback;
 ```
 
@@ -164,7 +164,7 @@ The `&` sigil indicates that this attribute represents something invocable. Th
 
 The second declaration also uses the private twigil:
 
-```Perl6
+```Raku
 has Task @!dependencies;
 ```
 
@@ -176,15 +176,15 @@ However, this attribute represents an array of items, so it requires the `@` s
 
 The third attribute represents the state of completion of a task:
 
-```Perl6
+```Raku
 has Bool $.done;
 ```
 
-这个标量属性（以 `$` 标记）是 `Bool` 类型。这里使用了 `.` 而非 `!` 。这样，Perl 6 强制封装属性的同时，也避免了你写访问器方法。用 `.` 替换 `!` 时声明了属性 `$!done` 以及访问器方法 `done` 。就像你写了下面代码一样：
+这个标量属性（以 `$` 标记）是 `Bool` 类型。这里使用了 `.` 而非 `!` 。这样，Raku 强制封装属性的同时，也避免了你写访问器方法。用 `.` 替换 `!` 时声明了属性 `$!done` 以及访问器方法 `done` 。就像你写了下面代码一样：
 
-This scalar attribute (with the `$` sigil) has a type of `Bool`. Instead of the `!` twigil, the `.` twigil is used. While Perl 6 does enforce encapsulation on attributes, it also saves you from writing accessor methods. Replacing the `!` with a `.` both declares the attribute `$!done` and an accessor method named `done`. It's as if you had written:
+This scalar attribute (with the `$` sigil) has a type of `Bool`. Instead of the `!` twigil, the `.` twigil is used. While Raku does enforce encapsulation on attributes, it also saves you from writing accessor methods. Replacing the `!` with a `.` both declares the attribute `$!done` and an accessor method named `done`. It's as if you had written:
 
-```Perl6
+```Raku
 has Bool $!done;
 method done() { return $!done }
 ```
@@ -197,7 +197,7 @@ Note that this is not like declaring a public attribute, as some languages allow
 
 Note that using the `.` twigil has created a method that will provide read-only access to the attribute. If instead the users of this object should be able to reset a task's completion state (perhaps to perform it again), you can change the attribute declaration:
 
-```Perl6
+```Raku
 has Bool $.done is rw;
 ```
 
@@ -209,7 +209,7 @@ The `is rw` trait causes the generated accessor method to return something ext
 
 You can also supply default values to attributes (which works equally for those with and without accessors):
 
-```Perl6
+```Raku
 has Bool $.done = False;
 ```
 
@@ -217,7 +217,7 @@ has Bool $.done = False;
 
 The assignment is carried out at object build time. The right-hand side is evaluated at that time, and can even reference earlier attributes:
 
-```Perl6
+```Raku
 has Task @!dependencies;
 has $.ready = not @!dependencies;
 ```
@@ -225,11 +225,11 @@ has $.ready = not @!dependencies;
 <a id="静态字段？--static-fields"></a>
 # 静态字段？ / Static fields?
 
-Perl 6 没有 **static** 关键字。然而，任何类都可以声明模组可以声明的任何东西，创建一个有限作用域的变量听起来是个好点子。
+Raku 没有 **static** 关键字。然而，任何类都可以声明模组可以声明的任何东西，创建一个有限作用域的变量听起来是个好点子。
 
-Perl 6 has no **static** keyword. Nevertheless, any class may declare anything that a module can, so making a scoped variable sounds like good idea.
+Raku has no **static** keyword. Nevertheless, any class may declare anything that a module can, so making a scoped variable sounds like good idea.
 
-```Perl6
+```Raku
 class Singleton {
     my Singleton $instance;
     method new {!!!}
@@ -245,7 +245,7 @@ class Singleton {
 
 Class attributes defined by [my](https://docs.raku.org/syntax/my) or [our](https://docs.raku.org/syntax/our) may also be initialized when being declared, however we are implementing the Singleton pattern here and the object must be created during its first use. It is not 100% possible to predict the moment when attribute initialization will be executed, because it can take place during compilation, runtime or both, especially when importing the class using the [use](https://docs.raku.org/syntax/use) keyword.
 
-```Perl6
+```Raku
 class HaveStaticAttr {
       my Foo $.foo = some_complicated_subroutine;
 }
@@ -262,7 +262,7 @@ Class attributes may also be declared with a secondary sigil – in a similar ma
 
 While attributes give objects state, methods give objects behaviors. Let's ignore the `new` method temporarily; it's a special type of method. Consider the second method, `add-dependency`, which adds a new task to a task's dependency list.
 
-```Perl6
+```Raku
 method add-dependency(Task $dependency) {
     push @!dependencies, $dependency;
 }
@@ -280,7 +280,7 @@ The method itself takes the passed parameter – which must be an instance of th
 
 The `perform` method contains the main logic of the dependency handler:
 
-```Perl6
+```Raku
 method perform() {
     unless $!done {
         .perform() for @!dependencies;
@@ -309,7 +309,7 @@ After all of the dependencies have completed, it's time to perform the current 
 
 Just like attributes, methods can also be private. Private methods are declared with a prefixed exclamation mark. They are called with `self!` followed by the method's name. To call a private method of another class the calling class has to be trusted by the called class. A trust relationship is declared with `trusts` and the class to be trusted must already be declared. Calling a private method of another class requires an instance of that class and the fully qualified name of the method. Trust also allows access to private attributes.
 
-```Perl6
+```Raku
 class B {...}
  
 class C {
@@ -340,19 +340,19 @@ Trust relationships are not subject to inheritance. To trust the global namespac
 <a id="构造器--constructors"></a>
 # 构造器 / Constructors
 
-Perl 6 在构造器领域比许多语言更自由。构造器是返回类实例的任何东西。此外，构造器是普通的方法。你从基类 `Mu` 继承了名为 `new` 的默认构造器，但是你可以自由地重写 `new`，如本例所示：
+Raku 在构造器领域比许多语言更自由。构造器是返回类实例的任何东西。此外，构造器是普通的方法。你从基类 `Mu` 继承了名为 `new` 的默认构造器，但是你可以自由地重写 `new`，如本例所示：
 
-Perl 6 is rather more liberal than many languages in the area of constructors. A constructor is anything that returns an instance of the class. Furthermore, constructors are ordinary methods. You inherit a default constructor named `new` from the base class `Mu`, but you are free to override `new`, as this example does:
+Raku is rather more liberal than many languages in the area of constructors. A constructor is anything that returns an instance of the class. Furthermore, constructors are ordinary methods. You inherit a default constructor named `new` from the base class `Mu`, but you are free to override `new`, as this example does:
 
-```Perl6
+```Raku
 method new(&callback, *@dependencies) {
     return self.bless(:&callback, :@dependencies);
 }
 ```
 
-Perl 6 中的构造器和 C 语言与 Java 语言中的构造器之间的最大区别在于，Perl 6 构造器自己创建对象本身，而不是在魔法般已创建的对象上建立状态。最简单的方法是调用 [bless](https://docs.raku.org/routine/bless) 方法，这个方法也继承自 [Mu]（https://docs.raku.org/type/mu）。`bless` 方法需要一组命名参数来为每个属性提供初始值。
+Raku 中的构造器和 C 语言与 Java 语言中的构造器之间的最大区别在于，Raku 构造器自己创建对象本身，而不是在魔法般已创建的对象上建立状态。最简单的方法是调用 [bless](https://docs.raku.org/routine/bless) 方法，这个方法也继承自 [Mu]（https://docs.raku.org/type/mu）。`bless` 方法需要一组命名参数来为每个属性提供初始值。
 
-The biggest difference between constructors in Perl 6 and constructors in languages such as C# and Java is that rather than setting up state on a somehow already magically created object, Perl 6 constructors create the object themselves. The easiest way to do this is by calling the [bless](https://docs.raku.org/routine/bless) method, also inherited from [Mu](https://docs.raku.org/type/Mu). The `bless` method expects a set of named parameters to provide the initial values for each attribute.
+The biggest difference between constructors in Raku and constructors in languages such as C# and Java is that rather than setting up state on a somehow already magically created object, Raku constructors create the object themselves. The easiest way to do this is by calling the [bless](https://docs.raku.org/routine/bless) method, also inherited from [Mu](https://docs.raku.org/type/Mu). The `bless` method expects a set of named parameters to provide the initial values for each attribute.
 
 示例的构造器将位置参数转换为命名参数，这样类就可以为其用户提供一个好的构造器。第一个参数是回调（将执行任务的对象）。其余参数依赖于 `Task` 实例。构造器将这些捕获到 `@dependencies` 吞噬数组中，并将它们作为命名参数传递给 `bless`（注意 `:&callback` 使用变量名减去标记作为参数名）。
 
@@ -362,7 +362,7 @@ The example's constructor turns positional arguments into named arguments, so th
 
 Private attributes really are private. This means that `bless` is not allowed to bind things to `&!callback` and `@!dependencies` directly. To do this, we override the `BUILD` submethod, which is called on the brand new object by `bless`:
 
-```Perl6
+```Raku
 submethod BUILD(:&!callback, :@!dependencies) { }
 ```
 
@@ -374,7 +374,7 @@ Since `BUILD` runs in the context of the newly created `Task` object, it is 
 
 The `BUILD` method is responsible for initializing all attributes and must also handle default values:
 
-```Perl6
+```Raku
 has &!callback;
 has @!dependencies;
 has Bool ($.done, $.ready);
@@ -396,7 +396,7 @@ See [Object Construction](https://docs.raku.org/language/objects#Object_Constru
 类创建后，你才可以创建类实例。声明任务以及他们的依赖的一个简单方法是声明一个自定义构造器。创建一个没有依赖的简单任务：
 After creating a class, you can create instances of the class. Declaring a custom constructor provides a simple way of declaring tasks along with their dependencies. To create a single task with no dependencies, write:
 
-```Perl6
+```Raku
 my $eat = Task.new({ say 'eating dinner. NOM!' });
 ```
 
@@ -408,7 +408,7 @@ An earlier section explained that declaring the class `Task` installed a type 
 
 Unfortunately, dinner never magically happens. It has dependent tasks:
 
-```Perl6
+```Raku
 my $eat =
     Task.new({ say 'eating dinner. NOM!' },
         Task.new({ say 'making dinner' },
@@ -429,7 +429,7 @@ Notice how the custom constructor and sensible use of whitespace makes task depe
 
 Finally, the `perform` method call recursively calls the `perform` method on the various other dependencies in order, giving the output:
 
-```Perl6
+```Raku
 making some money
 going to the store
 buying food
@@ -441,11 +441,11 @@ eating dinner. NOM!
 <a id="继承--inheritance"></a>
 # 继承 / Inheritance
 
-面向对象编程采用继承作为代码重用的一种机制。Perl 6 支持一个类从一个或者多个类继承。当一个类从另一个类继承时，它通知方法分派器沿着继承链查找要分派的方法。这既适用于通过 method 关键字定义的标准方法，也适用于通过其他方法（如属性访问器）生成的方法。
+面向对象编程采用继承作为代码重用的一种机制。Raku 支持一个类从一个或者多个类继承。当一个类从另一个类继承时，它通知方法分派器沿着继承链查找要分派的方法。这既适用于通过 method 关键字定义的标准方法，也适用于通过其他方法（如属性访问器）生成的方法。
 
-Object Oriented Programming provides the concept of inheritance as one of the mechanisms for code reuse. Perl 6 supports the ability for one class to inherit from one or more classes. When a class inherits from another class it informs the method dispatcher to follow the inheritance chain to look for a method to dispatch. This happens both for standard methods defined via the method keyword and for methods generated through other means, such as attribute accessors.
+Object Oriented Programming provides the concept of inheritance as one of the mechanisms for code reuse. Raku supports the ability for one class to inherit from one or more classes. When a class inherits from another class it informs the method dispatcher to follow the inheritance chain to look for a method to dispatch. This happens both for standard methods defined via the method keyword and for methods generated through other means, such as attribute accessors.
 
-```Perl6
+```Raku
 class Employee {
     has $.salary;
  
@@ -469,7 +469,7 @@ class Programmer is Employee {
 
 Now, any object of type Programmer can make use of the methods and accessors defined in the Employee class as though they were from the Programmer class.
 
-```Perl6
+```Raku
 my $programmer = Programmer.new(
     salary => 100_000,
     known_languages => <Perl5 Perl6 Erlang C++>,
@@ -487,7 +487,7 @@ $programmer.pay();
 
 Of course, classes can override methods and attributes defined by parent classes by defining their own. The example below demonstrates the `Baker` class overriding the `Cook`'s `cook` method.
 
-```Perl6
+```Raku
 class Cook is Employee {
     has @.utensils  is rw;
     has @.cookbooks is rw;
@@ -514,9 +514,9 @@ my $cook = Cook.new(
  
 $cook.cook( 'pizza' );       # OUTPUT: «Cooking pizza
 » 
-say $cook.utensils.perl;     # OUTPUT: «["spoon", "ladle", "knife", "pan"]
+say $cook.utensils.raku;     # OUTPUT: «["spoon", "ladle", "knife", "pan"]
 » 
-say $cook.cookbooks.perl;    # OUTPUT: «["The Joy of Cooking"]
+say $cook.cookbooks.raku;    # OUTPUT: «["The Joy of Cooking"]
 » 
 say $cook.salary;            # OUTPUT: «40000
 » 
@@ -528,9 +528,9 @@ my $baker = Baker.new(
  
 $baker.cook('brioche');      # OUTPUT: «Baking a tasty brioche
 » 
-say $baker.utensils.perl;    # OUTPUT: «["self cleaning oven"]
+say $baker.utensils.raku;    # OUTPUT: «["self cleaning oven"]
 » 
-say $baker.cookbooks.perl;   # OUTPUT: «["The Baker's Apprentice"]
+say $baker.cookbooks.raku;   # OUTPUT: «["The Baker's Apprentice"]
 » 
 say $baker.salary;           # OUTPUT: «50000
 » 
@@ -547,11 +547,11 @@ To access methods in the inheritance chain use [re-dispatch](https://docs.raku.
 <a id="多重继承--multiple-inheritance"></a>
 ## 多重继承 / Multiple inheritance
 
-如前所述，类可以从多个类继承。当一个类从多个类继承时，调度程序知道在查找要搜索的方法时查看这两个类。 Perl 6 使用 [C3 算法](https://en.wikipedia.org/wiki/C3_linearization)来线性化多个继承层次结构，这比深度优先搜索更好地处理多重继承。
+如前所述，类可以从多个类继承。当一个类从多个类继承时，调度程序知道在查找要搜索的方法时查看这两个类。 Raku 使用 [C3 算法](https://en.wikipedia.org/wiki/C3_linearization)来线性化多个继承层次结构，这比深度优先搜索更好地处理多重继承。
 
-As mentioned before, a class can inherit from multiple classes. When a class inherits from multiple classes the dispatcher knows to look at both classes when looking up a method to search for. Perl 6 uses the [C3 algorithm](https://en.wikipedia.org/wiki/C3_linearization) to linearize multiple inheritance hierarchies, which is better than depth-first search for handling multiple inheritance.
+As mentioned before, a class can inherit from multiple classes. When a class inherits from multiple classes the dispatcher knows to look at both classes when looking up a method to search for. Raku uses the [C3 algorithm](https://en.wikipedia.org/wiki/C3_linearization) to linearize multiple inheritance hierarchies, which is better than depth-first search for handling multiple inheritance.
 
-```Perl6
+```Raku
 class GeekCook is Programmer is Cook {
     method new( *%params ) {
         push( %params<cookbooks>, "Cooking for Geeks" );
@@ -560,10 +560,10 @@ class GeekCook is Programmer is Cook {
 }
  
 my $geek = GeekCook.new(
-    books           => 'Learning Perl 6',
+    books           => 'Learning Raku',
     utensils        => ('stainless steel pot', 'knife', 'calibrated oven'),
     favorite_editor => 'MacVim',
-    known_languages => <Perl6>
+    known_languages => <Raku>
 );
  
 $geek.cook('pizza');
@@ -585,7 +585,7 @@ While multiple inheritance is a useful concept to know and occasionally use, it 
 
 Classes to be inherited from can be listed in the class declaration body by prefixing the `is` trait with `also`. This also works for the role composition trait `does`.
 
-```Perl6
+```Raku
 class GeekCook {
     also is Programmer;
     also is Cook;
@@ -608,11 +608,11 @@ Introspection is the process of gathering information about some objects in your
 
 Given an object `$o` and the class definitions from the previous sections, we can ask it a few questions:
 
-```Perl6
+```Raku
 if $o ~~ Employee { say "It's an employee" };
 if $o ~~ GeekCook { say "It's a geeky cook" };
 say $o.WHAT;
-say $o.perl;
+say $o.Raku;
 say $o.^methods(:local)».name.join(', ');
 say $o.^name;
 ```
@@ -621,7 +621,7 @@ say $o.^name;
 
 The output can look like this:
 
-```Perl6
+```Raku
 It's an employee
 (Programmer)
 Programmer.new(known_languages => ["Perl", "Python", "Pascal"],
@@ -638,15 +638,15 @@ The first two tests each smart-match against a class name. If the object is of t
 
 The `.WHAT` method returns the type object associated with the object `$o`, which tells us the exact type of `$o`: in this case `Programmer`.
 
-`$o.perl` 返回一个可以作为 Perl 代码执行的字符串，并重现原始对象 `$o`。虽然这在对所有情况不会都完美生效，但它对于调试简单对象非常有用。 [[\]](https://docs.raku.org/language/classtut#fn-1) `$o.^methods(:local)` 生成对 `$o` 调用的 [Method](https://docs.raku.org/type/Method) 列表。`:local` 命名参数将返回的方法限制为 `Programmer` 类中定义的方法，并排除继承的方法。
+`$o.raku` 返回一个可以作为 Raku 代码执行的字符串，并重现原始对象 `$o`。虽然这在对所有情况不会都完美生效，但它对于调试简单对象非常有用。 [[\]](https://docs.raku.org/language/classtut#fn-1) `$o.^methods(:local)` 生成对 `$o` 调用的 [Method](https://docs.raku.org/type/Method) 列表。`:local` 命名参数将返回的方法限制为 `Programmer` 类中定义的方法，并排除继承的方法。
 
-`$o.perl` returns a string that can be executed as Perl code, and reproduces the original object `$o`. While this does not work perfectly in all cases, it is very useful for debugging simple objects. [[\]](https://docs.raku.org/language/classtut#fn-1) `$o.^methods(:local)` produces a list of [Method](https://docs.raku.org/type/Method)s that can be called on `$o`. The `:local` named argument limits the returned methods to those defined in the `Programmer` class and excludes the inherited methods.
+`$o.raku` returns a string that can be executed as Raku code, and reproduces the original object `$o`. While this does not work perfectly in all cases, it is very useful for debugging simple objects. [[\]](https://docs.raku.org/language/classtut#fn-1) `$o.^methods(:local)` produces a list of [Method](https://docs.raku.org/type/Method)s that can be called on `$o`. The `:local` named argument limits the returned methods to those defined in the `Programmer` class and excludes the inherited methods.
 
 使用 `.^` 而不是单个点调用方法的语法意味着它实际上是对其*元类*的一个方法调用，它是一个管理 `Programmer` 类的属性的类 - 或任何其他类你感兴趣的类。这个元类也可以实现其他内省方式：
 
 The syntax of calling a method with `.^` instead of a single dot means that it is actually a method call on its *meta class*, which is a class managing the properties of the `Programmer` class – or any other class you are interested in. This meta class enables other ways of introspection too:
 
-```Perl6
+```Raku
 say $o.^attributes.join(', ');
 say $o.^parents.map({ $_.^name }).join(', ');
 ```
@@ -655,9 +655,9 @@ say $o.^parents.map({ $_.^name }).join(', ');
 
 Finally `$o.^name` calls the `name` method on the meta object, which unsurprisingly returns the class name.
 
-内省对于调试和学习语言和新库非常有用。当一个函数或方法返回一个你不知道的对象时，用 `.WHAT` 找到它的类型，用 `.perl` 查看它的构造方法，依此类推，你会很清楚它是什么返回值是。使用 `.^methods` 你可以了解如何使用该类。
+内省对于调试和学习语言和新库非常有用。当一个函数或方法返回一个你不知道的对象时，用 `.WHAT` 找到它的类型，用 `.raku` 查看它的构造方法，依此类推，你会很清楚它是什么返回值是。使用 `.^methods` 你可以了解如何使用该类。
 
-Introspection is very useful for debugging and for learning the language and new libraries. When a function or method returns an object you don't know about, finding its type with `.WHAT`, seeing a construction recipe for it with `.perl`, and so on, you'll get a good idea of what its return value is. With `.^methods` you can learn what you can do with the class.
+Introspection is very useful for debugging and for learning the language and new libraries. When a function or method returns an object you don't know about, finding its type with `.WHAT`, seeing a construction recipe for it with `.raku`, and so on, you'll get a good idea of what its return value is. With `.^methods` you can learn what you can do with the class.
 
 但是还有其他应用程序：将对象序列化为一堆字节的例程需要知道该对象的属性，它可以通过内省找到。
 

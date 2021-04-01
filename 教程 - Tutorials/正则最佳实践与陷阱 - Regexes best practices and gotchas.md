@@ -50,7 +50,7 @@ my regex float {
 }
 ```
 
-根据经验，在原子周围和组内使用空白；在原子后面直接放置量词；垂直对齐左括号和右括号和圆括号。
+根据经验，在原子匹配项周围和组内使用空白；在原子匹配项后面直接放置量词；垂直对齐左括号和右括号和圆括号。
 
 As a rule of thumb, use whitespace around atoms and inside groups; put quantifiers directly after the atom; and vertically align opening and closing square brackets and parentheses.
 
@@ -148,7 +148,7 @@ key=value
 
 What can be inside the section header? Allowing only a word might be too restrictive. Somebody might write `[two words]`, or use dashes, etc. Instead of asking what's allowed on the inside, it might be worth asking instead: *what's not allowed?*
 
-显然，不允许使用右方括号，因为 `[a]b]` 将是不明确的。同样的道理，方括号也应该禁止打开。这就留给我们
+显然，不允许使用闭右方括号，因为 `[a]b]` 将是不明确的。同样的道理，方括号也应该禁止打开。这就留给我们
 
 Clearly, closing square brackets are not allowed, because `[a]b]` would be ambiguous. By the same argument, opening square brackets should be forbidden. This leaves us with
 
@@ -255,7 +255,7 @@ Besides putting all regexes into a grammar and turning them into tokens (because
 token ws { <!ww> \h* }
 ```
 
-它调用隐式空白分析。不在两个单词字符之间时匹配（`<！ww>`，在单词里的否定断言），以及零个或多个水平空格字符对水平空白的限制很重要，因为换行符（垂直空白）分隔记录，不应该隐式匹配。
+它调用隐式空白分析。不在两个单词字符之间时匹配（`<!ww>`，在单词里的否定断言），以及零个或多个水平空格字符对水平空白的限制很重要，因为换行符（垂直空白）分隔记录，不应该隐式匹配。
 
 which gets called for implicit whitespace parsing. It matches when it's not between two word characters (`<!ww>`, negated "within word" assertion), and zero or more horizontal space characters. The limitation to horizontal whitespace is important, because newlines (which are vertical whitespace) delimit records and shouldn't be matched implicitly.
 
