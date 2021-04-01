@@ -97,9 +97,11 @@ For every "method" you match in your grammar, you get an action you can use to a
 
 As already mentioned, grammars are declared using the *grammar* keyword and its "methods" are declared with *regex*, or *token*, or *rule*.
 
-- regex 方法很慢但很彻底，它们会回头看看字符串，然后真正尝试。
+- regex 方法很慢但很彻底，它会回头看字符串，很努力地尝试匹配。
 - token 方法比 regex 方法快，并且忽略空白。
 - rule 方法与 token 方法相同，只是不忽略空白。
+
+<br/>
 
 - Regex methods are slow but thorough, they will look back in the string and really try.
 - Token methods are faster than regex methods and ignore whitespace.
@@ -141,7 +143,7 @@ The two first output lines show that `$match` contains a `Match` objects with th
 
 The `TOP` method (whether regex, token, or rule) is the overarching pattern that must match everything (by default). If the parsed string doesn't match the TOP regex, your returned match object will be empty (`Nil`).
 
-如上文所示，在 `TOP` 中，提到了 `<thingy>` token。`<thingy>` 在下一行定义。这意味着 `'clever_text_keyword'` ‘**必须**是字符串中的第一件事，否则语法解析将失败，我们将得到一个空匹配。这对于识别应该丢弃的格式错误的字符串非常有用。
+如上文所示，在 `TOP` 中，提到了 `<thingy>` token。`<thingy>` 在下一行中定义。这意味着 `'clever_text_keyword'` **必须**是字符串中第一件事，否则语法解析将失败，我们将得到一个空匹配。这对于识别应该丢弃的格式错误的字符串非常有用。
 
 As you can see above, in `TOP`, the `<thingy>` token is mentioned. The `<thingy>` is defined on the next line. That means that `'clever_text_keyword'` **must** be the first thing in the string, or the grammar parse will fail and we'll get an empty match. This is great for recognizing a malformed string that should be discarded.
 
@@ -156,6 +158,8 @@ Let's suppose we'd like to parse a URI into the component parts that make up a R
 - URI的第二部分是“命令”，这是标准的 CRUD 函数（创建、检索、更新或删除）。
 - URI的第三部分将是任意数据，可能是我们将要使用的特定 ID，或者是由 "/" 分隔的一长串数据。
 - 当我们得到一个 URI 时，我们希望将上面的 1-3 放在一个数据结构中，我们可以很容易地使用这个结构（并在以后进行增强）。
+
+<br/>
 
 - The first part of the URI will be the "subject", like a part, or a product, or a person.
 - The second part of the URI will be the "command", the standard CRUD functions (create, retrieve, update, or delete).
@@ -216,7 +220,7 @@ The data can be accessed directly by using `$match<subject>` or `$match<command>
 <a id="%E5%A2%9E%E5%8A%A0%E4%B8%80%E4%BA%9B%E7%81%B5%E6%B4%BB%E6%80%A7--adding-some-flexibility"></a>
 ## 增加一些灵活性 / Adding some flexibility
 
-到目前为止，语法将处理检索、删除和更新。但是，*create* 命令没有第三个部分（*data* 部分）。这意味着如果我们尝试解析创建 URI，则语法将失败。为了避免这种情况，我们需要使最后的 *data* 位置匹配可选，以及前面的 '/' 。这通过将问号添加到 TOP token 的分组 '/' 和 *data* 组件来实现，以指示它们的可选性质，就像普通正则表达式一样。
+到目前为止，语法将处理检索、删除和更新。但是，*create* 命令没有第三个部分（*data* 部分）。这意味着如果我们尝试解析创建 URI，则语法将失败。为了避免这种情况，我们需要使最后的 *data* 位置匹配可选，以及前面的 '/'。这通过将问号添加到 TOP token 的分组 '/' 和 *data* 组件来实现，以指示它们的可选性质，就像普通正则表达式一样。
 
 So far, the grammar will handle retrieves, deletes and updates. However, a *create* command doesn't have the third part (the *data* portion). This means the grammar will fail to match if we try to parse a create URI. To avoid this, we need to make that last *data* position match optional, along with the '/' preceding it. This is accomplished by adding a question mark to the grouped '/' and *data* components of the TOP token, to indicate their optional nature, just like a normal regex.
 
@@ -362,6 +366,8 @@ grammar Quoted-Quotes does Letters does Quote-Quotes does Quote-Other { ... }
 
 We want our RESTful grammar to allow for CRUD operations only. Anything else we want to fail to parse. That means our "command" above should have one of four values: create, retrieve, update or delete.
 
+有好几种办法完成它。举个例子，可以将 command 方法改变：
+
 There are several ways to accomplish this. For example, you could change the command method:
 
 ```Raku
@@ -486,7 +492,7 @@ my $matchObject = REST.parse($uri, actions => REST-actions.new);
 my $matchObject = REST.parse($uri, :actions(REST-actions.new));
 ```
 
-如果你使用与语法方法*（token、regex、rule）相同的名称命名你的操作方法，则当你的语法方法匹配时，将自动调用具有相同名称的操作方法。该方法也将通过相应的匹配对象（由 `$/` 变量表示）。
+如果你*使用与语法方法（token、regex、rule）相同的名称命名你的操作方法*，则当你的语法方法匹配时，将自动调用具有相同名称的操作方法。该方法也将通过相应的匹配对象（由 `$/` 变量表示）。
 
 If you *name your action methods with the same name as your grammar methods* (tokens, regexes, rules), then when your grammar methods match, your action method with the same name will get called automatically. The method will also be passed the corresponding match object (represented by the `$/` variable).
 
@@ -518,7 +524,7 @@ grammar REST
 }
 ```
 
-回想一下，我们希望进一步处理 data token "7/notify"，以获得 7。为此，我们将创建一个动作类，该类具有与命名令牌同名的方法。在本例中，我们的 token 名为 `data`，因此我们的方法也被命名为 `data`。
+回想一下，我们希望进一步处理名叫 data 的 token "7/notify"，以获得 7。为此，我们将创建一个动作类，该类具有与命名令牌同名的方法。在本例中，我们的 token 名为 `data`，因此我们的方法也被命名为 `data`。
 
 Recall that we want to further process the data token "7/notify", to get the 7. To do this, we'll create an action class that has a method with the same name as the named token. In this case, our token is named `data` so our method is also named `data`.
 
@@ -533,7 +539,7 @@ class REST-actions
 
 Now when we pass the URI string through the grammar, the *data token match* will be passed to the *REST-actions' data method*. The action method will split the string by the '/' character and the first element of the returned list will be the ID number (7 in the case of "7/notify").
 
-但不是真的，还有更多。
+还有更多。
 
 But not really; there's a little more.
 

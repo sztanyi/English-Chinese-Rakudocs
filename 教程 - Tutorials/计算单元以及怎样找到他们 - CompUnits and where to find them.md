@@ -54,7 +54,7 @@ The experience from `Perl` and other languages is that the distributive nature o
 - 一个模块可以随着时间的推移而增强，维护人员保持两个版本的最新，但具有不同的 API。 因此，可能需要定义所需的 **API**。
 - 在开发新程序时，开发人员可能希望在本地安装爱丽丝和鲍勃编写的模块。 因此，不可能只安装一个单一名称的模块的一个版本。
 
-##
+<br/>
 
 - a popular module may go through several iterations as the API gets improved, without a guarantee that there is backward compatibility. So, if a program relies on some specific function or return, then there has to be a way to specify the **Version**.
 - a module may have been written by Bob, a very competent programmer, who moves on in life, leaving the module unmaintained, so Alice takes over. This means that the same module, with the same name, and the same general API may have have two versions in the wild. Alternatively, two developers (e.g., Alice and Bob) who initially cooperated on a module, then part company about its development. Consequently, it sometimes is necessary for there to be a way to define the **Auth** of the module.
@@ -171,7 +171,7 @@ At the same time, the thing you install is usually not a single module but a dis
 <a id="$repo"></a>
 ## $*REPO
 
-在 `Perl` 和 `Python` 中你将于指向文件系统目录的路径打交道。 在 `Raku` 中我们将这些目录称为“存储库”，其中每个存储库都由一个对象管理，该对象执行 `CompUnit::Repository` 角色。 而不是 `@INC` 数组，有 `$*REPO` 变量。 它包含一个存储库对象。 此对象具有 **next-repo** 属性，该属性可能包含另一个存储库。 换句话说：存储库被管理为*链接列表*。 与传统数组的重要区别在于，在遍历列表时，每个对象都有权决定是否将请求传递给下一个存储库。 `Raku` 建立了一套标准的存储库，即。 “perl”、 “vendor” 和 “site” 存储库，就像您从 `Perl` 了解它们一样。 此外，我们还为当前用户建立了一个“家”存储库。
+在 `Perl` 和 `Python` 中你将于指向文件系统目录的路径打交道。 在 `Raku` 中我们将这些目录称为“存储库”，其中每个存储库都由一个对象管理，该对象执行 `CompUnit::Repository` 角色。 而不是 `@INC` 数组，有 `$*REPO` 变量。 它包含一个存储库对象。 此对象具有 **next-repo** 属性，该属性可能包含另一个存储库。 换句话说：存储库被管理为*链接列表*。 与传统数组的重要区别在于，在遍历列表时，每个对象都有权决定是否将请求传递给下一个存储库。 `Raku` 建立了一套标准的存储库，即 “perl”、 “vendor” 和 “site” 存储库，就像您从 `Perl` 了解它们一样。 此外，我们还为当前用户建立了一个“家”存储库。
 
 In `Perl` and `Python` you deal with include paths pointing to filesystem directories. In `Raku` we call such directories "repositories" and each of these repositories is governed by an object that does the `CompUnit::Repository` role. Instead of an `@INC` array, there's the `$*REPO` variable. It contains a single repository object. This object has a **next-repo** attribute that may contain another repository. In other words: repositories are managed as a *linked list*. The important difference to the traditional array is, that when going through the list, each object has a say in whether to pass along a request to the next-repo or not. `Raku` sets up a standard set of repositories, i.e. the "perl", "vendor" and "site" repositories, just like you know them from `Perl`. In addition, we set up a "home" repository for the current user.
 
@@ -202,11 +202,11 @@ role CompUnit::Repository {
 <a id="存储库--repositories"></a>
 ## 存储库 / Repositories
 
-Rakudo 有几个可用于存储库的类。 最重要是 `CompUnit::Repository::FileSystem` 和 `CompUnit::Repository::Installation`。 文件系统存储库是指在模块开发期间使用的，实际上就像 `Perl` 在寻找模块时一样工作。 它不支持版本或 `auth`，只是将短名映射到文件系统路径。
+Rakudo 有几个可用于存储库的类。 最重要是 `CompUnit::Repository::FileSystem` 和 `CompUnit::Repository::Installation`。文件系统存储库是指在模块开发期间使用的，实际上就像 `Perl` 在寻找模块时一样工作。它不支持版本或 `auth`，只是将短名映射到文件系统路径。
 
 Rakudo comes with several classes that can be used for repositories. The most important ones are `CompUnit::Repository::FileSystem` and `CompUnit::Repository::Installation`. The FileSystem repo is meant to be used during module development and actually works just like `Perl` when looking for a module. It doesn't support versions or `auth`s and simply maps the short-name to a filesystem path.
 
-Installation 存储库是真正的智能所在。 在请求一个模块时，您通常要么通过它的确切长名称来执行，要么按照“给我一个与这个过滤器匹配的模块”的思路来说。这样的过滤器是通过一个 `CompUnit::DependencySpecification` 对象，该对象具有如下字段：
+Installation 存储库是真正的智能所在。在请求一个模块时，您通常要么通过它的确切长名称来执行，要么按照“给我一个与这个过滤器匹配的模块”的思路来说。这样的过滤器是通过一个 `CompUnit::DependencySpecification` 对象，该对象具有如下字段：
 
 The Installation repository is where the real smarts are. When requesting a module, you will usually either do it via its exact long name, or you say something along the lines of "give me a module that matches this filter." Such a filter is given by way of a `CompUnit::DependencySpecification` object which has fields for
 
@@ -215,19 +215,19 @@ The Installation repository is where the real smarts are. When requesting a modu
 - version-matcher and
 - api-matcher.
 
-当查看候选项时，Installation 存储库将模块的长名称与此 DependencySpecification 进行智能匹配，或者相反，单个字段与单个匹配器。 因此，Matcher 可能是一些具体的值、 版本范围，甚至是正则（尽管是任意的正则，例如 `.*`，不会产生有用的结果，但 `3.20.1+` 这样的只会发现候选人高于 3.20.1）。
+当查看候选项时，Installation 存储库将模块的长名称与此 DependencySpecification 进行智能匹配，或者相反，单个字段与单个匹配器。 因此，Matcher 可能是一些具体的值、版本范围，甚至是正则（尽管是任意的正则，例如 `.*`，不会产生有用的结果，但 `3.20.1+` 匹配高于 3.20.1 的候选者）。
 
 When looking through candidates, the Installation repository will smartmatch a module's long name against this DependencySpecification or rather the individual fields against the individual matchers. Thus a matcher may be some concrete value, a version range, or even a regex (though an arbitrary regex, such as `.*`, would not produce a useful result, but something like `3.20.1+` will only find candidates higher than 3.20.1).
 
-加载所有已安装发行版的元数据将是令人望而却步的。 `Raku` 框架的当前实现使用文件系统作为一种数据库。 然而，另一种实现可能使用另一种战略。 下面的描述显示了一个实现是如何工作的，并包含在这里来说明正在发生的事情。
+加载所有已安装发行版的元数据将是令人望而却步的。`Raku` 框架的当前实现使用文件系统作为一种数据库。然而，另一种实现可能使用另一种战略。下面的描述显示了一个实现是如何工作的，并包含在这里来说明正在发生的事情。
 
 Loading the metadata of all installed distributions would be prohibitively slow. The current implementation of the `Raku` framework uses the filesystem as a kind of database. However, another implementation may use another strategy. The following description shows how one implementation works and is included here to illustrate what is happening.
 
-我们不仅存储发行版的文件，而且还创建索引以加速查找。 其中一个索引是以安装模块的短名称命名的目录形式出现的。 然而，今天常用的大多数文件系统不能处理 Unicode 名称，因此我们不能直接使用模块名称。 这就是现在臭名昭著的 SHA-1 哈希进入游戏的地方。 目录名称是 UTF-8 编码的模块短名的 SHA-1 散列，散列为 ASCII 编码。
+我们不仅存储发行版的文件，而且还创建索引以加速查找。其中一个索引是以安装模块的短名称命名的目录形式出现的。然而，今天常用的大多数文件系统不能处理 Unicode 名称，因此我们不能直接使用模块名称。这就是现在臭名昭著的 SHA-1 哈希进入游戏的地方。目录名称是 UTF-8 编码的模块短名的 SHA-1 散列，散列为 ASCII 编码。
 
 We store not only a distribution's files but also create indices for speeding up lookups. One of these indices comes in the form of directories named after the short-name of installed modules. However most of the filesystems in common use today cannot handle Unicode names, so we cannot just use module names directly. This is where the now infamous SHA-1 hashes enter the game. The directory names are the ASCII encoded SHA-1 hashes of the UTF-8 encoded module short-names.
 
-在这些目录中，我们每个发行版找到一个文件，其中包含一个具有匹配短名称的模块。 这些文件包含发行版的 ID 和组成长名称的其他字段：auth、 version 和 api。 因此，通过阅读这些文件，我们有一个通常简短的 auth-version-api 三重奏列表，我们可以与我们的 DependencySpecification 相匹配。 我们最终得到的是获胜的发行版的 ID，我们用来查找存储在 JSON 编码文件中的元数据。 此元数据包含所请求模块代码的源/目录中文件的名称。 这是我们可以装载的。
+在这些目录中，我们每个发行版找到一个文件，其中包含一个具有匹配短名称的模块。 这些文件包含发行版的 ID 和组成长名称的其他字段：作者、版本和 api。 因此，通过阅读这些文件，我们有一个通常简短的 auth-version-api 三重奏列表，我们可以与我们的 DependencySpecification 相匹配。我们最终得到的是获胜的发行版的 ID，我们用来查找存储在 JSON 编码文件中的元数据。此元数据包含所请求模块代码的源/目录中文件的名称。这是我们可以装载的。
 
 In these directories we find one file per distribution that contains a module with a matching short name. These files again contain the ID of the dist and the other fields that make up the long name: auth, version, and api. So by reading these files we have a usually short list of auth-version-api triplets which we can match against our DependencySpecification. We end up with the winning distribution's ID, which we use to look up the metadata, stored in a JSON encoded file. This metadata contains the name of the file in the sources/directory containing the requested module's code. This is what we can load.
 
@@ -259,7 +259,7 @@ Foo
  
 ```
 
-不仅是源文件以这种方式存储和找到。 分布也可能包含任意资源文件。 这些可能是安装时编译的图像、语言文件或共享库。 它们可以通过 `%?RESOURCES` 哈希从模块内访问
+不仅是源文件以这种方式被存储和找到。发行版也可能包含任意资源文件。这些可能是安装时编译的图像、语言文件或共享库。它们可以通过 `%?RESOURCES` 哈希从模块内访问。
 
 It's not only source files that are stored and found this way. Distributions may also contain arbitrary resource files. These could be images, language files or shared libraries that are compiled on installation. They can be accessed from within the module through the `%?RESOURCES` hash
 
@@ -274,15 +274,15 @@ A nice result of this architecture is that it's fairly easy to create special pu
 <a id="依赖--dependencies"></a>
 ## 依赖 / Dependencies
 
-幸运的是，预编译在大多数情况下至少工作得很好。 然而，它也面临着自己的一系列挑战。 加载单个模块很容易。 当一个模块有依赖关系，而这些依赖关系又有自己的依赖关系时，乐趣就开始了。
+幸运的是，预编译在大多数情况下工作得很好。然而，它也面临着自己的一系列挑战。加载单个模块很容易。当一个模块有依赖关系，而这些依赖关系又有自己的依赖关系时，就变得有趣了。
 
 Luckily precompilation at least works quite well in most cases. Yet it comes with its own set of challenges. Loading a single module is easy. The fun starts when a module has dependencies and those dependencies have again dependencies of their own.
 
-在 `Raku` 中加载预编译文件时我们也需要加载其所有依赖项的预编译文件。 这些依赖项*必须*预先编译，我们无法从源文件加载它们。 更糟糕的是，依赖项的预编译文件*必须*与我们最初用于预编译模块的文件完全相同。
+在 `Raku` 中加载预编译文件时我们也需要加载其所有依赖项的预编译文件。这些依赖项*必须*被预编译，我们无法从源文件加载它们。更糟糕的是，依赖项的预编译文件*必须*与我们最初用于预编译模块的文件完全相同。
 
 When loading a precompiled file in `Raku` we need to load the precompiled files of all its dependencies, too. And those dependencies **must** be precompiled, we cannot load them from source files. Even worse, the precomp files of the dependencies **must** be exactly the same files we used for precompiling our module in the first place.
 
-为了消除它，预编译文件只使用用于编译的 `Raku` 二进制文件。
+为了消除它，预编译文件只对用于编译的那个 `Raku` 二进制文件有效。
 
 To top it off, precompiled files work only with the exact `Raku` binary, that was used for compilation.
 
@@ -297,7 +297,7 @@ In other words: if you upgrade a dependency of a precompiled module, we have to 
 <a id="预编译存储区--precomp-stores"></a>
 ## 预编译存储区 / Precomp stores
 
-现在请记住，虽然我们有一个标准的存储库链，用户可以通过 `-I` 在命令行或者在代码中使用 “use lib” 的方式预先发送额外的存储库。
+现在请记住，虽然我们有一个标准的存储库链，用户可以通过 `-I` 在命令行或者在代码中使用 “use lib” 的方式预先添加额外的存储库。
 
 Now remember that while we have a standard repository chain, the user may prepend additional repositories by way of `-I` on the command line or "use lib" in the code.
 
@@ -324,6 +324,6 @@ Instead, we will precompile the modules used when they are first loaded.
 <a id="credit"></a>
 ## Credit
 
-本教程是基于一个 `niner` [Talk](http://niner.name/talks/A%20look%20behind%20the%20curtains%20-%20module%20loading%20in%20Perl%206/)。
+本教程是基于 `niner` 的一个[演讲](http://niner.name/talks/A%20look%20behind%20the%20curtains%20-%20module%20loading%20in%20Perl%206/)。
 
 This tutorial is based on a `niner` [talk](http://niner.name/talks/A%20look%20behind%20the%20curtains%20-%20module%20loading%20in%20Perl%206/).
