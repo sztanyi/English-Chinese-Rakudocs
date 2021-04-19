@@ -93,3 +93,6 @@ https://raku.finanalyst.org/search.html
 
 # Another raku.org
 https://www.raku-lang.ir/en/
+
+# The Zen of Test Suites
+https://dev.to/ovid/the-zen-of-test-suites-304f
