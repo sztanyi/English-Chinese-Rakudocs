@@ -52,7 +52,7 @@ The string could be a file that you're looking to break into sections; perhaps a
 <a id="%E8%AF%AD%E6%B3%95%E7%9A%84%E5%B9%BF%E4%B9%89%E6%A6%82%E5%BF%B5--the-broad-concept-of-grammars"></a>
 ## 语法的广义概念 / The broad concept of grammars
 
-正则表达式（[正则表达式](https://docs.raku.org/language/regexes)）对于在字符串中查找模式非常有效。但是，对于某些任务，比如一次找到多个模式，或者组合模式，或者测试可能围绕字符串正则表达式的模式，仅仅这样做是不够的。
+正则表达式（[Regexes](https://docs.raku.org/language/regexes)）对于在字符串中查找模式非常有效。但是，对于某些任务，比如一次找到多个模式，或者组合模式，或者测试可能围绕字符串正则表达式的模式，仅仅这样做是不够的。
 
 Regular expressions ([Regexes](https://docs.raku.org/language/regexes)) work well for finding patterns in strings. However, for some tasks, like finding multiple patterns at once, or combining patterns, or testing for patterns that may surround strings regular expressions, alone, are not enough.
 
@@ -74,7 +74,7 @@ Grammars are a special kind of class. You declare and define a grammar exactly a
 grammar G { ... }
 ```
 
-作为这样的类，语法由定义正则表达式、标记或规则的方法组成。这些都是各种不同类型的匹配方法。一旦定义了语法，就调用它并传入一个字符串进行解析。
+作为这样的类，语法由定义正则表达式、标记或规则的方法组成。这些都是各种不同类型的匹配方法。一旦定义了一个语法，就可以传入一个字符串用 parse 方法进行解析。
 
 As such classes, grammars are made up of methods that define a regex, a token, or a rule. These are all varieties of different types of match methods. Once you have a grammar defined, you call it and pass in a string for parsing.
 
@@ -93,7 +93,7 @@ For every "method" you match in your grammar, you get an action you can use to a
 <a id="%E6%8A%80%E6%9C%AF%E6%A6%82%E8%BF%B0--the-technical-overview"></a>
 ## 技术概述 / The technical overview
 
-如前所述，语法使用 *grammar* 关键字声明，其“方法”使用 *regex* 或 *token* 或 *rule* 声明。
+如前所述，语法使用 *grammar* 关键字声明，其“方法”使用 *regex*、*token* 或 *rule* 声明。
 
 As already mentioned, grammars are declared using the *grammar* keyword and its "methods" are declared with *regex*, or *token*, or *rule*.
 
@@ -107,7 +107,7 @@ As already mentioned, grammars are declared using the *grammar* keyword and its 
 - Token methods are faster than regex methods and ignore whitespace.
 - Rule methods are the same as token methods except whitespace is not ignored.
 
-当一个方法（regex、token 或 rule）在语法中匹配时，匹配的字符串被放入[匹配对象](https://docs.raku.org/type/Match)中，其键为方法名相同。
+当一个方法（regex、token 或 rule）在语法中匹配时，匹配的字符串被放入[匹配对象](https://docs.raku.org/type/Match)中，其键与方法名相同。
 
 When a method (regex, token or rule) matches in the grammar, the string matched is put into a [match object](https://docs.raku.org/type/Match) and keyed with the same name as the method.
 
@@ -139,24 +139,24 @@ say $/<thingy>.perl;
 
 The two first output lines show that `$match` contains a `Match` objects with the results of the parsing; but those results are also assigned to the [match variable `$/`](https://docs.raku.org/syntax/$$SOLIDUS). Either match object can be keyed, as indicated above, by `thingy` to return the match for that particular `token`.
 
-`TOP` 方法（无论是 regex、token 还是 rule）是必须匹配一切（默认情况下）的总体模式。如果已解析的字符串与顶部正则表达式不匹配，则返回的Match对象将为空(`NIL‘)。
+`TOP` 方法（无论是 regex、token 还是 rule）是必须匹配一切（默认情况下）的总体模式。如果已解析的字符串与顶部正则表达式不匹配，则返回的Match对象将为空（`NIL`）。
 
 The `TOP` method (whether regex, token, or rule) is the overarching pattern that must match everything (by default). If the parsed string doesn't match the TOP regex, your returned match object will be empty (`Nil`).
 
-如上文所示，在 `TOP` 中，提到了 `<thingy>` token。`<thingy>` 在下一行中定义。这意味着 `'clever_text_keyword'` **必须**是字符串中第一件事，否则语法解析将失败，我们将得到一个空匹配。这对于识别应该丢弃的格式错误的字符串非常有用。
+如上文所示，在 `TOP` 中，提到了 `<thingy>` token。`<thingy>` 在下一行中定义。这意味着 `'clever_text_keyword'` **必须**是字符串的开头，否则语法解析将失败，我们将得到一个空匹配。这对于识别应该丢弃的格式错误的字符串非常有用。
 
 As you can see above, in `TOP`, the `<thingy>` token is mentioned. The `<thingy>` is defined on the next line. That means that `'clever_text_keyword'` **must** be the first thing in the string, or the grammar parse will fail and we'll get an empty match. This is great for recognizing a malformed string that should be discarded.
 
 <a id="%E6%A1%88%E4%BE%8B%E5%AD%A6%E4%B9%A0---rest-%E8%AE%BE%E8%AE%A1--learning-by-example---a-rest-contrivance"></a>
 # 案例学习 - REST 设计 / Learning by example - a REST contrivance
 
-假设我们希望将 URI 解析为构成 RESTful 请求的组件部分。我们希望 URI 这样工作：
+假设我们希望将 URI 解析为构成 RESTful 请求的组件部分。我们希望 URI 像这样工作：
 
 Let's suppose we'd like to parse a URI into the component parts that make up a RESTful request. We want the URIs to work like this:
 
-- URI 的第一部分将是“主体”，就像一个组件、一个产品或一个人。
-- URI的第二部分是“命令”，这是标准的 CRUD 函数（创建、检索、更新或删除）。
-- URI的第三部分将是任意数据，可能是我们将要使用的特定 ID，或者是由 "/" 分隔的一长串数据。
+- URI 的第一部分将是“主题”，就像一个组件、一个产品或一个人。
+- URI 的第二部分是“命令”，这是标准的 CRUD 函数（创建、检索、更新或删除）。
+- URI 的第三部分将是任意数据，可能是我们将要使用的特定 ID，或者是由 "/" 分隔的一长串数据。
 - 当我们得到一个 URI 时，我们希望将上面的 1-3 放在一个数据结构中，我们可以很容易地使用这个结构（并在以后进行增强）。
 
 <br/>
@@ -166,7 +166,7 @@ Let's suppose we'd like to parse a URI into the component parts that make up a R
 - The third part of the URI will be arbitrary data, perhaps the specific ID we'll be working with or a long list of data separated by "/"'s.
 - When we get a URI, we'll want 1-3 above to be placed into a data structure that we can easily work with (and later enhance).
 
-因此，如果我们有 "/product/update/7/notify"，那么我们希望语法给出一个匹配的对象，该对象主题为 "product"、命令为 "update"、数据为 "7/notify"。
+因此，如果我们有 "/product/update/7/notify"，那么我们希望语法给出一个匹配的对象，该对象主题为 "product"、命令为 "update" 并且数据为 "7/notify"。
 
 So, if we have "/product/update/7/notify", we would want our grammar to give us a match object that has a `subject` of "product", a `command` of "update", and `data` of "7/notify".
 
@@ -182,7 +182,7 @@ grammar REST {
 }
 ```
 
-到目前为止，这个 REST 语法表示我们需要一个主题，它将是 *word* 字符，命令将是 *word* 字符，而数据将是字符串中剩下的所有内容。
+到目前为止，这个 REST 语法表示我们需要一个主题，它将是*单词*，命令也将是*单词*，而数据将是字符串中剩下的所有内容。
 
 So far, this REST grammar says we want a subject that will be just *word* characters, a command that will be just *word* characters, and data that will be everything else left in the string.
 
@@ -213,7 +213,7 @@ say $match;
 #          data => ｢7/notify｣» 
 ```
 
-可以通过使用 `$match<subject>` 或 `$match<command>` 或 `$match<data>` 来直接访问数据，以返回所解析的值。它们都包含你可以进一步处理的匹配对象，例如将其强制放入字符串（`$match<command>.Str`）。
+可以通过使用 `$match<subject>` 或 `$match<command>` 或 `$match<data>` 来直接访问数据，以返回所解析的值。它们都包含你可以进一步处理的匹配对象，例如将其转换为字符串（`$match<command>.Str`）。
 
 The data can be accessed directly by using `$match<subject>` or `$match<command>` or `$match<data>` to return the values parsed. They each contain match objects that you can work further with, such as coercing into a string ( `$match<command>.Str` ).
 
@@ -235,14 +235,14 @@ grammar REST {
     token command { \w+ }
     token data    { .* }
 }
- 
+
 my $m = REST.parse('/product/create');
 say $m<subject>, $m<command>;
- 
+
 # OUTPUT: «｢product｣｢create｣␤» 
 ```
 
-接下来，假设 URI 将由用户手动输入，并且用户可能会意外地在 '/' 之间放置空格。如果我们想适应这种情况，可以用允许空格的 token 替换 TOP 中的 '/'。
+接下来，假设 URI 将由用户手动输入，并且用户可能会意外地在 '/' 之间放置空格。如果我们想适配这种情况，可以用允许空格的标记 slash 替换 TOP 中的 '/'。
 
 Next, assume that the URIs will be entered manually by a user and that the user might accidentally put spaces between the '/'s. If we wanted to accommodate for this, we could replace the '/'s in TOP with a token that allowed for spaces.
 
@@ -255,10 +255,10 @@ grammar REST {
  
     token slash   { \s* '/' \s* }
 }
- 
+
 my $m = REST.parse('/ product / update /7 /notify');
 say $m;
- 
+
 # OUTPUT: «｢/ product / update /7 /notify｣␤ 
 #          slash => ｢/ ｣ 
 #          subject => ｢product｣ 
@@ -402,11 +402,11 @@ token command:sym<delete>   { <sym> }
 
 The `sym` keyword is used to create the various proto-regex options. Each option is named (e.g., `sym<update>`), and for that option's use, a special `<sym>` token is auto-generated with the same name.
 
-`<sym>` token 以及其他用户定义的 token 可以用于原型正则选项块中，以定义特定*匹配条件*。正则 token 为编译过的形式，并且一旦定义，则随后不能被副词操作（例如 `:i`）修改。因此，当它是自动生成时，特殊的 `<sym>` token 仅在需要选项名称的精确匹配时才有用。
+`<sym>` 标记以及其他用户定义的标记可以用于原型正则选项块中，以定义特定*匹配条件*。正则标记为编译过的形式，并且一旦定义，则随后不能被副词操作（例如 `:i`）修改。因此，当它是自动生成时，特殊的 `<sym>` 标记仅在需要选项名称的精确匹配时才有用。
 
 The `<sym>` token, as well as other user-defined tokens, may be used in the proto-regex option block to define the specific *match condition*. Regex tokens are compiled forms and, once defined, cannot subsequently be modified by adverb actions (e.g., `:i`). Therefore, as it's auto-generated, the special `<sym>` token is useful only where an exact match of the option name is required.
 
-如果，对于一个原型正则选项，出现匹配条件，则整个原型的搜索将终止。匹配数据以匹配对象的形式分配给父原型 token。如果使用了特殊的 `<sym>` token 并形成了全部或部分实际匹配，则在匹配对象中将其保存为子级别，否则将不存在。
+如果，对于一个原型正则选项，出现匹配条件，则整个原型的搜索将终止。匹配数据以匹配对象的形式分配给父原型 token。如果使用了特殊的 `<sym>` 标记并形成了全部或部分实际匹配，则在匹配对象中将其保存为子级别，否则将不存在。
 
 If, for one of the proto-regex options, a match condition occurs, then the whole proto's search terminates. The matching data, in the form of a match object, is assigned to the parent proto token. If the special `<sym>` token was employed and formed all or part of the actual match, then it's preserved as a sub-level in the match object, otherwise it's absent.
 
@@ -465,7 +465,7 @@ Note that since `<data>` matches nothing on the second string, `$m<data>` will b
 
 With just this part of a grammar, we're getting almost everything we're looking for. The URIs get parsed and we get a data structure with the data.
 
-*data* token 将 URI 的整个结尾作为一个字符串返回。4 没问题。然而，从 '7/notify' 开始，我们只需要 7。为了得到 7，我们将使用语法类的另一个特性：*动作*。
+*data* 标记将 URI 的整个结尾作为一个字符串返回。4 没问题。然而，从 '7/notify' 开始，我们只需要 7。为了得到 7，我们将使用语法类的另一个特性：*动作*。
 
 The *data* token returns the entire end of the URI as one string. The 4 is fine. However from the '7/notify', we only want the 7. To get just the 7, we'll use another feature of grammar classes: *actions*.
 
@@ -486,13 +486,13 @@ To work with actions, you use a named parameter called `actions` which should co
 
 ```Raku
 my $matchObject = REST.parse($uri, actions => REST-actions.new);
- 
+
 #   …or if you prefer… 
- 
+
 my $matchObject = REST.parse($uri, :actions(REST-actions.new));
 ```
 
-如果你*使用与语法方法（token、regex、rule）相同的名称命名你的操作方法*，则当你的语法方法匹配时，将自动调用具有相同名称的操作方法。该方法也将通过相应的匹配对象（由 `$/` 变量表示）。
+如果你*使用与语法方法（token、regex 以及 rule）相同的名称命名你的操作方法*，则当你的语法方法匹配时，将自动调用具有相同名称的操作方法。该方法也将通过相应的匹配对象（由 `$/` 变量表示）。
 
 If you *name your action methods with the same name as your grammar methods* (tokens, regexes, rules), then when your grammar methods match, your action method with the same name will get called automatically. The method will also be passed the corresponding match object (represented by the `$/` variable).
 
@@ -524,7 +524,7 @@ grammar REST
 }
 ```
 
-回想一下，我们希望进一步处理名叫 data 的 token "7/notify"，以获得 7。为此，我们将创建一个动作类，该类具有与命名令牌同名的方法。在本例中，我们的 token 名为 `data`，因此我们的方法也被命名为 `data`。
+回想一下，我们希望进一步处理 data 标记 "7/notify"，以获得 7。为此，我们将创建一个动作类，该类具有与命名令牌同名的方法。在本例中，我们的标记名为 `data`，因此我们的方法也被命名为 `data`。
 
 Recall that we want to further process the data token "7/notify", to get the 7. To do this, we'll create an action class that has a method with the same name as the named token. In this case, our token is named `data` so our method is also named `data`.
 
@@ -535,13 +535,9 @@ class REST-actions
 }
 ```
 
-现在，当我们通过语法传递 URI 字符串时，*data token 匹配*将传递给 *REST-actions 的 data 方法*。action 方法将字符串拆分为 '/' 字符，返回列表的第一个元素将是 ID 号（在 "7/notify" 的情况下为 7）。
+现在，当我们通过语法传递 URI 字符串时，*data 标记匹配*将传递给 *REST-actions 的 data 方法*。action 方法将字符串拆分为 '/' 字符，返回列表的第一个元素将是 ID 号（在 "7/notify" 的情况下为 7）。
 
 Now when we pass the URI string through the grammar, the *data token match* will be passed to the *REST-actions' data method*. The action method will split the string by the '/' character and the first element of the returned list will be the ID number (7 in the case of "7/notify").
-
-还有更多。
-
-But not really; there's a little more.
 
 <a id="%E7%94%A8-make-%E5%92%8C-made-%E4%BF%9D%E6%8C%81%E8%AF%AD%E6%B3%95%E4%B8%8E%E5%8A%A8%E4%BD%9C%E7%9A%84%E6%95%B4%E6%B4%81--keeping-grammars-with-actions-tidy-with-make-and-made"></a>
 ## 用 `make` 和 `made` 保持语法与动作的整洁 / Keeping grammars with actions tidy with `make` and `made`
@@ -586,13 +582,15 @@ say $match<command>.Str;   # OUTPUT: «update␤»
 
 Here we call `made` on data, because we want the result of the action that we `made` (with `make`) to get the split array. That's lovely! But, wouldn't it be lovelier if we could `make` a friendlier data structure that contained all of the stuff we want, rather than having to coerce types and remember arrays?
 
-就像语法的 `TOP`（与整个字符串匹配）一样，动作也有一个 TOP 方法。我们可以 `make` 所有单独的匹配组件，如 `data` 或 `subject` 或 `command`，然后我们可以将它们放置在数据结构中并在 TOP 中将他们 `make`。当我们返回最终的匹配对象时，我们可以访问这个数据结构。
+就像语法的 `TOP`（与整个字符串匹配）一样，动作也有一个 TOP 方法。我们可以 `make` 所有单独的匹配组件，如 `data`、`subject` 或 `command`，然后我们可以将它们放置在数据结构中并在 TOP 中将他们 `make`。当我们返回最终的匹配对象时，我们可以访问这个数据结构。
 
 Just like Grammar's `TOP`, which matches the entire string, actions have a TOP method as well. We can `make` all of the individual match components, like `data` or `subject` or `command`, and then we can place them in a data structure that we will `make` in TOP. When we return the final match object, we can then access this data structure.
 
 为此，我们将方法 `TOP` 添加到动作类中，并从组件片段中添加任何我们喜欢的数据结构。
 
 To do this, we add the method `TOP` to the action class and `make` whatever data structure we like from the component pieces.
+
+因此，我们的动作类变成了：
 
 So, our action class becomes:
 
@@ -613,7 +611,7 @@ class REST-actions
 
 Here in the `TOP` method, the `subject` remains the same as the subject we matched in the grammar. Also, `command` returns the valid `<sym>` that was matched (create, update, retrieve, or delete). We coerce each into `.Str`, as well, since we don't need the full match object.
 
-我们希望确保在 `$<data>` 对象上使用 `made` 方法，因为我们希望访问我们在 action 中使用 data 方法用 `make` 返回的拆分数组，而不是 `$<data>` 对象。
+我们希望确保在 `$<data>` 对象上使用 `made` 方法，因为我们希望访问我们在动作中使用 data 方法用 `make` 返回的拆分数组，而不是 `$<data>` 对象。
 
 We want to make sure to use the `made` method on the `$<data>` object, since we want to access the split one that we `made` with `make` in our action, rather than the proper `$<data>` object.
 
@@ -623,24 +621,24 @@ After we `make` something in the `TOP` method of a grammar action, we can then a
 
 ```Raku
 my $uri = '/product/update/7/notify';
- 
+
 my $match = REST.parse($uri, actions => REST-actions.new);
- 
+
 my $rest = $match.made;
 say $rest<data>[0];   # OUTPUT: «7␤» 
 say $rest<command>;   # OUTPUT: «update␤» 
 say $rest<subject>;   # OUTPUT: «product␤» 
 ```
 
-如果不需要完整的返回匹配对象，则只能从 action 的 `TOP` 返回已生成的数据。
+如果不需要完整的返回匹配对象，则只能从动作的 `TOP` 返回已生成的数据。
 
 If the complete return match object is not needed, you could return only the made data from your action's `TOP`.
 
 ```Raku
 my $uri = '/product/update/7/notify';
- 
+
 my $rest = REST.parse($uri, actions => REST-actions.new).made;
- 
+
 say $rest<data>[0];   # OUTPUT: «7␤» 
 say $rest<command>;   # OUTPUT: «update␤» 
 say $rest<subject>;   # OUTPUT: «product␤» 
