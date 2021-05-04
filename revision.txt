@@ -45,8 +45,8 @@ Raku 原生类型 - Raku native types
 算术 - Doing math with Raku.md
 类和对象 - Classes and Objects.md
 计算单元以及怎样找到他们 - CompUnits and where to find them.md
-	语法教程 - Grammar tutorial.md
-	输入 unicode 字符 - Entering unicode characters.md
+语法教程 - Grammar tutorial.md
+输入 unicode 字符 - Entering unicode characters.md
 	输入输出 - IO.md
 	进程间通信 - Inter-process communication.md
 	迭代 - Iterating.md

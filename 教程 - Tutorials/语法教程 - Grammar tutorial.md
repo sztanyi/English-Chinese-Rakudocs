@@ -749,6 +749,6 @@ First, we can add actions inside the grammar itself, and such actions are perfor
 
 Hopefully this has helped introduce you to the grammars in Raku and shown you how grammars and grammar action classes work together. For more information, check out the more advanced [Raku Grammar Guide](https://docs.raku.org/language/grammars).
 
-有关语法调试的更多信息，请参见 [Grammar::Debugger](https://github.com/jnthn/grammar-debugger)。这为每个语法标记提供断点和颜色编码匹配以及失败输出。
+有关语法调试的更多信息，请参见 [Grammar::Debugger](https://github.com/jnthn/grammar-debugger) 模块。这为每个语法标记提供断点和颜色编码匹配以及失败输出。
 
 For more grammar debugging, see [Grammar::Debugger](https://github.com/jnthn/grammar-debugger). This provides breakpoints and color-coded MATCH and FAIL output for each of your grammar tokens.

@@ -6,11 +6,11 @@
 
 Input methods for unicode characters in editors and the shell
 
-Raku 允许使用 Unicode 字符作为变量名。许多操作符使用 Unicode 符号（特别是 [set/bag operators](https://docs.raku.org/language/setbagmix#Set%252FBag_operators)）以及一些引用结构。因此，最好知道如何将这些符号输入编辑器，Perl 6 shell 和命令行，特别是如果符号不是键盘上的实际字符。
+Raku 允许使用 Unicode 字符作为变量名。许多操作符使用 Unicode 符号（特别是 [set/bag 运算符](https://docs.raku.org/language/setbagmix#Set%252FBag_operators)）以及一些引用结构。因此，最好知道如何将这些符号输入编辑器，Raku shell 和命令行，特别是如果符号不是键盘上的实际字符。
 
-Perl 6 allows the use of unicode characters as variable names. Many operators are defined with unicode symbols (in particular the [set/bag operators](https://docs.raku.org/language/setbagmix#Set%252FBag_operators)) as well as some quoting constructs. Hence it is good to know how to enter these symbols into editors, the Perl 6 shell and the command line, especially if the symbols aren't available as actual characters on a keyboard.
+Raku allows the use of unicode characters as variable names. Many operators are defined with unicode symbols (in particular the [set/bag operators](https://docs.raku.org/language/setbagmix#Set%252FBag_operators)) as well as some quoting constructs. Hence it is good to know how to enter these symbols into editors, the Raku shell and the command line, especially if the symbols aren't available as actual characters on a keyboard.
 
-有关在各种操作系统和环境下输入 Unicode 的一般信息，请参见 Wikipedia [Unicode 输入页面](https://en.wikipedia.org/wiki/Unicode_input)。
+有关在各种操作系统和环境下输入 Unicode 的一般信息，请参见 Wikipedia 上的 [Unicode 输入页面](https://en.wikipedia.org/wiki/Unicode_input)。
 
 General information about entering unicode under various operating systems and environments can be found on the Wikipedia [unicode input page](https://en.wikipedia.org/wiki/Unicode_input).
 
@@ -23,11 +23,11 @@ General information about entering unicode under various operating systems and e
 - [WinCompose \(Windows\)](#wincompose-windows)
 - [编辑器和 shell / Editors and shells](#%E7%BC%96%E8%BE%91%E5%99%A8%E5%92%8C-shell--editors-and-shells)
     - [Vim](#vim)
-        - [vim-perl6](#vim-perl6)
+        - [vim-raku](#vim-raku)
     - [Emacs](#emacs)
     - [Unix shell](#unix-shell)
     - [Screen](#screen)
-- [Perl 6 中一些有用的字符 / Some characters useful in Perl 6](#perl-6-%E4%B8%AD%E4%B8%80%E4%BA%9B%E6%9C%89%E7%94%A8%E7%9A%84%E5%AD%97%E7%AC%A6--some-characters-useful-in-perl-6)
+- [Raku 中一些有用的字符 / Some characters useful in Raku](#perl-6-%E4%B8%AD%E4%B8%80%E4%BA%9B%E6%9C%89%E7%94%A8%E7%9A%84%E5%AD%97%E7%AC%A6--some-characters-useful-in-perl-6)
     - [智能引号 / Smart quotes]\(https://en.wikipedia.org/wiki/Quotation_mark#Curved_quotes_and_Unicode\)](#%E6%99%BA%E8%83%BD%E5%BC%95%E5%8F%B7--smart-quoteshttpsenwikipediaorgwikiquotationmarkcurved_quotes_andunicode)
     - [书名号 / Guillemets]\(https://en.wikipedia.org/wiki/Guillemet\)](#%E4%B9%A6%E5%90%8D%E5%8F%B7--guillemetshttpsenwikipediaorgwikiguillemet)
     - [set/bag 操作符 / Set/bag operators](#setbag-%E6%93%8D%E4%BD%9C%E7%AC%A6--setbag-operators)
@@ -52,7 +52,7 @@ Xorg includes digraph support using a [*Compose key*](https://en.wikipedia.org/w
 <a id="%E4%BD%BF-compose-%E9%94%AE%E5%85%A8%E5%B1%80%E7%94%9F%E6%95%88--getting-compose-working-in-all-programs"></a>
 ## 使 compose 键全局生效 / Getting compose working in all programs
 
-在所有程序中使用 compose 键可能会出现问题。 在这种情况下，你可以试试 `ibus`。
+在所有程序中使用 compose 键可能会出现问题。在这种情况下，你可以试试 `ibus`。
 
 You may have issues using the compose key in all programs. In that case you can try `ibus`.
 
@@ -96,7 +96,7 @@ If you are using KDE, open the start menu and type in “Autostart” and click 
 <a id="wincompose-windows"></a>
 # WinCompose (Windows)
 
-[WinCompose](https://github.com/samhocevar/wincompose) 将 [compose 键](https://en.wikipedia.org/wiki/Compose_key) 功能添加到 Windows。 它可以通过 GitHub 上的 [WinCompose releases](https://github.com/samhocevar/wincompose/releases) 页面安装，也可以通过 [Chocolatey 包管理器]安装(https://chocolatey.org/packages/wincompose)。
+[WinCompose](https://github.com/samhocevar/wincompose) 将 [compose 键](https://en.wikipedia.org/wiki/Compose_key)功能添加到 Windows。 它可以通过 GitHub 上的 [WinCompose releases](https://github.com/samhocevar/wincompose/releases) 页面安装，也可以通过 [Chocolatey 包管理器]安装(https://chocolatey.org/packages/wincompose)。
 
 [WinCompose](https://github.com/samhocevar/wincompose) adds [compose key](https://en.wikipedia.org/wiki/Compose_key) functionality to Windows. It can be installed either via the [WinCompose releases](https://github.com/samhocevar/wincompose/releases)page on GitHub, or with the [Chocolatey package manager](https://chocolatey.org/packages/wincompose).
 
@@ -138,12 +138,12 @@ The list of digraphs Vim provides is documented [here](http://vimdoc.sourceforge
 
 Further information about entering special characters in Vim can be found on the Vim Wikia page about [entering special characters](http://vim.wikia.com/wiki/Entering_special_characters).
 
-<a id="vim-perl6"></a>
-### vim-perl6
+<a id="vim-raku"></a>
+### vim-raku
 
-Vim 的 [vim-perl6](https://github.com/vim-perl/vim-perl6) 插件可以配置为可选地将基于 ASCII 的操作替换为基于 Unicode 的等效操作。 这将在键入时动态转换基于 ASCII 的操作。
+Vim 的 [vim-raku](https://github.com/Raku/vim-raku) 插件可以配置为可选地将基于 ASCII 的操作替换为基于 Unicode 的等效操作。 这将在键入时动态转换基于 ASCII 的操作。
 
-The [vim-perl6](https://github.com/vim-perl/vim-perl6) plugin for Vim can be configured to optionally replace ASCII based ops with their Unicode based equivalents. This will convert the ASCII based ops on the fly while typing them.
+The [vim-raku](https://github.com/Raku/vim-raku) plugin for Vim can be configured to optionally replace ASCII based ops with their Unicode based equivalents. This will convert the ASCII based ops on the fly while typing them.
 
 <a id="emacs"></a>
 ## Emacs
@@ -172,7 +172,7 @@ C-x RET C-\ rfc1345 RET
 
 Or `C-u C-\ rfc1345 RET`.
 
-要键入特殊字符，请键入 `&`，然后键入助记符。 Emacs将在回显区域显示可能的字符。 例如，可以通过键入以下内容输入希腊字母 λ（lambda）：
+要键入特殊字符，请键入 `&`，然后键入助记符。 Emacs 将在回显区域显示可能的字符。 例如，可以通过键入以下内容输入希腊字母 λ（lambda）：
 
 To type special characters, type `&` followed by a mnemonic. Emacs will show the possible characters in the echo area. For example, Greek letter λ (lambda) can be entered by typing:
 
@@ -211,9 +211,9 @@ At the bash shell, one enters unicode characters by using entering `Ctrl-Shift-u
 Ctrl-Shift-u 2208 Enter
 ```
 
-这也是用于将 Unicode 字符输入到 `perl6` REPL 中的方法，如果已经在 Unix shell 中启动了 REPL。
+这也是用于将 Unicode 字符输入到 `raku` REPL 中的方法，如果已经在 Unix shell 中启动了 REPL。
 
-This also the method one would use to enter unicode characters into the `perl6` REPL, if one has started the REPL inside a Unix shell.
+This also the method one would use to enter unicode characters into the `raku` REPL, if one has started the REPL inside a Unix shell.
 
 <a id="screen"></a>
 ## Screen
@@ -226,20 +226,19 @@ This also the method one would use to enter unicode characters into the `perl6` 
 bindkey ^K exec .! digraphs
 ```
 
-这会将 control-k 绑定到 shell 命令 digraphs。 如果你更中意对 Perl 6 友好的有向图表
-如果你喜欢[RFC 1345]（https://tools.ietf.org/html/rfc1345）上的Perl 6友好有向图表或更改，你可以使用[digraphs]（https://github.com/gfldex/digraphs） 它符合你的需求。
+这会将 control-k 绑定到 shell 命令 digraphs。如果你更喜欢 [RFC 1345](https://tools.ietf.org/html/rfc1345) 上对 Raku 友好有向图表或更改，你可以使用 [digraphs](https://github.com/gfldex/digraphs) 或者修改它使得它符合你的需求。
 
-This will bind control-k to the shell command digraphs. You can use [digraphs](https://github.com/gfldex/digraphs) if you prefer a Perl 6 friendly digraph table over [RFC 1345](https://tools.ietf.org/html/rfc1345) or change it to your needs.
+This will bind control-k to the shell command digraphs. You can use [digraphs](https://github.com/gfldex/digraphs) if you prefer a Raku friendly digraph table over [RFC 1345](https://tools.ietf.org/html/rfc1345) or change it to your needs.
 
 <a id="perl-6-%E4%B8%AD%E4%B8%80%E4%BA%9B%E6%9C%89%E7%94%A8%E7%9A%84%E5%AD%97%E7%AC%A6--some-characters-useful-in-perl-6"></a>
-# Perl 6 中一些有用的字符 / Some characters useful in Perl 6
+# Raku 中一些有用的字符 / Some characters useful in Raku
 
 <a id="%E6%99%BA%E8%83%BD%E5%BC%95%E5%8F%B7--smart-quoteshttpsenwikipediaorgwikiquotationmarkcurved_quotes_andunicode"></a>
 ## 智能引号 / Smart quotes](https://en.wikipedia.org/wiki/Quotation_mark#Curved_quotes_and_Unicode)
 
-这些字符在不同语言中用作引号。在 Perl 6 中，它们被用作[引用字符](https://docs.raku.org/language/quoting)
+这些字符在不同语言中用作引号。在 Raku 中，它们被用作[引用字符](https://docs.raku.org/language/quoting)
 
-These characters are used in different languages as quotation marks. In Perl 6 they are used as [quoting characters](https://docs.raku.org/language/quoting)
+These characters are used in different languages as quotation marks. In Raku they are used as [quoting characters](https://docs.raku.org/language/quoting)
 
 这样的构造现在是可能的：
 
@@ -258,7 +257,7 @@ say “here: “no problem” at all!”; # You can nest them!
 This is very useful in shell:
 
 ```Raku
-perl6 -e 'say ‘hello world’'
+raku -e 'say ‘hello world’'
 ```
 
 因为你可以复制和粘贴一些代码，而不必担心引号。
@@ -268,9 +267,9 @@ since you can just copy and paste some piece of code and not worry about quotes.
 <a id="%E4%B9%A6%E5%90%8D%E5%8F%B7--guillemetshttpsenwikipediaorgwikiguillemet"></a>
 ## 书名号 / Guillemets](https://en.wikipedia.org/wiki/Guillemet)
 
-这些字符在法语和德语中用作引号。在 Perl 6 中，它们被用作[内插词引号](https://docs.raku.org/language/quoting#Word_quoting_with_interpolation_and_quote_protection%3A_qqww)、[hyper 运算符](https://docs.raku.org/language/operators#Hyper_operators)，以及 POD6 中尖角括号的另一种选择。
+这些字符在法语和德语中用作引号。在 Raku 中，它们被用作[内插词引号](https://docs.raku.org/language/quoting#Word_quoting_with_interpolation_and_quote_protection%3A_qqww)、[hyper 运算符](https://docs.raku.org/language/operators#Hyper_operators)，以及 POD6 中尖角括号的另一种选择。
 
-These characters are used in French and German as quotation marks. In Perl 6 they are used as [interpolation word quotes](https://docs.raku.org/language/quoting#Word_quoting_with_interpolation_and_quote_protection%3A_qqww), [hyper operators](https://docs.raku.org/language/operators#Hyper_operators) and as an angle bracket alternative in POD6.
+These characters are used in French and German as quotation marks. In Raku they are used as [interpolation word quotes](https://docs.raku.org/language/quoting#Word_quoting_with_interpolation_and_quote_protection%3A_qqww), [hyper operators](https://docs.raku.org/language/operators#Hyper_operators) and as an angle bracket alternative in POD6.
 
 | symbol | unicode code point | ascii equivalent |
 | ------ | ------------------ | ---------------- |
@@ -287,7 +286,7 @@ say (1, 2) »+« (3, 4);     # OUTPUT: «(4 6)␤» - element-wise add
 say «moo»;                 # OUTPUT: «moo␤» 
  
 my $baa = "foo bar";
-say «$baa $baa ber».perl;  # OUTPUT: «("foo", "bar", "foo", "bar", "ber")␤» 
+say «$baa $baa ber».raku;  # OUTPUT: «("foo", "bar", "foo", "bar", "ber")␤» 
 ```
 
 <a id="setbag-%E6%93%8D%E4%BD%9C%E7%AC%A6--setbag-operators"></a>
@@ -328,9 +327,11 @@ Wikipedia contains a full list of [mathematical operators and symbols in unicode
 <a id="%E5%B8%8C%E8%85%8A%E5%AD%97%E7%AC%A6--greek-characters"></a>
 ## 希腊字符 / Greek characters
 
-希腊字符可以用作变量名。有关希腊和科普特字符及其 Unicode 代码点的列表，请参阅[Unicode中的希腊语维基百科文章]（https://en.wikipedia.org/wiki/Greek_Alphabet希腊语Unicode中的希腊语）。
+希腊字符可以用作变量名。有关希腊和科普特字符及其 Unicode 代码点的列表，请参阅 [Unicode 中的希腊语维基百科文章](https://en.wikipedia.org/wiki/Greek_alphabet#Greek_in_Unicode)。
 
 Greek characters may be used as variable names. For a list of Greek and Coptic characters and their unicode code points see the [Greek in Unicode Wikipedia article](https://en.wikipedia.org/wiki/Greek_alphabet#Greek_in_Unicode).
+
+比如，将 3 赋值给 π，在 Vim 中输入如下字符（在组合序列中增加空格增加可读性）。
 
 For example, to assign the value 3 to π, enter the following in Vim (whitespace added to the compose sequences for clarity):
 
