@@ -66,7 +66,7 @@ say so "32.51" ~~ &number;                         # OUTPUT: «True␤»
 say so "15 + 4.5" ~~ /<number>\s* '+' \s*<number>/ # OUTPUT: «True␤» 
 ```
 
-**regex** 不是命名正则的唯一声明符。事实上，这是最不常见的。大多数时候使用 **token** 或者 **rule** 声明符。这两个都有*棘轮效应*，这意味着匹配引擎在匹配失败时不会备份并重试。这通常会满足你的需求，但不适用于所有情况：
+**regex** 不是命名正则的唯一声明符。事实上，这是最不常见的声明符。大多数时候使用 **token** 或者 **rule** 声明符。这两个都有*棘轮效应*，这意味着匹配引擎在匹配失败时不会备份并重试。这通常会满足你的需求，但不适用于所有情况：
 
 **regex** isn't the only declarator for named regexes. In fact, it's the least common. Most of the time, the **token** or **rule**declarators are used. These are both *ratcheting*, which means that the match engine won't back up and try again if it fails to match something. This will usually do what you want, but isn't appropriate for all cases:
 
@@ -328,7 +328,7 @@ This comes in handy when you're already differentiating the proto regexes with t
 
 The `<?>` is the *always succeed* assertion. When used as a grammar token, it can be used to trigger an Action class method. In the following grammar we look for Arabic digits and define a `succ` token with the always succeed assertion.
 
-在 action 类中，我们使用对 `succ` 方法的调用来进行设置（在本例中，我们在 `@!numbers` 中准备了一个新元素）。在 `digit` 方法中，我们将阿拉伯数字用作天成文书数字列表的索引，并将其添加到 `@!numbers` 的最后一个元素中.由于 `succ`，最后一个元素将始终是当前分析的 `digit` 数字。
+在 action 类中，我们使用对 `succ` 方法的调用来进行设置（在本例中，我们在 `@!numbers` 中准备了一个新元素）。在 `digit` 方法中，我们将阿拉伯数字用作天成文书数字列表的索引，并将其添加到 `@!numbers` 的最后一个元素中。由于 `succ`，最后一个元素将始终是当前分析的 `digit` 数字。
 
 In the action class, we use calls to the `succ` method to do set up (in this case, we prepare a new element in `@!numbers`). In the `digit` method, we use the Arabic digit as an index into a list of Devanagari digits and add it to the last element of `@!numbers`. Thanks to `succ`, the last element will always be the number for the currently parsed `digit` digits.
 
