@@ -53,7 +53,7 @@ By adding the `IO` role to the file name string, we are effectively able to refe
 <a id="%E9%80%90%E8%A1%8C%E8%AF%BB%E5%8F%96--line-by-line"></a>
 ## 逐行读取 / Line by line
 
-当然，我们也可以选择逐行读取文件。新的行分隔符（即 `$*IN.nl-in`）将被排除在外。
+当然，我们也可以选择逐行读取文件。换行符（即 `$*IN.nl-in`）已经被去除掉了。
 
 Of course, we also have the option to read a file line-by-line. The new line separator (i.e., `$*IN.nl-in`) will be excluded.
 
@@ -150,9 +150,9 @@ To explicitly write binary data to a file, open it with the `:bin` option. The i
 <a id="%E5%A4%8D%E5%88%B6%E3%80%81%E9%87%8D%E5%91%BD%E5%90%8D%E5%92%8C%E5%88%A0%E9%99%A4%E6%96%87%E4%BB%B6--copying-renaming-and-removing-files"></a>
 # 复制、重命名和删除文件 / Copying, renaming, and removing files
 
-子例程 `copy`、 `rename`、 `move`、 和 `unlink` 可用，以此避免低级系统命令。更多细节见 [copy](https://docs.raku.org/routine/copy)、 [rename](https://docs.raku.org/routine/rename)、 [move](https://docs.raku.org/routine/move) 和 `unlink|/routine/unlink`。一些例子:
+可以使用子例程 `copy`、 `rename`、 `move` 和 `unlink` 来避免低级系统命令。更多细节见 [copy](https://docs.raku.org/routine/copy)、 [rename](https://docs.raku.org/routine/rename)、 [move](https://docs.raku.org/routine/move) 和 [unlink](https://docs.raku.org/routine/unlink)。一些例子:
 
-Routines `copy`, `rename`, `move`, and `unlink` are available to avoid low-level system commands. See details at [copy](https://docs.raku.org/routine/copy), [rename](https://docs.raku.org/routine/rename), [move](https://docs.raku.org/routine/move), and `unlink|/routine/unlink`. Some examples:
+Routines `copy`, `rename`, `move`, and `unlink` are available to avoid low-level system commands. See details at [copy](https://docs.raku.org/routine/copy), [rename](https://docs.raku.org/routine/rename), [move](https://docs.raku.org/routine/move), and [unlink](https://docs.raku.org/routine/unlink). Some examples:
 
 ```Raku
 my $filea = 'foo';
@@ -174,7 +174,7 @@ unlink $filea;
 $fileb.IO.unlink;
 ```
 
-两个 `unlink` 语句如果存在，则删除它们的参数，除非用户没有正确的权限这样做；在这种情况下，它会引发异常。
+两个 `unlink` 删除它们的参数指定的文件，如果文件存在的话。除非用户没有正确的权限这样做；在这种情况下，它会引发异常。
 
 The two `unlink` sentences remove their argument if it exists, unless the user does not have the correct permissions to do so; in that case, it raises an exception.
 

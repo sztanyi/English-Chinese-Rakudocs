@@ -44,7 +44,7 @@ say @longer-chain.perl;
 say  @longer-chain».join("").join("|"); #OUTPUT: «ACG|TAC|GTT␤» 
 ```
 
-在此示例中，这是 [`Iterable` 示例的扩展，它显示了 `for` 如何调用 `.iterator`](https://docs.raku.org/type/Iterable)，仅当创建的对象被分配给[位置](https://docs.raku.org/type/Positional)变量 `@longer-chain` 时，才会在相应的上下文中调用“迭代器”方法，该变量是一个 [Array](https://docs.raku.org/type/Array)，并且我们在最后一个示例中对其进行操作。
+在此示例中，这是 [`Iterable`](https://docs.raku.org/type/Iterable) 示例的扩展，它显示了 `for` 如何调用，仅当创建的对象被分配给[位置](https://docs.raku.org/type/Positional)变量 `@longer-chain` 时，才会在相应的上下文中调用“迭代器”方法，该变量是一个 [Array](https://docs.raku.org/type/Array)，并且我们在上一个示例中对其进行操作。
 
 In this example, which is an extension of the [example in `Iterable` that shows how `for` calls `.iterator`](https://docs.raku.org/type/Iterable), the `iterator` method will be called in the appropriate context only when the created object is assigned to a [Positional](https://docs.raku.org/type/Positional) variable, `@longer-chain`; this variable is an [Array](https://docs.raku.org/type/Array) and we operate on it as such in the last example.
 
