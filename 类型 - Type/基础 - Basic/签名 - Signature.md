@@ -6,7 +6,7 @@
 
 Parameter list pattern
 
-```Perl6
+```Raku
 class Signature { }
 ```
 
@@ -71,7 +71,7 @@ Passing arguments to a signature *binds* the arguments, contained in a [Capture]
 
 Signatures appear inside parentheses after [subroutine](https://docs.raku.org/type/Sub) and [method](https://docs.raku.org/type/Method) names, on blocks after a `-> `or `<-> `arrow, as the input to [variable declarators](https://docs.raku.org/language/variables#Variable_declarators_and_scope) like [`my`](https://docs.raku.org/syntax/my), or as a separate term starting with a colon.
 
-```Perl6
+```Raku
 sub f($x) { }
 #    ^^^^ 函数 f 的签名 / Signature of sub f
 my method x() { }
@@ -93,7 +93,7 @@ my $sig = :($a, $b);
 
 Signature literals can be used to define the signature of a callback or a closure.
 
-```Perl6
+```Raku
 sub f(&c:(Int)) { }
 sub will-work(Int) { }
 sub won't-work(Str) { }
@@ -110,7 +110,7 @@ f(-> Int { 'this works too' } );
 
 Smartmatching signatures against a List is supported.
 
-```Perl6
+```Raku
 my $sig = :(Int $i, Str $s);
 say (10, 'answer') ~~ $sig;
 # OUTPUT: «True␤» 
@@ -133,7 +133,7 @@ It matches the second `when` clause since `:($, $)` represents a `Signature` wit
 
 When smartmatching against a Hash, the signature is assumed to consist of the keys of the Hash.
 
-```Perl6
+```Raku
 my %h = left => 1, right => 2;
 say %h ~~ :(:$left, :$right);
 # OUTPUT: «True␤» 
@@ -146,7 +146,7 @@ say %h ~~ :(:$left, :$right);
 
 A signature consists of zero or more *parameters*, separated by commas.
 
-```Perl6
+```Raku
 my $sig = :($a, @b, %c);
 sub add($a, $b) { $a + $b };
 ```
@@ -155,7 +155,7 @@ sub add($a, $b) { $a + $b };
 
 As an exception the first parameter may be followed by a colon instead of a comma to mark the invocant of a method. The invocant is the object that was used to call the method, which is usually bound to [`self`](https://docs.raku.org/routine/self). By specifying it in the signature, you can change the variable name it is bound to.
 
-```Perl6
+```Raku
 method ($a: @b, %c) {};       # first argument is the invocant 
  
 class Foo {
@@ -173,7 +173,7 @@ say Foo.whoami; # OUTPUT: «Well I'm class Foo, of course!␤»
 
 Parameters can optionally have a type constraint (the default is [`Any`](https://docs.raku.org/type/Any)). These can be used to restrict the allowed input to a function.
 
-```Perl6
+```Raku
 my $sig = :(Int $a, Str $b);
 ```
 
@@ -181,7 +181,7 @@ my $sig = :(Int $a, Str $b);
 
 Type constraints can have any compile-time defined value
 
-```Perl6
+```Raku
 subset Positive-integer of Int where * > 0;
 sub divisors(Positive-integer $n) { $_ if $n %% $_ for 1..$n };
 divisors 2.5;
@@ -200,7 +200,7 @@ Please note that in the code above type constraints are enforced at two differen
 
 Anonymous arguments are fine too, if you don't actually need to refer to a parameter by name, for instance to distinguish between different signatures in a [multi](https://docs.raku.org/language/functions#index-entry-declarator_multi-Multi-dispatch) or to check the signature of a [Callable](https://docs.raku.org/type/Callable).
 
-```Perl6
+```Raku
 my $sig = :($, @, %a);          # two anonymous and a "normal" parameter 
 $sig = :(Int, Positional);      # just a type is also fine (two parameters) 
 sub baz(Str) { "Got passed a Str" }
@@ -214,7 +214,7 @@ Type constraints may also be [type captures](https://docs.raku.org/type/Signatur
 
 In addition to those *nominal* types, additional constraints can be placed on parameters in the form of code blocks which must return a true value to pass the type check
 
-```Perl6
+```Raku
 sub f(Real $x where { $x > 0 }, Real $y where { $y >= $x }) { }
 ```
 
@@ -226,7 +226,7 @@ The code in `where` clauses has some limitations: anything that produces side-ef
 
 The `where` clause doesn't need to be a code block, anything on the right of the `where`-clause will be used to [smartmatch](https://docs.raku.org/language/operators#infix_~~) the argument against it. So you can also write:
 
-```Perl6
+```Raku
 multi factorial(Int $ where 0) { 1 }
 multi factorial(Int $x)        { $x * factorial($x - 1) }
 ```
@@ -235,7 +235,7 @@ multi factorial(Int $x)        { $x * factorial($x - 1) }
 
 The first of those can be shortened to
 
-```Perl6
+```Raku
 multi factorial(0) { 1 }
 ```
 
@@ -247,7 +247,7 @@ i.e., you can use a literal directly as a type and value constraint on an anonym
 
 **Tip:** pay attention to not accidentally leave off a block when you, say, have several conditions:
 
-```Perl6
+```Raku
 -> $y where   .so && .name    {}( sub one   {} ); # WRONG!! 
 -> $y where { .so && .name }  {}( sub two   {} ); # OK! 
 -> $y where   .so &  .name.so {}( sub three {} ); # Also good 
@@ -260,7 +260,7 @@ The first version is wrong and will issue a warning about sub object coerced to 
 
 All previous arguments that are not part of a sub-signature in a `Signature` are accessible in a `where`-clause that follows an argument. Therefore, the `where`-clause of the last argument has access to all arguments of a signature that are not part of a sub-signature. For a sub-signature place the `where`-clause inside the sub-signature.
 
-```Perl6
+```Raku
 sub foo($a, $b where * == $a ** 2) { say "$b is a square of $a" }
 foo 2, 4; # OUTPUT: «4 is a square of 2␤»» 
 # foo 2, 3; 
@@ -276,7 +276,7 @@ can have constraints, too. Any `where` clause on any parameter will be executed,
 
 [Optional arguments](https://docs.raku.org/type/Signature#Optional_and_mandatory_arguments) can have constraints, too. Any `where` clause on any parameter will be executed, even if it's optional and not provided by the caller. In that case you may have to guard against undefined values within the `where` clause.
 
-```Perl6
+```Raku
 sub f(Int $a, UInt $i? where { !$i.defined or $i > 5 }) { ... }
 ```
 
@@ -287,7 +287,7 @@ sub f(Int $a, UInt $i? where { !$i.defined or $i > 5 }) { ... }
 
 [Slurpy arguments](https://docs.raku.org/type/Signature#Slurpy_%28A.K.A._variadic%29_parameters) can not have type constraints. A `where`-clause in conjunction with a [Junction](https://docs.raku.org/type/Junction) can be used to that effect.
 
-```Perl6
+```Raku
 sub f(*@a where {$_.all ~~ Int}) { say @a };
 f(42);
 f(<a>);
@@ -302,7 +302,7 @@ CATCH { default { say .^name, ' ==> ', .Str }  }
 
 Constraints against [Named arguments](https://docs.raku.org/type/Signature#Positional_vs._named_arguments) apply to the value part of the [colon-pair](https://docs.raku.org/type/Pair).
 
-```Perl6
+```Raku
 sub f(Int :$i){};
 f :i<forty-two>;
 CATCH { default { say .^name, ' ==> ', .Str }  }
@@ -317,7 +317,7 @@ CATCH { default { say .^name, ' ==> ', .Str }  }
 
 Normally, a type constraint only checks whether the value of the parameter is of the correct type. Crucially, both *object instances* and *type objects* will satisfy such a constraint as illustrated below:
 
-```Perl6
+```Raku
 say  42.^name;    # OUTPUT: «Int␤» 
 say  42 ~~ Int;   # OUTPUT: «True␤» 
 say Int ~~ Int;   # OUTPUT: «True␤» 
@@ -331,7 +331,7 @@ Note how both `42` and `Int` satisfy the match.
 
 Sometimes we need to distinguish between these object instances (`42`) and type objects (`Int`). Consider the following code:
 
-```Perl6
+```Raku
 sub limit-lines(Str $s, Int $limit) {
     my @lines = $s.lines;
     @lines[0 .. min @lines.elems, $limit].join("\n")
@@ -355,7 +355,7 @@ Here we really only want to deal with string instances, not type objects. To do 
 
 To warm up, let's apply `:D` to the right-hand side of our humble `Int` example:
 
-```Perl6
+```Raku
 say  42 ~~ Int:D;  # OUTPUT: «True␤» 
 say Int ~~ Int:D;  # OUTPUT: «False␤» 
 ```
@@ -368,7 +368,7 @@ Note how only `42` matches `Int:D` in the above.
 
 Returning to `limit-lines`, we can now amend its signature to catch the error early:
 
-```Perl6
+```Raku
 sub limit-lines(Str:D $s, Int $limit) { };
 say limit-lines Str, 3;
 CATCH { default { put .^name ~ '--' ~ .Str } };
@@ -384,7 +384,7 @@ This is much better than the way the program failed before, since here the reaso
 
 It's also possible that *type objects* are the only ones that make sense for a routine to accept. This can be done with the `:U`type constraint, which checks whether the value passed is a type object rather than an object instance. Here's our `Int`example again, this time with `:U` applied:
 
-```Perl6
+```Raku
 say  42 ~~ Int:U;  # OUTPUT: «False␤» 
 say Int ~~ Int:U;  # OUTPUT: «True␤» 
 ```
@@ -397,7 +397,7 @@ Now `42` fails to match `Int:U` while `Int` succeeds.
 
 Here's a more practical example:
 
-```Perl6
+```Raku
 sub can-turn-into(Str $string, Any:U $type) {
    return so $string.$type;
 }
@@ -411,7 +411,7 @@ say can-turn-into("a string", Num); # OUTPUT: «False␤»
 
 Calling `can-turn-into` with an object instance as its second parameter will yield a constraint violation as intended:
 
-```Perl6
+```Raku
 say can-turn-into("a string", 123);
 # OUTPUT: «Parameter '$type' of routine 'can-turn-into' must be a type object 
 # of type 'Any', not an object instance of type 'Int'...» 
@@ -425,7 +425,7 @@ For explicitly indicating the normal behavior, that is, not constraining whether
 
 To recap, here is a quick illustration of these type constraints, also known collectively as *type smileys*:
 
-```Perl6
+```Raku
 # Checking a type object 
 say Int ~~ Any:D;    # OUTPUT: «False␤» 
 say Int ~~ Any:U;    # OUTPUT: «True␤» 
@@ -457,7 +457,7 @@ The [Classes and Objects](https://docs.raku.org/language/classtut#Starting_with_
 
 Keep in mind all parameters have values; even optional ones have default defaults that are the type object of the constrained type for explicit type constraints. If no explicit type constraint exists, the default default is an [Any](https://docs.raku.org/type/Any) type object for methods, submethods, and subroutines, and a [Mu](https://docs.raku.org/type/Mu) type object for blocks. This means that if you use the `:D` type smiley, you'd need to provide a default value or make the parameter required. Otherwise, the default default would be a type object, which would fail the definiteness constraint.
 
-```Perl6
+```Raku
 sub divide (Int:D :$a = 2, Int:D :$b!) { say $a/$b }
 divide :1a, :2b; # OUTPUT: «0.5␤» 
 ```
@@ -466,7 +466,7 @@ divide :1a, :2b; # OUTPUT: «0.5␤»
 
 The default value will kick in when that particular parameter, either positional or named, gets no value *at all*.
 
-```Perl6
+```Raku
 sub f($a = 42){
   my $b is default('answer');
   say $a;
@@ -485,7 +485,7 @@ f Nil; # OUTPUT: «Nil␤answer␤»
 
 Note: in 6.c language, the default default of `:U`/`:D` constrained variables was a type object with such a constraint, which is not initializable, thus you cannot use the `.=` operator, for example.
 
-```Perl6
+```Raku
 use v6.c;
 my Int:D $x .= new: 42;
 # OUTPUT: You cannot create an instance of this type (Int:D) 
@@ -496,7 +496,7 @@ my Int:D $x .= new: 42;
 
 In the 6.d language, the default default is the type object without the smiley constraint:
 
-```Perl6
+```Raku
 use v6.d;
 my Int:D $x .= new: 42; # OUTPUT: «42␤» 
 ```
@@ -513,7 +513,7 @@ As explained above, *definiteness* is concerned with the distinction between typ
 
 *Definiteness* should be distinguished from *definedness*, which is concerned with the difference between defined and undefined objects. Whether an object is defined or undefined can be verified using the `defined`-method, which is implemented in class [Mu](https://docs.raku.org/type/Mu). By default a type object is considered undefined, while an object instance is considered defined; that is: `.defined` returns `False` on a type object, and `True` otherwise. But this default behavior may be overridden by subclasses. An example of a subclass that overrides the default `.defined` behavior is [Failure](https://docs.raku.org/type/Failure), so that even an instantiated `Failure` acts as an undefined value:
 
-```Perl6
+```Raku
 my $a = Failure;                # Initialize with type object 
 my $b = Failure.new("foo");     # Initialize with object instance 
 say $a.DEFINITE;                # Output: «False␤» : indefinite type object 
@@ -529,7 +529,7 @@ say $b.defined;                 # Output: «False␤» : .defined override
 
 The signature of a [Callable](https://docs.raku.org/type/Callable) parameter can be constrained by specifying a [Signature](https://docs.raku.org/type/Signature) literal right after the parameter (no whitespace allowed):
 
-```Perl6
+```Raku
 sub f(&c:(Int, Str))  { say c(10, 'ten') };
 sub g(Int $i, Str $s) { $s ~ $i };
 f(&g);
@@ -540,7 +540,7 @@ f(&g);
 
 This shorthand syntax is available only for parameters with the `&` sigil. For others, you need to use the long version:
 
-```Perl6
+```Raku
 sub f($c where .signature ~~ :(Int, Str))  { say $c(10, 'ten') }
 sub g(Num $i, Str $s) { $s ~ $i }
 sub h(Int $i, Str $s) { $s ~ $i }
@@ -559,7 +559,7 @@ There are multiple ways to constrain return types on a [Routine](https://docs.ra
 
 [`Nil`](https://docs.raku.org/type/Nil) and [`Failure`](https://docs.raku.org/type/Failure) are always allowed as return types, regardless of any type constraint. This allows [Failure](https://docs.raku.org/type/Failure) to be returned and passed on down the call chain.
 
-```Perl6
+```Raku
 sub foo(--> Int) { Nil };
 say foo.perl; # OUTPUT: «Nil␤» 
 ```
@@ -579,7 +579,7 @@ This form is preferred for several reasons: (1) it can handle constant values wh
 
 The return type arrow has to be placed at the end of the parameter list, with or without a `,` before it.
 
-```Perl6
+```Raku
 sub greeting1(Str $name  --> Str) { say "Hello, $name" } # Valid 
 sub greeting2(Str $name, --> Str) { say "Hello, $name" } # Valid 
  
@@ -591,7 +591,7 @@ sub favorite-number2(--> 42) { return } # OUTPUT: 42
 
 If the type constraint is a constant expression, it is used as the return value of the routine. Any return statement in that routine has to be argumentless.
 
-```Perl6
+```Raku
 sub foo(Str $word --> 123) { say $word; return; }
 my $value = foo("hello"); # OUTPUT: hello 
 say $value;               # OUTPUT: 123 
@@ -608,7 +608,7 @@ say $value;
 
 The keyword `returns` following a signature declaration has the same function as `-->` with the caveat that this form does not work with constant values. You cannot use it in a block either. That is why the pointy arrow form is always preferred.
 
-```Perl6
+```Raku
 sub greeting(Str $name) returns Str { say "Hello, $name" } # Valid 
 sub favorite-number returns 42 {        } # This will fail. 
 ```
@@ -620,7 +620,7 @@ sub favorite-number returns 42 {        } # This will fail.
 
 `of` is just the real name of the `returns` keyword.
 
-```Perl6
+```Raku
 sub foo() of Int { 42 }; # Valid 
 sub foo() of 42 {  };    # This will fail. 
 ```
@@ -632,7 +632,7 @@ sub foo() of 42 {  };    # This will fail.
 
 This is similar to placing type constraints on variables like `my Type $var = 20;`, except the `$var` is a definition for a routine.
 
-```Perl6
+```Raku
 my Int sub bar { 1 };     # Valid 
 my 42 sub bad-answer {};  # This will fail. 
 ```
@@ -644,7 +644,7 @@ my 42 sub bad-answer {};  # This will fail.
 
 To accept one type but coerce it automatically to another, use the accepted type as an argument to the target type. If the accepted type is `Any` it can be omitted.
 
-```Perl6
+```Raku
 sub f(Int(Str) $want-int, Str() $want-str) {
     say $want-int.^name ~ ' ' ~ $want-str.^name
 }
@@ -666,7 +666,7 @@ The coercion is performed by calling the method with the name of the type to coe
 
 Coercion can also be performed on return types:
 
-```Perl6
+```Raku
 sub square-str (Int $x --> Str(Int)) {
     $x²
 }
@@ -696,7 +696,7 @@ A function is variadic if it can take a varying number of arguments; that is, it
 
 These are called "slurpy" because they slurp up any remaining arguments to a function, like someone slurping up noodles.
 
-```Perl6
+```Raku
 $ = :($a, @b);     # 正好两个参数，第二个参数必须是位置的 / exactly two arguments, where the second one must be Positional 
 $ = :($a, *@b);    # 至少有一个参数，@b 吃掉多余一个的参数 / at least one argument, @b slurps up any beyond that 
 $ = :(*%h);        # no positional arguments, but any number of named arguments 
@@ -717,7 +717,7 @@ say named-names :foo(42) :bar<baz>; # OUTPUT: «foo bar␤»
 
 Positional and named slurpies can be combined; named arguments (i.e., `Pair`s) are collected in the specified hash, positional arguments in the array:
 
-```Perl6
+```Raku
 sub combined-slurpy (*@a, *%h) { { array => @a, hash => %h } }
 # or: sub combined-slurpy (*%h, *@a) { ... } 
  
@@ -735,7 +735,7 @@ say combined-slurpy(one => 1, two => 2, 3, 4, five => 5, 6);
 
 Note that positional parameters aren't allowed after slurpy parameters:
 
-```Perl6
+```Raku
 :(*@args, $last);
 # ===SORRY!=== Error while compiling: 
 # Cannot put required parameter $last after variadic parameters 
@@ -775,7 +775,7 @@ Each will be described in detail in the next few sections. As the difference bet
 
 Slurpy parameters declared with one asterisk will flatten arguments by dissolving one or more layers of bare [Iterable](https://docs.raku.org/type/Iterable)s.
 
-```Perl6
+```Raku
 my @array = <a b c>;
 my $list := <d e f>;
 sub a(*@a)  { @a.perl.say };
@@ -797,7 +797,7 @@ A single asterisk slurpy flattens all given iterables, effectively hoisting any 
 
 Slurpy parameters declared with two stars do not flatten any [Iterable](https://docs.raku.org/type/Iterable) arguments within the list, but keep the arguments more or less as-is:
 
-```Perl6
+```Raku
 my @array = <a b c>;
 my $list := <d e f>;
 sub b(**@b) { @b.perl.say };
@@ -819,7 +819,7 @@ The double asterisk slurpy hides the nested comma objects and leaves them as-is 
 
 A slurpy parameter created using a plus engages the *"single argument rule"*, which decides how to handle the slurpy argument based upon context. Basically, if only a single argument is passed and that argument is [Iterable](https://docs.raku.org/type/Iterable), that argument is used to fill the slurpy parameter array. In any other case, `+@` works like `**@`.
 
-```Perl6
+```Raku
 my @array = <a b c>;
 my $list := <d e f>;
 sub c(+@b) { @b.perl.say };
@@ -841,7 +841,7 @@ For additional discussion and examples, see [Slurpy Conventions for Functions](h
 
 Type captures allow deferring the specification of a type constraint to the time the function is called. They allow referring to a type both in the signature and the function body.
 
-```Perl6
+```Raku
 sub f(::T $p1, T $p2, ::C){
     # $p1 and $p2 are of the same type T, that we don't know yet 
     # C will hold a type we derive from a type object or value 
@@ -864,7 +864,7 @@ say s(2); # 10 / 2 * 2 == 10
 
 An argument can be *positional* or *named*. By default, arguments are positional, except slurpy hash and arguments marked with a leading colon `:`. The latter is called a [colon-pair](https://docs.raku.org/type/Pair). Check the following signatures and what they denote:
 
-```Perl6
+```Raku
 $ = :($a);               # a positional argument 
 $ = :(:$a);              # a named argument of name 'a' 
 $ = :(*@a);              # a slurpy positional argument 
@@ -875,7 +875,7 @@ $ = :(*%h);              # a slurpy named argument
 
 On the caller side, positional arguments are passed in the same order as the arguments are declared.
 
-```Perl6
+```Raku
 sub pos($x, $y) { "x=$x y=$y" }
 pos(4, 5);                          # OUTPUT: «x=4 y=5» 
 ```
@@ -884,7 +884,7 @@ pos(4, 5);                          # OUTPUT: «x=4 y=5»
 
 In the case of named arguments and parameters, only the name is used for mapping arguments to parameters. If a fat arrow is used to construct a [Pair](https://docs.raku.org/type/Pair) only those with valid identifiers as keys are recognized as named arguments.
 
-```Perl6
+```Raku
 sub named(:$x, :$y) { "x=$x y=$y" }
 named( y => 5, x => 4);             # OUTPUT: «x=4 y=5» 
 ```
@@ -893,7 +893,7 @@ named( y => 5, x => 4);             # OUTPUT: «x=4 y=5»
 
 You can invoke the routine using a variable with the same name as the named argument; in that case `:` will be used for the invocation so that the name of the variable is understood as the key of the argument.
 
-```Perl6
+```Raku
 sub named-shortcut( :$shortcut ) {
     say "Looks like $shortcut"
 }
@@ -906,7 +906,7 @@ named-shortcut( :$shortcut );           # OUTPUT: «Looks like Þor is mighty␤
 
 It is possible to have a different name for a named argument than the variable name:
 
-```Perl6
+```Raku
 sub named(:official($private)) { "Official business!" if $private }
 named :official;
 ```
@@ -918,7 +918,7 @@ named :official;
 
 The [colon-pair](https://docs.raku.org/type/Pair) syntax can be used to provide aliases for arguments:
 
-```Perl6
+```Raku
 sub alias-named(:color(:$colour), :type(:class($kind))) {
     say $colour ~ " " ~ $kind
 }
@@ -935,7 +935,7 @@ The presence of the colon `:` will decide whether we are creating a new named ar
 
 A function with named arguments can be called dynamically, dereferencing a [Pair](https://docs.raku.org/type/Pair) with `|` to turn it into a named argument.
 
-```Perl6
+```Raku
 multi f(:$named) { note &?ROUTINE.signature };
 multi f(:$also-named) { note &?ROUTINE.signature };
 for 'named', 'also-named' -> $n {
@@ -950,7 +950,7 @@ f |$pair;                           # OUTPUT: «(:$named)␤»
 
 The same can be used to convert a `Hash` into named arguments.
 
-```Perl6
+```Raku
 sub f(:$also-named) { note &?ROUTINE.signature };
 my %pairs = also-named => 4;
 f |%pairs;                              # OUTPUT: «(:$also-named)␤» 
@@ -960,7 +960,7 @@ f |%pairs;                              # OUTPUT: «(:$also-named)␤»
 
 A `Hash` that contains a list may prove problematic when slipped into named arguments. To avoid the extra layer of containers coerce to [Map](https://docs.raku.org/type/Map) before slipping.
 
-```Perl6
+```Raku
 class C { has $.x; has $.y; has @.z };
 my %h = <x y z> Z=> (5, 20, [1,2]);
 say C.new(|%h.Map);
@@ -974,7 +974,7 @@ say C.new(|%h.Map);
 
 Positional parameters are mandatory by default, and can be made optional with a default value or a trailing question mark:
 
-```Perl6
+```Raku
 $ = :(Str $id);         # required parameter 
 $ = :($base = 10);      # optional parameter, default value 10 
 $ = :(Int $x?);         # optional parameter, default is the Int type object 
@@ -984,7 +984,7 @@ $ = :(Int $x?);         # optional parameter, default is the Int type object
 
 Named parameters are optional by default, and can be made mandatory with a trailing exclamation mark:
 
-```Perl6
+```Raku
 $ = :(:%config);        # optional parameter 
 $ = :(:$debug = False); # optional parameter, defaults to False 
 $ = :(:$name!);         # mandatory 'name' named parameter 
@@ -994,7 +994,7 @@ $ = :(:$name!);         # mandatory 'name' named parameter
 
 Default values can depend on previous parameters, and are (at least notionally) computed anew for each call
 
-```Perl6
+```Raku
 $ = :($goal, $accuracy = $goal / 100);
 $ = :(:$excludes = ['.', '..']);        # a new Array for every call 
 ```
@@ -1014,7 +1014,7 @@ $ = :(:$excludes = ['.', '..']);        # a new Array for every call
 
 Parameters can be followed by a sub-signature in parentheses, which will destructure the argument given. The destructuring of a list is just its elements:
 
-```Perl6
+```Raku
 sub first(@array ($first, *@rest)) { $first }
 ```
 
@@ -1022,7 +1022,7 @@ sub first(@array ($first, *@rest)) { $first }
 
 or
 
-```Perl6
+```Raku
 sub first([$f, *@]) { $f }
 ```
 
@@ -1030,7 +1030,7 @@ sub first([$f, *@]) { $f }
 
 While the destructuring of a hash is its pairs:
 
-```Perl6
+```Raku
 sub all-dimensions(% (:length(:$x), :width(:$y), :depth(:$z))) {
     $x andthen $y andthen $z andthen True
 }
@@ -1040,7 +1040,7 @@ sub all-dimensions(% (:length(:$x), :width(:$y), :depth(:$z))) {
 
 Pointy loops can also destructure hashes, allowing assignment to variables:
 
-```Perl6
+```Raku
 my %hhgttu = (:40life, :41universe, :42everything);
 for %hhgttu -> (:$key, :$value) {
   say "$key → $value";
@@ -1052,7 +1052,7 @@ for %hhgttu -> (:$key, :$value) {
 
 In general, an object is destructured based on its attributes. A common idiom is to unpack a [`Pair`](https://docs.raku.org/type/Pair)'s key and value in a for loop:
 
-```Perl6
+```Raku
 for <Peter Paul Merry>.pairs -> (:key($index), :value($guest)) { }
 ```
 
@@ -1067,7 +1067,7 @@ However, this unpacking of objects as their attributes is only the default behav
 
 To match against a compound parameter use a sub-signature following the argument name in parentheses.
 
-```Perl6
+```Raku
 sub foo(|c(Int, Str)){
    put "called with {c.perl}"
 };
@@ -1082,7 +1082,7 @@ foo(42, "answer");
 
 To exclude certain parameters from being considered in multiple dispatch, separate them with a double semicolon.
 
-```Perl6
+```Raku
 multi sub f(Int $i, Str $s;; :$b) { say "$i, $s, {$b.perl}" };
 f(10, 'answer');
 # OUTPUT: «10, answer, Any␤» 
@@ -1103,7 +1103,7 @@ This is often used in `proto` definitions (like `proto foo (|) {*}`) to indicate
 
 If bound to a variable arguments can be forwarded as a whole using the slip operator `|`.
 
-```Perl6
+```Raku
 sub a(Int $i, Str $s) { say $i.^name ~ ' ' ~ $s.^name }
 sub b(|c) { say c.^name; a(|c) }
 b(42, "answer");
@@ -1121,7 +1121,7 @@ By default, parameters are bound to their argument and marked as read-only. One 
 
 The `is copy` trait causes the argument to be copied, and allows it to be modified inside the routine
 
-```Perl6
+```Raku
 sub count-up($x is copy) {
     $x = ∞ if $x ~~ Whatever;
     .say for 1..$x;
@@ -1132,7 +1132,7 @@ sub count-up($x is copy) {
 
 The `is rw` trait, which stands for *is read-write*, makes the parameter bind to a variable (or other writable container). Assigning to the parameter changes the value of the variable at the caller side.
 
-```Perl6
+```Raku
 sub swap($x is rw, $y is rw) {
     ($x, $y) = ($y, $x);
 }
@@ -1154,7 +1154,7 @@ To explicitly ask for a read-only parameter use the `is readonly` trait. Please 
 
 Traits can be followed by the where clause:
 
-```Perl6
+```Raku
 sub ip-expand-ipv6($ip is copy where m:i/^<[a..f\d\:]>**3..39$/) { }
 ```
 
@@ -1164,7 +1164,7 @@ sub ip-expand-ipv6($ip is copy where m:i/^<[a..f\d\:]>**3..39$/) { }
 <a id="方法-params--method-params"></a>
 ## 方法 params / method params
 
-```Perl6
+```Raku
 method params(Signature:D: --> Positional)
 ```
 
@@ -1175,7 +1175,7 @@ Returns the list of [`Parameter`](https://docs.raku.org/type/Parameter) objects 
 <a id="方法-arity--method-arity"></a>
 ## 方法 arity / method arity
 
-```Perl6
+```Raku
 method arity(Signature:D: --> Int:D)
 ```
 
@@ -1186,7 +1186,7 @@ Returns the *minimal* number of positional arguments required to satisfy the sig
 <a id="方法-count--method-count"></a>
 ## 方法 count / method count
 
-```Perl6
+```Raku
 method count(Signature:D: --> Real:D)
 ```
 
@@ -1201,14 +1201,14 @@ Returns the *maximal* number of positional arguments which can be bound to the s
 
 Whatever the Signature's return constraint is:
 
-```Perl6
+```Raku
 :($a, $b --> Int).returns # OUTPUT: «(Int)» 
 ```
 
 <a id="方法-accepts--method-accepts"></a>
 ## 方法 ACCEPTS / method ACCEPTS
 
-```Perl6
+```Raku
 multi method ACCEPTS(Signature:D: Signature $topic)
 multi method ACCEPTS(Signature:D: Capture $topic)
 multi method ACCEPTS(Signature:D: Mu \topic)
@@ -1218,7 +1218,7 @@ multi method ACCEPTS(Signature:D: Mu \topic)
 
 If `$topic` is a [Signature](https://docs.raku.org/type/Signature) returns `True` if anything accepted by `$topic` would also be accepted by the invocant, otherwise returns `False`:
 
-```Perl6
+```Raku
 :($a, $b) ~~ :($foo, $bar, $baz?);   # OUTPUT: «True» 
 :(Int $n) ~~ :(Str);                 # OUTPUT: «False» 
 ```
@@ -1227,7 +1227,7 @@ If `$topic` is a [Signature](https://docs.raku.org/type/Signature) returns `True
 
 The `$topic` is a [Capture](https://docs.raku.org/type/Capture), returns `True` if it can be bound to the invocant, i.e., if a function with invocant's `Signature` would be able to be called with the `$topic`:
 
-```Perl6
+```Raku
 \(1, 2, :foo) ~~ :($a, $b, :foo($bar)); # OUTPUT: «True» 
 \(1, :bar)    ~~ :($a);                 # OUTPUT: «False» 
 ```
@@ -1236,7 +1236,7 @@ The `$topic` is a [Capture](https://docs.raku.org/type/Capture), returns `True` 
 
 Lastly, the candidate with `Mu \topic` converts `topic` to [Capture](https://docs.raku.org/type/Capture) and follows the same semantics as [Capture](https://docs.raku.org/type/Capture) `$topic`:
 
-```Perl6
+```Raku
 <a b c d>  ~~ :(Int $a);      # OUTPUT: «False» 
 42         ~~ :(Int);         # OUTPUT: «False» (Int.Capture throws) 
 set(<a b>) ~~ :(:$a, :$b);    # OUTPUT: «True» 
@@ -1246,7 +1246,7 @@ set(<a b>) ~~ :(:$a, :$b);    # OUTPUT: «True»
 
 Since [`where` clauses](https://docs.raku.org/type/Signature#index-entry-where_clause_%28Signature%29) are not introspectable, the method cannot determine whether two signatures [ACCEPTS](https://docs.raku.org/type/Signature#method_ACCEPTS) the same sort of `where`-constrained parameters. Such comparisons will return `False`. This includes signatures with literals, which are just sugar for the `where`-constraints:
 
-```Perl6
+```Raku
 say :(42) ~~ :($ where 42)    # OUTPUT: «False␤» 
 ```
 
@@ -1257,7 +1257,7 @@ say :(42) ~~ :($ where 42)    # OUTPUT: «False␤»
 
 Defined as:
 
-```Perl6
+```Raku
 method Capture()
 ```
 
@@ -1268,7 +1268,7 @@ Throws `X::Cannot::Capture`.
 <a id="运行时创建签名对象6d-201901及以后--runtime-creation-of-signature-objects-6d-201901-and-later"></a>
 # 运行时创建签名对象(6.d, 2019.01及以后) / Runtime creation of Signature objects (6.d, 2019.01 and later)
 
-```Perl6
+```Raku
 Signature.new(params => (...), returns => Type, arity => 1, count => 1)
 ```
 
