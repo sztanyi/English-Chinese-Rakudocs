@@ -96,3 +96,15 @@ https://www.raku-lang.ir/en/
 
 # The Zen of Test Suites
 https://dev.to/ovid/the-zen-of-test-suites-304f
+
+# StackOverflow for Raku questions
+https://stackoverflow.com/questions/tagged/raku
+
+# Rakulang subReddit
+https://www.redit.com/r/rakulang/
+
+# Raku IRC channel on Libera.Chat
+https://web.libera.chat
+
+# Rakulang Twitter feed
+https://twitter.com/search?q=%23rakulang
