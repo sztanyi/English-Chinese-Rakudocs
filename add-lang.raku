@@ -26,8 +26,7 @@ sub MAIN(Str $file) {
     }
 }
 
-sub remove_link (Str $l --> Str) {
-    my $line = $l;
+sub remov_link (Str $line is copy --> Str) {
     $line ~~ s/^ ('#'+ \s) \[ /$0/;
     $line ~~ s/\] \( https .* \) $//;
     return $line;
