@@ -108,3 +108,6 @@ https://web.libera.chat
 
 # Rakulang Twitter feed
 https://twitter.com/search?q=%23rakulang
+
+# Raku IDE
+https://commaide.com
